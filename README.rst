@@ -35,4 +35,5 @@ this license, visit http://creativecommons.org/licenses/by-nc-sa/3.0/ or send
 a letter to Creative Commons, 444 Castro Street, Suite 900, Mountain View,
 California, 94041, USA.
 
-A copy of this license in text format is included in this package
+A copy of this license in text format is included in this package under the
+`docs` directory
