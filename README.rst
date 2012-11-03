@@ -36,4 +36,4 @@ a letter to Creative Commons, 444 Castro Street, Suite 900, Mountain View,
 California, 94041, USA.
 
 A copy of this license in text format is included in this package under the
-`docs` directory
+``docs`` directory
