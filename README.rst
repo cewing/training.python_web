@@ -23,8 +23,8 @@ After cloning this package from the repository, do the following::
   $ ../bin/buildout
   $ ../bin/sphinx
 
-At the end of a successful build, you will find a `build` directory, containing
-the completed HTML documentation.
+At the end of a successful build, you will find a ``build`` directory, containing
+the completed documentation.
 
 LICENSE
 =======
