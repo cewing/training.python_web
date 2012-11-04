@@ -1,0 +1,11 @@
+#!/bin/bash
+shopt -s nullglob
+SRC=rst
+DEST=${options['build-suffix']}
+
+for RST in ${parts.buildout.directory}/source/presentations/*.rst
+do
+    BASE=`basename $$RST`
+    OUT=${options['build-directory']}/$${BASE%.$$SRC}.$$DEST
+    ${options['build-cmd']} $$RST $$OUT
+done

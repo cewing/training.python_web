@@ -13,9 +13,9 @@ In this documentation:
    :maxdepth: 2
 
    outline
+   
 
-
-:ref:`presentations <presentations:index>`
+`presentations <presentations/index.html>`_
 
 
 

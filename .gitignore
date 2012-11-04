@@ -30,3 +30,6 @@ svn-commit.tmp
 .installed.cfg
 bin
 build
+downloads/*
+include
+lib

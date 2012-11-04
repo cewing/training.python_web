@@ -25,7 +25,7 @@ import sys, os
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.intersphinx']
+extensions = []
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -85,12 +85,6 @@ pygments_style = 'sphinx'
 
 # A list of ignored prefixes for module index sorting.
 #modindex_common_prefix = []
-
-intersphinx_mapping = {
-    # 'main': ('../../build/html', None),
-    'presentations': ('../../build/presentations', None),
-}
-intersphinx_cache_limit = 0
 
 # -- Options for HTML output ---------------------------------------------------
 
