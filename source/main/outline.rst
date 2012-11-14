@@ -19,7 +19,7 @@ demonstrates the use of sockets. We will install the server on our Virtual
 Machines, and accomplish our first networked communication.
 
 The class assignment will focus on extending our use of sockets to support a
-more complex use-case.  
+more complex use-case.
 
 Reading
 *******

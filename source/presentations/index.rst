@@ -7,7 +7,3 @@ Individual Course Presentations
 
 .. _Week 1 - Sockets: week1.html
 .. _Week 2 - French Fries: week2.html
-
-Slide 2
--------
-
