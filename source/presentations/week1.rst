@@ -3,7 +3,7 @@ Internet Programming with Python
 
 .. image:: ../../../img/python.png
     :align: left
-    :width: 300px
+    :width: 33%
 
 Week 1: Networking and Sockets
 
@@ -53,6 +53,51 @@ But First
 But First
 ---------
 
+I'll spend a lot of time talking
+
+.. class:: incremental
+
+Don't make the mistake of thinking this means I know everything
+
+.. class:: incremental
+
+Each of us has domain expertise, share it
+
+But First
+---------
+
 .. class:: big-centered
 
 Introductions
+
+Finally
+-------
+
+.. class:: big-centered
+
+    And now, let us begin!
+
+Questions From the Reading?
+---------------------------
+
+.. class:: big-centered
+
+do you have any?
+
+Computer Communications
+-----------------------
+
+.. image:: ../../../img/network_topology.png
+    :align: left
+    :width: 40%
+
+.. class:: incremental
+
+* processes can communicate
+* inside one machine
+* between two machines
+* among many machines
+
+.. class:: image-credit
+
+image: http://en.wikipedia.org/wiki/Internet_Protocol_Suite

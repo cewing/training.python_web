@@ -150,3 +150,17 @@ img.align-center, .figure.align-center, object.align-center {
 }
 div#footer {background: #005 url(../../img/by-nc-sa.png) 99% 90% no-repeat;}
 #footer :link, #footer :visited {text-decoration: none; color: #aae;}
+
+div.figure p.caption {
+    margin-top: 5px;
+}
+
+p.image-credit {
+    font-size: 60%;
+    border: 1px solid red;
+    position: absolute;
+    bottom: 0.5em;
+    left: 1em;
+    margin: 1em 0em 0em 0em;
+    z-index: 10;
+}
