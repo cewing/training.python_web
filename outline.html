@@ -1,0 +1,260 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Course Outline &mdash; Internet Programming with Python 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Internet Programming with Python 1.0 documentation" href="index.html" />
+    <link rel="prev" title="Internet Programming with Python" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="index.html" title="Internet Programming with Python"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Internet Programming with Python 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="course-outline">
+<h1>Course Outline<a class="headerlink" href="#course-outline" title="Permalink to this headline">¶</a></h1>
+<p>Each week will have in-class lectures, lab time, and lightning talks.  There
+will be recommended reading, additional reading for the curious, and an
+assignment to be completed.</p>
+<div class="section" id="week-1-introduction-and-sockets">
+<h2>Week 1 - Introduction and Sockets<a class="headerlink" href="#week-1-introduction-and-sockets" title="Permalink to this headline">¶</a></h2>
+<p><strong>Date</strong>: Jan. 8, 2013</p>
+<p>In this class, we will discuss the fundamental concepts and structures that
+underly the internet and networked computing. We will learn about the TCP/IP
+stack (Internet Protocol Suite) and gain insight into how that model is
+manifested in real life. We will learn about sockets and how to use them to
+communicate between processes on a single machine or across a network.</p>
+<p>Our class laboratory will focus on creating a small server-client program that
+demonstrates the use of sockets. We will install the server on our Virtual
+Machines, and accomplish our first networked communication.</p>
+<p>The class assignment will focus on extending our use of sockets to support a
+more complex use-case.</p>
+<div class="section" id="reading">
+<h3>Reading<a class="headerlink" href="#reading" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><a class="reference external" href="http://en.wikipedia.org/wiki/Internet_Protocol_Suite">Wikipedia - Internet Protocol Suite</a></li>
+<li><a class="reference external" href="http://www.garykessler.net/library/tcpip.html">Kessler - TCP/IP (sections 1 and 2)</a></li>
+<li><a class="reference external" href="http://en.wikipedia.org/wiki/Domain_Name_System">Wikipedia - Domain Name System</a></li>
+<li><a class="reference external" href="http://en.wikipedia.org/wiki/Internet_socket">Wikipedia - Internet Sockets</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc5321#appendix-D">RFC 5321 - SMTP (Appendix D only)</a></li>
+</ul>
+</div>
+<div class="section" id="references">
+<h3>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.python.org/release/2.6.5/library/socket.html">Python Library - socket</a></li>
+<li><a class="reference external" href="http://docs.python.org/release/2.6.5/howto/sockets.html">Socket Programming How-to</a></li>
+<li><a class="reference external" href="http://docs.python.org/release/2.6.5/library/smtplib.html">Python Library - smtplib</a></li>
+</ul>
+</div>
+<div class="section" id="further-reading">
+<h3>Further Reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><a class="reference external" href="http://en.wikipedia.org/wiki/Berkeley_sockets">Wikipedia - Berkeley socket interface</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc821">RFC 821 - SMTP (initial)</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc5321">RFC 5321 - SMTP (latest)</a></li>
+</ul>
+</div>
+<div class="section" id="bonus">
+<h3>Bonus<a class="headerlink" href="#bonus" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="http://zguide.zeromq.org/chapter:1">ZeroMQ Guide, Chapter 1</a>: ZeroMQ is a
+modern, advanced implementation of the socket concept. Read this to find out
+what sockets can get up to these days.</p>
+</div>
+</div>
+<div class="section" id="week-2-web-protocols">
+<h2>Week 2 - Web Protocols<a class="headerlink" href="#week-2-web-protocols" title="Permalink to this headline">¶</a></h2>
+<p><strong>Date</strong>: Jan. 15, 2013</p>
+<p>In this class we will discuss the various languages of the Internet. What
+differentiates one protocol from another? How are they similar? How can you
+use the inherent qualities of each to determine which is appropriate for a
+given purpose?</p>
+<p>The class laboratory will cover creating a simple web server. Using the HTTP
+protocol and information we learned in week one about sockets, we&#8217;ll create a
+simple web server that allows us to look at files and directories on our own
+computers.</p>
+<p>The class assignment will be to extend the simple web server, adding the
+ability to run dynamic processes and return the results to the client.</p>
+<div class="section" id="id1">
+<h3>Reading<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Read through the list of Python Internet Protocols. If you don&#8217;t know what a
+protocol is for, look it up online. Think about their relationship to each
+other, which are clients? Which are servers? Which clients talk to which
+servers?</p>
+<p><a class="reference external" href="http://docs.python.org/release/2.6.5/library/internet.html">Python Standard Library Internet Protocols</a></p>
+<p>An introduction to the HTTP protocol:
+<a class="reference external" href="http://www.jmarshall.com/easy/http/">HTTP Made Really Easy</a></p>
+</div>
+<div class="section" id="id2">
+<h3>References<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Skim these before class, you&#8217;ll need them for lab and your assignment:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.python.org/release/2.6.5/library/ftplib.html">ftplib</a></li>
+<li><a class="reference external" href="http://docs.python.org/release/2.6.5/library/httplib.html">httplib</a></li>
+<li><a class="reference external" href="http://docs.python.org/release/2.6.5/library/urllib.html">urllib</a></li>
+<li><a class="reference external" href="http://docs.python.org/release/2.6.5/library/urllib2.html">urllib2</a></li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h3>Bonus<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="http://code.google.com/p/httplib2/">httplib2</a> - A comprehensive HTTP client library that supports many features
+left out of other HTTP libraries.</p>
+<p>Skim these four documents from different phases of HTTP&#8217;s life. Get a feel for
+how the specification has changed (and how it hasn&#8217;t!).</p>
+<ul class="simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/HTTP/AsImplemented.html">HTTP/0.9</a></li>
+<li><cite>HTTP - as defined in 1992 &lt;http://www.w3.org/Protocols/HTTP/HTTP2.html&gt;</cite></li>
+<li><cite>Hypertext Transfer Protocol &#8211; HTTP/1.0
+&lt;http://www.w3.org/Protocols/rfc1945/rfc1945&gt;</cite></li>
+<li><cite>Hypertext Transfer Protocol &#8211; HTTP/1.1
+&lt;http://www.w3.org/Protocols/rfc2616/rfc2616&gt;</cite></li>
+</ul>
+</div>
+</div>
+<div class="section" id="week-3">
+<h2>Week 3 -<a class="headerlink" href="#week-3" title="Permalink to this headline">¶</a></h2>
+<p><strong>Date</strong>: Jan. 22, 2013</p>
+</div>
+<div class="section" id="week-4">
+<h2>Week 4 -<a class="headerlink" href="#week-4" title="Permalink to this headline">¶</a></h2>
+<p><strong>Date</strong>: Jan. 29, 2013</p>
+</div>
+<div class="section" id="week-5">
+<h2>Week 5 -<a class="headerlink" href="#week-5" title="Permalink to this headline">¶</a></h2>
+<p><strong>Date</strong>: Feb. 5, 2013</p>
+</div>
+<div class="section" id="week-6">
+<h2>Week 6 -<a class="headerlink" href="#week-6" title="Permalink to this headline">¶</a></h2>
+<p><strong>Date</strong>: Feb. 12, 2013</p>
+</div>
+<div class="section" id="week-7">
+<h2>Week 7 -<a class="headerlink" href="#week-7" title="Permalink to this headline">¶</a></h2>
+<p><strong>Date</strong>: Feb. 19, 2013</p>
+</div>
+<div class="section" id="week-8">
+<h2>Week 8 -<a class="headerlink" href="#week-8" title="Permalink to this headline">¶</a></h2>
+<p><strong>Date</strong>: Feb. 26, 2013</p>
+</div>
+<div class="section" id="week-9">
+<h2>Week 9 -<a class="headerlink" href="#week-9" title="Permalink to this headline">¶</a></h2>
+<p><strong>Date</strong>: Mar. 5, 2013</p>
+</div>
+<div class="section" id="week-10">
+<h2>Week 10 -<a class="headerlink" href="#week-10" title="Permalink to this headline">¶</a></h2>
+<p><strong>Date</strong>: Mar. 12, 2013</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Course Outline</a><ul>
+<li><a class="reference internal" href="#week-1-introduction-and-sockets">Week 1 - Introduction and Sockets</a><ul>
+<li><a class="reference internal" href="#reading">Reading</a></li>
+<li><a class="reference internal" href="#references">References</a></li>
+<li><a class="reference internal" href="#further-reading">Further Reading</a></li>
+<li><a class="reference internal" href="#bonus">Bonus</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#week-2-web-protocols">Week 2 - Web Protocols</a><ul>
+<li><a class="reference internal" href="#id1">Reading</a></li>
+<li><a class="reference internal" href="#id2">References</a></li>
+<li><a class="reference internal" href="#id3">Bonus</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#week-3">Week 3 -</a></li>
+<li><a class="reference internal" href="#week-4">Week 4 -</a></li>
+<li><a class="reference internal" href="#week-5">Week 5 -</a></li>
+<li><a class="reference internal" href="#week-6">Week 6 -</a></li>
+<li><a class="reference internal" href="#week-7">Week 7 -</a></li>
+<li><a class="reference internal" href="#week-8">Week 8 -</a></li>
+<li><a class="reference internal" href="#week-9">Week 9 -</a></li>
+<li><a class="reference internal" href="#week-10">Week 10 -</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Internet Programming with Python</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/outline.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="index.html" title="Internet Programming with Python"
+             >previous</a> |</li>
+        <li><a href="index.html">Internet Programming with Python 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Cris Ewing.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
