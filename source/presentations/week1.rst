@@ -130,8 +130,8 @@ Computer Communications
 
 image: http://en.wikipedia.org/wiki/Internet_Protocol_Suite
 
-The TCP/IP Stack
-----------------
+The TCP/IP Stack - Link
+-----------------------
 
 The bottom layer is the 'Link Layer'
 
@@ -147,8 +147,8 @@ The bottom layer is the 'Link Layer'
 
 * Primarily uses the Network Interface Card (NIC) in your computer
 
-The TCP/IP Stack
-----------------
+The TCP/IP Stack - Internet
+---------------------------
 
 Moving up, we have the 'Internet Layer'
 
@@ -172,15 +172,15 @@ Moving up, we have the 'Internet Layer'
 
   * IPv6 (future, 3.4 x 10^38 addresses, '2001:0db8:85a3:0042:0000:8a2e:0370:7334')
 
-The TCP/IP Stack
-----------------
+The TCP/IP Stack - Internet
+---------------------------
 
 .. class:: big-centered
 
 That's 4.3 x 10^28 addresses *per person alive today*
 
-The TCP/IP Stack
-----------------
+The TCP/IP Stack - Transport
+----------------------------
 
 Next up is the 'Transport Layer'
 
@@ -206,8 +206,8 @@ Next up is the 'Transport Layer'
   
   * Reliability is slow and expensive
 
-The TCP/IP Stack
-----------------
+The TCP/IP Stack - Transport
+----------------------------
 
 The 'Transport Layer' also establishes the concept of a **port**
 
@@ -223,3 +223,27 @@ The 'Transport Layer' also establishes the concept of a **port**
 
 This means that you don't have to worry about information intended for your
 web browser being accidentally read by your email client.
+
+The TCP/IP Stack - Application
+------------------------------
+
+The topmost layer is the 'Application Layer'
+
+.. class:: incremental
+
+* Deals directly with data produced or consumed by an application
+
+* Reads or writes data using a set of understood, well-defined **protocols**
+
+  * HTTP, SMTP, FTP etc.
+
+* Does not know (or need to know) about lower layer functionality
+
+  * The exception to this rule is **endpoint** data (or IP:Port)
+
+The TCP/IP Stack - Application
+------------------------------
+
+.. class:: big-centered
+
+this is where we live and work

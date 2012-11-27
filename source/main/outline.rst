@@ -8,6 +8,8 @@ assignment to be completed.
 Week 1 - Introduction and Sockets
 ---------------------------------
 
+**Date**: Jan. 8, 2013
+
 In this class, we will discuss the fundamental concepts and structures that
 underly the internet and networked computing. We will learn about the TCP/IP
 stack (Internet Protocol Suite) and gain insight into how that model is
@@ -59,3 +61,103 @@ Bonus
 `ZeroMQ Guide, Chapter 1 <http://zguide.zeromq.org/chapter:1>`_: ZeroMQ is a
 modern, advanced implementation of the socket concept. Read this to find out
 what sockets can get up to these days.
+
+Week 2 - Web Protocols
+----------------------
+
+**Date**: Jan. 15, 2013
+
+In this class we will discuss the various languages of the Internet. What
+differentiates one protocol from another? How are they similar? How can you
+use the inherent qualities of each to determine which is appropriate for a
+given purpose?
+
+The class laboratory will cover creating a simple web server. Using the HTTP
+protocol and information we learned in week one about sockets, we'll create a
+simple web server that allows us to look at files and directories on our own
+computers.
+
+The class assignment will be to extend the simple web server, adding the
+ability to run dynamic processes and return the results to the client.
+
+Reading
+*******
+
+Read through the list of Python Internet Protocols. If you don't know what a
+protocol is for, look it up online. Think about their relationship to each
+other, which are clients? Which are servers? Which clients talk to which
+servers? 
+
+`Python Standard Library Internet Protocols
+<http://docs.python.org/release/2.6.5/library/internet.html>`_
+
+An introduction to the HTTP protocol:
+`HTTP Made Really Easy <http://www.jmarshall.com/easy/http/>`_
+
+References
+**********
+
+Skim these before class, you'll need them for lab and your assignment:
+
+* `ftplib <http://docs.python.org/release/2.6.5/library/ftplib.html>`_
+* `httplib <http://docs.python.org/release/2.6.5/library/httplib.html>`_
+* `urllib <http://docs.python.org/release/2.6.5/library/urllib.html>`_
+* `urllib2 <http://docs.python.org/release/2.6.5/library/urllib2.html>`_
+
+Bonus
+*****
+
+httplib2_ - A comprehensive HTTP client library that supports many features
+left out of other HTTP libraries.
+
+.. _httplib2: http://code.google.com/p/httplib2/
+
+Skim these four documents from different phases of HTTP's life. Get a feel for
+how the specification has changed (and how it hasn't!).
+
+* `HTTP/0.9 <http://www.w3.org/Protocols/HTTP/AsImplemented.html>`_
+* `HTTP - as defined in 1992 <http://www.w3.org/Protocols/HTTP/HTTP2.html>`
+* `Hypertext Transfer Protocol -- HTTP/1.0
+  <http://www.w3.org/Protocols/rfc1945/rfc1945>`
+* `Hypertext Transfer Protocol -- HTTP/1.1
+  <http://www.w3.org/Protocols/rfc2616/rfc2616>`
+
+Week 3 -
+--------
+
+**Date**: Jan. 22, 2013
+
+Week 4 -
+--------
+
+**Date**: Jan. 29, 2013
+
+Week 5 -
+--------
+
+**Date**: Feb. 5, 2013
+
+Week 6 -
+--------
+
+**Date**: Feb. 12, 2013
+
+Week 7 -
+--------
+
+**Date**: Feb. 19, 2013
+
+Week 8 -
+--------
+
+**Date**: Feb. 26, 2013
+
+Week 9 -
+--------
+
+**Date**: Mar. 5, 2013
+
+Week 10 -
+---------
+
+**Date**: Mar. 12, 2013
