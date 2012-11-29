@@ -127,42 +127,82 @@ how the specification has changed (and how it hasn't!).
 * `Hypertext Transfer Protocol -- HTTP/1.1
   <http://www.w3.org/Protocols/rfc2616/rfc2616>`
 
-Week 3 -
---------
+Week 3 - APIs and Mashups
+-------------------------
 
 **Date**: Jan. 22, 2013
 
-Week 4 -
---------
+Assignment
+**********
+
+To be completed once I decide the right format.
+
+Week 4 - CGI and WSGI
+---------------------
 
 **Date**: Jan. 29, 2013
 
-Week 5 -
---------
+Assignment
+**********
+
+To be completed once I decide the right format.
+
+Week 5 - Small Frameworks
+-------------------------
 
 **Date**: Feb. 5, 2013
 
-Week 6 -
---------
+Assignment
+**********
+
+To be completed once I decide the right format.
+
+Week 6 - Django I / Relational DBs
+----------------------------------
 
 **Date**: Feb. 12, 2013
 
-Week 7 -
---------
+Assignment
+**********
+
+To be completed once I decide the right format.
+
+Week 7 - Django II
+------------------
 
 **Date**: Feb. 19, 2013
 
-Week 8 -
---------
+Assignment
+**********
+
+To be completed once I decide the right format.
+
+Week 8 - Pyramid / SqlAlchemy
+-----------------------------
 
 **Date**: Feb. 26, 2013
 
-Week 9 -
---------
+Assignment
+**********
+
+To be completed once I decide the right format.
+
+Week 9 - Pyramid - ZODB
+-----------------------
 
 **Date**: Mar. 5, 2013
 
-Week 10 -
----------
+Assignment
+**********
+
+To be completed once I decide the right format.
+
+Week 10 - Plone
+---------------
 
 **Date**: Mar. 12, 2013
+
+Assignment
+**********
+
+To be completed once I decide the right format.
