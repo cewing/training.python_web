@@ -62,6 +62,11 @@ Bonus
 modern, advanced implementation of the socket concept. Read this to find out
 what sockets can get up to these days.
 
+Assignment
+**********
+
+To be completed once I decide the right format.
+
 Week 2 - Web Protocols
 ----------------------
 
