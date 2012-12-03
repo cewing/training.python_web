@@ -203,7 +203,7 @@ SOAP
 .. _rpclib: https://github.com/arskom/rpclib
 .. _Suds: https://fedorahosted.org/suds/
 
-Extra
+Bonus
 *****
 
 * `Wikipedia on REST
