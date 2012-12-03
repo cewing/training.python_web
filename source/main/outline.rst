@@ -132,6 +132,85 @@ Week 3 - APIs and Mashups
 
 **Date**: Jan. 22, 2013
 
+In this class we will explore some of the ways that you can consume and
+explore the data provided by other websites. Online data can be provided in
+ways intended for consumption. But you can also use scraping techniques to get
+at data the original author may not have considered valuable enough to present
+as consumable.
+
+We'll explore the use of tools like BeautifulSoup to help make sense of the
+truly horrible HTML that can be found in the wild. We will also look at "Web
+Services" formats like XMLRPC and REST so we can understand the ways in which
+we can find data, or present it ourselves.  Finally, we'll look at some "Web
+Service APIs" to help understand how to read them, and how to use them to get
+at the data they provide.
+
+Reading
+*******
+
+* `Wikipedia's take on 'Web Services'
+  <http://en.wikipedia.org/wiki/Web_service>`_
+* `xmlrpc overview <http://www.xmlrpc.com/>`_
+* `xmlrpc spec (short) <http://www.xmlrpc.com/spec>`_
+* `json overview and spec (short) <http://www.json.org/>`_
+* `How I Explained REST to My Wife (Tomayko 2004)
+  <http://tomayko.com/writings/rest-to-my-wife>`_
+* `A Brief Introduction to REST (Tilkov 2007)
+  <http://www.infoq.com/articles/rest-introduction>`_
+* `Why HATEOAS - *a simple case study on the often ignored REST constraint*
+  <http://www.slideshare.net/trilancer/why-hateoas-1547275#btnPrevious>`_
+
+References
+**********
+
+Python Standard Libraries:
+++++++++++++++++++++++++++
+
+* `httplib <http://docs.python.org/release/2.6.5/library/httplib.html>`_
+* `htmlparser <http://docs.python.org/release/2.6.5/library/htmlparser.html>`_
+* `xmlrpclib <http://docs.python.org/release/2.6.5/library/xmlrpclib.html>`_
+* `DocXMLRPCServer
+  <http://docs.python.org/release/2.6.5/library/docxmlrpcserver.html>`_
+* `json <http://docs.python.org/release/2.6.5/library/json.html>`_
+
+External Eibraries:
++++++++++++++++++++
+
+* BeautifulSoup_ - "You didn't write that awful page. You're just trying to
+  get some data out of it. Right now, you don't really care what HTML is
+  supposed to look like. Neither does this parser."
+
+* httplib2_ - A comprehensive HTTP client library that supports many features
+  left out of other HTTP libraries.
+
+* restkit_ - an HTTP resource kit for Python. It allows you to easily access
+  to HTTP resource and build objects around it.
+
+.. _BeautifulSoup: http://www.crummy.com/software/BeautifulSoup/
+.. _httplib2: http://code.google.com/p/httplib2/
+.. _restkit: https://github.com/benoitc/restkit/
+
+SOAP
+++++
+
+* rpclib_ - a simple, easily extendible soap library that provides several
+  useful tools for creating, publishing and consuming soap web services
+
+* Suds_ - a lightweight SOAP python client for consuming Web Services.
+
+* `the SOAP specification <http://www.w3.org/TR/soap/>`_
+
+.. _rpclib: https://github.com/arskom/rpclib
+.. _Suds: https://fedorahosted.org/suds/
+
+Extra
+*****
+
+* `Wikipedia on REST
+  <http://en.wikipedia.org/wiki/Representational_State_Transfer>`
+* `Original REST disertation
+  <http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm>`
+
 Assignment
 **********
 
