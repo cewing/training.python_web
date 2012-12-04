@@ -221,6 +221,55 @@ Week 4 - CGI and WSGI
 
 **Date**: Jan. 29, 2013
 
+Reading
+*******
+
+* `CGI tutorial`_ - Read the following sections: Hello World, Debugging, Form.
+  Other sections optional. Follow along, hosting CGI scripts either via Apache
+  on our VMs, or locally using CGIHTTPServer.
+
+* `WSGI tutorial`_ - Follow along, hosting WSGI scripts either via Apache on our
+  VMs, or locally using wsgiref.
+
+.. _CGI tutorial: http://webpython.codepoint.net/cgi_tutorial
+.. _WSGI tutorial: http://webpython.codepoint.net/wsgi_tutorial
+
+Prepare for class:
+++++++++++++++++++
+
+* `CGI example scripts`_ - Use these examples to get started experimenting with
+  CGI.
+
+.. _CGI example scripts: http://fixme.crisewing.com
+
+(https://github.com/briandorsey/uwpython_web/tree/master/week05/cgi_example)
+
+References
+**********
+
+* `CGI module`_ - utilities for CGI scripts, mostly form and query string parsing
+* `Parse URLS into components
+  <http://docs.python.org/release/2.6.5/library/urlparse.html>`_
+* `CGIHTTPServer`_ - python -m CGIHTTPServer
+* `WSGI Utilities and Reference implementation
+  <http://docs.python.org/release/2.6.5/library/wsgiref.html>`_
+* `WSGI 1.0 specification <http://www.python.org/dev/peps/pep-0333/>`_
+* `WSGI 1.0.1 (Python 3 support) <http://python.org/dev/peps/pep-3333/>`_
+* `test WSGI server, like cgi.test()
+  <http://hg.moinmo.in/moin/1.8/raw-file/tip/wiki/server/test.wsgi>`_
+
+.. _CGI module: http://docs.python.org/release/2.6.5/library/cgi.html
+.. _CGIHTTPServer: http://docs.python.org/release/2.6.5/library/cgihttpserver.html
+
+Alternate WSGI introductions:
++++++++++++++++++++++++++++++
+
+* `Getting Started with WSGI`_ - by Armin Ronacher 
+* `very minimal introduction to WSGI
+  <http://be.groovie.org/post/296349572/wsgi-and-wsgi-middleware-is-easy>`_
+
+.. _Getting Started with WSGI: http://lucumr.pocoo.org/2007/5/21/getting-started-with-wsgi/
+
 Assignment
 **********
 
