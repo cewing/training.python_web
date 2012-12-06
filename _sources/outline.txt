@@ -62,6 +62,11 @@ Bonus
 modern, advanced implementation of the socket concept. Read this to find out
 what sockets can get up to these days.
 
+Assignment
+**********
+
+To be completed once I decide the right format.
+
 Week 2 - Web Protocols
 ----------------------
 
@@ -122,42 +127,210 @@ how the specification has changed (and how it hasn't!).
 * `Hypertext Transfer Protocol -- HTTP/1.1
   <http://www.w3.org/Protocols/rfc2616/rfc2616>`
 
-Week 3 -
---------
+Week 3 - APIs and Mashups
+-------------------------
 
 **Date**: Jan. 22, 2013
 
-Week 4 -
---------
+In this class we will explore some of the ways that you can consume and
+explore the data provided by other websites. Online data can be provided in
+ways intended for consumption. But you can also use scraping techniques to get
+at data the original author may not have considered valuable enough to present
+as consumable.
+
+We'll explore the use of tools like BeautifulSoup to help make sense of the
+truly horrible HTML that can be found in the wild. We will also look at "Web
+Services" formats like XMLRPC and REST so we can understand the ways in which
+we can find data, or present it ourselves.  Finally, we'll look at some "Web
+Service APIs" to help understand how to read them, and how to use them to get
+at the data they provide.
+
+Reading
+*******
+
+* `Wikipedia's take on 'Web Services'
+  <http://en.wikipedia.org/wiki/Web_service>`_
+* `xmlrpc overview <http://www.xmlrpc.com/>`_
+* `xmlrpc spec (short) <http://www.xmlrpc.com/spec>`_
+* `json overview and spec (short) <http://www.json.org/>`_
+* `How I Explained REST to My Wife (Tomayko 2004)
+  <http://tomayko.com/writings/rest-to-my-wife>`_
+* `A Brief Introduction to REST (Tilkov 2007)
+  <http://www.infoq.com/articles/rest-introduction>`_
+* `Why HATEOAS - *a simple case study on the often ignored REST constraint*
+  <http://www.slideshare.net/trilancer/why-hateoas-1547275#btnPrevious>`_
+
+References
+**********
+
+Python Standard Libraries:
+++++++++++++++++++++++++++
+
+* `httplib <http://docs.python.org/release/2.6.5/library/httplib.html>`_
+* `htmlparser <http://docs.python.org/release/2.6.5/library/htmlparser.html>`_
+* `xmlrpclib <http://docs.python.org/release/2.6.5/library/xmlrpclib.html>`_
+* `DocXMLRPCServer
+  <http://docs.python.org/release/2.6.5/library/docxmlrpcserver.html>`_
+* `json <http://docs.python.org/release/2.6.5/library/json.html>`_
+
+External Eibraries:
++++++++++++++++++++
+
+* BeautifulSoup_ - "You didn't write that awful page. You're just trying to
+  get some data out of it. Right now, you don't really care what HTML is
+  supposed to look like. Neither does this parser."
+
+* httplib2_ - A comprehensive HTTP client library that supports many features
+  left out of other HTTP libraries.
+
+* restkit_ - an HTTP resource kit for Python. It allows you to easily access
+  to HTTP resource and build objects around it.
+
+.. _BeautifulSoup: http://www.crummy.com/software/BeautifulSoup/
+.. _httplib2: http://code.google.com/p/httplib2/
+.. _restkit: https://github.com/benoitc/restkit/
+
+SOAP
+++++
+
+* rpclib_ - a simple, easily extendible soap library that provides several
+  useful tools for creating, publishing and consuming soap web services
+
+* Suds_ - a lightweight SOAP python client for consuming Web Services.
+
+* `the SOAP specification <http://www.w3.org/TR/soap/>`_
+
+.. _rpclib: https://github.com/arskom/rpclib
+.. _Suds: https://fedorahosted.org/suds/
+
+Bonus
+*****
+
+* `Wikipedia on REST
+  <http://en.wikipedia.org/wiki/Representational_State_Transfer>`
+* `Original REST disertation
+  <http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm>`
+
+Assignment
+**********
+
+To be completed once I decide the right format.
+
+Week 4 - CGI and WSGI
+---------------------
 
 **Date**: Jan. 29, 2013
 
-Week 5 -
---------
+Reading
+*******
+
+* `CGI tutorial`_ - Read the following sections: Hello World, Debugging, Form.
+  Other sections optional. Follow along, hosting CGI scripts either via Apache
+  on our VMs, or locally using CGIHTTPServer.
+
+* `WSGI tutorial`_ - Follow along, hosting WSGI scripts either via Apache on our
+  VMs, or locally using wsgiref.
+
+.. _CGI tutorial: http://webpython.codepoint.net/cgi_tutorial
+.. _WSGI tutorial: http://webpython.codepoint.net/wsgi_tutorial
+
+Prepare for class:
+++++++++++++++++++
+
+* `CGI example scripts`_ - Use these examples to get started experimenting with
+  CGI.
+
+.. _CGI example scripts: http://fixme.crisewing.com
+
+(https://github.com/briandorsey/uwpython_web/tree/master/week05/cgi_example)
+
+References
+**********
+
+* `CGI module`_ - utilities for CGI scripts, mostly form and query string parsing
+* `Parse URLS into components
+  <http://docs.python.org/release/2.6.5/library/urlparse.html>`_
+* `CGIHTTPServer`_ - python -m CGIHTTPServer
+* `WSGI Utilities and Reference implementation
+  <http://docs.python.org/release/2.6.5/library/wsgiref.html>`_
+* `WSGI 1.0 specification <http://www.python.org/dev/peps/pep-0333/>`_
+* `WSGI 1.0.1 (Python 3 support) <http://python.org/dev/peps/pep-3333/>`_
+* `test WSGI server, like cgi.test()
+  <http://hg.moinmo.in/moin/1.8/raw-file/tip/wiki/server/test.wsgi>`_
+
+.. _CGI module: http://docs.python.org/release/2.6.5/library/cgi.html
+.. _CGIHTTPServer: http://docs.python.org/release/2.6.5/library/cgihttpserver.html
+
+Alternate WSGI introductions:
++++++++++++++++++++++++++++++
+
+* `Getting Started with WSGI`_ - by Armin Ronacher 
+* `very minimal introduction to WSGI
+  <http://be.groovie.org/post/296349572/wsgi-and-wsgi-middleware-is-easy>`_
+
+.. _Getting Started with WSGI: http://lucumr.pocoo.org/2007/5/21/getting-started-with-wsgi/
+
+Assignment
+**********
+
+To be completed once I decide the right format.
+
+Week 5 - Small Frameworks
+-------------------------
 
 **Date**: Feb. 5, 2013
 
-Week 6 -
---------
+Assignment
+**********
+
+To be completed once I decide the right format.
+
+Week 6 - Django I / Relational DBs
+----------------------------------
 
 **Date**: Feb. 12, 2013
 
-Week 7 -
---------
+Assignment
+**********
+
+To be completed once I decide the right format.
+
+Week 7 - Django II
+------------------
 
 **Date**: Feb. 19, 2013
 
-Week 8 -
---------
+Assignment
+**********
+
+To be completed once I decide the right format.
+
+Week 8 - Pyramid / SqlAlchemy
+-----------------------------
 
 **Date**: Feb. 26, 2013
 
-Week 9 -
---------
+Assignment
+**********
+
+To be completed once I decide the right format.
+
+Week 9 - Pyramid - ZODB
+-----------------------
 
 **Date**: Mar. 5, 2013
 
-Week 10 -
----------
+Assignment
+**********
+
+To be completed once I decide the right format.
+
+Week 10 - Plone
+---------------
 
 **Date**: Mar. 12, 2013
+
+Assignment
+**********
+
+To be completed once I decide the right format.
