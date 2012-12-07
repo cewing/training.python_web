@@ -280,13 +280,29 @@ Week 5 - Small Frameworks
 
 **Date**: Feb. 5, 2013
 
+In this class we learn about using frameworks to help us reach our goals. We
+will learn what makes up a framework and some criteria for evaluating which is
+the right one for you.
+
+This week we will also learn about the final project for the class and students
+will begin to think about what they wish to do to complete the project.
+
+In our class lab we will explore using a specific framework (Flask) to create
+a simple web application. We'll learn how to install the framework, how to
+read the documentation for it, how to build a simple dynamic application, and
+how to push further on.
+
+For our assignment we will extend our knowledge by trying out a different
+framework. We will have the chance to repeat the class lab, or create another
+dynamic system using one of the many other frameworks available to us.
+
 Assignment
 **********
 
 To be completed once I decide the right format.
 
-Week 6 - Django I / Relational DBs
-----------------------------------
+Week 6 - Options for Persistence
+--------------------------------
 
 **Date**: Feb. 12, 2013
 
@@ -295,8 +311,8 @@ Assignment
 
 To be completed once I decide the right format.
 
-Week 7 - Django II
-------------------
+Week 7 - Django I / Relational DBs
+----------------------------------
 
 **Date**: Feb. 19, 2013
 
@@ -305,8 +321,8 @@ Assignment
 
 To be completed once I decide the right format.
 
-Week 8 - Pyramid / SqlAlchemy
------------------------------
+Week 8 - Pyramid / ZODB
+-----------------------
 
 **Date**: Feb. 26, 2013
 
@@ -315,8 +331,8 @@ Assignment
 
 To be completed once I decide the right format.
 
-Week 9 - Pyramid - ZODB
------------------------
+Week 9 - Plone
+--------------
 
 **Date**: Mar. 5, 2013
 
@@ -325,8 +341,8 @@ Assignment
 
 To be completed once I decide the right format.
 
-Week 10 - Plone
----------------
+Week 10 - Final Assignments
+---------------------------
 
 **Date**: Mar. 12, 2013
 
