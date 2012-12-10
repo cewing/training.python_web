@@ -65,7 +65,7 @@ what sockets can get up to these days.
 Assignment
 **********
 
-To be completed once I decide the right format.
+To Be Decided
 
 Week 2 - Web Protocols
 ----------------------
@@ -214,12 +214,23 @@ Bonus
 Assignment
 **********
 
-To be completed once I decide the right format.
+To Be Decided
 
 Week 4 - CGI and WSGI
 ---------------------
 
 **Date**: Jan. 29, 2013
+
+In this class we will explore ways of moving data from HTTP requests into the
+dynamic scripts that process data. We will begin by looking at the original
+specification for passing data, CGI (Common Gateway Interface). We'll look at
+the benefits and drawbacks of the specification, and use it to create some
+simple interactions.
+
+Then we will investigate a more modern take on the same problem, WSGI (Web
+Services Gateway Interface). We'll see the ways in which WSGI is similar to
+CGI, and look at the ways in which it differs. We'll create a simple interaction
+using WSGI and see what benefits and drawbacks it confers.
 
 Reading
 *******
@@ -273,7 +284,7 @@ Alternate WSGI introductions:
 Assignment
 **********
 
-To be completed once I decide the right format.
+To Be Decided
 
 Week 5 - Small Frameworks
 -------------------------
@@ -294,59 +305,60 @@ how to push further on.
 
 For our assignment we will extend our knowledge by trying out a different
 framework. We will have the chance to repeat the class lab, or create another
-dynamic system using one of the many other frameworks available to us.
+dynamic system using one of the many other python web frameworks available to
+us.
 
 Assignment
 **********
 
-To be completed once I decide the right format.
+To Be Decided
 
-Week 6 - Options for Persistence
---------------------------------
-
-**Date**: Feb. 12, 2013
-
-Assignment
-**********
-
-To be completed once I decide the right format.
-
-Week 7 - Django I / Relational DBs
-----------------------------------
+Week 6 - Django
+---------------
 
 **Date**: Feb. 19, 2013
 
 Assignment
 **********
 
-To be completed once I decide the right format.
+To Be Decided
 
-Week 8 - Pyramid / ZODB
------------------------
+Week 7 - Django
+---------------
 
 **Date**: Feb. 26, 2013
 
 Assignment
 **********
 
-To be completed once I decide the right format.
+To Be Decided
 
-Week 9 - Plone
---------------
+Week 8 - Pyramid
+----------------
 
 **Date**: Mar. 5, 2013
 
 Assignment
 **********
 
-To be completed once I decide the right format.
+To Be Decided
 
-Week 10 - Final Assignments
----------------------------
+Week 9 - Plone
+--------------
 
 **Date**: Mar. 12, 2013
 
 Assignment
 **********
 
-To be completed once I decide the right format.
+To Be Decided
+
+Week 10 - The Cloud
+-------------------
+
+**Date**: Feb. 12, 2013
+
+Assignment
+**********
+
+To Be Decided
