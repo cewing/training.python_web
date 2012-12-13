@@ -121,11 +121,11 @@ Skim these four documents from different phases of HTTP's life. Get a feel for
 how the specification has changed (and how it hasn't!).
 
 * `HTTP/0.9 <http://www.w3.org/Protocols/HTTP/AsImplemented.html>`_
-* `HTTP - as defined in 1992 <http://www.w3.org/Protocols/HTTP/HTTP2.html>`
+* `HTTP - as defined in 1992 <http://www.w3.org/Protocols/HTTP/HTTP2.html>`_
 * `Hypertext Transfer Protocol -- HTTP/1.0
-  <http://www.w3.org/Protocols/rfc1945/rfc1945>`
+  <http://www.w3.org/Protocols/rfc1945/rfc1945>`_
 * `Hypertext Transfer Protocol -- HTTP/1.1
-  <http://www.w3.org/Protocols/rfc2616/rfc2616>`
+  <http://www.w3.org/Protocols/rfc2616/rfc2616>`_
 
 Week 3 - APIs and Mashups
 -------------------------
@@ -318,6 +318,8 @@ Week 6 - Django
 
 **Date**: Feb. 19, 2013
 
+
+
 Assignment
 **********
 
@@ -343,20 +345,20 @@ Assignment
 
 To Be Decided
 
-Week 9 - Plone
---------------
+Week 9 - The Cloud
+------------------
 
-**Date**: Mar. 12, 2013
+**Date**: Feb. 12, 2013
 
 Assignment
 **********
 
 To Be Decided
 
-Week 10 - The Cloud
--------------------
+Week 10 - Plone
+---------------
 
-**Date**: Feb. 12, 2013
+**Date**: Mar. 12, 2013
 
 Assignment
 **********
