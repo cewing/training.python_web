@@ -52,10 +52,11 @@ div#controls form {position: absolute; bottom: 0; right: 0; width: 100%;
 
 #slide0 {padding-top: 1.5em}
 #slide0 h1 {position: static; margin: 1em 0 0; padding: 0; color: #000;
-  font: bold 2em sans-serif; white-space: normal; background: transparent;}
+  font: bold 1.5em sans-serif; white-space: normal; background: transparent;}
 #slide0 h2 {font: bold italic 1em sans-serif; margin: 0.25em;}
 #slide0 h3 {margin-top: 1.5em; font-size: 1.5em;}
 #slide0 h4 {margin-top: 0; font-size: 1em;}
+#slide0 h1.title {text-align: center; margin-bottom: 0.5em;}
 
 ul.urls {list-style: none; display: inline; margin: 0;}
 .urls li {display: inline; margin: 0;}
@@ -118,3 +119,48 @@ tt.docutils {background-color: white;}
 li:after {content: " [" attr(class) "]"; color: #F88;}
 div:before {content: "[" attr(class) "]"; color: #F88;}
 */
+
+/* My additions */
+img.align-left, .figure.align-left, object.align-left {
+  clear: left ;
+  float: left ;
+  margin-right: 1em }
+
+img.align-right, .figure.align-right, object.align-right {
+  clear: right ;
+  float: right ;
+  margin-left: 1em }
+
+img.align-center, .figure.align-center, object.align-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.intro-blurb {
+    font-size: 80%;
+    border: 1px solid black;
+    background-color: #eee;
+    padding: 1em;
+}
+.big-centered {
+    font-size: 1.5em;
+    text-align: center;
+    margin-top: 3em;
+}
+div#footer {background: #005 url(../../img/by-nc-sa.png) 99% 90% no-repeat;}
+#footer :link, #footer :visited {text-decoration: none; color: #aae;}
+
+div.figure p.caption {
+    margin-top: 5px;
+}
+
+p.image-credit {
+    font-size: 60%;
+    border: 1px solid red;
+    position: absolute;
+    bottom: 0.5em;
+    left: 1em;
+    margin: 1em 0em 0em 0em;
+    z-index: 10;
+}
