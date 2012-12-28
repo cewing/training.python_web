@@ -38,7 +38,7 @@
 <div class="slide" id="slide0">
 <h1 class="title">Internet Programming with Python</h1>
 
-<img alt="../../../img/python.png" class="align-left" src="../../../img/python.png" style="width: 33%;" />
+<img alt="img/python.png" class="align-left" src="img/python.png" style="width: 33%;" />
 <p>Week 1: Networking and Sockets</p>
 <p class="intro-blurb">Wherein we learn about the basic structure of the internet and explore the
 building blocks that make it possible.</p>
@@ -58,7 +58,7 @@ building blocks that make it possible.</p>
 <li>You may not use the work for commercial purposes</li>
 <li>You have to share your versions just like this one</li>
 </ul>
-<p>If you find mistakes, or see improvements, feel free to make a pull request</p>
+<p>Find mistakes? See improvements? Make a pull request.</p>
 </div>
 <div class="slide" id="id2">
 <h1>But First</h1>
@@ -94,7 +94,7 @@ building blocks that make it possible.</p>
 </div>
 <div class="slide" id="computer-communications">
 <h1>Computer Communications</h1>
-<img alt="../../../img/network_topology.png" class="align-left" src="../../../img/network_topology.png" style="width: 40%;" />
+<img alt="img/network_topology.png" class="align-left" src="img/network_topology.png" style="width: 40%;" />
 <ul class="incremental simple">
 <li>processes can communicate</li>
 <li>inside one machine</li>
@@ -105,10 +105,10 @@ building blocks that make it possible.</p>
 </div>
 <div class="slide" id="id6">
 <h1>Computer Communications</h1>
-<img alt="../../../img/data_in_tcpip_stack.png" class="align-left" src="../../../img/data_in_tcpip_stack.png" style="width: 50%;" />
+<img alt="img/data_in_tcpip_stack.png" class="align-left" src="img/data_in_tcpip_stack.png" style="width: 55%;" />
 <ul class="incremental simple">
-<li>We divide the process into 'layers'</li>
-<li>'Layers' are mostly arbitrary descriptions</li>
+<li>Process divided into 'layers'</li>
+<li>'Layers' are mostly arbitrary</li>
 <li>Different descriptions have different layers</li>
 <li>Most common is the 'TCP/IP Stack'</li>
 </ul>
@@ -181,6 +181,29 @@ building blocks that make it possible.</p>
 <p class="incremental">This means that you don't have to worry about information intended for your
 web browser being accidentally read by your email client.</p>
 </div>
+<div class="slide" id="id9">
+<h1>The TCP/IP Stack - Transport</h1>
+<p>There are certain <strong>ports</strong> which are commonly understood to belong to given
+applications or protocols:</p>
+<ul class="incremental simple">
+<li>80/443 - HTTP/HTTPS</li>
+<li>20 - FTP</li>
+<li>22 - SSH</li>
+<li>23 - Telnet</li>
+<li>25 - SMTP</li>
+<li>...</li>
+</ul>
+<p class="small">(see <a class="reference external" href="http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers">http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers</a>)</p>
+</div>
+<div class="slide" id="id10">
+<h1>The TCP/IP Stack - Transport</h1>
+<p>Ports are grouped into a few different classes</p>
+<ul class="incremental simple">
+<li>Ports numbered 0 - 1023 are <em>reserved</em></li>
+<li>Ports numbered 1024 - 65535 are <em>open</em></li>
+<li>Ports numbered 49152 - 65535 are generally considered <em>ephemeral</em></li>
+</ul>
+</div>
 <div class="slide" id="the-tcp-ip-stack-application">
 <h1>The TCP/IP Stack - Application</h1>
 <p>The topmost layer is the 'Application Layer'</p>
@@ -196,9 +219,28 @@ web browser being accidentally read by your email client.</p>
 </li>
 </ul>
 </div>
-<div class="slide" id="id9">
+<div class="slide" id="id11">
 <h1>The TCP/IP Stack - Application</h1>
 <p class="big-centered">this is where we live and work</p>
+</div>
+<div class="slide" id="sockets">
+<h1>Sockets</h1>
+<p>Think back for a second to what we just finished discussing, the TCP/IP stack.</p>
+<ul class="incremental simple">
+<li>The <em>Internet</em> layer gives us an <strong>IP Address</strong></li>
+<li>The <em>Transport</em> layer establishes the idea of a <strong>port</strong>.</li>
+<li>The <em>Application</em> layer doesn't care about what happens below...</li>
+<li><em>Except for</em> <strong>endpoint data</strong> (IP:Port)</li>
+</ul>
+<p class="incremental">A <strong>Socket</strong> is the software representation of that endpoint.</p>
+<p class="incremental">Opening a <strong>socket</strong> creates a kind of transceiver that can send and/or
+receive data at a given IP address and Port.</p>
+</div>
+<div class="slide" id="sockets-in-python">
+<h1>Sockets in Python</h1>
+<p>Python provides a standard library module which provides socket functionality.
+It is called <strong>socket</strong>.  Let's spend a few minutes getting to know this
+module.</p>
 </div>
 </div>
 </body>

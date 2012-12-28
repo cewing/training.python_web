@@ -50,6 +50,8 @@ References
 Further Reading
 ***************
 
+* `Python Module of the Week - socket
+  <http://www.doughellmann.com/PyMOTW/socket/>`_
 * `Wikipedia - Berkeley socket interface
   <http://en.wikipedia.org/wiki/Berkeley_sockets>`_ 
 * `RFC 821 - SMTP (initial) <http://tools.ietf.org/html/rfc821>`_
@@ -57,6 +59,7 @@ Further Reading
 
 Bonus
 *****
+
 
 `ZeroMQ Guide, Chapter 1 <http://zguide.zeromq.org/chapter:1>`_: ZeroMQ is a
 modern, advanced implementation of the socket concept. Read this to find out
@@ -112,10 +115,13 @@ Skim these before class, you'll need them for lab and your assignment:
 Bonus
 *****
 
-httplib2_ - A comprehensive HTTP client library that supports many features
-left out of other HTTP libraries.
+* httplib2_ - A comprehensive HTTP client library that supports many features
+  left out of other HTTP libraries.
+* requests_ - "... an Apache2 Licensed HTTP library, written in Python, for
+  human beings."
 
 .. _httplib2: http://code.google.com/p/httplib2/
+.. _requests: http://docs.python-requests.org/en/latest/
 
 Skim these four documents from different phases of HTTP's life. Get a feel for
 how the specification has changed (and how it hasn't!).
