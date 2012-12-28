@@ -1,7 +1,7 @@
 Internet Programming with Python
 ================================
 
-.. image:: ../../../img/python.png
+.. image:: img/python.png
     :align: left
     :width: 33%
 
@@ -32,7 +32,7 @@ Licensed with Creative Commons BY-NC-SA
 * You may not use the work for commercial purposes
 * You have to share your versions just like this one
 
-If you find mistakes, or see improvements, feel free to make a pull request
+Find mistakes? See improvements? Make a pull request.
 
 But First
 ---------
@@ -91,7 +91,7 @@ do you have any?
 Computer Communications
 -----------------------
 
-.. image:: ../../../img/network_topology.png
+.. image:: img/network_topology.png
     :align: left
     :width: 40%
 
@@ -112,15 +112,15 @@ image: http://en.wikipedia.org/wiki/Internet_Protocol_Suite
 Computer Communications
 -----------------------
 
-.. image:: ../../../img/data_in_tcpip_stack.png
+.. image:: img/data_in_tcpip_stack.png
     :align: left
-    :width: 50%
+    :width: 55%
 
 .. class:: incremental
 
-* We divide the process into 'layers'
+* Process divided into 'layers'
 
-* 'Layers' are mostly arbitrary descriptions
+* 'Layers' are mostly arbitrary
 
 * Different descriptions have different layers
 
@@ -283,3 +283,30 @@ this is where we live and work
 Sockets
 -------
 
+Think back for a second to what we just finished discussing, the TCP/IP stack.
+
+.. class:: incremental
+
+* The *Internet* layer gives us an **IP Address**
+
+* The *Transport* layer establishes the idea of a **port**.
+
+* The *Application* layer doesn't care about what happens below...
+
+* *Except for* **endpoint data** (IP:Port)
+
+.. class:: incremental
+
+A **Socket** is the software representation of that endpoint.
+
+.. class:: incremental
+
+Opening a **socket** creates a kind of transceiver that can send and/or
+receive data at a given IP address and Port.
+
+Sockets in Python
+-----------------
+
+Python provides a standard library module which provides socket functionality.
+It is called **socket**.  Let's spend a few minutes getting to know this
+module.
