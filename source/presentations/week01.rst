@@ -224,6 +224,38 @@ The 'Transport Layer' also establishes the concept of a **port**
 This means that you don't have to worry about information intended for your
 web browser being accidentally read by your email client.
 
+The TCP/IP Stack - Transport
+----------------------------
+
+There are certain **ports** which are commonly understood to belong to given
+applications or protocols:
+
+.. class:: incremental
+
+* 80/443 - HTTP/HTTPS
+* 20 - FTP
+* 22 - SSH
+* 23 - Telnet
+* 25 - SMTP
+* ...
+
+.. class:: small
+
+(see http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers)
+
+The TCP/IP Stack - Transport
+----------------------------
+
+Ports are grouped into a few different classes
+
+.. class:: incremental
+
+* Ports numbered 0 - 1023 are *reserved* 
+
+* Ports numbered 1024 - 65535 are *open*
+
+* Ports numbered 49152 - 65535 are generally considered *ephemeral*
+
 The TCP/IP Stack - Application
 ------------------------------
 
@@ -247,3 +279,7 @@ The TCP/IP Stack - Application
 .. class:: big-centered
 
 this is where we live and work
+
+Sockets
+-------
+

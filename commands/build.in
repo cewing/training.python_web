@@ -9,3 +9,6 @@ do
     OUT=${options['build-directory']}/$${BASE%.$$SRC}.$$DEST
     ${options['build-cmd']} $$RST $$OUT
 done
+
+cp -R ${parts.buildout.directory}/source/ui ${options['build-directory']}/
+cp -R ${parts.buildout.directory}/source/img ${options['build-directory']}/
