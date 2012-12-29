@@ -314,3 +314,33 @@ module.
 We're going to do this next part together, so open up a terminal and start
 python.
 
+Sockets in Python
+-----------------
+
+The sockets library provides tools for finding out information about hosts on
+the network. For example, you can find out about the machine you are currently
+using::
+
+    >>> import socket
+    >>> socket.gethostname()
+    'heffalump.local'
+    >>> socket.gethostbyname(socket.gethostname())
+    '10.211.55.2'
+    >>> socket.gethostbyname_ex(socket.gethosthame())
+    ('heffalump.local', [], ['10.211.55.2', '10.37.129.2', '192.168.1.102'])
+
+Sockets in Python
+-----------------
+
+You can also find out about machines that are located elsewhere, for example::
+
+    >>> socket.gethostbyname_ex('google.com')
+    ('google.com', [], ['173.194.33.9', '173.194.33.14', 
+                        ...
+                        '173.194.33.6', '173.194.33.7', 
+                        '173.194.33.8'])
+    >>> socket.gethostbyname_ex('www.rad.washington.edu')
+    ('elladan.rad.washington.edu', # <- canonical hostname
+     ['www.rad.washington.edu'], # <- any aliases
+     ['128.95.247.84']) # <- all active IP addresses
+

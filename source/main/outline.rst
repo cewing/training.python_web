@@ -23,6 +23,8 @@ Machines, and accomplish our first networked communication.
 The class assignment will focus on extending our use of sockets to support a
 more complex use-case.
 
+`Class Presentation <presentations/week01.html>`_
+
 Reading
 *******
 
