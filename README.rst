@@ -18,13 +18,20 @@ Building The Documentation
 
 After cloning this package from the repository, do the following::
 
-  $ cd templer.maual  # the location of your local copy
+  $ cd training.python_web  # the location of your local copy
   $ python bootstrap.py  # must be Python 2.6 or 2.7
-  $ ../bin/buildout
-  $ ../bin/sphinx
+  $ bin/buildout
+  $ bin/sphinx   # to build the main documentation and course outline
+  $ bin/build_s5   # to build the class session presentations
 
-At the end of a successful build, you will find a ``build`` directory, containing
-the completed documentation.
+At the end of a successful build, you will find a ``build/html`` directory,
+containing the completed documentation and presentations.
+
+Reading The Documentation
+-------------------------
+
+A rendered version of this documentation is maintained online.  You can view
+the latest updates at http://cewing.github.com/training.python_web/
 
 LICENSE
 =======

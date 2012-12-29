@@ -310,3 +310,7 @@ Sockets in Python
 Python provides a standard library module which provides socket functionality.
 It is called **socket**.  Let's spend a few minutes getting to know this
 module.
+
+We're going to do this next part together, so open up a terminal and start
+python.
+
