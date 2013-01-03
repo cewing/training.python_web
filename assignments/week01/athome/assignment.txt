@@ -1,0 +1,8 @@
+1. Create a socket server which can take two numbers, add them together, and
+return the result
+
+2. Create a socket client that sends two numbers to the above server, and
+receives and prints the returned result.
+
+Submit your work by forking this repository. Add the server and client scripts
+to your fork and then issue a pull request.
