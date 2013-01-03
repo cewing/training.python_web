@@ -552,6 +552,8 @@ What answers do you get?
 On the Internet
 ---------------
 
+::
+
     >>> get_address_info('www.google.com', 'http')
     >>> get_address_info('www.google.com', 'http')
     family:  AF_INET
@@ -567,4 +569,205 @@ On the Internet
 .. class:: incremental
 
 Try a few other servers you know about.
+
+First Steps
+-----------
+
+.. class:: big-centered
+
+Let's put this to use
+
+Client Connections
+------------------
+
+The information returned by a call to ``socket.getaddrinfo`` is all you need
+to make a proper connection to a socket on a remote host.  The value returned
+is a tuple of
+
+.. class:: incremental
+
+* socket family
+* socket type
+* socket protocol
+* canonical name
+* socket address
+
+Construct a Socket
+------------------
+
+We've already made a socket ``foo`` using the generic constructor without any
+arguments.  We can make a better one now by using real address information from
+a real server online::
+
+    >>> all = socket.getaddrinfo('www.google.com', 'http')
+    >>> info = all[0]
+    >>> info
+    (2, 1, 6, '', ('173.194.79.104', 80))
+    >>> google_socket = socket.socket(*info[:3])
+    
+
+Connecting a Socket
+-------------------
+
+Once the socket is constructed with the appropriate *family*, *type* and
+*protocol*, we can connect it to the address of our remote server::
+
+    >>> google_socket.connect(info[-1])
+    >>> 
+
+.. class:: incremental
+
+* a successful connection returns ``None``
+
+* a failed connection raises an error
+
+* you can use the *type* of error returned to tell why the connection failed.
+
+Sending a Message
+-----------------
+
+We can send a message to the server on the other end of our connection::
+
+    >>> msg = "GET / HTTP/1.1\r\n\r\n"
+    >>> google_socket.sendall(msg)
+    >>>
+
+.. class:: incremental
+
+* the transmission continues until all data is sent or an error occurs
+
+* success returns ``None``
+
+* failure to send raises an error 
+
+* you can use the type of error to figure out why the transmission failed
+
+* you cannot know how much, if any, of your data was sent
+
+Receiving an Reply
+------------------
+
+Whatever reply we get is received by the socket we created. We can read it
+back out::
+
+    >>> response = google_socket.recv(4096)
+    >>> response
+    'HTTP/1.1 200 OK\r\nDate: Thu, 03 Jan 2013 05:56:53
+    ...
+
+.. class:: incremental
+
+* The sole required argument is a buffer size, it should be a power of 2 and
+  smallish
+
+* the returned value will be a string of buffer size (or smaller if less data
+  was received)
+
+
+Cleaning Up
+-----------
+
+When you are finished with a connection, you should always close it::
+
+    >>> google_socket.close()
+
+Putting it all together
+-----------------------
+
+::
+
+    >>> all = socket.getaddrinfo('google.com', 'http')
+    >>> info = all[0]
+    >>> gs = socket.socket(*info[:3])
+    >>> gs.connect(info[-1])
+    >>> msg = "GET / HTTP/1.1\r\n\r\n"
+    >>> gs.sendall(msg)
+    >>> response = gs.recv(4096)
+    >>> response
+    ... 'HTTP/1.1 200 OK\r\n...
+    >>> gs.close()
+
+Server Side
+-----------
+
+.. class:: big-centered
+
+What about the other half of the equation?
+
+Construct a Socket
+------------------
+
+Again, we begin by constructing a socket. Since we are actually the server
+this time, we get to choose family, type and protocol::
+
+    >>> server_socket = socket.socket(
+    ...     socket.AF_INET,
+    ...     socket.SOCK_STREAM,
+    ...     socket.IPPROTO_IP)
+    ... 
+    >>> server_socket
+    <socket._socketobject object at 0x100563c90>
+
+Bind the Socket
+---------------
+
+Our server socket needs to be bound to an address. This is the IP Address and
+Port to which clients must connect::
+
+    >>> address = ('127.0.0.1', '50000')
+    >>> server_socket.bind(address)
+
+Listen for Connections
+----------------------
+
+Once our socket is created, we use it to listen for attempted connections::
+
+    >>> server_socket.listen(1)
+
+.. class:: incremental
+
+* the argument to ``listen`` is the *backlog*
+
+* the *backlog* is the maximum number of connections that the socket will queue
+
+* once the limit is reached, the socket refuses new connections
+
+
+Accept Incoming Messages
+------------------------
+
+When a socket is listening, it can accept incoming messages::
+
+    >>> connection, client_address = server_socket.accept()
+    >>> connection.recv(16)
+
+.. class:: incremental
+
+* the ``connection`` returned by a call to ``accept`` is a **new socket**
+
+* you do not need to know what port it uses, this is managed
+
+* the ``client_address`` is a two-tuple of IP Address and Port (very familiar)
+
+* ``backlog`` represents the maximum number of ``connection`` sockets that a
+  server can spin off
+
+* close a ``connection`` socket to accept a new connection one the max is
+  reached
+
+Send a Reply
+------------
+
+You can use the ``connection`` socket spun off by ``accept`` to send a reply
+back to the client socket::
+
+    >>> connection.sendall("messasge received")
+
+Clean Up
+--------
+
+Once a transaction between the client and server is complete, the
+``connection`` socket should be closed so that new connections can be made::
+
+    >>> connection.close()
 
