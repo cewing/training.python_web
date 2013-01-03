@@ -344,3 +344,227 @@ You can also find out about machines that are located elsewhere, for example::
      ['www.rad.washington.edu'], # <- any aliases
      ['128.95.247.84']) # <- all active IP addresses
 
+Sockets in Python
+-----------------
+
+To create a socket, you use the **socket** method of the ``socket`` library::
+
+    >>> foo = socket.socket()
+    >>> foo
+    <socket._socketobject object at 0x10046cec0>
+
+Sockets in Python
+-----------------
+
+A socket has some properties that are immediately important to us. These
+include the *family*, *type* and *protocol* of the socket::
+
+    >>> foo.family
+    2
+    >>> foo.type
+    1
+    >>> foo.proto
+    0
+
+Socket Families
+---------------
+
+Think back a moment to our discussion of the *Internet* layer of the TCP/IP
+stack.  There were a couple of different types of IP addresses:
+
+.. class:: incremental
+
+* IPv4 ('192.168.1.100')
+
+* IPv6 ('2001:0db8:85a3:0042:0000:8a2e:0370:7334')
+
+.. class:: incremental
+
+The *family* of a socket corresponds to the type of address you use to make a
+connection to it.
+
+A quick utility method
+----------------------
+
+Let's explore these families for a moment.  To do so, we're going to define
+a method we can use to read contstants from the ``socket`` library.  It will 
+take a single argument, the shared prefix for a defined set of constants::
+
+    >>> def get_constants(prefix):
+    ...     """mapping of socket module constants to their names."""
+    ...     return dict( (getattr(socket, n), n)
+    ...                  for n in dir(socket)
+    ...                  if n.startswith(prefix)
+    ...                  )
+    ...
+    >>>
+
+Socket Families
+---------------
+
+Families defined in the ``socket`` library are prefixed by ``AF_``::
+
+    >>> families = get_constants('AF_')
+    >>> families
+    {0: 'AF_UNSPEC', 1: 'AF_UNIX', 2: 'AF_INET',
+     11: 'AF_SNA', 12: 'AF_DECnet', 16: 'AF_APPLETALK',
+     17: 'AF_ROUTE', 23: 'AF_IPX', 30: 'AF_INET6'}
+
+.. class:: small incremental
+
+*Your results may vary*
+
+.. class:: incremental
+
+Of all of these, the ones we care most about are ``2`` (IPv4) and ``30`` (IPv6).
+
+Unix Domain Sockets
+-------------------
+
+When you are on a machine with an operating system that is Unix-like, you will
+find another generally useful socket family: ``AF_UNIX``, or Unix Domain
+Sockets. Sockets in this family:
+
+.. class:: incremental
+
+* connect processes **on the same machine**
+
+* are generally a bit slower than IPC connnections
+
+* have the benefit of allowing the same API for programs that might run on one
+  machine __or__ across the network
+
+* use an 'address' that looks like a pathname ('/tmp/foo.sock')
+
+Socket Families
+---------------
+
+What is the *default* family for the socket we created just a moment ago?
+
+.. class:: incremental
+
+(remember we bound the socket to the symbol ``foo``)
+
+Socket Types
+------------
+
+The socket type determines how the socket handles connections. Socket type
+constants defined in the ``socket`` library are prefixed by ``SOCK_``::
+
+    >>> types = get_constants('SOCK_')
+    >>> types
+    {1: 'SOCK_STREAM', 2: 'SOCK_DGRAM',
+     ...}
+
+.. class:: incremental
+
+In general, the only two of these that are widely useful are ``1``
+(representing TCP type connections) and ``2`` (representing UDP type
+connections).
+
+Socket Types
+------------
+
+What is the *default* type for our generic socket, ``foo``?
+
+Socket Protocols
+----------------
+
+A socket also has a designated *protocol*. The constants for these are
+prefixed by ``IPPROTO``::
+
+    >>> protocols = get_constants('IPPROTO_')
+    >>> protocols
+    {0: 'IPPROTO_IP', 1: 'IPPROTO_ICMP',
+     ...,
+     255: 'IPPROTO_RAW'}
+
+.. class:: incremental
+
+The choice of which protocol to use for a socket is determined by the type of
+activity the socket is intended to support.  What messages are you needing to
+send?
+
+Socket Protocols
+----------------
+
+What is the *default* protocol used by our generic socket, ``foo``?
+
+Address Information
+-------------------
+
+When creating a socket, you can provide ``family``, ``type`` and ``protocol``
+as arguments to the constructor::
+
+    >>> bar = socket.socket(socket.AF_INET,
+    ...                     socket.SOCK_STREAM, 
+    ...                     socket.IPPROTO_IP)
+    ...
+    >>> bar
+    <socket._socketobject object at 0x1005b8b40>
+
+Address Information
+-------------------
+
+But how do you find out the *right* values?
+
+.. class:: incremental
+
+You ask.
+
+A quick utility method
+----------------------
+
+Create the following function::
+
+    >>> def get_address_info(host, port):
+    ...     for response in socket.getaddrinfo(host, port):
+    ...         fam, typ, pro, nam, add = response
+    ...         print 'family: ', families[fam]
+    ...         print 'type: ', types[typ]
+    ...         print 'protocol: ', protocols[pro]
+    ...         print 'canonical name: ', nam
+    ...         print 'socket address: ', add
+    ...         print
+    ...
+    >>>
+
+On Your Own Machine
+-------------------
+
+Now, ask your own machine what services are available on 'http'::
+
+    >>> get_address_info(socket.gethostname(), 'http')
+    family:  AF_INET
+    type:  SOCK_DGRAM
+    protocol:  IPPROTO_UDP
+    canonical name:  
+    socket address:  ('10.211.55.2', 80)
+    
+    family:  AF_INET
+    ...
+    >>>
+
+.. class:: incremental
+
+What answers do you get?
+
+On the Internet
+---------------
+
+    >>> get_address_info('www.google.com', 'http')
+    >>> get_address_info('www.google.com', 'http')
+    family:  AF_INET
+    type:  SOCK_STREAM
+    protocol:  IPPROTO_TCP
+    canonical name:  
+    socket address:  ('74.125.129.105', 80)
+    
+    family:  AF_INET
+    ...
+    >>>
+
+.. class:: incremental
+
+Try a few other servers you know about.
+
