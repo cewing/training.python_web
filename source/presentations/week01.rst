@@ -819,7 +819,8 @@ Submitting the Assignment
 -------------------------
 
 * Add ``sum_server.py`` and ``sum_client.py`` to the
-``assignments/week01/athome/`` directory of your fork of the class repository.
+  ``assignments/week01/athome/`` directory of your fork of the class
+  repository.
 
 * When you are satisfied with your code, make a **pull request**
 
