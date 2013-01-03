@@ -62,7 +62,6 @@ Further Reading
 Bonus
 *****
 
-
 `ZeroMQ Guide, Chapter 1 <http://zguide.zeromq.org/chapter:1>`_: ZeroMQ is a
 modern, advanced implementation of the socket concept. Read this to find out
 what sockets can get up to these days.
@@ -70,7 +69,12 @@ what sockets can get up to these days.
 Assignment
 **********
 
-To Be Decided
+You can read the assignment at 
+
+http://github.com/cewing/training.python_web/blob/master/assignments/week01/athome/assignment.txt
+
+Please complete the assignment by noon on Sunday, January 13, 2012.
+
 
 Week 2 - Web Protocols
 ----------------------
