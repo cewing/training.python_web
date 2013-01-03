@@ -771,3 +771,62 @@ Once a transaction between the client and server is complete, the
 
     >>> connection.close()
 
+Lab Time
+--------
+
+For our class lab time today, let's explore what we've learned. First, we'll
+need the samples:
+
+.. class:: incremental
+
+* visit the class repository (http://github.com/cewing/training.python_web)
+
+* create a fork of the repository in your own git account
+
+* clone your fork to your local machine
+
+Lab Time
+--------
+
+In the repository you've just cloned, you'll find a directory called
+``assignments``. This is where all our class lab and take-home assignments
+will be located.
+
+.. class:: incremental
+
+* Find ``assignments/week01/lab``
+
+* Open ``echo_server.py`` and ``echo_client.py``
+
+* Using what you've learned today, complete the server and client by replacing
+  comments with real code
+
+* Start the server on your local machine, run the client and send some messages
+
+* Copy the server to your Blue Box VM. Run it and use the client to send it
+  some messages
+
+* What do you have to change to make that work?
+
+Assignment
+----------
+
+Using what you've learned, expand on the client/server relationship. Create a
+server which accepts two numbers, adds them, and returns the result to the
+client.
+
+Submitting the Assignment
+-------------------------
+
+* Add ``sum_server.py`` and ``sum_client.py`` to the
+``assignments/week01/athome/`` directory of your fork of the class repository.
+
+* When you are satisfied with your code, make a **pull request**
+
+* I should be able to run the server and client scripts on my local machine
+  and get results.
+
+* For bonus points, set the server running on your VM. I should be able to run
+  your client script from my local machine and get the expected reply.
+
+* Due by Sunday morning if you want me to review it :)
