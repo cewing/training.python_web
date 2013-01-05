@@ -37,22 +37,21 @@ Find mistakes? See improvements? Make a pull request.
 But First
 ---------
 
-.. class:: big-centered
+Class Structure
 
-Classroom Mechanics
+* ~20 minutes of Review and Discussion
 
-But First
----------
+* 5 minute break
 
-* ~1 hour of Lecture and Discussion
+* ~1 hour of Lecture and Exercises
 
 * 10 minute break
 
 * ~1 hour of Lab Time
 
-* 10 minute break
+* 5 minute break
 
-* ~30 minutes of Lightning Talks
+* ~20 minutes of Lightning Talks
 
 But First
 ---------
