@@ -62,25 +62,24 @@ building blocks that make it possible.</p>
 </div>
 <div class="slide" id="id2">
 <h1>But First</h1>
-<p class="big-centered">Classroom Mechanics</p>
-</div>
-<div class="slide" id="id3">
-<h1>But First</h1>
+<p>Class Structure</p>
 <ul class="simple">
-<li>~1 hour of Lecture and Discussion</li>
+<li>~20 minutes of Review and Discussion</li>
+<li>5 minute break</li>
+<li>~1 hour of Lecture and Exercises</li>
 <li>10 minute break</li>
 <li>~1 hour of Lab Time</li>
-<li>10 minute break</li>
-<li>~30 minutes of Lightning Talks</li>
+<li>5 minute break</li>
+<li>~20 minutes of Lightning Talks</li>
 </ul>
 </div>
-<div class="slide" id="id4">
+<div class="slide" id="id3">
 <h1>But First</h1>
 <p>I'll spend a lot of time talking</p>
 <p class="incremental">Don't make the mistake of thinking this means I know everything</p>
 <p class="incremental">Each of us has domain expertise, share it</p>
 </div>
-<div class="slide" id="id5">
+<div class="slide" id="id4">
 <h1>But First</h1>
 <p class="big-centered">Introductions</p>
 </div>
@@ -103,7 +102,7 @@ building blocks that make it possible.</p>
 </ul>
 <p class="image-credit">image: <a class="reference external" href="http://en.wikipedia.org/wiki/Internet_Protocol_Suite">http://en.wikipedia.org/wiki/Internet_Protocol_Suite</a></p>
 </div>
-<div class="slide" id="id6">
+<div class="slide" id="id5">
 <h1>Computer Communications</h1>
 <img alt="img/data_in_tcpip_stack.png" class="align-left" src="img/data_in_tcpip_stack.png" style="width: 55%;" />
 <ul class="incremental simple">
@@ -145,7 +144,7 @@ building blocks that make it possible.</p>
 </li>
 </ul>
 </div>
-<div class="slide" id="id7">
+<div class="slide" id="id6">
 <h1>The TCP/IP Stack - Internet</h1>
 <p class="big-centered">That's 4.3 x 10^28 addresses <em>per person alive today</em></p>
 </div>
@@ -170,7 +169,7 @@ building blocks that make it possible.</p>
 </li>
 </ul>
 </div>
-<div class="slide" id="id8">
+<div class="slide" id="id7">
 <h1>The TCP/IP Stack - Transport</h1>
 <p>The 'Transport Layer' also establishes the concept of a <strong>port</strong></p>
 <ul class="incremental simple">
@@ -181,7 +180,7 @@ building blocks that make it possible.</p>
 <p class="incremental">This means that you don't have to worry about information intended for your
 web browser being accidentally read by your email client.</p>
 </div>
-<div class="slide" id="id9">
+<div class="slide" id="id8">
 <h1>The TCP/IP Stack - Transport</h1>
 <p>There are certain <strong>ports</strong> which are commonly understood to belong to given
 applications or protocols:</p>
@@ -195,7 +194,7 @@ applications or protocols:</p>
 </ul>
 <p class="small">(see <a class="reference external" href="http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers">http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers</a>)</p>
 </div>
-<div class="slide" id="id10">
+<div class="slide" id="id9">
 <h1>The TCP/IP Stack - Transport</h1>
 <p>Ports are grouped into a few different classes</p>
 <ul class="incremental simple">
@@ -219,7 +218,7 @@ applications or protocols:</p>
 </li>
 </ul>
 </div>
-<div class="slide" id="id11">
+<div class="slide" id="id10">
 <h1>The TCP/IP Stack - Application</h1>
 <p class="big-centered">this is where we live and work</p>
 </div>
@@ -244,7 +243,7 @@ module.</p>
 <p>We're going to do this next part together, so open up a terminal and start
 python.</p>
 </div>
-<div class="slide" id="id12">
+<div class="slide" id="id11">
 <h1>Sockets in Python</h1>
 <p>The sockets library provides tools for finding out information about hosts on
 the network. For example, you can find out about the machine you are currently
@@ -259,7 +258,7 @@ using:</p>
 ('heffalump.local', [], ['10.211.55.2', '10.37.129.2', '192.168.1.102'])
 </pre>
 </div>
-<div class="slide" id="id13">
+<div class="slide" id="id12">
 <h1>Sockets in Python</h1>
 <p>You can also find out about machines that are located elsewhere, for example:</p>
 <pre class="literal-block">
@@ -274,7 +273,7 @@ using:</p>
  ['128.95.247.84']) # &lt;- all active IP addresses
 </pre>
 </div>
-<div class="slide" id="id14">
+<div class="slide" id="id13">
 <h1>Sockets in Python</h1>
 <p>To create a socket, you use the <strong>socket</strong> method of the <tt class="docutils literal">socket</tt> library:</p>
 <pre class="literal-block">
@@ -283,7 +282,7 @@ using:</p>
 &lt;socket._socketobject object at 0x10046cec0&gt;
 </pre>
 </div>
-<div class="slide" id="id15">
+<div class="slide" id="id14">
 <h1>Sockets in Python</h1>
 <p>A socket has some properties that are immediately important to us. These
 include the <em>family</em>, <em>type</em> and <em>protocol</em> of the socket:</p>
@@ -323,7 +322,7 @@ take a single argument, the shared prefix for a defined set of constants:</p>
 &gt;&gt;&gt;
 </pre>
 </div>
-<div class="slide" id="id16">
+<div class="slide" id="id15">
 <h1>Socket Families</h1>
 <p>Families defined in the <tt class="docutils literal">socket</tt> library are prefixed by <tt class="docutils literal">AF_</tt>:</p>
 <pre class="literal-block">
@@ -349,7 +348,7 @@ machine __or__ across the network</li>
 <li>use an 'address' that looks like a pathname ('/tmp/foo.sock')</li>
 </ul>
 </div>
-<div class="slide" id="id17">
+<div class="slide" id="id16">
 <h1>Socket Families</h1>
 <p>What is the <em>default</em> family for the socket we created just a moment ago?</p>
 <p class="incremental">(remember we bound the socket to the symbol <tt class="docutils literal">foo</tt>)</p>
@@ -368,7 +367,7 @@ constants defined in the <tt class="docutils literal">socket</tt> library are pr
 (representing TCP type connections) and <tt class="docutils literal">2</tt> (representing UDP type
 connections).</p>
 </div>
-<div class="slide" id="id18">
+<div class="slide" id="id17">
 <h1>Socket Types</h1>
 <p>What is the <em>default</em> type for our generic socket, <tt class="docutils literal">foo</tt>?</p>
 </div>
@@ -387,7 +386,7 @@ prefixed by <tt class="docutils literal">IPPROTO</tt>:</p>
 activity the socket is intended to support.  What messages are you needing to
 send?</p>
 </div>
-<div class="slide" id="id19">
+<div class="slide" id="id18">
 <h1>Socket Protocols</h1>
 <p>What is the <em>default</em> protocol used by our generic socket, <tt class="docutils literal">foo</tt>?</p>
 </div>
@@ -404,12 +403,12 @@ as arguments to the constructor:</p>
 &lt;socket._socketobject object at 0x1005b8b40&gt;
 </pre>
 </div>
-<div class="slide" id="id20">
+<div class="slide" id="id19">
 <h1>Address Information</h1>
 <p>But how do you find out the <em>right</em> values?</p>
 <p class="incremental">You ask.</p>
 </div>
-<div class="slide" id="id21">
+<div class="slide" id="id20">
 <h1>A quick utility method</h1>
 <p>Create the following function:</p>
 <pre class="literal-block">
@@ -563,7 +562,7 @@ was received)</li>
 <h1>Server Side</h1>
 <p class="big-centered">What about the other half of the equation?</p>
 </div>
-<div class="slide" id="id22">
+<div class="slide" id="id21">
 <h1>Construct a Socket</h1>
 <p>Again, we begin by constructing a socket. Since we are actually the server
 this time, we get to choose family, type and protocol:</p>
@@ -641,7 +640,7 @@ need the samples:</p>
 <li>clone your fork to your local machine</li>
 </ul>
 </div>
-<div class="slide" id="id23">
+<div class="slide" id="id22">
 <h1>Lab Time</h1>
 <p>In the repository you've just cloned, you'll find a directory called
 <tt class="docutils literal">assignments</tt>. This is where all our class lab and take-home assignments

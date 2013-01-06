@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="Docutils 0.9.1: http://docutils.sourceforge.net/" />
 <meta name="version" content="S5 1.1" />
-<title>This is week 2</title>
+<title>Internet Programming with Python</title>
 <link rel="stylesheet" href="ui/uw_pce_theme/pretty.css" type="text/css" />
 <!-- configuration parameters -->
 <meta name="defaultView" content="slideshow" />
@@ -29,15 +29,457 @@
 
 </div>
 <div id="footer">
-<h1>This is week 2</h1>
+<h1>Internet Programming with Python</h1>
 <h2><a class="reference external" href="http://github.com/cewing/training.python_web">View document source</a>.
 </h2>
 </div>
 </div>
 <div class="presentation">
 <div class="slide" id="slide0">
-<h1 class="title">This is week 2</h1>
+<h1 class="title">Internet Programming with Python</h1>
 
+<img alt="img/protocol.png" class="align-left" src="img/protocol.png" style="width: 45%;" />
+<p>Week 2: Web Protocols</p>
+<p class="intro-blurb">Wherein we learn about the languages that the internet speaks and how to
+choose the right one for our message</p>
+
+</div>
+<div class="slide" id="but-first">
+<h1>But First</h1>
+<p class="big-centered">Review from the Assignment</p>
+</div>
+<div class="slide" id="and-second">
+<h1>And Second</h1>
+<p class="big-centered">Questions from the Reading?</p>
+</div>
+<div class="slide" id="and-now">
+<h1>And Now...</h1>
+<img alt="img/protocol_sea.png" class="align-center" src="img/protocol_sea.png" style="width: 48%;" />
+<p class="image-credit">image exerpted from: <a class="reference external" href="http://xkcd.com/802/">http://xkcd.com/802/</a></p>
+</div>
+<div class="slide" id="what-is-a-protocol">
+<h1>What is a Protocol?</h1>
+<p class="incremental big-centered">a set of rules or conventions</p>
+<p class="incremental big-centered">governing communications</p>
+</div>
+<div class="slide" id="protocols-irl">
+<h1>Protocols IRL</h1>
+<p>Life has lots of sets of rules for how to do things.</p>
+<ul class="incremental simple">
+<li>What do you do on a first date?</li>
+<li>What do you do in a job interview?</li>
+<li>What do (and don't) you talk about at a dinner party?</li>
+<li>...?</li>
+</ul>
+</div>
+<div class="slide" id="id1">
+<h1>Protocols IRL</h1>
+<img alt="img/icup.png" class="align-center" src="img/icup.png" style="width: 60%;" />
+<p class="image-credit"><a class="reference external" href="http://blog.xkcd.com/2009/09/02/urinal-protocol-vulnerability/">http://blog.xkcd.com/2009/09/02/urinal-protocol-vulnerability/</a></p>
+</div>
+<div class="slide" id="protocols-in-computers">
+<h1>Protocols In Computers</h1>
+<p>Digital life has lots of rules too:</p>
+<ul class="incremental simple">
+<li>how to identify yourself</li>
+<li>how to find a partner</li>
+<li>how to ask for information</li>
+<li>how to provide answers</li>
+<li>how to say goodbye</li>
+</ul>
+</div>
+<div class="slide" id="real-protocol-examples">
+<h1>Real Protocol Examples</h1>
+<p class="big-centered">What does this look like in practice?</p>
+</div>
+<div class="slide" id="id2">
+<h1>Real Protocol Examples</h1>
+<ul class="incremental simple">
+<li>SMTP (Simple Message Transfer Protocol)
+<a class="reference external" href="http://tools.ietf.org/html/rfc5321#appendix-D">http://tools.ietf.org/html/rfc5321#appendix-D</a></li>
+<li>POP3 (Post Office Protocol)
+<a class="reference external" href="http://www.faqs.org/docs/artu/ch05s03.html">http://www.faqs.org/docs/artu/ch05s03.html</a></li>
+<li>IMAP (Internet Message Access Protocol)
+<a class="reference external" href="http://www.faqs.org/docs/artu/ch05s03.html">http://www.faqs.org/docs/artu/ch05s03.html</a></li>
+<li>HTTP (Hyper-Text Transfer Protocol)
+<a class="reference external" href="http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol">http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol</a></li>
+</ul>
+</div>
+<div class="slide" id="what-does-smtp-look-like">
+<h1>What does SMTP look like?</h1>
+<p>SMTP (Identify yourself and find a partner):</p>
+<pre class="literal-block">
+S: 220 foo.com Simple Mail Transfer Service Ready
+C: EHLO bar.com
+S: 250-foo.com greets bar.com
+S: 250-8BITMIME
+S: 250-SIZE
+S: 250-DSN
+S: 250 HELP
+</pre>
+</div>
+<div class="slide" id="id3">
+<h1>What does SMTP look like?</h1>
+<p>SMTP (Ask for information, provide answers):</p>
+<pre class="literal-block">
+C: MAIL FROM:&lt;Smith&#64;bar.com&gt;
+S: 250 OK
+C: RCPT TO:&lt;Jones&#64;foo.com&gt;
+S: 250 OK
+C: RCPT TO:&lt;Green&#64;foo.com&gt;
+S: 550 No such user here
+C: DATA
+S: 354 Start mail input; end with &lt;CRLF&gt;.&lt;CRLF&gt;
+C: Blah blah blah...
+C: ...etc. etc. etc.
+C: .
+S: 250 OK
+</pre>
+</div>
+<div class="slide" id="id4">
+<h1>What does SMTP look like?</h1>
+<p>SMTP (Say goodbye):</p>
+<pre class="literal-block">
+C: QUIT
+S: 221 foo.com Service closing transmission channel
+</pre>
+</div>
+<div class="slide" id="what-does-pop3-look-like">
+<h1>What does POP3 look like?</h1>
+<p>POP3 (Identify yourself and find a partner):</p>
+<pre class="literal-block">
+C: &lt;client connects to service port 110&gt;
+S: +OK POP3 server ready &lt;1896.6971&#64;mailgate.dobbs.org&gt;
+C: USER bob
+S: +OK bob
+C: PASS redqueen
+S: +OK bob's maildrop has 2 messages (320 octets)
+</pre>
+</div>
+<div class="slide" id="id5">
+<h1>What does POP3 look like?</h1>
+<p>POP3 (Ask for information, provide answers):</p>
+<pre class="literal-block">
+C: STAT
+S: +OK 2 320
+C: LIST
+S: +OK 2 messages (320 octets)
+S: 1 120
+S: 2 200
+S: .
+</pre>
+</div>
+<div class="slide" id="id6">
+<h1>What does POP3 look like?</h1>
+<p>POP3 (Ask for information, provide answers):</p>
+<pre class="literal-block">
+C: RETR 1
+S: +OK 120 octets
+S: &lt;the POP3 server sends the text of message 1&gt;
+S: .
+C: DELE 1
+S: +OK message 1 deleted
+C: RETR 2
+S: +OK 200 octets
+S: &lt;the POP3 server sends the text of message 2&gt;
+S: .
+C: DELE 2
+S: +OK message 2 deleted
+</pre>
+</div>
+<div class="slide" id="id7">
+<h1>What does POP3 look like?</h1>
+<p>POP3 (Say goodbye):</p>
+<pre class="literal-block">
+C: QUIT
+S: +OK dewey POP3 server signing off (maildrop empty)
+C: &lt;client hangs up&gt;
+</pre>
+</div>
+<div class="slide" id="what-does-imap-look-like">
+<h1>What does IMAP look like?</h1>
+<p>IMAP (Identify yourself and find a partner):</p>
+<pre class="literal-block">
+C: &lt;client connects to service port 143&gt;
+S: * OK example.com IMAP4rev1 v12.264 server ready
+C: A0001 USER &quot;frobozz&quot; &quot;xyzzy&quot;
+S: * OK User frobozz authenticated
+</pre>
+</div>
+<div class="slide" id="id8">
+<h1>What does IMAP look like?</h1>
+<p>IMAP (Ask for information, provide answers [connect to an inbox]):</p>
+<pre class="literal-block">
+C: A0002 SELECT INBOX
+S: * 1 EXISTS
+S: * 1 RECENT
+S: * FLAGS (\Answered \Flagged \Deleted \Draft \Seen)
+S: * OK [UNSEEN 1] first unseen message in /var/spool/mail/esr
+S: A0002 OK [READ-WRITE] SELECT completed
+</pre>
+</div>
+<div class="slide" id="id9">
+<h1>What does IMAP look like?</h1>
+<p>IMAP (Ask for information, provide answers [Get message sizes]):</p>
+<pre class="literal-block">
+C: A0003 FETCH 1 RFC822.SIZE
+S: * 1 FETCH (RFC822.SIZE 2545)
+S: A0003 OK FETCH completed
+</pre>
+</div>
+<div class="slide" id="id10">
+<h1>What does IMAP look like?</h1>
+<p>IMAP (Ask for information, provide answers [Get first message header]):</p>
+<pre class="literal-block">
+C: A0004 FETCH 1 BODY[HEADER]
+S: * 1 FETCH (RFC822.HEADER {1425}
+&lt;server sends 1425 octets of message payload&gt;
+S: )
+S: A0004 OK FETCH completed
+</pre>
+</div>
+<div class="slide" id="id11">
+<h1>What does IMAP look like?</h1>
+<p>IMAP (Ask for information, provide answers [Get first message body]):</p>
+<pre class="literal-block">
+C: A0005 FETCH 1 BODY[TEXT]
+S: * 1 FETCH (BODY[TEXT] {1120}
+&lt;server sends 1120 octets of message payload&gt;
+S: )
+S: * 1 FETCH (FLAGS (\Recent \Seen))
+S: A0005 OK FETCH completed
+</pre>
+</div>
+<div class="slide" id="id12">
+<h1>What does IMAP look like?</h1>
+<p>IMAP (Say goodbye):</p>
+<pre class="literal-block">
+C: A0006 LOGOUT
+S: * BYE example.com IMAP4rev1 server terminating connection
+S: A0006 OK LOGOUT completed
+C: &lt;client hangs up&gt;
+</pre>
+</div>
+<div class="slide" id="notice-any-difference">
+<h1>Notice Any Difference?</h1>
+<p>POP3 Commands:</p>
+<ul class="incremental simple">
+<li>STAT</li>
+<li>LIST</li>
+<li>RETR 1</li>
+<li>DELE 1</li>
+<li>QUIT</li>
+</ul>
+</div>
+<div class="slide" id="id13">
+<h1>Notice Any Difference?</h1>
+<p>IMAP Commands:</p>
+<ul class="incremental simple">
+<li>A0001 USER &quot;frobozz&quot; &quot;xyzzy&quot;</li>
+<li>A0002 SELECT INBOX</li>
+<li>A0003 FETCH 1 RFC822.SIZE</li>
+<li>A0004 FETCH 1 BODY[HEADER]</li>
+<li>A0005 FETCH 1 BODY[TEXT]</li>
+<li>A0006 LOGOUT</li>
+</ul>
+</div>
+<div class="slide" id="id14">
+<h1>Notice Any Difference?</h1>
+<p>Sequence Identifiers allow the client to send commands without waiting for
+responses.</p>
+</div>
+<div class="slide" id="re-ordered-imap-interaction">
+<h1>Re-ordered IMAP Interaction</h1>
+<pre class="literal-block">
+C: A0001 USER &quot;frobozz&quot; &quot;xyzzy&quot;
+S: * OK User frobozz authenticated
+C: A0002 SELECT INBOX
+S: ...
+S: A0002 OK [READ-WRITE] SELECT completed
+C: A0003 FETCH 1 RFC822.SIZE
+C: A0004 FETCH 1 BODY[HEADER]
+C: A0005 FETCH 1 BODY[TEXT]
+S: * 1 FETCH (RFC822.SIZE 2545)
+S: A0003 OK FETCH completed
+...
+...
+C: A0006 LOGOUT
+...
+</pre>
+</div>
+<div class="slide" id="which-protocol-do-you-choose">
+<h1>Which Protocol do you Choose?</h1>
+<p>Stacking commands is more efficient, but would it work for POP3?</p>
+<p class="incremental">Why not?</p>
+</div>
+<div class="slide" id="what-does-http-look-like">
+<h1>What does HTTP look like?</h1>
+<p>HTTP (Ask for information):</p>
+<pre class="literal-block">
+GET /index.html HTTP/1.1
+Host: www.example.com
+\r\n
+</pre>
+</div>
+<div class="slide" id="id15">
+<h1>What does HTTP look like?</h1>
+<p>HTTP (Provide answers):</p>
+<pre class="literal-block">
+HTTP/1.1 200 OK
+Date: Mon, 23 May 2005 22:38:34 GMT
+Server: Apache/1.3.3.7 (Unix) (Red-Hat/Linux)
+Last-Modified: Wed, 08 Jan 2003 23:11:55 GMT
+Etag: &quot;3f80f-1b6-3e1cb03b&quot;
+Accept-Ranges:  none
+Content-Length: 438
+Connection: close
+Content-Type: text/html; charset=UTF-8
+\r\n
+&lt;438 bytes of content&gt;
+</pre>
+</div>
+<div class="slide" id="protocols-in-python">
+<h1>Protocols in Python</h1>
+<p class="big-centered">Let's try this out for ourselves!</p>
+</div>
+<div class="slide" id="id16">
+<h1>Protocols in Python</h1>
+<p class="big-centered">Fire up a Python interpreter</p>
+</div>
+<div class="slide" id="smtp-in-python">
+<h1>SMTP in Python</h1>
+<p>Start by importing smtplib (part of the standard library):</p>
+<pre class="literal-block">
+&gt;&gt;&gt; import smtplib
+&gt;&gt;&gt; dir(smtplib)
+['CRLF', 'LMTP', 'LMTP_PORT', 'OLDSTYLE_AUTH',
+ 'SMTP', 'SMTPAuthenticationError', 'SMTPConnectError',
+ 'SMTPDataError', 'SMTPException', 'SMTPHeloError',
+ 'SMTPRecipientsRefused', 'SMTPResponseException',
+ 'SMTPSenderRefused', 'SMTPServerDisconnected',
+ 'SMTP_PORT', 'SMTP_SSL', 'SMTP_SSL_PORT', 'SSLFakeFile',
+ '__all__', '__builtins__', '__doc__', '__file__',
+ '__name__', '__package__', '_have_ssl', 'base64', 'email',
+ 'encode_base64', 'hmac', 'quoteaddr', 'quotedata', 're',
+ 'socket', 'ssl', 'stderr']
+</pre>
+</div>
+<div class="slide" id="id17">
+<h1>SMTP in Python</h1>
+<p>Let's make a connection to a server. We'll use one I've set up in advance to
+avoid needing to create one of our own:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; server = smtplib.SMTP('smtp.webfaction.com', 587)
+&gt;&gt;&gt; server.set_debuglevel(True) # to see interaction
+&gt;&gt;&gt; server.ehlo()
+send: 'ehlo heffalump.local\r\n'
+reply: '250-smtp.webfaction.com\r\n'
+reply: '250-PIPELINING\r\n'
+reply: '250-SIZE 20971520\r\n'
+reply: '250-VRFY\r\n'
+reply: '250-ETRN\r\n'
+reply: '250-STARTTLS\r\n'
+...
+</pre>
+</div>
+<div class="slide" id="id18">
+<h1>SMTP in Python</h1>
+<p>Does our server support TLS (secure transmissions?):</p>
+<pre class="literal-block">
+&gt;&gt;&gt; server.has_extn('STARTTLS')
+True
+</pre>
+<p>What other extensions are available?:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; server.esmpt_features.keys()
+['enhancedstatuscodes', 'etrn', 'starttls',
+ 'auth', 'dsn', '8bitmime', 'pipelining',
+ 'size', 'vrfy']
+</pre>
+</div>
+<div class="slide" id="id19">
+<h1>SMTP in Python</h1>
+<p>Some SMTP servers require authentication. This is one such server. Before
+passing our username and password, though, we should turn on TLS for the sake
+of security:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; server.starttls()
+&gt;&gt;&gt; server.ehlo() # re-identify after TLS begins
+&gt;&gt;&gt; server.login(username, password)
+</pre>
+</div>
+<div class="slide" id="id20">
+<h1>SMTP in Python</h1>
+<p>Let's prepare a message to be sent to our server:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; from_addr = &quot;YOUR NAME &lt;fill in this address&gt;&quot;
+&gt;&gt;&gt; to_addrs = &quot;testbox&#64;crisewing.com&quot;
+&gt;&gt;&gt; subject = &quot;this is a test&quot;
+&gt;&gt;&gt; message = &quot;a message from python smtplib&quot;
+</pre>
+</div>
+<div class="slide" id="id21">
+<h1>SMTP in Python</h1>
+<p>Email sent via SMTP requires certain formatting. It's part of the Protocol. In
+particular, note that the headers are separated by CRLF sequences.  This is
+very common across internet protocols:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; template = &quot;From: %s\r\nTo: %s\r\nSubject: %s\r\n\r\n&quot;
+&gt;&gt;&gt; headers = template % (from_addr, to_addrs, subject)
+</pre>
+</div>
+<div class="slide" id="id22">
+<h1>SMTP in Python</h1>
+<p>A message is the headers, plus the body of the message:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; email_body = headers + message
+</pre>
+<p>Sending the email is accomplished by calling the <tt class="docutils literal">sendmail</tt> method on our
+server object, after which we should close the connection:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; server.sendmail(from_addr, [to_addrs, ], email_body)
+&gt;&gt;&gt; server.close()
+</pre>
+</div>
+<div class="slide" id="putting-it-all-together">
+<h1>Putting it all Together</h1>
+<pre class="literal-block">
+&gt;&gt;&gt; from_addr = &quot;YOUR NAME &lt;fill in this address&gt;&quot;
+&gt;&gt;&gt; to_addrs = &quot;testbox&#64;crisewing.com&quot;
+&gt;&gt;&gt; subject = &quot;this is a test&quot;
+&gt;&gt;&gt; message = &quot;a message from python smtplib&quot;
+&gt;&gt;&gt; template = &quot;From: %s\r\nTo: %s\r\nSubject: %s\r\n\r\n&quot;
+&gt;&gt;&gt; headers = template % (from_addr, to_addrs, subject)
+</pre>
+</div>
+<div class="slide" id="id23">
+<h1>Putting it all Together</h1>
+<pre class="literal-block">
+&gt;&gt;&gt; server = smtplib.SMTP('smtp.webfaction.com', 587)
+&gt;&gt;&gt; server.set_debuglevel(True)
+&gt;&gt;&gt; server.ehlo()
+&gt;&gt;&gt; server.starttls()
+&gt;&gt;&gt; server.ehlo() # re-identify after TLS begins
+&gt;&gt;&gt; server.login(username, password)
+&gt;&gt;&gt; email_body = headers + message
+&gt;&gt;&gt; server.sendmail(from_addr, [to_addrs, ], email_body)
+&gt;&gt;&gt; server.close()
+</pre>
+</div>
+<div class="slide" id="python-means-batteries-included">
+<h1>Python Means Batteries Included</h1>
+<p>So in fact we have a module in the standard library for email support:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; import email.utils
+&gt;&gt;&gt; from email.mime.text import MIMEText
+&gt;&gt;&gt; from_addr = &quot;addr&#64;host.com&quot;
+&gt;&gt;&gt; to_addrs = &quot;other&#64;another.com&quot;
+&gt;&gt;&gt; msg = MIMEText(&quot;This is an email message&quot;)
+&gt;&gt;&gt; msg['From'] = email.utils.formataddr((&quot;Name&quot;, from_addr))
+&gt;&gt;&gt; msg['To'] = email.utils.formataddr((&quot;Name&quot;, to_addrs))
+&gt;&gt;&gt; msg['Subject'] = &quot;Simple Test&quot;
+&gt;&gt;&gt; server.sendmail(from_addr, [to_addrs, ], msg.as_string())
+</pre>
 </div>
 </div>
 </body>
