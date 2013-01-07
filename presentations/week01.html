@@ -446,7 +446,6 @@ family:  AF_INET
 <h1>On the Internet</h1>
 <pre class="literal-block">
 &gt;&gt;&gt; get_address_info('www.google.com', 'http')
-&gt;&gt;&gt; get_address_info('www.google.com', 'http')
 family:  AF_INET
 type:  SOCK_STREAM
 protocol:  IPPROTO_TCP
@@ -564,6 +563,7 @@ was received)</li>
 </div>
 <div class="slide" id="id21">
 <h1>Construct a Socket</h1>
+<p>For the moment, stop typing this into your interpreter.</p>
 <p>Again, we begin by constructing a socket. Since we are actually the server
 this time, we get to choose family, type and protocol:</p>
 <pre class="literal-block">
@@ -581,7 +581,7 @@ this time, we get to choose family, type and protocol:</p>
 <p>Our server socket needs to be bound to an address. This is the IP Address and
 Port to which clients must connect:</p>
 <pre class="literal-block">
-&gt;&gt;&gt; address = ('127.0.0.1', '50000')
+&gt;&gt;&gt; address = ('127.0.0.1', 50000)
 &gt;&gt;&gt; server_socket.bind(address)
 </pre>
 </div>
@@ -599,9 +599,10 @@ Port to which clients must connect:</p>
 </div>
 <div class="slide" id="accept-incoming-messages">
 <h1>Accept Incoming Messages</h1>
-<p>When a socket is listening, it can accept incoming messages:</p>
+<p>When a socket is listening, it can receive incoming messages:</p>
 <pre class="literal-block">
 &gt;&gt;&gt; connection, client_address = server_socket.accept()
+... # note that nothing happens here until a client sends something
 &gt;&gt;&gt; connection.recv(16)
 </pre>
 <ul class="incremental simple">
@@ -610,7 +611,7 @@ Port to which clients must connect:</p>
 <li>the <tt class="docutils literal">client_address</tt> is a two-tuple of IP Address and Port (very familiar)</li>
 <li><tt class="docutils literal">backlog</tt> represents the maximum number of <tt class="docutils literal">connection</tt> sockets that a
 server can spin off</li>
-<li>close a <tt class="docutils literal">connection</tt> socket to accept a new connection one the max is
+<li>close a <tt class="docutils literal">connection</tt> socket to accept a new connection once the max is
 reached</li>
 </ul>
 </div>
@@ -630,17 +631,23 @@ back to the client socket:</p>
 &gt;&gt;&gt; connection.close()
 </pre>
 </div>
+<div class="slide" id="id22">
+<h1>Putting it all together</h1>
+<p>Open a second terminal next to your first, and let's try out the full
+connection:</p>
+<img alt="img/socket_interaction.png" class="align-center" src="img/socket_interaction.png" style="width: 100%;" />
+</div>
 <div class="slide" id="lab-time">
 <h1>Lab Time</h1>
 <p>For our class lab time today, let's explore what we've learned. First, we'll
 need the samples:</p>
 <ul class="incremental simple">
 <li>visit the class repository (<a class="reference external" href="http://github.com/cewing/training.python_web">http://github.com/cewing/training.python_web</a>)</li>
-<li>create a fork of the repository in your own git account</li>
+<li><a class="reference external" href="http://help.github.com/articles/fork-a-repo">create a fork</a> of the repository in your own git account</li>
 <li>clone your fork to your local machine</li>
 </ul>
 </div>
-<div class="slide" id="id22">
+<div class="slide" id="id23">
 <h1>Lab Time</h1>
 <p>In the repository you've just cloned, you'll find a directory called
 <tt class="docutils literal">assignments</tt>. This is where all our class lab and take-home assignments
@@ -651,8 +658,8 @@ will be located.</p>
 <li>Using what you've learned today, complete the server and client by replacing
 comments with real code</li>
 <li>Start the server on your local machine, run the client and send some messages</li>
-<li>Copy the server to your Blue Box VM. Run it and use the client to send it
-some messages</li>
+<li>If you complete that, then copy the server to your Blue Box VM. Run it
+remotely and use the client to send it some messages</li>
 <li>What do you have to change to make that work?</li>
 </ul>
 </div>
@@ -668,7 +675,7 @@ client.</p>
 <li>Add <tt class="docutils literal">sum_server.py</tt> and <tt class="docutils literal">sum_client.py</tt> to the
 <tt class="docutils literal">assignments/week01/athome/</tt> directory of your fork of the class
 repository.</li>
-<li>When you are satisfied with your code, make a <strong>pull request</strong></li>
+<li>When you are satisfied with your code, <a class="reference external" href="http://help.github.com/articles/using-pull-requests">make a pull request</a></li>
 <li>I should be able to run the server and client scripts on my local machine
 and get results.</li>
 <li>For bonus points, set the server running on your VM. I should be able to run
