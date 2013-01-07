@@ -441,7 +441,7 @@ SMTP in Python
 Let's prepare a message to be sent to our server::
 
     >>> from_addr = "YOUR NAME <fill in this address>"
-    >>> to_addrs = "testbox@crisewing.com"
+    >>> to_addrs = "demo@crisewing.com"
     >>> subject = "this is a test"
     >>> message = "a message from python smtplib"
 
@@ -474,7 +474,7 @@ Putting it all Together
 ::
 
     >>> from_addr = "YOUR NAME <fill in this address>"
-    >>> to_addrs = "testbox@crisewing.com"
+    >>> to_addrs = "demo@crisewing.com"
     >>> subject = "this is a test"
     >>> message = "a message from python smtplib"
     >>> template = "From: %s\r\nTo: %s\r\nSubject: %s\r\n\r\n"
@@ -509,4 +509,177 @@ So in fact we have a module in the standard library for email support::
     >>> msg['To'] = email.utils.formataddr(("Name", to_addrs))
     >>> msg['Subject'] = "Simple Test"
     >>> server.sendmail(from_addr, [to_addrs, ], msg.as_string())
+
+IMAP in Python
+--------------
+
+.. class:: big-centered
+
+Let's read that email we just sent
+
+IMAP in Python
+--------------
+
+Again, begin by importing the module from the Python Standard Library::
+
+    >>> import imaplib
+    >>> dir(imaplib)
+    ['AllowedVersions', 'CRLF', 'Commands', 
+     'Continuation', 'Debug', 'Flags', 'IMAP4', 
+     'IMAP4_PORT', 'IMAP4_SSL', 'IMAP4_SSL_PORT', 
+     'IMAP4_stream', 'Int2AP', 'InternalDate', 
+     'Internaldate2tuple', 'Literal', 'MapCRLF', 
+     'Mon2num', 'ParseFlags', 'Response_code', 
+     'Time2Internaldate', 'Untagged_response', 
+     'Untagged_status', '_Authenticator', ...]
+
+IMAP in Python
+--------------
+
+We set up a client object.  WebFaction requires SSL for connecting to IMAP
+servers, so let's initialize an IMAP4_SSL client and authenticate::
+
+    >>> conn = imaplib.IMAP4_SSL('mail.webfaction.com')
+      57:04.83 imaplib version 2.58
+      57:04.83 new IMAP4 connection, tag=FNHG
+    >>> conn.login(username, password)
+    ('OK', ['Logged in.'])
+
+IMAP in Python
+--------------
+
+Let's set up debugging here too, so that we can see the communication back and
+forth between client and server::
+
+    >>> conn.debug = 4 # >3 prints all messages
+
+We can start by listing the mailboxes we have on the server::
+
+    >>> conn.list()
+      00:41.91 > FNHG3 LIST "" *
+      00:41.99 < * LIST (\HasNoChildren) "." "INBOX"
+      00:41.99 < FNHG3 OK List completed.
+    ('OK', ['(\\HasNoChildren) "." "INBOX"'])
+
+IMAP in Python
+--------------
+
+We can find out about the mail on our server. We do this by querying for
+`status`. IMAP provides a few different status values, let's ask for them
+all::
+
+    >>> vals = '(MESSAGES RECENT UIDNEXT'
+    >>> vals += ' UIDVALIDITY UNSEEN)'
+    >>> conn.status('INBOX', vals)
+      12:03.91 > FNHG4 STATUS INBOX (MESSAGES RECENT UIDNEXT UIDVALIDITY UNSEEN)
+      12:04.01 < * STATUS "INBOX" (MESSAGES 2 RECENT 0 UIDNEXT 3 UIDVALIDITY 1357449499 UNSEEN 1)
+      12:04.01 < FNHG4 OK Status completed.
+    ('OK', ['"INBOX" (MESSAGES 2 RECENT 0 
+                      UIDNEXT 3 UIDVALIDITY 1357449499 
+                      UNSEEN 1)'])
+
+IMAP in Python
+--------------
+
+To interact with our email, we must select a mailbox from the list we received
+earlier::
+
+    >>> conn.select('INBOX')
+      00:00.47 > FNHG2 SELECT INBOX
+      00:00.56 < * FLAGS (\Answered \Flagged \Deleted \Seen \Draft)
+      00:00.56 < * OK [PERMANENTFLAGS (\Answered \Flagged \Deleted \Seen \Draft \*)] Flags permitted.
+      00:00.56 < * 2 EXISTS
+      00:00.57 < * 0 RECENT
+      00:00.57 < * OK [UNSEEN 2] First unseen.
+      00:00.57 < * OK [UIDVALIDITY 1357449499] UIDs valid
+      00:00.57 < * OK [UIDNEXT 3] Predicted next UID
+      00:00.57 < FNHG2 OK [READ-WRITE] Select completed.
+    ('OK', ['2'])
+
+IMAP in Python
+--------------
+
+We can search our selected mailbox for messages matching one or more criteria.
+The return value is a string list of the UIDs of messages that match our
+search::
+
+    >>> conn.search(None, '(FROM "IPIP")')
+      18:25.41 > FNHG5 SEARCH (FROM "IPIP")
+      18:25.54 < * SEARCH 1 2
+      18:25.54 < FNHG5 OK Search completed.
+    ('OK', ['1 2'])
+    >>>
+
+IMAP in Python
+--------------
+
+Once we've found a message we want to look at, we can use the ``fetch``
+command to read it from the server. IMAP allows fetching each part of
+a message independently::
+
+    >>> conn.fetch('2', '(BODY[HEADER])')
+    ...
+    >>> conn.fetch('2', '(BODY[TEXT])')
+    ...
+    >>> conn.fetch('2', '(FLAGS)')
+
+IMAP in Python
+--------------
+
+It is even possible to download an entire message in raw format, and load that
+into a python email message object::
+
+    >>> import email
+    >>> typ, data = conn.fetch('2', '(RFC822)')
+      28:08.40 > FNHG8 FETCH 2 (RFC822)
+      ...
+    >>> for part in data:
+    ...   if isinstance(part, tuple):
+    ...     msg = email.message_from_string(part[1])
+    ... 
+    >>> 
+
+IMAP in Python
+--------------
+
+Once we have that, we can play with the resulting email object::
+
+    >>> msg['to']
+    'demo@crisewing.com'
+    >>> print msg.get_payload()
+    This is an email message
+
+IMAP in Python
+--------------
+
+.. class:: big-centered
+
+Neat, huh?
+
+What Have We Learned?
+---------------------
+
+.. class:: incremental
+
+* Protocols are just a set of rules for how to communicate
+
+* A given protocol has a set of commands it knows
+
+* If we properly format requests to a server, we can get answers
+
+* Python supports a number of these protocols
+
+    * So we don't have to remember how to format the commands ourselves
+
+    .. class:: incremental
+
+     * But in every case we've seen so far, we could do the same thing with a
+       socket and some strings
+
+HTTP in Python
+--------------
+
+.. class:: big-centered
+
+HTTP is no different
 

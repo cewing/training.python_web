@@ -113,7 +113,8 @@ References
 
 Skim these before class, you'll need them for lab and your assignment:
 
-* `ftplib <http://docs.python.org/release/2.6.5/library/ftplib.html>`_
+* `smtplib <http://docs.python.org/release/2.6.5/library/smtplib.html>`_
+* `imaplib <http://docs.python.org/release/2.6.5/library/imaplib.html>`_
 * `httplib <http://docs.python.org/release/2.6.5/library/httplib.html>`_
 * `urllib <http://docs.python.org/release/2.6.5/library/urllib.html>`_
 * `urllib2 <http://docs.python.org/release/2.6.5/library/urllib2.html>`_
@@ -138,6 +139,14 @@ how the specification has changed (and how it hasn't!).
   <http://www.w3.org/Protocols/rfc1945/rfc1945>`_
 * `Hypertext Transfer Protocol -- HTTP/1.1
   <http://www.w3.org/Protocols/rfc2616/rfc2616>`_
+
+If you have more curiosity about other Python Standard Library implementations
+of internet protocols, you should read Doug Hellmann's Python Module Of The
+Week on `Internet Protocols and Support`_. His entries on these libraries are
+clear and concise and have some great code examples.
+
+.. _Internet Protocols and Support: http://www.doughellmann.com/PyMOTW/internet_protocols.html
+
 
 Week 3 - APIs and Mashups
 -------------------------

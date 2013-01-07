@@ -802,8 +802,8 @@ will be located.
 
 * Start the server on your local machine, run the client and send some messages
 
-* Copy the server to your Blue Box VM. Run it and use the client to send it
-  some messages
+* If you complete that, then copy the server to your Blue Box VM. Run it
+  remotely and use the client to send it some messages
 
 * What do you have to change to make that work?
 
