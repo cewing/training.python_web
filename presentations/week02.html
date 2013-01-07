@@ -413,7 +413,7 @@ of security:</p>
 <p>Let's prepare a message to be sent to our server:</p>
 <pre class="literal-block">
 &gt;&gt;&gt; from_addr = &quot;YOUR NAME &lt;fill in this address&gt;&quot;
-&gt;&gt;&gt; to_addrs = &quot;testbox&#64;crisewing.com&quot;
+&gt;&gt;&gt; to_addrs = &quot;demo&#64;crisewing.com&quot;
 &gt;&gt;&gt; subject = &quot;this is a test&quot;
 &gt;&gt;&gt; message = &quot;a message from python smtplib&quot;
 </pre>
@@ -445,7 +445,7 @@ server object, after which we should close the connection:</p>
 <h1>Putting it all Together</h1>
 <pre class="literal-block">
 &gt;&gt;&gt; from_addr = &quot;YOUR NAME &lt;fill in this address&gt;&quot;
-&gt;&gt;&gt; to_addrs = &quot;testbox&#64;crisewing.com&quot;
+&gt;&gt;&gt; to_addrs = &quot;demo&#64;crisewing.com&quot;
 &gt;&gt;&gt; subject = &quot;this is a test&quot;
 &gt;&gt;&gt; message = &quot;a message from python smtplib&quot;
 &gt;&gt;&gt; template = &quot;From: %s\r\nTo: %s\r\nSubject: %s\r\n\r\n&quot;
@@ -480,6 +480,168 @@ server object, after which we should close the connection:</p>
 &gt;&gt;&gt; msg['Subject'] = &quot;Simple Test&quot;
 &gt;&gt;&gt; server.sendmail(from_addr, [to_addrs, ], msg.as_string())
 </pre>
+</div>
+<div class="slide" id="imap-in-python">
+<h1>IMAP in Python</h1>
+<p class="big-centered">Let's read that email we just sent</p>
+</div>
+<div class="slide" id="id24">
+<h1>IMAP in Python</h1>
+<p>Again, begin by importing the module from the Python Standard Library:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; import imaplib
+&gt;&gt;&gt; dir(imaplib)
+['AllowedVersions', 'CRLF', 'Commands',
+ 'Continuation', 'Debug', 'Flags', 'IMAP4',
+ 'IMAP4_PORT', 'IMAP4_SSL', 'IMAP4_SSL_PORT',
+ 'IMAP4_stream', 'Int2AP', 'InternalDate',
+ 'Internaldate2tuple', 'Literal', 'MapCRLF',
+ 'Mon2num', 'ParseFlags', 'Response_code',
+ 'Time2Internaldate', 'Untagged_response',
+ 'Untagged_status', '_Authenticator', ...]
+</pre>
+</div>
+<div class="slide" id="id25">
+<h1>IMAP in Python</h1>
+<p>We set up a client object.  WebFaction requires SSL for connecting to IMAP
+servers, so let's initialize an IMAP4_SSL client and authenticate:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; conn = imaplib.IMAP4_SSL('mail.webfaction.com')
+  57:04.83 imaplib version 2.58
+  57:04.83 new IMAP4 connection, tag=FNHG
+&gt;&gt;&gt; conn.login(username, password)
+('OK', ['Logged in.'])
+</pre>
+</div>
+<div class="slide" id="id26">
+<h1>IMAP in Python</h1>
+<p>Let's set up debugging here too, so that we can see the communication back and
+forth between client and server:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; conn.debug = 4 # &gt;3 prints all messages
+</pre>
+<p>We can start by listing the mailboxes we have on the server:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; conn.list()
+  00:41.91 &gt; FNHG3 LIST &quot;&quot; *
+  00:41.99 &lt; * LIST (\HasNoChildren) &quot;.&quot; &quot;INBOX&quot;
+  00:41.99 &lt; FNHG3 OK List completed.
+('OK', ['(\\HasNoChildren) &quot;.&quot; &quot;INBOX&quot;'])
+</pre>
+</div>
+<div class="slide" id="id27">
+<h1>IMAP in Python</h1>
+<p>We can find out about the mail on our server. We do this by querying for
+<cite>status</cite>. IMAP provides a few different status values, let's ask for them
+all:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; vals = '(MESSAGES RECENT UIDNEXT'
+&gt;&gt;&gt; vals += ' UIDVALIDITY UNSEEN)'
+&gt;&gt;&gt; conn.status('INBOX', vals)
+  12:03.91 &gt; FNHG4 STATUS INBOX (MESSAGES RECENT UIDNEXT UIDVALIDITY UNSEEN)
+  12:04.01 &lt; * STATUS &quot;INBOX&quot; (MESSAGES 2 RECENT 0 UIDNEXT 3 UIDVALIDITY 1357449499 UNSEEN 1)
+  12:04.01 &lt; FNHG4 OK Status completed.
+('OK', ['&quot;INBOX&quot; (MESSAGES 2 RECENT 0
+                  UIDNEXT 3 UIDVALIDITY 1357449499
+                  UNSEEN 1)'])
+</pre>
+</div>
+<div class="slide" id="id28">
+<h1>IMAP in Python</h1>
+<p>To interact with our email, we must select a mailbox from the list we received
+earlier:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; conn.select('INBOX')
+  00:00.47 &gt; FNHG2 SELECT INBOX
+  00:00.56 &lt; * FLAGS (\Answered \Flagged \Deleted \Seen \Draft)
+  00:00.56 &lt; * OK [PERMANENTFLAGS (\Answered \Flagged \Deleted \Seen \Draft \*)] Flags permitted.
+  00:00.56 &lt; * 2 EXISTS
+  00:00.57 &lt; * 0 RECENT
+  00:00.57 &lt; * OK [UNSEEN 2] First unseen.
+  00:00.57 &lt; * OK [UIDVALIDITY 1357449499] UIDs valid
+  00:00.57 &lt; * OK [UIDNEXT 3] Predicted next UID
+  00:00.57 &lt; FNHG2 OK [READ-WRITE] Select completed.
+('OK', ['2'])
+</pre>
+</div>
+<div class="slide" id="id29">
+<h1>IMAP in Python</h1>
+<p>We can search our selected mailbox for messages matching one or more criteria.
+The return value is a string list of the UIDs of messages that match our
+search:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; conn.search(None, '(FROM &quot;IPIP&quot;)')
+  18:25.41 &gt; FNHG5 SEARCH (FROM &quot;IPIP&quot;)
+  18:25.54 &lt; * SEARCH 1 2
+  18:25.54 &lt; FNHG5 OK Search completed.
+('OK', ['1 2'])
+&gt;&gt;&gt;
+</pre>
+</div>
+<div class="slide" id="id30">
+<h1>IMAP in Python</h1>
+<p>Once we've found a message we want to look at, we can use the <tt class="docutils literal">fetch</tt>
+command to read it from the server. IMAP allows fetching each part of
+a message independently:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; conn.fetch('2', '(BODY[HEADER])')
+...
+&gt;&gt;&gt; conn.fetch('2', '(BODY[TEXT])')
+...
+&gt;&gt;&gt; conn.fetch('2', '(FLAGS)')
+</pre>
+</div>
+<div class="slide" id="id31">
+<h1>IMAP in Python</h1>
+<p>It is even possible to download an entire message in raw format, and load that
+into a python email message object:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; import email
+&gt;&gt;&gt; typ, data = conn.fetch('2', '(RFC822)')
+  28:08.40 &gt; FNHG8 FETCH 2 (RFC822)
+  ...
+&gt;&gt;&gt; for part in data:
+...   if isinstance(part, tuple):
+...     msg = email.message_from_string(part[1])
+...
+&gt;&gt;&gt;
+</pre>
+</div>
+<div class="slide" id="id32">
+<h1>IMAP in Python</h1>
+<p>Once we have that, we can play with the resulting email object:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; msg['to']
+'demo&#64;crisewing.com'
+&gt;&gt;&gt; print msg.get_payload()
+This is an email message
+</pre>
+</div>
+<div class="slide" id="id33">
+<h1>IMAP in Python</h1>
+<p class="big-centered">Neat, huh?</p>
+</div>
+<div class="slide" id="what-have-we-learned">
+<h1>What Have We Learned?</h1>
+<ul class="incremental">
+<li><p class="first">Protocols are just a set of rules for how to communicate</p>
+</li>
+<li><p class="first">A given protocol has a set of commands it knows</p>
+</li>
+<li><p class="first">If we properly format requests to a server, we can get answers</p>
+</li>
+<li><p class="first">Python supports a number of these protocols</p>
+<blockquote>
+<ul class="simple">
+<li>So we don't have to remember how to format the commands ourselves</li>
+</ul>
+<ul class="incremental simple">
+<li>But in every case we've seen so far, we could do this with a socket and
+some strings</li>
+</ul>
+</blockquote>
+</li>
+</ul>
 </div>
 </div>
 </body>
