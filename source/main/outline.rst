@@ -49,6 +49,12 @@ References
 * `Python Library - smtplib
   <http://docs.python.org/release/2.6.5/library/smtplib.html>`_
 
+For our in-class lab and our homework, you'll be forking a github repository
+and making pull requests.  You can read up on how this is accomplished here:
+
+* `Fork a Repo <http://help.github.com/articles/fork-a-repo>`_
+* `Using Pull Requests <http://help.github.com/articles/using-pull-requests>`_
+
 Further Reading
 ***************
 
@@ -62,9 +68,9 @@ Further Reading
 Bonus
 *****
 
-`ZeroMQ Guide, Chapter 1 <http://zguide.zeromq.org/chapter:1>`_: ZeroMQ is a
-modern, advanced implementation of the socket concept. Read this to find out
-what sockets can get up to these days.
+`ZeroMQ Guide, Chapter 1 <http://zguide.zeromq.org/page:all#Chapter-Basics>`_:
+ZeroMQ is a modern, advanced implementation of the socket concept. Read this
+to find out what sockets can get up to these days.
 
 Assignment
 **********

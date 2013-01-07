@@ -554,7 +554,6 @@ On the Internet
 ::
 
     >>> get_address_info('www.google.com', 'http')
-    >>> get_address_info('www.google.com', 'http')
     family:  AF_INET
     type:  SOCK_STREAM
     protocol:  IPPROTO_TCP
@@ -696,6 +695,8 @@ What about the other half of the equation?
 Construct a Socket
 ------------------
 
+For the moment, stop typing this into your interpreter.
+
 Again, we begin by constructing a socket. Since we are actually the server
 this time, we get to choose family, type and protocol::
 
@@ -713,7 +714,7 @@ Bind the Socket
 Our server socket needs to be bound to an address. This is the IP Address and
 Port to which clients must connect::
 
-    >>> address = ('127.0.0.1', '50000')
+    >>> address = ('127.0.0.1', 50000)
     >>> server_socket.bind(address)
 
 Listen for Connections
@@ -735,9 +736,10 @@ Once our socket is created, we use it to listen for attempted connections::
 Accept Incoming Messages
 ------------------------
 
-When a socket is listening, it can accept incoming messages::
+When a socket is listening, it can receive incoming messages::
 
     >>> connection, client_address = server_socket.accept()
+    ... # note that nothing happens here until a client sends something
     >>> connection.recv(16)
 
 .. class:: incremental
@@ -751,7 +753,7 @@ When a socket is listening, it can accept incoming messages::
 * ``backlog`` represents the maximum number of ``connection`` sockets that a
   server can spin off
 
-* close a ``connection`` socket to accept a new connection one the max is
+* close a ``connection`` socket to accept a new connection once the max is
   reached
 
 Send a Reply
@@ -770,6 +772,17 @@ Once a transaction between the client and server is complete, the
 
     >>> connection.close()
 
+Putting it all together
+-----------------------
+
+Open a second terminal next to your first, and let's try out the full
+connection:
+
+.. image:: img/socket_interaction.png
+    :align: center
+    :width: 100%
+
+
 Lab Time
 --------
 
@@ -780,9 +793,11 @@ need the samples:
 
 * visit the class repository (http://github.com/cewing/training.python_web)
 
-* create a fork of the repository in your own git account
+* `create a fork`_ of the repository in your own git account
 
 * clone your fork to your local machine
+
+.. _create a fork: http://help.github.com/articles/fork-a-repo
 
 Lab Time
 --------
@@ -821,7 +836,7 @@ Submitting the Assignment
   ``assignments/week01/athome/`` directory of your fork of the class
   repository.
 
-* When you are satisfied with your code, make a **pull request**
+* When you are satisfied with your code, `make a pull request`_
 
 * I should be able to run the server and client scripts on my local machine
   and get results.
@@ -830,3 +845,5 @@ Submitting the Assignment
   your client script from my local machine and get the expected reply.
 
 * Due by Sunday morning if you want me to review it :)
+
+.. _make a pull request: http://help.github.com/articles/using-pull-requests
