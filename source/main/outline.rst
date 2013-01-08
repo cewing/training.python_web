@@ -153,6 +153,14 @@ clear and concise and have some great code examples.
 
 .. _Internet Protocols and Support: http://www.doughellmann.com/PyMOTW/internet_protocols.html
 
+Assignment
+**********
+
+You can read the assignment at 
+
+http://github.com/cewing/training.python_web/blob/master/assignments/week02/athome/assignment.txt
+
+Please complete the assignment by noon on Sunday, January 13, 2012.
 
 Week 3 - APIs and Mashups
 -------------------------
