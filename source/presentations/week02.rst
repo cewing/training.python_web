@@ -40,11 +40,11 @@ image exerpted from: http://xkcd.com/802/
 What is a Protocol?
 -------------------
 
-.. class:: incremental big-centered
+.. class:: incremental center
 
 a set of rules or conventions
 
-.. class:: incremental big-centered
+.. class:: incremental center
 
 governing communications
 
@@ -69,7 +69,7 @@ Protocols IRL
 
 .. image:: img/icup.png
     :align: center
-    :width: 60%
+    :width: 58%
 
 .. class:: image-credit
 
@@ -84,7 +84,7 @@ Digital life has lots of rules too:
 
 * how to identify yourself
 
-* how to find a partner
+* how to find a conversation partner
 
 * how to ask for information
 
