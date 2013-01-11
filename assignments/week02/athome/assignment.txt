@@ -1,0 +1,15 @@
+Complete your HTTP Web Server. Accomplish as many of the following goals as
+you are able:
+
+* If you were unable to complete the first five steps in class, circle back
+  and finish them
+
+* Complete the 'Bonus point' parts from the first five steps, if you haven't
+  already done so
+
+* Format your directory listing as HTML
+
+* In the HTML directory listing, make the files clickable links
+
+* Add a new, dynamic endpoint. If the URI /time-page is requested, return an
+  HTML page with the current time displayed.
