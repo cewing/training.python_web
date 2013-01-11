@@ -208,7 +208,7 @@ Python Standard Libraries:
   <http://docs.python.org/release/2.6.5/library/docxmlrpcserver.html>`_
 * `json <http://docs.python.org/release/2.6.5/library/json.html>`_
 
-External Eibraries:
+External Libraries:
 +++++++++++++++++++
 
 * BeautifulSoup_ - "You didn't write that awful page. You're just trying to
