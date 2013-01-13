@@ -59,8 +59,8 @@ choose the right one for our message</p>
 </div>
 <div class="slide" id="what-is-a-protocol">
 <h1>What is a Protocol?</h1>
-<p class="incremental big-centered">a set of rules or conventions</p>
-<p class="incremental big-centered">governing communications</p>
+<p class="incremental center">a set of rules or conventions</p>
+<p class="incremental center">governing communications</p>
 </div>
 <div class="slide" id="protocols-irl">
 <h1>Protocols IRL</h1>
@@ -74,7 +74,7 @@ choose the right one for our message</p>
 </div>
 <div class="slide" id="id1">
 <h1>Protocols IRL</h1>
-<img alt="img/icup.png" class="align-center" src="img/icup.png" style="width: 60%;" />
+<img alt="img/icup.png" class="align-center" src="img/icup.png" style="width: 58%;" />
 <p class="image-credit"><a class="reference external" href="http://blog.xkcd.com/2009/09/02/urinal-protocol-vulnerability/">http://blog.xkcd.com/2009/09/02/urinal-protocol-vulnerability/</a></p>
 </div>
 <div class="slide" id="protocols-in-computers">
@@ -82,7 +82,7 @@ choose the right one for our message</p>
 <p>Digital life has lots of rules too:</p>
 <ul class="incremental simple">
 <li>how to identify yourself</li>
-<li>how to find a partner</li>
+<li>how to find a conversation partner</li>
 <li>how to ask for information</li>
 <li>how to provide answers</li>
 <li>how to say goodbye</li>
@@ -643,9 +643,356 @@ socket and some strings</li>
 </li>
 </ul>
 </div>
-<div class="slide" id="http-in-python">
-<h1>HTTP in Python</h1>
+<div class="slide" id="http">
+<h1>HTTP</h1>
 <p class="big-centered">HTTP is no different</p>
+</div>
+<div class="slide" id="id34">
+<h1>HTTP</h1>
+<p>We are concerned with two things in HTTP:</p>
+<ul class="incremental simple">
+<li>Requests (Asking for information)</li>
+<li>Responses (Providing answers)</li>
+</ul>
+</div>
+<div class="slide" id="http-req-resp-format">
+<h1>HTTP Req/Resp Format</h1>
+<p>Both share a common basic format:</p>
+<ul class="incremental simple">
+<li>Line separators are &lt;CRLF&gt;</li>
+<li>An required initial line</li>
+<li>A (mostly) optional set of headers, one per line</li>
+<li>A blank line</li>
+<li>An optional body</li>
+</ul>
+<p class="incremental">&quot;Be strict in what you send and tolerant in what you receive&quot;</p>
+</div>
+<div class="slide" id="http-requests">
+<h1>HTTP Requests</h1>
+<p>In HTTP 1.0, the only required line in an HTTP request is this:</p>
+<pre class="literal-block">
+GET /path/to/index.html HTTP/1.0
+&lt;CRLF&gt;
+</pre>
+<p class="incremental">As virtual hosting grew more common, that was not enough, so HTTP 1.1 adds a
+single required <em>header</em>, <strong>Host</strong>:</p>
+<pre class="incremental literal-block">
+GET /path/to/index.html HTTP/1.1
+Host: www.mysite1.com:80
+&lt;CRLF&gt;
+</pre>
+</div>
+<div class="slide" id="http-verbs">
+<h1>HTTP Verbs</h1>
+<p><strong>GET</strong> <tt class="docutils literal">/path/to/index.html HTTP/1.1</tt></p>
+<ul class="incremental">
+<li><p class="first">Every HTTP request must start with a <em>verb</em></p>
+</li>
+<li><p class="first">There are four main HTTP verbs:</p>
+<blockquote>
+<ul class="incremental simple">
+<li>GET</li>
+<li>POST</li>
+<li>PUT</li>
+<li>DELETE</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<ul class="incremental simple">
+<li>There are others, notably HEAD, but you won't see them too much</li>
+</ul>
+</div>
+<div class="slide" id="id35">
+<h1>HTTP Verbs</h1>
+<p>These four verbs are mapped to the four basic steps of a <em>CRUD</em> content management
+cycle:</p>
+<ul class="incremental simple">
+<li>POST = Create</li>
+<li>GET = Read</li>
+<li>PUT = Update</li>
+<li>DELETE = Delete</li>
+</ul>
+</div>
+<div class="slide" id="verbs-safe-unsafe">
+<h1>Verbs: Safe &lt;--&gt; Unsafe</h1>
+<p>HTTP verbs can be categorized as <strong>safe</strong> or <strong>unsafe</strong>, based on whether they
+might change something on the server:</p>
+<ul class="incremental">
+<li><dl class="first docutils">
+<dt>Safe HTTP Verbs</dt>
+<dd><ul class="first last simple">
+<li>GET</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Unsafe HTTP Verbs</dt>
+<dd><ul class="first last simple">
+<li>POST</li>
+<li>PUT</li>
+<li>DELETE</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p class="incremental">This is a <em>normative</em> distinction, which is to say <strong>be careful</strong></p>
+</div>
+<div class="slide" id="verbs-idempoent">
+<h1>Verbs: Idempoent &lt;--&gt; ???</h1>
+<p>HTTP verbs can be categorized as <strong>idempotent</strong>, based on whether a given
+request will always have the same result:</p>
+<ul class="incremental">
+<li><dl class="first docutils">
+<dt>Idempotent HTTP Verbs</dt>
+<dd><ul class="first last simple">
+<li>GET</li>
+<li>PUT</li>
+<li>DELETE</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Non-Idempotent HTTP Verbs</dt>
+<dd><ul class="first last simple">
+<li>POST</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p class="incremental">Again, <em>normative</em>. The developer is responsible for ensuring that it is true.</p>
+</div>
+<div class="slide" id="http-requests-uri">
+<h1>HTTP Requests: URI</h1>
+<p><tt class="docutils literal">GET</tt> <strong>/path/to/index.html</strong> <tt class="docutils literal">HTTP/1.1</tt></p>
+<ul class="incremental">
+<li><p class="first">Every HTTP request must include a <strong>URI</strong> used to determine the <strong>resource</strong> to
+be returned</p>
+</li>
+<li><p class="first">URI??
+<a class="reference external" href="http://stackoverflow.com/questions/176264/whats-the-difference-between-a-uri-and-a-url/1984225#1984225">http://stackoverflow.com/questions/176264/whats-the-difference-between-a-uri-and-a-url/1984225#1984225</a></p>
+</li>
+<li><p class="first">Resource?  Files (html, img, .js, .css), but also:</p>
+<blockquote>
+<ul class="incremental simple">
+<li>Dynamic scripts</li>
+<li>Raw data</li>
+<li>API endpoints</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</div>
+<div class="slide" id="http-responses">
+<h1>HTTP Responses</h1>
+<p>In both HTTP 1.0 and 1.1, a proper response consists of an intial line,
+followed by optional headers, a single blank line, and then optionally a
+response body:</p>
+<pre class="literal-block">
+HTTP/1.1 200 OK
+Content-Type: text/plain
+&lt;CRLF&gt;
+this is a pretty minimal response
+</pre>
+</div>
+<div class="slide" id="http-response-codes">
+<h1>HTTP Response Codes</h1>
+<p><tt class="docutils literal">HTTP/1.1</tt> <strong>200 OK</strong></p>
+<p>All HTTP responses must include a <strong>response code</strong> indicating the outcome of
+the request.</p>
+<ul class="incremental simple">
+<li>1xx (HTTP 1.1 only) - Informational message</li>
+<li>2xx - Success of some kind</li>
+<li>3xx - Redirection of some kind</li>
+<li>4xx - Client Error of some kind</li>
+<li>5xx - Server Error of some kind</li>
+</ul>
+<p class="incremental">The text bit makes the code more human-readable</p>
+</div>
+<div class="slide" id="common-response-codes">
+<h1>Common Response Codes</h1>
+<p>There are certain HTTP response codes you are likely to see (and use) most
+often:</p>
+<ul class="incremental simple">
+<li><tt class="docutils literal">200 OK</tt> - Everything is good</li>
+<li><tt class="docutils literal">301 Moved Permanently</tt> - You should update your link</li>
+<li><tt class="docutils literal">304 Not Modified</tt> - You should load this from cache</li>
+<li><tt class="docutils literal">404 Not Found</tt> - You've asked for something that doesn't exist</li>
+<li><tt class="docutils literal">500 Internal Server Error</tt> - Something bad happened</li>
+</ul>
+<p class="incremental">Do not be afraid to use other, less common codes in building good RESTful
+apps. There are a lot of them for a reason. See
+<a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html">http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html</a></p>
+</div>
+<div class="slide" id="http-headers">
+<h1>HTTP Headers</h1>
+<p>Both requests and responses can contain <strong>headers</strong> of the form <tt class="docutils literal">Name: Value</tt></p>
+<ul class="incremental simple">
+<li>HTTP 1.0 has 16, 1.1 has 46</li>
+<li>Any number of spaces or tabs may separate the <em>name</em> from the <em>value</em></li>
+<li>If a header line starts with spaces or tabs, it is considered part of the
+value for the previous header</li>
+<li>Header <em>names</em> are <strong>not</strong> case-sensitive, but <em>values</em> may be</li>
+</ul>
+<p class="incremental">read more about HTTP headers: <a class="reference external" href="http://www.cs.tut.fi/~jkorpela/http.html">http://www.cs.tut.fi/~jkorpela/http.html</a></p>
+</div>
+<div class="slide" id="content-type-header">
+<h1>Content-Type Header</h1>
+<p>A very common header used in HTTP responses is <tt class="docutils literal"><span class="pre">Content-Type</span></tt>. It tells the
+client what to expect.</p>
+<ul class="incremental simple">
+<li>uses <strong>mime-type</strong> (Multi-purpose Internet Mail Extensions)</li>
+<li>foo.jpeg - <tt class="docutils literal"><span class="pre">Content-Type:</span> image/jpeg</tt></li>
+<li>foo.png - <tt class="docutils literal"><span class="pre">Content-Type:</span> image/png</tt></li>
+<li>bar.txt - <tt class="docutils literal"><span class="pre">Content-Type:</span> text/plain</tt></li>
+<li>baz.html - <tt class="docutils literal"><span class="pre">Content-Type:</span> text/html</tt></li>
+</ul>
+<p class="incremental">There are <em>many</em> mime-type identifiers:
+<a class="reference external" href="http://www.webmaster-toolkit.com/mime-types.shtml">http://www.webmaster-toolkit.com/mime-types.shtml</a></p>
+</div>
+<div class="slide" id="http-debugging">
+<h1>HTTP Debugging</h1>
+<p>When working on applications, it's nice to be able to see all this going back
+and forth.  There are several apps that can help with this:</p>
+<ul class="simple">
+<li>windows: <a class="reference external" href="http://www.fiddler2.com/fiddler2/">http://www.fiddler2.com/fiddler2/</a></li>
+<li>firefox: <a class="reference external" href="http://getfirebug.com/">http://getfirebug.com/</a></li>
+<li>safari: built in</li>
+<li>chrome: built in</li>
+<li>IE (7.0+): built in</li>
+</ul>
+<p class="incremental">These tools can show you both request and response, headers and all. Very
+useful.</p>
+</div>
+<div class="slide" id="lab-time">
+<h1>Lab Time</h1>
+<p>For this lab, we'll be building a basic HTTP server.</p>
+<ul>
+<li><p class="first">update your fork of the class repository by pulling from the <tt class="docutils literal">upstream</tt> remote</p>
+</li>
+<li><p class="first">find the folder <tt class="docutils literal">assignments/week02/lab</tt> and open <tt class="docutils literal">echo_server.py</tt></p>
+<blockquote>
+<ul class="simple">
+<li>this is a canonical example of what we built last week</li>
+</ul>
+</blockquote>
+</li>
+<li><p class="first">We'll move in steps to turn this into an HTTP server.</p>
+</li>
+</ul>
+</div>
+<div class="slide" id="lab-time-step-1">
+<h1>Lab Time - Step 1</h1>
+<p>First, echo an HTTP request</p>
+<ul class="simple">
+<li>Run <cite>echo_server.py</cite> in a terminal</li>
+<li>Point your browser at <tt class="docutils literal"><span class="pre">http://localhost:5000</span></tt>, what do you get back?</li>
+<li>Save the script as <tt class="docutils literal">http_serve1.py</tt>, then edit it to make it return the
+HTML you find in <tt class="docutils literal">tiny_html.html</tt></li>
+<li>What does this look like?</li>
+</ul>
+</div>
+<div class="slide" id="lab-time-step-2">
+<h1>Lab Time - Step 2</h1>
+<p>Return a proper HTTP response:</p>
+<ul class="simple">
+<li>Save the file as <tt class="docutils literal">http_serve2.py</tt></li>
+<li>Add a new method that takes a string 'body' and returns a proper <tt class="docutils literal">200 OK</tt>
+HTTP response.  Call the method <tt class="docutils literal">ok_response</tt>.</li>
+<li>Bonus Points: add a GMT <tt class="docutils literal">Date:</tt> header in the proper format (RFC-1123).
+<em>hint: see email.utils.formatdate in the python standard library</em></li>
+<li>How does the returned HTML look now?</li>
+</ul>
+</div>
+<div class="slide" id="lab-time-step-3">
+<h1>Lab Time - Step 3</h1>
+<p>Parse an incoming request to get the URI:</p>
+<ul class="simple">
+<li>Save the file as <tt class="docutils literal">http_serve3.py</tt></li>
+<li>Add a new method called <tt class="docutils literal">parse_request</tt> that takes a request and returns a
+URI. Have the server print the URI to the console (rudimentary logging).</li>
+<li>Make sure that the method validates that the incoming request is HTTP and
+that the verb is <tt class="docutils literal">GET</tt>. If either is not true, it should raise a
+ValueError</li>
+<li>Bonus points: add an <tt class="docutils literal">client_error_response</tt> method that returns an
+appropriate HTTP code if the validation from <tt class="docutils literal">parse_request</tt> fails. What
+is the right response code?</li>
+</ul>
+</div>
+<div class="slide" id="lab-time-step-4">
+<h1>Lab Time - Step 4</h1>
+<p>Serve directory listings:</p>
+<ul>
+<li><p class="first">Save the file as <tt class="docutils literal">http_serve4.py</tt> * Add a method called <tt class="docutils literal">resolve_uri</tt>
+which takes as an argument the URI returned from our previous step and
+returns an HTTP response. The method should start from a given directory
+('web') and check the URI:</p>
+<blockquote>
+<ul class="simple">
+<li>If the URI names a directory, return the content listing as a <tt class="docutils literal">200 OK</tt></li>
+<li>If the URI names a file, raise a NotImplementedError (coming soon)</li>
+<li>If the URI does not exist, raise a ValueError</li>
+</ul>
+</blockquote>
+</li>
+<li><p class="first">Bonus points: add a <tt class="docutils literal">notfound_response</tt> method that returns a proper <tt class="docutils literal">404
+Not Found</tt> response to the client. Use it when appropriate. (where is
+that?)</p>
+</li>
+</ul>
+</div>
+<div class="slide" id="lab-time-step-5">
+<h1>Lab Time - Step 5</h1>
+<p>Serve different types of files:</p>
+<ul class="simple">
+<li>Save the file as <tt class="docutils literal">http_serve5.py</tt></li>
+<li>Update the <tt class="docutils literal">resolve_uri</tt> method. If the URI names a file, return it as the
+body of a <tt class="docutils literal">200 OK</tt> response.</li>
+<li>You'll need a way to return the approprate <tt class="docutils literal"><span class="pre">Content-Type:</span></tt> header.</li>
+<li>Support at least <tt class="docutils literal">.html</tt>, <tt class="docutils literal">.txt</tt>, <tt class="docutils literal">.jpeg</tt>, and <tt class="docutils literal">.png</tt> files</li>
+<li>Try it out.</li>
+</ul>
+<p class="incremental">You've now got a reasonably functional HTTP web server.  Congratulations!</p>
+</div>
+<div class="slide" id="assignment">
+<h1>Assignment</h1>
+<p>Using what you've learned this week, take your new webserver to the next
+level. Accomplish as many of the following as you can:</p>
+<ul class="simple">
+<li>If you were unable to complete the first five steps in class, circle back
+and finish them</li>
+<li>Complete the 'Bonus point' parts from the first five steps, if you haven't
+already done so</li>
+<li>Format your directory listing as HTML</li>
+<li>In the HTML directory listing, make the files clickable links</li>
+<li>Add a new, dynamic endpoint. If the URI /time-page is requested, return an
+HTML page with the current time displayed.</li>
+</ul>
+</div>
+<div class="slide" id="submitting-the-assignment">
+<h1>Submitting the Assignment</h1>
+<ul class="simple">
+<li>Copy your final html server into the <tt class="docutils literal">assignments/week02/athome</tt>
+directory in your fork of the repository.</li>
+<li>Copy the <tt class="docutils literal">assignments/week02/lab/web</tt> directory into
+<tt class="docutils literal">assignments/week02/at_home</tt></li>
+<li>Make a new plain-text file at the top level of the web directory. Tell me
+what you did in it.</li>
+<li>Make a new pull request for the week02 assignments.</li>
+<li>I should be able to run the server on my local machine, open your plain text
+file in my browser, and evaluate your work from there.</li>
+<li>For bonus points, set the server running on your VM, with the <tt class="docutils literal">web</tt> home
+directory. I should be able to load <a class="reference external" href="http://yourserver.bluboxgrid.com:50000">http://yourserver.bluboxgrid.com:50000</a>
+in my web browser and evaluate your results.</li>
+</ul>
+</div>
+<div class="slide" id="lightning-talks">
+<h1>Lightning Talks</h1>
+<p class="big-centered">Ready, Steady, GO!</p>
 </div>
 </div>
 </body>
