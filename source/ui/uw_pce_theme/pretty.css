@@ -18,6 +18,8 @@ kbd {font-weight: bold; font-size: 1em;}
 sup {font-size: smaller; line-height: 1px;}
 
 .slide pre {padding: 0; margin-left: 0; margin-right: 0; font-size: 80%;}
+.slide pre.small {font-size: 65%}
+.slide pre.tiny {font-size: 50%}
 .slide ul li {font-size: 90%;}
 .slide ul ul li {list-style: square;}
 .slide img.leader {display: block; margin: 0 auto;}

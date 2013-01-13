@@ -174,11 +174,17 @@ at data the original author may not have considered valuable enough to present
 as consumable.
 
 We'll explore the use of tools like BeautifulSoup to help make sense of the
-truly horrible HTML that can be found in the wild. We will also look at "Web
+truly horrible HTML that is to be found in the wild. We will also look at "Web
 Services" formats like XMLRPC and REST so we can understand the ways in which
-we can find data, or present it ourselves.  Finally, we'll look at some "Web
+we can find data, or present it ourselves. Finally, we'll look at some "Web
 Service APIs" to help understand how to read them, and how to use them to get
 at the data they provide.
+
+In our class lab sessions we will practice scraping a website and using a
+documented web service API.
+
+For our class assignment, students will choose two sources of information
+online and combine them in a mashup.
 
 Reading
 *******

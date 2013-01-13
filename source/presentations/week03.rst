@@ -5,7 +5,7 @@ Internet Programming with Python
     :align: left
     :width: 50%
 
-Week 1: Scraping, APIs and Mashups
+Week 3: Scraping, APIs and Mashups
 
 .. class:: intro-blurb
 
@@ -322,8 +322,12 @@ BeautifulSoup is built to use the Python HTMLParser.
 * Batteries Included.  It's already there
 * It kinda sucks, especially before Python 2.7.3
 
+.. class:: incremental
+
 BeautifulSoup also supports using other parsers. Let's install one. There are
 two decent choices: ``lxml`` and ``html5lib``.
+
+.. class:: incremental
 
 ``lxml`` is better, but harder to install.  Let's use ``html5lib`` today.
 
@@ -351,19 +355,327 @@ it::
 
 And that's it.  The document is now parsed and ready to scrape.
 
+Scraping HTML
+-------------
+
+The next step is to figure out what it is from the HTML page that you want to
+scrape.
+
+.. class:: incremental
+
+**Goal**: Sort the blog post titles and URLs into two lists, one for Django
+and one for PostgreSQL
+
+.. class:: incremental
+
+What tools do we have to allow us to look at the source and find our targets?
+
+HTML Inspection Demo
+--------------------
+
+We can use the developer tools that come in Safari, Chrome and IE, or use the 
+Firebug extension to FireFox.
+
+.. class:: incremental
+
+So, we need to find ``<div>`` elements with the class ``feedEntry``.
+
+Searching Your Soup
+-------------------
+
+BeautifulSoup has parsed our document
+
+.. class:: incremental
+
+* A parsed document acts like a ``tag``
+* A ``tag`` can be searched using the ``find_all`` method
+* The ``find_all`` method searches the descendents of the tag on which it is
+  called.
+* The ``find_all`` method takes arguments which act as *filters* on the search
+  results
+
+.. class:: incremental
+
+| like so: 
+| 
+| ``tag.find_all(name, attrs, recursive, text, limit, **kwargs)``
+
+Searching by CSS Class
+----------------------
+
+The items we are looking for are ``div`` tags which have the CSS class
+``feedEntry``::
+
+    >>> entries = parsed.find_all('div', class_='feedEntry')
+    >>> len(entries)
+    106
+
+.. class:: incremental
+
+| If you pass a simple string as the sole value to the ``attrs`` argument, that
+  string is treated as a CSS class: 
+| 
+| ``parsed.find_all('div', 'feedEntry')``
+
+Find a Single Match
+-------------------
+
+What bits of an entry have the details we need to meet our goals?
+
+.. class:: incremental
+
+* A ``tag`` also has a ``find`` method which returns only the **first** match
+* ``tag.find(name, attrs, recursive, text, **kwargs)``
+* In each entry, the first ``<a>`` has title and URL
+* In each entry, the first ``<p>`` with the class ``discreet`` has the source
+  of the feed (Planet Django or Planet PostgreSQL)
+
+Testing it out
+--------------
+
+::
+
+    >>> for e in entries:
+    ...     anchor = e.find('a')
+    ...     paragraph = e.find('p', 'discreet')
+    ...     title = anchor.text.strip()
+    ...     url = anchor.attrs['href']
+    ...     print title
+    ...     print url
+    ...     try:
+    ...         print paragraph.text.strip()
+    ...     except AttributeError:
+    ...         print 'Uncategorized'
+    ...     print
+    ...     
+    >>>
+
+Lab 1 - 20 mins
+---------------
+
+* Write a function, take a BeautifulSoup object as the sole argument
+* find all the 'feedEntry' divs in the page
+* Get the title and url of the entry and put them in a dictionary
+* Categorize an entry as ``pgsql``, ``django`` or ``other``
+* It should return three lists of categorized entries
+
+| Call it like so:
+| 
+|   ``pgsql, django, other = my_function(parsed_page)``
+
+.. class:: incremental center
+
+**GO**
+
+Another Approach
+----------------
+
+Scraping web pages is inherently brittle
+
+.. class:: incremental
+
+The owner of the website updates their layout, your code breaks
+
+.. class:: incremental
+
+But there is another way to get information from the web in a more normalized
+fashion
+
+.. class:: incremental center
+
+**Web Services**
+
+Web Services
+------------
+
+"a software system designed to support interoperable machine-to-machine
+interaction over a network" - W3C
+
+.. class:: incremental
+
+* provides a defined set of calls
+* returns structured data
+
+Classifying Web Services
+------------------------
+
+Web services can be classified in a couple of ways: 
+
+.. class:: incremental
+
+* By how they are implemented (XML-RPC, SOAP, REST)
+
+* By what they return (XML, JSON)
+
+Early Web Services
+------------------
+
+RSS is one of the earliest forms of Web Services
+
+* First known as ``RDF Site Summary``
+* Became ``Really Simple Syndication``
+* More at http://www.rss-specification.com/rss-specifications.htm
+
+.. class:: incremental
+
+A single web-based *endpoint* provides a dynamically updated listing of
+content
+
+.. class:: incremental
+
+Implemented in pure HTTP.  Returns XML 
+
+.. class:: incremental
+
+**Atom** is a competing, but similar standard
+
+RSS Document
+------------
+
+.. class:: tiny
+
+::
+
+    <?xml version="1.0" encoding="UTF-8" ?>
+    <rss version="2.0">
+    <channel>
+      <title>RSS Title</title>
+      <description>This is an example of an RSS feed</description>
+      <link>http://www.someexamplerssdomain.com/main.html</link>
+      <lastBuildDate>Mon, 06 Sep 2010 00:01:00 +0000 </lastBuildDate>
+      <pubDate>Mon, 06 Sep 2009 16:45:00 +0000 </pubDate>
+      <ttl>1800</ttl>
+
+      <item>
+        <title>Example entry</title>
+        <description>Here is some text containing an interesting description.</description>
+        <link>http://www.wikipedia.org/</link>
+        <guid>unique string per item</guid>
+        <pubDate>Mon, 06 Sep 2009 16:45:00 +0000 </pubDate>
+      </item>
+      ...
+    </channel>
+    </rss>
+
+XML-RPC
+-------
+
+If we can provide a single endpoint that returns a single data set (RSS), can
+we also allow *calling procedures* at an endpoint?
+
+.. class:: incremental
+
+We can!  Enter XML-RPC
+
+.. class:: incremental
+
+* Provides a set of defined procedures which can take arguments
+* Calls are made via HTTP GET, by passing an XML document
+* Returns from a call are sent to the client in XML
+
+.. class:: incremental
+
+Easier to demonstrate than explain
+
+XML-RPC Example - Server
+------------------------
+
+xmlrpc_server.py:
+
+.. class:: small
+
+::
+
+    from SimpleXMLRPCServer import SimpleXMLRPCServer
+    
+    server = SimpleXMLRPCServer(('localhost', 50000))
+    
+    def multiply(a, b):
+        return a * b
+    server.register_function(multiply)
+    
+    try:
+        print "Use Ctrl-C to Exit"
+        server.serve_forever()
+    except KeyboardInterrupt:
+        print "Exiting"
+
+XML-RPC Example - Client
+------------------------
+
+We can run a client from a terminal. First, open one terminal and run the
+xmlrpc_server.py script:
+
+    $ python xmlrcp_server.py
+
+Then, open another terminal and start up python:
+
+.. class:: small
+
+::
+
+    >>> import xmlrpclib
+    >>> proxy = xmlrpclib.ServerProxy('http://localhost:50000', verbose=True)
+    >>> proxy.multiply(3, 24)
+    ...
+    72
+
+XML-RPC Request
+---------------
+
+``verbose=True``, allows us to see the request we sent:
+
+.. class:: tiny
+
+::
+
+    POST /RPC2 HTTP/1.0
+    Host: localhost:50000
+    User-Agent: xmlrpclib.py/1.0.1 (by www.pythonware.com)
+    Content-Type: text/xml
+    Content-Length: 192
+    
+    <?xml version='1.0'?>
+    <methodCall>
+     <methodName>multiply</methodName>
+     <params>
+      <param>
+       <value><int>3</int></value>
+      </param>
+      <param>
+       <value><int>24</int></value>
+      </param>
+     </params>
+    </methodCall>
+
+XML-RPC Response
+----------------
+
+and we can see the response, too:
+
+.. class:: tiny
+
+::
+
+    HTTP/1.0 200 OK
+    Server: BaseHTTP/0.3 Python/2.6.1
+    Date: Sun, 13 Jan 2013 03:38:00 GMT
+    Content-type: text/xml
+    Content-length: 121
+
+    <?xml version='1.0'?>
+    <methodResponse>
+     <params>
+      <param>
+       <value><int>72</int></value>
+      </param>
+     </params>
+    </methodResponse>
 
 
 scraps
 ------
 
-
-www.lyricsnmusic.com/api
-
-virtualenv
-
-scraping
-
-beautifulsoup/html5lib/[lxml (for the very brave)]
 
 web services
 
