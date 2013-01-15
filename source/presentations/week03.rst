@@ -623,7 +623,7 @@ Then, open another terminal and start up python:
 XML-RPC Request
 ---------------
 
-``verbose=True``, allows us to see the request we sent:
+``verbose=True`` allows us to see the request we sent:
 
 .. class:: tiny
 
@@ -673,28 +673,738 @@ and we can see the response, too:
     </methodResponse>
 
 
-scraps
-------
+More XML-RPC
+------------
+
+Register an entire Python class as a service, exposing class methods::
+
+    server.register_instance(MyClass())
+
+Keep an instance method private:
+
+.. class:: tiny
+
+::
+
+    class MyServiceClass(object):
+        ...
+        def public_method(self, arg1, arg2):
+            """this method is public"""
+            pass
+        
+        def _private_method(self):
+            """this method is private because it starts with '_'
+            """
+            pass
+
+XML-RPC Introspection
+---------------------
+
+First, implement required methods on your service class:
+
+.. class:: tiny
+
+::
+
+    from SimpleXMLRPCServer import list_public_methods
+    
+    class MyServiceClass(object):
+        ...
+        def _listMethods(self):
+            """custom logic for presenting method names to users
+            
+            list_public_methods is a convenience function from the Python 
+            library, but you can make your own logic if you wish.
+            """
+            return list_public_methods(self)
+        
+        def _methodHelp(self, method):
+            """provide help text for an individual method
+            """
+            f = getattr(self, method)
+            return f.__doc__
+
+XML-RPC Instrospection
+----------------------
+
+Then enable introspection via the server instance:
+
+.. class:: small
+
+::
+
+    server.register_introspection_functions()
+
+After this, a client proxy can call pre-defined methods to learn about what
+your service offers
+
+.. class:: small
+
+::
+
+    >>> for name in proxy.system.listMethods():
+    ...     help = proxy.system.methodHelp(name)
+    ...     print name
+    ...     print "\t%s" % help
+    ... 
+    public_method
+        this method is public
 
 
-web services
+Beyond XML-RPC
+--------------
 
-rss/atom feeds
+.. class:: incremental
 
-xml-rpc
+* XML-RPC allows introspection
+* XML-RPC forces you to introspect to get information
+* *Wouldn't it be nice to get that automatically?*
+* XML-RPC provides data types
+* XML-RPC provides only *certain* data types
+* *Wouldn't it be nice to have an extensible system for types?*
+* XML-RPC allows calling methods with parameters
+* XML-RPC only allows calling methods, nothing else
+* *wouldn't it be nice to have contextual data as well?*
 
-soap
+.. class:: incremental center
 
-rest
+**Enter SOAP: Simple Object Access Protocol**
 
-lab
+SOAP
+----
 
-scrape the latest news stories from reddit front page and sort titles by
-category. Omit NSFW stories if present
+SOAP extends XML-RPC in a couple of useful ways:
 
-assignment
+.. class:: incremental
 
-find two web services (or one webservice and a web page to scrape), combine
-the information you can get from them into a mashup.
+* It uses Web Services Description Language (WSDL) to provide meta-data about
+  an entire service in a machine-readable format (Automatic introspection)
 
-resource: http://www.programmableweb.com/
+* It establishes a method for extending available data types using XML
+  namespaces
+
+* It provides a wrapper around method calls called the **envelope**, which
+  allows the inclusion of a **header** with system meta-data that can be used
+  by the application
+
+SOAP in Python
+--------------
+
+There is no standard library module that supports SOAP directly.
+
+.. class:: incremental
+
+* The best-known and best-supported module available is **Suds**
+* The homepage is https://fedorahosted.org/suds/
+* It can be installed using ``easy_install`` or ``pip install``
+
+Install Suds
+------------
+
+* Quit your python interpreter if you have it running.
+* If you see (soupenv) at your command line prompt, cool.
+* If you do not, type ``source /path/to/soupenv/bin/activate``
+* Windows folks: ``> \path\to\soupenv\Scripts\activate``
+* Once activated: ``pip install suds``
+
+Creating a Suds Client
+----------------------
+
+Suds allows us to create a SOAP client object. SOAP uses WSDL to define a
+service. All we need to do to set this up in python is load the URL of the
+WSDL for the service we want to use:
+
+.. class:: small
+
+::
+
+    (soupenv)$ python
+    >>> from suds.client import Client
+    >>> geo_client = Client('https://geoservices.tamu.edu/Services/Geocode/WebService/GeocoderService_V03_01.asmx?wsdl')
+    >>> geo_client
+    <suds.client.Client object at 0x10041fc10>
+
+Peeking at the Service
+----------------------
+
+Suds allows us to visually scan the service. Simply print the client object to
+see what the service has to offer:
+
+.. class:: small
+
+::
+
+    >>> print geo_client
+
+    Suds ( https://fedorahosted.org/suds/ )  version: 0.4 GA  build: R699-20100913
+
+    Service ( GeocoderService_V03_01 ) tns="https://geoservices.tamu.edu/"
+       Prefixes (1)
+          ns0 = "https://geoservices.tamu.edu/"
+       Ports (2):
+          (GeocoderService_V03_01Soap)
+          Methods (4):
+             ...
+          Types (12):
+             ...
+
+Debugging Suds
+--------------
+
+Suds uses python logging to deal with debug information, so if you want to see
+what's going on under the hood, you configure it via the Python logging
+module::
+
+    >>> import logging
+    >>> logging.basicConfig(level=logging.INFO)
+    >>> logging.getLogger('suds.client').setLevel(logging.DEBUG)
+
+.. class:: incremental
+
+This will allow us to see the messages sent and received by our client.
+
+Client Options
+--------------
+
+SOAP Servers can provide more than one *service* and each *service* might have
+more than one *port*. Suds provides two ways to configure which *service* and
+*port* you wish to use.  
+
+Via subscription::
+
+    client.service['<service>']['<port>'].method(args)
+
+Or the way we will do it, via configuration::
+
+    geo_client.set_options(service='GeocoderService_V03_01', ↩
+                           port='GeocoderService_V03_01Soap')
+
+Providing Arguments
+-------------------
+
+Arguments to a method are set up as a dictionary.  Although some may not be 
+required according to api documentation, it is safest to provide them all:
+
+.. class:: small
+
+::
+
+    >>> apiKey = '<fill this in>'
+    >>> args = {'apiKey': apiKey, }
+    >>> args['streetAddress'] = '1325 4th Avenue'
+    >>> args['city'] = 'Seattle'
+    >>> args['state'] = 'WA'
+    >>> args['zip'] = '98101'
+    >>> args['version'] = 3.01
+    >>> args['shouldReturnReferenceGeometry'] = True
+    >>> args['shouldNotStoreTransactionDetails'] = True
+    >>> args['shouldCalculateCensus'] = False
+    >>> args['censusYear'] = "TwoThousandTen"
+
+Making the Call
+---------------
+
+Finally, once we've got the arguments all ready we can go ahead and make a call
+to the server:
+
+.. class:: small
+
+::
+
+    >>> res = geo_client.service.GeocodeAddressNonParsed(**args)
+    DEBUG:suds.client:sending to 
+    (https://geoservices.tamu.edu/Services/Geocode/WebService/GeocoderService_V03_01.asmx)
+    message:
+    ...
+
+What does it look like?
+-----------------------
+
+.. class:: tiny
+
+::
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <SOAP-ENV:Envelope xmlns:ns0="https://geoservices.tamu.edu/" xmlns:ns1="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+       <SOAP-ENV:Header/>
+       <ns1:Body>
+          <ns0:GeocodeAddressNonParsed>
+             <ns0:streetAddress>1325 4th Avenue</ns0:streetAddress>
+             <ns0:city>Seattle</ns0:city>
+             <ns0:state>WA</ns0:state>
+             <ns0:zip>98101</ns0:zip>
+             <ns0:apiKey>a450a9181f85498598e21f8a39440e9a</ns0:apiKey>
+             <ns0:version>3.01</ns0:version>
+             <ns0:shouldCalculateCensus>false</ns0:shouldCalculateCensus>
+             <ns0:censusYear>TwoThousandTen</ns0:censusYear>
+             <ns0:shouldReturnReferenceGeometry>true</ns0:shouldReturnReferenceGeometry>
+             <ns0:shouldNotStoreTransactionDetails>true</ns0:shouldNotStoreTransactionDetails>
+          </ns0:GeocodeAddressNonParsed>
+       </ns1:Body>
+    </SOAP-ENV:Envelope>
+
+And the Reply?
+--------------
+
+.. class:: tiny
+
+::
+
+    <?xml version="1.0" encoding="utf-8"?>
+    <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <soap:Body>
+        <GeocodeAddressNonParsedResponse xmlns="https://geoservices.tamu.edu/">
+          <GeocodeAddressNonParsedResult>
+            <TransactionId>6ef9c110-994c-4142-93d5-a55173526b64</TransactionId>
+            <Latitude>47.6084110119244</Latitude>
+            <Longitude>-122.3351592971042</Longitude>
+            <Version>3.01</Version>
+            <Quality>QUALITY_ADDRESS_RANGE_INTERPOLATION</Quality>
+            <MatchedLocationType>LOCATION_TYPE_STREET_ADDRESS</MatchedLocationType>
+            <MatchType>Exact</MatchType>
+            <FeatureMatchingResultCount>1</FeatureMatchingResultCount>
+            ...
+            <FArea>2910.69420560356</FArea>
+            <FAreaType>Meters</FAreaType>
+            <FGeometrySRID>4269</FGeometrySRID>
+            <FGeometry>&lt;?xml version="1.0" encoding="utf-8"?&gt;&lt;LineString xmlns="http://www.opengis.net/gml"&gt;&lt;posList&gt;-122.334868 47.608226 -122.335777 47.609219&lt;/posList&gt;&lt;/LineString&gt;</FGeometry>
+            ...
+          </GeocodeAddressNonParsedResult>
+        </GeocodeAddressNonParsedResponse>
+      </soap:Body>
+    </soap:Envelope>
+
+And What of Our Result?
+-----------------------
+
+The WSDL we started with should provide type definitions for both data we send
+and results we receive. The ``res`` symbol we bound to our result earlier
+should now be an instance of a *GeocodeAddressNonParsedResult*. Lets see what
+that looks like::
+
+    >>> type(res)
+    <type 'instance'>
+    >>> dir(res)
+    ['CensusTimeTaken', 'CensusYear', 'ErrorMessage', 'FArea',
+     'FAreaType', 'FCity', 'FCounty', 'FCountySubRegion', 
+     ...]
+    >>> res.Latitude, res.Longitude
+    (47.608411011924403, -122.3351592971042)
+
+A Word on Debugging
+-------------------
+
+.. class:: center
+
+**blerg**
+
+.. class:: incremental
+
+* Messages sent to the server are long XML strings
+* Error messages are generally based on parsing errors in XML
+* These error messages can be quite cryptic:
+* "There is an error in XML document (1, 572). ---> The string '' is not a
+  valid Boolean value.'
+
+.. class:: incremental
+
+Try this
+
+.. class:: small incremental
+
+::
+
+    >>> geo_client.last_sent().str().replace(" ","")[:573]
+    '...</ns0:version>\n<ns0:shouldCalculateCensus/>'
+
+
+Afterword
+---------
+
+SOAP (and XML-RPC) have some problems:
+
+.. class:: incremental
+
+* XML is pretty damned inefficient as a data transfer medium
+* Why should I need to know method names?
+* If I can discover method names at all, I have to read a WSDL to do it?
+
+.. class:: incremental
+
+Suds is the best we have, and it hasn't been updated since Sept. 2010.
+
+If Not XML, Then What?
+----------------------
+
+.. class:: big-centered incremental
+
+**JSON**
+
+JSON
+----
+
+JavaScript Object Notation:
+
+.. class:: incremental
+
+* a lightweight data-interchange format
+* easy for humans to read and write
+* easy for machines to parse and generate
+
+.. class:: incremental
+
+Based on Two Structures:
+
+.. class:: incremental
+
+* object: ``{ string: value, ...}``
+* array: ``[value, value, ]``
+
+.. class:: center incremental
+
+pythonic, no?
+
+JSON Data Types
+---------------
+
+JSON provides a few basic data types:
+
+.. class:: incremental
+
+* string: unicode, anything but '"', '\' and control chars
+* number: any number, but json does not use octal or hexidecimal
+* object, array (we've seen these above)
+* true
+* false
+* null
+
+.. class:: incremental center
+
+**No date type? OMGWTF??!!1!1**
+
+Dates in JSON
+-------------
+
+.. class:: incremental
+
+Option 1 - Unix Epoch Time (number):
+
+.. class:: incremental small
+
+::
+
+    >>> import time
+    >>> time.time()
+    1358212616.7691269
+
+.. class:: incremental
+
+Option 2 - ISO 8661 (string)
+
+.. class:: incremental small
+
+    >>> import datetime
+    >>> datetime.datetime.now().isoformat()
+    '2013-01-14T17:18:10.727240'
+
+JSON in Python
+--------------
+
+You can encode python to json, and decode json back to python:
+
+.. class:: small
+
+::
+
+    >>> import json
+    >>> array = [1,2,3]
+    >>> json.dumps(array)
+    >>> dict_ = {'foo': [1,2,3], 'bar': u'my resumé', 'baz': True}
+    >>> json.dumps(dict_)
+    '{"baz": true, "foo": [1, 2, 3], "bar": "my resum\\u00e9"}'
+    >>> incoming = _
+    >>> new = json.loads(incoming)
+    >>> new == dict_
+    True
+
+.. class:: incremental
+
+Customizing the encoder or decoder class allows for specialized serializations
+
+JSON in Python
+--------------
+
+the json module also supports reading and writing to *file-like objects* via 
+``json.dump(fp)`` and ``json.load(fp)`` (note the missing 's')
+
+.. class:: incremental
+
+Remember duck-typing. Anything with a ``.write`` and a ``.read`` method is
+*file-like*
+
+.. class:: incremental
+
+Have we seen any network-related classes recently that behave that way?
+
+What about WSDL?
+----------------
+
+SOAP was invented in part to provide completely machine-readable
+interoperability.
+
+.. class:: incremental
+
+Does that really work in real life?
+
+.. class:: incremental center
+
+Hardly ever
+
+What about WSDL?
+----------------
+
+Another reason was to provide extensibility via custom types
+
+.. class:: incremental
+
+Does that really work in real life?
+
+.. class:: incremental center
+
+Hardly ever
+
+Why Do All The Work?
+--------------------
+
+So, if neither of these goals is really achieved by using SOAP, why pay all
+the overhead required to use the protocol?
+
+.. class:: incremental
+
+Enter REST
+
+REST
+----
+
+.. class:: center
+
+Representational State Transfer
+
+.. class:: incremental
+
+* Originally described by Roy T. Fielding (did you read it?)
+* Use HTTP for what it can do
+* Read more in `this book
+  <http://www.crummy.com/writing/RESTful-Web-Services/>`_\*
+
+.. class:: image-credit incremental
+
+\* Seriously. Buy it and read
+(<http://www.crummy.com/writing/RESTful-Web-Services/)
+
+A Comparison
+------------
+
+The XML-RCP/SOAP way:
+
+.. class:: incremental small
+
+* POST /getComment HTTP/1.1
+* POST /getComments HTTP/1.1
+* POST /addComment HTTP/1.1
+* POST /editComment HTTP/1.1
+* POST /deleteComment HTTP/1.1
+
+.. class:: incremental
+
+The RESTful way:
+
+.. class:: incremental small
+
+* GET /comment/<id> HTTP/1.1
+* GET /comment HTTP/1.1
+* POST /comment HTTP/1.1
+* PUT /comment/<id> HTTP/1.1
+* DELETE /comment/<id> HTTP/1.1
+
+ROA
+---
+
+This is **Resource Oriented Architecture**
+
+.. class:: incremental
+
+The URL represents the *resource* we are working with
+
+.. class:: incremental
+
+The HTTP Verb represents the ``action`` to be taken
+
+.. class:: incremental
+
+The HTTP Code returned tells us the ``result`` (whether success or failure)
+
+HTTP Codes Revisited
+--------------------
+
+.. class:: small
+
+POST /comment HTTP/1.1  (creating a new comment):
+
+.. class:: incremental small
+
+* Success: ``HTTP/1.1 201 Created``
+* Failure (unauthorized): ``HTTP/1.1 401 Unauthorized``
+* Failure (NotImplemented): ``HTTP/1.1 405 Not Allowed``
+* Failure (ValueError): ``HTTP/1.1 406 Not Acceptable``
+
+.. class:: small incremental
+
+PUT /comment/<id> HTTP/1.1 (edit comment):
+
+.. class:: incremental small
+
+* Success: ``HTTP/1.1 200 OK``
+* Failure: ``HTTP/1.1 409 Conflict``
+
+.. class:: small incremental
+
+DELETE /comment/<id> HTTP/1.1 (delete comment):
+
+.. class:: incremental small
+
+* Success: ``HTTP/1.1 204 No Content``
+
+HTTP Is Stateless
+-----------------
+
+No individual request may be assumed to know anything about any other request.
+
+.. class:: incremental
+
+All the required information for to represent the possible actions to take
+*should be present in either the request or the response*.
+
+.. class:: incremental big-centered
+
+Thus:  HATEOAS
+
+HATEOAS
+-------
+
+.. class:: big-centered
+
+Hypermedia As The Engine Of Application State
+
+Applications are State Engines
+------------------------------
+
+A State Engine is a machine that provides *states* for a resource to be in and
+*transitions* to move resources between states.  A Restful api should:
+
+.. class:: incremental
+
+* provide information about the current state of a resource
+* provide information about available transitions for that resource (URIs)
+* provide all this in each HTTP response
+
+Playing With REST
+-----------------
+
+Let's take a moment to play with REST.
+
+.. class:: incremental
+
+We tried geocoding with SOAP.  Let's repeat the exercise with a REST/JSON API
+
+.. class:: incremental center
+
+**Back to your interpreter**
+
+Geocoding with Google APIs
+--------------------------
+
+https://developers.google.com/maps/documentation/geocoding
+
+.. class:: small
+
+    >>> import urllib
+    >>> import urllib2
+    >>> from pprint import pprint
+    >>> base = 'http://maps.googleapis.com/maps/api/geocode/json'
+    >>> addr = '1325 4th Ave, Seattle, WA 98101'
+    >>> data = {'address': addr, 'sensor': False }
+    >>> query = urllib.urlencode(data)
+    >>> res = urllib2.urlopen('?'.join([base, query]))
+    >>> response = json.load(res)
+    >>> pprint(response)
+
+RESTful Job Listings
+--------------------
+
+https://github.com/mattnull/techsavvyapi
+
+.. class:: small
+
+    >>> base = 'http://api.techsavvy.io/jobs'
+    >>> search = 'python+web'
+    >>> res = urllib2.urlopen('/'.join([base, search]))
+    >>> response = json.load(res)
+    >>> type(response)
+    <type 'dict'>
+    >>> response.keys()
+    [u'count', u'data']
+    >>> response['count']
+    50
+    >>> for post in response['data']:
+    ...   for key in sorted(post.keys()):
+    ...     print "%s:\n    %s" % (key, post[key])
+    ...   print
+    ... 
+
+Lab 2 - Mashup
+--------------
+
+Some of the job postings from our TechSavvy api returned lat/lon pairs.
+
+Google provides a reverse address lookup service via the geocoding api
+(https://developers.google.com/maps/documentation/geocoding/#ReverseGeocoding)
+
+Create a list of job postings, with an address for those postings that provide
+the needed data
+
+.. class:: incremental center
+
+**GO**
+
+Assignment
+----------
+
+Using what you've learned this week, create a more complex mashup of some data
+that interests you. Map the locations of the breweries near your house. Chart
+a multi-axial graph of the popularity of various cities across several
+categories.  Visualize the most effective legislators in Congress.  You have
+interests, the Web has tools.  Put them together to make something.
+
+Submitting the Assignment
+-------------------------
+
+Place the following in the ``assignments/week03/athome`` directory and make a
+pull request:
+
+.. class:: small
+
+A textual description of your mashup.
+  What data sources did you scan, what tools did you use, what is the
+  outcome you wanted to create?
+
+.. class:: small
+
+Your source code.
+  Give me an executable python script that I can run to get output.
+
+.. class:: small
+
+Any instructions I need.
+  If I need instructions beyond 'python myscript.py' to get the right
+  output, let me know.

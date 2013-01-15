@@ -100,6 +100,8 @@ computers.
 The class assignment will be to extend the simple web server, adding the
 ability to run dynamic processes and return the results to the client.
 
+`Week 2 Presentation <presentations/week02.html>`_
+
 Reading
 *******
 
@@ -199,7 +201,7 @@ Reading
 * `A Brief Introduction to REST (Tilkov 2007)
   <http://www.infoq.com/articles/rest-introduction>`_
 * `Why HATEOAS - *a simple case study on the often ignored REST constraint*
-  <http://www.slideshare.net/trilancer/why-hateoas-1547275#btnPrevious>`_
+  <http://www.slideshare.net/trilancer/why-hateoas-1547275>`_
 
 References
 **********
