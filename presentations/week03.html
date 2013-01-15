@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="Docutils 0.9.1: http://docutils.sourceforge.net/" />
 <meta name="version" content="S5 1.1" />
-<title>This is Week 3</title>
+<title>Internet Programming with Python</title>
 <link rel="stylesheet" href="ui/uw_pce_theme/pretty.css" type="text/css" />
 <!-- configuration parameters -->
 <meta name="defaultView" content="slideshow" />
@@ -29,15 +29,1066 @@
 
 </div>
 <div id="footer">
-<h1>This is Week 3</h1>
+<h1>Internet Programming with Python</h1>
 <h2><a class="reference external" href="http://github.com/cewing/training.python_web">View document source</a>.
 </h2>
 </div>
 </div>
 <div class="presentation">
 <div class="slide" id="slide0">
-<h1 class="title">This is Week 3</h1>
+<h1 class="title">Internet Programming with Python</h1>
 
+<img alt="img/granny_mashup.png" class="align-left" src="img/granny_mashup.png" style="width: 50%;" />
+<p>Week 3: Scraping, APIs and Mashups</p>
+<p class="intro-blurb">Wherein we learn how to make order from the chaos of the wild internet.</p>
+<p class="image-credit">image: Paul Downey <a class="reference external" href="http://www.flickr.com/photos/psd/492139935/">http://www.flickr.com/photos/psd/492139935/</a> - CC-BY</p>
+
+</div>
+<div class="slide" id="but-first">
+<h1>But First</h1>
+<p class="big-centered">Review from the Assignment</p>
+</div>
+<div class="slide" id="and-second">
+<h1>And Second</h1>
+<p class="big-centered">Questions from the Reading?</p>
+</div>
+<div class="slide" id="and-now">
+<h1>And Now...</h1>
+<p class="big-centered">HTML</p>
+</div>
+<div class="slide" id="ideally">
+<h1>Ideally</h1>
+<pre class="literal-block">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p&gt;A nice clean paragraph&lt;/p&gt;
+    &lt;p&gt;And another nice clean paragraph&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+</div>
+<div class="slide" id="yeah-right">
+<h1>Yeah, Right</h1>
+<p class="big-centered">Is it ever actually like that?</p>
+</div>
+<div class="slide" id="html-irl">
+<h1>HTML... IRL</h1>
+<pre class="literal-block">
+&lt;html&gt;
+ &lt;form&gt;
+  &lt;table&gt;
+   &lt;td&gt;&lt;input name=&quot;input1&quot;&gt;Row 1 cell 1
+   &lt;tr&gt;&lt;td&gt;Row 2 cell 1
+  &lt;/form&gt;
+  &lt;td&gt;Row 2 cell 2&lt;br&gt;This&lt;/br&gt; sure is a long cell
+ &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+</div>
+<div class="slide" id="fffffffffuuuuuuuuuuuuu">
+<h1>FFFFFFFFFUUUUUUUUUUUUU</h1>
+<img alt="img/scream.jpg" class="align-center" src="img/scream.jpg" style="width: 32%;" />
+<p class="image-credit">Photo by Matthew via Flickr (<a class="reference external" href="http://www.flickr.com/photos/purplemattfish/3918004964/">http://www.flickr.com/photos/purplemattfish/3918004964/</a>) - CC-BY-NC-ND</p>
+</div>
+<div class="slide" id="the-law-of-the-internet">
+<h1>The Law of The Internet</h1>
+<p class="big-centered">&quot;Be strict in what you send and tolerant in what you receive&quot;</p>
+</div>
+<div class="slide" id="but-what-if">
+<h1>But What If...</h1>
+<p class="incremental">You have some information you want to get from online.</p>
+<p class="incremental">You really want to organize this information in some interesting way</p>
+<p class="incremental">You <em>really really</em> don't want to spend the next three weeks cutting and
+pasting</p>
+</div>
+<div class="slide" id="web-scraping">
+<h1>Web Scraping</h1>
+<p class="big-centered">Let Python do the job for you.  Fire up your interpreter!</p>
+</div>
+<div class="slide" id="first-steps">
+<h1>First Steps</h1>
+<p>First, you need to get a web page.  Let's use this one (a list of recent
+blog posts about Django and PostgreSQL):</p>
+<p class="center incremental"><a class="reference external" href="http://crisewing.com/cover/++contextportlets++ContentWellPortlets.BelowPortletManager3/open-source-posts/full_feed">http://crisewing.com/cover/++contextportlets++ContentWellPortlets.BelowPortletManager3/open-source-posts/full_feed</a></p>
+</div>
+<div class="slide" id="first-steps-get-source">
+<h1>First Steps - Get Source</h1>
+<p>Let's start by grabbing the page we want. We use the Python Standard Library
+<tt class="docutils literal">urllib2</tt> to handle this task (note that we've shortened the URL):</p>
+<pre class="literal-block">
+&gt;&gt;&gt; import urllib2
+&gt;&gt;&gt; page = urllib2.urlopen('http://tinyurl.com/osfeeds')
+&gt;&gt;&gt; page
+&lt;addinfourl at 4302170088 whose fp = &lt;socket._fileobject object at 0x1005c6410&gt;&gt;
+&gt;&gt;&gt; page.code
+200
+&gt;&gt;&gt; page.headers['content-type']
+'text/html;charset=utf-8'
+&gt;&gt;&gt; page.headers['content-length']
+'373447'
+</pre>
+</div>
+<div class="slide" id="first-steps-read-source">
+<h1>First Steps - Read Source</h1>
+<p>We can take the page we just opened, and read it. The object is file-like, so
+it supports standard file read operations:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; html = page.read()
+&gt;&gt;&gt; len(page)
+373447
+&gt;&gt;&gt; print page
+
+&lt;!DOCTYPE html PUBLIC
+  &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot;
+  &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
+
+&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; lang=&quot;en&quot;&gt;
+...
+&lt;/html&gt;
+</pre>
+</div>
+<div class="slide" id="now-what">
+<h1>Now What?</h1>
+<p><strong>Goal</strong>: Sort the blog post titles and URLs into two lists, one for Django
+and one for PostgreSQL</p>
+<p>What tools do we have to do this job?</p>
+<ul class="incremental simple">
+<li>String Methods?</li>
+<li>Regular Expressions?</li>
+</ul>
+</div>
+<div class="slide" id="brief-interlude">
+<h1>Brief Interlude</h1>
+<p class="big-centered">&quot;Some people, when confronted with a problem, think 'I know, I'ʹll use regular
+expressions.' Now they have two problems.&quot;</p>
+</div>
+<div class="slide" id="even-better">
+<h1>Even Better</h1>
+<p>Read this excellent rant (during break):</p>
+<p><a class="reference external" href="http://stackoverflow.com/questions/1732348/regex-match-open-tags-except-xhtml-self-contained-tags/1732454#1732454">http://stackoverflow.com/questions/1732348/regex-match-open-tags-except-xhtml-self-contained-tags/1732454#1732454</a></p>
+</div>
+<div class="slide" id="but-really">
+<h1>But Really</h1>
+<p class="center">So what <em>do</em> we use?</p>
+<p class="incremental center">Special-purpose Parsers</p>
+<p class="incremental center">Enter <strong>BeautifulSoup</strong></p>
+</div>
+<div class="slide" id="step-back-for-a-moment">
+<h1>Step Back for a Moment</h1>
+<p>This is going to take some preparation, so let's set aside our html page in a
+way that will allow us to come back to it:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; fh = open('bloglist.html', 'w')
+&gt;&gt;&gt; fh.write(html)
+&gt;&gt;&gt; fh.close()
+</pre>
+<p>Now the page is saved to a file in your current working directory.</p>
+<p class="incremental"><strong>Quit your interpreter</strong></p>
+</div>
+<div class="slide" id="virtualenv">
+<h1>Virtualenv</h1>
+<p>We are about to install a non-standard library.</p>
+<ul class="incremental simple">
+<li>As a real-world developer you need to do this a lot</li>
+<li>As a web developer you need to install <em>different</em> versions of the <em>same</em>
+library</li>
+<li>For every non-standard library installed into a System Python, the gods kill
+a kitten</li>
+<li>Use Virtualenv...</li>
+<li><strong>Always</strong></li>
+</ul>
+</div>
+<div class="slide" id="getting-virtualenv">
+<h1>Getting Virtualenv</h1>
+<p>Three options for installing virtualenv (this is the exception to the above
+rule):</p>
+<ul class="simple">
+<li><tt class="docutils literal">pip install virtualenv</tt></li>
+<li><tt class="docutils literal">easy_install virtualenv</tt></li>
+</ul>
+<p>These both demand that you first install something else. If you haven't
+already got <tt class="docutils literal">pip</tt> or <tt class="docutils literal">easy_install</tt> try this way instead:</p>
+<ul class="simple">
+<li>download <tt class="docutils literal"><span class="pre">https://raw.github.com/pypa/virtualenv/master/virtualenv.py</span></tt></li>
+<li>remember where it goes.  You'll need it</li>
+</ul>
+</div>
+<div class="slide" id="creating-a-virtualenv">
+<h1>Creating a Virtualenv</h1>
+<p>Creating a new virtualenv is very very simple:</p>
+<pre class="literal-block">
+$ python virtualenv.py [options] &lt;ENV&gt;
+</pre>
+<p>&lt;ENV&gt; is just the name of the environment you want to create. It's arbitrary.
+Let's make one for our BeautifulSoup install:</p>
+<pre class="literal-block">
+$ python virtualanv.py --distribute soupenv
+New python executable in fooenv/bin/python2.6
+Also creating executable in fooenv/bin/python
+Installing distribute........................
+.............................................
+...done.
+</pre>
+</div>
+<div class="slide" id="what-happened">
+<h1>What Happened?</h1>
+<p>When you ran that file, a couple of things took place:</p>
+<ul class="incremental simple">
+<li>A new directory with your requested name was created</li>
+<li>A new Python executable was created in &lt;ENV&gt;/bin</li>
+<li>The new Python was cloned from the Python used to run the file</li>
+<li>The new Python was isolated from any libraries installed in the old Python</li>
+<li>Distribute (a newer, better setuptools) was installed so you have <tt class="docutils literal">easy_install</tt></li>
+<li>Pip was installed so you have <tt class="docutils literal">pip</tt></li>
+</ul>
+<p class="incremental">Cool, eh?  Learn more at <a class="reference external" href="http://www.virtualenv.org">http://www.virtualenv.org</a></p>
+</div>
+<div class="slide" id="using-virtualenv">
+<h1>Using Virtualenv</h1>
+<p>To install new libraries into a virtualenv, the easiest process is to first
+activate the env:</p>
+<pre class="literal-block">
+$ source soupenv/bin/activate
+(soupenv)$ which python
+/path/to/soupenv/bin/python
+</pre>
+<p>Or, on Windows:</p>
+<pre class="literal-block">
+&gt; \path\to\soupenv\Scripts\activate
+</pre>
+<p class="image-credit">If you use Powershell, read the note here:
+<a class="reference external" href="http://www.virtualenv.org/en/latest/#activate-script">http://www.virtualenv.org/en/latest/#activate-script</a></p>
+</div>
+<div class="slide" id="install-beautifulsoup">
+<h1>Install BeautifulSoup</h1>
+<p>Once the virtualenv is activated, you can simply use pip or easy_install to
+install the libraries you want:</p>
+<pre class="literal-block">
+(soupenv)$ pip install beautifulsoup4
+</pre>
+</div>
+<div class="slide" id="choose-a-parsing-engine">
+<h1>Choose a Parsing Engine</h1>
+<p>BeautifulSoup is built to use the Python HTMLParser.</p>
+<ul class="incremental simple">
+<li>Batteries Included.  It's already there</li>
+<li>It kinda sucks, especially before Python 2.7.3</li>
+</ul>
+<p class="incremental">BeautifulSoup also supports using other parsers. Let's install one. There are
+two decent choices: <tt class="docutils literal">lxml</tt> and <tt class="docutils literal">html5lib</tt>.</p>
+<p class="incremental"><tt class="docutils literal">lxml</tt> is better, but harder to install.  Let's use <tt class="docutils literal">html5lib</tt> today.</p>
+</div>
+<div class="slide" id="install-a-parsing-engine">
+<h1>Install a Parsing Engine</h1>
+<p>Again, this is pretty simple:</p>
+<pre class="literal-block">
+(soupenv)$ pip install html5lib
+</pre>
+<p>Once that is installed, BeautifulSoup will choose it instead of the standard
+library module.</p>
+</div>
+<div class="slide" id="parsing-html">
+<h1>Parsing HTML</h1>
+<p>Okay, we're all set here. Let's load up our HTML page and get ready to scrape
+it:</p>
+<pre class="literal-block">
+(soupenv)$ python
+&gt;&gt;&gt; fh = open('bloglist.html', 'r')
+&gt;&gt;&gt; from bs4 import BeautifulSoup
+&gt;&gt;&gt; parsed = BeautifulSoup(fh)
+&gt;&gt;&gt;
+</pre>
+<p>And that's it.  The document is now parsed and ready to scrape.</p>
+</div>
+<div class="slide" id="scraping-html">
+<h1>Scraping HTML</h1>
+<p>The next step is to figure out what it is from the HTML page that you want to
+scrape.</p>
+<p class="incremental"><strong>Goal</strong>: Sort the blog post titles and URLs into two lists, one for Django
+and one for PostgreSQL</p>
+<p class="incremental">What tools do we have to allow us to look at the source and find our targets?</p>
+</div>
+<div class="slide" id="html-inspection-demo">
+<h1>HTML Inspection Demo</h1>
+<p>We can use the developer tools that come in Safari, Chrome and IE, or use the
+Firebug extension to FireFox.</p>
+<p class="incremental">So, we need to find <tt class="docutils literal">&lt;div&gt;</tt> elements with the class <tt class="docutils literal">feedEntry</tt>.</p>
+</div>
+<div class="slide" id="searching-your-soup">
+<h1>Searching Your Soup</h1>
+<p>BeautifulSoup has parsed our document</p>
+<ul class="incremental simple">
+<li>A parsed document acts like a <tt class="docutils literal">tag</tt></li>
+<li>A <tt class="docutils literal">tag</tt> can be searched using the <tt class="docutils literal">find_all</tt> method</li>
+<li>The <tt class="docutils literal">find_all</tt> method searches the descendents of the tag on which it is
+called.</li>
+<li>The <tt class="docutils literal">find_all</tt> method takes arguments which act as <em>filters</em> on the search
+results</li>
+</ul>
+<div class="incremental line-block">
+<div class="line">like so:</div>
+<div class="line"><br /></div>
+<div class="line"><tt class="docutils literal">tag.find_all(name, attrs, recursive, text, limit, **kwargs)</tt></div>
+</div>
+</div>
+<div class="slide" id="searching-by-css-class">
+<h1>Searching by CSS Class</h1>
+<p>The items we are looking for are <tt class="docutils literal">div</tt> tags which have the CSS class
+<tt class="docutils literal">feedEntry</tt>:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; entries = parsed.find_all('div', class_='feedEntry')
+&gt;&gt;&gt; len(entries)
+106
+</pre>
+<div class="incremental line-block">
+<div class="line">If you pass a simple string as the sole value to the <tt class="docutils literal">attrs</tt> argument, that
+string is treated as a CSS class:</div>
+<div class="line"><br /></div>
+<div class="line"><tt class="docutils literal"><span class="pre">parsed.find_all('div',</span> 'feedEntry')</tt></div>
+</div>
+</div>
+<div class="slide" id="find-a-single-match">
+<h1>Find a Single Match</h1>
+<p>What bits of an entry have the details we need to meet our goals?</p>
+<ul class="incremental simple">
+<li>A <tt class="docutils literal">tag</tt> also has a <tt class="docutils literal">find</tt> method which returns only the <strong>first</strong> match</li>
+<li><tt class="docutils literal">tag.find(name, attrs, recursive, text, **kwargs)</tt></li>
+<li>In each entry, the first <tt class="docutils literal">&lt;a&gt;</tt> has title and URL</li>
+<li>In each entry, the first <tt class="docutils literal">&lt;p&gt;</tt> with the class <tt class="docutils literal">discreet</tt> has the source
+of the feed (Planet Django or Planet PostgreSQL)</li>
+</ul>
+</div>
+<div class="slide" id="testing-it-out">
+<h1>Testing it out</h1>
+<pre class="literal-block">
+&gt;&gt;&gt; for e in entries:
+...     anchor = e.find('a')
+...     paragraph = e.find('p', 'discreet')
+...     title = anchor.text.strip()
+...     url = anchor.attrs['href']
+...     print title
+...     print url
+...     try:
+...         print paragraph.text.strip()
+...     except AttributeError:
+...         print 'Uncategorized'
+...     print
+...
+&gt;&gt;&gt;
+</pre>
+</div>
+<div class="slide" id="lab-1-20-mins">
+<h1>Lab 1 - 20 mins</h1>
+<ul class="simple">
+<li>Write a function, take a BeautifulSoup object as the sole argument</li>
+<li>find all the 'feedEntry' divs in the page</li>
+<li>Get the title and url of the entry and put them in a dictionary</li>
+<li>Categorize an entry as <tt class="docutils literal">pgsql</tt>, <tt class="docutils literal">django</tt> or <tt class="docutils literal">other</tt></li>
+<li>It should return three lists of categorized entries</li>
+</ul>
+<div class="line-block">
+<div class="line">Call it like so:</div>
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><tt class="docutils literal">pgsql, django, other = my_function(parsed_page)</tt></div>
+</div>
+</div>
+<p class="incremental center"><strong>GO</strong></p>
+</div>
+<div class="slide" id="another-approach">
+<h1>Another Approach</h1>
+<p>Scraping web pages is inherently brittle</p>
+<p class="incremental">The owner of the website updates their layout, your code breaks</p>
+<p class="incremental">But there is another way to get information from the web in a more normalized
+fashion</p>
+<p class="incremental center"><strong>Web Services</strong></p>
+</div>
+<div class="slide" id="web-services">
+<h1>Web Services</h1>
+<p>&quot;a software system designed to support interoperable machine-to-machine
+interaction over a network&quot; - W3C</p>
+<ul class="incremental simple">
+<li>provides a defined set of calls</li>
+<li>returns structured data</li>
+</ul>
+</div>
+<div class="slide" id="classifying-web-services">
+<h1>Classifying Web Services</h1>
+<p>Web services can be classified in a couple of ways:</p>
+<ul class="incremental simple">
+<li>By how they are implemented (XML-RPC, SOAP, REST)</li>
+<li>By what they return (XML, JSON)</li>
+</ul>
+</div>
+<div class="slide" id="early-web-services">
+<h1>Early Web Services</h1>
+<p>RSS is one of the earliest forms of Web Services</p>
+<ul class="simple">
+<li>First known as <tt class="docutils literal">RDF Site Summary</tt></li>
+<li>Became <tt class="docutils literal">Really Simple Syndication</tt></li>
+<li>More at <a class="reference external" href="http://www.rss-specification.com/rss-specifications.htm">http://www.rss-specification.com/rss-specifications.htm</a></li>
+</ul>
+<p class="incremental">A single web-based <em>endpoint</em> provides a dynamically updated listing of
+content</p>
+<p class="incremental">Implemented in pure HTTP.  Returns XML</p>
+<p class="incremental"><strong>Atom</strong> is a competing, but similar standard</p>
+</div>
+<div class="slide" id="rss-document">
+<h1>RSS Document</h1>
+<pre class="tiny literal-block">
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;rss version=&quot;2.0&quot;&gt;
+&lt;channel&gt;
+  &lt;title&gt;RSS Title&lt;/title&gt;
+  &lt;description&gt;This is an example of an RSS feed&lt;/description&gt;
+  &lt;link&gt;http://www.someexamplerssdomain.com/main.html&lt;/link&gt;
+  &lt;lastBuildDate&gt;Mon, 06 Sep 2010 00:01:00 +0000 &lt;/lastBuildDate&gt;
+  &lt;pubDate&gt;Mon, 06 Sep 2009 16:45:00 +0000 &lt;/pubDate&gt;
+  &lt;ttl&gt;1800&lt;/ttl&gt;
+
+  &lt;item&gt;
+    &lt;title&gt;Example entry&lt;/title&gt;
+    &lt;description&gt;Here is some text containing an interesting description.&lt;/description&gt;
+    &lt;link&gt;http://www.wikipedia.org/&lt;/link&gt;
+    &lt;guid&gt;unique string per item&lt;/guid&gt;
+    &lt;pubDate&gt;Mon, 06 Sep 2009 16:45:00 +0000 &lt;/pubDate&gt;
+  &lt;/item&gt;
+  ...
+&lt;/channel&gt;
+&lt;/rss&gt;
+</pre>
+</div>
+<div class="slide" id="xml-rpc">
+<h1>XML-RPC</h1>
+<p>If we can provide a single endpoint that returns a single data set (RSS), can
+we also allow <em>calling procedures</em> at an endpoint?</p>
+<p class="incremental">We can!  Enter XML-RPC</p>
+<ul class="incremental simple">
+<li>Provides a set of defined procedures which can take arguments</li>
+<li>Calls are made via HTTP GET, by passing an XML document</li>
+<li>Returns from a call are sent to the client in XML</li>
+</ul>
+<p class="incremental">Easier to demonstrate than explain</p>
+</div>
+<div class="slide" id="xml-rpc-example-server">
+<h1>XML-RPC Example - Server</h1>
+<p>xmlrpc_server.py:</p>
+<pre class="small literal-block">
+from SimpleXMLRPCServer import SimpleXMLRPCServer
+
+server = SimpleXMLRPCServer(('localhost', 50000))
+
+def multiply(a, b):
+    return a * b
+server.register_function(multiply)
+
+try:
+    print &quot;Use Ctrl-C to Exit&quot;
+    server.serve_forever()
+except KeyboardInterrupt:
+    print &quot;Exiting&quot;
+</pre>
+</div>
+<div class="slide" id="xml-rpc-example-client">
+<h1>XML-RPC Example - Client</h1>
+<p>We can run a client from a terminal. First, open one terminal and run the
+xmlrpc_server.py script:</p>
+<blockquote>
+$ python xmlrcp_server.py</blockquote>
+<p>Then, open another terminal and start up python:</p>
+<pre class="small literal-block">
+&gt;&gt;&gt; import xmlrpclib
+&gt;&gt;&gt; proxy = xmlrpclib.ServerProxy('http://localhost:50000', verbose=True)
+&gt;&gt;&gt; proxy.multiply(3, 24)
+...
+72
+</pre>
+</div>
+<div class="slide" id="xml-rpc-request">
+<h1>XML-RPC Request</h1>
+<p><tt class="docutils literal">verbose=True</tt> allows us to see the request we sent:</p>
+<pre class="tiny literal-block">
+POST /RPC2 HTTP/1.0
+Host: localhost:50000
+User-Agent: xmlrpclib.py/1.0.1 (by www.pythonware.com)
+Content-Type: text/xml
+Content-Length: 192
+
+&lt;?xml version='1.0'?&gt;
+&lt;methodCall&gt;
+ &lt;methodName&gt;multiply&lt;/methodName&gt;
+ &lt;params&gt;
+  &lt;param&gt;
+   &lt;value&gt;&lt;int&gt;3&lt;/int&gt;&lt;/value&gt;
+  &lt;/param&gt;
+  &lt;param&gt;
+   &lt;value&gt;&lt;int&gt;24&lt;/int&gt;&lt;/value&gt;
+  &lt;/param&gt;
+ &lt;/params&gt;
+&lt;/methodCall&gt;
+</pre>
+</div>
+<div class="slide" id="xml-rpc-response">
+<h1>XML-RPC Response</h1>
+<p>and we can see the response, too:</p>
+<pre class="tiny literal-block">
+HTTP/1.0 200 OK
+Server: BaseHTTP/0.3 Python/2.6.1
+Date: Sun, 13 Jan 2013 03:38:00 GMT
+Content-type: text/xml
+Content-length: 121
+
+&lt;?xml version='1.0'?&gt;
+&lt;methodResponse&gt;
+ &lt;params&gt;
+  &lt;param&gt;
+   &lt;value&gt;&lt;int&gt;72&lt;/int&gt;&lt;/value&gt;
+  &lt;/param&gt;
+ &lt;/params&gt;
+&lt;/methodResponse&gt;
+</pre>
+</div>
+<div class="slide" id="more-xml-rpc">
+<h1>More XML-RPC</h1>
+<p>Register an entire Python class as a service, exposing class methods:</p>
+<pre class="literal-block">
+server.register_instance(MyClass())
+</pre>
+<p>Keep an instance method private:</p>
+<pre class="tiny literal-block">
+class MyServiceClass(object):
+    ...
+    def public_method(self, arg1, arg2):
+        &quot;&quot;&quot;this method is public&quot;&quot;&quot;
+        pass
+
+    def _private_method(self):
+        &quot;&quot;&quot;this method is private because it starts with '_'
+        &quot;&quot;&quot;
+        pass
+</pre>
+</div>
+<div class="slide" id="xml-rpc-introspection">
+<h1>XML-RPC Introspection</h1>
+<p>First, implement required methods on your service class:</p>
+<pre class="tiny literal-block">
+from SimpleXMLRPCServer import list_public_methods
+
+class MyServiceClass(object):
+    ...
+    def _listMethods(self):
+        &quot;&quot;&quot;custom logic for presenting method names to users
+
+        list_public_methods is a convenience function from the Python
+        library, but you can make your own logic if you wish.
+        &quot;&quot;&quot;
+        return list_public_methods(self)
+
+    def _methodHelp(self, method):
+        &quot;&quot;&quot;provide help text for an individual method
+        &quot;&quot;&quot;
+        f = getattr(self, method)
+        return f.__doc__
+</pre>
+</div>
+<div class="slide" id="xml-rpc-instrospection">
+<h1>XML-RPC Instrospection</h1>
+<p>Then enable introspection via the server instance:</p>
+<pre class="small literal-block">
+server.register_introspection_functions()
+</pre>
+<p>After this, a client proxy can call pre-defined methods to learn about what
+your service offers</p>
+<pre class="small literal-block">
+&gt;&gt;&gt; for name in proxy.system.listMethods():
+...     help = proxy.system.methodHelp(name)
+...     print name
+...     print &quot;\t%s&quot; % help
+...
+public_method
+    this method is public
+</pre>
+</div>
+<div class="slide" id="beyond-xml-rpc">
+<h1>Beyond XML-RPC</h1>
+<ul class="incremental simple">
+<li>XML-RPC allows introspection</li>
+<li>XML-RPC forces you to introspect to get information</li>
+<li><em>Wouldn't it be nice to get that automatically?</em></li>
+<li>XML-RPC provides data types</li>
+<li>XML-RPC provides only <em>certain</em> data types</li>
+<li><em>Wouldn't it be nice to have an extensible system for types?</em></li>
+<li>XML-RPC allows calling methods with parameters</li>
+<li>XML-RPC only allows calling methods, nothing else</li>
+<li><em>wouldn't it be nice to have contextual data as well?</em></li>
+</ul>
+<p class="incremental center"><strong>Enter SOAP: Simple Object Access Protocol</strong></p>
+</div>
+<div class="slide" id="soap">
+<h1>SOAP</h1>
+<p>SOAP extends XML-RPC in a couple of useful ways:</p>
+<ul class="incremental simple">
+<li>It uses Web Services Description Language (WSDL) to provide meta-data about
+an entire service in a machine-readable format (Automatic introspection)</li>
+<li>It establishes a method for extending available data types using XML
+namespaces</li>
+<li>It provides a wrapper around method calls called the <strong>envelope</strong>, which
+allows the inclusion of a <strong>header</strong> with system meta-data that can be used
+by the application</li>
+</ul>
+</div>
+<div class="slide" id="soap-in-python">
+<h1>SOAP in Python</h1>
+<p>There is no standard library module that supports SOAP directly.</p>
+<ul class="incremental simple">
+<li>The best-known and best-supported module available is <strong>Suds</strong></li>
+<li>The homepage is <a class="reference external" href="https://fedorahosted.org/suds/">https://fedorahosted.org/suds/</a></li>
+<li>It can be installed using <tt class="docutils literal">easy_install</tt> or <tt class="docutils literal">pip install</tt></li>
+</ul>
+</div>
+<div class="slide" id="install-suds">
+<h1>Install Suds</h1>
+<ul class="simple">
+<li>Quit your python interpreter if you have it running.</li>
+<li>If you see (soupenv) at your command line prompt, cool.</li>
+<li>If you do not, type <tt class="docutils literal">source /path/to/soupenv/bin/activate</tt></li>
+<li>Windows folks: <tt class="docutils literal">&gt; \path\to\soupenv\Scripts\activate</tt></li>
+<li>Once activated: <tt class="docutils literal">pip install suds</tt></li>
+</ul>
+</div>
+<div class="slide" id="creating-a-suds-client">
+<h1>Creating a Suds Client</h1>
+<p>Suds allows us to create a SOAP client object. SOAP uses WSDL to define a
+service. All we need to do to set this up in python is load the URL of the
+WSDL for the service we want to use:</p>
+<pre class="small literal-block">
+(soupenv)$ python
+&gt;&gt;&gt; from suds.client import Client
+&gt;&gt;&gt; geo_client = Client('https://geoservices.tamu.edu/Services/Geocode/WebService/GeocoderService_V03_01.asmx?wsdl')
+&gt;&gt;&gt; geo_client
+&lt;suds.client.Client object at 0x10041fc10&gt;
+</pre>
+</div>
+<div class="slide" id="peeking-at-the-service">
+<h1>Peeking at the Service</h1>
+<p>Suds allows us to visually scan the service. Simply print the client object to
+see what the service has to offer:</p>
+<pre class="small literal-block">
+&gt;&gt;&gt; print geo_client
+
+Suds ( https://fedorahosted.org/suds/ )  version: 0.4 GA  build: R699-20100913
+
+Service ( GeocoderService_V03_01 ) tns=&quot;https://geoservices.tamu.edu/&quot;
+   Prefixes (1)
+      ns0 = &quot;https://geoservices.tamu.edu/&quot;
+   Ports (2):
+      (GeocoderService_V03_01Soap)
+      Methods (4):
+         ...
+      Types (12):
+         ...
+</pre>
+</div>
+<div class="slide" id="debugging-suds">
+<h1>Debugging Suds</h1>
+<p>Suds uses python logging to deal with debug information, so if you want to see
+what's going on under the hood, you configure it via the Python logging
+module:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; import logging
+&gt;&gt;&gt; logging.basicConfig(level=logging.INFO)
+&gt;&gt;&gt; logging.getLogger('suds.client').setLevel(logging.DEBUG)
+</pre>
+<p class="incremental">This will allow us to see the messages sent and received by our client.</p>
+</div>
+<div class="slide" id="client-options">
+<h1>Client Options</h1>
+<p>SOAP Servers can provide more than one <em>service</em> and each <em>service</em> might have
+more than one <em>port</em>. Suds provides two ways to configure which <em>service</em> and
+<em>port</em> you wish to use.</p>
+<p>Via subscription:</p>
+<pre class="literal-block">
+client.service['&lt;service&gt;']['&lt;port&gt;'].method(args)
+</pre>
+<p>Or the way we will do it, via configuration:</p>
+<pre class="literal-block">
+geo_client.set_options(service='GeocoderService_V03_01', ↩
+                       port='GeocoderService_V03_01Soap')
+</pre>
+</div>
+<div class="slide" id="providing-arguments">
+<h1>Providing Arguments</h1>
+<p>Arguments to a method are set up as a dictionary.  Although some may not be
+required according to api documentation, it is safest to provide them all:</p>
+<pre class="small literal-block">
+&gt;&gt;&gt; apiKey = '&lt;fill this in&gt;'
+&gt;&gt;&gt; args = {'apiKey': apiKey, }
+&gt;&gt;&gt; args['streetAddress'] = '1325 4th Avenue'
+&gt;&gt;&gt; args['city'] = 'Seattle'
+&gt;&gt;&gt; args['state'] = 'WA'
+&gt;&gt;&gt; args['zip'] = '98101'
+&gt;&gt;&gt; args['version'] = 3.01
+&gt;&gt;&gt; args['shouldReturnReferenceGeometry'] = True
+&gt;&gt;&gt; args['shouldNotStoreTransactionDetails'] = True
+&gt;&gt;&gt; args['shouldCalculateCensus'] = False
+&gt;&gt;&gt; args['censusYear'] = &quot;TwoThousandTen&quot;
+</pre>
+</div>
+<div class="slide" id="making-the-call">
+<h1>Making the Call</h1>
+<p>Finally, once we've got the arguments all ready we can go ahead and make a call
+to the server:</p>
+<pre class="small literal-block">
+&gt;&gt;&gt; res = geo_client.service.GeocodeAddressNonParsed(**args)
+DEBUG:suds.client:sending to
+(https://geoservices.tamu.edu/Services/Geocode/WebService/GeocoderService_V03_01.asmx)
+message:
+...
+</pre>
+</div>
+<div class="slide" id="what-does-it-look-like">
+<h1>What does it look like?</h1>
+<pre class="tiny literal-block">
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;SOAP-ENV:Envelope xmlns:ns0=&quot;https://geoservices.tamu.edu/&quot; xmlns:ns1=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:SOAP-ENV=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;&gt;
+   &lt;SOAP-ENV:Header/&gt;
+   &lt;ns1:Body&gt;
+      &lt;ns0:GeocodeAddressNonParsed&gt;
+         &lt;ns0:streetAddress&gt;1325 4th Avenue&lt;/ns0:streetAddress&gt;
+         &lt;ns0:city&gt;Seattle&lt;/ns0:city&gt;
+         &lt;ns0:state&gt;WA&lt;/ns0:state&gt;
+         &lt;ns0:zip&gt;98101&lt;/ns0:zip&gt;
+         &lt;ns0:apiKey&gt;a450a9181f85498598e21f8a39440e9a&lt;/ns0:apiKey&gt;
+         &lt;ns0:version&gt;3.01&lt;/ns0:version&gt;
+         &lt;ns0:shouldCalculateCensus&gt;false&lt;/ns0:shouldCalculateCensus&gt;
+         &lt;ns0:censusYear&gt;TwoThousandTen&lt;/ns0:censusYear&gt;
+         &lt;ns0:shouldReturnReferenceGeometry&gt;true&lt;/ns0:shouldReturnReferenceGeometry&gt;
+         &lt;ns0:shouldNotStoreTransactionDetails&gt;true&lt;/ns0:shouldNotStoreTransactionDetails&gt;
+      &lt;/ns0:GeocodeAddressNonParsed&gt;
+   &lt;/ns1:Body&gt;
+&lt;/SOAP-ENV:Envelope&gt;
+</pre>
+</div>
+<div class="slide" id="and-the-reply">
+<h1>And the Reply?</h1>
+<pre class="tiny literal-block">
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;soap:Envelope xmlns:soap=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;
+  &lt;soap:Body&gt;
+    &lt;GeocodeAddressNonParsedResponse xmlns=&quot;https://geoservices.tamu.edu/&quot;&gt;
+      &lt;GeocodeAddressNonParsedResult&gt;
+        &lt;TransactionId&gt;6ef9c110-994c-4142-93d5-a55173526b64&lt;/TransactionId&gt;
+        &lt;Latitude&gt;47.6084110119244&lt;/Latitude&gt;
+        &lt;Longitude&gt;-122.3351592971042&lt;/Longitude&gt;
+        &lt;Version&gt;3.01&lt;/Version&gt;
+        &lt;Quality&gt;QUALITY_ADDRESS_RANGE_INTERPOLATION&lt;/Quality&gt;
+        &lt;MatchedLocationType&gt;LOCATION_TYPE_STREET_ADDRESS&lt;/MatchedLocationType&gt;
+        &lt;MatchType&gt;Exact&lt;/MatchType&gt;
+        &lt;FeatureMatchingResultCount&gt;1&lt;/FeatureMatchingResultCount&gt;
+        ...
+        &lt;FArea&gt;2910.69420560356&lt;/FArea&gt;
+        &lt;FAreaType&gt;Meters&lt;/FAreaType&gt;
+        &lt;FGeometrySRID&gt;4269&lt;/FGeometrySRID&gt;
+        &lt;FGeometry&gt;&amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&amp;gt;&amp;lt;LineString xmlns=&quot;http://www.opengis.net/gml&quot;&amp;gt;&amp;lt;posList&amp;gt;-122.334868 47.608226 -122.335777 47.609219&amp;lt;/posList&amp;gt;&amp;lt;/LineString&amp;gt;&lt;/FGeometry&gt;
+        ...
+      &lt;/GeocodeAddressNonParsedResult&gt;
+    &lt;/GeocodeAddressNonParsedResponse&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;
+</pre>
+</div>
+<div class="slide" id="and-what-of-our-result">
+<h1>And What of Our Result?</h1>
+<p>The WSDL we started with should provide type definitions for both data we send
+and results we receive. The <tt class="docutils literal">res</tt> symbol we bound to our result earlier
+should now be an instance of a <em>GeocodeAddressNonParsedResult</em>. Lets see what
+that looks like:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; type(res)
+&lt;type 'instance'&gt;
+&gt;&gt;&gt; dir(res)
+['CensusTimeTaken', 'CensusYear', 'ErrorMessage', 'FArea',
+ 'FAreaType', 'FCity', 'FCounty', 'FCountySubRegion',
+ ...]
+&gt;&gt;&gt; res.Latitude, res.Longitude
+(47.608411011924403, -122.3351592971042)
+</pre>
+</div>
+<div class="slide" id="a-word-on-debugging">
+<h1>A Word on Debugging</h1>
+<p class="center"><strong>blerg</strong></p>
+<ul class="incremental simple">
+<li>Messages sent to the server are long XML strings</li>
+<li>Error messages are generally based on parsing errors in XML</li>
+<li>These error messages can be quite cryptic:</li>
+<li>&quot;There is an error in XML document (1, 572). ---&gt; The string '' is not a
+valid Boolean value.'</li>
+</ul>
+<p class="incremental">Try this</p>
+<pre class="small incremental literal-block">
+&gt;&gt;&gt; geo_client.last_sent().str().replace(&quot; &quot;,&quot;&quot;)[:573]
+'...&lt;/ns0:version&gt;\n&lt;ns0:shouldCalculateCensus/&gt;'
+</pre>
+</div>
+<div class="slide" id="afterword">
+<h1>Afterword</h1>
+<p>SOAP (and XML-RPC) have some problems:</p>
+<ul class="incremental simple">
+<li>XML is pretty damned inefficient as a data transfer medium</li>
+<li>Why should I need to know method names?</li>
+<li>If I can discover method names at all, I have to read a WSDL to do it?</li>
+</ul>
+<p class="incremental">Suds is the best we have, and it hasn't been updated since Sept. 2010.</p>
+</div>
+<div class="slide" id="if-not-xml-then-what">
+<h1>If Not XML, Then What?</h1>
+<p class="big-centered incremental"><strong>JSON</strong></p>
+</div>
+<div class="slide" id="json">
+<h1>JSON</h1>
+<p>JavaScript Object Notation:</p>
+<ul class="incremental simple">
+<li>a lightweight data-interchange format</li>
+<li>easy for humans to read and write</li>
+<li>easy for machines to parse and generate</li>
+</ul>
+<p class="incremental">Based on Two Structures:</p>
+<ul class="incremental simple">
+<li>object: <tt class="docutils literal">{ string: value, <span class="pre">...}</span></tt></li>
+<li>array: <tt class="docutils literal">[value, value, ]</tt></li>
+</ul>
+<p class="center incremental">pythonic, no?</p>
+</div>
+<div class="slide" id="json-data-types">
+<h1>JSON Data Types</h1>
+<p>JSON provides a few basic data types:</p>
+<ul class="incremental simple">
+<li>string: unicode, anything but '&quot;', '' and control chars</li>
+<li>number: any number, but json does not use octal or hexidecimal</li>
+<li>object, array (we've seen these above)</li>
+<li>true</li>
+<li>false</li>
+<li>null</li>
+</ul>
+<p class="incremental center"><strong>No date type? OMGWTF??!!1!1</strong></p>
+</div>
+<div class="slide" id="dates-in-json">
+<h1>Dates in JSON</h1>
+<p class="incremental">Option 1 - Unix Epoch Time (number):</p>
+<pre class="incremental small literal-block">
+&gt;&gt;&gt; import time
+&gt;&gt;&gt; time.time()
+1358212616.7691269
+</pre>
+<p class="incremental">Option 2 - ISO 8661 (string)</p>
+<pre class="incremental small doctest-block">
+&gt;&gt;&gt; import datetime
+&gt;&gt;&gt; datetime.datetime.now().isoformat()
+'2013-01-14T17:18:10.727240'
+</pre>
+</div>
+<div class="slide" id="json-in-python">
+<h1>JSON in Python</h1>
+<p>You can encode python to json, and decode json back to python:</p>
+<pre class="small literal-block">
+&gt;&gt;&gt; import json
+&gt;&gt;&gt; array = [1,2,3]
+&gt;&gt;&gt; json.dumps(array)
+&gt;&gt;&gt; dict_ = {'foo': [1,2,3], 'bar': u'my resumé', 'baz': True}
+&gt;&gt;&gt; json.dumps(dict_)
+'{&quot;baz&quot;: true, &quot;foo&quot;: [1, 2, 3], &quot;bar&quot;: &quot;my resum\\u00e9&quot;}'
+&gt;&gt;&gt; incoming = _
+&gt;&gt;&gt; new = json.loads(incoming)
+&gt;&gt;&gt; new == dict_
+True
+</pre>
+<p class="incremental">Customizing the encoder or decoder class allows for specialized serializations</p>
+</div>
+<div class="slide" id="id1">
+<h1>JSON in Python</h1>
+<p>the json module also supports reading and writing to <em>file-like objects</em> via
+<tt class="docutils literal">json.dump(fp)</tt> and <tt class="docutils literal">json.load(fp)</tt> (note the missing 's')</p>
+<p class="incremental">Remember duck-typing. Anything with a <tt class="docutils literal">.write</tt> and a <tt class="docutils literal">.read</tt> method is
+<em>file-like</em></p>
+<p class="incremental">Have we seen any network-related classes recently that behave that way?</p>
+</div>
+<div class="slide" id="what-about-wsdl">
+<h1>What about WSDL?</h1>
+<p>SOAP was invented in part to provide completely machine-readable
+interoperability.</p>
+<p class="incremental">Does that really work in real life?</p>
+<p class="incremental center">Hardly ever</p>
+</div>
+<div class="slide" id="id2">
+<h1>What about WSDL?</h1>
+<p>Another reason was to provide extensibility via custom types</p>
+<p class="incremental">Does that really work in real life?</p>
+<p class="incremental center">Hardly ever</p>
+</div>
+<div class="slide" id="why-do-all-the-work">
+<h1>Why Do All The Work?</h1>
+<p>So, if neither of these goals is really achieved by using SOAP, why pay all
+the overhead required to use the protocol?</p>
+<p class="incremental">Enter REST</p>
+</div>
+<div class="slide" id="rest">
+<h1>REST</h1>
+<p class="center">Representational State Transfer</p>
+<ul class="incremental simple">
+<li>Originally described by Roy T. Fielding (did you read it?)</li>
+<li>Use HTTP for what it can do</li>
+<li>Read more in <a class="reference external" href="http://www.crummy.com/writing/RESTful-Web-Services/">this book</a>*</li>
+</ul>
+<p class="image-credit incremental">* Seriously. Buy it and read
+(&lt;<a class="reference external" href="http://www.crummy.com/writing/RESTful-Web-Services/">http://www.crummy.com/writing/RESTful-Web-Services/</a>)</p>
+</div>
+<div class="slide" id="a-comparison">
+<h1>A Comparison</h1>
+<p>The XML-RCP/SOAP way:</p>
+<ul class="incremental small simple">
+<li>POST /getComment HTTP/1.1</li>
+<li>POST /getComments HTTP/1.1</li>
+<li>POST /addComment HTTP/1.1</li>
+<li>POST /editComment HTTP/1.1</li>
+<li>POST /deleteComment HTTP/1.1</li>
+</ul>
+<p class="incremental">The RESTful way:</p>
+<ul class="incremental small simple">
+<li>GET /comment/&lt;id&gt; HTTP/1.1</li>
+<li>GET /comment HTTP/1.1</li>
+<li>POST /comment HTTP/1.1</li>
+<li>PUT /comment/&lt;id&gt; HTTP/1.1</li>
+<li>DELETE /comment/&lt;id&gt; HTTP/1.1</li>
+</ul>
+</div>
+<div class="slide" id="roa">
+<h1>ROA</h1>
+<p>This is <strong>Resource Oriented Architecture</strong></p>
+<p class="incremental">The URL represents the <em>resource</em> we are working with</p>
+<p class="incremental">The HTTP Verb represents the <tt class="docutils literal">action</tt> to be taken</p>
+<p class="incremental">The HTTP Code returned tells us the <tt class="docutils literal">result</tt> (whether success or failure)</p>
+</div>
+<div class="slide" id="http-codes-revisited">
+<h1>HTTP Codes Revisited</h1>
+<p class="small">POST /comment HTTP/1.1  (creating a new comment):</p>
+<ul class="incremental small simple">
+<li>Success: <tt class="docutils literal">HTTP/1.1 201 Created</tt></li>
+<li>Failure (unauthorized): <tt class="docutils literal">HTTP/1.1 401 Unauthorized</tt></li>
+<li>Failure (NotImplemented): <tt class="docutils literal">HTTP/1.1 405 Not Allowed</tt></li>
+<li>Failure (ValueError): <tt class="docutils literal">HTTP/1.1 406 Not Acceptable</tt></li>
+</ul>
+<p class="small incremental">PUT /comment/&lt;id&gt; HTTP/1.1 (edit comment):</p>
+<ul class="incremental small simple">
+<li>Success: <tt class="docutils literal">HTTP/1.1 200 OK</tt></li>
+<li>Failure: <tt class="docutils literal">HTTP/1.1 409 Conflict</tt></li>
+</ul>
+<p class="small incremental">DELETE /comment/&lt;id&gt; HTTP/1.1 (delete comment):</p>
+<ul class="incremental small simple">
+<li>Success: <tt class="docutils literal">HTTP/1.1 204 No Content</tt></li>
+</ul>
+</div>
+<div class="slide" id="http-is-stateless">
+<h1>HTTP Is Stateless</h1>
+<p>No individual request may be assumed to know anything about any other request.</p>
+<p class="incremental">All the required information for to represent the possible actions to take
+<em>should be present in either the request or the response</em>.</p>
+<p class="incremental big-centered">Thus:  HATEOAS</p>
+</div>
+<div class="slide" id="hateoas">
+<h1>HATEOAS</h1>
+<p class="big-centered">Hypermedia As The Engine Of Application State</p>
+</div>
+<div class="slide" id="applications-are-state-engines">
+<h1>Applications are State Engines</h1>
+<p>A State Engine is a machine that provides <em>states</em> for a resource to be in and
+<em>transitions</em> to move resources between states.  A Restful api should:</p>
+<ul class="incremental simple">
+<li>provide information about the current state of a resource</li>
+<li>provide information about available transitions for that resource (URIs)</li>
+<li>provide all this in each HTTP response</li>
+</ul>
+</div>
+<div class="slide" id="playing-with-rest">
+<h1>Playing With REST</h1>
+<p>Let's take a moment to play with REST.</p>
+<p class="incremental">We tried geocoding with SOAP.  Let's repeat the exercise with a REST/JSON API</p>
+<p class="incremental center"><strong>Back to your interpreter</strong></p>
+</div>
+<div class="slide" id="geocoding-with-google-apis">
+<h1>Geocoding with Google APIs</h1>
+<p><a class="reference external" href="https://developers.google.com/maps/documentation/geocoding">https://developers.google.com/maps/documentation/geocoding</a></p>
+<pre class="small incremental doctest-block">
+&gt;&gt;&gt; import urllib
+&gt;&gt;&gt; import urllib2
+&gt;&gt;&gt; from pprint import pprint
+&gt;&gt;&gt; base = 'http://maps.googleapis.com/maps/api/geocode/json'
+&gt;&gt;&gt; addr = '1325 4th Ave, Seattle, WA 98101'
+&gt;&gt;&gt; data = {'address': addr, 'sensor': False }
+&gt;&gt;&gt; query = urllib.urlencode(data)
+&gt;&gt;&gt; res = urllib2.urlopen('?'.join([base, query]))
+&gt;&gt;&gt; response = json.load(res)
+&gt;&gt;&gt; pprint(response)
+</pre>
+</div>
+<div class="slide" id="restful-job-listings">
+<h1>RESTful Job Listings</h1>
+<p><a class="reference external" href="https://github.com/mattnull/techsavvyapi">https://github.com/mattnull/techsavvyapi</a></p>
+<pre class="small incremental doctest-block">
+&gt;&gt;&gt; base = 'http://api.techsavvy.io/jobs'
+&gt;&gt;&gt; search = 'python+web'
+&gt;&gt;&gt; res = urllib2.urlopen('/'.join([base, search]))
+&gt;&gt;&gt; response = json.load(res)
+&gt;&gt;&gt; type(response)
+&lt;type 'dict'&gt;
+&gt;&gt;&gt; response.keys()
+[u'count', u'data']
+&gt;&gt;&gt; response['count']
+50
+&gt;&gt;&gt; for post in response['data']:
+...   for key in sorted(post.keys()):
+...     print &quot;%s:\n    %s&quot; % (key, post[key])
+...   print
+...
+</pre>
+</div>
+<div class="slide" id="lab-2-mashup">
+<h1>Lab 2 - Mashup</h1>
+<p>Some of the job postings from our TechSavvy api returned lat/lon pairs.</p>
+<p>Google provides a reverse address lookup service via the geocoding api
+(<a class="reference external" href="https://developers.google.com/maps/documentation/geocoding/#ReverseGeocoding">https://developers.google.com/maps/documentation/geocoding/#ReverseGeocoding</a>)</p>
+<p>Create a list of job postings, with an address for those postings that provide
+the needed data</p>
+<p class="incremental center"><strong>GO</strong></p>
+</div>
+<div class="slide" id="assignment">
+<h1>Assignment</h1>
+<p>Using what you've learned this week, create a more complex mashup of some data
+that interests you. Map the locations of the breweries near your house. Chart
+a multi-axial graph of the popularity of various cities across several
+categories.  Visualize the most effective legislators in Congress.  You have
+interests, the Web has tools.  Put them together to make something.</p>
+</div>
+<div class="slide" id="submitting-the-assignment">
+<h1>Submitting the Assignment</h1>
+<p>Place the following in the <tt class="docutils literal">assignments/week03/athome</tt> directory and make a
+pull request:</p>
+<dl class="small docutils">
+<dt>A textual description of your mashup.</dt>
+<dd>What data sources did you scan, what tools did you use, what is the
+outcome you wanted to create?</dd>
+</dl>
+<dl class="small docutils">
+<dt>Your source code.</dt>
+<dd>Give me an executable python script that I can run to get output.</dd>
+</dl>
+<dl class="small docutils">
+<dt>Any instructions I need.</dt>
+<dd>If I need instructions beyond 'python myscript.py' to get the right
+output, let me know.</dd>
+</dl>
 </div>
 </div>
 </body>
