@@ -1326,7 +1326,7 @@ Geocoding with Google APIs
 
 https://developers.google.com/maps/documentation/geocoding
 
-.. class:: small
+.. class:: small incremental
 
     >>> import urllib
     >>> import urllib2
@@ -1344,7 +1344,7 @@ RESTful Job Listings
 
 https://github.com/mattnull/techsavvyapi
 
-.. class:: small
+.. class:: small incremental
 
     >>> base = 'http://api.techsavvy.io/jobs'
     >>> search = 'python+web'
