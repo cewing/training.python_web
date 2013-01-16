@@ -48,9 +48,111 @@ choose the right one for our message</p>
 <h1>But First</h1>
 <p class="big-centered">Review from the Assignment</p>
 </div>
+<div class="slide" id="clean-up-after-yourself">
+<h1>Clean Up After Yourself</h1>
+<p>very few of you closed your server socket before exiting the server script:</p>
+<pre class="small literal-block">
+server = socket.socket()
+# set up
+try:
+    while True
+        # do server stuff
+except KeyboardInterrupt:
+    server.close()
+    sys.exit()
+</pre>
+</div>
+<div class="slide" id="use-module-constants">
+<h1>Use Module Constants</h1>
+<p>Constants are provided to help us 'do the right thing' without needing to
+remember what the right thing is, exactly.  So, instead of:</p>
+<pre class="literal-block">
+socket.socket(2,1,0)
+</pre>
+<p>use:</p>
+<pre class="literal-block">
+socket.socket(socket.AF_INET,
+              socket.SOCK_STREAM,
+              socket.IPPROTO_IP)
+</pre>
+</div>
+<div class="slide" id="interaction-can-be-good">
+<h1>Interaction Can Be Good</h1>
+<pre class="tiny literal-block">
+try:
+    # generate two numbers
+    while True:
+        try:
+            number_one = int(raw_input(&quot;Enter the first number in the sum: &quot;))
+            break
+        except ValueError:
+            print &quot;Oops!  That was no valid number.  Try again...&quot;
+
+    while True:
+        try:
+            number_two = int(raw_input(&quot;Enter the second number in the sum: &quot;))
+            break
+        except ValueError:
+            print &quot;Oops!  That was no valid number.  Try again...&quot;
+</pre>
+</div>
+<div class="slide" id="a-tricksy-bug">
+<h1>A Tricksy Bug</h1>
+<pre class="small literal-block">
+...
+while 1:
+    conn, addr = server_socket.accept()
+    print &quot;Connection Established.&quot;
+    # Keep connection alive.
+    while 1:
+        data = conn.recv(4096)
+        listIn = literal_eval(data)
+        print 'Values: %s, Type: %s' % (listIn, type(listIn))
+        conn.sendall('Sum: %s\n' % sum(listIn))
+
+conn.close()
+server_socket.close()
+</pre>
+</div>
+<div class="slide" id="the-result">
+<h1>The Result</h1>
+<p>Client: prints correct value</p>
+<p>Server: prints <tt class="docutils literal">Values: [0, 1, 2, 3], Type: &lt;type 'list'&gt;</tt></p>
+<p>Server:</p>
+<pre class="tiny incremental literal-block">
+Traceback (most recent call last):
+  File &quot;training.python_web/assignments/week01/athome/number_server.py&quot;, line 34, in &lt;module&gt;
+    listIn = literal_eval(data)
+  File &quot;/System/Library/Frameworks/Python.framework/Versions/2.6/lib/python2.6/ast.py&quot;, line 49, in literal_eval
+    node_or_string = parse(node_or_string, mode='eval')
+  File &quot;/System/Library/Frameworks/Python.framework/Versions/2.6/lib/python2.6/ast.py&quot;, line 37, in parse
+    return compile(expr, filename, mode, PyCF_ONLY_AST)
+  File &quot;&lt;unknown&gt;&quot;, line 0
+
+    ^
+SyntaxError: unexpected EOF while parsing
+</pre>
+</div>
+<div class="slide" id="screen">
+<h1>Screen</h1>
+<p>For running scripts on a *nix server and keeping them running, even after you
+disconnect:</p>
+<pre class="literal-block">
+$ screen
+$ start_process
+&lt;ctrl-a ctrl-d&gt;
+Screen Detached
+$ screen -ls # lists your screens
+$ screen -r connects to only running screen
+</pre>
+</div>
 <div class="slide" id="and-second">
 <h1>And Second</h1>
 <p class="big-centered">Questions from the Reading?</p>
+</div>
+<div class="slide" id="and-third">
+<h1>And Third</h1>
+<p class="big-centered">Dan Explains Git!!!</p>
 </div>
 <div class="slide" id="and-now">
 <h1>And Now...</h1>
