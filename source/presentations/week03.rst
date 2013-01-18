@@ -1394,17 +1394,17 @@ pull request:
 
 .. class:: small
 
-A textual description of your mashup.
+A textual description of your mashup (README.txt).
   What data sources did you scan, what tools did you use, what is the
   outcome you wanted to create?
 
 .. class:: small
 
-Your source code.
+Your source code (mashup.py).
   Give me an executable python script that I can run to get output.
 
 .. class:: small
 
 Any instructions I need.
-  If I need instructions beyond 'python myscript.py' to get the right
+  If I need instructions beyond 'python mashup.py' to get the right
   output, let me know.
