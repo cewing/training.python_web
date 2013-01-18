@@ -44,6 +44,18 @@ In week two, we wrote an HTTP server.
 We set up the server to be *dynamic* by returning the output of a python
 script
 
+.. class:: incremental
+
+But what if we want to pass arguments to that script?
+
+.. class:: incremental
+
+How do we let the script have access to information about the HTTP request
+itself?
+
+
+
+
 
 scraps
 ------
