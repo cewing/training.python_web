@@ -185,8 +185,10 @@ at the data they provide.
 In our class lab sessions we will practice scraping a website and using a
 documented web service API.
 
-For our class assignment, students will choose two sources of information
-online and combine them in a mashup.
+For our class assignment, students will choose two (or more) sources of
+information online and combine them in a mashup.
+
+`Week 3 Presentation <presentations/week03.html>`_
 
 Reading
 *******
@@ -257,7 +259,7 @@ Bonus
 Assignment
 **********
 
-To Be Decided
+On the way soon.
 
 Week 4 - CGI and WSGI
 ---------------------
