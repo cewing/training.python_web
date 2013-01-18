@@ -92,7 +92,9 @@ Environment in Python
 We can see this *environment* in Python, too::
 
     $ python
-    ...
+
+.. code-block:: python
+
     >>> import os
     >>> print os.environ['VARIABLE']
     some_value
@@ -103,7 +105,9 @@ We can see this *environment* in Python, too::
 Altering the Environment
 ------------------------
 
-You can alter os environment values while in Python::
+You can alter os environment values while in Python:
+
+.. code-block:: python
 
     >>> os.environ['VARIABLE'] = 'new_value'
     >>> print os.environ['VARIABLE']
@@ -265,9 +269,8 @@ the script?  What happens there?
 * Open ``assignments/week04/lab/cgi-bin/cgi_1.py`` in an editor
 * Before where it says ``cgi.test()``, add a single line:
 
-.. class:: incremental
-
-::
+.. code-block:: python
+    :class: incremental
 
     1 / 0
 
@@ -291,9 +294,8 @@ Viewing Errors in Python CGI
 
 Back in your editor, add the following lines, just below ``import cgi``:
 
-.. class:: incremental
-
-::
+.. code-block:: python
+    :class: incremental
 
     import cgitb
     cgitb.enable()
