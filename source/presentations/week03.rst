@@ -128,7 +128,9 @@ First Steps - Get Source
 ------------------------
 
 Let's start by grabbing the page we want. We use the Python Standard Library
-``urllib2`` to handle this task (note that we've shortened the URL)::
+``urllib2`` to handle this task (note that we've shortened the URL):
+
+.. code-block:: python
 
     >>> import urllib2
     >>> page = urllib2.urlopen('http://tinyurl.com/osfeeds')
@@ -145,7 +147,9 @@ First Steps - Read Source
 -------------------------
 
 We can take the page we just opened, and read it. The object is file-like, so
-it supports standard file read operations::
+it supports standard file read operations:
+
+.. code-block:: python
 
     >>> html = page.read()
     >>> len(page)
@@ -207,7 +211,9 @@ Step Back for a Moment
 ----------------------
 
 This is going to take some preparation, so let's set aside our html page in a
-way that will allow us to come back to it::
+way that will allow us to come back to it:
+
+.. code-block:: python
 
     >>> fh = open('bloglist.html', 'w')
     >>> fh.write(html)
@@ -345,7 +351,9 @@ Parsing HTML
 ------------
 
 Okay, we're all set here. Let's load up our HTML page and get ready to scrape
-it::
+it:
+
+.. code-block:: python
 
     (soupenv)$ python
     >>> fh = open('bloglist.html', 'r')
@@ -404,7 +412,9 @@ Searching by CSS Class
 ----------------------
 
 The items we are looking for are ``div`` tags which have the CSS class
-``feedEntry``::
+``feedEntry``:
+
+.. code-block:: python
 
     >>> entries = parsed.find_all('div', class_='feedEntry')
     >>> len(entries)
@@ -433,7 +443,7 @@ What bits of an entry have the details we need to meet our goals?
 Testing it out
 --------------
 
-::
+.. code-block:: python
 
     >>> for e in entries:
     ...     anchor = e.find('a')
@@ -582,9 +592,8 @@ XML-RPC Example - Server
 
 xmlrpc_server.py:
 
-.. class:: small
-
-::
+.. code-block:: python
+    :class: small
 
     from SimpleXMLRPCServer import SimpleXMLRPCServer
     
@@ -610,9 +619,8 @@ xmlrpc_server.py script:
 
 Then, open another terminal and start up python:
 
-.. class:: small
-
-::
+.. code-block:: python
+    :class: small
 
     >>> import xmlrpclib
     >>> proxy = xmlrpclib.ServerProxy('http://localhost:50000', verbose=True)
@@ -680,11 +688,10 @@ Register an entire Python class as a service, exposing class methods::
 
     server.register_instance(MyClass())
 
-Keep an instance method private:
+Keep an instance method private    :
 
-.. class:: tiny
-
-::
+.. code-block:: python
+    :class: tiny
 
     class MyServiceClass(object):
         ...
@@ -702,9 +709,8 @@ XML-RPC Introspection
 
 First, implement required methods on your service class:
 
-.. class:: tiny
-
-::
+.. code-block:: python
+    :class: tiny
 
     from SimpleXMLRPCServer import list_public_methods
     
@@ -729,18 +735,16 @@ XML-RPC Instrospection
 
 Then enable introspection via the server instance:
 
-.. class:: small
-
-::
+.. code-block:: python
+    :class: small
 
     server.register_introspection_functions()
 
 After this, a client proxy can call pre-defined methods to learn about what
-your service offers
+your service offers:
 
-.. class:: small
-
-::
+.. code-block:: python
+    :class: small
 
     >>> for name in proxy.system.listMethods():
     ...     help = proxy.system.methodHelp(name)
@@ -814,9 +818,8 @@ Suds allows us to create a SOAP client object. SOAP uses WSDL to define a
 service. All we need to do to set this up in python is load the URL of the
 WSDL for the service we want to use:
 
-.. class:: small
-
-::
+.. code-block:: python
+    :class: small
 
     (soupenv)$ python
     >>> from suds.client import Client
@@ -830,9 +833,8 @@ Peeking at the Service
 Suds allows us to visually scan the service. Simply print the client object to
 see what the service has to offer:
 
-.. class:: small
-
-::
+.. code-block:: python
+    :class: small
 
     >>> print geo_client
 
@@ -853,7 +855,9 @@ Debugging Suds
 
 Suds uses python logging to deal with debug information, so if you want to see
 what's going on under the hood, you configure it via the Python logging
-module::
+module:
+
+.. code-block:: python
 
     >>> import logging
     >>> logging.basicConfig(level=logging.INFO)
@@ -870,13 +874,17 @@ SOAP Servers can provide more than one *service* and each *service* might have
 more than one *port*. Suds provides two ways to configure which *service* and
 *port* you wish to use.  
 
-Via subscription::
+Via subscription:
+
+.. code-block:: python
 
     client.service['<service>']['<port>'].method(args)
 
-Or the way we will do it, via configuration::
+Or the way we will do it, via configuration:
 
-    geo_client.set_options(service='GeocoderService_V03_01', ↩
+.. code-block:: python
+
+    geo_client.set_options(service='GeocoderService_V03_01',
                            port='GeocoderService_V03_01Soap')
 
 Providing Arguments
@@ -885,9 +893,8 @@ Providing Arguments
 Arguments to a method are set up as a dictionary.  Although some may not be 
 required according to api documentation, it is safest to provide them all:
 
-.. class:: small
-
-::
+.. code-block:: python
+    :class: small
 
     >>> apiKey = '<fill this in>'
     >>> args = {'apiKey': apiKey, }
@@ -907,9 +914,8 @@ Making the Call
 Finally, once we've got the arguments all ready we can go ahead and make a call
 to the server:
 
-.. class:: small
-
-::
+.. code-block:: python
+    :class: small
 
     >>> res = geo_client.service.GeocodeAddressNonParsed(**args)
     DEBUG:suds.client:sending to 
@@ -980,7 +986,9 @@ And What of Our Result?
 The WSDL we started with should provide type definitions for both data we send
 and results we receive. The ``res`` symbol we bound to our result earlier
 should now be an instance of a *GeocodeAddressNonParsedResult*. Lets see what
-that looks like::
+that looks like:
+
+.. code-block:: python
 
     >>> type(res)
     <type 'instance'>
@@ -1008,11 +1016,10 @@ A Word on Debugging
 
 .. class:: incremental
 
-Try this
+Try this:
 
-.. class:: small incremental
-
-::
+.. code-block:: python
+    :class: small incremental
 
     >>> geo_client.last_sent().str().replace(" ","")[:573]
     '...</ns0:version>\n<ns0:shouldCalculateCensus/>'
@@ -1089,9 +1096,8 @@ Dates in JSON
 
 Option 1 - Unix Epoch Time (number):
 
-.. class:: incremental small
-
-::
+.. code-block:: python
+    :class: small incremental
 
     >>> import time
     >>> time.time()
@@ -1099,9 +1105,10 @@ Option 1 - Unix Epoch Time (number):
 
 .. class:: incremental
 
-Option 2 - ISO 8661 (string)
+Option 2 - ISO 8661 (string):
 
-.. class:: incremental small
+.. code-block:: python
+    :class: small incremental
 
     >>> import datetime
     >>> datetime.datetime.now().isoformat()
@@ -1112,9 +1119,8 @@ JSON in Python
 
 You can encode python to json, and decode json back to python:
 
-.. class:: small
-
-::
+.. code-block:: python
+    :class: small
 
     >>> import json
     >>> array = [1,2,3]
@@ -1326,7 +1332,8 @@ Geocoding with Google APIs
 
 https://developers.google.com/maps/documentation/geocoding
 
-.. class:: small incremental
+.. code-block:: python
+    :class: small incremental
 
     >>> import urllib
     >>> import urllib2
@@ -1344,7 +1351,8 @@ RESTful Job Listings
 
 https://github.com/mattnull/techsavvyapi
 
-.. class:: small incremental
+.. code-block:: python
+    :class: small incremental
 
     >>> base = 'http://api.techsavvy.io/jobs'
     >>> search = 'python+web'
