@@ -19,12 +19,133 @@ But First
 
 Review from the Assignment
 
+Clean Up After Yourself
+-----------------------
+
+very few of you closed your server socket before exiting the server script:
+
+.. class:: small
+
+::
+
+    server = socket.socket()
+    # set up
+    try:
+        while True
+            # do server stuff
+    except KeyboardInterrupt:
+        server.close()
+        sys.exit()
+
+Use Module Constants
+--------------------
+
+Constants are provided to help us 'do the right thing' without needing to
+remember what the right thing is, exactly.  So, instead of::
+
+    socket.socket(2,1,0)
+
+use::
+
+    socket.socket(socket.AF_INET,
+                  socket.SOCK_STREAM,
+                  socket.IPPROTO_IP)
+
+Interaction Can Be Good
+-----------------------
+
+.. class:: tiny
+
+::
+
+    try:
+        # generate two numbers
+        while True:
+            try:
+                number_one = int(raw_input("Enter the first number in the sum: "))
+                break
+            except ValueError:
+                print "Oops!  That was no valid number.  Try again..."
+    
+        while True:
+            try:
+                number_two = int(raw_input("Enter the second number in the sum: "))
+                break
+            except ValueError:
+                print "Oops!  That was no valid number.  Try again..."
+
+A Tricksy Bug
+-------------
+
+.. class:: small
+
+::
+
+    ...
+    while 1:
+        conn, addr = server_socket.accept()
+        print "Connection Established."
+        # Keep connection alive.
+        while 1:
+            data = conn.recv(4096)
+            listIn = literal_eval(data)
+            print 'Values: %s, Type: %s' % (listIn, type(listIn))
+            conn.sendall('Sum: %s\n' % sum(listIn))
+
+    conn.close()
+    server_socket.close()
+
+The Result
+----------
+
+Client: prints correct value
+
+Server: prints ``Values: [0, 1, 2, 3], Type: <type 'list'>``
+
+Server:
+
+.. class:: tiny incremental
+
+::
+
+    Traceback (most recent call last):
+      File "training.python_web/assignments/week01/athome/number_server.py", line 34, in <module>
+        listIn = literal_eval(data)
+      File "/System/Library/Frameworks/Python.framework/Versions/2.6/lib/python2.6/ast.py", line 49, in literal_eval
+        node_or_string = parse(node_or_string, mode='eval')
+      File "/System/Library/Frameworks/Python.framework/Versions/2.6/lib/python2.6/ast.py", line 37, in parse
+        return compile(expr, filename, mode, PyCF_ONLY_AST)
+      File "<unknown>", line 0
+    
+        ^
+    SyntaxError: unexpected EOF while parsing
+
+Screen
+------
+
+For running scripts on a \*nix server and keeping them running, even after you
+disconnect::
+
+    $ screen
+    $ start_process
+    <ctrl-a ctrl-d>
+    Screen Detached
+    $ screen -ls # lists your screens
+    $ screen -r connects to only running screen
+
 And Second
 ----------
 
 .. class:: big-centered
 
 Questions from the Reading?
+
+And Third
+---------
+
+.. class:: big-centered
+
+Dan Explains Git!!!
 
 And Now...
 ----------
