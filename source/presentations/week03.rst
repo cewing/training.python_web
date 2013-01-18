@@ -1125,12 +1125,12 @@ You can encode python to json, and decode json back to python:
     >>> import json
     >>> array = [1,2,3]
     >>> json.dumps(array)
-    >>> dict_ = {'foo': [1,2,3], 'bar': u'my resumé', 'baz': True}
-    >>> json.dumps(dict_)
+    >>> orig = {'foo': [1,2,3], 'bar': u'my resumé', 'baz': True}
+    >>> encoded = json.dumps(dict_)
+    >>> encoded
     '{"baz": true, "foo": [1, 2, 3], "bar": "my resum\\u00e9"}'
-    >>> incoming = _
-    >>> new = json.loads(incoming)
-    >>> new == dict_
+    >>> decoded = json.loads(encoded)
+    >>> decoded == orig
     True
 
 .. class:: incremental
