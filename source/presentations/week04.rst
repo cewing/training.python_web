@@ -796,14 +796,311 @@ WSGI
 
 Enter WSGI, the Web Server Gateway Interface.
 
+.. class:: incremental
+
+Where other alternatives are specific implementations of the CGI standard,
+WSGI is itself a new standard, not an implementation.
+
+.. class:: incremental
+
+WSGI is generalized to describe a set of interactions, so that developers can
+write WSGI-capable apps and deploy them on any WSGI server.
+
+.. class:: incremental
+
+Read the WSGI spec: http://www.python.org/dev/peps/pep-0333
+
+WSGI: Apps and Servers
+----------------------
+
+.. class:: small
+
+WSGI consists of two parts, a *server* and an *application*.
+
+.. class:: small
+
+A WSGI Server must:
+
+.. class:: incremental small
+
+* set up an environment, much like the one in CGI
+* provide a method ``start_response(status, headers, exc_info=None)``
+* build a response body by calling an *application*, passing
+  ``environment`` and ``start_response`` as args
+* return a response with the status, headers and body
+
+.. class:: small
+
+A WSGI Appliction must:
+
+.. class:: incremental small
+
+* Be a callable (function, method, class) 
+* Take an environment and a ``start_response`` callable as arguments
+* Return an iterable of 0 or more strings, which are treated as the body of
+  the respponse.
+
+Flowcharts
+----------
+
+WSGI Servers:
+
+.. class:: center incremental
+
+**HTTP <---> WSGI**
+
+.. class:: incremental
+
+WSGI Applications:
+
+.. class:: center incremental
+
+**WSGI <---> app code**
+
+The Whole Enchilada
+-------------------
+
+The WSGI *Stack* can thus be expressed like so:
+
+.. class:: incremental big-centered
+
+**HTTP <---> WSGI <---> app code**
+
+Using wsgiref
+-------------
+
+The Python standard lib provides a reference implementation of WSGI:
+
+.. image:: img/wsgiref_flow.png
+    :align: center
+    :width: 80%
+    :class: incremental
+
+Apache mod_wsgi
+---------------
+
+You can also deploy with Apache as your HTTP server, using **mod_wsgi**:
+
+.. image:: img/mod_wsgi_flow.png
+    :align: center
+    :width: 80%
+    :class: incremental
+
+Proxied WSGI Servers
+--------------------
+
+Finally, it is also common to see WSGI apps deployed via a proxied WSGI
+server:
+
+.. image:: img/proxy_wsgi.png
+    :align: center
+    :width: 80%
+    :class: incremental
+
+WSGI Middleware
+---------------
+
+Another feature of WSGI is *middleware*:
+
+.. class:: incremental
+
+* Middleware implements both the *server* and *application* interfaces
+* Middleware acts as a server when viewed from an application
+* Middleware acts as an application when viewed from a server
+
+.. image:: img/wsgi_middleware_onion.png
+    :align: center
+    :width: 38%
+    :class: incremental
+
+Simplified WSGI Server
+----------------------
+
+.. code-block:: python
+    :class: small
+
+    from some_application import simple_app
+    
+    def build_env(request):
+        # put together some environment info from the reqeuest
+        return env
+    
+    def handle_request(request, app):
+        environ = build_env(request)
+        iterable = app(environ, start_response)
+        for data in iterable:
+            # send data to client here
+    
+    def start_response(status, headers):
+        # start an HTTP response, sending status and headers
+    
+    # listen for HTTP requests and pass on to handle_request()
+    serve(simple_app)
+
+WSGI Environment
+----------------
+
+.. class:: small incremental
+
+REQUEST_METHOD
+  The HTTP request method, such as "GET" or "POST". This cannot ever be an
+  empty string, and so is always required.
+SCRIPT_NAME
+  The initial portion of the request URL's "path" that corresponds to the
+  application object, so that the application knows its virtual "location".
+  This may be an empty string, if the application corresponds to the "root" of
+  the server.
+PATH_INFO
+  The remainder of the request URL's "path", designating the virtual
+  "location" of the request's target within the application. This may be an
+  empty string, if the request URL targets the application root and does not
+  have a trailing slash.
+QUERY_STRING
+  The portion of the request URL that follows the "?", if any. May be empty or
+  absent.
+CONTENT_TYPE
+  The contents of any Content-Type fields in the HTTP request. May be empty or
+  absent.
+
+WSGI Environment
+----------------
+
+.. class:: small
+
+CONTENT_LENGTH
+  The contents of any Content-Length fields in the HTTP request. May be empty
+  or absent.
+SERVER_NAME, SERVER_PORT
+  When combined with SCRIPT_NAME and PATH_INFO, these variables can be used to
+  complete the URL. Note, however, that HTTP_HOST, if present, should be used
+  in preference to SERVER_NAME for reconstructing the request URL. See the URL
+  Reconstruction section below for more detail. SERVER_NAME and SERVER_PORT
+  can never be empty strings, and so are always required.
+SERVER_PROTOCOL
+  The version of the protocol the client used to send the request. Typically
+  this will be something like "HTTP/1.0" or "HTTP/1.1" and may be used by the
+  application to determine how to treat any HTTP request headers. (This
+  variable should probably be called REQUEST_PROTOCOL, since it denotes the
+  protocol used in the request, and is not necessarily the protocol that will
+  be used in the server's response. However, for compatibility with CGI we
+  have to keep the existing name.)
+
+WSGI Environment
+----------------
+
+.. class:: small
+
+HTTP\_ Variables
+  Variables corresponding to the client-supplied HTTP request headers (i.e.,
+  variables whose names begin with "HTTP\_"). The presence or absence of these
+  variables should correspond with the presence or absence of the appropriate
+  HTTP header in the request.
+
+.. class:: center incremental
+
+**Seem Familiar?**
+
+Simple WSGI Application
+-----------------------
+
+Where the simplified server above is **not** functional, this is a complete
+app:
+
+.. code-block:: python
+
+    def application(environ, start_response)
+        status = "200 OK"
+        body = "Hello World\n"
+        response_headers = [('Content-type', 'text/plain',
+                             'Content-length', len(body))]
+        start_response(status, response_headers)
+        return [body]
+
+Simple WSGI Middleware
+----------------------
+
+Here's a very simple sample of middleware:
+
+.. code-block:: python
+    :class: small
+
+    class Upperware:
+        def __init__(self, app)
+            self.wrapped_app = app
+        
+        def __call__(self, environ, start_response)
+            for data in self.wrapped_app(environ, start_response):
+                return data.upper()
+
+.. class:: incremental
+
+How does this fulfill the server part of the agreement?  
+
+.. class:: incremental
+
+The application part?
+
+A Word on Middleware
+--------------------
+
+.. class:: incremental center
+
+**TRANSPARENT**
+
+.. class:: incremental
+
+* loose coupling means layers should not need to know anything about each
+  other
+* You should be able to combine a server from one package, middleware from
+  another, and application code from yet another
+* A good test is this:
+
+.. class:: incremental center
+
+If you remove your middleware, does your app break?
+
+.. class:: incremental
+
+If so, the code should be in your app, not in middleware.
+
+Interesting Middleware Uses
+---------------------------
+
+Middleware can be used for a number of really useful purposes:
+
+.. class:: incremental
+
+* Routing (stitch together multiple wsgi apps into one site)
+* Authentication (share authentication between multiple apps, delegate)
+* Cache Control (decide what to rebuild and what can be re-used)
+* Debugging and Introspection (provide information about reqest, reponse and
+  processing)
+* Theming (use tools like xslt to build themes that can merge different apps)
+
+WSGI on our VMs
+---------------
+
+For our lab, and for the homework, we'll be using WSGI via mod_wsgi on our
+VMs.
+
+.. class:: incremental
+
+CGI was all set for us, once we turned on Apache.  
+
+.. class:: incremental
+
+How about WSGI?
+
+.. class:: incremental
+
+Let's find out.
 
 
-scraps 
+
+scraps
 ------
 
 How does WSGI differ from CGI?
-
-What is WSGI?
 
 Is WSGI Python-specific?
 
