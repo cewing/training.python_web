@@ -311,9 +311,387 @@ cgitb Output
     :align: center
     :width: 100%
 
+Another Way to Break It
+-----------------------
+
+Let's fix the error from our traceback.  Edit your ``cgi_1.py`` file to match:
+
+.. code-block:: python
+    :class: small
+
+    #!/usr/bin/python
+    import cgi
+    import cgitb
+
+    cgitb.enable()
+
+    cgi.test()
+
+.. class:: incremental
+
+Notice the first line of that script: ``#!/usr/bin/python``. This is called
+the *shebang* (short for hash-bang) and it tells the system what executable
+program to use when running the script.
+
+CGI Process Execution
+---------------------
+
+When a web server like ``CGIHTTPServer`` or ``Apache`` runs a CGI script, it
+simply attempts to run the script as if it were a normal system user.  This is
+just like you calling::
+
+    $ ./path/to/cgi_1.py
+
+.. class:: incremental
+
+In fact try that now (use the real path), what do you get?  What is missing?
+
+CGI Process Execution
+---------------------
+
+There are a couple of important facts that are related to the way CGI
+processes are run:
+
+.. class:: incremental
+
+* The script **must** include a *shebang* so that the system knows how to run
+  it.
+* The script **must** be executable.
+* The *executable* named in the *shebang* will be called as the *nobody* user.
+* This is a security feature to prevent CGI scripts from running as a user
+  with any privileges.
+* This means that the *executable* from the script *shebang* must be one that
+  *anyone* can run.
+
+More Permission Fun
+-------------------
+
+Let's interfere with this::
+
+    $ ls -l /usr/bin/python
+    -rwxr-xr-x  2 root  wheel ... /usr/bin/python
+    $ sudo chmod 750 /usr/bin/python
+    Password: 
+    $ ls -l /usr/bin/python
+    -rwxr-x---  2 root  wheel ... /usr/bin/python
+
+.. class:: incremental
+
+Now, reload your web browser. Did you get anything? Check your debugging
+tools.
+
+Enough of That
+--------------
+
+Okay, put the permissions back on your system python::
+
+    $ sudo chmod 755 /usr/bin/python
+    Password: 
+    $ ls -l /usr/bin/python
+    -rwxr-xr-x  2 root  wheel ... /usr/bin/python
+
+The CGI Environment
+-------------------
+
+CGI is largely a set of agreed-upon environmental variables.
+
+.. class:: incremental
+
+We've seen how environmental variables are found in python in ``os.environ``
+
+.. class:: incremental
+
+We've also seen that at least some of the variables in CGI are **not** in the
+standard set of environment variables.
+
+.. class:: incremental
+
+Where do they come from?
+
+CGI Servers
+-----------
+
+Let's find 'em.  In a terminal fire up python:
+
+.. code-block::
+
+    >>> import CGIHTTPServer
+    >>> CGIHTTPServer.__file__
+    '/System/Library/Frameworks/Python.framework/Versions/2.6/lib/python2.6/CGIHTTPServer.py'
+
+.. class:: incremental
+
+Copy this path and open the file it points to in your text editor
+
+Environmental Set Up
+--------------------
+
+From CGIHTTPServer.py, in the CGIHTTPServer.run_cgi method:
+
+.. code-block:: python
+    :class: tiny
+
+    # Reference: http://hoohoo.ncsa.uiuc.edu/cgi/env.html
+    # XXX Much of the following could be prepared ahead of time!
+    env = {}
+    env['SERVER_SOFTWARE'] = self.version_string()
+    env['SERVER_NAME'] = self.server.server_name
+    env['GATEWAY_INTERFACE'] = 'CGI/1.1'
+    env['SERVER_PROTOCOL'] = self.protocol_version
+    env['SERVER_PORT'] = str(self.server.server_port)
+    env['REQUEST_METHOD'] = self.command
+    ...
+    ua = self.headers.getheader('user-agent')
+    if ua:
+        env['HTTP_USER_AGENT'] = ua
+    ...
+    os.environ.update(env)
+    ...
+
+CGI Scripts
+-----------
+
+And that's it, the big secret. The server takes care of setting up the
+environment so it has what is needed.
+
+.. class:: incremental
+
+Now, in reverse. How does the information that a script creates end up in your
+browser?
+
+.. class:: incremental
+
+A CGI Script must print it's results to stdout.
+
+Recap:
+------
+
+What the Server Does:
+
+.. class:: incremental small
+
+* parses the request
+* sets up the environment, including HTTP and SERVER variables
+* figures out if the URI points to a CGI script and runs it
+* builds an appropriate HTTP Response first line ('HTTP/1.1 200 Ok\r\n')
+* appends what comes from the script on stdout and sends that back
+
+What the Script Does:
+
+.. class:: incremental small
+
+* names appropriate *executable* in it's *shebang* line
+* uses os.environ to read information from the HTTP request
+* builds *any and all* appropriate **HTTP Headers** (Content-type:,
+  Content-length:, ...)
+* prints headers, empty line and script output (body) to stdout
+
+Lab 1
+-----
+
+You've seen the output from the ``cgi.test()`` method from the ``cgi`` module.
+Let's make our own version of this.
+
+.. class:: incremental
+
+* In ``assignments/week04/lab/src`` you will find the file
+  ``lab1_cgi_template.py``.
+* Copy that file to ``assignments/week04/lab/cgi-bin/lab1_cgi.py`` (note the
+  missing '_template' part)
+* The script contains some html with text naming elements of the CGI
+  environment.
+* Use elements of os.environ to fill in the blanks.
+
+.. class:: incremental center
+
+**GO**
+
+Putting CGI Online
+------------------
+
+We have CGI working, how do we make it **live** so that others can see our
+work?
+
+.. class:: incremental big-centered
+
+**Put It On A Server**
+
+Apache
+------
+
+Our VMs have the Apache HTTP Server installed and ready to use. Unfortunately
+for our current purposes, Apache is not the running web server software.
+
+Load ``http://<your-vm-id>.blueboxgrid.com`` in your web browser.  What do you see?
+
+.. image:: img/nginx.png
+    :align: center
+    :class: incremental
+    :width: 75%
+
+Managing Server Processes
+-------------------------
+
+.. class:: incremental
+
+* Nginx is a great webserver, but it doesn't support running external processes
+* This is a good choice for security, but not good for us right now
+* We need to turn it off, and turn on Apache
+
+.. class:: incremental
+
+SSH into your server. Then run:
+
+.. class:: incremental
+
+::
+
+    $ sudo /etc/init.d/nginx stop
+    Stopping nginx: nginx.
+    $ sudo /etc/init.d/apache2 start
+     * Starting web server apache2    [ OK ]
+
+Check Your Work
+---------------
+
+Reload your web browser.  You should now see this:
+
+.. image:: img/apache.png
+    :align: center
+    :width: 75%
+
+.. class:: incremental
+
+This means that you've stopped nginx and started Apache. Congrats, you are now
+a sysadmin!
+
+Default Site
+------------
+
+.. class:: incremental
+
+* Apache on Ubuntu is set to do virtual hosting
+* Config for individual sites is added in ``/etc/apache2/sites-available``
+* Activating a site makes a link to the config in
+  ``/etc/apache2/sites-enabled``
+
+.. class:: incremental
+
+Check your server to see what sites are available and active:
+
+.. class:: incremental small
+
+::
+
+    $ cd /etc/apache2/
+    $ ls sites-available/
+    default  default-ssl
+    $ ls -l sites-enabled/
+    total 0
+    ... 000-default -> ../sites-available/default
+
+Apache Configuration
+--------------------
+
+::
+
+    $ less sites-available/default
+
+.. code-block:: apache
+    :class: small incremental
+
+    <VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+
+        DocumentRoot /var/www
+        <Directory />
+                Options FollowSymLinks
+                AllowOverride None
+        </Directory>
+        <Directory /var/www/>
+                Options Indexes FollowSymLinks MultiViews
+                AllowOverride None
+                Order allow,deny
+                allow from all
+        </Directory>
+
+More Apache Configuration
+-------------------------
+
+Skip over the ``ScriptAlias`` for a moment (we'll come back)
+
+.. code-block:: apache
+    :class: small incremental
+
+        ErrorLog /var/log/apache2/error.log
+        # Possible values include: debug, info, notice, warn, error, crit,
+        # alert, emerg.
+        LogLevel warn
+        CustomLog /var/log/apache2/access.log combined
+        
+        Alias /doc/ "/usr/share/doc/"
+        <Directory "/usr/share/doc/">
+            Options Indexes MultiViews FollowSymLinks
+            AllowOverride None
+            Order deny,allow
+            Deny from all
+            Allow from 127.0.0.0/255.0.0.0 ::1/128
+        </Directory>
+        
+    </VirtualHost>
+
+Apache CGI Configuration
+------------------------
+
+This is the bit that sets up CGI for us:
+
+.. code-block:: apache
+
+    ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
+    <Directory "/usr/lib/cgi-bin">
+            AllowOverride None
+            Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+            Order allow,deny
+            Allow from all
+    </Directory>
+
+Setting up Our Script
+---------------------
+
+The directory for CGI is ``/usr/lib/cgi-bin/``.  What's there now?
+
+.. class:: incremental
+
+::
+
+    $ ls -la /usr/lib/cgi-bin/
+    total 24
+    drwxr-xr-x  2 root root  4096 Apr 13  2010 .
+    drwxr-xr-x 66 root root 20480 Nov 23  2011 ..
+
+No Directory Listing
+--------------------
+
+Check the ``cgi-bin`` directory in your browser:
+
+``http://<your-vm-id>.blueboxgrid.com/cgi-bin/``
+
+.. image:: img/forbidden.png
+    :align: center
+    :class: incremental
+    :width: 60%
+
+.. class:: incremental
+
+Apache is configured to disallow directory listings for ``cgi-bin`` (No
+``Option Indexes``)
 
 
-scraps
+
+
+
+
+scraps 
 ------
 
 How to run CGI scripts
