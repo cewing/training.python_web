@@ -897,12 +897,12 @@ valid Boolean value.'</li>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">json</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">dict_</span> <span class="o">=</span> <span class="p">{</span><span class="s">'foo'</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="s">'bar'</span><span class="p">:</span> <span class="s">u'my resumé'</span><span class="p">,</span> <span class="s">'baz'</span><span class="p">:</span> <span class="bp">True</span><span class="p">}</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">dict_</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">orig</span> <span class="o">=</span> <span class="p">{</span><span class="s">'foo'</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="s">'bar'</span><span class="p">:</span> <span class="s">u'my resumé'</span><span class="p">,</span> <span class="s">'baz'</span><span class="p">:</span> <span class="bp">True</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">encoded</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">dict_</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">encoded</span>
 <span class="s">'{&quot;baz&quot;: true, &quot;foo&quot;: [1, 2, 3], &quot;bar&quot;: &quot;my resum</span><span class="se">\\</span><span class="s">u00e9&quot;}'</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">incoming</span> <span class="o">=</span> <span class="n">_</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">new</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">incoming</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">new</span> <span class="o">==</span> <span class="n">dict_</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">decoded</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">encoded</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">decoded</span> <span class="o">==</span> <span class="n">orig</span>
 <span class="bp">True</span>
 </pre>
 <p class="incremental">Customizing the encoder or decoder class allows for specialized serializations</p>

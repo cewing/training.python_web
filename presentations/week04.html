@@ -251,15 +251,559 @@ the script?  What happens there?</p>
 <h1>cgitb Output</h1>
 <img alt="img/cgitb_output.png" class="align-center" src="img/cgitb_output.png" style="width: 100%;" />
 </div>
+<div class="slide" id="another-way-to-break-it">
+<h1>Another Way to Break It</h1>
+<p>Let's fix the error from our traceback.  Edit your <tt class="docutils literal">cgi_1.py</tt> file to match:</p>
+<pre class="code python small literal-block">
+<span class="c">#!/usr/bin/python</span>
+<span class="kn">import</span> <span class="nn">cgi</span>
+<span class="kn">import</span> <span class="nn">cgitb</span>
+
+<span class="n">cgitb</span><span class="o">.</span><span class="n">enable</span><span class="p">()</span>
+
+<span class="n">cgi</span><span class="o">.</span><span class="n">test</span><span class="p">()</span>
+</pre>
+<p class="incremental">Notice the first line of that script: <tt class="docutils literal"><span class="pre">#!/usr/bin/python</span></tt>. This is called
+the <em>shebang</em> (short for hash-bang) and it tells the system what executable
+program to use when running the script.</p>
+</div>
+<div class="slide" id="cgi-process-execution">
+<h1>CGI Process Execution</h1>
+<p>When a web server like <tt class="docutils literal">CGIHTTPServer</tt> or <tt class="docutils literal">Apache</tt> runs a CGI script, it
+simply attempts to run the script as if it were a normal system user.  This is
+just like you calling:</p>
+<pre class="literal-block">
+$ ./path/to/cgi_1.py
+</pre>
+<p class="incremental">In fact try that now (use the real path), what do you get?  What is missing?</p>
+</div>
+<div class="slide" id="id1">
+<h1>CGI Process Execution</h1>
+<p>There are a couple of important facts that are related to the way CGI
+processes are run:</p>
+<ul class="incremental simple">
+<li>The script <strong>must</strong> include a <em>shebang</em> so that the system knows how to run
+it.</li>
+<li>The script <strong>must</strong> be executable.</li>
+<li>The <em>executable</em> named in the <em>shebang</em> will be called as the <em>nobody</em> user.</li>
+<li>This is a security feature to prevent CGI scripts from running as a user
+with any privileges.</li>
+<li>This means that the <em>executable</em> from the script <em>shebang</em> must be one that
+<em>anyone</em> can run.</li>
+</ul>
+</div>
+<div class="slide" id="more-permission-fun">
+<h1>More Permission Fun</h1>
+<p>Let's interfere with this:</p>
+<pre class="literal-block">
+$ ls -l /usr/bin/python
+-rwxr-xr-x  2 root  wheel ... /usr/bin/python
+$ sudo chmod 750 /usr/bin/python
+Password:
+$ ls -l /usr/bin/python
+-rwxr-x---  2 root  wheel ... /usr/bin/python
+</pre>
+<p class="incremental">Now, reload your web browser. Did you get anything? Check your debugging
+tools.</p>
+</div>
+<div class="slide" id="enough-of-that">
+<h1>Enough of That</h1>
+<p>Okay, put the permissions back on your system python:</p>
+<pre class="literal-block">
+$ sudo chmod 755 /usr/bin/python
+Password:
+$ ls -l /usr/bin/python
+-rwxr-xr-x  2 root  wheel ... /usr/bin/python
+</pre>
+</div>
+<div class="slide" id="the-cgi-environment">
+<h1>The CGI Environment</h1>
+<p>CGI is largely a set of agreed-upon environmental variables.</p>
+<p class="incremental">We've seen how environmental variables are found in python in <tt class="docutils literal">os.environ</tt></p>
+<p class="incremental">We've also seen that at least some of the variables in CGI are <strong>not</strong> in the
+standard set of environment variables.</p>
+<p class="incremental">Where do they come from?</p>
+</div>
+<div class="slide" id="cgi-servers">
+<h1>CGI Servers</h1>
+<p>Let's find 'em.  In a terminal fire up python:</p>
+<pre class="code literal-block">
+&gt;&gt;&gt; import CGIHTTPServer
+&gt;&gt;&gt; CGIHTTPServer.__file__
+'/System/Library/Frameworks/Python.framework/Versions/2.6/lib/python2.6/CGIHTTPServer.py'
+</pre>
+<p class="incremental">Copy this path and open the file it points to in your text editor</p>
+</div>
+<div class="slide" id="environmental-set-up">
+<h1>Environmental Set Up</h1>
+<p>From CGIHTTPServer.py, in the CGIHTTPServer.run_cgi method:</p>
+<pre class="code python tiny literal-block">
+<span class="c"># Reference: http://hoohoo.ncsa.uiuc.edu/cgi/env.html</span>
+<span class="c"># XXX Much of the following could be prepared ahead of time!</span>
+<span class="n">env</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">env</span><span class="p">[</span><span class="s">'SERVER_SOFTWARE'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">version_string</span><span class="p">()</span>
+<span class="n">env</span><span class="p">[</span><span class="s">'SERVER_NAME'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">server_name</span>
+<span class="n">env</span><span class="p">[</span><span class="s">'GATEWAY_INTERFACE'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'CGI/1.1'</span>
+<span class="n">env</span><span class="p">[</span><span class="s">'SERVER_PROTOCOL'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">protocol_version</span>
+<span class="n">env</span><span class="p">[</span><span class="s">'SERVER_PORT'</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">server_port</span><span class="p">)</span>
+<span class="n">env</span><span class="p">[</span><span class="s">'REQUEST_METHOD'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">command</span>
+<span class="o">...</span>
+<span class="n">ua</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">getheader</span><span class="p">(</span><span class="s">'user-agent'</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">ua</span><span class="p">:</span>
+    <span class="n">env</span><span class="p">[</span><span class="s">'HTTP_USER_AGENT'</span><span class="p">]</span> <span class="o">=</span> <span class="n">ua</span>
+<span class="o">...</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+<span class="o">...</span>
+</pre>
+</div>
+<div class="slide" id="cgi-scripts">
+<h1>CGI Scripts</h1>
+<p>And that's it, the big secret. The server takes care of setting up the
+environment so it has what is needed.</p>
+<p class="incremental">Now, in reverse. How does the information that a script creates end up in your
+browser?</p>
+<p class="incremental">A CGI Script must print it's results to stdout.</p>
+</div>
+<div class="slide" id="recap">
+<h1>Recap:</h1>
+<p>What the Server Does:</p>
+<ul class="incremental small simple">
+<li>parses the request</li>
+<li>sets up the environment, including HTTP and SERVER variables</li>
+<li>figures out if the URI points to a CGI script and runs it</li>
+<li>builds an appropriate HTTP Response first line ('HTTP/1.1 200 Okrn')</li>
+<li>appends what comes from the script on stdout and sends that back</li>
+</ul>
+<p>What the Script Does:</p>
+<ul class="incremental small simple">
+<li>names appropriate <em>executable</em> in it's <em>shebang</em> line</li>
+<li>uses os.environ to read information from the HTTP request</li>
+<li>builds <em>any and all</em> appropriate <strong>HTTP Headers</strong> (Content-type:,
+Content-length:, ...)</li>
+<li>prints headers, empty line and script output (body) to stdout</li>
+</ul>
+</div>
+<div class="slide" id="lab-1">
+<h1>Lab 1</h1>
+<p>You've seen the output from the <tt class="docutils literal">cgi.test()</tt> method from the <tt class="docutils literal">cgi</tt> module.
+Let's make our own version of this.</p>
+<ul class="incremental simple">
+<li>In <tt class="docutils literal">assignments/week04/lab/src</tt> you will find the file
+<tt class="docutils literal">lab1_cgi_template.py</tt>.</li>
+<li>Copy that file to <tt class="docutils literal"><span class="pre">assignments/week04/lab/cgi-bin/lab1_cgi.py</span></tt> (note the
+missing '_template' part)</li>
+<li>The script contains some html with text naming elements of the CGI
+environment.</li>
+<li>Use elements of os.environ to fill in the blanks.</li>
+</ul>
+<p class="incremental center"><strong>GO</strong></p>
+</div>
+<div class="slide" id="putting-cgi-online">
+<h1>Putting CGI Online</h1>
+<p>We have CGI working, how do we make it <strong>live</strong> so that others can see our
+work?</p>
+<p class="incremental big-centered"><strong>Put It On A Server</strong></p>
+</div>
+<div class="slide" id="a-word-about-our-vms">
+<h1>A Word About Our VMs</h1>
+<p>We each have an individual VM that we can use for the duration of this class.</p>
+<p class="incremental">These machines, with a value of $8000 or more, have been donated to us by Blue
+Box Hosting.</p>
+<img alt="img/bluebox_logo.png" class="incremental align-center" src="img/bluebox_logo.png" style="width: 60%;" />
+<p class="incremental">If you need hosting services, consider <a class="reference external" href="https://bluebox.net/">https://bluebox.net/</a></p>
+</div>
+<div class="slide" id="apache">
+<h1>Apache</h1>
+<p>Our VMs have the Apache HTTP Server installed and ready to use. Unfortunately
+for our current purposes, Apache is not the running web server software.</p>
+<p>Load <tt class="docutils literal"><span class="pre">http://&lt;your-vm-id&gt;.blueboxgrid.com</span></tt> in your web browser.  What do you see?</p>
+<img alt="img/nginx.png" class="incremental align-center" src="img/nginx.png" style="width: 75%;" />
+</div>
+<div class="slide" id="managing-server-processes">
+<h1>Managing Server Processes</h1>
+<ul class="incremental simple">
+<li>Nginx is a great webserver, but it doesn't support running external processes</li>
+<li>This is a good choice for security, but not good for us right now</li>
+<li>We need to turn it off, and turn on Apache</li>
+</ul>
+<p class="incremental">SSH into your server. Then run:</p>
+<pre class="incremental literal-block">
+$ sudo /etc/init.d/nginx stop
+Stopping nginx: nginx.
+$ sudo /etc/init.d/apache2 start
+ * Starting web server apache2    [ OK ]
+</pre>
+</div>
+<div class="slide" id="check-your-work">
+<h1>Check Your Work</h1>
+<p>Reload your web browser.  You should now see this:</p>
+<img alt="img/apache.png" class="align-center" src="img/apache.png" style="width: 75%;" />
+<p class="incremental">This means that you've stopped nginx and started Apache. Congrats, you are now
+a sysadmin!</p>
+</div>
+<div class="slide" id="default-site">
+<h1>Default Site</h1>
+<ul class="incremental simple">
+<li>Apache on Ubuntu is set to do virtual hosting</li>
+<li>Config for individual sites is added in <tt class="docutils literal"><span class="pre">/etc/apache2/sites-available</span></tt></li>
+<li>Enabling a site makes a link to the config in
+<tt class="docutils literal"><span class="pre">/etc/apache2/sites-enabled</span></tt></li>
+</ul>
+<p class="incremental">Check your server to see what sites are available and enabled:</p>
+<pre class="incremental small literal-block">
+$ cd /etc/apache2/
+$ ls sites-available/
+default  default-ssl
+$ ls -l sites-enabled/
+total 0
+... 000-default -&gt; ../sites-available/default
+</pre>
+</div>
+<div class="slide" id="apache-configuration">
+<h1>Apache Configuration</h1>
+<pre class="literal-block">
+$ less sites-available/default
+</pre>
+<pre class="code apache small incremental literal-block">
+<span class="nt">&lt;VirtualHost</span> <span class="s">*:80</span><span class="nt">&gt;</span>
+    <span class="nb">ServerAdmin</span> webmaster&#64;localhost
+
+    <span class="nb">DocumentRoot</span> <span class="sx">/var/www</span>
+    <span class="nt">&lt;Directory</span> <span class="s">/</span><span class="nt">&gt;</span>
+            <span class="nb">Options</span> FollowSymLinks
+            <span class="nb">AllowOverride</span> <span class="k">None</span>
+    <span class="nt">&lt;/Directory&gt;</span>
+    <span class="nt">&lt;Directory</span> <span class="s">/var/www/</span><span class="nt">&gt;</span>
+            <span class="nb">Options</span> Indexes FollowSymLinks MultiViews
+            <span class="nb">AllowOverride</span> <span class="k">None</span>
+            <span class="nb">Order</span> allow,deny
+            <span class="nb">allow</span> from <span class="k">all</span>
+    <span class="nt">&lt;/Directory&gt;</span>
+</pre>
+</div>
+<div class="slide" id="more-apache-configuration">
+<h1>More Apache Configuration</h1>
+<p>Skip over the <tt class="docutils literal">ScriptAlias</tt> for a moment (we'll come back)</p>
+<pre class="code apache small incremental literal-block">
+    <span class="nb">ErrorLog</span> <span class="sx">/var/log/apache2/error.log</span>
+    <span class="c"># Possible values include: debug, info, notice, warn, error, crit,</span>
+    <span class="c"># alert, emerg.</span>
+    <span class="nb">LogLevel</span> <span class="k">warn</span>
+    <span class="nb">CustomLog</span> <span class="sx">/var/log/apache2/access.log</span> combined
+
+    <span class="nb">Alias</span> <span class="sx">/doc/</span> <span class="s2">&quot;/usr/share/doc/&quot;</span>
+    <span class="nt">&lt;Directory</span> <span class="s">&quot;/usr/share/doc/&quot;</span><span class="nt">&gt;</span>
+        <span class="nb">Options</span> Indexes MultiViews FollowSymLinks
+        <span class="nb">AllowOverride</span> <span class="k">None</span>
+        <span class="nb">Order</span> deny,allow
+        <span class="nb">Deny</span> from <span class="k">all</span>
+        <span class="nb">Allow</span> from <span class="m">127.0.0.0/255</span>.0.0.0 ::1/128
+    <span class="nt">&lt;/Directory&gt;</span>
+
+<span class="nt">&lt;/VirtualHost&gt;</span>
+</pre>
+</div>
+<div class="slide" id="apache-cgi-configuration">
+<h1>Apache CGI Configuration</h1>
+<p>This is the bit that sets up CGI for us:</p>
+<pre class="code apache literal-block">
+<span class="nb">ScriptAlias</span> <span class="sx">/cgi-bin/</span> <span class="sx">/usr/lib/cgi-bin/</span>
+<span class="nt">&lt;Directory</span> <span class="s">&quot;/usr/lib/cgi-bin&quot;</span><span class="nt">&gt;</span>
+        <span class="nb">AllowOverride</span> <span class="k">None</span>
+        <span class="nb">Options</span> +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+        <span class="nb">Order</span> allow,deny
+        <span class="nb">Allow</span> from <span class="k">all</span>
+<span class="nt">&lt;/Directory&gt;</span>
+</pre>
+</div>
+<div class="slide" id="setting-up-our-script">
+<h1>Setting up Our Script</h1>
+<p>The directory for CGI is <tt class="docutils literal"><span class="pre">/usr/lib/cgi-bin/</span></tt>.  What's there now?</p>
+<pre class="incremental literal-block">
+$ ls -la /usr/lib/cgi-bin/
+total 24
+drwxr-xr-x  2 root root  4096 Apr 13  2010 .
+drwxr-xr-x 66 root root 20480 Nov 23  2011 ..
+</pre>
+</div>
+<div class="slide" id="no-directory-listing">
+<h1>No Directory Listing</h1>
+<p>Check the <tt class="docutils literal"><span class="pre">cgi-bin</span></tt> directory in your browser:</p>
+<p><tt class="docutils literal"><span class="pre">http://&lt;your-vm-id&gt;.blueboxgrid.com/cgi-bin/</span></tt></p>
+<img alt="img/forbidden.png" class="incremental align-center" src="img/forbidden.png" style="width: 75%;" />
+<p class="incremental">Apache is configured to disallow directory listings for <tt class="docutils literal"><span class="pre">cgi-bin</span></tt> (No
+<tt class="docutils literal">Option Indexes</tt>)</p>
+</div>
+<div class="slide" id="copy-cgi-to-the-server">
+<h1>Copy CGI To The Server</h1>
+<p>To get our script to run, we have to put it in the <tt class="docutils literal"><span class="pre">cgi-bin</span></tt> directory.</p>
+<ul class="incremental simple">
+<li>The <tt class="docutils literal"><span class="pre">/usr/lib/cgi-bin</span></tt> directory is owned by <strong>root</strong></li>
+<li>It is <strong>not</strong> world-writable</li>
+<li>You'll need to put it somewhere you can write without using <tt class="docutils literal">sudo</tt></li>
+<li>Put it in your home directory</li>
+</ul>
+<pre class="incremental literal-block">
+$ cd /path/to/training.python_web
+$ scp assignments/week04/lab/cgi-bin/cgi_1.py uw&#64;&lt;yourvm&gt;:~/
+</pre>
+</div>
+<div class="slide" id="move-it-to-cgi-bin">
+<h1>Move it to cgi-bin</h1>
+<p>Now that we have the script on the server, we can use sudo there to put it in
+the right spot (execute these commands on your VM):</p>
+<pre class="literal-block">
+$ sudo mv ~/cgi_1.py /usr/lib/cgi-bin/
+$ ls -l /usr/lib/cgi-bin
+total 4
+-rwxr-xr-x 1 uw uw 42 Jan 20 04:34 cgi_1.py
+</pre>
+<p class="incremental">Does the file have the right permissions to be executed successfully?</p>
+<p class="incremental small"><tt class="docutils literal"><span class="pre">http://&lt;your-vm-url&gt;/cgi-bin/cgi_1.py</span></tt></p>
+</div>
+<div class="slide" id="do-it-again">
+<h1>Do it again</h1>
+<p>Repeat the process. This time, move your <tt class="docutils literal">lab1_cgi.py</tt> script from our first
+lab exercise.</p>
+</div>
+<div class="slide" id="id2">
+<h1>And Now</h1>
+<p class="big-centered">A Short Break</p>
+</div>
+<div class="slide" id="cgi-problems">
+<h1>CGI Problems</h1>
+<p>CGI is great, but there are problems:</p>
+<ul class="incremental simple">
+<li>Code is executed <em>in a new process</em></li>
+<li><strong>Every</strong> call to a CGI script starts a new process on the server</li>
+<li>Starting a new process is expensive in terms of server resources</li>
+<li><em>Especially for interpreted languages like Python</em></li>
+</ul>
+<p class="incremental">How do we overcome this problem?</p>
+</div>
+<div class="slide" id="alternatives-to-cgi">
+<h1>Alternatives to CGI</h1>
+<p>The most popular approach is to have a long-running process <em>inside</em> the
+server that handles CGI scripts.</p>
+<p class="incremental">FastCGI and SCGI are existing implementations of CGI in this fashion.
+<strong>mod_python</strong> offers a similar capability for Python code.</p>
+<ul class="incremental simple">
+<li>Each of these options has a specific API</li>
+<li>None are compatible with each-other</li>
+<li>Code written for one is <strong>not portable</strong> to another</li>
+<li>This makes it hard to <em>share resources</em></li>
+</ul>
+</div>
+<div class="slide" id="wsgi">
+<h1>WSGI</h1>
+<p>Enter WSGI, the Web Server Gateway Interface.</p>
+<p class="incremental">Where other alternatives are specific implementations of the CGI standard,
+WSGI is itself a new standard, not an implementation.</p>
+<p class="incremental">WSGI is generalized to describe a set of interactions, so that developers can
+write WSGI-capable apps and deploy them on any WSGI server.</p>
+<p class="incremental">Read the WSGI spec: <a class="reference external" href="http://www.python.org/dev/peps/pep-0333">http://www.python.org/dev/peps/pep-0333</a></p>
+</div>
+<div class="slide" id="wsgi-apps-and-servers">
+<h1>WSGI: Apps and Servers</h1>
+<p class="small">WSGI consists of two parts, a <em>server</em> and an <em>application</em>.</p>
+<p class="small">A WSGI Server must:</p>
+<ul class="incremental small simple">
+<li>set up an environment, much like the one in CGI</li>
+<li>provide a method <tt class="docutils literal">start_response(status, headers, exc_info=None)</tt></li>
+<li>build a response body by calling an <em>application</em>, passing
+<tt class="docutils literal">environment</tt> and <tt class="docutils literal">start_response</tt> as args</li>
+<li>return a response with the status, headers and body</li>
+</ul>
+<p class="small">A WSGI Appliction must:</p>
+<ul class="incremental small simple">
+<li>Be a callable (function, method, class)</li>
+<li>Take an environment and a <tt class="docutils literal">start_response</tt> callable as arguments</li>
+<li>Return an iterable of 0 or more strings, which are treated as the body of
+the respponse.</li>
+</ul>
+</div>
+<div class="slide" id="flowcharts">
+<h1>Flowcharts</h1>
+<p>WSGI Servers:</p>
+<p class="center incremental"><strong>HTTP &lt;---&gt; WSGI</strong></p>
+<p class="incremental">WSGI Applications:</p>
+<p class="center incremental"><strong>WSGI &lt;---&gt; app code</strong></p>
+</div>
+<div class="slide" id="the-whole-enchilada">
+<h1>The Whole Enchilada</h1>
+<p>The WSGI <em>Stack</em> can thus be expressed like so:</p>
+<p class="incremental big-centered"><strong>HTTP &lt;---&gt; WSGI &lt;---&gt; app code</strong></p>
+</div>
+<div class="slide" id="using-wsgiref">
+<h1>Using wsgiref</h1>
+<p>The Python standard lib provides a reference implementation of WSGI:</p>
+<img alt="img/wsgiref_flow.png" class="incremental align-center" src="img/wsgiref_flow.png" style="width: 80%;" />
+</div>
+<div class="slide" id="apache-mod-wsgi">
+<h1>Apache mod_wsgi</h1>
+<p>You can also deploy with Apache as your HTTP server, using <strong>mod_wsgi</strong>:</p>
+<img alt="img/mod_wsgi_flow.png" class="incremental align-center" src="img/mod_wsgi_flow.png" style="width: 80%;" />
+</div>
+<div class="slide" id="proxied-wsgi-servers">
+<h1>Proxied WSGI Servers</h1>
+<p>Finally, it is also common to see WSGI apps deployed via a proxied WSGI
+server:</p>
+<img alt="img/proxy_wsgi.png" class="incremental align-center" src="img/proxy_wsgi.png" style="width: 80%;" />
+</div>
+<div class="slide" id="wsgi-middleware">
+<h1>WSGI Middleware</h1>
+<p>Another feature of WSGI is <em>middleware</em>:</p>
+<ul class="incremental simple">
+<li>Middleware implements both the <em>server</em> and <em>application</em> interfaces</li>
+<li>Middleware acts as a server when viewed from an application</li>
+<li>Middleware acts as an application when viewed from a server</li>
+</ul>
+<img alt="img/wsgi_middleware_onion.png" class="incremental align-center" src="img/wsgi_middleware_onion.png" style="width: 38%;" />
+</div>
+<div class="slide" id="simplified-wsgi-server">
+<h1>Simplified WSGI Server</h1>
+<pre class="code python small literal-block">
+<span class="kn">from</span> <span class="nn">some_application</span> <span class="kn">import</span> <span class="n">simple_app</span>
+
+<span class="k">def</span> <span class="nf">build_env</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="c"># put together some environment info from the reqeuest</span>
+    <span class="k">return</span> <span class="n">env</span>
+
+<span class="k">def</span> <span class="nf">handle_request</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">app</span><span class="p">):</span>
+    <span class="n">environ</span> <span class="o">=</span> <span class="n">build_env</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="n">iterable</span> <span class="o">=</span> <span class="n">app</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">iterable</span><span class="p">:</span>
+        <span class="c"># send data to client here</span>
+
+<span class="k">def</span> <span class="nf">start_response</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">headers</span><span class="p">):</span>
+    <span class="c"># start an HTTP response, sending status and headers</span>
+
+<span class="c"># listen for HTTP requests and pass on to handle_request()</span>
+<span class="n">serve</span><span class="p">(</span><span class="n">simple_app</span><span class="p">)</span>
+</pre>
+</div>
+<div class="slide" id="wsgi-environment">
+<h1>WSGI Environment</h1>
+<dl class="small incremental docutils">
+<dt>REQUEST_METHOD</dt>
+<dd>The HTTP request method, such as &quot;GET&quot; or &quot;POST&quot;. This cannot ever be an
+empty string, and so is always required.</dd>
+<dt>SCRIPT_NAME</dt>
+<dd>The initial portion of the request URL's &quot;path&quot; that corresponds to the
+application object, so that the application knows its virtual &quot;location&quot;.
+This may be an empty string, if the application corresponds to the &quot;root&quot; of
+the server.</dd>
+<dt>PATH_INFO</dt>
+<dd>The remainder of the request URL's &quot;path&quot;, designating the virtual
+&quot;location&quot; of the request's target within the application. This may be an
+empty string, if the request URL targets the application root and does not
+have a trailing slash.</dd>
+<dt>QUERY_STRING</dt>
+<dd>The portion of the request URL that follows the &quot;?&quot;, if any. May be empty or
+absent.</dd>
+<dt>CONTENT_TYPE</dt>
+<dd>The contents of any Content-Type fields in the HTTP request. May be empty or
+absent.</dd>
+</dl>
+</div>
+<div class="slide" id="id3">
+<h1>WSGI Environment</h1>
+<dl class="small docutils">
+<dt>CONTENT_LENGTH</dt>
+<dd>The contents of any Content-Length fields in the HTTP request. May be empty
+or absent.</dd>
+<dt>SERVER_NAME, SERVER_PORT</dt>
+<dd>When combined with SCRIPT_NAME and PATH_INFO, these variables can be used to
+complete the URL. Note, however, that HTTP_HOST, if present, should be used
+in preference to SERVER_NAME for reconstructing the request URL. See the URL
+Reconstruction section below for more detail. SERVER_NAME and SERVER_PORT
+can never be empty strings, and so are always required.</dd>
+<dt>SERVER_PROTOCOL</dt>
+<dd>The version of the protocol the client used to send the request. Typically
+this will be something like &quot;HTTP/1.0&quot; or &quot;HTTP/1.1&quot; and may be used by the
+application to determine how to treat any HTTP request headers. (This
+variable should probably be called REQUEST_PROTOCOL, since it denotes the
+protocol used in the request, and is not necessarily the protocol that will
+be used in the server's response. However, for compatibility with CGI we
+have to keep the existing name.)</dd>
+</dl>
+</div>
+<div class="slide" id="id4">
+<h1>WSGI Environment</h1>
+<dl class="small docutils">
+<dt>HTTP_ Variables</dt>
+<dd>Variables corresponding to the client-supplied HTTP request headers (i.e.,
+variables whose names begin with &quot;HTTP_&quot;). The presence or absence of these
+variables should correspond with the presence or absence of the appropriate
+HTTP header in the request.</dd>
+</dl>
+<p class="center incremental"><strong>Seem Familiar?</strong></p>
+</div>
+<div class="slide" id="simple-wsgi-application">
+<h1>Simple WSGI Application</h1>
+<p>Where the simplified server above is <strong>not</strong> functional, this is a complete
+app:</p>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">)</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="s">&quot;200 OK&quot;</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="s">&quot;Hello World</span><span class="se">\n</span><span class="s">&quot;</span>
+    <span class="n">response_headers</span> <span class="o">=</span> <span class="p">[(</span><span class="s">'Content-type'</span><span class="p">,</span> <span class="s">'text/plain'</span><span class="p">,</span>
+                         <span class="s">'Content-length'</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">body</span><span class="p">))]</span>
+    <span class="n">start_response</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">response_headers</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">body</span><span class="p">]</span>
+</pre>
+</div>
+<div class="slide" id="simple-wsgi-middleware">
+<h1>Simple WSGI Middleware</h1>
+<p>Here's a very simple sample of middleware:</p>
+<pre class="code python small literal-block">
+<span class="k">class</span> <span class="nc">Upperware</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wrapped_app</span> <span class="o">=</span> <span class="n">app</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">wrapped_app</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+</pre>
+<p class="incremental">How does this fulfill the server part of the agreement?</p>
+<p class="incremental">The application part?</p>
+</div>
+<div class="slide" id="a-word-on-middleware">
+<h1>A Word on Middleware</h1>
+<p class="incremental center"><strong>TRANSPARENT</strong></p>
+<ul class="incremental simple">
+<li>loose coupling means layers should not need to know anything about each
+other</li>
+<li>You should be able to combine a server from one package, middleware from
+another, and application code from yet another</li>
+<li>A good test is this:</li>
+</ul>
+<p class="incremental center">If you remove your middleware, does your app break?</p>
+<p class="incremental">If so, the code should be in your app, not in middleware.</p>
+</div>
+<div class="slide" id="interesting-middleware-uses">
+<h1>Interesting Middleware Uses</h1>
+<p>Middleware can be used for a number of really useful purposes:</p>
+<ul class="incremental simple">
+<li>Routing (stitch together multiple wsgi apps into one site)</li>
+<li>Authentication (share authentication between multiple apps, delegate)</li>
+<li>Cache Control (decide what to rebuild and what can be re-used)</li>
+<li>Debugging and Introspection (provide information about reqest, reponse and
+processing)</li>
+<li>Theming (use tools like xslt to build themes that can merge different apps)</li>
+</ul>
+</div>
+<div class="slide" id="wsgi-on-our-vms">
+<h1>WSGI on our VMs</h1>
+<p>For our lab, and for the homework, we'll be using WSGI via mod_wsgi on our
+VMs.</p>
+<p class="incremental">CGI was all set for us, once we turned on Apache.</p>
+<p class="incremental">How about WSGI?</p>
+<p class="incremental">Let's find out.</p>
+</div>
 <div class="slide" id="scraps">
 <h1>scraps</h1>
-<p>How to run CGI scripts</p>
-<ul class="simple">
-<li>locally</li>
-<li>on a server</li>
-</ul>
 <p>How does WSGI differ from CGI?</p>
-<p>What is WSGI?</p>
 <p>Is WSGI Python-specific?</p>
 <p>How to run locally</p>
 <p>How to run on a server</p>
