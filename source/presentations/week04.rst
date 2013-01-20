@@ -516,6 +516,25 @@ work?
 
 **Put It On A Server**
 
+A Word About Our VMs
+--------------------
+
+We each have an individual VM that we can use for the duration of this class.
+
+.. class:: incremental
+
+These machines, with a value of $8000 or more, have been donated to us by Blue
+Box Hosting.
+
+.. image:: img/bluebox_logo.png
+    :align: center
+    :class: incremental
+    :width: 60%
+
+.. class:: incremental
+
+If you need hosting services, consider https://bluebox.net/
+
 Apache
 ------
 
@@ -572,12 +591,12 @@ Default Site
 
 * Apache on Ubuntu is set to do virtual hosting
 * Config for individual sites is added in ``/etc/apache2/sites-available``
-* Activating a site makes a link to the config in
+* Enabling a site makes a link to the config in
   ``/etc/apache2/sites-enabled``
 
 .. class:: incremental
 
-Check your server to see what sites are available and active:
+Check your server to see what sites are available and enabled:
 
 .. class:: incremental small
 
@@ -679,26 +698,108 @@ Check the ``cgi-bin`` directory in your browser:
 .. image:: img/forbidden.png
     :align: center
     :class: incremental
-    :width: 60%
+    :width: 75%
 
 .. class:: incremental
 
 Apache is configured to disallow directory listings for ``cgi-bin`` (No
 ``Option Indexes``)
 
+Copy CGI To The Server
+----------------------
+
+To get our script to run, we have to put it in the ``cgi-bin`` directory.
+
+.. class:: incremental
+
+* The ``/usr/lib/cgi-bin`` directory is owned by **root**
+* It is **not** world-writable
+* You'll need to put it somewhere you can write without using ``sudo``
+* Put it in your home directory
+
+.. class:: incremental
+
+::
+
+    $ cd /path/to/training.python_web
+    $ scp assignments/week04/lab/cgi-bin/cgi_1.py uw@<yourvm>:~/
+
+Move it to cgi-bin
+------------------
+
+Now that we have the script on the server, we can use sudo there to put it in
+the right spot (execute these commands on your VM)::
+
+    $ sudo mv ~/cgi_1.py /usr/lib/cgi-bin/
+    $ ls -l /usr/lib/cgi-bin
+    total 4
+    -rwxr-xr-x 1 uw uw 42 Jan 20 04:34 cgi_1.py
+
+.. class:: incremental
+
+Does the file have the right permissions to be executed successfully?
+
+.. class:: incremental small
+
+``http://<your-vm-url>/cgi-bin/cgi_1.py``
+
+Do it again
+-----------
+
+Repeat the process. This time, move your ``lab1_cgi.py`` script from our first
+lab exercise.
+
+And Now
+-------
+
+.. class:: big-centered
+
+A Short Break
+
+CGI Problems
+------------
+
+CGI is great, but there are problems:
+
+.. class:: incremental
+
+* Code is executed *in a new process*
+* **Every** call to a CGI script starts a new process on the server
+* Starting a new process is expensive in terms of server resources
+* *Especially for interpreted languages like Python*
+
+.. class:: incremental
+
+How do we overcome this problem?
+
+Alternatives to CGI
+-------------------
+
+The most popular approach is to have a long-running process *inside* the
+server that handles CGI scripts.
+
+.. class:: incremental
+
+FastCGI and SCGI are existing implementations of CGI in this fashion.
+**mod_python** offers a similar capability for Python code.
+
+.. class:: incremental
+
+* Each of these options has a specific API
+* None are compatible with each-other
+* Code written for one is **not portable** to another
+* This makes it hard to *share resources*
 
 
+WSGI
+----
+
+Enter WSGI, the Web Server Gateway Interface.
 
 
 
 scraps 
 ------
-
-How to run CGI scripts
-
-- locally
-
-- on a server
 
 How does WSGI differ from CGI?
 
