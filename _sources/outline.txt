@@ -79,7 +79,7 @@ You can read the assignment at
 
 http://github.com/cewing/training.python_web/blob/master/assignments/week01/athome/assignment.txt
 
-Please complete the assignment by noon on Sunday, January 13, 2012.
+Please complete the assignment by noon on Sunday, January 13, 2013.
 
 
 Week 2 - Web Protocols
@@ -162,7 +162,7 @@ You can read the assignment at
 
 http://github.com/cewing/training.python_web/blob/master/assignments/week02/athome/assignment.txt
 
-Please complete the assignment by noon on Sunday, January 13, 2012.
+Please complete the assignment by noon on Sunday, January 20, 2013.
 
 Week 3 - APIs and Mashups
 -------------------------
@@ -259,7 +259,11 @@ Bonus
 Assignment
 **********
 
-On the way soon.
+You can read the assignment at 
+
+http://github.com/cewing/training.python_web/blob/master/assignments/week03/athome/assignment.txt
+
+Please complete the assignment by noon on Sunday, January 27, 2013.
 
 Week 4 - CGI and WSGI
 ---------------------
@@ -296,9 +300,7 @@ Prepare for class:
 * `CGI example scripts`_ - Use these examples to get started experimenting with
   CGI.
 
-.. _CGI example scripts: http://fixme.crisewing.com
-
-(https://github.com/briandorsey/uwpython_web/tree/master/week05/cgi_example)
+.. _CGI example scripts: https://github.com/cewing/training.python_web/tree/master/assignments/week04/lab/cgi-bin
 
 References
 **********
@@ -320,16 +322,20 @@ References
 Alternate WSGI introductions:
 +++++++++++++++++++++++++++++
 
-* `Getting Started with WSGI`_ - by Armin Ronacher 
+* `Getting Started with WSGI`_ - by Armin Ronacher (really solid and quick!)
 * `very minimal introduction to WSGI
-  <http://be.groovie.org/post/296349572/wsgi-and-wsgi-middleware-is-easy>`_
+  <http://be.groovie.org/2005/10/07/wsgi_and_wsgi_middleware_is_easy.html>`_
 
 .. _Getting Started with WSGI: http://lucumr.pocoo.org/2007/5/21/getting-started-with-wsgi/
 
 Assignment
 **********
 
-To Be Decided
+You can read the assignment at 
+
+http://github.com/cewing/training.python_web/blob/master/assignments/week04/athome/assignment.txt
+
+Please complete the assignment by noon on Sunday, February 3, 2013.
 
 Week 5 - Small Frameworks
 -------------------------

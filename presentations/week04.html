@@ -68,6 +68,7 @@ itself?</p>
 <div class="slide" id="stepping-away">
 <h1>Stepping Away</h1>
 <p>Let's think about this same problem in another realm, the command line.</p>
+<p class="incremental">Windows folks, for this next bit please open an ssh terminal on your VM.</p>
 <p class="incremental">In a <tt class="docutils literal">bash</tt> shell we can do this:</p>
 <pre class="incremental literal-block">
 $ export VARIABLE='some_value'
@@ -179,6 +180,7 @@ an Internet standard of any kind.</em></p>
 <li>Some other HTTP server that implements CGI (lighttpd, ...?)</li>
 </ul>
 <p class="incremental">Let's start locally by using the Python module</p>
+<p class="incremental">Again, Windows folks, this is going to be most easily done on your VM</p>
 </div>
 <div class="slide" id="running-cgi-first-test">
 <h1>Running CGI - First Test</h1>
@@ -205,7 +207,7 @@ executable.</li>
 <div class="slide" id="break-it">
 <h1>Break It</h1>
 <p>Once that's working correctly, let's play with breaking it. Start by making
-the file not exectuable:</p>
+the file not executable:</p>
 <pre class="incremental small literal-block">
 $ ls -l cgi-bin/cgi_1.py
 -rwxr-xr-x 1 cewing  staff  42 Jan 17 22:30 cgi-bin/cgi_1.py
@@ -263,8 +265,8 @@ the script?  What happens there?</p>
 
 <span class="n">cgi</span><span class="o">.</span><span class="n">test</span><span class="p">()</span>
 </pre>
-<p class="incremental">Notice the first line of that script: <tt class="docutils literal"><span class="pre">#!/usr/bin/python</span></tt>. This is called
-the <em>shebang</em> (short for hash-bang) and it tells the system what executable
+<p class="incremental">Notice the first line of that script: <tt class="docutils literal"><span class="pre">#!/usr/bin/python</span></tt>. This is called a
+<em>shebang</em> (short for hash-bang) and it tells the system what executable
 program to use when running the script.</p>
 </div>
 <div class="slide" id="cgi-process-execution">
@@ -275,7 +277,8 @@ just like you calling:</p>
 <pre class="literal-block">
 $ ./path/to/cgi_1.py
 </pre>
-<p class="incremental">In fact try that now (use the real path), what do you get?  What is missing?</p>
+<p class="incremental">In fact try that now (use the real path), what do you get?</p>
+<p class="incremental">What is missing?</p>
 </div>
 <div class="slide" id="id1">
 <h1>CGI Process Execution</h1>
@@ -371,7 +374,7 @@ browser?</p>
 <li>parses the request</li>
 <li>sets up the environment, including HTTP and SERVER variables</li>
 <li>figures out if the URI points to a CGI script and runs it</li>
-<li>builds an appropriate HTTP Response first line ('HTTP/1.1 200 Okrn')</li>
+<li>builds an appropriate HTTP Response first line ('HTTP/1.1 200 OK\r\n')</li>
 <li>appends what comes from the script on stdout and sends that back</li>
 </ul>
 <p>What the Script Does:</p>
@@ -515,6 +518,7 @@ $ less sites-available/default
         <span class="nb">Allow</span> from <span class="k">all</span>
 <span class="nt">&lt;/Directory&gt;</span>
 </pre>
+<p class="incremental">More about Apache Configuration: <a class="reference external" href="http://httpd.apache.org/docs/">http://httpd.apache.org/docs/</a></p>
 </div>
 <div class="slide" id="setting-up-our-script">
 <h1>Setting up Our Script</h1>
@@ -591,7 +595,7 @@ server that handles CGI scripts.</p>
 <li>Each of these options has a specific API</li>
 <li>None are compatible with each-other</li>
 <li>Code written for one is <strong>not portable</strong> to another</li>
-<li>This makes it hard to <em>share resources</em></li>
+<li>This makes it hard to <strong>share resources</strong></li>
 </ul>
 </div>
 <div class="slide" id="wsgi">
@@ -801,12 +805,246 @@ VMs.</p>
 <p class="incremental">How about WSGI?</p>
 <p class="incremental">Let's find out.</p>
 </div>
-<div class="slide" id="scraps">
-<h1>scraps</h1>
-<p>How does WSGI differ from CGI?</p>
-<p>Is WSGI Python-specific?</p>
-<p>How to run locally</p>
-<p>How to run on a server</p>
+<div class="slide" id="apache-modules">
+<h1>Apache Modules</h1>
+<p>The abilities of Apache are extended using <strong>modules</strong>. You can list <em>loaded</em>
+modules with the <tt class="docutils literal">apache2ctl</tt> command.</p>
+<p class="incremental">Open an ssh terminal on your VM:</p>
+<pre class="incremental literal-block">
+$ which apache2ctl
+/usr/sbin/apache2ctl
+$ apache2ctl -M
+Loaded Modules:
+ ...
+ alias_module (shared)
+ auth_basic_module (shared)
+ authn_file_module (shared)
+ authz_default_module (shared)
+ ...
+</pre>
+</div>
+<div class="slide" id="another-way">
+<h1>Another Way</h1>
+<p>You can also see which modules are enabled by checking the listings in
+<tt class="docutils literal"><span class="pre">/etc/apache2/mods-enabled/</span></tt>:</p>
+<pre class="incremental small literal-block">
+$ ls /etc/apache2/mods-enabled/
+alias.conf            authz_user.load  dir.load          php5.load
+alias.load            autoindex.conf   env.load          reqtimeout.conf
+auth_basic.load       autoindex.load   mime.conf         reqtimeout.load
+authn_file.load       cgi.load         mime.load         setenvif.conf
+authz_default.load    deflate.conf     negotiation.conf  setenvif.load
+authz_groupfile.load  deflate.load     negotiation.load  status.conf
+authz_host.load       dir.conf         php5.conf         status.load
+</pre>
+</div>
+<div class="slide" id="available-modules">
+<h1>Available Modules</h1>
+<p>By default, not all the modules that are <em>available</em> have been <em>enabled</em>. You
+can check the <tt class="docutils literal"><span class="pre">/etc/apache2/mods-available/</span></tt> directory to see what else is
+there:</p>
+<pre class="incremental small literal-block">
+$ ls /etc/apache2/mods-available/
+actions.conf          cern_meta.load     ident.load           proxy_http.load
+actions.load          cgi.load           imagemap.load        proxy_scgi.load
+alias.conf            cgid.conf          include.load         reqtimeout.conf
+alias.load            cgid.load          info.conf            reqtimeout.load
+asis.load             charset_lite.load  info.load            rewrite.load
+auth_basic.load       dav.load           ldap.load            setenvif.conf
+auth_digest.load      dav_fs.conf        log_forensic.load    setenvif.load
+...
+</pre>
+</div>
+<div class="slide" id="adding-new-modules">
+<h1>Adding New Modules</h1>
+<ul class="incremental simple">
+<li>Debian/Ubuntu provide pre-packaged versions of software like Apache</li>
+<li>The pre-packaged versions will come with popular extensions included</li>
+<li>We want to install an Apache module which is <em>not</em> included in the
+pre-packaged Apache</li>
+<li>We can use the packaging tools in Debian/Ubuntu to install it ourselves.</li>
+<li>The packaging tools are called <strong>apt</strong> (Advanced Packaging Tool)</li>
+</ul>
+<p class="incremental">There is more to learn about <strong>apt</strong> than we can hope to cover here. Learn it
+as you need it.</p>
+</div>
+<div class="slide" id="searching-using-apt-cache">
+<h1>Searching Using apt-cache</h1>
+<p>You can search for a package using apt-cache (<tt class="docutils literal"><span class="pre">apt-cache</span> search</tt> <em>text</em>):</p>
+<pre class="literal-block">
+$ apt-cache search mod_wsgi
+</pre>
+<p class="incremental">Once you've found the name of a package, you can use apt-cache to read the
+dependencies it has:</p>
+<pre class="incremental literal-block">
+$ apt-cache depends libapache2-mod-wsgi
+libapache2-mod-wsgi
+  Depends: apache2
+    apache2-mpm-itk
+...
+</pre>
+</div>
+<div class="slide" id="installing-using-apt-get">
+<h1>Installing using apt-get</h1>
+<p>Okay, so we know what the package is called, and what it will require.  Let's
+install it! (we'll need superuser privileges to do this, so <em>sudo</em>)</p>
+<pre class="literal-block">
+$ sudo apt-get install libapache2-mod-wsgi
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+...
+Get:1 http://us.archive.ubuntu.com/ubuntu/ lucid/universe libapache2-mod-wsgi 2.8-2ubuntu1 [63.5kB]
+Fetched 63.5kB in 0s (197kB/s)
+...
+Setting up libapache2-mod-wsgi (2.8-2ubuntu1)
+ * Restarting web server apache2
+ ... waiting                                     [ OK ]
+</pre>
+</div>
+<div class="slide" id="id5">
+<h1>Check Your Work</h1>
+<p>Are we done?  Remember that command for checking loaded modules?</p>
+<pre class="incremental literal-block">
+$ apache2ctl -M
+Loaded Modules:
+ ...
+ alias_module (shared)
+ auth_basic_module (shared)
+ ...
+ status_module (shared)
+ wsgi_module (shared)
+Syntax OK
+</pre>
+<p class="incremental center"><strong>Wahooooo!</strong></p>
+</div>
+<div class="slide" id="configure-mod-wsgi">
+<h1>Configure mod_wsgi</h1>
+<p>Like CGI, mod_wsgi requires that we do some set up in our Apache
+configuration.</p>
+<p class="incremental">Open the file /etc/apache2/sites-available/default in a text editor:</p>
+<pre class="incremental literal-block">
+$ cd /etc/apache2
+$ vi sites-available/default
+</pre>
+</div>
+<div class="slide" id="adding-wsgiscriptalias">
+<h1>Adding WSGIScriptAlias</h1>
+<p>mod_wsgi uses the directive <strong>WSGIScriptAlias</strong> in exactly the same way that
+CGI uses <strong>ScriptAlias</strong>:</p>
+<pre class="code apache small literal-block">
+<span class="nb">ScriptAlias</span> <span class="sx">/cgi-bin/</span> <span class="sx">/usr/lib/cgi-bin/</span>
+<span class="nt">&lt;Directory</span> <span class="s">&quot;/usr/lib/cgi-bin&quot;</span><span class="nt">&gt;</span>
+        <span class="nb">AllowOverride</span> <span class="k">None</span>
+        <span class="nb">Options</span> +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+        <span class="nb">Order</span> allow,deny
+        <span class="nb">Allow</span> from <span class="k">all</span>
+<span class="nt">&lt;/Directory&gt;</span>
+
+<span class="c"># Add this line to the file to expose a /wsgi-bin directory</span>
+<span class="nb">WSGIScriptAlias</span> <span class="sx">/wsgi-bin/</span> <span class="sx">/usr/lib/wsgi-bin/</span>
+</pre>
+<p class="incremental">Save your work and exit the editor</p>
+</div>
+<div class="slide" id="give-wsgi-something-to-do">
+<h1>Give WSGI Something To Do</h1>
+<p>We've set Apache to look in <tt class="docutils literal"><span class="pre">/usr/lib/wsgi-bin/</span></tt> for wsgi scripts. We need
+to make that directory since it doesn't exist by default:</p>
+<pre class="literal-block">
+$ sudo mkdir /usr/lib/wsgi-bin
+</pre>
+<p class="incremental">On your local machine find the <tt class="docutils literal">wsgi_test.py</tt> file in
+<tt class="docutils literal">assignments/week04/lab/</tt>. Use <tt class="docutils literal">scp</tt> to move it to your home directory on
+the VM. Then on the VM:</p>
+<pre class="incremental small literal-block">
+$ sudo cp ~/wsgi_test.py /usr/lib/wsgi-bin/
+$ ls -l /usr/lib/wsgi-bin/
+total 4
+-rwxr-xr-x 1 root root 955 Jan 22 00:06 wsgi_test.py
+</pre>
+</div>
+<div class="slide" id="reload-apache">
+<h1>Reload Apache</h1>
+<p>Any time you change Apache configuration, you need to restart to pick up the
+changes.  First, you should check your work to avoid
+crashing Apache:</p>
+<pre class="literal-block">
+$ apache2ctl configtest
+Syntax OK
+</pre>
+<p class="incremental">Okay, our syntax is good, no problems there.  Let's restart:</p>
+<pre class="incremental literal-block">
+$ sudo /etc/init.d/apache2 graceful
+* Reloading web server config apache2           [ OK ]
+</pre>
+</div>
+<div class="slide" id="looking-at-wsgi-test-py">
+<h1>Looking at wsgi_test.py</h1>
+<pre class="code python tiny literal-block">
+<span class="c">#!/usr/bin/python</span>
+
+<span class="c"># This is our application object. It could have any name,</span>
+<span class="c"># except when using mod_wsgi where it must be &quot;application&quot;</span>
+<span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">):</span>
+
+    <span class="c"># build the response body possibly using the environ dictionary</span>
+    <span class="n">response_body</span> <span class="o">=</span> <span class="s">'The request method was </span><span class="si">%s</span><span class="s">'</span> <span class="o">%</span> <span class="n">environ</span><span class="p">[</span><span class="s">'REQUEST_METHOD'</span><span class="p">]</span>
+
+    <span class="c"># HTTP response code and message</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="s">'200 OK'</span>
+
+    <span class="c"># These are HTTP headers expected by the client.</span>
+    <span class="c"># They must be wrapped as a list of tupled pairs:</span>
+    <span class="c"># [(Header name, Header value)].</span>
+    <span class="n">response_headers</span> <span class="o">=</span> <span class="p">[(</span><span class="s">'Content-Type'</span><span class="p">,</span> <span class="s">'text/plain'</span><span class="p">),</span>
+                        <span class="p">(</span><span class="s">'Content-Length'</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">response_body</span><span class="p">)))]</span>
+
+    <span class="c"># Send them to the server using the supplied function</span>
+    <span class="n">start_response</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">response_headers</span><span class="p">)</span>
+
+    <span class="c"># Return the response body.</span>
+    <span class="c"># Notice it is wrapped in a list although it could be any iterable.</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">response_body</span><span class="p">]</span>
+</pre>
+</div>
+<div class="slide" id="lab-2">
+<h1>Lab 2</h1>
+<p>Let's repeat what we did for CGI with WSGI:</p>
+<ul class="incremental simple">
+<li>In <tt class="docutils literal">assignments/week04/lab/src</tt> you will find the file
+<tt class="docutils literal">lab2_wsgi_template.py</tt>.</li>
+<li>Copy that file to <tt class="docutils literal"><span class="pre">assignments/week04/lab/wsgi-bin/lab2_wsgi.py</span></tt> (note the
+missing '_template' part)</li>
+<li>The script contains some html with text naming elements of the WSGI
+environment.</li>
+<li>Use elements of <tt class="docutils literal">environ</tt> to fill in the blanks.</li>
+<li>You can test and debug changes locally by running the script (<tt class="docutils literal">python lab2_wsgi_template.py</tt>)</li>
+</ul>
+<p class="incremental center"><strong>GO</strong></p>
+</div>
+<div class="slide" id="assignment">
+<h1>Assignment</h1>
+<p>Using what you've learned this week, Attempt the following:</p>
+<ul class="incremental simple">
+<li>Create a small, multi-page WSGI application</li>
+<li>Use <tt class="docutils literal">assignments/week04/athome/bookdb.py</tt> as a data source</li>
+<li>Your app index page should list the books in the db</li>
+<li>Each listing should supply a link to a detail page</li>
+<li>Each detail page should list information about the book</li>
+</ul>
+<p class="incremental">Use the Armin Ronacher reading from the class outline as a source for hints:
+<a class="reference external" href="http://lucumr.pocoo.org/2007/5/21/getting-started-with-wsgi/">http://lucumr.pocoo.org/2007/5/21/getting-started-with-wsgi/</a></p>
+</div>
+<div class="slide" id="submitting-the-assignment">
+<h1>Submitting the Assignment</h1>
+<p>This week we are going to do something a bit different. Get your application
+running on your VM. Then add the following to <tt class="docutils literal">assignments/week04/athome</tt>
+and submit a pull request:</p>
+<ul class="simple">
+<li>A README.txt file containing the URL I can visit to see your application.
+You can also put questions or comments in this file.</li>
+<li>Your source code, whatever is up on your VM.</li>
+</ul>
 </div>
 </div>
 </body>
