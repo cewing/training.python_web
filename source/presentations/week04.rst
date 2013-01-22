@@ -60,6 +60,10 @@ Let's think about this same problem in another realm, the command line.
 
 .. class:: incremental
 
+Windows folks, for this next bit please open an ssh terminal on your VM.  
+
+.. class:: incremental
+
 In a ``bash`` shell we can do this:
 
 .. class:: incremental
@@ -211,6 +215,10 @@ You have a couple of options:
 
 Let's start locally by using the Python module
 
+.. class:: incremental
+
+Again, Windows folks, this is going to be most easily done on your VM
+
 Running CGI - First Test
 ------------------------
 
@@ -238,7 +246,7 @@ Break It
 --------
 
 Once that's working correctly, let's play with breaking it. Start by making
-the file not exectuable:
+the file not executable:
 
 .. class:: incremental small
 
@@ -329,8 +337,8 @@ Let's fix the error from our traceback.  Edit your ``cgi_1.py`` file to match:
 
 .. class:: incremental
 
-Notice the first line of that script: ``#!/usr/bin/python``. This is called
-the *shebang* (short for hash-bang) and it tells the system what executable
+Notice the first line of that script: ``#!/usr/bin/python``. This is called a
+*shebang* (short for hash-bang) and it tells the system what executable
 program to use when running the script.
 
 CGI Process Execution
@@ -344,7 +352,11 @@ just like you calling::
 
 .. class:: incremental
 
-In fact try that now (use the real path), what do you get?  What is missing?
+In fact try that now (use the real path), what do you get?  
+
+.. class:: incremental
+
+What is missing?
 
 CGI Process Execution
 ---------------------
@@ -473,7 +485,7 @@ What the Server Does:
 * parses the request
 * sets up the environment, including HTTP and SERVER variables
 * figures out if the URI points to a CGI script and runs it
-* builds an appropriate HTTP Response first line ('HTTP/1.1 200 Ok\r\n')
+* builds an appropriate HTTP Response first line ('HTTP/1.1 200 OK\\r\\n')
 * appends what comes from the script on stdout and sends that back
 
 What the Script Does:
@@ -674,6 +686,10 @@ This is the bit that sets up CGI for us:
             Allow from all
     </Directory>
 
+.. class:: incremental
+
+More about Apache Configuration: http://httpd.apache.org/docs/
+
 Setting up Our Script
 ---------------------
 
@@ -788,7 +804,7 @@ FastCGI and SCGI are existing implementations of CGI in this fashion.
 * Each of these options has a specific API
 * None are compatible with each-other
 * Code written for one is **not portable** to another
-* This makes it hard to *share resources*
+* This makes it hard to **share resources**
 
 
 WSGI
@@ -1095,16 +1111,315 @@ How about WSGI?
 
 Let's find out.
 
+Apache Modules
+--------------
 
+The abilities of Apache are extended using **modules**. You can list *loaded*
+modules with the ``apache2ctl`` command.
 
-scraps
-------
+.. class:: incremental
 
-How does WSGI differ from CGI?
+Open an ssh terminal on your VM:
 
-Is WSGI Python-specific?
+.. class:: incremental
 
-How to run locally
+::
 
-How to run on a server
+    $ which apache2ctl
+    /usr/sbin/apache2ctl
+    $ apache2ctl -M
+    Loaded Modules:
+     ...
+     alias_module (shared)
+     auth_basic_module (shared)
+     authn_file_module (shared)
+     authz_default_module (shared)
+     ...
 
+Another Way
+-----------
+
+You can also see which modules are enabled by checking the listings in
+``/etc/apache2/mods-enabled/``:
+
+.. class:: incremental small
+
+::
+
+    $ ls /etc/apache2/mods-enabled/
+    alias.conf            authz_user.load  dir.load          php5.load
+    alias.load            autoindex.conf   env.load          reqtimeout.conf
+    auth_basic.load       autoindex.load   mime.conf         reqtimeout.load
+    authn_file.load       cgi.load         mime.load         setenvif.conf
+    authz_default.load    deflate.conf     negotiation.conf  setenvif.load
+    authz_groupfile.load  deflate.load     negotiation.load  status.conf
+    authz_host.load       dir.conf         php5.conf         status.load
+
+Available Modules
+-----------------
+
+By default, not all the modules that are *available* have been *enabled*. You
+can check the ``/etc/apache2/mods-available/`` directory to see what else is
+there: 
+
+.. class:: incremental small
+
+::
+
+    $ ls /etc/apache2/mods-available/
+    actions.conf          cern_meta.load     ident.load           proxy_http.load
+    actions.load          cgi.load           imagemap.load        proxy_scgi.load
+    alias.conf            cgid.conf          include.load         reqtimeout.conf
+    alias.load            cgid.load          info.conf            reqtimeout.load
+    asis.load             charset_lite.load  info.load            rewrite.load
+    auth_basic.load       dav.load           ldap.load            setenvif.conf
+    auth_digest.load      dav_fs.conf        log_forensic.load    setenvif.load
+    ...
+
+Adding New Modules
+------------------
+
+.. class:: incremental
+
+* Debian/Ubuntu provide pre-packaged versions of software like Apache
+* The pre-packaged versions will come with popular extensions included
+* We want to install an Apache module which is *not* included in the
+  pre-packaged Apache
+* We can use the packaging tools in Debian/Ubuntu to install it ourselves.
+* The packaging tools are called **apt** (Advanced Packaging Tool)
+
+.. class:: incremental
+
+There is more to learn about **apt** than we can hope to cover here. Learn it
+as you need it.
+
+Searching Using apt-cache
+-------------------------
+
+You can search for a package using apt-cache (``apt-cache search`` *text*)::
+
+    $ apt-cache search mod_wsgi
+
+.. class:: incremental
+
+Once you've found the name of a package, you can use apt-cache to read the
+dependencies it has:
+
+.. class:: incremental
+
+::
+
+    $ apt-cache depends libapache2-mod-wsgi
+    libapache2-mod-wsgi
+      Depends: apache2
+        apache2-mpm-itk
+    ...
+
+Installing using apt-get
+------------------------
+
+Okay, so we know what the package is called, and what it will require.  Let's
+install it! (we'll need superuser privileges to do this, so *sudo*)
+
+::
+
+    $ sudo apt-get install libapache2-mod-wsgi
+    Reading package lists... Done
+    Building dependency tree       
+    Reading state information... Done
+    ...
+    Get:1 http://us.archive.ubuntu.com/ubuntu/ lucid/universe libapache2-mod-wsgi 2.8-2ubuntu1 [63.5kB]
+    Fetched 63.5kB in 0s (197kB/s)              
+    ...
+    Setting up libapache2-mod-wsgi (2.8-2ubuntu1)
+     * Restarting web server apache2
+     ... waiting                                     [ OK ]
+
+Check Your Work
+---------------
+
+Are we done?  Remember that command for checking loaded modules?
+
+.. class:: incremental
+
+::
+
+    $ apache2ctl -M
+    Loaded Modules:
+     ...
+     alias_module (shared)
+     auth_basic_module (shared)
+     ...
+     status_module (shared)
+     wsgi_module (shared)
+    Syntax OK
+
+.. class:: incremental center
+
+**Wahooooo!**
+
+Configure mod_wsgi
+------------------
+
+Like CGI, mod_wsgi requires that we do some set up in our Apache
+configuration.
+
+.. class:: incremental
+
+Open the file /etc/apache2/sites-available/default in a text editor:
+
+.. class:: incremental
+
+::
+
+    $ cd /etc/apache2
+    $ vi sites-available/default
+
+Adding WSGIScriptAlias
+----------------------
+
+mod_wsgi uses the directive **WSGIScriptAlias** in exactly the same way that
+CGI uses **ScriptAlias**:
+
+.. code-block:: apache
+    :class: small
+
+    ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
+    <Directory "/usr/lib/cgi-bin">
+            AllowOverride None
+            Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+            Order allow,deny
+            Allow from all
+    </Directory>
+    
+    # Add this line to the file to expose a /wsgi-bin directory
+    WSGIScriptAlias /wsgi-bin/ /usr/lib/wsgi-bin/
+
+.. class:: incremental
+
+Save your work and exit the editor
+
+Give WSGI Something To Do
+-------------------------
+
+We've set Apache to look in ``/usr/lib/wsgi-bin/`` for wsgi scripts. We need
+to make that directory since it doesn't exist by default::
+
+    $ sudo mkdir /usr/lib/wsgi-bin
+
+.. class:: incremental
+
+On your local machine find the ``wsgi_test.py`` file in
+``assignments/week04/lab/``. Use ``scp`` to move it to your home directory on
+the VM. Then on the VM:
+
+.. class:: incremental small
+
+::
+
+    $ sudo cp ~/wsgi_test.py /usr/lib/wsgi-bin/
+    $ ls -l /usr/lib/wsgi-bin/
+    total 4
+    -rwxr-xr-x 1 root root 955 Jan 22 00:06 wsgi_test.py
+
+Reload Apache
+-------------
+
+Any time you change Apache configuration, you need to restart to pick up the 
+changes.  First, you should check your work to avoid
+crashing Apache::
+
+    $ apache2ctl configtest
+    Syntax OK
+
+.. class:: incremental
+
+Okay, our syntax is good, no problems there.  Let's restart:
+
+.. class:: incremental
+
+::
+
+    $ sudo /etc/init.d/apache2 graceful
+    * Reloading web server config apache2           [ OK ]
+
+Looking at wsgi_test.py
+-----------------------
+
+.. code-block:: python
+    :class: tiny
+
+    #!/usr/bin/python
+    
+    # This is our application object. It could have any name,
+    # except when using mod_wsgi where it must be "application"
+    def application(environ, start_response):
+        
+        # build the response body possibly using the environ dictionary
+        response_body = 'The request method was %s' % environ['REQUEST_METHOD']
+        
+        # HTTP response code and message
+        status = '200 OK'
+        
+        # These are HTTP headers expected by the client.
+        # They must be wrapped as a list of tupled pairs:
+        # [(Header name, Header value)].
+        response_headers = [('Content-Type', 'text/plain'),
+                            ('Content-Length', str(len(response_body)))]
+        
+        # Send them to the server using the supplied function
+        start_response(status, response_headers)
+        
+        # Return the response body.
+        # Notice it is wrapped in a list although it could be any iterable.
+        return [response_body]
+
+Lab 2
+-----
+
+Let's repeat what we did for CGI with WSGI:
+
+.. class:: incremental
+
+* In ``assignments/week04/lab/src`` you will find the file
+  ``lab2_wsgi_template.py``.
+* Copy that file to ``assignments/week04/lab/wsgi-bin/lab2_wsgi.py`` (note the
+  missing '_template' part)
+* The script contains some html with text naming elements of the WSGI
+  environment.
+* Use elements of ``environ`` to fill in the blanks.
+* You can test and debug changes locally by running the script (``python lab2_wsgi_template.py``)
+
+.. class:: incremental center
+
+**GO**
+
+Assignment
+----------
+
+Using what you've learned this week, Attempt the following:
+
+.. class:: incremental
+
+* Create a small, multi-page WSGI application
+* Use ``assignments/week04/athome/bookdb.py`` as a data source
+* Your app index page should list the books in the db
+* Each listing should supply a link to a detail page
+* Each detail page should list information about the book
+
+.. class:: incremental
+
+Use the Armin Ronacher reading from the class outline as a source for hints:
+http://lucumr.pocoo.org/2007/5/21/getting-started-with-wsgi/
+
+Submitting the Assignment
+-------------------------
+
+This week we are going to do something a bit different. Get your application
+running on your VM. Then add the following to ``assignments/week04/athome``
+and submit a pull request:
+
+* A README.txt file containing the URL I can visit to see your application.
+  You can also put questions or comments in this file.
+
+* Your source code, whatever is up on your VM.
