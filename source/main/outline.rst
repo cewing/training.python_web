@@ -300,9 +300,7 @@ Prepare for class:
 * `CGI example scripts`_ - Use these examples to get started experimenting with
   CGI.
 
-.. _CGI example scripts: http://fixme.crisewing.com
-
-(https://github.com/briandorsey/uwpython_web/tree/master/week05/cgi_example)
+.. _CGI example scripts: https://github.com/cewing/training.python_web/tree/master/assignments/week04/lab/cgi-bin
 
 References
 **********
