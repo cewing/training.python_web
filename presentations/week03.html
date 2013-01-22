@@ -137,9 +137,9 @@ blog posts about Django and PostgreSQL):</p>
 it supports standard file read operations:</p>
 <pre class="code python literal-block">
 <span class="o">&gt;&gt;&gt;</span> <span class="n">html</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
 <span class="mi">373447</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">page</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">html</span>
 
 <span class="o">&lt;</span><span class="err">!</span><span class="n">DOCTYPE</span> <span class="n">html</span> <span class="n">PUBLIC</span>
   <span class="s">&quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot;</span>
@@ -162,7 +162,7 @@ and one for PostgreSQL</p>
 </div>
 <div class="slide" id="brief-interlude">
 <h1>Brief Interlude</h1>
-<p class="big-centered">&quot;Some people, when confronted with a problem, think 'I know, I'ʹll use regular
+<p class="big-centered">&quot;Some people, when confronted with a problem, think 'I know, I'll use regular
 expressions.' Now they have two problems.&quot;</p>
 </div>
 <div class="slide" id="even-better">
@@ -225,9 +225,9 @@ $ python virtualenv.py [options] &lt;ENV&gt;
 <p>&lt;ENV&gt; is just the name of the environment you want to create. It's arbitrary.
 Let's make one for our BeautifulSoup install:</p>
 <pre class="literal-block">
-$ python virtualanv.py --distribute soupenv
-New python executable in fooenv/bin/python2.6
-Also creating executable in fooenv/bin/python
+$ python virtualenv.py --distribute soupenv
+New python executable in soupenv/bin/python2.6
+Also creating executable in soupenv/bin/python
 Installing distribute........................
 .............................................
 ...done.
@@ -238,7 +238,7 @@ Installing distribute........................
 <p>When you ran that file, a couple of things took place:</p>
 <ul class="incremental simple">
 <li>A new directory with your requested name was created</li>
-<li>A new Python executable was created in &lt;ENV&gt;/bin</li>
+<li>A new Python executable was created in &lt;ENV&gt;/bin (&lt;ENV&gt;/Scripts on Windows)</li>
 <li>The new Python was cloned from the Python used to run the file</li>
 <li>The new Python was isolated from any libraries installed in the old Python</li>
 <li>Distribute (a newer, better setuptools) was installed so you have <tt class="docutils literal">easy_install</tt></li>
@@ -364,21 +364,20 @@ of the feed (Planet Django or Planet PostgreSQL)</li>
 <div class="slide" id="testing-it-out">
 <h1>Testing it out</h1>
 <pre class="code python literal-block">
-<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">:</span>
-<span class="o">...</span>     <span class="n">anchor</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">'a'</span><span class="p">)</span>
-<span class="o">...</span>     <span class="n">paragraph</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">'p'</span><span class="p">,</span> <span class="s">'discreet'</span><span class="p">)</span>
-<span class="o">...</span>     <span class="n">title</span> <span class="o">=</span> <span class="n">anchor</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-<span class="o">...</span>     <span class="n">url</span> <span class="o">=</span> <span class="n">anchor</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">'href'</span><span class="p">]</span>
-<span class="o">...</span>     <span class="k">print</span> <span class="n">title</span>
-<span class="o">...</span>     <span class="k">print</span> <span class="n">url</span>
-<span class="o">...</span>     <span class="k">try</span><span class="p">:</span>
-<span class="o">...</span>         <span class="k">print</span> <span class="n">paragraph</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-<span class="o">...</span>     <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-<span class="o">...</span>         <span class="k">print</span> <span class="s">'Uncategorized'</span>
-<span class="o">...</span>     <span class="k">print</span>
-<span class="o">...</span>
-<span class="o">&gt;&gt;&gt;</span>
+<span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">:</span>
+    <span class="n">anchor</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">'a'</span><span class="p">)</span>
+    <span class="n">paragraph</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">'p'</span><span class="p">,</span> <span class="s">'discreet'</span><span class="p">)</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">anchor</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">anchor</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">'href'</span><span class="p">]</span>
+    <span class="k">print</span> <span class="n">title</span>
+    <span class="k">print</span> <span class="n">url</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">print</span> <span class="n">paragraph</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">'Uncategorized'</span>
+    <span class="k">print</span>
 </pre>
+<p class="incremental">Watch for unicode encoding errors, I don't get any, but you might.</p>
 </div>
 <div class="slide" id="lab-1-20-mins">
 <h1>Lab 1 - 20 mins</h1>
@@ -397,6 +396,14 @@ of the feed (Planet Django or Planet PostgreSQL)</li>
 </div>
 </div>
 <p class="incremental center"><strong>GO</strong></p>
+</div>
+<div class="slide" id="short-break">
+<h1>Short Break</h1>
+<p>While you are taking a short break, you might take a moment to sign up for
+the geocoding service we'll use later:</p>
+<p><a class="reference external" href="http://geoservices.tamu.edu/UserServices/Signup.aspx">http://geoservices.tamu.edu/UserServices/Signup.aspx</a></p>
+<p>You can also view your profile once you've signed up:</p>
+<p><a class="reference external" href="http://geoservices.tamu.edu/UserServices/Profile/ViewProfile.aspx">http://geoservices.tamu.edu/UserServices/Profile/ViewProfile.aspx</a></p>
 </div>
 <div class="slide" id="another-approach">
 <h1>Another Approach</h1>
@@ -465,7 +472,7 @@ content</p>
 <h1>XML-RPC</h1>
 <p>If we can provide a single endpoint that returns a single data set (RSS), can
 we also allow <em>calling procedures</em> at an endpoint?</p>
-<p class="incremental">We can!  Enter XML-RPC</p>
+<p class="incremental">We can!  Enter XML-RPC (Remote Procedure Call)</p>
 <ul class="incremental simple">
 <li>Provides a set of defined procedures which can take arguments</li>
 <li>Calls are made via HTTP GET, by passing an XML document</li>
@@ -594,8 +601,8 @@ server.register_instance(MyClass())
         <span class="k">return</span> <span class="n">f</span><span class="o">.</span><span class="n">__doc__</span>
 </pre>
 </div>
-<div class="slide" id="xml-rpc-instrospection">
-<h1>XML-RPC Instrospection</h1>
+<div class="slide" id="id1">
+<h1>XML-RPC Introspection</h1>
 <p>Then enable introspection via the server instance:</p>
 <pre class="code python small literal-block">
 <span class="n">server</span><span class="o">.</span><span class="n">register_introspection_functions</span><span class="p">()</span>
@@ -611,6 +618,15 @@ your service offers:</p>
 <span class="n">public_method</span>
     <span class="n">this</span> <span class="n">method</span> <span class="ow">is</span> <span class="n">public</span>
 </pre>
+</div>
+<div class="slide" id="introspection-question">
+<h1>Introspection Question</h1>
+<p>I told you when we added the <tt class="docutils literal">_private_method</tt> that any method that any
+method whose name starts with <tt class="docutils literal">_</tt> would be <strong>private</strong>.</p>
+<p class="incremental">But we also added a <tt class="docutils literal">_listMethods</tt> method and a <tt class="docutils literal">_methodHelp</tt> method and
+<em>those</em> methods are listed when you run <tt class="docutils literal">proxy.system.listMethods()</tt></p>
+<p class="incremental">Why is this?</p>
+<p class="incremental">For a complete discussion of this, read <a class="reference external" href="http://www.doughellmann.com/PyMOTW/SimpleXMLRPCServer/index.html#introspection-api">this MOTW post</a></p>
 </div>
 <div class="slide" id="beyond-xml-rpc">
 <h1>Beyond XML-RPC</h1>
@@ -724,17 +740,17 @@ more than one <em>port</em>. Suds provides two ways to configure which <em>servi
 <p>Arguments to a method are set up as a dictionary.  Although some may not be
 required according to api documentation, it is safest to provide them all:</p>
 <pre class="code python small literal-block">
-<span class="o">&gt;&gt;&gt;</span> <span class="n">apiKey</span> <span class="o">=</span> <span class="s">'&lt;fill this in&gt;'</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">args</span> <span class="o">=</span> <span class="p">{</span><span class="s">'apiKey'</span><span class="p">:</span> <span class="n">apiKey</span><span class="p">,</span> <span class="p">}</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">args</span><span class="p">[</span><span class="s">'streetAddress'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'1325 4th Avenue'</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">args</span><span class="p">[</span><span class="s">'city'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'Seattle'</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">args</span><span class="p">[</span><span class="s">'state'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'WA'</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">args</span><span class="p">[</span><span class="s">'zip'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'98101'</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">args</span><span class="p">[</span><span class="s">'version'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">3.01</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">args</span><span class="p">[</span><span class="s">'shouldReturnReferenceGeometry'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">args</span><span class="p">[</span><span class="s">'shouldNotStoreTransactionDetails'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">args</span><span class="p">[</span><span class="s">'shouldCalculateCensus'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">args</span><span class="p">[</span><span class="s">'censusYear'</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;TwoThousandTen&quot;</span>
+<span class="n">apiKey</span> <span class="o">=</span> <span class="s">'&lt;fill this in&gt;'</span>
+<span class="n">args</span> <span class="o">=</span> <span class="p">{</span><span class="s">'apiKey'</span><span class="p">:</span> <span class="n">apiKey</span><span class="p">,</span> <span class="p">}</span>
+<span class="n">args</span><span class="p">[</span><span class="s">'streetAddress'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'1325 4th Avenue'</span>
+<span class="n">args</span><span class="p">[</span><span class="s">'city'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'Seattle'</span>
+<span class="n">args</span><span class="p">[</span><span class="s">'state'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'WA'</span>
+<span class="n">args</span><span class="p">[</span><span class="s">'zip'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'98101'</span>
+<span class="n">args</span><span class="p">[</span><span class="s">'version'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">3.01</span>
+<span class="n">args</span><span class="p">[</span><span class="s">'shouldReturnReferenceGeometry'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="n">args</span><span class="p">[</span><span class="s">'shouldNotStoreTransactionDetails'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="n">args</span><span class="p">[</span><span class="s">'shouldCalculateCensus'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">args</span><span class="p">[</span><span class="s">'censusYear'</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;TwoThousandTen&quot;</span>
 </pre>
 </div>
 <div class="slide" id="making-the-call">
@@ -864,9 +880,9 @@ valid Boolean value.'</li>
 </div>
 <div class="slide" id="json-data-types">
 <h1>JSON Data Types</h1>
-<p>JSON provides a few basic data types:</p>
+<p>JSON provides a few basic data types (see <a class="reference external" href="http://json.org/">http://json.org/</a>):</p>
 <ul class="incremental simple">
-<li>string: unicode, anything but '&quot;', '' and control chars</li>
+<li>string: unicode, anything but &quot;, \ and control characters</li>
 <li>number: any number, but json does not use octal or hexidecimal</li>
 <li>object, array (we've seen these above)</li>
 <li>true</li>
@@ -898,7 +914,7 @@ valid Boolean value.'</li>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">orig</span> <span class="o">=</span> <span class="p">{</span><span class="s">'foo'</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="s">'bar'</span><span class="p">:</span> <span class="s">u'my resumé'</span><span class="p">,</span> <span class="s">'baz'</span><span class="p">:</span> <span class="bp">True</span><span class="p">}</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">encoded</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">dict_</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">encoded</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">orig</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">encoded</span>
 <span class="s">'{&quot;baz&quot;: true, &quot;foo&quot;: [1, 2, 3], &quot;bar&quot;: &quot;my resum</span><span class="se">\\</span><span class="s">u00e9&quot;}'</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">decoded</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">encoded</span><span class="p">)</span>
@@ -907,7 +923,7 @@ valid Boolean value.'</li>
 </pre>
 <p class="incremental">Customizing the encoder or decoder class allows for specialized serializations</p>
 </div>
-<div class="slide" id="id1">
+<div class="slide" id="id2">
 <h1>JSON in Python</h1>
 <p>the json module also supports reading and writing to <em>file-like objects</em> via
 <tt class="docutils literal">json.dump(fp)</tt> and <tt class="docutils literal">json.load(fp)</tt> (note the missing 's')</p>
@@ -922,7 +938,7 @@ interoperability.</p>
 <p class="incremental">Does that really work in real life?</p>
 <p class="incremental center">Hardly ever</p>
 </div>
-<div class="slide" id="id2">
+<div class="slide" id="id3">
 <h1>What about WSDL?</h1>
 <p>Another reason was to provide extensibility via custom types</p>
 <p class="incremental">Does that really work in real life?</p>
