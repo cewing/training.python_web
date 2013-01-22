@@ -1,0 +1,23 @@
+Using what you've learned this week, Attempt the following:
+
+* Create a small, multi-page WSGI application
+* Use ``assignments/week04/athome/bookdb.py`` as a data source
+* Your app index page should list the books in the db
+* Each listing should supply a link to a detail page
+* Each detail page should list information about the book
+
+HINT:
+
+Use the Armin Ronacher reading from the class outline as a source for hints:
+http://lucumr.pocoo.org/2007/5/21/getting-started-with-wsgi/
+
+Submitting Your Work:
+
+This week we are going to do something a bit different. Get your application
+running on your VM. Then add the following to ``assignments/week04/athome``
+and submit a pull request:
+
+* A README.txt file containing the URL I can visit to see your application.
+  You can also put questions or comments in this file.
+
+* Your source code, whatever is up on your VM.
