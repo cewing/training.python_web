@@ -7,18 +7,12 @@ interests, the Web has tools.  Put them together to make something.
 Place the following in the ``assignments/week03/athome`` directory and make a
 pull request:
 
-.. class:: small
-
 A textual description of your mashup.
   What data sources did you scan, what tools did you use, what is the
   outcome you wanted to create?
 
-.. class:: small
-
 Your source code.
   Give me an executable python script that I can run to get output.
-
-.. class:: small
 
 Any instructions I need.
   If I need instructions beyond 'python myscript.py' to get the right
