@@ -48,9 +48,77 @@
 <h1>But First</h1>
 <p class="big-centered">Review from the Assignment</p>
 </div>
+<div class="slide" id="save-memory-on-loading">
+<h1>Save Memory on Loading</h1>
+<p>When you are loading data from an API, you can sometimes get more than you
+bargained for. Both BeautifulSoup and the json library provide ways to help:</p>
+<pre class="code python incremental literal-block">
+<span class="n">page</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="n">json_string</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">json_string</span><span class="p">)</span>
+</pre>
+<pre class="code python incremental literal-block">
+<span class="n">page</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
+</pre>
+<p class="incremental">The second form will <em>buffer</em> the input as it is read, and minimize memory
+consumption. If you've got really large data sets this can be very good.</p>
+</div>
+<div class="slide" id="protect-yourself-from-the-net">
+<h1>Protect Yourself From the Net</h1>
+<p>We learned in our last class that APIs can flake. Remember that. It's <em>vital</em>!</p>
+<pre class="code python incremental literal-block">
+<span class="n">page</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="n">parsed</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
+</pre>
+<pre class="code python incremental literal-block">
+<span class="n">page</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">page</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+    <span class="n">parsed</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="n">SomeExceptionYouCanCatch</span>
+</pre>
+<p class="incremental">What happens if your desired API is offline when a user comes to see your
+page? Make sure you give yourself a way to be kind to your users. 500 Internal
+Server Errors suck!</p>
+</div>
+<div class="slide" id="what-you-made">
+<h1>What You Made</h1>
+<ul class="incremental simple">
+<li>geographic locations of our Bluebox VMs</li>
+<li>Visualization of the popularity of Facebook Friends' first names</li>
+<li>Restaurants near your location with recent Health Inspection data</li>
+<li>A Last-FM user's top artists, with lists of mixcloud mixes featuring each of
+them</li>
+<li>A list of Craigslist apartments with the nearest bars, pizza and sushi
+places and their Yelp ratings</li>
+<li>Geographic locations of the top 20 users returned for a twitter search,
+along with other twitter data</li>
+</ul>
+</div>
+<div class="slide" id="a-note-on-homeworks">
+<h1>A Note on Homeworks</h1>
+<ul class="incremental simple">
+<li>I've been saying that only attendance counts for your grade.</li>
+<li>It was brought to my attention this week that my own syllabus says
+differently</li>
+<li>The work we've done so far is all, in some sense, foundational. We will be
+using tools starting next week that build upon the tools we've encountered.</li>
+</ul>
+<p class="incremental">Homework from this point out should be considered required. We are now
+reaching the level of tools you will use on a day to day basis. Mastery comes
+with practice.</p>
+</div>
 <div class="slide" id="and-second">
 <h1>And Second</h1>
 <p class="big-centered">Questions from the Reading?</p>
+</div>
+<div class="slide" id="and-third">
+<h1>And Third</h1>
+<p>Open <tt class="docutils literal"><span class="pre">assignments/week04/lab/type-along.txt</span></tt></p>
+<p class="incremental">This contains all the code examples from today's lecture. It's meant to help
+you with keeping up when we are moving quickly through sample slides. I hope
+it is of some use.</p>
 </div>
 <div class="slide" id="and-now">
 <h1>And Now...</h1>
