@@ -111,6 +111,17 @@ And Second
 
 Questions from the Reading?
 
+And Third
+---------
+
+Open ``assignments/week04/lab/type-along.txt``
+
+.. class:: incremental
+
+This contains all the code examples from today's lecture. It's meant to help
+you with keeping up when we are moving quickly through sample slides. I hope
+it is of some use.
+
 And Now...
 ----------
 
