@@ -1,0 +1,654 @@
+But First
+---------
+
+Save Memory on Loading
+----------------------
+
+    page = urllib2.urlopen(url)
+    json_string = page.read()
+    json.loads(json_string)
+
+
+    page = urllib2.urlopen(url)
+    json.loads(page)
+
+
+Protect Yourself From the Net
+-----------------------------
+
+    page = urllib2.urlopen(url)
+    parsed = BeautifulSoup(page)
+
+
+    page = urllib2.urlopen(url)
+    if page.code == 200:
+        parsed = BeautifulSoup(page)
+    else:
+        raise SomeExceptionYouCanCatch
+
+
+What You Made
+-------------
+
+A Note on Homeworks
+-------------------
+
+And Second
+----------
+
+And Now...
+----------
+
+Think Back
+----------
+
+Stepping Away
+-------------
+
+    $ export VARIABLE='some_value'
+    $ echo this is the value: $VARIABLE
+    this is the value: some_value
+
+
+Environment
+-----------
+
+    $ printenv
+    VARIABLE=some_value
+    TERM_PROGRAM=iTerm.app
+    TERM=xterm
+    SHELL=/bin/bash
+    ...
+
+
+Environment in Python
+---------------------
+
+    $ python
+
+
+    >>> import os
+    >>> print os.environ['VARIABLE']
+    some_value
+    >>> print os.environ.keys()
+    ['VERSIONER_PYTHON_PREFER_32_BIT', 'VARIABLE', 
+     'LOGNAME', 'USER', 'PATH', ...]
+
+
+Altering the Environment
+------------------------
+
+    >>> os.environ['VARIABLE'] = 'new_value'
+    >>> print os.environ['VARIABLE']
+    new_value
+
+
+    >>> ^D
+    $ echo this is the value: $VARIABLE
+    this is the value: some_value
+
+
+Lessons Learned
+---------------
+
+    subprocess.Popen(args, bufsize=0, executable=None, 
+                     stdin=None, stdout=None, stderr=None, 
+                     preexec_fn=None, close_fds=False, 
+                     shell=False, cwd=None, env=None, # <-------
+                     universal_newlines=False, startupinfo=None, 
+                     creationflags=0)
+
+
+Web Environment
+---------------
+
+RFC 3875
+--------
+
+Meta-Variables
+--------------
+
+    4.  The CGI Request . . . . . . . . . . . . . . . . . . . . . . .  10
+        4.1. Request Meta-Variables . . . . . . . . . . . . . . . . .  10
+             4.1.1.  AUTH_TYPE. . . . . . . . . . . . . . . . . . . .  11
+             4.1.2.  CONTENT_LENGTH . . . . . . . . . . . . . . . . .  12
+             4.1.3.  CONTENT_TYPE . . . . . . . . . . . . . . . . . .  12
+             4.1.4.  GATEWAY_INTERFACE. . . . . . . . . . . . . . . .  13
+             4.1.5.  PATH_INFO. . . . . . . . . . . . . . . . . . . .  13
+             4.1.6.  PATH_TRANSLATED. . . . . . . . . . . . . . . . .  14
+             4.1.7.  QUERY_STRING . . . . . . . . . . . . . . . . . .  15
+             4.1.8.  REMOTE_ADDR. . . . . . . . . . . . . . . . . . .  15
+             4.1.9.  REMOTE_HOST. . . . . . . . . . . . . . . . . . .  16
+             4.1.10. REMOTE_IDENT . . . . . . . . . . . . . . . . . .  16
+             4.1.11. REMOTE_USER. . . . . . . . . . . . . . . . . . .  16
+             4.1.12. REQUEST_METHOD . . . . . . . . . . . . . . . . .  17
+             4.1.13. SCRIPT_NAME. . . . . . . . . . . . . . . . . . .  17
+             4.1.14. SERVER_NAME. . . . . . . . . . . . . . . . . . .  17
+             4.1.15. SERVER_PORT. . . . . . . . . . . . . . . . . . .  18
+             4.1.16. SERVER_PROTOCOL. . . . . . . . . . . . . . . . .  18
+             4.1.17. SERVER_SOFTWARE. . . . . . . . . . . . . . . . .  19
+
+
+Running CGI
+-----------
+
+Running CGI - Preparations
+--------------------------
+
+    $ cd
+    $ mkdir git
+    $ cd git
+    $ git clone https://github.com/cewing/training.python_web.git
+    $ cd training.python_web
+
+
+Running CGI - First Test
+------------------------
+
+Did that work?
+--------------
+
+Break It
+--------
+
+    $ ls -l cgi-bin/cgi_1.py
+    -rwxr-xr-x 1 cewing  staff  42 Jan 17 22:30 cgi-bin/cgi_1.py
+    $ chmod 444 cgi-bin/cgi_1.py
+    $ ls -l cgi-bin/cgi_1.py
+    -r--r--r-- 1 cewing  staff  42 Jan 17 22:35 cgi-bin/cgi_1.py
+
+
+Break It Differently
+--------------------
+
+    1 / 0
+
+
+Errors in CGI
+-------------
+
+Viewing Errors in Python CGI
+----------------------------
+
+    import cgitb
+    cgitb.enable()
+
+
+cgitb Output
+------------
+
+Another Way to Break It
+-----------------------
+
+    #!/usr/bin/python
+    import cgi
+    import cgitb
+
+
+    cgitb.enable()
+
+
+    cgi.test()
+
+
+CGI Process Execution
+---------------------
+
+    $ ./path/to/cgi_1.py
+
+
+CGI Process Execution
+---------------------
+
+More Permission Fun
+-------------------
+
+    $ ls -l /usr/bin/python*
+    lrwxrwxrwx 1 root root       9 Oct  4 18:48 python -> python2.6
+    lrwxrwxrwx 1 root root       9 Oct  4 18:48 python2 -> python2.6
+    -rwxr-xr-x 1 root root 2288240 Apr 16  2010 python2.6
+    $ sudo chmod 750 python
+    $ ls -l /usr/bin/python*
+    lrwxrwxrwx 1 root root       9 Oct  4 18:48 python -> python2.6
+    lrwxrwxrwx 1 root root       9 Oct  4 18:48 python2 -> python2.6
+    -rwxr-x--- 1 root root 2288240 Apr 16  2010 python2.6
+
+
+Enough of That
+--------------
+
+    $ sudo chmod 755 /usr/bin/python
+    $ ls -l /usr/bin/python*
+    lrwxrwxrwx 1 root root       9 Oct  4 18:48 python -> python2.6
+    lrwxrwxrwx 1 root root       9 Oct  4 18:48 python2 -> python2.6
+    -rwxr-xr-x 1 root root 2288240 Apr 16  2010 python2.6
+
+
+The CGI Environment
+-------------------
+
+CGI Servers
+-----------
+
+    >>> import CGIHTTPServer
+    >>> CGIHTTPServer.__file__
+    '/big/giant/path/to/lib/python2.6/CGIHTTPServer.py'
+
+
+Environmental Set Up
+--------------------
+
+    # Reference: http://hoohoo.ncsa.uiuc.edu/cgi/env.html
+    # XXX Much of the following could be prepared ahead of time!
+    env = {}
+    env['SERVER_SOFTWARE'] = self.version_string()
+    env['SERVER_NAME'] = self.server.server_name
+    env['GATEWAY_INTERFACE'] = 'CGI/1.1'
+    env['SERVER_PROTOCOL'] = self.protocol_version
+    env['SERVER_PORT'] = str(self.server.server_port)
+    env['REQUEST_METHOD'] = self.command
+    ...
+    ua = self.headers.getheader('user-agent')
+    if ua:
+        env['HTTP_USER_AGENT'] = ua
+    ...
+    os.environ.update(env)
+    ...
+
+
+CGI Scripts
+-----------
+
+Recap:
+------
+
+Lab 1
+-----
+
+Putting CGI Online
+------------------
+
+A Word About Our VMs
+--------------------
+
+Apache
+------
+
+Managing Server Processes
+-------------------------
+
+    $ sudo /etc/init.d/nginx stop
+    Stopping nginx: nginx.
+    $ sudo /etc/init.d/apache2 start
+     * Starting web server apache2    [ OK ]
+
+
+Check Your Work
+---------------
+
+Default Site
+------------
+
+    $ cd /etc/apache2/
+    $ ls sites-available/
+    default  default-ssl
+    $ ls -l sites-enabled/
+    total 0
+    ... 000-default -> ../sites-available/default
+
+
+Apache Configuration
+--------------------
+
+    $ less sites-available/default
+
+
+    <VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+
+
+        DocumentRoot /var/www
+        <Directory />
+                Options FollowSymLinks
+                AllowOverride None
+        </Directory>
+        <Directory /var/www/>
+                Options Indexes FollowSymLinks MultiViews
+                AllowOverride None
+                Order allow,deny
+                allow from all
+        </Directory>
+
+
+More Apache Configuration
+-------------------------
+
+        ErrorLog /var/log/apache2/error.log
+        # Possible values include: debug, info, notice, warn, error, crit,
+        # alert, emerg.
+        LogLevel warn
+        CustomLog /var/log/apache2/access.log combined
+        
+        Alias /doc/ "/usr/share/doc/"
+        <Directory "/usr/share/doc/">
+            Options Indexes MultiViews FollowSymLinks
+            AllowOverride None
+            Order deny,allow
+            Deny from all
+            Allow from 127.0.0.0/255.0.0.0 ::1/128
+        </Directory>
+        
+    </VirtualHost>
+
+
+Apache CGI Configuration
+------------------------
+
+    ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
+    <Directory "/usr/lib/cgi-bin">
+            AllowOverride None
+            Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+            Order allow,deny
+            Allow from all
+    </Directory>
+
+
+Setting up Our Script
+---------------------
+
+    $ ls -la /usr/lib/cgi-bin/
+    total 24
+    drwxr-xr-x  2 root root  4096 Apr 13  2010 .
+    drwxr-xr-x 66 root root 20480 Nov 23  2011 ..
+
+
+No Directory Listing
+--------------------
+
+Copy CGI To The Server
+----------------------
+
+    $ cd /path/to/training.python_web
+    $ scp assignments/week04/lab/cgi-bin/cgi_1.py uw@<yourvm>:~/
+
+
+Move it to cgi-bin
+------------------
+
+    $ sudo mv ~/cgi_1.py /usr/lib/cgi-bin/
+    $ ls -l /usr/lib/cgi-bin
+    total 4
+    -rwxr-xr-x 1 uw uw 42 Jan 20 04:34 cgi_1.py
+
+
+Do it again
+-----------
+
+And Now
+-------
+
+CGI Problems
+------------
+
+Alternatives to CGI
+-------------------
+
+WSGI
+----
+
+WSGI: Apps and Servers
+----------------------
+
+Flowcharts
+----------
+
+The Whole Enchilada
+-------------------
+
+Using wsgiref
+-------------
+
+Apache mod_wsgi
+---------------
+
+Proxied WSGI Servers
+--------------------
+
+WSGI Middleware
+---------------
+
+Simplified WSGI Server
+----------------------
+
+    from some_application import simple_app
+    
+    def build_env(request):
+        # put together some environment info from the reqeuest
+        return env
+    
+    def handle_request(request, app):
+        environ = build_env(request)
+        iterable = app(environ, start_response)
+        for data in iterable:
+            # send data to client here
+    
+    def start_response(status, headers):
+        # start an HTTP response, sending status and headers
+    
+    # listen for HTTP requests and pass on to handle_request()
+    serve(simple_app)
+
+
+WSGI Environment
+----------------
+
+WSGI Environment
+----------------
+
+WSGI Environment
+----------------
+
+Simple WSGI Application
+-----------------------
+
+    def application(environ, start_response)
+        status = "200 OK"
+        body = "Hello World\n"
+        response_headers = [('Content-type', 'text/plain',
+                             'Content-length', len(body))]
+        start_response(status, response_headers)
+        return [body]
+
+
+Simple WSGI Middleware
+----------------------
+
+    class Upperware:
+        def __init__(self, app)
+            self.wrapped_app = app
+        
+        def __call__(self, environ, start_response)
+            for data in self.wrapped_app(environ, start_response):
+                return data.upper()
+
+
+A Word on Middleware
+--------------------
+
+Interesting Middleware Uses
+---------------------------
+
+WSGI on our VMs
+---------------
+
+Apache Modules
+--------------
+
+    $ which apache2ctl
+    /usr/sbin/apache2ctl
+    $ apache2ctl -M
+    Loaded Modules:
+     ...
+     alias_module (shared)
+     auth_basic_module (shared)
+     authn_file_module (shared)
+     authz_default_module (shared)
+     ...
+
+
+Another Way
+-----------
+
+    $ ls /etc/apache2/mods-enabled/
+    alias.conf            authz_user.load  dir.load          php5.load
+    alias.load            autoindex.conf   env.load          reqtimeout.conf
+    auth_basic.load       autoindex.load   mime.conf         reqtimeout.load
+    authn_file.load       cgi.load         mime.load         setenvif.conf
+    authz_default.load    deflate.conf     negotiation.conf  setenvif.load
+    authz_groupfile.load  deflate.load     negotiation.load  status.conf
+    authz_host.load       dir.conf         php5.conf         status.load
+
+
+Available Modules
+-----------------
+
+    $ ls /etc/apache2/mods-available/
+    actions.conf          cern_meta.load     ident.load           proxy_http.load
+    actions.load          cgi.load           imagemap.load        proxy_scgi.load
+    alias.conf            cgid.conf          include.load         reqtimeout.conf
+    alias.load            cgid.load          info.conf            reqtimeout.load
+    asis.load             charset_lite.load  info.load            rewrite.load
+    auth_basic.load       dav.load           ldap.load            setenvif.conf
+    auth_digest.load      dav_fs.conf        log_forensic.load    setenvif.load
+    ...
+
+
+Adding New Modules
+------------------
+
+Searching Using apt-cache
+-------------------------
+
+    $ apt-cache search mod_wsgi
+
+
+    $ apt-cache depends libapache2-mod-wsgi
+    libapache2-mod-wsgi
+      Depends: apache2
+        apache2-mpm-itk
+    ...
+
+
+Installing using apt-get
+------------------------
+
+    $ sudo apt-get install libapache2-mod-wsgi
+    Reading package lists... Done
+    Building dependency tree       
+    Reading state information... Done
+    ...
+    Get:1 http://us.archive.ubuntu.com/ubuntu/ lucid/universe libapache2-mod-wsgi 2.8-2ubuntu1 [63.5kB]
+    Fetched 63.5kB in 0s (197kB/s)              
+    ...
+    Setting up libapache2-mod-wsgi (2.8-2ubuntu1)
+     * Restarting web server apache2
+     ... waiting                                     [ OK ]
+
+
+Check Your Work
+---------------
+
+    $ apache2ctl -M
+    Loaded Modules:
+     ...
+     alias_module (shared)
+     auth_basic_module (shared)
+     ...
+     status_module (shared)
+     wsgi_module (shared)
+    Syntax OK
+
+
+Configure mod_wsgi
+------------------
+
+    $ cd /etc/apache2
+    $ vi sites-available/default
+
+
+Adding WSGIScriptAlias
+----------------------
+
+    ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
+    <Directory "/usr/lib/cgi-bin">
+            AllowOverride None
+            Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+            Order allow,deny
+            Allow from all
+    </Directory>
+    
+    # Add this line to the file to expose a /wsgi-bin directory
+    WSGIScriptAlias /wsgi-bin/ /usr/lib/wsgi-bin/
+
+
+Give WSGI Something To Do
+-------------------------
+
+    $ sudo mkdir /usr/lib/wsgi-bin
+
+
+    $ sudo cp ~/wsgi_test.py /usr/lib/wsgi-bin/
+    $ ls -l /usr/lib/wsgi-bin/
+    total 4
+    -rwxr-xr-x 1 root root 955 Jan 22 00:06 wsgi_test.py
+
+
+Reload Apache
+-------------
+
+    $ apache2ctl configtest
+    Syntax OK
+
+
+    $ sudo /etc/init.d/apache2 graceful
+    * Reloading web server config apache2           [ OK ]
+
+
+Looking at wsgi_test.py
+-----------------------
+
+    #!/usr/bin/python
+    
+    # This is our application object. It could have any name,
+    # except when using mod_wsgi where it must be "application"
+    def application(environ, start_response):
+        
+        # build the response body possibly using the environ dictionary
+        response_body = 'The request method was %s' % environ['REQUEST_METHOD']
+        
+        # HTTP response code and message
+        status = '200 OK'
+        
+        # These are HTTP headers expected by the client.
+        # They must be wrapped as a list of tupled pairs:
+        # [(Header name, Header value)].
+        response_headers = [('Content-Type', 'text/plain'),
+                            ('Content-Length', str(len(response_body)))]
+        
+        # Send them to the server using the supplied function
+        start_response(status, response_headers)
+        
+        # Return the response body.
+        # Notice it is wrapped in a list although it could be any iterable.
+        return [response_body]
+
+
+Lab 2
+-----
+
+Assignment
+----------
+
+Submitting the Assignment
+-------------------------
+
