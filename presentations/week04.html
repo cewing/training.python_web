@@ -177,10 +177,24 @@ an Internet standard of any kind.</em></p>
 <ul class="incremental simple">
 <li>Python Standard Library CGIHTTPServer</li>
 <li>Apache</li>
+<li>IIS (on Windows)</li>
 <li>Some other HTTP server that implements CGI (lighttpd, ...?)</li>
 </ul>
 <p class="incremental">Let's start locally by using the Python module</p>
 <p class="incremental">Again, Windows folks, this is going to be most easily done on your VM</p>
+</div>
+<div class="slide" id="running-cgi-preparations">
+<h1>Running CGI - Preparations</h1>
+<p>If you are running this on your VM (<em>Windows users, this means **you**</em>) and
+you <strong>do not already have the class repo on your vm</strong>, here's the steps to get
+it:</p>
+<pre class="literal-block">
+$ cd
+$ mkdir git
+$ cd git
+$ git clone https://github.com/cewing/training.python_web.git
+$ cd training.python_web
+</pre>
 </div>
 <div class="slide" id="running-cgi-first-test">
 <h1>Running CGI - First Test</h1>
@@ -190,6 +204,7 @@ an Internet standard of any kind.</em></p>
 <tt class="docutils literal">assignments/week04/lab</tt> directory</li>
 <li>In the first terminal, run <tt class="docutils literal">python <span class="pre">-m</span> CGIHTTPServer</tt></li>
 <li>Open a web browser and load <tt class="docutils literal"><span class="pre">http://localhost:8000/</span></tt></li>
+<li>(if you're running on your VM, you'll open <a class="reference external" href="http:/">http:/</a>/&lt;YOUR_BLUEBOX_VM&gt;.blueboxgrid.com:8000/)</li>
 <li>Click on <em>CGI Test 1</em></li>
 </ul>
 </div>
@@ -203,6 +218,7 @@ an Internet standard of any kind.</em></p>
 <li>The file must be executable, the directory needs to be readable <em>and</em>
 executable.</li>
 </ul>
+<p class="incremental">Remember that you can use the bash <tt class="docutils literal">chmod</tt> command to change permissions</p>
 </div>
 <div class="slide" id="break-it">
 <h1>Break It</h1>
@@ -216,7 +232,10 @@ $ ls -l cgi-bin/cgi_1.py
 -r--r--r-- 1 cewing  staff  42 Jan 17 22:35 cgi-bin/cgi_1.py
 </pre>
 <p class="incremental">Reload your web browser and see what happens.</p>
-<p class="incremental">Put the permissions back to how they were before.</p>
+<div class="incremental line-block">
+<div class="line">Put the permissions back to how they were before:</div>
+<div class="line">$ chmod 755 cgi-bin/cgi_1.py</div>
+</div>
 </div>
 <div class="slide" id="break-it-differently">
 <h1>Break It Differently</h1>
@@ -224,6 +243,7 @@ $ ls -l cgi-bin/cgi_1.py
 the script?  What happens there?</p>
 <ul class="incremental simple">
 <li>Open <tt class="docutils literal"><span class="pre">assignments/week04/lab/cgi-bin/cgi_1.py</span></tt> in an editor</li>
+<li>if you're on your VM, use <tt class="docutils literal">nano <span class="pre">cgi-bin/cgi_1.py</span></tt> (ctrl-o, &lt;enter&gt; to save, ctrl-x to exit)</li>
 <li>Before where it says <tt class="docutils literal">cgi.test()</tt>, add a single line:</li>
 </ul>
 <pre class="code python incremental literal-block">
@@ -298,13 +318,16 @@ with any privileges.</li>
 <div class="slide" id="more-permission-fun">
 <h1>More Permission Fun</h1>
 <p>Let's interfere with this:</p>
-<pre class="literal-block">
-$ ls -l /usr/bin/python
--rwxr-xr-x  2 root  wheel ... /usr/bin/python
-$ sudo chmod 750 /usr/bin/python
-Password:
-$ ls -l /usr/bin/python
--rwxr-x---  2 root  wheel ... /usr/bin/python
+<pre class="small literal-block">
+$ ls -l /usr/bin/python*
+lrwxrwxrwx 1 root root       9 Oct  4 18:48 python -&gt; python2.6
+lrwxrwxrwx 1 root root       9 Oct  4 18:48 python2 -&gt; python2.6
+-rwxr-xr-x 1 root root 2288240 Apr 16  2010 python2.6
+$ sudo chmod 750 python
+$ ls -l /usr/bin/python*
+lrwxrwxrwx 1 root root       9 Oct  4 18:48 python -&gt; python2.6
+lrwxrwxrwx 1 root root       9 Oct  4 18:48 python2 -&gt; python2.6
+-rwxr-x--- 1 root root 2288240 Apr 16  2010 python2.6
 </pre>
 <p class="incremental">Now, reload your web browser. Did you get anything? Check your debugging
 tools.</p>
@@ -312,11 +335,12 @@ tools.</p>
 <div class="slide" id="enough-of-that">
 <h1>Enough of That</h1>
 <p>Okay, put the permissions back on your system python:</p>
-<pre class="literal-block">
+<pre class="small literal-block">
 $ sudo chmod 755 /usr/bin/python
-Password:
-$ ls -l /usr/bin/python
--rwxr-xr-x  2 root  wheel ... /usr/bin/python
+$ ls -l /usr/bin/python*
+lrwxrwxrwx 1 root root       9 Oct  4 18:48 python -&gt; python2.6
+lrwxrwxrwx 1 root root       9 Oct  4 18:48 python2 -&gt; python2.6
+-rwxr-xr-x 1 root root 2288240 Apr 16  2010 python2.6
 </pre>
 </div>
 <div class="slide" id="the-cgi-environment">
@@ -329,11 +353,11 @@ standard set of environment variables.</p>
 </div>
 <div class="slide" id="cgi-servers">
 <h1>CGI Servers</h1>
-<p>Let's find 'em.  In a terminal fire up python:</p>
+<p>Let's find 'em.  In a terminal (on your local machine, please) fire up python:</p>
 <pre class="code literal-block">
 &gt;&gt;&gt; import CGIHTTPServer
 &gt;&gt;&gt; CGIHTTPServer.__file__
-'/System/Library/Frameworks/Python.framework/Versions/2.6/lib/python2.6/CGIHTTPServer.py'
+'/big/giant/path/to/lib/python2.6/CGIHTTPServer.py'
 </pre>
 <p class="incremental">Copy this path and open the file it points to in your text editor</p>
 </div>
@@ -366,6 +390,8 @@ environment so it has what is needed.</p>
 <p class="incremental">Now, in reverse. How does the information that a script creates end up in your
 browser?</p>
 <p class="incremental">A CGI Script must print it's results to stdout.</p>
+<p class="incremental">As a corollary to this, the <tt class="docutils literal">test</tt> method of the cgi module has this line:
+<tt class="docutils literal">sys.stderr = sys.stdout</tt>. Why?</p>
 </div>
 <div class="slide" id="recap">
 <h1>Recap:</h1>
@@ -390,7 +416,7 @@ Content-length:, ...)</li>
 <h1>Lab 1</h1>
 <p>You've seen the output from the <tt class="docutils literal">cgi.test()</tt> method from the <tt class="docutils literal">cgi</tt> module.
 Let's make our own version of this.</p>
-<ul class="incremental simple">
+<ul class="incremental small simple">
 <li>In <tt class="docutils literal">assignments/week04/lab/src</tt> you will find the file
 <tt class="docutils literal">lab1_cgi_template.py</tt>.</li>
 <li>Copy that file to <tt class="docutils literal"><span class="pre">assignments/week04/lab/cgi-bin/lab1_cgi.py</span></tt> (note the
@@ -398,6 +424,7 @@ missing '_template' part)</li>
 <li>The script contains some html with text naming elements of the CGI
 environment.</li>
 <li>Use elements of os.environ to fill in the blanks.</li>
+<li>view your work in a browser at localhost:8000 <em>or</em> &lt;yourvm&gt;.blueboxgrid.com:8000</li>
 </ul>
 <p class="incremental center"><strong>GO</strong></p>
 </div>
@@ -546,6 +573,7 @@ drwxr-xr-x 66 root root 20480 Nov 23  2011 ..
 <li>It is <strong>not</strong> world-writable</li>
 <li>You'll need to put it somewhere you can write without using <tt class="docutils literal">sudo</tt></li>
 <li>Put it in your home directory</li>
+<li>If you are already working on your VM, you can skip this part.</li>
 </ul>
 <pre class="incremental literal-block">
 $ cd /path/to/training.python_web
@@ -623,7 +651,7 @@ write WSGI-capable apps and deploy them on any WSGI server.</p>
 <li>Be a callable (function, method, class)</li>
 <li>Take an environment and a <tt class="docutils literal">start_response</tt> callable as arguments</li>
 <li>Return an iterable of 0 or more strings, which are treated as the body of
-the respponse.</li>
+the response.</li>
 </ul>
 </div>
 <div class="slide" id="flowcharts">
@@ -927,6 +955,8 @@ configuration.</p>
 $ cd /etc/apache2
 $ vi sites-available/default
 </pre>
+<p class="incremental">You can also use <tt class="docutils literal">nano</tt> or <tt class="docutils literal">pico</tt> or <tt class="docutils literal">joe</tt> or whatever simple text
+editor you like.</p>
 </div>
 <div class="slide" id="adding-wsgiscriptalias">
 <h1>Adding WSGIScriptAlias</h1>
@@ -977,6 +1007,7 @@ Syntax OK
 $ sudo /etc/init.d/apache2 graceful
 * Reloading web server config apache2           [ OK ]
 </pre>
+<p class="incremental">Hit <a class="reference external" href="http://YOUR_VM.blueboxgrid.com/wsgi-bin/wsgi_test.py">http://YOUR_VM.blueboxgrid.com/wsgi-bin/wsgi_test.py</a> with your browser.</p>
 </div>
 <div class="slide" id="looking-at-wsgi-test-py">
 <h1>Looking at wsgi_test.py</h1>
@@ -1018,7 +1049,8 @@ missing '_template' part)</li>
 <li>The script contains some html with text naming elements of the WSGI
 environment.</li>
 <li>Use elements of <tt class="docutils literal">environ</tt> to fill in the blanks.</li>
-<li>You can test and debug changes locally by running the script (<tt class="docutils literal">python lab2_wsgi_template.py</tt>)</li>
+<li>You can test and debug changes <em>locally</em> by running the script (<tt class="docutils literal">python
+lab2_wsgi.py</tt>) and then pointing your browser to <tt class="docutils literal">localhost:8080</tt></li>
 </ul>
 <p class="incremental center"><strong>GO</strong></p>
 </div>

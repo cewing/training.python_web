@@ -281,6 +281,8 @@ Services Gateway Interface). We'll see the ways in which WSGI is similar to
 CGI, and look at the ways in which it differs. We'll create a simple interaction
 using WSGI and see what benefits and drawbacks it confers.
 
+`Week 4 Presentation <presentations/week04.html>`_
+
 Reading
 *******
 
@@ -358,6 +360,18 @@ For our assignment we will extend our knowledge by trying out a different
 framework. We will have the chance to repeat the class lab, or create another
 dynamic system using one of the many other python web frameworks available to
 us.
+
+Reading
+*******
+
+* `Web Application Frameworks
+  <http://en.wikipedia.org/wiki/Web_application_framework>`_
+  
+Reference
+*********
+
+* `Python Web Frameworks <http://wiki.python.org/moin/WebFrameworks>`_
+
 
 Assignment
 **********
