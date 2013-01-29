@@ -281,6 +281,8 @@ Services Gateway Interface). We'll see the ways in which WSGI is similar to
 CGI, and look at the ways in which it differs. We'll create a simple interaction
 using WSGI and see what benefits and drawbacks it confers.
 
+`Week 4 Presentation <presentations/week04.html>`_
+
 Reading
 *******
 
@@ -359,10 +361,45 @@ framework. We will have the chance to repeat the class lab, or create another
 dynamic system using one of the many other python web frameworks available to
 us.
 
+Reading
+*******
+
+* `Web Application Frameworks
+  <http://en.wikipedia.org/wiki/Web_application_framework>`_
+* `Flask Documentation <http://flask.pocoo.org/docs/>`_ - Read the Foreward,
+  Installation and Quickstart sections.
+* `Unittest - Unit Testing Framework
+  <http://docs.python.org/2.6/library/unittest.html>`_ - We will be writing
+  tests from here forward. Start learning how.
+
+Before Class
+************
+
+* Install Flask in a virtualenv on your local machine.
+* Walk through the examples in the Quickstart section.
+* You can play with the tutorial if you want. We'll be doing this in class as
+  our lab work
+  
+Reference
+*********
+
+* `Bottle: Python Web Framework <http://bottlepy.org/docs/dev/>`_
+* `CherryPy: A Minimalize Python Web Framework <http://www.cherrypy.org/>`_
+* `Web.py: Think about the ideal way to write a web app. Write the code to
+  make it happen. <http://webpy.org/>`_
+
+These are only a few of the many python web frameworks available in the
+'microframework' class. I offer these resources as a starting point. For your
+assignment, pick one of these to work with, or select one from the list at the
+python wiki below. **Do Not Use Django or Pyramid**. We will be covering those
+specifically in class.
+
+* `Python Web Frameworks <http://wiki.python.org/moin/WebFrameworks>`_
+
 Assignment
 **********
 
-To Be Decided
+Coming soon
 
 Week 6 - Django
 ---------------
