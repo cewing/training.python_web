@@ -22,6 +22,88 @@ But First
 
 Review from the Assignment
 
+Save Memory on Loading
+----------------------
+
+When you are loading data from an API, you can sometimes get more than you
+bargained for. Both BeautifulSoup and the json library provide ways to help:
+
+.. code-block:: python
+    :class: incremental
+
+    page = urllib2.urlopen(url)
+    json_string = page.read()
+    json.loads(json_string)
+
+.. code-block:: python
+    :class: incremental
+
+    page = urllib2.urlopen(url)
+    json.loads(page)
+
+.. class:: incremental
+
+The second form will *buffer* the input as it is read, and minimize memory
+consumption. If you've got really large data sets this can be very good.
+
+Protect Yourself From the Net
+-----------------------------
+
+We learned in our last class that APIs can flake. Remember that. It's *vital*!
+
+.. code-block:: python
+    :class: incremental
+
+    page = urllib2.urlopen(url)
+    parsed = BeautifulSoup(page)
+
+.. code-block:: python
+    :class: incremental
+
+    page = urllib2.urlopen(url)
+    if page.code == 200:
+        parsed = BeautifulSoup(page)
+    else:
+        raise SomeExceptionYouCanCatch
+
+.. class:: incremental
+
+What happens if your desired API is offline when a user comes to see your
+page? Make sure you give yourself a way to be kind to your users. 500 Internal
+Server Errors suck!
+
+What You Made
+-------------
+
+.. class:: incremental
+
+* geographic locations of our Bluebox VMs
+* Visualization of the popularity of Facebook Friends' first names
+* Restaurants near your location with recent Health Inspection data
+* A Last-FM user's top artists, with lists of mixcloud mixes featuring each of
+  them
+* A list of Craigslist apartments with the nearest bars, pizza and sushi
+  places and their Yelp ratings
+* Geographic locations of the top 20 users returned for a twitter search,
+  along with other twitter data
+
+A Note on Homeworks
+-------------------
+
+.. class:: incremental
+
+* I've been saying that only attendance counts for your grade.
+* It was brought to my attention this week that my own syllabus says
+  differently
+* The work we've done so far is all, in some sense, foundational. We will be
+  using tools starting next week that build upon the tools we've encountered.
+
+.. class:: incremental
+
+Homework from this point out should be considered required. We are now
+reaching the level of tools you will use on a day to day basis. Mastery comes
+with practice.
+
 And Second
 ----------
 
