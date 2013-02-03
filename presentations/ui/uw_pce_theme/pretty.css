@@ -169,6 +169,19 @@ p.image-credit {
     z-index: 10;
 }
 
+table.invisible {
+    border: none;
+    border-collapse: collapse;
+}
+table.invisible tr,
+table.invisible td {
+    border: none;
+}
+table.invisible td {
+    text-align: center;
+    padding: 5px;
+}
+
 /* Pygments 'colorful' colorization */
 .code { background-color: #ffffcc}
 .current .c, .c { color: #888888 } /* Comment */

@@ -361,6 +361,8 @@ framework. We will have the chance to repeat the class lab, or create another
 dynamic system using one of the many other python web frameworks available to
 us.
 
+`Week 5 Presentation <presentations/week05.html>`_
+
 Reading
 *******
 
@@ -371,6 +373,14 @@ Reading
 * `Unittest - Unit Testing Framework
   <http://docs.python.org/2.6/library/unittest.html>`_ - We will be writing
   tests from here forward. Start learning how.
+
+Please also skim this:
+
+* `sqlite3 - DB API for sqlite3
+  <http://www.doughellmann.com/PyMOTW/sqlite3/index.html>`_ - We'll need a bit
+  of familiarity with the sqlite3 module. How to open connections, execute
+  queries, and read the results from a cursor. Just read the first two
+  sections ('Creating a Database' and 'Retrieving Data').
 
 Before Class
 ************
@@ -396,10 +406,19 @@ specifically in class.
 
 * `Python Web Frameworks <http://wiki.python.org/moin/WebFrameworks>`_
 
+You may also want to do more reading on the unittest module:
+
+* `PyMOTW - unittest
+  <http://www.doughellmann.com/PyMOTW/unittest/index.html>`_
+
 Assignment
 **********
 
-Coming soon
+You can read the assignment at 
+
+http://github.com/cewing/training.python_web/blob/master/assignments/week05/athome/assignment.txt
+
+Please complete the assignment by noon on Sunday, February 10, 2013.
 
 Week 6 - Django
 ---------------
