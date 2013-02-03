@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Flaskr</title>
+    <!-- Bootstrap -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
+    <style type="text/css">
+    body {
+      padding-top: 50px;
+    }
+    ul.entries {
+      list-style: none;
+      list-style-type: none;
+    }
+    li.entry {
+      margin-top: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
+    }
+    li.entry:last-child {
+      border-bottom: none;
+    }
+    li.entry:first-child {
+      margin-top:0;
+    }
+    </style>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="navbar navbar-fixed-top navbar-inverse">
+        <div class="navbar-inner">
+          <a href="/" class="brand">Flaskr</a>
+          <ul class="nav pull-right">
+          {% if not session.logged_in %}
+            <li><a href="{{ url_for('login') }}">log in</a></li>
+          {% else %}
+            <li><a href="{{ url_for('logout') }}">log out</a></li>
+          {% endif %}
+          </ul>
+        </div>
+      </div>
+      {% for message in get_flashed_messages() %}
+      <div class="alert alert-info">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <p><strong>Info</strong> {{ message }}</p>
+      </div>
+      {% endfor %}
+      <div class="content">
+          {% block body %}{% endblock %}
+      </div>
+    </div>
+  </body>
+</html>

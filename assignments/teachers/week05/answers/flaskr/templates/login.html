@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block body %}
+  <div class="well span6">
+    <form action="{{ url_for('login') }}" method="POST" class="form-horizontal">
+      <fieldset>
+        <legend>Login</legend>
+        {% if error -%}
+        <div class="alert alert-error">
+          <p><strong>Error</strong> {{ error }}</p>
+        </div>
+        {%- endif %}
+        <div class="control-group">
+          <label class="control-label" for="username">Username</label>
+          <div class="controls">
+            <input type="text" name="username" id="username"/>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="password">Password</label>
+          <div class="controls">
+            <input type="password" name="password" id="password"/>
+          </div>
+        </div>
+        <div class="control-group">
+          <div class="controls">
+            <button type="submit" class="btn btn-primary">Sign in</button>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+{% endblock %}

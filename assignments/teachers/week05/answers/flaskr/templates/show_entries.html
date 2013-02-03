@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+{% block body %}
+  {% if session.logged_in %}
+  <div class="well">
+    <a class="btn btn-mini btn-link pull-right" data-toggle="collapse" data-target="#add_form">show/hide</a>
+    <form action="{{ url_for('add_entry') }}" method="POST" class="form-horizontal">
+      <fieldset>
+        <legend>Add a Post</legend>
+         <div class="collapse" id="add_form">
+          <div class="control-group" style="margin-top: 20px">
+            <label class="control-label" for="title">Title</label>
+            <div class="controls">
+              <input type="text" name="title" id="title" class="input-xxlarge"/>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="title">Text</label>
+            <div class="controls">
+              <textarea name="text" id="text" rows="10" class="input-xxlarge"></textarea>
+            </div>
+          </div>
+          <div class="control-group">
+            <div class="controls">
+              <button type="submit" class="btn btn-primary">Share</button>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+  <div class="clearfix"><!-- --></div>
+  {% endif %}
+  <div class="page-header">
+    <h1>Posts</h1>
+  </div>
+  <ul class="entries">
+  {% for entry in entries %}
+    <li class="entry">
+      <h2>{{ entry.title }}</h2>
+      <div class="entry_body">
+      {{ entry.text|safe }}
+      </div>
+    </li>
+  {% else %}
+    <li><em>No entries so far</em></li>
+  {% endfor %}
+  </ul>
+{% endblock %}
+

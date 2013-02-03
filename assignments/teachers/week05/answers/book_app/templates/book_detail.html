@@ -1,0 +1,15 @@
+<!doctype html>
+<html>
+  <head>
+    <title>{{ book.title }}</title>
+  </head>
+  <body>
+    <h1>{{ book.title }}</h1>
+    <dl>
+      <dt>Author</dt><dd>{{ book.author }}</dd>
+      <dt>Publisher</dt><dd>{{ book.publisher }}</dd>
+      <dt>ISBN</dt><dd>{{ book.isbn }}</dd>
+    </dl>
+    <p><a href="{{ url_for('books') }}">Back to the list</a></p>
+  </body>
+</html>
