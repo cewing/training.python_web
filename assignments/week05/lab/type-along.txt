@@ -1,0 +1,761 @@
+But First
+---------
+
+And Second
+----------
+
+And Now...
+----------
+
+A Moment to Reflect
+-------------------
+
+We've built
+-----------
+
+We've built
+-----------
+
+We've built
+-----------
+
+We've built
+-----------
+
+Onward
+------
+
+From Now On
+-----------
+
+The Abstraction Stack
+---------------------
+
+Plumbing
+--------
+
+Tools
+-----
+
+Small Frameworks
+----------------
+
+Full Stack Frameworks
+---------------------
+
+Systems
+-------
+
+Frameworks
+----------
+
+What Does That *Mean*?
+----------------------
+
+Level of Abstraction
+--------------------
+
+Python Web Frameworks
+---------------------
+
+Choosing a Framework
+--------------------
+
+Cris' First Law of Frameworks
+-----------------------------
+
+Cris' Second Law of Frameworks
+------------------------------
+
+Preparation
+-----------
+
+Flask
+-----
+
+    from flask import Flask
+    app = Flask(__name__)
+    
+    @app.route('/')
+    def hello_world():
+        return 'Hello World!'
+    
+    if __name__ == '__main__':
+        app.run()
+
+
+Running our App
+---------------
+
+    (flaskenv)$ python flask_intro.py
+
+
+Debugging our App
+-----------------
+
+    @app.route('/')
+    def hello_world():
+        bar = 1 / 0
+        return 'Hello World!'
+    
+    if __name__ == '__main__':
+        app.run(debug=True)
+
+
+What's Happening Here?
+----------------------
+
+URL Routing
+-----------
+
+Routes Can Be Dynamic
+---------------------
+
+    @app.route('/profile/<username>')
+    def show_profile(username):
+        return "My username is %s" % username
+
+
+    @app.route('/div/<float:val>/')
+    def divide(val):
+        return "%0.2f divided by 2 is %0.2f" % (val, val / 2)
+
+
+Routes Can Be Filtered
+----------------------
+
+    @app.route('/blog/entry/<int:id>/', methods=['GET',])
+    def read_entry(id):
+        return "reading entry %d" % id
+    
+    @app.route('/blog/entry/<int:id>/', methods=['POST', ])
+    def write_entry(id):
+        return 'writing entry %d' % id
+
+
+Routes Can Be Reversed
+----------------------
+
+Reversing URLs in Flask
+-----------------------
+
+    from flask import url_for
+    with app.test_request_context():
+      print url_for('endpoint', **kwargs)
+
+
+Reversing in Action
+-------------------
+
+    import flask_intro
+    from flask_intro import app
+    from flask import url_for
+    with app.test_request_context():
+        print url_for('show_profile', username="cris")
+        print url_for('divide', val=23.7)
+    
+    '/profile/cris/'
+    '/div/23.7/'
+
+
+Generating HTML
+---------------
+
+Templating
+----------
+
+Jinja2 Template Basics
+----------------------
+
+Advanced Jinja2
+---------------
+
+Templates in Flask
+------------------
+
+    from flask import render_template
+    
+    @app.route('/hello/')
+    @app.route('/hello/<name>')
+    def hello(name=None):
+        return render_template('hello.html', name=name)
+
+
+Flask Template Context
+----------------------
+
+Lab 1
+-----
+
+Lab 2 - Part 1
+--------------
+
+Data Persistence
+----------------
+
+Simple SQL
+----------
+
+Our Database
+------------
+
+    drop table if exists entries;
+    create table entries (
+        id integer primary key autoincrement,
+        title string not null,
+        text string not null
+    );
+
+
+Our App
+-------
+
+    # configuration goes here
+    DATABASE = '/tmp/flaskr.db'
+    SECRET_KEY = 'development key'
+    
+    app = Flask(__name__) # this is already in the file
+    app.config.from_object(__name__)
+
+
+Creating the Database
+---------------------
+
+    # add this at the very top
+    import sqlite3
+    
+    # add the rest of this below the app.config statement
+    def connect_db():
+        return sqlite3.connect(app.config['DATABASE'])
+
+
+Tests and TDD
+-------------
+
+Testing Setup
+-------------
+
+    import os
+    import flaskr
+    import unittest
+    import tempfile
+    
+    class FlaskrTestCase(unittest.TestCase):
+    
+        def setUp(self):
+            db_fd = tempfile.mkstemp()
+            self.db_fd, flaskr.app.config['DATABASE'] = db_fd
+            flaskr.app.config['TESTING'] = True
+            self.client = flaskr.app.test_client()
+            self.app = flaskr.app
+
+
+Testing Teardown
+----------------
+
+    class FlaskrTestCase(unittest.TestCase):
+        ...
+        
+        def tearDown(self):
+            os.close(self.db_fd)
+            os.unlink(flaskr.app.config['DATABASE'])
+
+
+Make Tests Runnable
+-------------------
+
+    if __name__ == '__main__':
+        unittest.main()
+
+
+Test Databse Setup
+------------------
+
+    def test_database_setup(self):
+        con = flaskr.connect_db()
+        cur = con.execute('PRAGMA table_info(entries);')
+        rows = cur.fetchall()
+        self.assertEquals(len(rows), 3)
+
+
+Run the Tests
+-------------
+
+    (flaskenv)$ python flaskr_tests.py
+    F
+    ======================================================================
+    FAIL: test_database_setup (__main__.FlaskrTestCase)
+    ----------------------------------------------------------------------
+    Traceback (most recent call last):
+      File "flaskr_tests.py", line 23, in test_database_setup
+        self.assertTrue(len(rows) == 3)
+    AssertionError: False is not True
+
+
+    ----------------------------------------------------------------------
+    Ran 1 test in 0.011s
+
+
+    FAILED (failures=1)
+
+
+Make the Test Pass
+------------------
+
+    # add this import at the top
+    from contextlib import closing
+    
+    # add this function after the connect_db function
+    def init_db():
+        with closing(connect_db()) as db:
+            with app.open_resource('schema.sql') as f:
+                db.cursor().executescript(f.read())
+            db.commit()
+
+
+Initialize the DB in Tests
+--------------------------
+
+    def setUp(self):
+        ...
+        flaskr.init_db() # <- add this at the end
+
+
+Initialize the DB IRL
+---------------------
+
+    import flaskr
+    flaskr.init_db()
+    ^D
+
+
+Lab 2 - Part 2
+--------------
+
+Managing DB Connections
+-----------------------
+
+Manage our DB
+-------------
+
+    # add this import at the top:
+    from flask import g
+    
+    # add these function after init_db
+    @app.before_request
+    def before_request():
+        g.db = connect_db()
+    
+    @app.teardown_request
+    def teardown_request(exception):
+        g.db.close()
+
+
+Test Writing Entries
+--------------------
+
+    def test_write_entry(self):
+        expected = ("My Title", "My Text")
+        with self.app.test_request_context('/'):
+            self.app.preprocess_request()
+            flaskr.write_entry(*expected)
+            con = flaskr.connect_db()
+            cur = con.execute("select * from entries;")
+            rows = cur.fetchall()
+        self.assertEquals(len(rows), 1)
+        for val in expected:
+            self.assertTrue(val in rows[0])
+
+
+Write an Entry
+--------------
+
+    def write_entry(title, text):
+        g.db.execute('insert into entries (title, text) values (?, ?)',
+                     [title, text])
+        g.db.commit()
+
+
+Test Reading Entries
+--------------------
+
+    def test_get_all_entries_empty(self):
+        with self.app.test_request_context('/'):
+            self.app.preprocess_request()
+            entries = flaskr.get_all_entries()
+            self.assertEquals(len(entries), 0)
+
+
+    def test_get_all_entries(self):
+        expected = ("My Title", "My Text")
+        with self.app.test_request_context('/'):
+            self.app.preprocess_request()
+            flaskr.write_entry(*expected)
+            entries = flaskr.get_all_entries()
+            self.assertEquals(len(entries), 1)
+            for entry in entries:
+                self.assertEquals(expected[0], entry['title'])
+                self.assertEquals(expected[1], entry['text'])
+
+
+Read Entries
+------------
+
+    def get_all_entries():
+        cur = g.db.execute('select title, text from entries order by id desc')
+        entries = [dict(title=row[0], text=row[1]) for row in cur.fetchall()]
+        return entries
+
+
+Lab 2 - Part 3
+--------------
+
+Test the Front Page
+-------------------
+
+    def test_empty_listing(self):
+        rv = self.client.get('/')
+        assert 'No entries here so far' in rv.data
+
+
+    def test_listing(self):
+        expected = ("My Title", "My Text")
+        with self.app.test_request_context('/'):
+            self.app.preprocess_request()
+            flaskr.write_entry(*expected)
+        rv = self.client.get('/')
+        for value in expected:
+            assert value in rv.data
+
+
+Template Inheritance
+--------------------
+
+Creating Layout
+---------------
+
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Flaskr</title>
+      </head>
+      <body>
+        <h1>Flaskr</h1>
+        <div class="content">
+        {% block body %}{% endblock %}
+        </div>
+      </body>
+    </html>
+
+
+Extending Layout
+----------------
+
+    {% extends "layout.html" %}
+    {% block body %}
+      <h2>Posts</h2>
+      <ul class="entries">
+      {% for entry in entries %}
+        <li>
+          <h2>{{ entry.title }}</h2>
+          <div class="entry_body">
+          {{ entry.text|safe }}
+          </div>
+        </li>
+      {% else %}
+        <li><em>No entries here so far</em></li>
+      {% endfor %}
+      </ul>
+    {% endblock %}
+
+
+Creating a View
+---------------
+
+    # at the top, import
+    from flask import render_template
+    
+    # and after our last functions:
+    @app.route('/')
+    def show_entries():
+        entries = get_all_entries()
+        return render_template('show_entries.html', entries=entries)
+
+
+Authentication
+--------------
+
+Test Authentication
+-------------------
+
+    def test_login_passes(self):
+        with self.app.test_request_context('/'):
+            self.app.preprocess_request()
+            flaskr.do_login(flaskr.app.config['USERNAME'],
+                            flaskr.app.config['PASSWORD'])
+            self.assertTrue(session.get('logged_in', False))
+
+
+    def test_login_fails(self):
+        with self.app.test_request_context('/'):
+            self.app.preprocess_request()
+            self.assertRaises(ValueError, flaskr.do_login, 
+                              flaskr.app.config['USERNAME'],
+                              'incorrectpassword')
+
+
+Set Up Authentication
+---------------------
+
+    # add an import
+    from flask import session
+    
+    # and configuration
+    USERNAME = 'admin'
+    PASSWORD = 'default'
+    
+    # and a function
+    def do_login(usr, pwd):
+        if usr != app.config['USERNAME']:
+            raise ValueError
+        elif pwd != app.config['PASSWORD']:
+            raise ValueError
+        else:
+            session['logged_in'] = True
+
+
+Login/Logout in Tests
+---------------------
+
+    def login(self, username, password):
+        return self.client.post('/login', data=dict(
+            username=username,
+            password=password
+        ), follow_redirects=True)
+
+
+    def logout(self):
+        return self.client.get('/logout',
+                               follow_redirects=True)
+
+
+Test Authentication
+-------------------
+
+    def test_login_logout(self):
+        rv = self.login('admin', 'default')
+        assert 'You were logged in' in rv.data
+        rv = self.logout()
+        assert 'You were logged out' in rv.data
+        rv = self.login('adminx', 'default')
+        assert 'Invalid username' in rv.data
+        rv = self.login('admin', 'defaultx')
+        assert 'Invalid password' in rv.data
+
+
+Add Login Template
+------------------
+
+    {% extends "layout.html" %}
+    {% block body %}
+      <h2>Login</h2>
+      {% if error -%}
+        <p class="error"><strong>Error</strong> {{ error }}
+      {%- endif %}
+      <form action="{{ url_for('login') }}" method="POST">
+        <div class="field">
+          <label for="username">Username</label>
+          <input type="text" name="username" id="username"/>
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" name="password" id="password"/>
+        </div>
+        <div class="control_row">
+          <input type="submit" name="Login" value="Login"/>
+        </div>
+      </form>
+    {% endblock %}
+
+
+Add Login/Logout Views
+----------------------
+
+    # at the top, new imports
+    from flask import request
+    from flask import redirect
+    from flask import flash
+    from flask import url_for
+
+
+And the View Code
+-----------------
+
+    @app.route('/login', methods=['GET', 'POST'])
+    def login():
+        error = None
+        if request.method == 'POST':
+            try:
+                do_login(request.form['username'],
+                         request.form['password'])
+            except ValueError:
+                error = "Invalid Login"
+            else:
+                flash('You were logged in')
+                return redirect(url_for('show_entries'))
+        return render_template('login.html', error=error)
+
+
+    @app.route('/logout')
+    def logout():
+        session.pop('logged_in', None)
+        flash('You were logged out')
+        return redirect(url_for('show_entries'))
+
+
+About Flash
+-----------
+
+    <h1>Flaskr</h1>       <!-- already there -->
+    <div class="metanav"> <!-- add all this -->
+    {% if not session.logged_in %}
+      <a href="{{ url_for('login') }}">log in</a>
+    {% else %}
+      <a href="{{ url_for('logout') }}">log_out</a>
+    {% endif %}
+    </div>
+    {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+    {% endfor %}
+    <div class="content"> <!-- already there -->
+
+
+Adding an Entry
+---------------
+
+    def test_add_entries(self):
+        self.login('admin', 'default')
+        rv = self.client.post('/add', data=dict(
+            title='Hello',
+            text='This is a post'
+        ), follow_redirects=True)
+        assert 'No entries here so far' not in rv.data
+        assert 'Hello' in rv.data
+        assert 'This is a post' in rv.data
+
+
+Add the View
+------------
+
+    # add an import
+    from flask import abort
+
+
+    @app.route('/add', methods=['POST'])
+    def add_entry():
+        if not session.get('logged_in'):
+            abort(401)
+        try:
+            write_entry(request.form['title'], request.form['text'])
+            flash('New entry was successfully posted')
+        except sqlite3.Error as e:
+            flash('There was an error: %s' % e.args[0])
+        return redirect(url_for('show_entries'))
+
+
+Where do Entries Come From
+--------------------------
+
+Provide a Form
+--------------
+
+    {% block body %}  <!-- already there -->
+    {% if session.logged_in %}
+    <form action="{{ url_for('add_entry') }}" method="POST" class="add_entry">
+      <div class="field">
+        <label for="title">Title</label>
+        <input type="text" size="30" name="title" id="title"/>
+      </div>
+      <div class="field">
+        <label for="text">Text</label>
+        <textarea name="text" id="text" rows="5" cols="80"></textarea>
+      </div>
+      <div class="control_row">
+        <input type="submit" value="Share" name="Share"/>
+      </div>
+    </form>
+    {% endif %}
+    <h2>Posts</h2>  <!-- already there -->
+
+
+All Done
+--------
+
+    (flaskenv)$ python flaskr.py
+    * Running on http://127.0.0.1:5000/
+    * Restarting with reloader
+
+
+The Big Payoff
+--------------
+
+Lab 2 - Part 4
+--------------
+
+Static Files
+------------
+
+    <head>  <!-- you only need to add the <link> below -->
+      <title>Flaskr</title>
+      <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" type="text/css">
+    </head>
+
+
+Deploying
+---------
+
+    (flaskenv)$ cd ../
+    (flaskenv)$ tar -czvf flaskr.tgz flaskr
+    (flaskenv)$ scp flaskr.tgz <your_vm>:~/
+    (flaskenv)$ ssh <your_vm>
+    $ tar -zxvf flaskr.tgz
+
+
+Deploying
+---------
+
+    WSGIScriptAlias / /var/www/flaskr.wsgi
+
+
+Deploying
+---------
+
+    $ sudo touch /var/www/flaskr.wsgi
+    $ sudo vi /var/www/flasrk.wsgi
+    
+    
+    import sys
+    sys.path.insert(0, 'path/to/flaskr') # the flaskr app you uploaded
+    
+    from flaskr import app as application
+
+
+Deploying
+---------
+
+    $ sudo apache2ctl configtest
+    $ sudo /etc/init.d/apache2 graceful
+
+
+Going Further
+-------------
+
+But Instead
+-----------
+
+Assignment
+----------
+
+Submitting The Assignment
+-------------------------
+
