@@ -361,6 +361,8 @@ framework. We will have the chance to repeat the class lab, or create another
 dynamic system using one of the many other python web frameworks available to
 us.
 
+`Week 5 Presentation <presentations/week05.html>`_
+
 Reading
 *******
 
@@ -412,7 +414,11 @@ You may also want to do more reading on the unittest module:
 Assignment
 **********
 
-Coming soon
+You can read the assignment at 
+
+http://github.com/cewing/training.python_web/blob/master/assignments/week05/athome/assignment.txt
+
+Please complete the assignment by noon on Sunday, February 10, 2013.
 
 Week 6 - Django
 ---------------

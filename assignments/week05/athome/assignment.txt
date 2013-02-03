@@ -1,0 +1,23 @@
+* Re-implement the Flaskr app we built in class in a different Small
+  Framework.
+
+* There are several named in the class outline, and in this presentation.
+
+* Pick one of them, or a different one of your choice.  It must be Python.
+
+* When you are finished, add your source code and a README that talks about
+  your experience to the ``athome`` folder of week05.
+
+* Tell me about your new Framework. Discuss the points above regarding
+  differences.
+
+Submittin Your Work
+
+* Try to get your code running on your VM
+
+* Add your source code, in it's entirety, to the ``athome`` folder for week 5
+
+* Add a README.txt file that discusses the experience.
+
+* Commit your changes to your fork of the class repository and send me a pull
+  request
