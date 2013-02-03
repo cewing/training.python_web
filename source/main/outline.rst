@@ -372,6 +372,14 @@ Reading
   <http://docs.python.org/2.6/library/unittest.html>`_ - We will be writing
   tests from here forward. Start learning how.
 
+Please also skim this:
+
+* `sqlite3 - DB API for sqlite3
+  <http://www.doughellmann.com/PyMOTW/sqlite3/index.html>`_ - We'll need a bit
+  of familiarity with the sqlite3 module. How to open connections, execute
+  queries, and read the results from a cursor. Just read the first two
+  sections ('Creating a Database' and 'Retrieving Data').
+
 Before Class
 ************
 
@@ -395,6 +403,11 @@ python wiki below. **Do Not Use Django or Pyramid**. We will be covering those
 specifically in class.
 
 * `Python Web Frameworks <http://wiki.python.org/moin/WebFrameworks>`_
+
+You may also want to do more reading on the unittest module:
+
+* `PyMOTW - unittest
+  <http://www.doughellmann.com/PyMOTW/unittest/index.html>`_
 
 Assignment
 **********
