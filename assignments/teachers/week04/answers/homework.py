@@ -19,6 +19,7 @@ class MyApplication(object):
 
     def __call__(self, environ, start_response):
         headers = [('Content-type', 'text/html')]
+        import pdb; pdb.set_trace( )
         try:
             path = environ.get('PATH_INFO', None)
             if path is None:
@@ -44,9 +45,9 @@ class MyApplication(object):
     def books(self):
         core = ['<h1>Book Database</h1>',
                 '<ul>']
-        tmpl = '<li><a href="book/%s">%s</a></li>'
-        for book_id, book_data in self.db.items():
-            core.append(tmpl % (book_id, book_data['title']))
+        tmpl = '<li><a href="book/%(id)s">%(title)s</a></li>'
+        for data in self.db.titles():
+            core.append(tmpl % data)
         core.append('</ul>')
         body = "\n".join(core)
         context = {'page_title': "Book Database",
@@ -66,9 +67,10 @@ class MyApplication(object):
 </dl>
 <p><a href="../">More Books</a></p>
 """
-        book = self.db.get(id, None)
-        if book is None:
-            raise NameError
+        try:
+            book = self.db.title_info(id)
+        except KeyError:
+            raise NameError('book not found')
         title = "Book Database: %s" % book['isbn']
         context = {'page_title': title,
                    'page_body': tmpl % book}
@@ -99,7 +101,7 @@ if __name__ == '__main__':
     # this block will be called when the script is run directly
     from wsgiref.simple_server import make_server
     import bookdb
-    application = MyApplication(bookdb.database, URLS)
+    application = MyApplication(bookdb.BookDB(), URLS)
     srv = make_server('localhost', 8080, application)
     srv.serve_forever()
 else:
@@ -114,4 +116,4 @@ else:
     import sys
     sys.path.append('/path/to/directory/containing/bookdb/on/server')
     import bookdb
-    application = MyApplication(bookdb.database, URLS)
+    application = MyApplication(bookdb.BookDB(), URLS)
