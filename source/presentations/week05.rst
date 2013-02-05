@@ -9,9 +9,9 @@ Week 5: Small Frameworks
 
 .. class:: intro-blurb right
 
-| "Reinventing the wheel is great 
-| if your goal is to learn more about the wheel" 
-| 
+| "Reinventing the wheel is great
+| if your goal is to learn more about the wheel"
+|
 | -- James Tauber, PyCon 2007
 
 .. class:: image-credit
@@ -25,12 +25,137 @@ But First
 
 Review from the Assignment
 
+URL Mapping
+-----------
+
+Two basic approaches to solving the problem::
+
+    /books?id=id1
+    /books/id1
+
+.. class:: incremental
+
+The first generally used ``environ['QUERY_STRING']``. The second used
+``environ['PATH_INFO']``
+
+.. class:: incremental
+
+Both are fine. Largely a matter of taste. I find the latter more common in
+daily work.
+
+Regular Expressions
+-------------------
+
+My personal approach to the url mapping problem was the second, which relies
+on regular expression mapping:
+
+.. code-block:: python
+
+    URLS = [(r'^$', 'books'),
+            (r'^book/(id[\d]{1,2})$', 'book'), ]
+
+.. class:: incremental
+
+Regular expressions should be as tight as possible, it's easy to over-match
+
+.. class:: incremental
+
+Read the `Python Regexp How-to <http://docs.python.org/2.6/howto/regex.html>`_
+and find a good `Regular Expression Tester <http://www.pythonregex.com/>`_
+
+String Formatting
+-----------------
+
+This is awkward:
+
+.. code-block:: python
+
+    bob = {'a': 'things', 'b': 'stuff'}
+    "I have lots of " + bob['a'] + " and " + bob['b'] + "."
+
+.. class:: incremental
+
+This is much less so:
+
+.. code-block:: python
+    :class: incremental
+
+    bob = {'a': 'things', 'b': 'stuff'}
+    "I have lots of %(a)s and %(b)s." % bob
+
+.. class:: incremental
+
+I am chastened.  string.format() is the best (most flexible)
+
+WSGIScriptAlias
+---------------
+
+CGI required a cgi directory.  WSGI makes no such requirement.
+
+.. class:: incremental
+
+You can use WSGIScriptAlias to point to a single file
+
+.. class:: incremental
+
+Since a single file can often provide the entry point to an entire app, this
+allows you to mount entire apps at arbitrary path locations:
+
+.. class:: incremental
+
+::
+
+    WSGIScriptAlias / /path/to/main/app/wsgi_app.py
+    WSGIScriptAlias /blog /path/to/blog/app/wsgi_app.py
+    WSGIScriptAlias /forum /path/to/forum/app/wsgi_app.py
+
+Bad HTML
+--------
+
+I know that web browsers are forgiving, but you should be less so.
+
+These are *not* good HTML::
+
+    <p><a href = /book/id4 >foobar</p>
+    <P><A HREF='/book/id4'>foobar</A></P>
+
+.. class:: incremental
+
+This is: `<p><a href="/book/id4">foobar</a></p>`
+
+.. class:: incremental
+
+The `Mozilla Developer Network
+<https://developer.mozilla.org/en-US/docs/HTML>`_ is a great resource for
+proper HTML. It also has great reference information on JavaScript. Shun the
+`w3schools`.
+
 And Second
 ----------
 
 .. class:: big-centered
 
 Questions from the Reading?
+
+And Third
+---------
+
+.. class:: center incremental
+
+**Class Project**
+
+.. class:: incremental
+
+* Create a Website
+* It can do anything you want it to. 
+* It should have some user interactions (forms users complete).
+* It should look nice-ish
+* It should show off some aspect of what you've learned
+* It should take you about 15-20 hours to create (so small)
+* It will be due on the last day of class (March 10)
+* We will spend half of each of the last two class session working on it in
+  class.
+* **Questions?**
 
 And Now...
 ----------
@@ -277,13 +402,13 @@ There are scores of 'em (this is a partial list).
 .. class:: incremental invisible small center
 
 ========= ======== ======== ========== ==============
-Django    Grok     Pylons   TurboGears web2py 
-Zope      CubicWeb Enamel   Gizmo(QP)  Glashammer 
-Karrigell Nagare   notmm    Porcupine  QP 
-SkunkWeb  Spyce    Tipfy    Tornado    WebCore 
-web.py    Webware  Werkzeug WHIFF      XPRESS 
-AppWsgi   Bobo     Bo7le    CherryPy   circuits.web 
-Paste     PyWebLib WebStack Albatross  Aquarium 
+Django    Grok     Pylons   TurboGears web2py
+Zope      CubicWeb Enamel   Gizmo(QP)  Glashammer
+Karrigell Nagare   notmm    Porcupine  QP
+SkunkWeb  Spyce    Tipfy    Tornado    WebCore
+web.py    Webware  Werkzeug WHIFF      XPRESS
+AppWsgi   Bobo     Bo7le    CherryPy   circuits.web
+Paste     PyWebLib WebStack Albatross  Aquarium
 Divmod    Nevow    Flask    JOTWeb2    Python Servlet
 Engine    Pyramid  Quixote  Spiked     weblayer
 ========= ======== ======== ========== ==============
@@ -366,11 +491,11 @@ simple app.  Type it into `flask_intro.py`:
 
     from flask import Flask
     app = Flask(__name__)
-    
+
     @app.route('/')
     def hello_world():
         return 'Hello World!'
-    
+
     if __name__ == '__main__':
         app.run()
 
@@ -402,7 +527,7 @@ Flask has a similar tool. Make the following changes to your
     def hello_world():
         bar = 1 / 0
         return 'Hello World!'
-    
+
     if __name__ == '__main__':
         app.run(debug=True)
 
@@ -419,7 +544,7 @@ represents a single *application* in the WSGI sense.
 .. class:: incremental
 
 * You instantiate a `Flask` app with a name that represents the package or
-  module containing the app. 
+  module containing the app.
 * If your application is a single module, this should be `__name__`
 * This is used to help the `Flask` app figure out where to look for
   *resources*
@@ -484,7 +609,7 @@ You can also determine which HTTP *methods* a given route will accept:
     @app.route('/blog/entry/<int:id>/', methods=['GET',])
     def read_entry(id):
         return "reading entry %d" % id
-    
+
     @app.route('/blog/entry/<int:id>/', methods=['POST', ])
     def write_entry(id):
         return 'writing entry %d' % id
@@ -547,7 +672,7 @@ terminal and import your ``flask_intro.py`` module:
     with app.test_request_context():
         print url_for('show_profile', username="cris")
         print url_for('divide', val=23.7)
-    
+
     '/profile/cris/'
     '/div/23.7/'
 
@@ -618,7 +743,7 @@ Use the ``render_template`` function:
     :class: small
 
     from flask import render_template
-    
+
     @app.route('/hello/')
     @app.route('/hello/<name>')
     def hello(name=None):
@@ -671,7 +796,7 @@ Lab 2 - Part 1
 --------------
 
 The rest of class today will be devoted to building and deploying a simple
-micro-blog app using flask.  
+micro-blog app using flask.
 
 .. class:: incremental
 
@@ -755,7 +880,7 @@ editor. Add the following and save the file:
     # configuration goes here
     DATABASE = '/tmp/flaskr.db'
     SECRET_KEY = 'development key'
-    
+
     app = Flask(__name__) # this is already in the file
     app.config.from_object(__name__)
 
@@ -770,14 +895,14 @@ Still in ``flaskr.py`` let's add a function that will connect to our database:
 
     # add this at the very top
     import sqlite3
-    
+
     # add the rest of this below the app.config statement
     def connect_db():
         return sqlite3.connect(app.config['DATABASE'])
 
 .. class:: incremental
 
-This will be a convenience to us later on, and it will allow us to write our 
+This will be a convenience to us later on, and it will allow us to write our
 very first test.
 
 Tests and TDD
@@ -815,9 +940,9 @@ in your editor. Edit it to look like this:
     import flaskr
     import unittest
     import tempfile
-    
+
     class FlaskrTestCase(unittest.TestCase):
-    
+
         def setUp(self):
             db_fd = tempfile.mkstemp()
             self.db_fd, flaskr.app.config['DATABASE'] = db_fd
@@ -834,7 +959,7 @@ Add the following method to your test class:
 
     class FlaskrTestCase(unittest.TestCase):
         ...
-        
+
         def tearDown(self):
             os.close(self.db_fd)
             os.unlink(flaskr.app.config['DATABASE'])
@@ -905,7 +1030,7 @@ following to ``flaskr.py``:
 
     # add this import at the top
     from contextlib import closing
-    
+
     # add this function after the connect_db function
     def init_db():
         with closing(connect_db()) as db:
@@ -939,7 +1064,7 @@ Initialize the DB IRL
 ---------------------
 
 Okay, so we know the ``init_db`` function we added sets up the database
-properly. 
+properly.
 
 .. class:: incremental
 
@@ -1002,12 +1127,12 @@ Add the following code to our app (``flaskr.py``):
 
     # add this import at the top:
     from flask import g
-    
+
     # add these function after init_db
     @app.before_request
     def before_request():
         g.db = connect_db()
-    
+
     @app.teardown_request
     def teardown_request(exception):
         g.db.close()
@@ -1103,7 +1228,7 @@ Re-run your tests.  You should now have four passing tests.  Great Job!
 Lab 2 - Part 3
 --------------
 
-Now we can read and write blog entries, let's add views so we can see what 
+Now we can read and write blog entries, let's add views so we can see what
 we're doing.
 
 .. class:: incremental
@@ -1138,7 +1263,7 @@ Add the following tests to ``flaskr_tests.py``:
 Template Inheritance
 --------------------
 
-One aspect of Jinja2 templates we haven't seen yet is that templates can 
+One aspect of Jinja2 templates we haven't seen yet is that templates can
 inherit structure from other templates.
 
 .. class:: incremental
@@ -1206,7 +1331,7 @@ add the following code:
 
     # at the top, import
     from flask import render_template
-    
+
     # and after our last functions:
     @app.route('/')
     def show_entries():
@@ -1250,7 +1375,7 @@ Back in ``flaskr_tests.py`` add new test methods:
     def test_login_fails(self):
         with self.app.test_request_context('/'):
             self.app.preprocess_request()
-            self.assertRaises(ValueError, flaskr.do_login, 
+            self.assertRaises(ValueError, flaskr.do_login,
                               flaskr.app.config['USERNAME'],
                               'incorrectpassword')
 
@@ -1264,11 +1389,11 @@ Now, let's add the code in ``flaskr.py`` to support this:
 
     # add an import
     from flask import session
-    
+
     # and configuration
     USERNAME = 'admin'
     PASSWORD = 'default'
-    
+
     # and a function
     def do_login(usr, pwd):
         if usr != app.config['USERNAME']:
@@ -1579,7 +1704,7 @@ Then, on your VM, set up a virtualenv with Flask installed
 Deploying
 ---------
 
-You'll need to make some changes to mod_wsgi configuration.  
+You'll need to make some changes to mod_wsgi configuration.
 
 * Open ``/etc/apache2/sites-available/default`` in an editor (on the VM)
 
@@ -1600,11 +1725,11 @@ Finally, you'll need to add the named wsgi file and edit it to match::
 
     $ sudo touch /var/www/flaskr.wsgi
     $ sudo vi /var/www/flasrk.wsgi
-    
-    
+
+
     import sys
     sys.path.insert(0, 'path/to/flaskr') # the flaskr app you uploaded
-    
+
     from flaskr import app as application
 
 Deploying
@@ -1622,11 +1747,11 @@ Wheeee!
 Going Further
 -------------
 
-It's not too hard to see ways you could improve this.  
+It's not too hard to see ways you could improve this.
 
 .. class:: incremental
 
-* For my part, I made a version using Bootstrap.js. 
+* For my part, I made a version using Bootstrap.js.
 * You could limit the number of posts shown on the front page.
 * You could add dates to the posts and provide archived views for older posts.
 * You could add the ability to edit existing posts (and add an updated date to the schema)
