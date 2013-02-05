@@ -451,7 +451,8 @@ Routes Can Be Dynamic
 ---------------------
 
 You can provide *placeholders* in dynamic urls. Each *placeholder* is then a
-named arg to your function (add these to ``flask_intro.py``):
+named arg to your function (add these to ``flask_intro.py`` (and delete the
+1/0 bit)):
 
 .. code-block:: python
     :class: incremental small
@@ -496,7 +497,7 @@ After adding that to ``flask_intro.py`` and saving, try loading
 Routes Can Be Reversed
 ----------------------
 
-Reversing a URL means the ability to generating the url that would result in a
+Reversing a URL means the ability to generate the url that would result in a
 given endpoint being called.
 
 .. class:: incremental
@@ -590,7 +591,7 @@ There are a few basic things to know:
 * Variables in templates can be printed by surrounding the variable name with
   double curly braces: ``{{ name }}``.
 * If a variable points to something like a dictionary or object, you can use
-  *either* dot or subscription notation: ``{{ obj[attr] }}``, ``{{ dict.key
+  *either* dot or subscript notation: ``{{ obj[attr] }}``, ``{{ dict.key
   }}``.
 * Variables in templates can be *filtered*: ``{{ name|capitalize }}``. There
   is a list of builtin filters.
