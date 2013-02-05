@@ -423,9 +423,59 @@ Please complete the assignment by noon on Sunday, February 10, 2013.
 Week 6 - Django
 ---------------
 
-**Date**: Feb. 19, 2013
+**Date**: Feb. 12, 2013
 
+In this class we'll get introduced to arguably the most popular full-stack
+Python web framework, Django. We'll build a simple application that introduces
+us to the basics of Models, Views and Templates.  We'll also learn about the 
+Django admin and how it can help us rapidly develop effective applications.
 
+We'll cover basic relational modeling and talk about how to create effective
+database schemas to model real-world problems.  We'll take a look at how the 
+Django ORM (and ORMs in general) can help shield Python developers from SQL.
+
+For our homework, we'll take a look at a set of specifications for a project
+and create a set of Django Models that will fulfill the specification.
+
+Reading
+*******
+
+* `Django at a Glance
+  <https://docs.djangoproject.com/en/1.4/intro/overview/>`_ - introduction to
+  the concepts and execution of Django
+
+* `Quick Install Guide
+  <https://docs.djangoproject.com/en/1.4/intro/install/>`_ - lightweight
+  instructions on installing Django. Use Python 2.6, not 2.5.    
+
+* `Django Tutorial, part 1
+  <https://docs.djangoproject.com/en/1.4/intro/tutorial01/>`_ - as noted
+  below, please actually follow the steps in the tutorial up until you reach
+  *Creating Models*
+
+Before Class
+************
+
+* Install Django 1.4.3. Use a Virtualenv and pip or easy_install. (see the
+  installation quick-start above, and the more in-depth guide below)
+
+* Install an RDBMS (I personally recommend PostgreSQL, but MySQL or any other
+  will do. We can even live with sqlite3, so long as you understand it is
+  **not for production**)
+
+* Set up a Django project. Walk through the first part of the tutorial above
+  until you reach *Creating Models*. **Do Not** create models)
+
+Reference
+*********
+
+* `Using Django <https://docs.djangoproject.com/en/1.4/topics/>`_ - far more
+  in-depth information about core topics in Django. Pay particular attention
+  to the installation documentation here.
+
+* `Django Design Philosophies
+  <https://docs.djangoproject.com/en/dev/misc/design-philosophies/>`_ - some
+  well-considered words on why Django is the way it is.
 
 Assignment
 **********
@@ -435,7 +485,7 @@ To Be Decided
 Week 7 - Django
 ---------------
 
-**Date**: Feb. 26, 2013
+**Date**: Feb. 19, 2013
 
 Assignment
 **********
@@ -445,7 +495,7 @@ To Be Decided
 Week 8 - Pyramid
 ----------------
 
-**Date**: Mar. 5, 2013
+**Date**: Feb. 26, 2013
 
 Assignment
 **********
@@ -455,7 +505,7 @@ To Be Decided
 Week 9 - The Cloud
 ------------------
 
-**Date**: Feb. 12, 2013
+**Date**: Mar. 5, 2013
 
 Assignment
 **********

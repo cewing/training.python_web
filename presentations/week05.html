@@ -53,9 +53,88 @@
 <h1>But First</h1>
 <p class="big-centered">Review from the Assignment</p>
 </div>
+<div class="slide" id="url-mapping">
+<h1>URL Mapping</h1>
+<p>Two basic approaches to solving the problem:</p>
+<pre class="literal-block">
+/books?id=id1
+/books/id1
+</pre>
+<p class="incremental">The first generally used <tt class="docutils literal"><span class="pre">environ['QUERY_STRING']</span></tt>. The second used
+<tt class="docutils literal"><span class="pre">environ['PATH_INFO']</span></tt></p>
+<p class="incremental">Both are fine. Largely a matter of taste. I find the latter more common in
+daily work.</p>
+</div>
+<div class="slide" id="regular-expressions">
+<h1>Regular Expressions</h1>
+<p>My personal approach to the url mapping problem was the second, which relies
+on regular expression mapping:</p>
+<pre class="code python literal-block">
+<span class="n">URLS</span> <span class="o">=</span> <span class="p">[(</span><span class="s">r'^$'</span><span class="p">,</span> <span class="s">'books'</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">r'^book/(id[\d]{1,2})$'</span><span class="p">,</span> <span class="s">'book'</span><span class="p">),</span> <span class="p">]</span>
+</pre>
+<p class="incremental">Regular expressions should be as tight as possible, it's easy to over-match</p>
+<p class="incremental">Read the <a class="reference external" href="http://docs.python.org/2.6/howto/regex.html">Python Regexp How-to</a>
+and find a good <a class="reference external" href="http://www.pythonregex.com/">Regular Expression Tester</a></p>
+</div>
+<div class="slide" id="string-formatting">
+<h1>String Formatting</h1>
+<p>This is awkward:</p>
+<pre class="code python literal-block">
+<span class="n">bob</span> <span class="o">=</span> <span class="p">{</span><span class="s">'a'</span><span class="p">:</span> <span class="s">'things'</span><span class="p">,</span> <span class="s">'b'</span><span class="p">:</span> <span class="s">'stuff'</span><span class="p">}</span>
+<span class="s">&quot;I have lots of &quot;</span> <span class="o">+</span> <span class="n">bob</span><span class="p">[</span><span class="s">'a'</span><span class="p">]</span> <span class="o">+</span> <span class="s">&quot; and &quot;</span> <span class="o">+</span> <span class="n">bob</span><span class="p">[</span><span class="s">'b'</span><span class="p">]</span> <span class="o">+</span> <span class="s">&quot;.&quot;</span>
+</pre>
+<p class="incremental">This is much less so:</p>
+<pre class="code python incremental literal-block">
+<span class="n">bob</span> <span class="o">=</span> <span class="p">{</span><span class="s">'a'</span><span class="p">:</span> <span class="s">'things'</span><span class="p">,</span> <span class="s">'b'</span><span class="p">:</span> <span class="s">'stuff'</span><span class="p">}</span>
+<span class="s">&quot;I have lots of </span><span class="si">%(a)s</span><span class="s"> and </span><span class="si">%(b)s</span><span class="s">.&quot;</span> <span class="o">%</span> <span class="n">bob</span>
+</pre>
+<p class="incremental">I am chastened.  string.format() is the best (most flexible)</p>
+</div>
+<div class="slide" id="wsgiscriptalias">
+<h1>WSGIScriptAlias</h1>
+<p>CGI required a cgi directory.  WSGI makes no such requirement.</p>
+<p class="incremental">You can use WSGIScriptAlias to point to a single file</p>
+<p class="incremental">Since a single file can often provide the entry point to an entire app, this
+allows you to mount entire apps at arbitrary path locations:</p>
+<pre class="incremental literal-block">
+WSGIScriptAlias / /path/to/main/app/wsgi_app.py
+WSGIScriptAlias /blog /path/to/blog/app/wsgi_app.py
+WSGIScriptAlias /forum /path/to/forum/app/wsgi_app.py
+</pre>
+</div>
+<div class="slide" id="bad-html">
+<h1>Bad HTML</h1>
+<p>I know that web browsers are forgiving, but you should be less so.</p>
+<p>These are <em>not</em> good HTML:</p>
+<pre class="literal-block">
+&lt;p&gt;&lt;a href = /book/id4 &gt;foobar&lt;/p&gt;
+&lt;P&gt;&lt;A HREF='/book/id4'&gt;foobar&lt;/A&gt;&lt;/P&gt;
+</pre>
+<p class="incremental">This is: <cite>&lt;p&gt;&lt;a href=&quot;/book/id4&quot;&gt;foobar&lt;/a&gt;&lt;/p&gt;</cite></p>
+<p class="incremental">The <a class="reference external" href="https://developer.mozilla.org/en-US/docs/HTML">Mozilla Developer Network</a> is a great resource for
+proper HTML. It also has great reference information on JavaScript. Shun the
+<cite>w3schools</cite>.</p>
+</div>
 <div class="slide" id="and-second">
 <h1>And Second</h1>
 <p class="big-centered">Questions from the Reading?</p>
+</div>
+<div class="slide" id="and-third">
+<h1>And Third</h1>
+<p class="center incremental"><strong>Class Project</strong></p>
+<ul class="incremental simple">
+<li>Create a Website</li>
+<li>It can do anything you want it to.</li>
+<li>It should have some user interactions (forms users complete).</li>
+<li>It should look nice-ish</li>
+<li>It should show off some aspect of what you've learned</li>
+<li>It should take you about 15-20 hours to create (so small)</li>
+<li>It will be due on the last day of class (March 10)</li>
+<li>We will spend half of each of the last two class session working on it in
+class.</li>
+<li><strong>Questions?</strong></li>
+</ul>
 </div>
 <div class="slide" id="and-now">
 <h1>And Now...</h1>
@@ -344,7 +423,8 @@ called.</p>
 <div class="slide" id="routes-can-be-dynamic">
 <h1>Routes Can Be Dynamic</h1>
 <p>You can provide <em>placeholders</em> in dynamic urls. Each <em>placeholder</em> is then a
-named arg to your function (add these to <tt class="docutils literal">flask_intro.py</tt>):</p>
+named arg to your function (add these to <tt class="docutils literal">flask_intro.py</tt> (and delete the
+1/0 bit)):</p>
 <pre class="code python incremental small literal-block">
 <span class="nd">&#64;app.route</span><span class="p">(</span><span class="s">'/profile/&lt;username&gt;'</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">show_profile</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
@@ -375,7 +455,7 @@ incoming argument is of the correct type.</p>
 </div>
 <div class="slide" id="routes-can-be-reversed">
 <h1>Routes Can Be Reversed</h1>
-<p>Reversing a URL means the ability to generating the url that would result in a
+<p>Reversing a URL means the ability to generate the url that would result in a
 given endpoint being called.</p>
 <p class="incremental">This means <em>you don't have to hard-code your URLs when building links</em></p>
 <p class="incremental">That means <em>you can change the URLs for your app without changing code or
@@ -435,7 +515,7 @@ the same folks)</p>
 <li>Variables in templates can be printed by surrounding the variable name with
 double curly braces: <tt class="docutils literal">{{ name }}</tt>.</li>
 <li>If a variable points to something like a dictionary or object, you can use
-<em>either</em> dot or subscription notation: <tt class="docutils literal">{{ obj[attr] }}</tt>, <tt class="docutils literal">{{ dict.key
+<em>either</em> dot or subscript notation: <tt class="docutils literal">{{ obj[attr] }}</tt>, <tt class="docutils literal">{{ dict.key
 }}</tt>.</li>
 <li>Variables in templates can be <em>filtered</em>: <tt class="docutils literal">{{ name|capitalize }}</tt>. There
 is a list of builtin filters.</li>
