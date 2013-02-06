@@ -1048,9 +1048,9 @@ main view on success. First, methods to actually do the login/logout (in
     <span class="n">rv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">logout</span><span class="p">()</span>
     <span class="k">assert</span> <span class="s">'You were logged out'</span> <span class="ow">in</span> <span class="n">rv</span><span class="o">.</span><span class="n">data</span>
     <span class="n">rv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="s">'adminx'</span><span class="p">,</span> <span class="s">'default'</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="s">'Invalid username'</span> <span class="ow">in</span> <span class="n">rv</span><span class="o">.</span><span class="n">data</span>
+    <span class="k">assert</span> <span class="s">'Invalid Login'</span> <span class="ow">in</span> <span class="n">rv</span><span class="o">.</span><span class="n">data</span>
     <span class="n">rv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="s">'admin'</span><span class="p">,</span> <span class="s">'defaultx'</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="s">'Invalid password'</span> <span class="ow">in</span> <span class="n">rv</span><span class="o">.</span><span class="n">data</span>
+    <span class="k">assert</span> <span class="s">'Invalid Login'</span> <span class="ow">in</span> <span class="n">rv</span><span class="o">.</span><span class="n">data</span>
 </pre>
 <p class="incremental">We should be up to 9 tests, one failing</p>
 </div>
