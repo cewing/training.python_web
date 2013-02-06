@@ -1439,9 +1439,9 @@ And now the test itself (again, ``flaskr_tests.py``):
         rv = self.logout()
         assert 'You were logged out' in rv.data
         rv = self.login('adminx', 'default')
-        assert 'Invalid username' in rv.data
+        assert 'Invalid Login' in rv.data
         rv = self.login('admin', 'defaultx')
-        assert 'Invalid password' in rv.data
+        assert 'Invalid Login' in rv.data
 
 .. class:: incremental
 
