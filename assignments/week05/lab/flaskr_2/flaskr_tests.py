@@ -9,7 +9,8 @@ class FlaskrTestCase(unittest.TestCase):
     def setUp(self):
         self.db_fd, flaskr.app.config['DATABASE'] = tempfile.mkstemp()
         flaskr.app.config['TESTING'] = True
-        self.app = flaskr.app.test_client()
+        self.client = flaskr.app.test_client()
+        self.app = flaskr.app
         flaskr.init_db()
     
     def tearDown(self):
