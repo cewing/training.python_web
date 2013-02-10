@@ -487,6 +487,79 @@ Week 7 - Django
 
 **Date**: Feb. 19, 2013
 
+In this class we'll dive a bit further into Django. We'll take the
+specifications from week 6 and the models we created from them to set up a
+simple application.  Along the way we'll learn a bit more about the Django
+admin, generic views, and templates.
+
+We'll also discuss extending the functionality of our application using
+existing Django **apps**. We'll see how these add-ons can help us to solve
+common problems like user registration and database schema management.
+
+Finally, we'll discuss some of the strengths and weaknesses of Django.  What 
+makes it a good choice for some projects but not for others.
+
+Our assignment for the week will be to enhance the application we build in
+class with some additional functionality.
+
+Reading
+*******
+
+* `Using Django <https://docs.djangoproject.com/en/1.4/topics/>`_ - far more
+  in-depth information about core topics in Django. Pay attention specifically
+  to the following topics (you'll want to follow links in these documents):
+
+  * `Models <https://docs.djangoproject.com/en/1.4/topics/db/models/>`_ -
+    details of the django modelling system. How to represent data for,
+    relationships between and the presentation of your objects.
+
+  * `Queries <https://docs.djangoproject.com/en/1.4/topics/db/queries/>`_ -
+    basic information about the Django ORM and how to use it to create,
+    retrieve, update and delete objects.
+
+  * `Working with Forms
+    <https://docs.djangoproject.com/en/1.4/topics/forms/>`_ - how to create,
+    display, and process forms in Django, including forms that are associated
+    with a given model.
+
+  * `The Django Template Language
+    <https://docs.djangoproject.com/en/1.4/topics/templates/>`_ - learn
+    template basics like variables, filters, tags and blocks, and learn about
+    template inheritance.
+
+  * `Class-based Generic Views
+    <https://docs.djangoproject.com/en/1.4/topics/class-based-views/>`_ - an
+    introduction to the simplest way to present your objects to your adoring
+    public.
+
+  * `Testing Django Applications
+    <https://docs.djangoproject.com/en/1.4/topics/testing/>`_ - learn
+    different approaches to testing Django applications, including unit
+    testing and doctests.
+
+Before Class
+************
+
+We'll be adding a new bit of functionality to our app, and we'll do this not
+by developing it ourselves, but by *integrating* an existing add-on. Before
+class begins, please install `django-south
+<http://south.readthedocs.org/en/0.7.6>`_ and `django-registration
+<http://docs.b-list.org/django-registration/0.8/>`_ into your Django
+virtualenv.
+
+Reference
+*********
+
+* `SQLAlchemy and You <http://lucumr.pocoo.org/2011/7/19/sqlachemy-and-you/>`_
+  - A really in-depth look at the differences between the Django ORM and the
+  reigning king of Python database integration, SQLAlchemy.
+
+* `About Django from the Pyramid Guy
+  <http://www.djangocon.us/schedule/presentations/22/>`_ - a talk given at
+  DjangoCon 2012 by Chris McDonough, one of the driving forces behind the
+  Pyramid framework. Also available in `video form
+  <http://www.youtube.com/watch?v=eN7h6ZbzMy0>`_.
+
 Assignment
 **********
 
