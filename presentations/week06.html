@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="Docutils 0.9.1: http://docutils.sourceforge.net/" />
 <meta name="version" content="S5 1.1" />
-<title>This is Week 6</title>
+<title>Internet Programming with Python</title>
 <link rel="stylesheet" href="ui/uw_pce_theme/pretty.css" type="text/css" />
 <!-- configuration parameters -->
 <meta name="defaultView" content="slideshow" />
@@ -29,15 +29,517 @@
 
 </div>
 <div id="footer">
-<h1>This is Week 6</h1>
+<h1>Internet Programming with Python</h1>
 <h2><a class="reference external" href="http://github.com/cewing/training.python_web">View document source</a>.
 </h2>
 </div>
 </div>
 <div class="presentation">
 <div class="slide" id="slide0">
-<h1 class="title">This is Week 6</h1>
+<h1 class="title">Internet Programming with Python</h1>
 
+<img alt="img/django-pony.png" class="align-left" src="img/django-pony.png" style="width: 50%;" />
+<p>Week 6: Django - Part 1</p>
+<p class="intro-blurb right">Wherein we become 'perfectionists with deadlines'</p>
+<p class="image-credit">image: <a class="reference external" href="http://djangopony.com/">http://djangopony.com/</a></p>
+
+</div>
+<div class="slide" id="but-first">
+<h1>But First</h1>
+<p class="big-centered">Review from the Assignment</p>
+</div>
+<div class="slide" id="and-second">
+<h1>And Second</h1>
+<p class="big-centered">Questions from the Reading?</p>
+</div>
+<div class="slide" id="and-now">
+<h1>And Now</h1>
+<img alt="img/django_lead.png" class="align-center" src="img/django_lead.png" style="width: 79%;" />
+</div>
+<div class="slide" id="full-stack-framework">
+<h1>Full Stack Framework</h1>
+<p>Django is <strong>One Big Package</strong></p>
+<p class="incremental">When you installed Flask, you also installed <em>werkzeug</em> and <em>jinja2</em>, a total
+of 1.85MB</p>
+<p class="incremental">Django 1.4.3 weighs in at 7.7MB (4 times the size of Flask)</p>
+<p class="incremental">So what do you get?</p>
+</div>
+<div class="slide" id="id1">
+<h1>Full Stack Framework</h1>
+<p>Django comes with:</p>
+<ul class="incremental simple">
+<li>Persistence via the <em>Django ORM</em></li>
+<li>CRUD content editing via the automatic <em>Django Admin</em></li>
+<li>URL Mapping via <em>urlpatterns</em></li>
+<li>Templating via the <em>Django Template Language</em></li>
+<li>Caching with levels of configurability</li>
+<li>Internationalization via i18n hooks</li>
+<li>Form rendering and handling</li>
+</ul>
+<p class="incremental">Pretty much everything you need to make a solid website quickly</p>
+</div>
+<div class="slide" id="what-sets-it-apart">
+<h1>What Sets it Apart?</h1>
+<p>Lots of frameworks offer some of these features, if not all.</p>
+<p class="incremental">What is Django's <em>killer feature</em></p>
+<p class="incremental center"><strong>The Django Admin</strong></p>
+</div>
+<div class="slide" id="the-django-admin">
+<h1>The Django Admin</h1>
+<p>Works in concert with the Django ORM to provide automatic CRUD functionality</p>
+<p class="incremental">You write the models, it provides the UI</p>
+<p class="incremental center"><strong>Really</strong></p>
+</div>
+<div class="slide" id="the-pareto-principle">
+<h1>The Pareto Principle</h1>
+<p>The Django Admin is a perfect embodiment of the Pareto Priciple, a.k.a. the
+80/20 rule:</p>
+<p class="incremental center">80% of the problems can be solved by 20% of the effort</p>
+<p class="incremental">The converse also holds true:</p>
+<p class="incremental center">Fixing the last 20% of the problems will take the remaining 80% of the effort.</p>
+</div>
+<div class="slide" id="other-django-advantages">
+<h1>Other Django Advantages</h1>
+<p>Clearly the most popular Python web framework at this time</p>
+<p class="incremental">Popularity translates into:</p>
+<ul class="incremental simple">
+<li>Active, present community</li>
+<li>Plethora of good examples to be found online</li>
+<li>Rich ecosystem of <em>apps</em> (encapsulated add-on functionality)</li>
+</ul>
+<p class="incremental center"><strong>Jobs</strong></p>
+</div>
+<div class="slide" id="active-development">
+<h1>Active Development</h1>
+<p>Popular frameworks tend to be actively developed.</p>
+<p class="incremental">Django releases in the last 12 months:</p>
+<ul class="incremental simple">
+<li>1.5 (any day now)</li>
+<li>1.4.3 (December 2012)</li>
+<li>1.3.5 (December 2012)</li>
+<li>1.4.2 (November 2012)</li>
+<li>1.3.3 (August 2012)</li>
+<li>1.4.1 (July 2012)</li>
+<li>1.3.2 (July 2012)</li>
+<li>1.4 (March 2012)</li>
+</ul>
+</div>
+<div class="slide" id="great-documentation">
+<h1>Great Documentation</h1>
+<p>Thorough, readable, and discoverable.</p>
+<p class="incremental">Led the way to better documentation for all Python</p>
+<p class="incremental"><a class="reference external" href="https://readthedocs.org/">Read The Docs</a> - built in connection with
+Django, sponsored by the Django Software Foundation.</p>
+<p class="incremental">Write documentation as part of your python package, and render new versions of
+that documentation for every commit</p>
+<p class="incremental center"><strong>this is awesome</strong></p>
+</div>
+<div class="slide" id="history">
+<h1>History</h1>
+<p>Django was created to power the website of the Lawrence Journal-World
+newspaper, Lawrence, KS</p>
+<p class="incremental">This birth in practicality is reflected in the design of the system.</p>
+<p class="incremental">Pretty much every design decision was made to solve a real problem.</p>
+<p class="incremental">You can read more in <a class="reference external" href="http://www.quora.com/What-is-the-history-of-the-Django-web-framework">this Quora post</a></p>
+</div>
+<div class="slide" id="django-organization">
+<h1>Django Organization</h1>
+<p>Django is organized into <em>projects</em> and <em>apps</em></p>
+<p class="incremental">A Django <em>project</em> represents the totality of a website, all the pages it
+will contain and all the functionality it supports</p>
+<p class="incremental">A Django <em>app</em> represents an individual unit of functionality: a blog, a
+forum, a registration system, a content tagging system, etc.</p>
+<p class="incremental">One <em>project</em> can (and likely will) consist of many <em>apps</em></p>
+</div>
+<div class="slide" id="starting-a-project">
+<h1>Starting a Project</h1>
+<p>You should already have done this at home, but we'll look at it together in
+case:</p>
+<ul class="incremental simple">
+<li>Set up a Django virtualenv</li>
+<li>Activate that env and <tt class="docutils literal">pip install django</tt></li>
+<li>Create a new Django project:</li>
+</ul>
+<pre class="code incremental literal-block">
+(djangoenv)$ django-admin.py startproject mysite
+</pre>
+<p class="incremental">This will create a folder called 'mysite'.  Let's take a look at it:</p>
+</div>
+<div class="slide" id="project-layout">
+<h1>Project Layout</h1>
+<p>The folder created by <em>django-admin.py</em> contains the following structure:</p>
+<pre class="code literal-block">
+mysite/
+    manage.py
+    mysite/
+        __init__.py
+        settings.py
+        urls.py
+        wsgi.py
+</pre>
+<p class="incremental">If what you see doesn't match that, you're using an older version of Django.
+Make sure you've installed 1.4.3.</p>
+</div>
+<div class="slide" id="what-got-created">
+<h1>What Got Created</h1>
+<ul class="incremental simple">
+<li><strong>outer *mysite* folder</strong>: this is just a container and can be renamed or
+moved at will</li>
+<li><strong>inner *mysite* folder</strong>: this is your project directory. It should not be
+renamed.</li>
+<li><strong>__init__.py</strong>: magic file that makes <em>mysite</em> a python package.</li>
+<li><strong>settings.py</strong>: file which holds configuration for your project, more soon.</li>
+<li><strong>urls.py</strong>: file which holds top-level URL configuration for your project,
+more soon.</li>
+<li><strong>wsgi.py</strong>: the .wsgi file which allows your project to be run in a wsgi
+server, like mod_wsgi.</li>
+<li><strong>manage.py</strong>: a management control script.</li>
+</ul>
+</div>
+<div class="slide" id="django-admin-py-and-manage-py">
+<h1><em>django-admin.py</em> and <em>manage.py</em></h1>
+<p><em>django-admin.py</em> provides a hook for administrative tasks and abilities:</p>
+<ul class="incremental simple">
+<li>creating a new project or app</li>
+<li>running the development server</li>
+<li>executing tests</li>
+<li>entering a python interpreter</li>
+<li>entering a database shell session with your database</li>
+<li>much much more (run <tt class="docutils literal"><span class="pre">django-admin.py</span></tt> without an argument)</li>
+</ul>
+<p class="incremental"><em>manage.py</em> wraps this functionality, adding the full environment of your
+project.</p>
+</div>
+<div class="slide" id="development-server">
+<h1>Development Server</h1>
+<p>At this point, you should be ready to use the development server:</p>
+<pre class="literal-block">
+(djangoenv)$ cd mysite
+(djangoenv)$ python manage.py runserver
+...
+</pre>
+<p class="incremental">Load <tt class="docutils literal"><span class="pre">http://localhost:8000</span></tt> in your browser.</p>
+</div>
+<div class="slide" id="a-blank-slate">
+<h1>A Blank Slate</h1>
+<p>You should see this:</p>
+<img alt="img/django-start.png" class="align-center" src="img/django-start.png" style="width: 98%;" />
+<p class="incremental center"><strong>Do you?</strong></p>
+</div>
+<div class="slide" id="connecting-a-database">
+<h1>Connecting A Database</h1>
+<p>Django comes with its own ORM (Object-Relational Mapper)</p>
+<p class="incremental">The first step in working with Django is to connect it to your database (this
+is set in <tt class="docutils literal">settings.py</tt>)</p>
+<pre class="code python small incremental literal-block">
+<span class="n">DATABASES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">'default'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">'ENGINE'</span><span class="p">:</span> <span class="s">'django.db.backends.&lt;your_db_backend&gt;'</span><span class="p">,</span>
+        <span class="s">'NAME'</span><span class="p">:</span> <span class="s">'&lt;your_db_name&gt;'</span><span class="p">,</span>
+        <span class="s">'USER'</span><span class="p">:</span> <span class="s">'&lt;your_db_user&gt;'</span><span class="p">,</span>
+        <span class="s">'PASSWORD'</span><span class="p">:</span> <span class="s">'&lt;your_db_password&gt;'</span><span class="p">,</span>
+        <span class="s">'HOST'</span><span class="p">:</span> <span class="s">'&lt;not_needed_on_localhost&gt;'</span><span class="p">,</span>
+        <span class="s">'PORT'</span><span class="p">:</span> <span class="s">'&lt;not_needed_on_localhost&gt;'</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+</div>
+<div class="slide" id="a-quick-word-about-databases">
+<h1>A Quick Word about Databases</h1>
+<p>Sqlite3 is <strong>not</strong> a production-capable database. Do not attempt to use it as
+such. Do not start a real project using sqlite3, expecting to move 'when
+you go to production'.</p>
+<p class="incremental">That being said, proper database administration is out-of-scope for this
+class. If you haven't already got a PostgreSQL or MySQL database set up and
+ready to use, just use sqlite3 so we can get through this.</p>
+</div>
+<div class="slide" id="building-db-tables">
+<h1>Building DB Tables</h1>
+<p>The Django ORM builds tables. Django models describe the objects you want, the
+ORM does the rest.</p>
+<p class="incremental">Django comes with some <em>apps</em> set up and ready to use. These define models,
+and need tables to power them. You create the tables by running the management
+command <em>syncdb</em>:</p>
+<pre class="incremental literal-block">
+(djangoenv)$ python manage.py syncdb
+</pre>
+<p class="incremental">Add your first admin user when prompted (remember the password)</p>
+</div>
+<div class="slide" id="lab">
+<h1>Lab</h1>
+<p>The remainder of our class today will be lab time. We'll be directly playing
+with Django from here on out.</p>
+<p>Todays lab is entirely drawn from the <a class="reference external" href="https://docs.djangoproject.com/en/1.4/intro/tutorial01/">Django Tutorial</a>, with some minor
+enhancements.</p>
+</div>
+<div class="slide" id="lab-step-one">
+<h1>Lab - Step One</h1>
+<p>We are going to create an <em>app</em> to add to our <em>project</em>.  This app will:</p>
+<ul class="incremental simple">
+<li>Allow a user to create poll questions</li>
+<li>Allow a user to provide choices for these questions</li>
+<li>Allow visitors to a site to see these questions and vote for an answer</li>
+<li>Allow the total vote tallies for the answers to a poll question to be
+displayed.</li>
+</ul>
+<p class="incremental">As stated above, an <em>app</em> should represent a unit of functionality within a
+larger system, the <em>project</em>.  We have a project, we need to create an <em>app</em></p>
+</div>
+<div class="slide" id="create-an-app">
+<h1>Create an App</h1>
+<p>This is accomplished using <tt class="docutils literal">manage.py</tt>.</p>
+<p class="incremental">In your terminal, make sure you are in the <em>outer</em> mysite directory, where the
+file <tt class="docutils literal">manage.py</tt> is located.  Then:</p>
+<pre class="incremental literal-block">
+(djangoenv)$ python manage.py startapp polls
+</pre>
+</div>
+<div class="slide" id="what-is-created">
+<h1>What is Created</h1>
+<p>This should leave you with the following structure:</p>
+<pre class="small literal-block">
+mysite/
+    manage.py
+    mysite/
+        ...
+    polls/
+        __init__.py
+        models.py
+        tests.py
+        views.py
+</pre>
+<p class="incremental">We'll start by defining the objects we will work with: poll questions and
+choices.</p>
+</div>
+<div class="slide" id="models">
+<h1>Models</h1>
+<p>Open the file <tt class="docutils literal">models.py</tt> in your editor, and add the following code:</p>
+<pre class="code python literal-block">
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+
+<span class="k">class</span> <span class="nc">Poll</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">question</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+    <span class="n">pub_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="s">'date published'</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Choice</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">poll</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Poll</span><span class="p">)</span>
+    <span class="n">choice</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+    <span class="n">votes</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre>
+</div>
+<div class="slide" id="model-details">
+<h1>Model Details</h1>
+<p>Let's look at that a bit more closely:</p>
+<pre class="code python small incrmental literal-block">
+<span class="k">class</span> <span class="nc">Poll</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+</pre>
+<!-- class: incremental small -->
+<ul class="simple">
+<li>Our Models are Python classes that inherit from the Model class</li>
+<li>The <tt class="docutils literal">Model</tt> class provides a standard API for interacting with a database,
+centered on the object defined by the model.</li>
+<li>You can add functionality to your object by adding methods to these models.</li>
+<li>Consider methods added to a model to be row-level operations. They will work
+on a single record from the database, not on entire tables</li>
+<li>You can read much more about the <a class="reference external" href="https://docs.djangoproject.com/en/1.4/ref/models/instances/">Model API</a></li>
+</ul>
+</div>
+<div class="slide" id="field-details">
+<h1>Field Details</h1>
+<p>A model has attributes defined by <tt class="docutils literal">Fields</tt>:</p>
+<pre class="code python small literal-block">
+<span class="n">question</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<span class="n">pub_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="s">'date published'</span><span class="p">)</span>
+<span class="n">poll</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Poll</span><span class="p">)</span>
+<span class="n">votes</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre>
+<ul class="incremental small simple">
+<li>Fields map to columns in a database table</li>
+<li>Note there are no explicit primary key fields. Django does this
+automatically</li>
+<li>Different field types map to different SQL column types, the ORM handles
+this.</li>
+<li>Django fields can handle complex relationships between objects.</li>
+<li>Field constructors take arguments, some are common to all Fields, others
+particular to a given Field type.</li>
+<li><strong>ALL</strong> Django model fields default to being NOT NULL (required). You change
+this with the <tt class="docutils literal">blank</tt> and <tt class="docutils literal">null</tt> constructor arguments</li>
+<li>You can read much more about <a class="reference external" href="https://docs.djangoproject.com/en/1.4/ref/models/fields/">Model Fields</a></li>
+</ul>
+</div>
+<div class="slide" id="hooking-it-up">
+<h1>Hooking it Up</h1>
+<p>Okay, we've got a couple of models, now we need to add our <em>app</em> to our
+project.</p>
+<p class="incremental">In Django, this is accomplished by configuration.</p>
+<p class="incremental">Configuration takes place in the project <tt class="docutils literal">settings.py</tt> file.</p>
+<p class="incremental">Open that file now, in your editor.</p>
+</div>
+<div class="slide" id="installing-apps">
+<h1>Installing Apps</h1>
+<p>You extend Django functionality by <em>installing apps</em>. Find the following block
+in <tt class="docutils literal">settings.py</tt> and edit it like so:</p>
+<pre class="code python small literal-block">
+<span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s">'django.contrib.auth'</span><span class="p">,</span>
+    <span class="s">'django.contrib.contenttypes'</span><span class="p">,</span>
+    <span class="s">'django.contrib.sessions'</span><span class="p">,</span>
+    <span class="s">'django.contrib.sites'</span><span class="p">,</span>
+    <span class="s">'django.contrib.messages'</span><span class="p">,</span>
+    <span class="s">'django.contrib.staticfiles'</span><span class="p">,</span>
+    <span class="c"># Uncomment the next line to enable the admin:</span>
+    <span class="c"># 'django.contrib.admin',</span>
+    <span class="c"># Uncomment the next line to enable admin documentation:</span>
+    <span class="c"># 'django.contrib.admindocs',</span>
+    <span class="s">'polls'</span><span class="p">,</span> <span class="c"># &lt;- YOU ADD THIS PART</span>
+<span class="p">)</span>
+</pre>
+</div>
+<div class="slide" id="setting-up-the-database">
+<h1>Setting Up the Database</h1>
+<p>By now, we should have some guess as to what the next step will be</p>
+<pre class="code incremental literal-block">
+(djangoenv)$ python manage.py syncdb
+</pre>
+<p class="incremental">This will execute the SQL commands needed to create the new tables in your
+database.</p>
+</div>
+<div class="slide" id="a-word-about-development">
+<h1>A Word About Development</h1>
+<p>These models we've created are not going to change. This is unusual for a
+development cycle.</p>
+<p class="incremental">The <tt class="docutils literal">syncdb</tt> management command only creates tables that <em>do not yet exist</em>.
+It <strong>does not update tables</strong>.</p>
+<p class="incremental">It is easy to get your model definitions out of sync with your database.</p>
+<p class="incremental">Django provides the management command <tt class="docutils literal">sqlclear</tt> to handle this. It drops
+all tables, so you can run <tt class="docutils literal">syncdb</tt> again.</p>
+</div>
+<div class="slide" id="ack">
+<h1>ACK!!!</h1>
+<p class="center">That doesn't sound very nice, does it?</p>
+<p class="big-centered incremental">We'll learn a better way next week</p>
+</div>
+<div class="slide" id="the-django-shell">
+<h1>The Django Shell</h1>
+<p>Django provides a management command <tt class="docutils literal">shell</tt>:</p>
+<ul class="incremental simple">
+<li>Shares the same <tt class="docutils literal">sys.path</tt> as your project, so all installed python
+packages are present.</li>
+<li>Imports the <tt class="docutils literal">settings.py</tt> file from your project, and so shares all
+installed apps and other settings.</li>
+<li>Handles connections to your database, so you can interact with live data
+directly.</li>
+</ul>
+<p class="incremental">Let's explore the Model Instance API directly using this shell</p>
+</div>
+<div class="slide" id="model-instance-api">
+<h1>Model Instance API</h1>
+<pre class="literal-block">
+(djangoenv)$ python manage.py shell
+</pre>
+<pre class="code python literal-block">
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">polls.models</span> <span class="kn">import</span> <span class="n">Poll</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Poll</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<span class="mi">0</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p1</span> <span class="o">=</span> <span class="n">Poll</span><span class="p">(</span><span class="n">question</span><span class="o">=</span><span class="s">&quot;What is your name?&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p1</span><span class="o">.</span><span class="n">full_clean</span><span class="p">()</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">timezone</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p1</span><span class="o">.</span><span class="n">pub_date</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p1</span><span class="o">.</span><span class="n">full_clean</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p1</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Poll</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<span class="mi">1</span>
+</pre>
+</div>
+<div class="slide" id="more-api">
+<h1>More API</h1>
+<pre class="code python small literal-block">
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Poll</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">[</span><span class="o">&lt;</span><span class="n">Poll</span><span class="p">:</span> <span class="n">Poll</span> <span class="nb">object</span><span class="o">&gt;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">what_polls</span> <span class="o">=</span> <span class="n">Poll</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">question__startswith</span><span class="o">=</span><span class="s">&quot;What&quot;</span><span class="p">)</span>
+<span class="p">[</span><span class="o">&lt;</span><span class="n">Poll</span><span class="p">:</span> <span class="n">Poll</span> <span class="nb">object</span><span class="o">&gt;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">mypoll</span> <span class="o">=</span> <span class="n">Poll</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">mypoll</span><span class="o">.</span><span class="n">choice_set</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="p">[]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">polls.models</span> <span class="kn">import</span> <span class="n">Choice</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">c1</span> <span class="o">=</span> <span class="n">Choice</span><span class="p">(</span><span class="n">choice</span><span class="o">=</span><span class="s">&quot;King Arthur of the Britons&quot;</span><span class="p">,</span> <span class="n">poll</span><span class="o">=</span><span class="n">mypoll</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">c1</span><span class="o">.</span><span class="n">save</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">mypoll</span><span class="o">.</span><span class="n">choice_set</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="p">[</span><span class="o">&lt;</span><span class="n">Choice</span><span class="p">:</span> <span class="n">Choice</span> <span class="nb">object</span><span class="o">&gt;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">mypoll</span><span class="o">.</span><span class="n">choice_set</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">choice</span><span class="o">=</span><span class="s">&quot;Lancelot of Camelot&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">mypoll</span><span class="o">.</span><span class="n">choice_set</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="p">[</span><span class="o">&lt;</span><span class="n">Choice</span><span class="p">:</span> <span class="n">Choice</span> <span class="nb">object</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">Choice</span><span class="p">:</span> <span class="n">Choice</span> <span class="nb">object</span><span class="o">&gt;</span><span class="p">]</span>
+</pre>
+</div>
+<div class="slide" id="enhancing-models">
+<h1>Enhancing Models</h1>
+<p>It's clear that the representation of our objects leaves something to be
+desired. Django can help</p>
+<p class="incremental">Back in <tt class="docutils literal">models.py</tt>, add these methods:</p>
+<pre class="code python small incremental literal-block">
+<span class="k">class</span> <span class="nc">Poll</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="c"># ...</span>
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">question</span>
+
+<span class="k">class</span> <span class="nc">Choice</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="c"># ...</span>
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">choice</span>
+</pre>
+</div>
+<div class="slide" id="model-methods">
+<h1>Model Methods</h1>
+<p>This <tt class="docutils literal">__unicode__</tt> method is a normal python instance method. You can add
+other methods, too (still <tt class="docutils literal">models.py</tt>):</p>
+<pre class="code python small incremental literal-block">
+<span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">timezone</span>
+
+<span class="k">class</span> <span class="nc">Poll</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="c"># ...</span>
+    <span class="k">def</span> <span class="nf">published_today</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">now</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="n">time_delta</span> <span class="o">=</span> <span class="n">now</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">pub_date</span>
+        <span class="k">return</span> <span class="n">time_delta</span><span class="o">.</span><span class="n">days</span> <span class="o">==</span> <span class="mi">0</span>
+</pre>
+<p class="incremental">Save that, then start up the Django shell again (<tt class="docutils literal">python manage.py shell</tt>)</p>
+</div>
+<div class="slide" id="check-custom-methods">
+<h1>Check Custom Methods</h1>
+<pre class="code python literal-block">
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">polls.models</span> <span class="kn">import</span> <span class="n">Poll</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">mypoll</span> <span class="o">=</span> <span class="n">Poll</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">mypoll</span>
+<span class="o">&lt;</span><span class="n">Poll</span><span class="p">:</span> <span class="n">What</span> <span class="ow">is</span> <span class="n">your</span> <span class="n">name</span><span class="err">?</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">mypoll</span><span class="o">.</span><span class="n">choice_set</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="p">[</span><span class="o">&lt;</span><span class="n">Choice</span><span class="p">:</span> <span class="n">King</span> <span class="n">Arthur</span> <span class="n">of</span> <span class="n">the</span> <span class="n">Britons</span><span class="o">&gt;</span><span class="p">,</span>
+ <span class="o">&lt;</span><span class="n">Choice</span><span class="p">:</span> <span class="n">Lancelot</span> <span class="n">of</span> <span class="n">Camelot</span><span class="o">&gt;</span><span class="p">,</span>
+ <span class="o">&lt;</span><span class="n">Choice</span><span class="p">:</span> <span class="n">Robin</span> <span class="n">of</span> <span class="n">Camelot</span><span class="o">&gt;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">mypoll</span><span class="o">.</span><span class="n">published_today</span><span class="p">()</span>
+<span class="bp">True</span>
+</pre>
+</div>
+<div class="slide" id="scraps">
+<h1>scraps</h1>
+<p>testing</p>
+<ul class="simple">
+<li>add a basic test or two for our models and run them.</li>
+</ul>
+<p>django admin</p>
+<ul class="simple">
+<li>set up basic admin</li>
+<li>customize to include an inline for Choice on Poll</li>
+</ul>
+<p>writing views</p>
+<ul class="simple">
+<li>start with urlconf (in poll app, include in root urlconf)</li>
+<li>create detail view for a poll.  Simple template</li>
+<li>add a form to vote on a poll.</li>
+<li>create a form processing view which redirects to the detail view</li>
+<li>add a class-based generic listing view</li>
+</ul>
 </div>
 </div>
 </body>

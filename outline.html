@@ -441,32 +441,89 @@ well-considered words on why Django is the way it is.</li>
 <div class="section" id="week-7-django">
 <h2>Week 7 - Django<a class="headerlink" href="#week-7-django" title="Permalink to this headline">¶</a></h2>
 <p><strong>Date</strong>: Feb. 19, 2013</p>
+<p>In this class we&#8217;ll dive a bit further into Django. We&#8217;ll take the
+specifications from week 6 and the models we created from them to set up a
+simple application.  Along the way we&#8217;ll learn a bit more about the Django
+admin, generic views, and templates.</p>
+<p>We&#8217;ll also discuss extending the functionality of our application using
+existing Django <strong>apps</strong>. We&#8217;ll see how these add-ons can help us to solve
+common problems like user registration and database schema management.</p>
+<p>Finally, we&#8217;ll discuss some of the strengths and weaknesses of Django.  What
+makes it a good choice for some projects but not for others.</p>
+<p>Our assignment for the week will be to enhance the application we build in
+class with some additional functionality.</p>
 <div class="section" id="id20">
-<h3>Assignment<a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h3>
+<h3>Reading<a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><a class="reference external" href="https://docs.djangoproject.com/en/1.4/topics/">Using Django</a> - far more
+in-depth information about core topics in Django. Pay attention specifically
+to the following topics (you&#8217;ll want to follow links in these documents):<ul>
+<li><a class="reference external" href="https://docs.djangoproject.com/en/1.4/topics/db/models/">Models</a> -
+details of the django modelling system. How to represent data for,
+relationships between and the presentation of your objects.</li>
+<li><a class="reference external" href="https://docs.djangoproject.com/en/1.4/topics/db/queries/">Queries</a> -
+basic information about the Django ORM and how to use it to create,
+retrieve, update and delete objects.</li>
+<li><a class="reference external" href="https://docs.djangoproject.com/en/1.4/topics/forms/">Working with Forms</a> - how to create,
+display, and process forms in Django, including forms that are associated
+with a given model.</li>
+<li><a class="reference external" href="https://docs.djangoproject.com/en/1.4/topics/templates/">The Django Template Language</a> - learn
+template basics like variables, filters, tags and blocks, and learn about
+template inheritance.</li>
+<li><a class="reference external" href="https://docs.djangoproject.com/en/1.4/topics/class-based-views/">Class-based Generic Views</a> - an
+introduction to the simplest way to present your objects to your adoring
+public.</li>
+<li><a class="reference external" href="https://docs.djangoproject.com/en/1.4/topics/testing/">Testing Django Applications</a> - learn
+different approaches to testing Django applications, including unit
+testing and doctests.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id22">
+<h3>Before Class<a class="headerlink" href="#id22" title="Permalink to this headline">¶</a></h3>
+<p>We&#8217;ll be adding a new bit of functionality to our app, and we&#8217;ll do this not
+by developing it ourselves, but by <em>integrating</em> an existing add-on. Before
+class begins, please install <a class="reference external" href="http://south.readthedocs.org/en/0.7.6">django-south</a> and <a class="reference external" href="http://docs.b-list.org/django-registration/0.8/">django-registration</a> into your Django
+virtualenv.</p>
+</div>
+<div class="section" id="id23">
+<h3>Reference<a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><a class="reference external" href="http://lucumr.pocoo.org/2011/7/19/sqlachemy-and-you/">SQLAlchemy and You</a>
+- A really in-depth look at the differences between the Django ORM and the
+reigning king of Python database integration, SQLAlchemy.</li>
+<li><a class="reference external" href="http://www.djangocon.us/schedule/presentations/22/">About Django from the Pyramid Guy</a> - a talk given at
+DjangoCon 2012 by Chris McDonough, one of the driving forces behind the
+Pyramid framework. Also available in <a class="reference external" href="http://www.youtube.com/watch?v=eN7h6ZbzMy0">video form</a>.</li>
+</ul>
+</div>
+<div class="section" id="id24">
+<h3>Assignment<a class="headerlink" href="#id24" title="Permalink to this headline">¶</a></h3>
 <p>To Be Decided</p>
 </div>
 </div>
 <div class="section" id="week-8-pyramid">
 <h2>Week 8 - Pyramid<a class="headerlink" href="#week-8-pyramid" title="Permalink to this headline">¶</a></h2>
 <p><strong>Date</strong>: Feb. 26, 2013</p>
-<div class="section" id="id21">
-<h3>Assignment<a class="headerlink" href="#id21" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id25">
+<h3>Assignment<a class="headerlink" href="#id25" title="Permalink to this headline">¶</a></h3>
 <p>To Be Decided</p>
 </div>
 </div>
 <div class="section" id="week-9-the-cloud">
 <h2>Week 9 - The Cloud<a class="headerlink" href="#week-9-the-cloud" title="Permalink to this headline">¶</a></h2>
 <p><strong>Date</strong>: Mar. 5, 2013</p>
-<div class="section" id="id22">
-<h3>Assignment<a class="headerlink" href="#id22" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id26">
+<h3>Assignment<a class="headerlink" href="#id26" title="Permalink to this headline">¶</a></h3>
 <p>To Be Decided</p>
 </div>
 </div>
 <div class="section" id="week-10-plone">
 <h2>Week 10 - Plone<a class="headerlink" href="#week-10-plone" title="Permalink to this headline">¶</a></h2>
 <p><strong>Date</strong>: Mar. 12, 2013</p>
-<div class="section" id="id23">
-<h3>Assignment<a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id27">
+<h3>Assignment<a class="headerlink" href="#id27" title="Permalink to this headline">¶</a></h3>
 <p>To Be Decided</p>
 </div>
 </div>
@@ -535,19 +592,22 @@ well-considered words on why Django is the way it is.</li>
 </ul>
 </li>
 <li><a class="reference internal" href="#week-7-django">Week 7 - Django</a><ul>
-<li><a class="reference internal" href="#id20">Assignment</a></li>
+<li><a class="reference internal" href="#id20">Reading</a></li>
+<li><a class="reference internal" href="#id22">Before Class</a></li>
+<li><a class="reference internal" href="#id23">Reference</a></li>
+<li><a class="reference internal" href="#id24">Assignment</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#week-8-pyramid">Week 8 - Pyramid</a><ul>
-<li><a class="reference internal" href="#id21">Assignment</a></li>
+<li><a class="reference internal" href="#id25">Assignment</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#week-9-the-cloud">Week 9 - The Cloud</a><ul>
-<li><a class="reference internal" href="#id22">Assignment</a></li>
+<li><a class="reference internal" href="#id26">Assignment</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#week-10-plone">Week 10 - Plone</a><ul>
-<li><a class="reference internal" href="#id23">Assignment</a></li>
+<li><a class="reference internal" href="#id27">Assignment</a></li>
 </ul>
 </li>
 </ul>
