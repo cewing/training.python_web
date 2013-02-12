@@ -58,14 +58,6 @@
 </div>
 <div class="slide" id="full-stack-framework">
 <h1>Full Stack Framework</h1>
-<p>Django is <strong>One Big Package</strong></p>
-<p class="incremental">When you installed Flask, you also installed <em>werkzeug</em> and <em>jinja2</em>, a total
-of 1.85MB</p>
-<p class="incremental">Django 1.4.3 weighs in at 7.7MB (4 times the size of Flask)</p>
-<p class="incremental">So what do you get?</p>
-</div>
-<div class="slide" id="id1">
-<h1>Full Stack Framework</h1>
 <p>Django comes with:</p>
 <ul class="incremental simple">
 <li>Persistence via the <em>Django ORM</em></li>
@@ -153,8 +145,8 @@ forum, a registration system, a content tagging system, etc.</p>
 </div>
 <div class="slide" id="starting-a-project">
 <h1>Starting a Project</h1>
-<p>You should already have done this at home, but we'll look at it together in
-case:</p>
+<p>You should already have done this at home, but we'll look at it together
+quickly, in case:</p>
 <ul class="incremental simple">
 <li>Set up a Django virtualenv</li>
 <li>Activate that env and <tt class="docutils literal">pip install django</tt></li>
@@ -269,11 +261,11 @@ command <em>syncdb</em>:</p>
 <h1>Lab</h1>
 <p>The remainder of our class today will be lab time. We'll be directly playing
 with Django from here on out.</p>
-<p>Todays lab is entirely drawn from the <a class="reference external" href="https://docs.djangoproject.com/en/1.4/intro/tutorial01/">Django Tutorial</a>, with some minor
-enhancements.</p>
+<p>Todays lab is drawn from the <a class="reference external" href="https://docs.djangoproject.com/en/1.4/intro/tutorial01/">Django Tutorial</a>, with some minor
+adjustments.</p>
 </div>
-<div class="slide" id="lab-step-one">
-<h1>Lab - Step One</h1>
+<div class="slide" id="lab-part-one">
+<h1>Lab - Part One</h1>
 <p>We are going to create an <em>app</em> to add to our <em>project</em>.  This app will:</p>
 <ul class="incremental simple">
 <li>Allow a user to create poll questions</li>
@@ -521,24 +513,637 @@ other methods, too (still <tt class="docutils literal">models.py</tt>):</p>
 <span class="bp">True</span>
 </pre>
 </div>
-<div class="slide" id="scraps">
-<h1>scraps</h1>
-<p>testing</p>
-<ul class="simple">
-<li>add a basic test or two for our models and run them.</li>
+<div class="slide" id="testing-our-models">
+<h1>Testing Our Models</h1>
+<p>As with any project, we want to test our work. Django provides a testing
+framework to allow this.</p>
+<p class="incremental">Django supports both <em>unit tests</em> and <em>doctests</em>. I strongly suggest using
+<em>unit tests</em>.</p>
+<p class="incremental">You add tests for your <em>app</em> to the file <tt class="docutils literal">tests.py</tt>, which should be at the
+same package level as <tt class="docutils literal">models.py</tt>.</p>
+<p class="incremental">Locate and open this file in your editor.  We are going to add a few tests for
+the models we've just written.</p>
+</div>
+<div class="slide" id="testing-setup">
+<h1>Testing Setup</h1>
+<pre class="code python small literal-block">
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
+
+<span class="kn">from</span> <span class="nn">django.test</span> <span class="kn">import</span> <span class="n">TestCase</span>
+<span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">timezone</span>
+
+<span class="kn">from</span> <span class="nn">polls.models</span> <span class="kn">import</span> <span class="n">Poll</span>
+
+<span class="k">class</span> <span class="nc">PollTest</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">expected_question</span> <span class="o">=</span> <span class="s">&quot;what is the question?&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">expected_choice</span> <span class="o">=</span> <span class="s">&quot;do you like spongecake?&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">poll</span> <span class="o">=</span> <span class="n">Poll</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">question</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">expected_question</span><span class="p">,</span>
+            <span class="n">pub_date</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">choice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">poll</span><span class="o">.</span><span class="n">choice_set</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">choice</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">expected_choice</span><span class="p">)</span>
+</pre>
+</div>
+<div class="slide" id="writing-tests">
+<h1>Writing Tests</h1>
+<pre class="code python small literal-block">
+<span class="k">def</span> <span class="nf">test_poll_display</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">poll</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">expected_question</span><span class="p">)</span>
+    <span class="n">new_question</span> <span class="o">=</span> <span class="s">&quot;What is the answer?&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">poll</span><span class="o">.</span><span class="n">question</span> <span class="o">=</span> <span class="n">new_question</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">poll</span><span class="p">),</span> <span class="n">new_question</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">test_choice_display</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">choice</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">expected_choice</span><span class="p">)</span>
+    <span class="n">new_choice</span> <span class="o">=</span> <span class="s">&quot;is left better than right?&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">choice</span><span class="o">.</span><span class="n">choice</span> <span class="o">=</span> <span class="n">new_choice</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">choice</span><span class="p">),</span> <span class="n">new_choice</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">test_published_today</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">poll</span><span class="o">.</span><span class="n">published_today</span><span class="p">())</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">26</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">poll</span><span class="o">.</span><span class="n">pub_date</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">poll</span><span class="o">.</span><span class="n">pub_date</span> <span class="o">-</span> <span class="n">delta</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">poll</span><span class="o">.</span><span class="n">published_today</span><span class="p">())</span>
+</pre>
+</div>
+<div class="slide" id="running-tests">
+<h1>Running Tests</h1>
+<p>You can run your tests using a management command provided by Django:</p>
+<pre class="literal-block">
+(djangoenv)$ python manage.py test polls
+</pre>
+<ul class="incremental simple">
+<li>This will run the tests for the <tt class="docutils literal">polls</tt> app</li>
+<li>You can provide the name of any installed app</li>
+<li>If you provide no name, the tests for <em>all</em> installed apps will run</li>
+<li>You can run subsets by providing dotted names: <tt class="docutils literal">polls.PollTest</tt>,
+<tt class="docutils literal">polls.PollTest.test_poll_display</tt></li>
 </ul>
-<p>django admin</p>
-<ul class="simple">
-<li>set up basic admin</li>
-<li>customize to include an inline for Choice on Poll</li>
+<p class="incremental">There is a lot more to know about <a class="reference external" href="https://docs.djangoproject.com/en/1.4/topics/testing/">Testing Django applications</a></p>
+</div>
+<div class="slide" id="what-to-test">
+<h1>What to Test</h1>
+<p>In any framework, the question arises of what exactly to test. Much of the
+functioning of your app is provided by framework tools. Do you need to test
+that stuff?</p>
+<p class="incremental">I <em>usually</em> don't write tests covering features provided directly by the
+framework.</p>
+<p class="incremental">I <em>do</em> write tests for functionality I add, and for places where I make
+changes to how the default functionality works.</p>
+<p class="incremental">This is largely a matter of style and taste (and of how much development time
+you have).</p>
+</div>
+<div class="slide" id="lab-part-two">
+<h1>Lab - Part Two</h1>
+<p>In this part, we'll be adding our app to the Django Admin.  This will allow
+us to add, edit and delete objects with a minimum of work.</p>
+<p>We'll focus instead on how to customize the admin to get the best results we
+can.</p>
+</div>
+<div class="slide" id="install-the-admin">
+<h1>Install the Admin</h1>
+<p>The Django Admin is, itself, an <em>app</em>. It is not installed by default.</p>
+<p class="incremental">Open the <tt class="docutils literal">settings.py</tt> file from our <tt class="docutils literal">mysite</tt> project package and uncomment
+the admin bit:</p>
+<pre class="code python incremental small literal-block">
+<span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="c"># ...</span>
+    <span class="s">'django.contrib.staticfiles'</span><span class="p">,</span>
+    <span class="c"># Uncomment the next line to enable the admin:</span>
+    <span class="s">'django.contrib.admin'</span><span class="p">,</span> <span class="c"># &lt;- THIS LINE HERE</span>
+    <span class="c"># Uncomment the next line to enable admin documentation:</span>
+    <span class="c"># 'django.contrib.admindocs',</span>
+    <span class="s">'polls'</span><span class="p">,</span>
+<span class="p">)</span>
+</pre>
+</div>
+<div class="slide" id="add-the-admin-tables">
+<h1>Add the Admin Tables</h1>
+<p>As you might expect, enabling the admin alters our DB. We'll need to run
+the <tt class="docutils literal">syncdb</tt> management command:</p>
+<pre class="literal-block">
+(djangoenv)$ python manage.py syncdb
+Creating tables ...
+Creating table django_admin_log
+Installing custom SQL ...
+Installing indexes ...
+Installed 0 object(s) from 0 fixture(s)
+</pre>
+<p class="incremental">All set.  Let's add URLs next</p>
+</div>
+<div class="slide" id="django-url-resolution">
+<h1>Django URL Resolution</h1>
+<p>Like Flas, Django has a system for routing URLs to code: the <em>urlconf</em>.</p>
+<ul class="incremental simple">
+<li>a urlconf is a list of mappings</li>
+<li>each mapping has a regexp <em>rule</em>, representing the URL</li>
+<li>each mapping names or provides the <tt class="docutils literal">callable</tt> to be invoked</li>
+<li>each mapping can have a <em>name</em>, used to <em>reverse</em> the URL</li>
+<li>a urlconf should be created using functions from the <tt class="docutils literal">django.conf.urls</tt>
+module</li>
+<li>django will load the urlconf named <tt class="docutils literal">urlpatterns</tt> that it finds in the file
+named in <tt class="docutils literal">settings.ROOT_URLCONF</tt>.</li>
+<li>That urlconf must include any others it requires</li>
 </ul>
-<p>writing views</p>
+</div>
+<div class="slide" id="django-url-patterns">
+<h1>Django URL Patterns</h1>
+<p>Open the file <tt class="docutils literal">urls.py</tt> from your <tt class="docutils literal">mysite</tt> project package:</p>
+<pre class="code python literal-block">
+<span class="kn">from</span> <span class="nn">django.conf.urls</span> <span class="kn">import</span> <span class="n">patterns</span><span class="p">,</span> <span class="n">include</span><span class="p">,</span> <span class="n">url</span>
+<span class="o">...</span>
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="n">patterns</span><span class="p">(</span><span class="s">''</span><span class="p">,</span>
+    <span class="c"># list of url patterns</span>
+<span class="p">)</span>
+</pre>
+<p class="incremental">You can include lists of urls from installed apps by using the <tt class="docutils literal">include</tt>
+function as the callable in a url pattern:</p>
+<pre class="code python incremental literal-block">
+<span class="n">url</span><span class="p">(</span><span class="s">r'^blog/'</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="s">'my.blog.app.urls'</span><span class="p">))</span>
+</pre>
+</div>
+<div class="slide" id="including-the-admin">
+<h1>Including the Admin</h1>
+<p>Using this knowledge, we can add <em>all</em> the URLs provided by the Django admin
+in one stroke. Edit <tt class="docutils literal">urls.py</tt>, which is open in your editor, and uncomment
+three lines:</p>
+<pre class="code python incremental literal-block">
+<span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">admin</span> <span class="c">#&lt;- Uncomment these two</span>
+<span class="n">admin</span><span class="o">.</span><span class="n">autodiscover</span><span class="p">()</span>
+
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="n">patterns</span><span class="p">(</span><span class="s">''</span><span class="p">,</span>
+
+    <span class="c"># Uncomment the next line to enable the admin:</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r'^admin/'</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">urls</span><span class="p">)),</span> <span class="c">#&lt;- and this</span>
+<span class="p">)</span>
+</pre>
+</div>
+<div class="slide" id="using-the-development-server">
+<h1>Using the Development Server</h1>
+<p>We can now view the admin.  We'll use the Django development server.</p>
+<p class="incremental">In your terminal, use the <tt class="docutils literal">runserver</tt> management command to start the
+development server:</p>
+<pre class="incremental literal-block">
+(djangoenv)$ python manage.py runserver
+Validating models...
+
+0 errors found
+Django version 1.4.3, using settings 'mysite.settings'
+Development server is running at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+</pre>
+</div>
+<div class="slide" id="viewing-the-admin">
+<h1>Viewing the Admin</h1>
+<p>Load <tt class="docutils literal"><span class="pre">http://localhost:8000/</span></tt>.  You should see this:</p>
+<img alt="img/django-admin-login.png" class="align-center" src="img/django-admin-login.png" style="width: 50%;" />
+<p class="incremental">Login with the name and password you created before.</p>
+</div>
+<div class="slide" id="the-admin-index">
+<h1>The Admin Index</h1>
+<p>The index will provide a list of all the installed <em>apps</em> and each model
+registered.  You should see this:</p>
+<img alt="img/admin_index.png" class="align-center" src="img/admin_index.png" style="width: 90%;" />
+<p class="incremental">Click on <tt class="docutils literal">Users</tt>. Find yourself? Edit yourself, but <strong>don't</strong> uncheck
+<tt class="docutils literal">superuser</tt>.</p>
+</div>
+<div class="slide" id="add-polls-to-the-admin">
+<h1>Add Polls to the Admin</h1>
+<p>Okay, let's add our app, and the models therein, to the admin.</p>
+<p class="incremental">Add a new file to the <tt class="docutils literal">polls</tt> app package: <tt class="docutils literal">admin.py</tt>. Edit it and add the
+following:</p>
+<pre class="code python incremental literal-block">
+<span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">admin</span>
+<span class="kn">from</span> <span class="nn">polls.models</span> <span class="kn">import</span> <span class="n">Poll</span><span class="p">,</span> <span class="n">Choice</span>
+
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Poll</span><span class="p">)</span>
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Choice</span><span class="p">)</span>
+</pre>
+<p class="incremental">Restart your Development server and reload the admin index</p>
+</div>
+<div class="slide" id="customized-admin">
+<h1>Customized Admin</h1>
+<p>The Django Admin displays <tt class="docutils literal">ModelAdmin</tt> instances for any models that are
+registered</p>
+<ul class="incremental simple">
+<li>The object <tt class="docutils literal">admin.site</tt> is a global instance of the <tt class="docutils literal">Admin</tt> class.</li>
+<li>Each call to <tt class="docutils literal">admin.site.register</tt> adds a new model to the global <em>site</em></li>
+<li><tt class="docutils literal">register</tt> takes two args: a <em>Model</em> subclass and a <em>ModelAdmin</em> subclass</li>
+<li>If you call it with only the <em>Model</em> subclass, the <em>ModelAdmin</em> is
+automatically generated.</li>
+<li>You can create, and customize, a <em>ModelAdmin</em> subclass for your models.</li>
+</ul>
+</div>
+<div class="slide" id="create-a-polladmin">
+<h1>Create a PollAdmin</h1>
+<p>In <tt class="docutils literal">admin.py</tt> add the following code (above the calls to <tt class="docutils literal">register</tt>):</p>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">PollAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
+    <span class="n">list_display</span> <span class="o">=</span> <span class="p">(</span><span class="s">'pub_date'</span><span class="p">,</span> <span class="s">'question'</span><span class="p">,</span>
+                    <span class="s">'published_today'</span><span class="p">)</span>
+    <span class="n">list_filter</span> <span class="o">=</span> <span class="p">(</span><span class="s">'pub_date'</span><span class="p">,</span> <span class="p">)</span>
+    <span class="n">ordering</span> <span class="o">=</span> <span class="p">(</span><span class="s">'pub_date'</span><span class="p">,</span> <span class="p">)</span>
+</pre>
+<p class="incremental">Then add this new class to the <tt class="docutils literal">register</tt> call for our <tt class="docutils literal">Poll</tt>:</p>
+<pre class="code python incremental literal-block">
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Poll</span><span class="p">,</span> <span class="n">PollAdmin</span><span class="p">)</span>
+</pre>
+</div>
+<div class="slide" id="more-convenient-relations">
+<h1>More Convenient Relations</h1>
+<p>In our Admin site, you can see the <tt class="docutils literal">Poll</tt> to which a <tt class="docutils literal">Choice</tt> belongs.</p>
+<p class="incremental">It'd be a lot nicer to be able to manage the <tt class="docutils literal">Choices</tt> for a <tt class="docutils literal">Poll</tt> from
+the poll admin page, wouldn't it?</p>
+<p class="incremental">The Django Admin provides a special type of <tt class="docutils literal">ModelAdmin</tt> for just this
+purpose: The <tt class="docutils literal">InlineModelAdmin</tt>.</p>
+<p class="incremental">There are two flavors, <em>stacked</em> and <em>tabular</em>. The <em>tabular</em> version is more
+compact as it displays each related object in a single table row.</p>
+</div>
+<div class="slide" id="create-a-choice-inline">
+<h1>Create a Choice Inline</h1>
+<p>Add the following code <em>above</em> our <tt class="docutils literal">PollAdmin</tt> class in <tt class="docutils literal">admin.py</tt>:</p>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">ChoiceInline</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">TabularInline</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Choice</span>
+    <span class="n">extra</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">ordering</span> <span class="o">=</span> <span class="p">(</span><span class="s">'choice'</span><span class="p">,</span> <span class="p">)</span>
+</pre>
+<p>Then, add the inline to <tt class="docutils literal">PollAdmin</tt>:</p>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">PollAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
+    <span class="c"># ...</span>
+    <span class="n">inlines</span> <span class="o">=</span> <span class="p">(</span><span class="n">ChoiceInline</span><span class="p">,</span> <span class="p">)</span>
+</pre>
+</div>
+<div class="slide" id="method-attributes-for-the-admin">
+<h1>Method Attributes for the Admin</h1>
+<p>For example, methods of a class you use in the admin can have special
+attributes that alter how it works. Make these changes to <tt class="docutils literal">models.py</tt></p>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">Poll</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="o">...</span>
+    <span class="k">def</span> <span class="nf">published_today</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">now</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="n">time_delta</span> <span class="o">=</span> <span class="n">now</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">pub_date</span>
+        <span class="k">return</span> <span class="n">time_delta</span><span class="o">.</span><span class="n">days</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="n">published_today</span><span class="o">.</span><span class="n">boolean</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="n">published_today</span><span class="o">.</span><span class="n">short_description</span> <span class="o">=</span> <span class="s">&quot;Published Today?&quot;</span>
+</pre>
+</div>
+<div class="slide" id="reap-the-rewards">
+<h1>Reap the Rewards</h1>
+<p>Good work. You've set up a fully functional CRUD admin interface for your
+application database in about 25 lines of code.</p>
+<p class="incremental">Play with it for a bit.</p>
+</div>
+<div class="slide" id="lab-part-three">
+<h1>Lab - Part Three</h1>
+<p>In this part, we'll add public views and set up a way for visitors to vote
+in our poll.</p>
+<p>Along the way, we'll learn a bit about Django's <em>Generic Views</em> and the
+<em>Django Templating Language</em></p>
+</div>
+<div class="slide" id="django-views">
+<h1>Django Views</h1>
+<p>Django views are callables that take a request and return a response.</p>
+<p class="incremental">From the beginning, these have been functions.  They still can be.</p>
+<p class="incremental">Version 1.3 added support for Class-based Views.</p>
+<p class="incremental">Really, they've always been there implicitly. The Admin is just a big
+class-based view.</p>
+</div>
+<div class="slide" id="generic-views">
+<h1>Generic Views</h1>
+<p>One of the most common uses for Class-based Views is in creating Generic Views.</p>
+<p class="incremental">Some public views are so common that providing a simple and generic interface
+for making them is a big win.</p>
+<ul class="incremental simple">
+<li>Showing a list of objects of some type.</li>
+<li>Showing the details of a single object of some type.</li>
+<li>Displaying a static HTML template (or a template with some dynamic context)</li>
+<li>Displaying and processing a simple HTML form.</li>
+</ul>
+</div>
+<div class="slide" id="our-application">
+<h1>Our Application</h1>
+<p>We'd like to be able to add some views that show our polls to the public.</p>
+<p class="incremental">What views would we like to have?</p>
+<ul class="incremental simple">
+<li>A list of all polls, perhaps ordered by publication date</li>
+<li>A display of a single poll, showing each choice and allowing a vote</li>
+<li>A view that processes a vote</li>
+<li>A view that shows the poll results after you vote.</li>
+</ul>
+<p class="incremental">I start by configuring my URLs, it helps me think about the app API.</p>
+</div>
+<div class="slide" id="configure-urls">
+<h1>Configure URLs</h1>
+<p>In your <tt class="docutils literal">polls</tt> app package, add a new file: <tt class="docutils literal">urls.py</tt>. Open it in an
+editor:</p>
+<pre class="code python incremental small literal-block">
+<span class="kn">from</span> <span class="nn">django.conf.urls</span> <span class="kn">import</span> <span class="n">patterns</span><span class="p">,</span> <span class="n">url</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span>
+
+<span class="k">def</span> <span class="nf">stub</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s">'stub view'</span><span class="p">,</span> <span class="n">mimetype</span><span class="o">=</span><span class="s">&quot;text/plain&quot;</span><span class="p">)</span>
+
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="n">patterns</span><span class="p">(</span><span class="s">''</span><span class="p">,</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r'^$'</span><span class="p">,</span> <span class="n">stub</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;poll_list&quot;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r'^(?P&lt;pk&gt;\d+)/$'</span><span class="p">,</span> <span class="n">stub</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;poll_detail&quot;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r'^(?P&lt;pk&gt;\d+)/vote/$'</span> <span class="n">stub</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;poll_vote&quot;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r'^(?P&lt;pk&gt;\d+)/result/$'</span><span class="p">,</span> <span class="n">stub</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;poll_result&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+</pre>
+</div>
+<div class="slide" id="hook-urls-to-the-root">
+<h1>Hook URLs to the Root</h1>
+<p>Like with the Django Admin, we can now add all the urls for our poll app at
+once.</p>
+<p class="incremental">In the <tt class="docutils literal">urls.py</tt> in our <tt class="docutils literal">mysite</tt> project package, add the following:</p>
+<pre class="code python incremental small literal-block">
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="n">patterns</span><span class="p">(</span><span class="s">''</span><span class="p">,</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r'^admin/'</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">urls</span><span class="p">)),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r'^polls/'</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="s">'polls.urls'</span><span class="p">)),</span> <span class="c"># ADD</span>
+<span class="p">)</span>
+</pre>
+<p class="incremental">Restart the development server and load <tt class="docutils literal"><span class="pre">http://localhost:8000/polls/</span></tt></p>
+</div>
+<div class="slide" id="generic-poll-list">
+<h1>Generic Poll List</h1>
+<p>Django's Generic Views allow you to do quite a lot with just a little code.
+Edit <tt class="docutils literal">urls.py</tt>:</p>
+<pre class="code python incremental small literal-block">
+<span class="c"># add this import</span>
+<span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">ListView</span>
+
+<span class="c"># edit the url pattern for the poll list:</span>
+<span class="n">url</span><span class="p">(</span><span class="s">r'^$'</span><span class="p">,</span>
+    <span class="n">ListView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span>
+        <span class="n">queryset</span><span class="o">=</span><span class="n">Poll</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">'-pub_date'</span><span class="p">)[:</span><span class="mi">5</span><span class="p">],</span>
+        <span class="n">context_object_name</span><span class="o">=</span><span class="s">'polls'</span><span class="p">,</span>
+        <span class="n">template_name</span><span class="o">=</span><span class="s">&quot;polls/list.html&quot;</span>
+    <span class="p">),</span>
+    <span class="n">name</span><span class="o">=</span><span class="s">&quot;poll_list&quot;</span><span class="p">),</span>
+</pre>
+<p class="incremental">Now, we just need to make that template</p>
+</div>
+<div class="slide" id="django-templates">
+<h1>Django Templates</h1>
+<p>The <a class="reference external" href="https://docs.djangoproject.com/en/1.4/topics/templates/">Django Template Language</a> looks a <em>lot</em> like
+Jinja2. It is, however, quite a bit more limited.</p>
+<ul class="incremental simple">
+<li>variables available in context may be printed with <tt class="docutils literal">{{ name }}</tt></li>
+<li>variables that are objects or dictionaries may be addressed with dots: <tt class="docutils literal">{{
+name.attr }}</tt></li>
+<li><em>filters</em> are available and look the same <tt class="docutils literal">{{ name|upper }}</tt></li>
+<li>logical <em>tags</em>: <tt class="docutils literal">{% for x in y <span class="pre">%}{{</span> x <span class="pre">}}{%</span> endfor %}</tt></li>
+<li>available filters and tags may be extended with custom code</li>
+<li>templates can be <em>extended</em> and <em>included</em></li>
+<li>you may define <em>blocks</em> in templates to be filled by other templates.</li>
+<li>you <strong>may not</strong> execute arbitrary python or assign variables and use them</li>
+</ul>
+</div>
+<div class="slide" id="setting-up">
+<h1>Setting Up</h1>
+<p>In <tt class="docutils literal">assignments/week06/lab/source</tt> you'll find a file <tt class="docutils literal">base.html</tt>.</p>
+<p class="incremental">Create a new directory, <tt class="docutils literal">templates</tt> in your <tt class="docutils literal">polls</tt> app package.</p>
+<p class="incremental">Copy the <tt class="docutils literal">base.html</tt> file into that new directory.</p>
+<p class="incremental">Next, create a folder <tt class="docutils literal">polls</tt> <em>inside</em> that new templates directory. We'll
+add our individual templates here.</p>
+</div>
+<div class="slide" id="list-template">
+<h1>List Template</h1>
+<p>Add <tt class="docutils literal">list.html</tt> inside <tt class="docutils literal">templates/polls</tt>:</p>
+<pre class="code django small literal-block">
+<span class="cp">{%</span> <span class="k">extends</span> <span class="s2">&quot;base.html&quot;</span> <span class="cp">%}</span><span class="x">
+
+</span><span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}</span><span class="x">
+&lt;h1&gt;Latest Polls&lt;/h1&gt;
+</span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">poll</span> <span class="k">in</span> <span class="nv">polls</span> <span class="cp">%}</span><span class="x">
+&lt;div class=&quot;poll&quot;&gt;
+  &lt;h2&gt;&lt;a href=&quot;</span><span class="cp">{%</span> <span class="k">url</span> <span class="nv">poll_detail</span> <span class="nv">poll.pk</span> <span class="cp">%}</span><span class="x">&quot;&gt;</span><span class="cp">{{</span> <span class="nv">poll</span> <span class="cp">}}</span><span class="x">&lt;/a&gt;&lt;/h2&gt;
+&lt;/div&gt;
+</span><span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span><span class="x">
+</span><span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+</pre>
+<p class="incremental">Now, load <tt class="docutils literal"><span class="pre">http://localhost:8000/polls/</span></tt> again.</p>
+</div>
+<div class="slide" id="detail-view">
+<h1>Detail View</h1>
+<p>Back in our <tt class="docutils literal">polls</tt> app, let's edit <tt class="docutils literal">urls.py</tt> again:</p>
+<pre class="code python incremental small literal-block">
+<span class="c"># add this import</span>
+<span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">ListView</span>
+
+<span class="c"># and edit the detail url like so:</span>
+<span class="n">url</span><span class="p">(</span><span class="s">r'^(?P&lt;pk&gt;\d+)/$'</span><span class="p">,</span>
+    <span class="n">DetailView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span>
+        <span class="n">model</span><span class="o">=</span><span class="n">Poll</span><span class="p">,</span>
+        <span class="n">template_name</span><span class="o">=</span><span class="s">&quot;polls/detail.html&quot;</span>
+    <span class="p">),</span>
+    <span class="n">name</span><span class="o">=</span><span class="s">&quot;poll_detail&quot;</span><span class="p">),</span>
+</pre>
+<p class="incremental">Again, we only need to add a template.</p>
+</div>
+<div class="slide" id="forms-in-django">
+<h1>Forms in Django</h1>
+<p>We want to be able to vote on a poll.</p>
+<p class="incremental">Because doing so involves changing data on the server, we should do this with
+a POST request.</p>
+<p class="incremental">An html form is a simple way to allow us to force a POST request.</p>
+<p class="incremental">Data-altering requests are vulnerable to Cross-Site Request Forgery, a common
+attack vector.</p>
+</div>
+<div class="slide" id="danger-csrf">
+<h1>Danger: CSRF</h1>
+<p>Django not only provides a convenient system to fight this, it <em>requires</em> it
+for any POST requests.</p>
+<p class="incremental">The Django middleware that does this is enabled by default. All you need to do
+is include the {% csrf_token %} tag in your form template.</p>
+<p class="incremental">Create a new file <tt class="docutils literal">detail.html</tt> in your <tt class="docutils literal">templates/polls</tt> directory</p>
+</div>
+<div class="slide" id="detail-template">
+<h1>Detail Template</h1>
+<pre class="code django small literal-block">
+<span class="cp">{%</span> <span class="k">extends</span> <span class="s2">&quot;base.html&quot;</span> <span class="cp">%}</span><span class="x">
+</span><span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}</span><span class="x">
+&lt;h1&gt;</span><span class="cp">{{</span> <span class="nv">poll</span> <span class="cp">}}</span><span class="x">&lt;/h1&gt;
+</span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">poll.choice_set.count</span> <span class="o">&gt;</span> <span class="m">0</span> <span class="cp">%}</span><span class="x">
+&lt;form action=&quot;</span><span class="cp">{%</span> <span class="k">url</span> <span class="nv">poll_vote</span> <span class="nv">poll.pk</span> <span class="cp">%}</span><span class="x">&quot; method=&quot;POST&quot;&gt;
+  </span><span class="cp">{%</span> <span class="k">csrf_token</span> <span class="cp">%}</span><span class="x">
+  </span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">choice</span> <span class="k">in</span> <span class="nv">poll.choice_set.all</span> <span class="cp">%}</span><span class="x">
+  &lt;div class=&quot;choice&quot;&gt;
+    &lt;label for=&quot;choice_</span><span class="cp">{{</span> <span class="nv">choice.pk</span> <span class="cp">}}</span><span class="x">&quot;&gt;
+      &lt;input type=&quot;radio&quot; name=&quot;choice&quot; id=&quot;choice_</span><span class="cp">{{</span> <span class="nv">choice.pk</span> <span class="cp">}}</span><span class="x">&quot;
+             value=&quot;</span><span class="cp">{{</span> <span class="nv">choice.pk</span> <span class="cp">}}</span><span class="x">&quot;/&gt;
+      </span><span class="cp">{{</span> <span class="nv">choice</span> <span class="cp">}}</span><span class="x">&lt;/label&gt;&lt;/div&gt;
+  </span><span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span><span class="x">
+  &lt;input type=&quot;submit&quot; name=&quot;vote&quot; value=&quot;Vote&quot;/&gt;
+&lt;/form&gt;
+</span><span class="cp">{%</span> <span class="k">else</span> <span class="cp">%}</span><span class="x">
+&lt;p&gt;No choices are available for this poll&lt;/p&gt;
+</span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x">
+</span><span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+</pre>
+</div>
+<div class="slide" id="processing-the-vote">
+<h1>Processing The Vote</h1>
+<p>We can now submit a form to the <tt class="docutils literal">poll_vote</tt> url. We need to process that
+vote</p>
+<p class="incremental">Here, a class-based generic view is just going to get in our way.  Let's use
+an old-fashioned view function.</p>
+<p class="incremental">How is our user's vote reaching the server?</p>
+<p class="incremental">It gets there as POST data, the value for the key 'choice'.</p>
+</div>
+<div class="slide" id="django-get-and-post-data">
+<h1>Django GET and POST Data</h1>
+<p>Django provides the same type of Request/Response based interaction model that
+most frameworks are based on. Views are called with the first argument being a
+<tt class="docutils literal">request</tt> object.</p>
+<p class="incremental">request.GET and request.POST are dictionary-like objects containing data
+parsed from incoming HTTP request.</p>
+<p class="incremental">You can use normal dictionary syntax to read values from these:</p>
+<pre class="code python incremental small literal-block">
+<span class="n">bar</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">'bucko'</span><span class="p">]</span>
+<span class="n">foo</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'somevar'</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</pre>
+</div>
+<div class="slide" id="vote-view-skeleton">
+<h1>Vote View Skeleton</h1>
+<p>In <tt class="docutils literal">views.py</tt> from our <tt class="docutils literal">polls</tt> app package:</p>
+<pre class="code python small literal-block">
+<span class="kn">from</span> <span class="nn">django.core.urlresolvers</span> <span class="kn">import</span> <span class="n">reverse</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponseRedirect</span>
+
+<span class="k">def</span> <span class="nf">vote_view</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c"># attempt to get a choice</span>
+        <span class="k">except</span> <span class="n">NoGoodChoice</span><span class="p">:</span> <span class="c"># send back to detail</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s">'poll_detail'</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">pk</span><span class="p">,</span> <span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span> <span class="c"># vote and send to result</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s">'poll_result'</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">pk</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span> <span class="c"># submitted via GET, ignore it</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s">'poll_detail'</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">pk</span><span class="p">,</span> <span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+</pre>
+</div>
+<div class="slide" id="get-the-choice">
+<h1>Get the Choice</h1>
+<p>Let's start by filling out the process of getting the choice:</p>
+<pre class="code python small literal-block">
+<span class="c"># add imports</span>
+<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">get_object_or_404</span>
+<span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">messages</span>
+<span class="kn">from</span> <span class="nn">polls.models</span> <span class="kn">import</span> <span class="n">Poll</span><span class="p">,</span> <span class="n">Choice</span>
+<span class="c"># and edit our skeleton</span>
+<span class="k">def</span> <span class="nf">vote_view</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
+    <span class="n">poll</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Poll</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">choice</span> <span class="o">=</span> <span class="n">poll</span><span class="o">.</span><span class="n">choice_set</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                <span class="n">pk</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'choice'</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="k">except</span> <span class="n">Choice</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;Ooops, pick a choice that exists, please&quot;</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">add_message</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">messages</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s">'poll_detail'</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">pk</span><span class="p">,</span> <span class="p">])</span>
+</pre>
+</div>
+<div class="slide" id="add-a-vote">
+<h1>Add a Vote</h1>
+<p>Next, let's record a vote on our choice:</p>
+<pre class="code python small literal-block">
+<span class="k">def</span> <span class="nf">vote_view</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
+    <span class="o">...</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c"># choice = ...</span>
+    <span class="k">except</span> <span class="n">Choice</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+        <span class="c"># ...</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">choice</span><span class="o">.</span><span class="n">votes</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">choice</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">add_message</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">messages</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
+                             <span class="s">&quot;You voted for </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">choice</span><span class="p">)</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s">'poll_result'</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">pk</span><span class="p">])</span>
+</pre>
+</div>
+<div class="slide" id="add-the-url">
+<h1>Add the URL</h1>
+<p>Finally, we need to add this view to our urlconf. Back in <tt class="docutils literal">urls.py</tt> in the
+<tt class="docutils literal">polls</tt> app package, edit the url for the voting view like so:</p>
+<pre class="code python small literal-block">
+<span class="n">url</span><span class="p">(</span><span class="s">r'^(?P&lt;pk&gt;\d+)/vote/$'</span><span class="p">,</span>
+    <span class="s">'polls.views.vote_view'</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s">&quot;poll_vote&quot;</span><span class="p">),</span>
+</pre>
+<p class="incremental">Notice that the 'callable' in this pattern is a string. Django allows you to
+use this sort of <em>dotted name</em> reference. It will resolve it (or throw an
+error if it can't)</p>
+</div>
+<div class="slide" id="display-result">
+<h1>Display Result</h1>
+<p>The last view we need is the poll result. This can simply be a different
+version of the Generic DetailView. Still in <tt class="docutils literal">urls.py</tt> edit the pattern for
+the results view:</p>
+<pre class="code python small literal-block">
+<span class="n">url</span><span class="p">(</span><span class="s">r'^(?P&lt;pk&gt;\d+)/result/$'</span><span class="p">,</span>
+    <span class="n">DetailView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span>
+        <span class="n">model</span><span class="o">=</span><span class="n">Poll</span><span class="p">,</span>
+        <span class="n">template_name</span><span class="o">=</span><span class="s">&quot;polls/result.html&quot;</span><span class="p">),</span>
+    <span class="n">name</span><span class="o">=</span><span class="s">&quot;poll_result&quot;</span><span class="p">)</span>
+</pre>
+<p class="incremental">And, of course, we will need to create that final template</p>
+</div>
+<div class="slide" id="result-template">
+<h1>Result Template</h1>
+<p>In <tt class="docutils literal">templates/polls</tt> create a new file, <tt class="docutils literal">result.html</tt>:</p>
+<pre class="code django small literal-block">
+<span class="cp">{%</span> <span class="k">extends</span> <span class="s2">&quot;base.html&quot;</span> <span class="cp">%}</span><span class="x">
+
+</span><span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}</span><span class="x">
+&lt;h1&gt;</span><span class="cp">{{</span> <span class="nv">poll</span> <span class="cp">}}</span><span class="x">&lt;/h1&gt;
+&lt;ul&gt;
+  </span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">choice</span> <span class="k">in</span> <span class="nv">poll.choice_set.all</span> <span class="cp">%}</span><span class="x">
+  &lt;li&gt;</span><span class="cp">{{</span> <span class="nv">choice</span> <span class="cp">}}</span><span class="x"> (</span><span class="cp">{{</span><span class="nv">choice.votes</span><span class="cp">}}</span><span class="x"> votes)&lt;/li&gt;
+  </span><span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span><span class="x">
+&lt;/ul&gt;
+&lt;a href=&quot;</span><span class="cp">{%</span> <span class="k">url</span> <span class="nv">poll_list</span> <span class="cp">%}</span><span class="x">&quot;&gt;Back to the polls, please&lt;/a&gt;
+</span><span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+</pre>
+</div>
+<div class="slide" id="play-a-bit">
+<h1>Play a Bit</h1>
+<p>Alright. You've done it.</p>
+<p>Take a few minutes to add some polls in the Admin.</p>
+<p>Then return to the public side and vote. See how it goes.</p>
+</div>
+<div class="slide" id="assignment">
+<h1>Assignment</h1>
 <ul class="simple">
-<li>start with urlconf (in poll app, include in root urlconf)</li>
-<li>create detail view for a poll.  Simple template</li>
-<li>add a form to vote on a poll.</li>
-<li>create a form processing view which redirects to the detail view</li>
-<li>add a class-based generic listing view</li>
+<li>Review the data structure and views required for the Flaskr app.</li>
+<li>Start a new <em>app</em> in your same <cite>mysite</cite> project.  Call it <cite>djangor</cite></li>
+<li>Build the required models to represent the data.  Make two enhancements:<ul>
+<li>Add a column for 'pub_date' to the entry model</li>
+<li>Allow each entry to be 'owned' by a User. Add a relation field to
+represent this.</li>
+<li><em>HINT</em> <tt class="docutils literal">django.contrib.auth.models</tt> defines a <tt class="docutils literal">User</tt> model.</li>
+</ul>
+</li>
+<li>Build the urlconf required to present an entry list and a view for posting a
+new entry.  Add two new urls:
+* One should show the archive of all posts from a given month and year
+* One should show all the posts by a single user</li>
+<li>Build views for each URL</li>
+</ul>
+</div>
+<div class="slide" id="submitting-the-assignment">
+<h1>Submitting the Assignment</h1>
+<ul class="simple">
+<li>place your <em>app</em> package into the <cite>athome</cite> folder in <tt class="docutils literal">assignments/week06/</tt></li>
+<li>Add any notes, comments or questions in the form of a README file in that
+same folder</li>
+<li>Commit your changes to your fork and make a pull request.</li>
 </ul>
 </div>
 </div>
