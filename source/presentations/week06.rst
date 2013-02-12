@@ -202,8 +202,8 @@ One *project* can (and likely will) consist of many *apps*
 Starting a Project
 ------------------
 
-You should already have done this at home, but we'll look at it together quickly, in
-case:
+You should already have done this at home, but we'll look at it together
+quickly, in case:
 
 .. class:: incremental
 
@@ -371,7 +371,7 @@ Todays lab is drawn from the `Django Tutorial
 <https://docs.djangoproject.com/en/1.4/intro/tutorial01/>`_, with some minor
 adjustments.
 
-Lab - Step One
+Lab - Part One
 --------------
 
 We are going to create an *app* to add to our *project*.  This app will:
@@ -1104,8 +1104,8 @@ application database in about 25 lines of code.
 
 Play with it for a bit.
 
-Lab - Part 3
-------------
+Lab - Part Three
+----------------
 
 In this part, we'll add public views and set up a way for visitors to vote
 in our poll.  
