@@ -36,25 +36,6 @@ And Now
     :align: center
     :width: 79%
 
-
-Full Stack Framework
---------------------
-
-Django is **One Big Package**
-
-.. class:: incremental
-
-When you installed Flask, you also installed *werkzeug* and *jinja2*, a total
-of 1.85MB
-
-.. class:: incremental
-
-Django 1.4.3 weighs in at 7.7MB (4 times the size of Flask)
-
-.. class:: incremental
-
-So what do you get?
-
 Full Stack Framework
 --------------------
 
@@ -221,7 +202,7 @@ One *project* can (and likely will) consist of many *apps*
 Starting a Project
 ------------------
 
-You should already have done this at home, but we'll look at it together in
+You should already have done this at home, but we'll look at it together quickly, in
 case:
 
 .. class:: incremental
