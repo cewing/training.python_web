@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Latest Polls</h1>
+{% for poll in polls %}
+<div class="poll">
+  <h2><a href="{% url poll_detail poll.pk %}">{{ poll }}</a></h2>
+  <p><strong>Total Votes:</strong> {{ poll.total_votes }}</p>
+</div>
+{% endfor %}
+{% endblock %}

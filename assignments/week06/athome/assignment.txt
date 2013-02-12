@@ -1,0 +1,33 @@
+Assignment
+
+* Review the data structure and views required for the Flaskr app.
+
+* Start a new *app* in your same `mysite` project.  Call it `djangor`
+
+* Build the required models to represent the data.  Make two enhancements:
+  
+  * Add a column for 'pub_date' to the entry model
+  
+  * Allow each entry to be 'owned' by a User. Add a relation field to
+    represent this.
+  
+  * *HINT* ``django.contrib.auth.models`` defines a ``User`` model.
+
+* Build the urlconf required to present an entry list and a view for posting a
+  new entry.  Add two new urls:
+  
+  * One should show the archive of all posts from a given month and year
+  
+  * One should show all the posts by a single user
+
+* Build views for each URL
+
+Submitting the Assignment
+-------------------------
+
+* place your *app* package into the `athome` folder in ``assignments/week06/``
+
+* Add any notes, comments or questions in the form of a README file in that
+  same folder
+
+* Commit your changes to your fork and make a pull request.

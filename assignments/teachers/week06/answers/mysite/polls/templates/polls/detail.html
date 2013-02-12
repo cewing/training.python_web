@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{{ poll }}</h1>
+{% if poll.choice_set.count > 0 %}
+<form action="{% url poll_vote poll.pk %}" method="POST">
+  {% csrf_token %}
+  {% for choice in poll.choice_set.all %}
+  <div class="choice">
+    <label for="choice_{{ choice.pk }}">
+      <input type="radio" name="choice" id="choice_{{ choice.pk }}" value="{{ choice.pk }}"/>
+      {{ choice }}
+    </label>
+  </div>
+  {% endfor %}
+  <input type="submit" name="vote" value="Vote"/>
+</form>
+{% else %}
+<p>No choices are available for this poll</p>
+{% endif %}
+{% endblock %}
