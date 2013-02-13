@@ -1558,35 +1558,69 @@ Take a few minutes to add some polls in the Admin.
 
 Then return to the public side and vote. See how it goes.
 
+Next Week
+---------
+
+We are going to mix it up quite a bit this week.
+
+.. class:: incremental
+
+I would like you all to divide into teams. Each team should have 4-6 people.
+Each team should have both experienced and inexperienced members. Try to match
+up with people whose strengths are different from your own.
+
+.. class:: incremental
+
+Now, each team, pick a 'facilitator'. This person will be responsible for
+managing the operation of the team. This person will help to ensure that each
+team member has a task. This should be a more experienced team member.
+
 Assignment
 ----------
 
-* Review the data structure and views required for the Flaskr app.
+During this week, each **non-leader member** will duplicate the Flaskr app
+using Django.
 
-* Start a new *app* in your same `mysite` project.  Call it `djangor`
+.. class:: incremental
 
-* Build the required models to represent the data.  Make two enhancements:
-  
-  * Add a column for 'pub_date' to the entry model
-  
-  * Allow each entry to be 'owned' by a User. Add a relation field to
-    represent this.
-  
-  * *HINT* ``django.contrib.auth.models`` defines a ``User`` model.
+* Create a new *app* which will hold all the code required.
+* Define the model for the 'entry' object.
+* Extend that model with two additional fields: ``publication_date``
+  (DateTimeField), and ``author`` (ForeignKey to
+  ``django.contrib.auth.models.User``)
+* Define the URLs you'll need (an entry list, a form processor)
+* Define the Views you'll need (see the two above).
 
-* Build the urlconf required to present an entry list and a view for posting a
-  new entry.  Add two new urls:
-  * One should show the archive of all posts from a given month and year
-  * One should show all the posts by a single user
+Assignment
+----------
 
-* Build views for each URL
+During this week, each **team leader** will communicate with me to build a
+plan for implementing a new feature for the Django flaskr app.
+
+.. class:: incremental
+
+* User Registration
+* 'Archive' views based on date or author
+* WYSIWYG visual editor for entry posts.
+* Tagging
+* Theme (make it beautiful)
+* Search (this is a bigger one than you might think)
 
 Submitting the Assignment
 -------------------------
 
-* place your *app* package into the `athome` folder in ``assignments/week06/``
+Leaders, you will communicate with me to make a plan
 
-* Add any notes, comments or questions in the form of a README file in that
-  same folder
+Members, you will do the usual submission of your code.
 
-* Commit your changes to your fork and make a pull request.
+DO NOT ATTEMPT TO GET YOUR CODE RUNNING ON A VM
+
+Next Week
+---------
+
+Our class next week will be a little different. Each team will be implementing
+a new feature for our micro-blog application.
+
+We will work in teams for the entire class up until 8:30, when we will show
+off our results.
+
