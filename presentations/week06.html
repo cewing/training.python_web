@@ -1118,33 +1118,55 @@ the results view:</p>
 <p>Take a few minutes to add some polls in the Admin.</p>
 <p>Then return to the public side and vote. See how it goes.</p>
 </div>
+<div class="slide" id="next-week">
+<h1>Next Week</h1>
+<p>We are going to mix it up quite a bit this week.</p>
+<p class="incremental">I would like you all to divide into teams. Each team should have 4-6 people.
+Each team should have both experienced and inexperienced members. Try to match
+up with people whose strengths are different from your own.</p>
+<p class="incremental">Now, each team, pick a 'facilitator'. This person will be responsible for
+managing the operation of the team. This person will help to ensure that each
+team member has a task. This should be a more experienced team member.</p>
+</div>
 <div class="slide" id="assignment">
 <h1>Assignment</h1>
-<ul class="simple">
-<li>Review the data structure and views required for the Flaskr app.</li>
-<li>Start a new <em>app</em> in your same <cite>mysite</cite> project.  Call it <cite>djangor</cite></li>
-<li>Build the required models to represent the data.  Make two enhancements:<ul>
-<li>Add a column for 'pub_date' to the entry model</li>
-<li>Allow each entry to be 'owned' by a User. Add a relation field to
-represent this.</li>
-<li><em>HINT</em> <tt class="docutils literal">django.contrib.auth.models</tt> defines a <tt class="docutils literal">User</tt> model.</li>
+<p>During this week, each <strong>non-leader member</strong> will duplicate the Flaskr app
+using Django.</p>
+<ul class="incremental simple">
+<li>Create a new <em>app</em> which will hold all the code required.</li>
+<li>Define the model for the 'entry' object.</li>
+<li>Extend that model with two additional fields: <tt class="docutils literal">publication_date</tt>
+(DateTimeField), and <tt class="docutils literal">author</tt> (ForeignKey to
+<tt class="docutils literal">django.contrib.auth.models.User</tt>)</li>
+<li>Define the URLs you'll need (an entry list, a form processor)</li>
+<li>Define the Views you'll need (see the two above).</li>
 </ul>
-</li>
-<li>Build the urlconf required to present an entry list and a view for posting a
-new entry.  Add two new urls:
-* One should show the archive of all posts from a given month and year
-* One should show all the posts by a single user</li>
-<li>Build views for each URL</li>
+</div>
+<div class="slide" id="id1">
+<h1>Assignment</h1>
+<p>During this week, each <strong>team leader</strong> will communicate with me to build a
+plan for implementing a new feature for the Django flaskr app.</p>
+<ul class="incremental simple">
+<li>User Registration</li>
+<li>'Archive' views based on date or author</li>
+<li>WYSIWYG visual editor for entry posts.</li>
+<li>Tagging</li>
+<li>Theme (make it beautiful)</li>
+<li>Search (this is a bigger one than you might think)</li>
 </ul>
 </div>
 <div class="slide" id="submitting-the-assignment">
 <h1>Submitting the Assignment</h1>
-<ul class="simple">
-<li>place your <em>app</em> package into the <cite>athome</cite> folder in <tt class="docutils literal">assignments/week06/</tt></li>
-<li>Add any notes, comments or questions in the form of a README file in that
-same folder</li>
-<li>Commit your changes to your fork and make a pull request.</li>
-</ul>
+<p>Leaders, you will communicate with me to make a plan</p>
+<p>Members, you will do the usual submission of your code.</p>
+<p>DO NOT ATTEMPT TO GET YOUR CODE RUNNING ON A VM</p>
+</div>
+<div class="slide" id="id2">
+<h1>Next Week</h1>
+<p>Our class next week will be a little different. Each team will be implementing
+a new feature for our micro-blog application.</p>
+<p>We will work in teams for the entire class up until 8:30, when we will show
+off our results.</p>
 </div>
 </div>
 </body>

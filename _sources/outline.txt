@@ -437,6 +437,8 @@ Django ORM (and ORMs in general) can help shield Python developers from SQL.
 For our homework, we'll take a look at a set of specifications for a project
 and create a set of Django Models that will fulfill the specification.
 
+`Week 6 Presentation <presentations/week06.html>`_
+
 Reading
 *******
 
