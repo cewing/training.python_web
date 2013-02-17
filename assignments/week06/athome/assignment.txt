@@ -1,4 +1,34 @@
 Assignment
+----------
+
+As described in class, we've divided into teams for Week 07. Our assignment
+for week six is also divided. Each team has a team leader, they have one
+assignment, described below. The remaining members of each team have a second
+assignment, also described below.
+
+Team Leader Assignment
+----------------------
+
+If you are a team leader, your assignment is to formulate a plan to implement
+one of the following features as an extension to the djangor micro-blog app
+your team members are building. Please pick one feature and communicate your
+plan to me before the start of class on Tuesday, Feb. 19:
+
+* User Registration (django-registration)
+* 'Archive' views based on date or author (generic date-based views)
+* WYSIWYG visual editor for entry posts. (django-ckeditor)
+* Tagging (django-taggit)
+* Theme (make it beautiful)
+
+Submitting the Team Leader Assignment
+-------------------------------------
+
+Communicate with your team to decide a feature. Formulate a plan to implement
+that feature. Research the tools you'll need to accomplish the job.
+Communicate your plan to Cris (cris@crisewing.com)
+
+Team Member Assignment
+----------------------
 
 * Review the data structure and views required for the Flaskr app.
 
@@ -14,16 +44,12 @@ Assignment
   * *HINT* ``django.contrib.auth.models`` defines a ``User`` model.
 
 * Build the urlconf required to present an entry list and a view for posting a
-  new entry.  Add two new urls:
-  
-  * One should show the archive of all posts from a given month and year
-  
-  * One should show all the posts by a single user
+  new entry.
 
 * Build views for each URL
 
-Submitting the Assignment
--------------------------
+Submitting the Team Member Assignment
+-------------------------------------
 
 * place your *app* package into the `athome` folder in ``assignments/week06/``
 
