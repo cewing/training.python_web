@@ -496,20 +496,18 @@ Week 7 - Django
 
 **Date**: Feb. 19, 2013
 
-In this class we'll dive a bit further into Django. We'll take the app we 
-build for our week 6 homework and add style and security features.  Along the
-way we'll have a chance to learn more about Django's templates, models, views
-and forms.
-
-We'll also discuss extending the functionality of our application using
-existing Django **apps**. We'll see how these add-ons can help us to solve
-common problems like user registration and database schema management.
+In this class we'll dive a bit further into Django. We'll start with a
+duplicate of the micro-blog we built in week 5 and work in teams to extend the
+functionality by integrating existing apps. Along the way, we'll have a chance
+to explore team-based development workflow.
 
 Finally, we'll discuss some of the strengths and weaknesses of Django.  What 
 makes it a good choice for some projects but not for others.
 
 Our assignment for the week will be to prepare for working with Pyramid in
 Week 8.
+
+`Week 7 Presentation <presentations/week07.html>`_
 
 Reading
 *******
@@ -546,16 +544,6 @@ Reading
     different approaches to testing Django applications, including unit
     testing and doctests.
 
-Before Class
-************
-
-We'll be adding a new bit of functionality to our app, and we'll do this not
-by developing it ourselves, but by *integrating* an existing add-on. Before
-class begins, please install `django-south
-<http://south.readthedocs.org/en/0.7.6>`_ and `django-registration
-<http://docs.b-list.org/django-registration/0.8/>`_ into your Django
-virtualenv.
-
 Reference
 *********
 
@@ -576,12 +564,12 @@ This week we will have no code assignment. Instead the assignment will be to
 install Pyramid and the ZODB.
 
 **WARNING**: the ZODB is built with C-based extensions. Installing it requires
-a c compiler. On linux, gcc will do nicely. If you are using Mac OS X, you'll
-need to install XCode. This is not fast. Be sure to start early in the week to
-leave time for this.
+a c compiler. On linux, gcc will do nicely but you'll need to install python
+development headers. If you are using Mac OS X, you'll need to install XCode.
+This is not fast. Be sure to start early in the week to leave time for this.
 
-A link will be supplied here to step-by-step instructions on installing what 
-is needed.
+Read the `Instructions
+<http://github.com/cewing/training.python_web/blob/master/assignments/week07/athome/assignment.txt>`_
 
 Week 8 - Pyramid
 ----------------
@@ -621,7 +609,7 @@ Compare and contrast forms of dispatch in Pyramid:
 
 * `URL Route Dispatch
   <http://docs.pylonsproject.org/projects/pyramid/en/latest/narr/urldispatch.html>`_
-* `Traversal
+* `Object Traversal
   <http://docs.pylonsproject.org/projects/pyramid/en/1.4-branch/narr/traversal.html>`_
 
 Learn a bit about the `ZODB <http://zodb.org/index.html>`_
