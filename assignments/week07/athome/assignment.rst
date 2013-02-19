@@ -127,6 +127,6 @@ If you like, you can see your work by running the new project::
     Starting server in PID 3056.
     serving on http://0.0.0.0:6543
 
-Visit that url to see your work in action. then go grab a beer and curl up
-with the reading for the week. There's a lot.
+Visit ``http://localhost:6543`` to see your work in action. then go grab a
+beer and curl up with the reading for the week. There's a lot.
 

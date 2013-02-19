@@ -496,20 +496,18 @@ Week 7 - Django
 
 **Date**: Feb. 19, 2013
 
-In this class we'll dive a bit further into Django. We'll take the app we 
-build for our week 6 homework and add style and security features.  Along the
-way we'll have a chance to learn more about Django's templates, models, views
-and forms.
-
-We'll also discuss extending the functionality of our application using
-existing Django **apps**. We'll see how these add-ons can help us to solve
-common problems like user registration and database schema management.
+In this class we'll dive a bit further into Django. We'll start with a
+duplicate of the micro-blog we built in week 5 and work in teams to extend the
+functionality by integrating existing apps. Along the way, we'll have a chance
+to explore team-based development workflow.
 
 Finally, we'll discuss some of the strengths and weaknesses of Django.  What 
 makes it a good choice for some projects but not for others.
 
-Our assignment for the week will be to enhance the application we build in
-class with some additional functionality.
+Our assignment for the week will be to prepare for working with Pyramid in
+Week 8.
+
+`Week 7 Presentation <presentations/week07.html>`_
 
 Reading
 *******
@@ -546,16 +544,6 @@ Reading
     different approaches to testing Django applications, including unit
     testing and doctests.
 
-Before Class
-************
-
-We'll be adding a new bit of functionality to our app, and we'll do this not
-by developing it ourselves, but by *integrating* an existing add-on. Before
-class begins, please install `django-south
-<http://south.readthedocs.org/en/0.7.6>`_ and `django-registration
-<http://docs.b-list.org/django-registration/0.8/>`_ into your Django
-virtualenv.
-
 Reference
 *********
 
@@ -572,12 +560,99 @@ Reference
 Assignment
 **********
 
-To Be Decided
+This week we will have no code assignment. Instead the assignment will be to
+install Pyramid and the ZODB.
+
+**WARNING**: the ZODB is built with C-based extensions. Installing it requires
+a c compiler. On linux, gcc will do nicely but you'll need to install python
+development headers. If you are using Mac OS X, you'll need to install XCode.
+This is not fast. Be sure to start early in the week to leave time for this.
+
+Read the `Instructions
+<http://github.com/cewing/training.python_web/blob/master/assignments/week07/athome/assignment.rst>`_
 
 Week 8 - Pyramid
 ----------------
 
 **Date**: Feb. 26, 2013
+
+This week we will look at a relative newcomer to the Python Web Framework
+scene, Pyramid. Although the framework is a newcomer, it is represents a
+combination of several projects, notably Repoze and Pylons, that have been
+around for quite some time. In fact, the roots of Repoze go back to Zope, the
+original Python web framework (and quite possibly the first web framework in
+any language).
+
+We will talk a bit about what makes Pyramid different from other web
+frameworks. We will look at the specific problems that the creators of Pyramid
+are looking to solve, and we will investigate how those decisions have
+influenced the design of the framework.
+
+We'll specifically look at two technologies that set the Pyramid framework
+apart: the ZODB and URL Traversal.  We'll do this by implementing a wiki using
+these technologies and then discuss what might make such tools appealing to a
+certain type of project.
+
+We'll also look at a very different templating system, Chameleon, which grew
+out of Zope Page Templates and the Template Attribute Language. Chameleon
+provides code structures via XML namespaces, allowing you to write templates
+that will load in a browser looking like HTML without needing a framework to
+render them.
+
+Reading
+*******
+
+Why you should care about `Traversal
+<http://docs.pylonsproject.org/projects/pyramid/en/1.4-branch/narr/muchadoabouttraversal.html>`_.
+
+Compare and contrast forms of dispatch in Pyramid:
+
+* `URL Route Dispatch
+  <http://docs.pylonsproject.org/projects/pyramid/en/latest/narr/urldispatch.html>`_
+* `Object Traversal
+  <http://docs.pylonsproject.org/projects/pyramid/en/1.4-branch/narr/traversal.html>`_
+
+Learn a bit about the `ZODB <http://zodb.org/index.html>`_
+
+* Read the `tutorial <http://zodb.org/documentation/tutorial.html>`_ for a
+  quick overview of usage (don't actually do it, though).
+* Read the `more complete walk-through here
+  <http://zodb.org/documentation/articles/ZODB1.html>`_ altough, again, do not
+  actually do the code examples.
+* Learn about `object references in the ZODB
+  <http://blog.startifact.com/posts/older/a-misconception-about-the-zodb.html>`_
+  - one of its greatest strengths.
+
+Learn a bit about the Chameleon ZPT templating language:
+
+* Read about `Chameleon Templates in Pyramid
+  <http://docs.pylonsproject.org/projects/pyramid/en/1.4-branch/narr/templates.html#chameleon-zpt-templates>`_
+* A `Quick Intro to TAL <https://weblion.psu.edu/trac/weblion/wiki/TAL>`_
+
+* `Chameleon Documentation <https://chameleon.readthedocs.org/en/latest/>`_ 
+
+In particular, pay attention to:
+
+* `Basics (TAL)
+  <https://chameleon.readthedocs.org/en/latest/reference.html#basics-tal>`_
+* `Expressions (TALES)
+  <https://chameleon.readthedocs.org/en/latest/reference.html#expressions-tales>`_
+
+
+References
+**********
+
+* `The ZODB Book <http://zodb.readthedocs.org/en/latest/>`_ - A work in
+  progress by Carlos De La Guardia.
+
+* The `ZPT Appendix <http://docs.zope.org/zope2/zope2book/AppendixC.html>`_ to
+  the Zope Book
+
+* Read `Defending Pyramid's Design
+  <http://docs.pylonsproject.org/projects/pyramid/en/latest/designdefense.html>`_
+  - an excellent point-by-point explanation of the design decisions that went
+  into creating this framework.
+
 
 Assignment
 **********
