@@ -1,5 +1,8 @@
-Assignment - Prep
------------------
+Week 7 Assignment Instructions
+==============================
+
+Prep
+----
 
 For this week, you have *no* code assignment. 
 
@@ -16,8 +19,8 @@ to take a while if you don't already have it.
 
 **Windows**: You all are safe for the time being.
 
-Assignment - Virtualenv
------------------------
+Virtualenv
+----------
 
 With that prep work out of the way, you're ready to start. First, set up a
 virtualenv:
@@ -29,8 +32,8 @@ virtualenv:
 
 Remeber, Windows users: ``> pyramidenv\Scripts\activate``
 
-Assignment - Install Pyramid
-----------------------------
+Install Pyramid
+---------------
 
 Once you've got a virtualenv set up and ready to go, install Pyramid:
 
@@ -40,8 +43,8 @@ This will install a number of dependency packages, do not be alarmed.
 
 Next, we'll install a different kind of Database, the ZODB.
 
-Assignment - Install ZODB
--------------------------
+Install ZODB
+------------
 
 If you're on OS X or Linux:
 
@@ -68,8 +71,8 @@ virtualenv:
 
 If you get an ImportError when you try that, you're not done.  Contact me.
 
-Assignment - Extras
--------------------
+Extras
+------
 
 Next, we'll need to finish installing the bits we need for our work next
 week:
@@ -83,8 +86,8 @@ week:
 These tools will allow us to manage ZODB connections, debug our app, and run
 cool tests.
 
-Assignment - Set Up Project
----------------------------
+Set Up Project
+--------------
 
 And finally, we'll set up a project for ourselves. This is like running
 'startproject' for django in a way:
