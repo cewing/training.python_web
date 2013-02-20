@@ -17,7 +17,25 @@ or Linux requires a compiler and python's development headers.
 **OS X**: Ensure that you have XCode installed. It's free, but *big* expect it
 to take a while if you don't already have it.
 
-**Windows**: You all are safe for the time being.
+**Windows**: See the next section
+
+Windows Prep
+------------
+
+Although there are pre-compiled binaries available for Windows, you'll need
+one `.bat` file to get them to work properly. To get that file, you'll need to
+install Visual Studio 2008 Express:
+
+* Download the installer (894MB):
+  http://download.microsoft.com/download/8/B/5/8B5804AD-4990-40D0-A6AA-CE894CBBB3DC/VS2008ExpressENUX1397868.iso
+* Extract the files to a folder (call it VS2008ExpressENUX1397868—it will be
+  2.68GB) using something like 7zip
+* Inside that folder double-click on Setup.hta
+* On the screen that comes up, click on the installer for Visual C++ 2008
+  Express Edition and follow the instructions. **Note**: It does work if you
+  include the following two options which are pre-selected for you: (1) MSDN
+  Express Library for Visual Studio 2008, and (2) Microsoft SQL Server 2005
+  Express Edition (x86).
 
 Virtualenv
 ----------
