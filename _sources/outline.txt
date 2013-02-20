@@ -569,7 +569,7 @@ development headers. If you are using Mac OS X, you'll need to install XCode.
 This is not fast. Be sure to start early in the week to leave time for this.
 
 Read the `Instructions
-<http://github.com/cewing/training.python_web/blob/master/assignments/week07/athome/assignment.txt>`_
+<http://github.com/cewing/training.python_web/blob/master/assignments/week07/athome/assignment.rst>`_
 
 Week 8 - Pyramid
 ----------------
