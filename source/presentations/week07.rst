@@ -244,37 +244,67 @@ A Few useful git commands:
     $ git push [origin [branch]]    # push committed changes to remote
     $ git merge <branch_name>       # merge changes from other to current
 
-Assignment - Prep
------------------
-
-.. class:: small
+Assignment
+----------
 
 For this week, you have *no* code assignment. 
 
-.. class:: small
+.. class:: incremental
 
 Instead I want you to focus on installing software and reading for next week.
 Software we'll be installing uses C extensions, and so installing it on OS X
 or Linux requires a compiler and python's development headers.
 
-.. class:: small
+.. class:: incremental
 
-**Ubuntu** (our vms):
+There are a few steps here, so follow along carefully.
 
-.. class:: small
+Assignment - Linux Prep
+-----------------------
+
+For Linux machines, we'll need to have ``gcc`` (a c compiler) and python's
+development headers in order to complete our tasks. The VMs we have access to
+already have ``gcc`` installed, so all we need there is::
 
 ::
 
     $ sudo apt-get install python-dev
 
+Assignment - OSX Prep
+---------------------
+
+OS X does not come with a c compiler installed. You'll need to have XCode
+installed. It's free, but *big* expect it to take a while if you don't already
+have it.
+
+Once it is installed, there's one more step, you have to install the
+'optional' command line tools:
+
+* Launch XCode
+* From the XCode menu, click 'preferences' > 'Downloads' > 'Install Command
+  Line Tools'
+* Once it completes, you can quit XCode again.  
+
+Assignment - Windows Prep
+-------------------------
+
+There are pre-compiled binaries available for Windows, but we need one
+``.bat`` file in order to properly install them. We'll need to install Visual
+Studio 2008 Express to get this file (if you already have another copy of VS,
+you can probably skip this)
+
 .. class:: small
 
-**OS X**: Ensure that you have XCode installed. It's free, but *big* expect it
-to take a while if you don't already have it.
-
-.. class:: small
-
-**Windows**: You all are safe for the time being.
+* Download the installer (894MB):
+  http://download.microsoft.com/download/8/B/5/8B5804AD-4990-40D0-A6AA-CE894CBBB3DC/VS2008ExpressENUX1397868.iso
+* Extract the files to a folder (call it VS2008ExpressENUX1397868—it will be
+  2.68GB) using something like 7zip
+* Inside that folder double-click on Setup.hta
+* On the screen that comes up, click on the installer for Visual C++ 2008
+  Express Edition and follow the instructions. **Note**: It does work if you
+  include the following two options which are pre-selected for you: (1) MSDN
+  Express Library for Visual Studio 2008, and (2) Microsoft SQL Server 2005
+  Express Edition (x86).
 
 Assignment - Virtualenv
 -----------------------
