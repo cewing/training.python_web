@@ -15,7 +15,14 @@ or Linux requires a compiler and python's development headers.
     $ sudo apt-get install python-dev
 
 **OS X**: Ensure that you have XCode installed. It's free, but *big* expect it
-to take a while if you don't already have it.
+to take a while if you don't already have it. Once you've downloaded it you'll
+also need to install the command-line tools (Thanks to Jon Braam for this
+pointer):
+
+* Open XCode
+* Open the XCode menu, then click 'Preferences' > 'Downloads' > 'Install
+  Command Line Tools'
+* Once this is done, you can close XCode again
 
 **Windows**: See the next section
 
