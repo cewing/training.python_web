@@ -168,19 +168,57 @@ $ git push [origin [branch]]    # push committed changes to remote
 $ git merge &lt;branch_name&gt;       # merge changes from other to current
 </pre>
 </div>
-<div class="slide" id="assignment-prep">
-<h1>Assignment - Prep</h1>
-<p class="small">For this week, you have <em>no</em> code assignment.</p>
-<p class="small">Instead I want you to focus on installing software and reading for next week.
+<div class="slide" id="assignment">
+<h1>Assignment</h1>
+<p>For this week, you have <em>no</em> code assignment.</p>
+<p class="incremental">Instead I want you to focus on installing software and reading for next week.
 Software we'll be installing uses C extensions, and so installing it on OS X
 or Linux requires a compiler and python's development headers.</p>
-<p class="small"><strong>Ubuntu</strong> (our vms):</p>
-<pre class="small literal-block">
-$ sudo apt-get install python-dev
+<p class="incremental">There are a few steps here, so follow along carefully.</p>
+</div>
+<div class="slide" id="assignment-linux-prep">
+<h1>Assignment - Linux Prep</h1>
+<p>For Linux machines, we'll need to have <tt class="docutils literal">gcc</tt> (a c compiler) and python's
+development headers in order to complete our tasks. The VMs we have access to
+already have <tt class="docutils literal">gcc</tt> installed, so all we need there is:</p>
+<pre class="literal-block">
+::
 </pre>
-<p class="small"><strong>OS X</strong>: Ensure that you have XCode installed. It's free, but <em>big</em> expect it
-to take a while if you don't already have it.</p>
-<p class="small"><strong>Windows</strong>: You all are safe for the time being.</p>
+<blockquote>
+$ sudo apt-get install python-dev</blockquote>
+</div>
+<div class="slide" id="assignment-osx-prep">
+<h1>Assignment - OSX Prep</h1>
+<p>OS X does not come with a c compiler installed. You'll need to have XCode
+installed. It's free, but <em>big</em> expect it to take a while if you don't already
+have it.</p>
+<p>Once it is installed, there's one more step, you have to install the
+'optional' command line tools:</p>
+<ul class="simple">
+<li>Launch XCode</li>
+<li>From the XCode menu, click 'preferences' &gt; 'Downloads' &gt; 'Install Command
+Line Tools'</li>
+<li>Once it completes, you can quit XCode again.</li>
+</ul>
+</div>
+<div class="slide" id="assignment-windows-prep">
+<h1>Assignment - Windows Prep</h1>
+<p>There are pre-compiled binaries available for Windows, but we need one
+<tt class="docutils literal">.bat</tt> file in order to properly install them. We'll need to install Visual
+Studio 2008 Express to get this file (if you already have another copy of VS,
+you can probably skip this)</p>
+<ul class="small simple">
+<li>Download the installer (894MB):
+<a class="reference external" href="http://download.microsoft.com/download/8/B/5/8B5804AD-4990-40D0-A6AA-CE894CBBB3DC/VS2008ExpressENUX1397868.iso">http://download.microsoft.com/download/8/B/5/8B5804AD-4990-40D0-A6AA-CE894CBBB3DC/VS2008ExpressENUX1397868.iso</a></li>
+<li>Extract the files to a folder (call it VS2008ExpressENUX1397868—it will be
+2.68GB) using something like 7zip</li>
+<li>Inside that folder double-click on Setup.hta</li>
+<li>On the screen that comes up, click on the installer for Visual C++ 2008
+Express Edition and follow the instructions. <strong>Note</strong>: It does work if you
+include the following two options which are pre-selected for you: (1) MSDN
+Express Library for Visual Studio 2008, and (2) Microsoft SQL Server 2005
+Express Edition (x86).</li>
+</ul>
 </div>
 <div class="slide" id="assignment-virtualenv">
 <h1>Assignment - Virtualenv</h1>
@@ -277,8 +315,8 @@ done.</p>
 Starting server in PID 3056.
 serving on http://0.0.0.0:6543
 </pre>
-<p>Visit that url to see your work in action. then go grab a beer and curl up
-with the reading for the week. There's a lot.</p>
+<p>Visit <tt class="docutils literal"><span class="pre">http://localhost:6543</span></tt> to see your work in action. then go grab a
+beer and curl up with the reading for the week. There's a lot.</p>
 </div>
 </div>
 </body>
