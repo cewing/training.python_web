@@ -16,6 +16,7 @@ Internet Programming with Python
        self
        outline
        assignments
+       project
 
 Winter Term, 2013 - (10 Sessions)
 
