@@ -657,7 +657,15 @@ References
 Assignment
 **********
 
-To Be Decided
+Begin work on your final project. You must communicate your plan with Dan and
+I first to ensure it is of an appropriate scope. If you are having trouble
+getting started, let us know.
+
+We will be spending most of the class over the next two weeks working. Be
+prepared to take advantage of the time with Dan and me by getting started now.
+
+`Reread the project specification
+<http://github.com/cewing/training.python_web/blob/master/assignments/week08/athome/assignment.rst>`_
 
 Week 9 - The Cloud
 ------------------
