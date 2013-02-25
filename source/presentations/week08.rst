@@ -194,7 +194,7 @@ class.
 
 .. class:: incremental
 
-The ``Configurator`` provides and extensible API for configuring just about
+The ``Configurator`` provides an extensible API for configuring just about
 everything.
 
 .. class:: incremental
@@ -209,8 +209,8 @@ The ``Configurator`` constructor can take a ``root_factory`` keyword argument.
 
 .. class:: incremental
 
-The ``root_factory`` of your app is the router that determines how to dispatch
-individual requests.
+The ``root_factory`` of your app returns the router that determines how to
+dispatch individual requests.
 
 .. class:: incremental
 
@@ -237,8 +237,8 @@ Our Root Factory
 
 .. class:: incremental
 
-In our root_factory method, we grab a connection to the ZODB and pass that into
-a call to ``appmaker``, the result is returned (and becomes our app root).
+We grab a connection to the ZODB and pass that into a call to ``appmaker``,
+the result is returned (and becomes our app root).
 
 .. class:: incremental
 
@@ -260,9 +260,8 @@ The appmaker
 
 .. class:: incremental
 
-In essence, we are ensuring that there is an ``app_root`` object stored in the
-ZODB, and then returning that. And that simple Python object will manage our
-*Traversal* based application.
+We ensure that there is an ``app_root`` object stored in the ZODB, and return
+it. That simple Python object will manage our *Traversal* based application.
 
 Seeing It Live
 --------------
@@ -387,7 +386,7 @@ will use two of these:
 * **Persistent** - a class that automatically tracks changes to class
   attributes and saves them. 
 
-* **PersistenMapping** - roughly equivalent to a Python *dictionary*, this
+* **PersistentMapping** - roughly equivalent to a Python *dictionary*, this
   class will save changes to itself *and its keys and values*.
 
 .. class:: incremental small
@@ -479,8 +478,8 @@ reference the class.
 
 .. class:: incremental
 
-Open the ``views.py`` file in your *package* directory and delete everything
-but the first line:
+Open the ``views.py`` file in your *package* directory and comment out
+everything **except** the first line:
 
 .. code-block:: python
     :class: incremental
@@ -573,6 +572,10 @@ Make sure Pyramid is not running.
 
 Delete Data.fs. It will be re-created as needed.
 
+.. class:: incremental
+
+You can also delete Data.fs.* (.tmp, .index, .lock)
+
 Run our Tests
 -------------
 
@@ -580,7 +583,7 @@ Finally, let's run our tests::
 
     (pyramidenv)$ python setup.py test
     ...
-    Ran 2 tests in 0.000s
+    Ran 3 tests in 0.000s
 
     OK
 
