@@ -153,15 +153,15 @@ only by your app.</p>
 </pre>
 <p class="incremental">Pyramid does configuration work when an app is run using the <tt class="docutils literal">Configurator</tt>
 class.</p>
-<p class="incremental">The <tt class="docutils literal">Configurator</tt> provides and extensible API for configuring just about
+<p class="incremental">The <tt class="docutils literal">Configurator</tt> provides an extensible API for configuring just about
 everything.</p>
 <p class="incremental">You can read more in <a class="reference external" href="http://docs.pylonsproject.org/projects/pyramid/en/1.4-branch/api/config.html">the pyramid.config documentation</a></p>
 </div>
 <div class="slide" id="the-application-root">
 <h1>The Application Root</h1>
 <p>The <tt class="docutils literal">Configurator</tt> constructor can take a <tt class="docutils literal">root_factory</tt> keyword argument.</p>
-<p class="incremental">The <tt class="docutils literal">root_factory</tt> of your app is the router that determines how to dispatch
-individual requests.</p>
+<p class="incremental">The <tt class="docutils literal">root_factory</tt> of your app returns the router that determines how to
+dispatch individual requests.</p>
 <p class="incremental">If you do not provide this argument, the default root factory, which uses URL
 Dispatch, will be used.</p>
 <p class="incremental">In our case, we want to use Traversal for our app, so we provide a custom
@@ -177,8 +177,8 @@ Dispatch, will be used.</p>
     <span class="n">conn</span> <span class="o">=</span> <span class="n">get_connection</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">appmaker</span><span class="p">(</span><span class="n">conn</span><span class="o">.</span><span class="n">root</span><span class="p">())</span>
 </pre>
-<p class="incremental">In our root_factory method, we grab a connection to the ZODB and pass that into
-a call to <tt class="docutils literal">appmaker</tt>, the result is returned (and becomes our app root).</p>
+<p class="incremental">We grab a connection to the ZODB and pass that into a call to <tt class="docutils literal">appmaker</tt>,
+the result is returned (and becomes our app root).</p>
 <p class="incremental">So what exactly does <tt class="docutils literal">appmaker</tt> do?</p>
 </div>
 <div class="slide" id="the-appmaker">
@@ -192,9 +192,8 @@ a call to <tt class="docutils literal">appmaker</tt>, the result is returned (an
         <span class="n">transaction</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">zodb_root</span><span class="p">[</span><span class="s">'app_root'</span><span class="p">]</span>
 </pre>
-<p class="incremental">In essence, we are ensuring that there is an <tt class="docutils literal">app_root</tt> object stored in the
-ZODB, and then returning that. And that simple Python object will manage our
-<em>Traversal</em> based application.</p>
+<p class="incremental">We ensure that there is an <tt class="docutils literal">app_root</tt> object stored in the ZODB, and return
+it. That simple Python object will manage our <em>Traversal</em> based application.</p>
 </div>
 <div class="slide" id="seeing-it-live">
 <h1>Seeing It Live</h1>
@@ -261,7 +260,7 @@ will use two of these:</p>
 <ul class="incremental simple">
 <li><strong>Persistent</strong> - a class that automatically tracks changes to class
 attributes and saves them.</li>
-<li><strong>PersistenMapping</strong> - roughly equivalent to a Python <em>dictionary</em>, this
+<li><strong>PersistentMapping</strong> - roughly equivalent to a Python <em>dictionary</em>, this
 class will save changes to itself <em>and its keys and values</em>.</li>
 </ul>
 <p class="incremental small">The ZODB also provides lists and more complex persistent data structures like
@@ -321,8 +320,8 @@ to <tt class="docutils literal">None</tt>.</p>
 <h1>A Last Bit of Cleanup</h1>
 <p>We've deleted the <tt class="docutils literal">MyModel</tt> class.  But we still have <em>views</em> that
 reference the class.</p>
-<p class="incremental">Open the <tt class="docutils literal">views.py</tt> file in your <em>package</em> directory and delete everything
-but the first line:</p>
+<p class="incremental">Open the <tt class="docutils literal">views.py</tt> file in your <em>package</em> directory and comment out
+everything <strong>except</strong> the first line:</p>
 <pre class="code python incremental literal-block">
 <span class="kn">from</span> <span class="nn">pyramid.view</span> <span class="kn">import</span> <span class="n">view_config</span>
 </pre>
@@ -390,6 +389,7 @@ class and replace it with the following:</p>
 anymore (MyModel). This means it is broken.</p>
 <p class="incremental">Make sure Pyramid is not running.</p>
 <p class="incremental">Delete Data.fs. It will be re-created as needed.</p>
+<p class="incremental">You can also delete Data.fs.* (.tmp, .index, .lock)</p>
 </div>
 <div class="slide" id="run-our-tests">
 <h1>Run our Tests</h1>
@@ -397,7 +397,7 @@ anymore (MyModel). This means it is broken.</p>
 <pre class="literal-block">
 (pyramidenv)$ python setup.py test
 ...
-Ran 2 tests in 0.000s
+Ran 3 tests in 0.000s
 
 OK
 </pre>
