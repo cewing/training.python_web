@@ -63,7 +63,7 @@ Micro-frameworks do not scale up or change specs easily
 
 .. class:: incremental
 
-Full-stack frameworks have too many opinions. *Bending* them can be difficult.
+Full-stack frameworks have lots of opinions. *Bending* them can be difficult.
 
 .. class:: incremental
 
@@ -81,12 +81,12 @@ in any language.
 
 .. class:: incremental
 
-After 14 years, the developers of Zope knew where all the pain was.
+After 14 years, the developers of Zope had seen and learned *a lot*.
 
 .. class:: incremental
 
-Repoze was a short-lived (2008-2010) framework intended to embody the hard
-lessons learned from Zope.
+Repoze was a short-lived (2008-2010) framework intended to embody the lessons
+learned from Zope.
 
 History - Pylons
 ----------------
@@ -594,7 +594,7 @@ the *object itself* is saved in the database.
 
 .. class:: incremental
 
-The ZODB provides *base classes* that will automatically save themselves. We
+The ZODB provides base classes that will *automatically save themselves*. We
 will use two of these:
 
 .. class:: incremental
