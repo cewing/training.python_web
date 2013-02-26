@@ -1,0 +1,14 @@
+<metal:main use-macro="load: base.pt">
+  <metal:pagename metal:fill-slot="page-name">
+  Editing 
+  <b><span tal:replace="page.__name__">Page Name Goes Here
+     </span></b>
+  </metal:pagename>
+  <metal:content metal:fill-slot="main-content">
+    <form action="${save_url}" method="post">
+      <textarea name="body" tal:content="page.data" rows="10"
+                cols="60"/><br/>
+      <input type="submit" name="form.submitted" value="Save"/>
+    </form>
+  </metal:content>
+</metal:main>

@@ -1,0 +1,12 @@
+<metal:main use-macro="load: base.pt">
+ <metal:content metal:fill-slot="main-content">
+  <div tal:replace="structure content">
+    Page text goes here.
+  </div>
+  <p>
+    <a tal:attributes="href edit_url" href="">
+      Edit this page
+    </a>
+  </p>
+ </metal:content>
+</metal:main>
