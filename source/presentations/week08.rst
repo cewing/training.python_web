@@ -22,8 +22,217 @@ Questions from the Reading?
 And Now
 -------
 
+.. image:: img/sheep_pyramid.jpg
+    :align: center
+    :width: 65%
 
+.. class:: image-credit
 
+image: Ionics http://www.flickr.com/photos/ionics/6337525967/ - CC_BY
+
+What is Pyramid?
+----------------
+
+A Web Framework
+
+.. class:: incremental
+
+"Its primary job is to make it easier for a developer to create an arbitrary
+web application"
+
+.. class:: incremental
+
+Makes as few decisions as possible for you.
+
+.. class:: incremental
+
+Allows *you* to make decisions, and provides tools to support you when you do
+
+.. class:: incremental
+
+"Pay only for what you eat"
+
+Why is Pyramid?
+---------------
+
+Micro-frameworks are great for lightweight apps
+
+.. class:: incremental
+
+Micro-frameworks do not scale up or change specs easily
+
+.. class:: incremental
+
+Full-stack frameworks have too many opinions. *Bending* them can be difficult.
+
+.. class:: incremental
+
+Pyramid can build a lightweight app easily, but it can also scale and bend
+
+History - Zope and Repoze
+-------------------------
+
+Many of the core developers of Pyramid started as Zope developers.
+
+.. class:: incremental
+
+Born in 1996, Zope was the first Python web framework, and possibly the first
+in any language.
+
+.. class:: incremental
+
+After 14 years, the developers of Zope knew where all the pain was.
+
+.. class:: incremental
+
+Repoze was a short-lived (2008-2010) framework intended to embody the hard
+lessons learned from Zope.
+
+History - Pylons
+----------------
+
+Pylons was released in 2005.
+
+.. class:: incremental
+
+It was among the first frameworks to fully embrace the WSGI specification.
+
+.. class:: incremental
+
+The creators of Pylons build WebTest, WebError and WebOb (abstracted HTTP
+request and response objects)
+
+History - 2010
+--------------
+
+In 2010, the authors of Repoze and Pylons got together and made an unusual
+decision.
+
+.. class:: incremental
+
+Why duplicate efforts when there are already so many other frameworks?
+
+.. class:: incremental
+
+Repoze was re-named 'Pyramid' and the 'Pylons Project' was born to shepherd
+this new combined project.
+
+Implications
+------------
+
+Pylons was a framework predicated largely on relational persistence and URL
+Dispatch.
+
+.. class:: incremental
+
+Zope/Repoze was based on the ZODB and Object Traversal.
+
+.. class:: incremental
+
+Each of these approaches has strengths and weaknesses.
+
+.. class:: incremental
+
+Pyramid supports neither, both and even combinations of the two.
+
+Relational DB / URL Dispatch
+----------------------------
+
+You've seen this before, both in Flask and Django
+
+.. class:: incremental
+
+SQLite3, the Django ORM, both are examples of relational persistence models
+
+.. class:: incremental
+
+Routes/urlpatterns, both are examples of URL Dispatch
+
+.. class:: incremental
+
+Pyramid can work this way too.  SQLAlchemy, Route-based views.  
+
+.. class:: incremental
+
+Been there, done that.  Let's see something else.
+
+ZODB
+----
+
+ORMs allow developers to pretend that Objects are like DB Tables.
+
+.. class:: incremental
+
+But Objects are *not* tables, so there's a `conceptual mismatch
+<http://en.wikipedia.org/wiki/Object-relational_impedance_mismatch>`_ between
+the two.
+
+.. class:: incremental
+
+The ZODB is an *object store*, rather than a relational database.
+
+.. class:: incremental
+
+If your data is best represented by *heterogenous* objects, it's a better
+persistence solution.
+
+Traversal - Object Graphs
+-------------------------
+
+Python objects can *contain* other objects.
+
+.. class:: incremental
+
+Using *dict*-like structures, you can build a *graph* of objects:
+
+.. class:: incremental
+
+::
+
+    Family
+    ├── Parents
+    │  ├── Cris
+    │  ├── Kristina
+    ├── Children
+    │  ├── Kieran
+    │  ├── Finnian
+
+Traversal - Path Lookup
+-----------------------
+
+You can *traverse* across the object graph by treating a URL as a series of
+*node names*
+
+.. class:: incremental small
+
+::
+
+    http://family/parents/cris -> family['parents']['cris']
+
+.. class:: incremental
+
+Further path segments can be view names or information passed to the view
+
+.. class:: incremental small
+
+::
+
+    http://family/parents/cris/edit -> edit view
+    http://family/parents/cris/next/steps -> subpath = /next/steps
+
+Break Time
+----------
+
+We've got the concept of object stores and traversal
+
+.. class:: incremental
+
+The next step is to see how those work in real life.
+
+.. class:: incremental
+
+Take the next few minutes here to ensure that you have a working Pyramid setup
+with the ZODB and a project created with ``pcreate -s zodb``.
 
 Lab - Part One
 --------------
@@ -351,6 +560,13 @@ Predicates are a very powerful system for choosing views. Read more about them
 in `view configuration
 <http://docs.pylonsproject.org/projects/pyramid/en/1.1-branch/narr/viewconfig.html>`_
 
+Lab - Part Two
+--------------
+
+.. class:: big-centered
+
+Data Models and Tests
+
 Wiki Models
 -----------
 
@@ -596,6 +812,20 @@ We can also run tests to tell us our code-coverage:
 ::
 
     (pyramidenv)$ nosetests --cover-package=tutorial --cover-erase --with-coverage
+
+Break
+-----
+
+.. class:: big-centered
+
+Take a few minutes to breathe
+
+Lab - Part Three
+----------------
+
+.. class:: big-centered
+
+Views and Templates
 
 Preparing for Views
 -------------------
