@@ -599,6 +599,8 @@ provides code structures via XML namespaces, allowing you to write templates
 that will load in a browser looking like HTML without needing a framework to
 render them.
 
+`Week 8 Presentation <presentations/week08.html>`_
+
 Reading
 *******
 
