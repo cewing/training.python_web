@@ -674,10 +674,21 @@ Week 9 - The Cloud
 
 **Date**: Mar. 5, 2013
 
+This week we'll talk a bit about deployment options, and take a quick tour of
+deploying to one of the many possible cloud solutions.
+
+The lion's share of the class will be devoted to lab time, enabling students
+to work on their final projects with the help of Dan and Cris
+
+`Week 9 Presentation <presentations/week09.html>`_
+
 Assignment
 **********
 
-To Be Decided
+Continue working on your final project.
+
+You will have one more week to complete the project after today's class. Your
+final version must be up and running live by Friday, March 15 at noon.
 
 Week 10 - Plone
 ---------------
