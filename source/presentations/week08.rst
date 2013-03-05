@@ -1275,30 +1275,3 @@ Your classmate Austin will give a short talk on the tools he used to deploy
 
 And the rest of the time (about 1.5-2 hours) will be reserved for working on 
 your final projects.  
-
-
-
-scraps
-------
-
-Pyramid Intro
-
-- What is it
-- Where does it come from
-- What problem is it trying to solve?
-
-Things that make pyramid like other frameworks we've seen
-
-- uses request/response model
-- can use url route dispatch
-- can use sql-based persistence
-
-Things that make pyramid __unlike__ other frameworks we've seen
-
-- can also use traversal
-- can work with Object persistence via the ZODB
-
-What is Traversal (as opposed to route dispatch?)
-
-What is the ZODB?
-
