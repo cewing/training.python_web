@@ -563,10 +563,7 @@ Heroku - DNS
 ------------
 
 Heroku does not want you to point A record DNS names at it's services.
-
-.. class:: incremental
-
-Using ``www.mydomain.com`` is okay, but ``mydomain.com`` is not.
+``www.mydomain.com`` is okay, but ``mydomain.com`` is not.
 
 .. class:: incremental
 
