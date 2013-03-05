@@ -690,6 +690,9 @@ Continue working on your final project.
 You will have one more week to complete the project after today's class. Your
 final version must be up and running live by Friday, March 15 at noon.
 
+`Reread the project specification
+<http://github.com/cewing/training.python_web/blob/master/assignments/week08/athome/assignment.rst>`_
+
 Week 10 - Plone
 ---------------
 
