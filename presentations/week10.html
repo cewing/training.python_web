@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="Docutils 0.9.1: http://docutils.sourceforge.net/" />
 <meta name="version" content="S5 1.1" />
-<title>This is Week 10</title>
+<title>Internet Programming with Python</title>
 <link rel="stylesheet" href="ui/uw_pce_theme/pretty.css" type="text/css" />
 <!-- configuration parameters -->
 <meta name="defaultView" content="slideshow" />
@@ -29,15 +29,212 @@
 
 </div>
 <div id="footer">
-<h1>This is Week 10</h1>
+<h1>Internet Programming with Python</h1>
 <h2><a class="reference external" href="http://github.com/cewing/training.python_web">View document source</a>.
 </h2>
 </div>
 </div>
 <div class="presentation">
 <div class="slide" id="slide0">
-<h1 class="title">This is Week 10</h1>
+<h1 class="title">Internet Programming with Python</h1>
 
+<img alt="img/plone-icon-256-white-bg.png" class="align-left" src="img/plone-icon-256-white-bg.png" style="width: 38%;" />
+<div class="line-block">
+<div class="line">Week 9: System Example:</div>
+<div class="line">The Plone CMS</div>
+</div>
+<p class="intro-blurb right">Content management done right.</p>
+<p class="image-credit">The Plone logo is a trademark of the Plone Foundation.</p>
+
+</div>
+<div class="slide" id="this-week">
+<h1>This Week</h1>
+<p>We'll have an introduction to the Plone Content Management System</p>
+<p class="incremental">We'll see a demo of this system in action</p>
+<p class="incremental">We'll talk a bit about the differences between a system and a framework</p>
+<p class="incremental">We'll spend the rest of the time working on your Final Projects.</p>
+</div>
+<div class="slide" id="what-is-plone">
+<h1>What is Plone?</h1>
+<p>Plone is a Content Management System</p>
+<p class="incremental"><strong>System</strong>: A tightly integrated set of tools oriented to a purpose</p>
+<p class="incremental"><strong>Content Management</strong>: The task of creating, editing, organizing and
+controlling access to content throughout it's lifecycle.</p>
+<p class="incremental"><strong>Content</strong>: Information and materials stored in a website which has value
+that can be maintained over time.</p>
+</div>
+<div class="slide" id="plone-features">
+<h1>Plone Features</h1>
+<p>Plone comes with an extensive feature set OOTB:</p>
+<ul class="incremental simple">
+<li>Fully translated UI, with over 40 languages supported</li>
+<li>Fine-grained permissions system for access to content and actions</li>
+<li>Built-in, fully configurable user and group management</li>
+<li>Workflow configurable per content type</li>
+<li>Automatic and configurable versioning of content</li>
+<li>Built-in system for event handling, including user notifications</li>
+<li>Built-in content rules allowing for complex automation of common actions</li>
+<li>Content Type framework allowing for TTW creation of new types</li>
+<li>Theme engine allowing for TTW creation of custom themes</li>
+</ul>
+</div>
+<div class="slide" id="and-there-s-more">
+<h1>And There's More</h1>
+<p>By installing additional packages in the core distribution get:</p>
+<ul class="incremental simple">
+<li>In-place content staging (working copies)</li>
+<li>Powerfully flexible caching</li>
+<li>Per-location workflow configuration</li>
+</ul>
+<p class="incremental">And with other add-ons you can have</p>
+<ul class="incremental simple">
+<li>Multi-lingual content</li>
+<li>TTW form building</li>
+<li>layered calendars</li>
+<li>much, much more...</li>
+</ul>
+</div>
+<div class="slide" id="separators">
+<h1>Separators</h1>
+<p>What is it that separates Plone from other web-based CMS solutions?</p>
+<ul class="incremental simple">
+<li>Simplicity</li>
+<li>Scalability</li>
+<li>Speed</li>
+<li>Security</li>
+</ul>
+</div>
+<div class="slide" id="simplicity">
+<h1>Simplicity</h1>
+<p>Plone features an in-place content editing model</p>
+<p class="incremental">Users create content in the place where they want it to be located</p>
+<p class="incremental">There is no separate authoring back-end where you must go to create and place
+content</p>
+<p class="incremental">All aspects of management: workflow, security, versioning and staging can be
+managed in-place.</p>
+</div>
+<div class="slide" id="scalability">
+<h1>Scalability</h1>
+<p>Plone is fast and easy enough to support small websites</p>
+<p class="incremental">But you can scale it up to the very largest sizes</p>
+<p class="incremental">Corporate or Education intranets with over 100,000 pieces of content are not
+unusual.</p>
+</div>
+<div class="slide" id="speed">
+<h1>Speed</h1>
+<p>Out of the box, Plone can serves content faster than Drupal, WordPress or
+SharePoint.</p>
+<p class="incremental">With the simple installation of a caching add-on, this speed is greatly
+accelerated.</p>
+<p class="incremental">Support for load-balancing and HTTP acceleration means you can push it further
+yet.</p>
+</div>
+<div class="slide" id="security">
+<h1>Security</h1>
+<p>Issues reported for various technologies in CVE (last 3 years):</p>
+<ul class="incremental simple">
+<li>Plone: 13 (9)</li>
+<li>Zope: 27 (9)</li>
+<li>Python: 111 (65)</li>
+<li>Drupal: 371 (269)</li>
+<li>Joomla: 653 (441)</li>
+<li>MySQL: 282 (84)</li>
+<li>PostgreSQL: 82 (22)</li>
+<li>PHP: 18,859 (5,813)</li>
+</ul>
+<p class="incremental">And then there is Plone's true secret weapon</p>
+</div>
+<div class="slide" id="community">
+<h1>Community</h1>
+<img alt="img/plone_conf_2012.jpg" class="align-center" src="img/plone_conf_2012.jpg" style="width: 85%;" />
+</div>
+<div class="slide" id="about-the-community">
+<h1>About the Community</h1>
+<p>Plone has more than 300 <em>active</em> core contributors.</p>
+<p class="incremental">The <a class="reference external" href="http://github.com/collective">add-on ecosystem</a> contains ~850 public
+repositories</p>
+<p class="incremental">The community averages one major sprint each month, in locations in Asia,
+Africa, Europe, South America, North America and Australia.</p>
+<p class="incremental">Plone is a &quot;do-ocracy&quot;, meaning that your standing in the community is
+determined by your contributions</p>
+</div>
+<div class="slide" id="history">
+<h1>History</h1>
+<p>In 1999 Plone is a theme for the Zope Content Management Framework.</p>
+<ul class="incremental simple">
+<li>By 2001, it had grown popular enough to warrant a public release.</li>
+<li>In 2003 Plone 1.0 is released</li>
+<li>In 2004 Plone 2.0 brings the Archetypes Content Type Framework</li>
+<li>In 2005 Plone 2.1 brings default content types via Archetypes</li>
+<li>In 2006 Plone 2.5 brings versioning and pluggable authentication</li>
+<li>In 2007 Plone 3.0 integrates the Zope Component Architecture</li>
+<li>In 2010 Plone 4.0 brings speed and the Dexterity Content Framework</li>
+<li>This week, Plone 4.3rc1 brings through the web theming</li>
+</ul>
+</div>
+<div class="slide" id="installation">
+<h1>Installation</h1>
+<p>Plone is an application that runs <em>on top of</em> the Zope Application Server.</p>
+<p class="incremental">Installing Plone involves installing Zope, the ZODB and a number of other
+technologies.</p>
+<p class="incremental">Forget all that, just use the installers</p>
+<p class="incremental">Go to <a class="reference external" href="http://plone.org">http://plone.org</a>, click &quot;download now&quot;, pick the right installer and go.</p>
+</div>
+<div class="slide" id="running-plone">
+<h1>Running Plone</h1>
+<p>After running the installer of your choice, you start Plone from the command
+line:</p>
+<pre class="incremental literal-block">
+$ bin/instance fg
+</pre>
+<p class="incremental">This runs plone in the <em>foreground</em> which allows you to see errors if they
+happen and get tracebacks.</p>
+<p class="incremental">Once you see the message &quot;Zope Ready to handle requests&quot;, the system is running</p>
+</div>
+<div class="slide" id="setting-up-your-first-site">
+<h1>Setting up Your First Site</h1>
+<p>When the site is running, you'll find it at localhost:8080</p>
+<p class="incremental">Load that page and you see a message instructing you to add your first site</p>
+<p class="incremental">Click the button, and your site is created with a bit of default content</p>
+<p class="incremental">At that point, you can start managing content</p>
+</div>
+<div class="slide" id="demo-of-plone">
+<h1>Demo of Plone</h1>
+<p class="big-centered">Let's see it in action</p>
+</div>
+<div class="slide" id="take-away">
+<h1>Take-away</h1>
+<p>Plone is a full-featured and flexible Content Management System</p>
+<p class="incremental">Plone customization is generally going to be <em>integration</em> - altering existing
+functionality to fit business needs.</p>
+<p class="incremental">Treating Plone as a <em>framework</em> - trying to build arbitrary web applications -
+is not easy.</p>
+<p class="incremental">But if the feature set it offers is in largely in line with your needs, you
+won't find a better tool.</p>
+</div>
+<div class="slide" id="reminder">
+<h1>Reminder</h1>
+<p>Your final projects are <strong>due Friday at noon</strong>.</p>
+<p class="incremental">I will not accept submissions that arrive after noon on Friday (March 15).</p>
+<p class="incremental">You will need to supply:</p>
+<ul class="incremental simple">
+<li>A Link to your site deployed online (your VM, in the cloud, ...)</li>
+<li>A Link to <strong>your project source code repository</strong> in Github.</li>
+<li>Text describing <strong>the goals and outcomes</strong> of your project.</li>
+<li>Instructions on <strong>how I can run your project locally</strong> on my laptop</li>
+</ul>
+</div>
+<div class="slide" id="another-reminder">
+<h1>Another reminder</h1>
+<p class="big-centered"><strong>LEAVE TIME FOR DEPLOYMENT</strong></p>
+</div>
+<div class="slide" id="final-word">
+<h1>Final Word</h1>
+<p class="big-centered"><strong>thank you all</strong></p>
+</div>
+<div class="slide" id="lab-time">
+<h1>Lab Time</h1>
+<p>For the rest of today, we work on your projects.</p>
 </div>
 </div>
 </body>
