@@ -698,7 +698,31 @@ Week 10 - Plone
 
 **Date**: Mar. 12, 2013
 
+This week we'll visit a full-featured Content Management System built using
+Python: Plone. We'll learn a bit about what Plone is and what it does. We'll
+learn about it's history and when it might be a good choice for a project.
+We'll even take a quick tour of some of the features of this mature,
+enterprise CMS.
+
+We'll also have a visit from the instructors for the third and final course in
+the Python certificate program.  They'll be giving you a quick introduction to
+the course and what you can expect to learn.  
+
+Finally, we'll spend lab time in the class working on completing our final
+projects.  The projects will be due at the end of the week, so this will be
+your last opportunity to work with Dan and Cris to answer questions.
+
+`Week 10 Presentation <presentations/week10.html>`_
+
 Assignment
 **********
 
-To Be Decided
+Complete and submit your final project.
+
+The project will be due Friday, March 15 at noon. Late submissions will not be
+accepted.  
+
+`Reread the project specification
+<http://github.com/cewing/training.python_web/blob/master/assignments/week08/athome/assignment.rst>`_
+
+Make sure you submit all of the parts requested in the specification.
