@@ -49,7 +49,7 @@ Minutiae
     have a portable computer in order to participate. Network access, both
     wired and wireless, will be provided, but you will need to know how to
     operate the network settings for your computer.
-    
+
     Your computer must have Python version 2.6 or 2.7 installed. No
     additional libraries will be required, but we will be installing some as
     the workshop progresses.
@@ -62,8 +62,8 @@ Minutiae
     protocols that power the internet and the sockets that enable
     communications between processes and machines, right up to the full-stack
     frameworks that enable developers to build rich applications efficiently.
-    
-     Along the way, you'll learn through a combination of lecture and
+
+    Along the way, you'll learn through a combination of lecture and
     activity. Historical information will be combined with exercises designed
     to help you learn the Pythonic way to create programs that interact with
     each-other across networks. Each module will include reading lists for
