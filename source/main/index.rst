@@ -58,9 +58,9 @@ Minutiae
 :What to Expect:
 
     This one-week course will cover the fundamental concepts of networked
-    programming in Python. You'll learn everything, starting from the
-    protocols that power the internet and the sockets that enable
-    communications between processes and machines, right up to the full-stack
+    programming in Python. You'll learn everything, starting from the sockets
+    that enable communications between processes and machines and the basic
+    protocols that govern this communication, right up to the full-stack
     frameworks that enable developers to build rich applications efficiently.
 
     Along the way, you'll learn through a combination of lecture and
@@ -71,32 +71,32 @@ Minutiae
     lessons you learn after the the class is over.
 
     **This class is** intended to give students a solid grounding in the
-    fundamental underpinnings of network programming. In addition, you will
-    gain a basic understanding of a broad range of Pythonic tools and learn to
-    choose the right tool for a given task.
+    fundamentals of network programming. You will gain a basic understanding
+    of a broad range of Pythonic tools and learn to choose the right tool for
+    a given task.
 
     **This class is not** an in-depth course in any single Python web
-    framework. As the intention is to give you evaluative tools for selecting
-    the right framework for your task, you will learn basic usage for the
-    frameworks covered as well as the choices and compromises that shape them.
+    framework. The intention is to give you the information needed to select
+    the right framework for your task. To that end, you will learn the basics
+    of the frameworks covered as well as the choices and compromises that
+    shape them.
 
 
 References
 ----------
 
-`Python 2.6.5 Documentation <http://docs.python.org/release/2.6.5/>`_:
-Complete documentation of the language.
+`Python 2 Documentation <http://docs.python.org/2/>`_: Complete
+documentation of the language.
 
-`Python 2.6.5 Quick Reference <http://rgruet.free.fr/PQR26/PQR2.6.html>`_:
-Dense and complete. Good for jogging your memeory, but don't start here.
+`Python 2.7 Quick Reference <http://rgruet.free.fr/PQR27/PQR2.7.html>`_:
+Dense and complete. Good for jogging your memory, but don't start here.
 
 `Python Standard Library - Internet Protocols and Support
-<http://docs.python.org/release/2.6.5/>`_: All the supported internet
+<http://docs.python.org/2/library/internet.html>`_: All the supported internet
 protocols as implemented in Python.
 
-`Python Module of the Week <http://www.doughellmann.com/PyMOTW/>`_: A
-fantastic reference for any module in python. Examples and usage are provided
-throughout.
+`Python Module of the Week <http://pymotw.com/2/>`_: A fantastic reference for
+any module in python. Examples and usage are provided throughout.
 
 `Lecture Presentations <presentations/index.html>`_: Slides from the workshop
 presentations.

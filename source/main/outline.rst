@@ -1,29 +1,29 @@
 Course Outline
 ==============
 
-Each week will have in-class lectures, lab time, and lightning talks.  There
-will be recommended reading, additional reading for the curious, and an 
-assignment to be completed.
+This course is five days long. Each day is split into morning and afternoon
+sessions. Each session will consist of three or so hours of instruction and
+exercises and a couple of short breaks.
 
-Week 1 - Introduction and Sockets
----------------------------------
+Monday Morning
+--------------
 
-**Date**: Jan. 8, 2013
+Introduction and Sockets
+++++++++++++++++++++++++
 
-In this class, we will discuss the fundamental concepts and structures that
-underly the internet and networked computing. We will learn about the TCP/IP
-stack (Internet Protocol Suite) and gain insight into how that model is
-manifested in real life. We will learn about sockets and how to use them to
-communicate between processes on a single machine or across a network.
+We will begin by covering basic front-matter for the course: schedule,
+protocol, introductions and such. Next we will move into a disucssion of the
+fundamental concepts and structures that underly the internet and networked
+computing. We will learn about the TCP/IP stack (Internet Protocol Suite) and
+gain some insights into how that model manifests in real life. We will then
+dive into sockets and learn how to use them to communicate between processes
+on a single machine, or across a network.
 
-Our class laboratory will focus on creating a small server-client program that
-demonstrates the use of sockets. We will install the server on our Virtual
-Machines, and accomplish our first networked communication.
+Along the way, we'll build a basic Echo server and client to demonstrate the
+processes we've learned. By lunch, we'll be sending messages and receiving 
+replies.
 
-The class assignment will focus on extending our use of sockets to support a
-more complex use-case.
-
-`Class Presentation <presentations/week01.html>`_
+`Class Presentation <presentations/session1.html>`_
 
 Reading
 *******
@@ -36,8 +36,6 @@ Reading
   <http://en.wikipedia.org/wiki/Domain_Name_System>`_
 * `Wikipedia - Internet Sockets
   <http://en.wikipedia.org/wiki/Internet_socket>`_
-* `RFC 5321 - SMTP (Appendix D only)
-  <http://tools.ietf.org/html/rfc5321#appendix-D>`_
 
 References
 **********
@@ -46,14 +44,6 @@ References
   <http://docs.python.org/release/2.6.5/library/socket.html>`_
 * `Socket Programming How-to
   <http://docs.python.org/release/2.6.5/howto/sockets.html>`_
-* `Python Library - smtplib
-  <http://docs.python.org/release/2.6.5/library/smtplib.html>`_
-
-For our in-class lab and our homework, you'll be forking a github repository
-and making pull requests.  You can read up on how this is accomplished here:
-
-* `Fork a Repo <http://help.github.com/articles/fork-a-repo>`_
-* `Using Pull Requests <http://help.github.com/articles/using-pull-requests>`_
 
 Further Reading
 ***************
@@ -68,24 +58,16 @@ Further Reading
 Bonus
 *****
 
-`ZeroMQ Guide, Chapter 1 <http://zguide.zeromq.org/page:all#Chapter-Basics>`_:
+`ZeroMQ Guide, Chapter 1 <http://zguide.zeromq.org/py:all#Chapter-Basics>`_:
 ZeroMQ is a modern, advanced implementation of the socket concept. Read this
 to find out what sockets can get up to these days.
 
-Assignment
-**********
 
-You can read the assignment at 
+Monday Afternoon
+----------------
 
-http://github.com/cewing/training.python_web/blob/master/assignments/week01/athome/assignment.txt
-
-Please complete the assignment by noon on Sunday, January 13, 2013.
-
-
-Week 2 - Web Protocols
-----------------------
-
-**Date**: Jan. 15, 2013
+Web Protocols
++++++++++++++
 
 In this class we will discuss the various languages of the Internet. What
 differentiates one protocol from another? How are they similar? How can you
@@ -155,17 +137,12 @@ clear and concise and have some great code examples.
 
 .. _Internet Protocols and Support: http://www.doughellmann.com/PyMOTW/internet_protocols.html
 
-Assignment
-**********
 
-You can read the assignment at 
+Tuesday Morning
+---------------
 
-http://github.com/cewing/training.python_web/blob/master/assignments/week02/athome/assignment.txt
-
-Please complete the assignment by noon on Sunday, January 20, 2013.
-
-Week 3 - APIs and Mashups
--------------------------
+APIs and Mashups
+++++++++++++++++
 
 **Date**: Jan. 22, 2013
 
@@ -209,7 +186,7 @@ References
 **********
 
 Python Standard Libraries:
-++++++++++++++++++++++++++
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * `httplib <http://docs.python.org/release/2.6.5/library/httplib.html>`_
 * `htmlparser <http://docs.python.org/release/2.6.5/library/htmlparser.html>`_
@@ -219,7 +196,7 @@ Python Standard Libraries:
 * `json <http://docs.python.org/release/2.6.5/library/json.html>`_
 
 External Libraries:
-+++++++++++++++++++
+~~~~~~~~~~~~~~~~~~~
 
 * BeautifulSoup_ - "You didn't write that awful page. You're just trying to
   get some data out of it. Right now, you don't really care what HTML is
@@ -236,7 +213,7 @@ External Libraries:
 .. _restkit: https://github.com/benoitc/restkit/
 
 SOAP
-++++
+~~~~
 
 * rpclib_ - a simple, easily extendible soap library that provides several
   useful tools for creating, publishing and consuming soap web services
@@ -256,17 +233,12 @@ Bonus
 * `Original REST disertation
   <http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm>`
 
-Assignment
-**********
 
-You can read the assignment at 
+Tuesday Afternoon
+-----------------
 
-http://github.com/cewing/training.python_web/blob/master/assignments/week03/athome/assignment.txt
-
-Please complete the assignment by noon on Sunday, January 27, 2013.
-
-Week 4 - CGI and WSGI
----------------------
+CGI and WSGI
+++++++++++++
 
 **Date**: Jan. 29, 2013
 
@@ -297,7 +269,7 @@ Reading
 .. _WSGI tutorial: http://webpython.codepoint.net/wsgi_tutorial
 
 Prepare for class:
-++++++++++++++++++
+~~~~~~~~~~~~~~~~~~
 
 * `CGI example scripts`_ - Use these examples to get started experimenting with
   CGI.
@@ -322,7 +294,7 @@ References
 .. _CGIHTTPServer: http://docs.python.org/release/2.6.5/library/cgihttpserver.html
 
 Alternate WSGI introductions:
-+++++++++++++++++++++++++++++
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * `Getting Started with WSGI`_ - by Armin Ronacher (really solid and quick!)
 * `very minimal introduction to WSGI
@@ -330,17 +302,12 @@ Alternate WSGI introductions:
 
 .. _Getting Started with WSGI: http://lucumr.pocoo.org/2007/5/21/getting-started-with-wsgi/
 
-Assignment
-**********
 
-You can read the assignment at 
+Wednesday Morning
+-----------------
 
-http://github.com/cewing/training.python_web/blob/master/assignments/week04/athome/assignment.txt
-
-Please complete the assignment by noon on Sunday, February 3, 2013.
-
-Week 5 - Small Frameworks
--------------------------
+Small Frameworks - Flask
+++++++++++++++++++++++++
 
 **Date**: Feb. 5, 2013
 
@@ -411,17 +378,12 @@ You may also want to do more reading on the unittest module:
 * `PyMOTW - unittest
   <http://www.doughellmann.com/PyMOTW/unittest/index.html>`_
 
-Assignment
-**********
 
-You can read the assignment at 
+Wednesday Afternoon
+-------------------
 
-http://github.com/cewing/training.python_web/blob/master/assignments/week05/athome/assignment.txt
-
-Please complete the assignment by noon on Sunday, February 10, 2013.
-
-Week 6 - Django
----------------
+More Flask
+++++++++++
 
 **Date**: Feb. 12, 2013
 
@@ -479,20 +441,11 @@ Reference
   <https://docs.djangoproject.com/en/dev/misc/design-philosophies/>`_ - some
   well-considered words on why Django is the way it is.
 
-Assignment
-**********
+Thursday Morning
+----------------
 
-Assignment
-**********
-
-You can read the assignment at 
-
-http://github.com/cewing/training.python_web/blob/master/assignments/week06/athome/assignment.txt
-
-Please complete the assignment by noon on Sunday, February 17, 2013.
-
-Week 7 - Django
----------------
+Introducing Django
+++++++++++++++++++
 
 **Date**: Feb. 19, 2013
 
@@ -557,22 +510,20 @@ Reference
   Pyramid framework. Also available in `video form
   <http://www.youtube.com/watch?v=eN7h6ZbzMy0>`_.
 
-Assignment
-**********
 
-This week we will have no code assignment. Instead the assignment will be to
-install Pyramid and the ZODB.
+Thursday Afternoon
+------------------
 
-**WARNING**: the ZODB is built with C-based extensions. Installing it requires
-a c compiler. On linux, gcc will do nicely but you'll need to install python
-development headers. If you are using Mac OS X, you'll need to install XCode.
-This is not fast. Be sure to start early in the week to leave time for this.
+More Django
++++++++++++
 
-Read the `Instructions
-<http://github.com/cewing/training.python_web/blob/master/assignments/week07/athome/assignment.rst>`_
 
-Week 8 - Pyramid
-----------------
+
+Friday Morning
+--------------
+
+Introducing Pyramid
++++++++++++++++++++
 
 **Date**: Feb. 26, 2013
 
@@ -656,21 +607,12 @@ References
   into creating this framework.
 
 
-Assignment
-**********
 
-Begin work on your final project. You must communicate your plan with Dan and
-I first to ensure it is of an appropriate scope. If you are having trouble
-getting started, let us know.
+Friday Afternoon
+----------------
 
-We will be spending most of the class over the next two weeks working. Be
-prepared to take advantage of the time with Dan and me by getting started now.
-
-`Reread the project specification
-<http://github.com/cewing/training.python_web/blob/master/assignments/week08/athome/assignment.rst>`_
-
-Week 9 - The Cloud
-------------------
+More Pyramid
+++++++++++++
 
 **Date**: Mar. 5, 2013
 
@@ -681,20 +623,6 @@ The lion's share of the class will be devoted to lab time, enabling students
 to work on their final projects with the help of Dan and Cris
 
 `Week 9 Presentation <presentations/week09.html>`_
-
-Assignment
-**********
-
-Continue working on your final project.
-
-You will have one more week to complete the project after today's class. Your
-final version must be up and running live by Friday, March 15 at noon.
-
-`Reread the project specification
-<http://github.com/cewing/training.python_web/blob/master/assignments/week08/athome/assignment.rst>`_
-
-Week 10 - Plone
----------------
 
 **Date**: Mar. 12, 2013
 
