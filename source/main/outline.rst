@@ -5,242 +5,94 @@ This course is five days long. Each day is split into morning and afternoon
 sessions. Each session will consist of three or so hours of instruction and
 exercises and a couple of short breaks.
 
-Monday Morning
---------------
+Day 1 AM - TCP/IP and Sockets
+-----------------------------
 
-Introduction and Sockets
-++++++++++++++++++++++++
-
-We will begin by covering basic front-matter for the course: schedule,
-protocol, introductions and such. Next we will move into a disucssion of the
-fundamental concepts and structures that underly the internet and networked
-computing. We will learn about the TCP/IP stack (Internet Protocol Suite) and
-gain some insights into how that model manifests in real life. We will then
-dive into sockets and learn how to use them to communicate between processes
-on a single machine, or across a network.
+We will begin by covering basic front-matter for the course: daily schedule,
+class protocol, introductions and such. Next we will move into a disucssion of
+the fundamental concepts and structures that underly the internet and
+networked computing. We will learn about the TCP/IP stack (Internet Protocol
+Suite) and gain some insights into how that model manifests in real life. We
+will then dive into sockets and learn how to use them to communicate between
+processes on a single machine, or across a network.
 
 Along the way, we'll build a basic Echo server and client to demonstrate the
 processes we've learned. By lunch, we'll be sending messages and receiving 
 replies.
 
-`Class Presentation <presentations/session1.html>`_
-
-Reading
-*******
-
-* `Wikipedia - Internet Protocol Suite
-  <http://en.wikipedia.org/wiki/Internet_Protocol_Suite>`_
-* `Kessler - TCP/IP (sections 1 and 2)
-  <http://www.garykessler.net/library/tcpip.html>`_
-* `Wikipedia - Domain Name System
-  <http://en.wikipedia.org/wiki/Domain_Name_System>`_
-* `Wikipedia - Internet Sockets
-  <http://en.wikipedia.org/wiki/Internet_socket>`_
+`Lecture Slides <presentations/session01.html>`_
 
 References
 **********
 
-* `Python Library - socket
-  <http://docs.python.org/release/2.6.5/library/socket.html>`_
-* `Socket Programming How-to
-  <http://docs.python.org/release/2.6.5/howto/sockets.html>`_
-
-Further Reading
-***************
-
-* `Python Module of the Week - socket
-  <http://www.doughellmann.com/PyMOTW/socket/>`_
-* `Wikipedia - Berkeley socket interface
-  <http://en.wikipedia.org/wiki/Berkeley_sockets>`_ 
-* `RFC 821 - SMTP (initial) <http://tools.ietf.org/html/rfc821>`_
-* `RFC 5321 - SMTP (latest) <http://tools.ietf.org/html/rfc5321>`_
-
-Bonus
-*****
-
-`ZeroMQ Guide, Chapter 1 <http://zguide.zeromq.org/py:all#Chapter-Basics>`_:
-ZeroMQ is a modern, advanced implementation of the socket concept. Read this
-to find out what sockets can get up to these days.
+* `Python Library - socket <http://docs.python.org/2/library/socket.html>`_
+* `Socket Programming How-to <http://docs.python.org/2/howto/sockets.html>`_
+* `Python Module of the Week - socket <http://pymotw.com/2/socket/>`_
 
 
-Monday Afternoon
-----------------
+Day 1 PM - Web Protocols
+------------------------
 
-Web Protocols
-+++++++++++++
+Protocols are the languages of the Internet. They govern how machines speak to
+one-another. We will focus on finding both the similarities and differences
+between protocols. Can you use the inherent qualities of each to determine
+which is appropriate for a given purpose?
 
-In this class we will discuss the various languages of the Internet. What
-differentiates one protocol from another? How are they similar? How can you
-use the inherent qualities of each to determine which is appropriate for a
-given purpose?
+Along the way, we'll build a simple web server. Using the HTTP protocol and
+extending what we learned in the morning about we'll create an HTTP server
+that allows us to serve files and directories from our own computers. By the
+end of the day, you'll be browsing your filesystem with your own web browser.
 
-The class laboratory will cover creating a simple web server. Using the HTTP
-protocol and information we learned in week one about sockets, we'll create a
-simple web server that allows us to look at files and directories on our own
-computers.
-
-The class assignment will be to extend the simple web server, adding the
-ability to run dynamic processes and return the results to the client.
-
-`Week 2 Presentation <presentations/week02.html>`_
-
-Reading
-*******
-
-Read through the list of Python Internet Protocols. If you don't know what a
-protocol is for, look it up online. Think about their relationship to each
-other, which are clients? Which are servers? Which clients talk to which
-servers? 
-
-`Python Standard Library Internet Protocols
-<http://docs.python.org/release/2.6.5/library/internet.html>`_
-
-An introduction to the HTTP protocol:
-`HTTP Made Really Easy <http://www.jmarshall.com/easy/http/>`_
+`Lecture Slides <presentations/session02.html>`_
 
 References
 **********
 
-Skim these before class, you'll need them for lab and your assignment:
-
-* `smtplib <http://docs.python.org/release/2.6.5/library/smtplib.html>`_
-* `imaplib <http://docs.python.org/release/2.6.5/library/imaplib.html>`_
-* `httplib <http://docs.python.org/release/2.6.5/library/httplib.html>`_
-* `urllib <http://docs.python.org/release/2.6.5/library/urllib.html>`_
-* `urllib2 <http://docs.python.org/release/2.6.5/library/urllib2.html>`_
-
-Bonus
-*****
-
-* httplib2_ - A comprehensive HTTP client library that supports many features
-  left out of other HTTP libraries.
-* requests_ - "... an Apache2 Licensed HTTP library, written in Python, for
-  human beings."
-
-.. _httplib2: http://code.google.com/p/httplib2/
-.. _requests: http://docs.python-requests.org/en/latest/
-
-Skim these four documents from different phases of HTTP's life. Get a feel for
-how the specification has changed (and how it hasn't!).
-
-* `HTTP/0.9 <http://www.w3.org/Protocols/HTTP/AsImplemented.html>`_
-* `HTTP - as defined in 1992 <http://www.w3.org/Protocols/HTTP/HTTP2.html>`_
-* `Hypertext Transfer Protocol -- HTTP/1.0
-  <http://www.w3.org/Protocols/rfc1945/rfc1945>`_
-* `Hypertext Transfer Protocol -- HTTP/1.1
-  <http://www.w3.org/Protocols/rfc2616/rfc2616>`_
+* `smtplib <http://docs.python.org/2/library/smtplib.html>`_
+* `imaplib <http://docs.python.org/2/library/imaplib.html>`_
+* `httplib <http://docs.python.org/2/library/httplib.html>`_
+* `urllib <http://docs.python.org/2/library/urllib.html>`_
+* `urllib2 <http://docs.python.org/2/library/urllib2.html>`_
 
 If you have more curiosity about other Python Standard Library implementations
 of internet protocols, you should read Doug Hellmann's Python Module Of The
 Week on `Internet Protocols and Support`_. His entries on these libraries are
 clear and concise and have some great code examples.
 
-.. _Internet Protocols and Support: http://www.doughellmann.com/PyMOTW/internet_protocols.html
+.. _Internet Protocols and Support: http://pymotw.com/2/internet_protocols.html
 
 
-Tuesday Morning
----------------
+Day 2 AM - APIs and Mashups
+---------------------------
 
-APIs and Mashups
-++++++++++++++++
+The internet is a treasure trove of information. But meaning can be hard to
+find among all that data. Mashups offer a way to combine data from disparate
+sources in order to derive meaning. Data online can be offered in forms ripe
+for consumption. APIs built in XMLRPC, SOAP or REST offer rich tools for
+extraction, but even simple websites can be scraped using tools like
+BeautifulSoup.
 
-**Date**: Jan. 22, 2013
+We'll explore the differences between various 'Web Services' formats, learning
+how to serve information and consume it. We'll also explore using BeautifulSoup
+to help extract information from the sea of HTML in the wild.
 
-In this class we will explore some of the ways that you can consume and
-explore the data provided by other websites. Online data can be provided in
-ways intended for consumption. But you can also use scraping techniques to get
-at data the original author may not have considered valuable enough to present
-as consumable.
+Along the way, we'll create a mashup of our own, using the tools we learn to
+build a script that can produce derived meaning out of data we find online.
 
-We'll explore the use of tools like BeautifulSoup to help make sense of the
-truly horrible HTML that is to be found in the wild. We will also look at "Web
-Services" formats like XMLRPC and REST so we can understand the ways in which
-we can find data, or present it ourselves. Finally, we'll look at some "Web
-Service APIs" to help understand how to read them, and how to use them to get
-at the data they provide.
-
-In our class lab sessions we will practice scraping a website and using a
-documented web service API.
-
-For our class assignment, students will choose two (or more) sources of
-information online and combine them in a mashup.
-
-`Week 3 Presentation <presentations/week03.html>`_
-
-Reading
-*******
-
-* `Wikipedia's take on 'Web Services'
-  <http://en.wikipedia.org/wiki/Web_service>`_
-* `xmlrpc overview <http://www.xmlrpc.com/>`_
-* `xmlrpc spec (short) <http://www.xmlrpc.com/spec>`_
-* `json overview and spec (short) <http://www.json.org/>`_
-* `How I Explained REST to My Wife (Tomayko 2004)
-  <http://tomayko.com/writings/rest-to-my-wife>`_
-* `A Brief Introduction to REST (Tilkov 2007)
-  <http://www.infoq.com/articles/rest-introduction>`_
-* `Why HATEOAS - *a simple case study on the often ignored REST constraint*
-  <http://www.slideshare.net/trilancer/why-hateoas-1547275>`_
+`Lecture Slides <presentations/session03.html>`_
 
 References
 **********
 
-Python Standard Libraries:
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-* `httplib <http://docs.python.org/release/2.6.5/library/httplib.html>`_
-* `htmlparser <http://docs.python.org/release/2.6.5/library/htmlparser.html>`_
-* `xmlrpclib <http://docs.python.org/release/2.6.5/library/xmlrpclib.html>`_
-* `DocXMLRPCServer
-  <http://docs.python.org/release/2.6.5/library/docxmlrpcserver.html>`_
-* `json <http://docs.python.org/release/2.6.5/library/json.html>`_
-
-External Libraries:
-~~~~~~~~~~~~~~~~~~~
-
-* BeautifulSoup_ - "You didn't write that awful page. You're just trying to
-  get some data out of it. Right now, you don't really care what HTML is
-  supposed to look like. Neither does this parser."
-
-* httplib2_ - A comprehensive HTTP client library that supports many features
-  left out of other HTTP libraries.
-
-* restkit_ - an HTTP resource kit for Python. It allows you to easily access
-  to HTTP resource and build objects around it.
-
-.. _BeautifulSoup: http://www.crummy.com/software/BeautifulSoup/
-.. _httplib2: http://code.google.com/p/httplib2/
-.. _restkit: https://github.com/benoitc/restkit/
-
-SOAP
-~~~~
-
-* rpclib_ - a simple, easily extendible soap library that provides several
-  useful tools for creating, publishing and consuming soap web services
-
-* Suds_ - a lightweight SOAP python client for consuming Web Services.
-
-* `the SOAP specification <http://www.w3.org/TR/soap/>`_
-
-.. _rpclib: https://github.com/arskom/rpclib
-.. _Suds: https://fedorahosted.org/suds/
-
-Bonus
-*****
-
-* `Wikipedia on REST
-  <http://en.wikipedia.org/wiki/Representational_State_Transfer>`
-* `Original REST disertation
-  <http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm>`
+* `httplib <http://docs.python.org/2/library/httplib.html>`_
+* `htmlparser <http://docs.python.org/2/library/htmlparser.html>`_
+* `xmlrpclib <http://docs.python.org/2/library/xmlrpclib.html>`_
+* `DocXMLRPCServer <http://docs.python.org/2/library/docxmlrpcserver.html>`_
+* `json <http://docs.python.org/2/library/json.html>`_
 
 
-Tuesday Afternoon
------------------
-
-CGI and WSGI
-++++++++++++
-
-**Date**: Jan. 29, 2013
+Day 2 PM - CGI and WSGI
+-----------------------
 
 In this class we will explore ways of moving data from HTTP requests into the
 dynamic scripts that process data. We will begin by looking at the original
@@ -303,13 +155,8 @@ Alternate WSGI introductions:
 .. _Getting Started with WSGI: http://lucumr.pocoo.org/2007/5/21/getting-started-with-wsgi/
 
 
-Wednesday Morning
------------------
-
-Small Frameworks - Flask
-++++++++++++++++++++++++
-
-**Date**: Feb. 5, 2013
+Day 3 AM - Intro to Flask
+-------------------------
 
 In this class we learn about using frameworks to help us reach our goals. We
 will learn what makes up a framework and some criteria for evaluating which is
@@ -379,13 +226,8 @@ You may also want to do more reading on the unittest module:
   <http://www.doughellmann.com/PyMOTW/unittest/index.html>`_
 
 
-Wednesday Afternoon
--------------------
-
-More Flask
-++++++++++
-
-**Date**: Feb. 12, 2013
+Day 3 PM - A Flask Application
+------------------------------
 
 In this class we'll get introduced to arguably the most popular full-stack
 Python web framework, Django. We'll build a simple application that introduces
@@ -441,13 +283,8 @@ Reference
   <https://docs.djangoproject.com/en/dev/misc/design-philosophies/>`_ - some
   well-considered words on why Django is the way it is.
 
-Thursday Morning
-----------------
-
-Introducing Django
-++++++++++++++++++
-
-**Date**: Feb. 19, 2013
+Day 4 AM - Intro to Django
+--------------------------
 
 In this class we'll dive a bit further into Django. We'll start with a
 duplicate of the micro-blog we built in week 5 and work in teams to extend the
@@ -511,21 +348,11 @@ Reference
   <http://www.youtube.com/watch?v=eN7h6ZbzMy0>`_.
 
 
-Thursday Afternoon
-------------------
+Day 4 PM - A Django Application
+-------------------------------
 
-More Django
-+++++++++++
-
-
-
-Friday Morning
---------------
-
-Introducing Pyramid
-+++++++++++++++++++
-
-**Date**: Feb. 26, 2013
+Day 5 AM - Intro to Pyramid
+---------------------------
 
 This week we will look at a relative newcomer to the Python Web Framework
 scene, Pyramid. Although the framework is a newcomer, it is represents a
@@ -608,49 +435,5 @@ References
 
 
 
-Friday Afternoon
-----------------
-
-More Pyramid
-++++++++++++
-
-**Date**: Mar. 5, 2013
-
-This week we'll talk a bit about deployment options, and take a quick tour of
-deploying to one of the many possible cloud solutions.
-
-The lion's share of the class will be devoted to lab time, enabling students
-to work on their final projects with the help of Dan and Cris
-
-`Week 9 Presentation <presentations/week09.html>`_
-
-**Date**: Mar. 12, 2013
-
-This week we'll visit a full-featured Content Management System built using
-Python: Plone. We'll learn a bit about what Plone is and what it does. We'll
-learn about it's history and when it might be a good choice for a project.
-We'll even take a quick tour of some of the features of this mature,
-enterprise CMS.
-
-We'll also have a visit from the instructors for the third and final course in
-the Python certificate program.  They'll be giving you a quick introduction to
-the course and what you can expect to learn.  
-
-Finally, we'll spend lab time in the class working on completing our final
-projects.  The projects will be due at the end of the week, so this will be
-your last opportunity to work with Dan and Cris to answer questions.
-
-`Week 10 Presentation <presentations/week10.html>`_
-
-Assignment
-**********
-
-Complete and submit your final project.
-
-The project will be due Friday, March 15 at noon. Late submissions will not be
-accepted.  
-
-`Reread the project specification
-<http://github.com/cewing/training.python_web/blob/master/assignments/week08/athome/assignment.rst>`_
-
-Make sure you submit all of the parts requested in the specification.
+Day 5 PM - A Pyramid Application
+--------------------------------
