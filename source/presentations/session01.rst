@@ -52,20 +52,6 @@ Daily Schedule
 But First
 ---------
 
-I'll spend a lot of time talking
-
-.. class:: incremental
-
-Don't make the mistake of thinking this means I know everything
-
-.. class:: incremental
-
-Each of us has domain expertise, share it
-
-
-But First
----------
-
 Classroom Protocol
 
 .. class:: incremental
@@ -106,6 +92,7 @@ But First
 .. class:: big-centered
 
 Introductions
+
 
 Computer Communications
 -----------------------
@@ -178,9 +165,7 @@ Moving up, we have the 'Internet Layer'
 
 * Deals with addressing and routing
 
-  * Where are we going?
-
-  * What path do we take to get there?
+  * Where are we going and how do we get there?
 
 * Agnostic as to physical medium (IP over Avian Carrier - IPoAC)
 
@@ -712,8 +697,9 @@ Sending a Message
 Send a message to the server on the other end of our connection (we'll
 learn later today about the message we are sending)::
 
-    >>> msg = "GET / HTTP/1.1\r\n\r\n"
-    >>> google_socket.sendall(msg)
+    >>> msg = "GET / HTTP/1.1\r\n"
+    >>> msg += "Host: crisewing.com\r\n\r\n"
+    >>> cewing_socket.sendall(msg)
     >>>
 
 .. class:: incremental small
@@ -726,7 +712,7 @@ learn later today about the message we are sending)::
 
 * you can use the type of error to figure out why the transmission failed
 
-* you cannot know how much, if any, of your data was sent
+* you **cannot** know how much, if any, of your data was sent
 
 
 Receiving a Reply
@@ -735,16 +721,453 @@ Receiving a Reply
 Whatever reply we get is received by the socket we created. We can read it
 back out::
 
-    >>> response = google_socket.recv(4096)
+    >>> response = cewing_socket.recv(4096)
     >>> response
     'HTTP/1.1 200 OK\r\nDate: Thu, 03 Jan 2013 05:56:53
     ...
 
+.. class:: incremental small
+
+* The sole required argument is ``buffer_size`` (an integer). It should be a
+  power of 2 and smallish
+* It returns a byte string of ``buffer_size`` (or smaller if less data was
+  received)
+* If the response is longer than ``buffer size``, you can call the method
+  repeatedly. The last bunch will be less than ``buffer size``.
+
+
+Cleaning Up
+-----------
+
+When you are finished with a connection, you should always close it::
+
+  >>> cewing_socket.close()
+
+
+Putting it all together
+-----------------------
+
+First, connect and send a message:
+
+::
+
+    >>> streams = [info
+    ...     for info in socket.getaddrinfo('crisewing.com', 'http')
+    ...     if info[1] == socket.SOCK_STREAM]
+    >>> info = streams[0]
+    >>> cewing_socket = socket.socket(*info[:3])
+    >>> cewing_socket.connect(info[-1])
+    >>> msg = "GET / HTTP/1.1\r\n\r\n"
+    >>> cewing_socket.sendall(msg)
+
+
+Putting it all together
+-----------------------
+
+Then, receive a reply, iterating until it is complete:
+
+    >>> buffsize = 4096
+    >>> response = ''
+    >>> done = False
+    >>> while not done:
+    ...     msg_part = cewing_socket.recv(buffsize)
+    ...     if len(msg_part) < buffsize:
+    ...         done = True
+    ...         cewing_socket.close()
+    ...     response += msg_part
+    >>> len(response)
+    19427
+
+
+Server Side
+-----------
+
+.. class:: big-centered
+
+What about the other half of the equation?
+
+Construct a Socket
+------------------
+
+**For the moment, stop typing this into your interpreter.**
+
+Again, we begin by constructing a socket. Since we are actually the server
+this time, we get to choose family, type and protocol::
+
+    >>> server_socket = socket.socket(
+    ...     socket.AF_INET,
+    ...     socket.SOCK_STREAM,
+    ...     socket.IPPROTO_IP)
+    ... 
+    >>> server_socket
+    <socket._socketobject object at 0x100563c90>
+
+
+Bind the Socket
+---------------
+
+Our server socket needs to be bound to an address. This is the IP Address and
+Port to which clients must connect::
+
+    >>> address = ('127.0.0.1', 50000)
+    >>> server_socket.bind(address)
+
+
+**Terminology Note**: In a server/client relationship, the server *binds* to
+an address and port. The client *connects*
+
+
+Listen for Connections
+----------------------
+
+Once our socket is bound to an address, we can listen for attempted
+connections::
+
+    >>> server_socket.listen(1)
+
 .. class:: incremental
 
-* The sole required argument is a buffer size, it should be a power of 2 and
-  smallish
+* The argument to ``listen`` is the *backlog*
 
-* the returned value will be a string of buffer size (or smaller if less data
-  was received)
-  
+* The *backlog* is the **maximum** number of connections that the socket will
+  queue
+
+* Once the limit is reached, the socket refuses new connections
+
+
+Accept Incoming Messages
+------------------------
+
+When a socket is listening, it can receive incoming messages::
+
+    >>> connection, client_address = server_socket.accept()
+    ... # this blocks until a client connects
+    >>> connection.recv(16)
+
+.. class:: incremental small
+
+* The ``connection`` returned by a call to ``accept`` is a **new socket**
+
+* It is this *new* socket that is used for communications with the client
+  socket
+
+* the ``client_address`` is a two-tuple of IP Address and Port for the client
+  socket
+
+* The number of *new* sockets that can be spun off by a listening socket is 
+  equal to ``backlog``
+
+
+Send a Reply
+------------
+
+The same socket that received a message from the client may be used to return
+a reply::
+
+    >>> connection.sendall("messasge received")
+
+
+Clean Up
+--------
+
+Once a transaction between the client and server is complete, the
+``connection`` socket should be closed::
+
+    >>> connection.close()
+
+.. class:: incremental
+
+* Closing the connection socket will decrement the number of active sockets in
+  the queue
+
+* If the maximum specified by ``backlog`` had been reached, this will allow a
+  new connection to be made.
+
+
+Getting the Flow
+----------------
+
+The flow of this interaction can be a bit confusing.  Let's see it in action
+step-by-step.
+
+.. class:: incremental
+
+Open a second python interpreter and place it next to your first so you can
+see both of them at the same time.
+
+
+Create a Server
+---------------
+
+In your first python interpreter, create a server socket and prepare it for
+connections::
+
+    >>> server_socket = socket.socket(
+    ...     socket.AF_INET,
+    ...     socket.SOCK_STREAM,
+    ...     socket.IPPROTO_IP)
+    >>> server_socket.bind(('127.0.0.1', 50000))
+    >>> server_socket.listen(1)
+    >>> conn, addr = server_socket.accept()
+    
+.. class:: incremental
+
+At this point, you should **not** get back a prompt. The server socket is
+waiting for a connection to be made.
+
+
+Create a Client
+---------------
+
+In your second interpreter, create a client socket and prepare to send a
+message::
+
+    >>> import socket
+    >>> client_socket = socket.socket(
+    ...     socket.AF_INET
+    ...     socket.SOCK_STREAM,
+    ...     socket.IPPROTO_IP)
+
+.. class:: incremental
+
+Before connecting, keep your eye on the server interpreter::
+
+    >>> client_socket.connect(('127.0.0.1', 50000))
+
+
+Send a Message Client->Server
+-----------------------------
+
+As soon as you made the connection above, you should have seen the prompt
+return in your server interpreter. The ``accept`` method finally returned a
+new connection socket.
+
+.. class:: incremental
+
+When you're ready, type the following in the *client* interpreter. Watch the
+server!
+
+.. class:: incremental
+
+::
+
+    >>> client_socket.sendall("Hey, can you hear me?")
+
+
+Receive and Respond
+-------------------
+
+Back in your server interpreter, go ahead and receive the message from your
+client::
+
+    >>> conn.receive(32)
+    'Hey, can you hear me?'
+
+Send a message back, and then close up your connection::
+
+    >>> conn.sendall("Yes, I hear you.")
+    >>> conn.close()
+
+
+Finish Up
+---------
+
+Back in your client interpreter, take a look at the response to your message,
+then be sure to close your client socket too::
+
+    >>> client_socket.recv(32)
+    'Yes, I hear you.'
+    >>> client_socket.close()
+
+And now that we're done, we can close up the server too (back in the server
+iterpreter)::
+
+    >>> server_socket.close()
+
+
+Congratulations!
+----------------
+
+.. class:: big-centered
+
+You've run your first client-server interaction
+
+
+Take it to the Next Level
+-------------------------
+
+That's pretty much everything we need to build a simple echo server and
+client.
+
+.. class:: incremental
+
+We are now going to move to writing python files.
+
+.. class:: incremental
+
+Quit both interpreters and open a new file in your favorite text editor.  Call
+it ``echo_client.py``
+
+
+The Echo Client - 1
+-------------------
+
+.. code-block:: python
+    :class: small
+
+    import socket
+    import sys
+
+    def client(msg):
+        print >> sys.stderr, "sending: %s" % msg
+
+    if __name__ == '__main__':
+        if len(sys.argv) != 2:
+            usg = '\nusage: python echo_client.py "this is my message"\n'
+            print >>sys.stderr, usg
+            sys.exit(1)
+
+        msg = sys.argv[1]
+        client(msg)
+
+.. class:: incremental
+
+Save that and try it out
+
+
+The Echo Client - 2
+-------------------
+
+.. code-block:: python
+    :class: small
+
+    def client(msg):
+        server_address = ('localhost', 10000)
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        print >>sys.stderr, 'connecting to %s port %s' % server_address
+        sock.connect(server_address)
+        try:
+            # Send data
+            print >>sys.stderr, 'sending "%s"' % msg
+            sock.sendall(msg)
+            # Look for the response
+            amount_received = 0
+            amount_expected = len(msg)
+            while amount_received < amount_expected:
+                data = sock.recv(16)
+                amount_received += len(data)
+                print >>sys.stderr, 'received "%s"' % data
+        finally:
+            print >>sys.stderr, 'closing socket'
+            sock.close()
+
+
+It Takes Two
+------------
+
+The client script at this point is no good without a server to receive the
+message and send it back.  Let's make that next.
+
+.. class:: incremental
+
+Again, open a new file in your text editor.  Call it `echo_server.py`.
+
+
+The Echo Server - 1
+-------------------
+
+.. code-block:: python
+    :class: small
+
+    import socket
+    import sys
+
+    def server():
+        address = ('127.0.0.1', 10000)
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        print >>sys.stderr, "making a server on %s:%s" % address
+        sock.bind(address)
+        sock.listen(1)
+        try:
+            pass
+        except KeyboardInterrupt:
+            sock.close()
+            return
+
+    if __name__ == '__main__':
+        server()
+        sys.exit(0)
+
+
+The Echo Server - 2
+-------------------
+
+.. code-block:: python
+    :class: small
+
+    try:
+        while True:
+            print >>sys.stderr, 'waiting for a connection'
+            conn, addr = sock.accept() # blocking
+            try:
+                print >>sys.stderr, 'connection - %s:%s' % addr
+                while True:
+                    data = conn.recv(16)
+                    print >>sys.stderr, 'received "%s"' % data
+                    if data:
+                        msg = 'sending data back to client'
+                        print >>sys.stderr, msg
+                        conn.sendall(data)
+                    else:
+                        msg = 'no more data from %s:%s' % addr
+                        print >>sys.stderr, msg
+                        break
+            finally:
+                conn.close
+    except KeyboardInterrupt:
+        # ...
+
+
+Playing With Your Toy
+---------------------
+
+In one terminal, start the server::
+
+    $ python echo_server.py
+    making a server on 127.0.0.1:10000
+    waiting for a connection
+
+.. class:: incremental
+
+In a second, use the client to send a message:
+
+.. class:: incremental
+
+::
+
+    $ python echo_client.py "I am sending a longer message."
+
+
+Next Steps
+----------
+
+You've now seen the basics of socket-based communication.
+
+.. class:: incremental
+
+This afternoon, we'll learn about the protocols that govern these types of
+communications.
+
+.. class:: incremental
+
+As an exercise, we'll extend this simple echo server into a basic HTTP
+server, and we'll be able to ditch the client and use a web browser instead.
+
+
+Lunch Time
+----------
+
+.. class:: big-centered
+
+We'll see you back here in an hour.  Enjoy!
