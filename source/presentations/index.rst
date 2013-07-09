@@ -2,8 +2,8 @@ Course Presentations
 ====================
 .. _index:
 
-* `Week 1 - Sockets`_
-* `Week 2 - Web Protocols`_
+* `Day 1 AM - Networking and Sockets <session01.html>`_
+* `Day 1 PM - Web Protocols <session02.html>`_
 * `Week 3 - APIs and Mashups`_
 * `Week 4 - CGI and WSGI`_
 * `Week 5 - Small Frameworks`_
@@ -13,8 +13,6 @@ Course Presentations
 * `Week 9 - The Cloud`_
 * `Week 10 - Plone`_
 
-.. _Week 1 - Sockets: week01.html
-.. _Week 2 - Web Protocols: week02.html
 .. _Week 3 - APIs and Mashups: week03.html
 .. _Week 4 - CGI and WSGI: week04.html
 .. _Week 5 - Small Frameworks: week05.html
