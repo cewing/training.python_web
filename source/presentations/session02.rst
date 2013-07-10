@@ -568,6 +568,105 @@ Both share a common basic format:
 * An optional body
 
 
+HTTP In Real Life
+-----------------
+
+Let's investigate the HTTP protocol a bit in real life.  
+
+.. class:: incremental
+
+We'll do so by building a simplified HTTP server, one step at a time.
+
+.. class:: incremental
+
+We'll bootstrap ourselves by using the ``echo_server.py`` file we created 
+earlier.
+
+.. class:: incremental
+
+Make a copy of that file now.  Call it ``http_server_1.py``.  Open it in your
+text editors.
+
+
+Viewing an HTTP Request
+-----------------------
+
+In a terminal, start your server running, like so::
+
+    $ python http_server_1.py
+    making a server on 127.0.0.1:10000
+    waiting for a connection
+
+.. class:: incremental
+
+This time, instead of using your echo client to make a connection, let's use
+a web browser
+
+.. class:: incremental
+
+Point your favorite browser at ``http://localhost:10000``
+
+
+A Bad Interaction
+-----------------
+
+First, look at the printed output from your echo server.
+
+.. class:: incremental
+
+Second, note that your browser is still waiting to finish loading the page
+
+.. class:: incremental
+
+Moreover, your server should also be hung, waiting for more from the 'client'
+
+.. class:: incremental
+
+This is because we are not yet following the right protocol.
+
+
+Echoing A Request
+-----------------
+
+Kill your server with ``ctrl-c`` (the keyboard interrupt) and you should see
+some printed content:
+
+.. class:: small incremental
+
+::
+
+    GET / HTTP/1.1
+    Host: localhost:10000
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:22.0) Gecko/20100101 Firefox/22.0
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+    Accept-Language: en-US,en;q=0.5
+    Accept-Encoding: gzip, deflate
+    DNT: 1
+    Cookie: __utma=111872281.383966302.1364503233.1364503233.1364503233.1; __utmz=111872281.1364503233.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); csrftoken=uiqj579iGRbReBHmJQNTH8PFfAz2qRJS
+    Connection: keep-alive
+    Cache-Control: max-age=0
+
+.. class:: incremental small
+
+Your results will vary from mine.
+
+HTTP Debugging
+--------------
+
+When working on applications, it's nice to be able to see all this going back
+and forth.  There are several apps that can help with this:
+
+* windows: http://www.fiddler2.com/fiddler2/
+* firefox: http://getfirebug.com/
+* safari: built in 
+* chrome: built in
+* IE (7.0+): built in
+
+.. class:: incremental
+
+These tools can show you both request and response, headers and all. Very
+useful.
+
 
 HTTP Requests
 -------------
@@ -591,15 +690,143 @@ single required *header*, **Host**:
     <CRLF>
 
 
-HTTP Verbs
-----------
+HTTP Responses
+--------------
+
+In both HTTP 1.0 and 1.1, a proper response consists of an intial line,
+followed by optional headers, a single blank line, and then optionally a
+response body::
+
+    HTTP/1.1 200 OK
+    Content-Type: text/plain
+    <CRLF>
+    this is a pretty minimal response
+
+.. class:: incremental
+
+Let's update our server to return such a response.
+
+
+Basic HTTP Protocol
+-------------------
+
+Begin by implementing a new function in your ``http_server_1.py`` script called
+`response_ok`.
+
+.. class:: incremental
+
+It can be super-simple for now.  We'll improve it later.
+
+.. class:: incremental
+
+It needs to return our minimal response from above:
+
+.. class:: small incremental
+
+::
+
+    HTTP/1.1 200 OK
+    Content-Type: text/plain
+    <CRLF>
+    this is a pretty minimal response
+
+
+My Solution
+-----------
+
+.. code-block:: python
+    :class: incremental
+
+    def response_ok():
+        """returns a basic HTTP response"""
+        resp = []
+        resp.append("HTTP/1.1 200 OK")
+        resp.append("Content-Type: text/plain")
+        resp.append("")
+        resp.append("this is a pretty minimal response")
+        return "\r\n".join(resp)
+
+
+Server Modifications
+--------------------
+
+Next, we need to rebuild the server loop from our echo server for it's new
+purpose:
+
+.. class:: incremental
+
+It should be able to return a response built by our function when a request
+is finished
+
+.. class:: incremental
+
+We could also bump up the buffer size to something more reasonable for HTTP
+traffic, say 1024
+
+My Solution
+-----------
+
+.. code-block:: python
+    :class: incremental small
+
+    # ...
+    try:
+        while True:
+            print >>sys.stderr, 'waiting for a connection'
+            conn, addr = sock.accept() # blocking
+            try:
+                print >>sys.stderr, 'connection - %s:%s' % addr
+                while True:
+                    data = conn.recv(1024)
+                    if len(data) < 1024:
+                        break
+                
+                print >>sys.stderr, 'sending response'
+                response = response_ok()
+                conn.sendall(response)
+            finally:
+                conn.close()
+    # ...
+
+
+Test Your Work
+--------------
+
+Once you've got that set, restart your server::
+
+    $ python http_server_1.py
+
+.. class:: incremental
+
+reload your browser pointing to ``http://localhost:10000`` and watch the magic!
+
+
+Parts of a Request
+------------------
+
+Every HTTP request **must** begin with a single line, broken by whitespace into
+three parts::
+
+    GET /path/to/index.html HTTP/1.1
+
+.. class:: incremental
+
+The three parts are the *method*, the *URI*, and the *protocol*
+
+.. class:: incremental
+
+Let's look at each in turn.
+
+
+HTTP Methods
+------------
 
 **GET** ``/path/to/index.html HTTP/1.1``
 
 .. class:: incremental
 
-* Every HTTP request must start with a *verb*
-* There are four main HTTP verbs:
+* Every HTTP request must start with a *method*
+* There are four main HTTP methods:
 
     .. class:: incremental
 
@@ -613,10 +840,10 @@ HTTP Verbs
 * There are others, notably HEAD, but you won't see them too much
 
 
-HTTP Verbs
-----------
+HTTP Methods
+------------
 
-These four verbs are mapped to the four basic steps (*CRUD*) of persistent
+These four methods are mapped to the four basic steps (*CRUD*) of persistent
 storage:
 
 .. class:: incremental
@@ -667,39 +894,116 @@ request will always have the same result:
 Again, *normative*. The developer is responsible for ensuring that it is true.
 
 
-HTTP Requests: URI
-------------------
+HTTP Method Handling
+--------------------
 
-``GET`` **/path/to/index.html** ``HTTP/1.1``
+Let's keep things simple, our server will only respond to *GET* requests.
 
 .. class:: incremental
 
-* Every HTTP request must include a **URI** used to determine the **resource** to
-  be returned
+We need to create a function that parses a request and determines if we can
+respond to it: ``parse_request``.
 
-* URI??
-  http://stackoverflow.com/questions/176264/whats-the-difference-between-a-uri-and-a-url/1984225#1984225
+.. class:: incremental
 
-* Resource?  Files (html, img, .js, .css), but also:
+If the request method is not *GET*, our method should raise an error
 
-    .. class:: incremental
+.. class:: incremental
 
-    * Dynamic scripts
-    * Raw data
-    * API endpoints
+Remember, although a request is more than one line long, all we care about
+here is the first line
 
 
-HTTP Responses
+My Solution
+-----------
+
+.. code-block:: python
+    :class: incremental
+
+    def parse_request(request):
+        first_line = request.split("\r\n", 1)[0]
+        method, uri, protocol = first_line.split()
+        if method != "GET":
+            raise ValueError("We only accept GET")
+        print >>sys.stderr, 'request is okay'
+
+
+Update the Server
+-----------------
+
+We'll also need to update the server code. It should
+
+.. class:: incremental
+
+* save the request as it comes in
+* check the request using our new function
+* send an OK response if things go well
+
+
+My Solution
+-----------
+
+.. code-block:: python
+    :class: incremental small
+
+    # ...
+    conn, addr = sock.accept() # blocking
+    try:
+        print >>sys.stderr, 'connection - %s:%s' % addr
+        request = ""
+        while True:
+            data = conn.recv(1024)
+            request += data
+            if len(data) < 1024 or not data:
+                break
+
+        parse_request(request)
+        print >>sys.stderr, 'sending response'
+        response = response_ok()
+        conn.sendall(response)
+    finally:
+        conn.close()
+    # ...
+
+
+Test Your Work
 --------------
 
-In both HTTP 1.0 and 1.1, a proper response consists of an intial line,
-followed by optional headers, a single blank line, and then optionally a
-response body::
+Quit and restart your server, now that you've updated the code.
 
-    HTTP/1.1 200 OK
-    Content-Type: text/plain
-    <CRLF>
-    this is a pretty minimal response
+.. class:: incremental
+
+Reload your browser.  It should work fine.
+
+.. class:: incremental
+
+We can use the ``echo_client.py`` script from yesterday to test our error
+condition.  In a second terminal window run the script like so:
+
+.. class:: incremental
+
+:: 
+
+    $ python echo_client.py "POST / HTTP/1.0\r\n\r\n"
+
+.. class:: incremental
+
+You'll have to quit the client pretty quickly with ``ctrl-c``
+
+
+Error Responses
+---------------
+
+Okay, so the outcome there was pretty ugly. The client went off the rails, and
+our server has terminated as well.
+
+.. class:: incremental
+
+The HTTP protocol allows us to handle errors like this more gracefully.
+
+.. class:: incremental center
+
+**Enter the Response Code**
 
 
 HTTP Response Codes
@@ -739,9 +1043,122 @@ often:
 
 .. class:: incremental
 
-Do not be afraid to use other, less common codes in building good RESTful
-apps. There are a lot of them for a reason. See
+Do not be afraid to use other, less common codes in building good apps. There
+are a lot of them for a reason. See
 http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
+
+
+Handling our Error
+------------------
+
+Luckily, there's an error code that is tailor-made for this situation.
+
+..  class:: incremental
+
+The client has made a request using a method we do not support
+
+.. class:: incremental
+
+``405 Method Not Allowed``
+
+.. class:: incremental
+
+Let's add a new method that returns this error code. It should be called
+``response_method_not_allowed``
+
+
+My Solution
+-----------
+
+.. code-block:: python
+    :class: incremental
+
+    def response_method_not_allowed():
+        """returns a 405 Method Not Allowed response"""
+        resp = []
+        resp.append("HTTP/1.1 405 Method Not Allowed")
+        resp.append("")
+        return "\r\n".join(resp)
+
+
+Server Updates
+--------------
+
+Again, we'll need to update the server to handle this error condition
+correctly.  It should
+
+.. class:: incremental
+
+* catch the exception raised by the ``parse_request`` function
+* return our new error response as a result
+* if no exception is raised, then return the OK response
+
+My Solution
+-----------
+
+.. code-block:: python
+    :class: incremental small
+
+    # ...
+    while True:
+        data = conn.recv(1024)
+        request += data
+        if len(data) < 1024 or not data:
+            break
+
+    try:
+        parse_request(request)
+    except ValueError:
+        response = response_method_not_allowed()
+    else:
+        response = response_ok()
+
+    print >>sys.stderr, 'sending response'
+    conn.sendall(response)
+    # ...
+
+
+Test Your Work
+--------------
+
+Start your server (or restart it if by some miracle it's still going).
+
+.. class:: incremental
+
+Then test this out by using the ``echo_client.py`` script again:
+
+.. class:: incremental
+
+::
+
+    $ python echo_client.py "POST / HTTP/1.1\r\n\r\n"
+    connecting to localhost port 10000
+    sending "POST / HTTP/1.1\r\n\r\n"
+    received "HTTP/1.1 405 Met"
+    "eceived "hod Not Allowed
+    closing socket
+
+
+HTTP Requests: URI
+------------------
+
+``GET`` **/path/to/index.html** ``HTTP/1.1``
+
+.. class:: incremental
+
+* Every HTTP request must include a **URI** used to determine the **resource** to
+  be returned
+
+* URI??
+  http://stackoverflow.com/questions/176264/whats-the-difference-between-a-uri-and-a-url/1984225#1984225
+
+* Resource?  Files (html, img, .js, .css), but also:
+
+    .. class:: incremental
+
+    * Dynamic scripts
+    * Raw data
+    * API endpoints
 
 
 HTTP Headers
@@ -782,19 +1199,3 @@ There are *many* mime-type identifiers:
 http://www.webmaster-toolkit.com/mime-types.shtml
 
 
-HTTP Debugging
---------------
-
-When working on applications, it's nice to be able to see all this going back
-and forth.  There are several apps that can help with this:
-
-* windows: http://www.fiddler2.com/fiddler2/
-* firefox: http://getfirebug.com/
-* safari: built in 
-* chrome: built in
-* IE (7.0+): built in
-
-.. class:: incremental
-
-These tools can show you both request and response, headers and all. Very
-useful.

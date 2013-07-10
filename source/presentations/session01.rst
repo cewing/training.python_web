@@ -1124,7 +1124,7 @@ The Echo Server - 2
                         print >>sys.stderr, msg
                         break
             finally:
-                conn.close
+                conn.close()
     except KeyboardInterrupt:
         # ...
 
