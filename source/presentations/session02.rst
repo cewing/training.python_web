@@ -924,7 +924,7 @@ My Solution
         first_line = request.split("\r\n", 1)[0]
         method, uri, protocol = first_line.split()
         if method != "GET":
-            raise ValueError("We only accept GET")
+            raise NotImplementedError("We only accept GET")
         print >>sys.stderr, 'request is okay'
 
 
@@ -1063,7 +1063,7 @@ The client has made a request using a method we do not support
 
 .. class:: incremental
 
-Let's add a new method that returns this error code. It should be called
+Let's add a new function that returns this error code. It should be called
 ``response_method_not_allowed``
 
 
@@ -1108,7 +1108,7 @@ My Solution
 
     try:
         parse_request(request)
-    except ValueError:
+    except NotImplementedError:
         response = response_method_not_allowed()
     else:
         response = response_ok()
@@ -1135,8 +1135,45 @@ Then test this out by using the ``echo_client.py`` script again:
     connecting to localhost port 10000
     sending "POST / HTTP/1.1\r\n\r\n"
     received "HTTP/1.1 405 Met"
-    "eceived "hod Not Allowed
+    received "hod Not Allowed
     closing socket
+
+
+HTTP - Resources
+----------------
+
+We've got a very simple server that accepts a request and sends a response.
+But what happens if we make a different request?
+
+.. container:: incremental
+
+    In your web browser, enter the following URL::
+
+        http://localhost:10000/page
+
+.. container:: incremental
+
+    What happened? What happens if you use this URL::
+
+        http://localhost:10000/section/page?
+
+
+HTTP - Resources
+----------------
+
+We expect different urls to result in different responses.
+
+.. class:: incremental
+
+But this isn't happening with our server, for obvious reasons.
+
+.. class:: incremental
+
+It brings us back to the second element of that first line of an HTTP request.
+
+.. class:: incremental center
+
+**The Return of the URI**
 
 
 HTTP Requests: URI
@@ -1161,6 +1198,253 @@ HTTP Requests: URI
     * API endpoints
 
 
+Responding to URIs
+------------------
+
+We should expand our server's capabilities so that it can make different
+responses to different URIs.
+
+.. class:: incremental
+
+To simplify things for ourselves, let's allow our server to serve up
+directories and files from our own filesystem.
+
+.. class:: incremental
+
+This will be much like other common HTTP servers, like Apache or nginx.
+
+.. class:: incremental
+
+Save your ``http_server_1.py`` module as ``http_server_2.py``. If you've
+fallen behind, you can find a copy of ``http_server_2.py`` in the class
+resources folder.
+
+
+Getting a URI
+-------------
+
+First, let's update our ``parse_request`` method so that it returns the URI it
+parses from the first line of our request:
+
+.. code-block:: python
+    :class: small incremental
+
+    def parse_request(request):
+        first_line = request.split("\r\n", 1)[0]
+        method, uri, protocol = first_line.split()
+        if method != "GET":
+            raise NotImplementedError("We only accept GET")
+        print >>sys.stderr, 'serving request for %s' % uri
+        return uri
+
+.. class:: incremental
+
+Next, we need to write a function that handles this uri for us:
+``resolve_uri``.
+
+What Should It Do?
+------------------
+
+Let's think for a bit about the specs for our function:
+
+.. class:: incremental
+
+* It should take a URI as the sole argument
+
+* It should use the pathname represented by the URI as a search path for a
+  filesystem location
+
+* It should have a 'home directory', someplace that serves as the root of the
+  search path.
+
+* If the URI represents a directory, the method should return a directory
+  listing
+
+* If the URI represents a file of some sort, the method should return the
+  contents of that file.
+
+* If the URI does not map to a real location, it should raise an exception.
+
+
+My Solution
+-----------
+
+.. code-block:: python
+    :class: small incremental
+
+    # at the top of the file:
+    import os
+
+    # add this function
+    def resolve_uri(uri):
+        """return the filesystem resources identified by 'uri'"""
+        home = 'webroot' # this is relative to the location of
+                         # the server script, could be a full path
+        filename = os.path.join(home, uri.lstrip('/'))
+        if os.path.isfile(filename):
+            contents = open(filename, 'rb').read()
+            return contents:
+        elif os.path.isdir(filename):
+            listing = "\n".join(os.listdir(filename))
+            return listing
+        else:
+            raise ValueError("Not Found")
+
+
+Returning Content
+-----------------
+
+Now we have to do something with the return value of that function.
+
+.. class:: incremental
+
+The value should be returned to the client as a response.
+
+.. class:: incremental
+
+Let's update our ``response_ok`` function to incorporate this stuff.
+
+.. class:: incremental
+
+Remember, this new material is the *body* of our response.
+
+
+My Solution
+-----------
+
+.. code-block:: python
+    :class: incremental
+
+    def response_ok(body):
+        """returns a basic HTTP response"""
+        resp = []
+        resp.append("HTTP/1.1 200 OK")
+        resp.append("Content-Type: text/plain")
+        resp.append("")
+        resp.append(body)
+        return "\r\n".join(resp)
+
+
+Handling The Error
+------------------
+
+Our ``resolve_uri`` function also adds a new possible error condition, one
+that maps nicely to a common HTTP response code.
+
+.. class:: incremental
+
+We'll need a function that generates that response for us
+
+.. code-block:: python
+    :class: small incremental
+
+    def response_not_found():
+        """return a 404 Not Found response"""
+        resp = []
+        resp.append("HTTP/1.1 404 Not Found")
+        resp.append("")
+        return "\r\n".join(resp)
+
+
+Server Updates
+--------------
+
+Finally, we need to update the code in our server loop to handle this new
+stuff.
+
+.. class:: incremental
+
+* It should bind the return value of ``parse_request`` to a symbol
+* It should pass that value in to our new ``resolve_uri`` function
+* It should bind the return value of that function to another symbol
+* It should use that value to build an ``OK`` response
+* It should return that response to the client via the open connection socket.
+* If the ValueError from ``resolve_uri`` is raised, it should handle it by
+  returning the proper response.
+
+
+My Solution
+-----------
+
+.. code-block:: python
+    :class: small incremental
+
+    # ...
+    while True:
+        data = conn.recv(1024)
+        request += data
+        if len(data) < 1024 or not data:
+            break
+
+    try:
+        uri = parse_request(request)
+        content = resolve_uri(uri)
+    except NotImplementedError:
+        response = response_method_not_allowed()
+    except ValueError:
+        response = response_not_found()
+    else:
+        response = response_ok(content)
+    print >>sys.stderr, 'sending response'
+    conn.sendall(response)
+    # ...
+
+
+Test Your Work
+--------------
+
+To test our new functionality, we need a bit of extra stuff, like a directory
+with interesting material in it.  
+
+.. class:: incremental
+
+In the class resources folder, I've provided a suitable directory. It's called
+``webroot``.
+
+.. class:: incremental
+
+Copy that directory and all its contents into the location where you've been
+creating your server files.
+
+.. class:: incremental
+
+Restart your server: ``$ python http_server_2.py``
+
+
+What's Missing?
+---------------
+
+Point your browser at ``http://localhost:10000/``.
+
+.. class:: incremental
+
+Try ``http://localhost:10000/a_web_page.html``.
+
+.. class:: incremental
+
+How about ``http://localhost:10000/images/JPEG_example.jpg``?
+
+.. class:: incremental
+
+What's going wrong here?
+
+
+HTTP Headers
+------------
+
+The problem is that we're identifying **all** the content we return as plain
+text.
+
+.. class:: incremental
+
+We can fix this by passing information about exactly what we are returning as
+part of the response.
+
+.. class:: incremental
+
+HTTP provides for this type of thing with the generic idea of *Headers*
+
+
 HTTP Headers
 ------------
 
@@ -1168,7 +1452,7 @@ Both requests and responses can contain **headers** of the form ``Name: Value``
 
 .. class:: incremental
 
-* HTTP 1.0 has 16, 1.1 has 46
+* HTTP 1.0 has 16 valid headers, 1.1 has 46
 * Any number of spaces or tabs may separate the *name* from the *value*
 * If a header line starts with spaces or tabs, it is considered part of the
   value for the previous header
@@ -1199,3 +1483,133 @@ There are *many* mime-type identifiers:
 http://www.webmaster-toolkit.com/mime-types.shtml
 
 
+Mapping Mime-types
+------------------
+
+By mapping a given file to a mime-type, we can write a header.
+
+.. class:: incremental
+
+The standard lib module ``mimetypes`` does just this.
+
+.. container:: incremental
+
+    We can guess the mime-type of a file based on the filename or map a file
+    extension to a type:
+    
+    .. code-block:: python 
+        :class: small
+    
+        >>> import mimetypes
+        >>> mimetypes.guess_type('file.txt')
+        ('text/plain', None)
+        >>> mimetypes.types_map['.txt']
+        'text/plain'
+
+Build a Content-type Header
+---------------------------
+
+We'll need to do a couple of things:
+
+.. class:: incremental
+
+* Extend the ``resolve_uri`` function to return content *and* mime-type
+* Extend the ``response_ok`` function to accept both content and mime-type as
+  arguments
+* Extend the ``response_ok`` function to write a ``Content-Type: XYZ`` header
+* Adjust the server loop appropriately
+
+
+My Solution
+-----------
+
+for ``resolve_uri``:
+
+.. code-block:: python
+    :class: small incremental
+    
+    # at the top of the file:
+    import mimetypes
+    
+    # in the existing function:
+    # ...
+        if os.path.isfile(filename):
+            ext = os.path.splitext(filename)[1]
+            mimetype = mimetypes.types_map.get(ext, 'text/plain')
+            contents = open(filename, 'rb').read()
+            return contents, mimetype
+        elif os.path.isdir(filename):
+        listing = "\n".join(os.listdir(filename))
+        return listing, 'text/plain'
+    else:
+        raise ValueError("Not Found")
+
+
+My Solution
+-----------
+
+for ``response_ok``:
+
+.. code-block:: python
+    :class: small incremental
+
+    def response_ok(body, mimetype):
+        """returns a basic HTTP response"""
+        resp = []
+        resp.append("HTTP/1.1 200 OK")
+        resp.append("Content-Type: %s" % mimetype)
+        resp.append("")
+        resp.append(body)
+        return "\r\n".join(resp)
+
+
+My Solution
+-----------
+
+for the server loop:
+
+.. code-block:: python
+    :class: small incremental
+
+    # ...
+    try:
+        uri = parse_request(request)
+        content, mimetype = resolve_uri(uri)
+    except NotImplementedError:
+        response = response_method_not_allowed()
+    except ValueError:
+        response = response_not_found()
+    else:
+        response = response_ok(content, mimetype)
+    
+    print >>sys.stderr, 'sending response'
+    conn.sendall(response)
+    # ...
+
+
+Test Your Work
+--------------
+
+Now, restart your server script and point your browser at various URLs, starting
+from the root (``http://localhost:10000/``).  
+
+.. class:: incremental
+
+Much better results, no?
+
+
+A Few Steps Further
+-------------------
+
+.. class:: incremental
+
+* Format directory listings as actual HTML, so you can make file names into
+  links.
+* Add a GMT ``Date:`` header in the proper format (RFC-1123) to responses.
+  *hint: see email.utils.formatdate in the python standard library*
+* Add a ``Content-Length:`` header for ``OK`` responses that provides a
+  correct value.
+* Protect your server against errors by providing, and using, a function that
+  returns a ``500 Internal Server Error`` response.
+* Instead of returning the python script in ``webroot`` as plain text, execute
+  the file and return the results as HTML.
