@@ -1,5 +1,5 @@
-Internet Programming with Python
-================================
+Python Web Programming
+======================
 
 .. image:: img/protocol.png
     :align: left
@@ -1613,3 +1613,20 @@ A Few Steps Further
   returns a ``500 Internal Server Error`` response.
 * Instead of returning the python script in ``webroot`` as plain text, execute
   the file and return the results as HTML.
+
+
+Wrap-Up
+-------
+
+For comparison, you might wish to take a look at the code in the Python
+Standard Library's ``SocketServer``, ``BaseHTTPServer`` and
+``SimpleHTTPServer`` modules::
+
+    >>> import SocketServer, BaseHTTPServer, SimpleHTTPServer
+    >>> SocketServer.__file__
+    '/full/path/to/your/copy/of/SocketServer.py'
+    ...
+
+.. class:: incremental center
+
+**See You Tomorrow!**
