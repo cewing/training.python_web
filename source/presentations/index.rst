@@ -4,8 +4,8 @@ Course Presentations
 
 * `Day 1 AM - Networking and Sockets <session01.html>`_
 * `Day 1 PM - Web Protocols <session02.html>`_
-* `Week 3 - APIs and Mashups`_
-* `Week 4 - CGI and WSGI`_
+* `Day 2 AM - APIs and Mashups <session03.html>`_
+* `Day 2 PM - CGI and WSGI <session04.html>`_
 * `Week 5 - Small Frameworks`_
 * `Week 6 - Django`_
 * `Week 7 - Django`_
@@ -13,8 +13,7 @@ Course Presentations
 * `Week 9 - The Cloud`_
 * `Week 10 - Plone`_
 
-.. _Week 3 - APIs and Mashups: week03.html
-.. _Week 4 - CGI and WSGI: week04.html
+
 .. _Week 5 - Small Frameworks: week05.html
 .. _Week 6 - Django: week06.html
 .. _Week 7 - Django: week07.html
