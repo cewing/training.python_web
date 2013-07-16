@@ -462,3 +462,21 @@ My Solution
         url = build_url(minAsk=500, maxAsk=1000, bedrooms=2)
         doc = parse_source(url)
         print doc.prettify()
+
+
+Test Your Work
+--------------
+
+Assuming your virtualenv is still active, you should be able to execute the
+script::
+
+    (soupenv)$ python mashup.py
+    <!DOCTYPE html>
+    <html class="nojs">
+     <head>
+      <title>
+       raleigh apts/housing for rent classifieds  - craigslist
+      </title>
+    ...
+
+

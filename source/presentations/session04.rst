@@ -5,7 +5,7 @@ Python Web Programming
     :align: left
     :width: 50%
 
-Week 4: CGI, WSGI and Living Online
+Day 2 PM: CGI, WSGI and Living Online
 
 .. class:: intro-blurb
 

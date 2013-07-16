@@ -5,7 +5,7 @@ Python Web Programming
     :align: left
     :width: 45%
 
-Week 2: Web Protocols
+Day 2 PM: Web Protocols
 
 .. class:: intro-blurb
 
