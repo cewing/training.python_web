@@ -105,129 +105,32 @@ Services Gateway Interface). We'll see the ways in which WSGI is similar to
 CGI, and look at the ways in which it differs. We'll create a simple interaction
 using WSGI and see what benefits and drawbacks it confers.
 
-`Week 4 Presentation <presentations/week04.html>`_
-
-Reading
-*******
-
-* `CGI tutorial`_ - Read the following sections: Hello World, Debugging, Form.
-  Other sections optional. Follow along, hosting CGI scripts either via Apache
-  on our VMs, or locally using CGIHTTPServer.
-
-* `WSGI tutorial`_ - Follow along, hosting WSGI scripts either via Apache on our
-  VMs, or locally using wsgiref.
-
-.. _CGI tutorial: http://webpython.codepoint.net/cgi_tutorial
-.. _WSGI tutorial: http://webpython.codepoint.net/wsgi_tutorial
-
-Prepare for class:
-~~~~~~~~~~~~~~~~~~
-
-* `CGI example scripts`_ - Use these examples to get started experimenting with
-  CGI.
-
-.. _CGI example scripts: https://github.com/cewing/training.python_web/tree/master/assignments/week04/lab/cgi-bin
-
-References
-**********
-
-* `CGI module`_ - utilities for CGI scripts, mostly form and query string parsing
-* `Parse URLS into components
-  <http://docs.python.org/release/2.6.5/library/urlparse.html>`_
-* `CGIHTTPServer`_ - python -m CGIHTTPServer
-* `WSGI Utilities and Reference implementation
-  <http://docs.python.org/release/2.6.5/library/wsgiref.html>`_
-* `WSGI 1.0 specification <http://www.python.org/dev/peps/pep-0333/>`_
-* `WSGI 1.0.1 (Python 3 support) <http://python.org/dev/peps/pep-3333/>`_
-* `test WSGI server, like cgi.test()
-  <http://hg.moinmo.in/moin/1.8/raw-file/tip/wiki/server/test.wsgi>`_
-
-.. _CGI module: http://docs.python.org/release/2.6.5/library/cgi.html
-.. _CGIHTTPServer: http://docs.python.org/release/2.6.5/library/cgihttpserver.html
-
-Alternate WSGI introductions:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-* `Getting Started with WSGI`_ - by Armin Ronacher (really solid and quick!)
-* `very minimal introduction to WSGI
-  <http://be.groovie.org/2005/10/07/wsgi_and_wsgi_middleware_is_easy.html>`_
-
-.. _Getting Started with WSGI: http://lucumr.pocoo.org/2007/5/21/getting-started-with-wsgi/
+`Lecture Slides <presentations/session04.html>`_
 
 
-Day 3 AM - Intro to Flask
--------------------------
+Day 3 AM - Frameworks and Flask
+-------------------------------
 
 In this class we learn about using frameworks to help us reach our goals. We
 will learn what makes up a framework and some criteria for evaluating which is
 the right one for you.
 
-This week we will also learn about the final project for the class and students
-will begin to think about what they wish to do to complete the project.
+After an introduction to the idea of frameworks, we'll look at a specific
+implementation of a *microframework*, `Flask <http://flask.pocoo.org/>`_.
+We'll install the framework and start working our way toward building a simple
+project using it.
 
-In our class lab we will explore using a specific framework (Flask) to create
-a simple web application. We'll learn how to install the framework, how to
-read the documentation for it, how to build a simple dynamic application, and
-how to push further on.
+Along the way we'll learn about Jinja2, the templating language that Flask
+uses, and a bit about the DBAPI2 and communicating with SQL databases from
+within Python.  We'll also begin to talk about unit testing and how to develop
+using a test-driven approach.
 
-For our assignment we will extend our knowledge by trying out a different
-framework. We will have the chance to repeat the class lab, or create another
-dynamic system using one of the many other python web frameworks available to
-us.
-
-`Week 5 Presentation <presentations/week05.html>`_
-
-Reading
-*******
-
-* `Web Application Frameworks
-  <http://en.wikipedia.org/wiki/Web_application_framework>`_
-* `Flask Documentation <http://flask.pocoo.org/docs/>`_ - Read the Foreward,
-  Installation and Quickstart sections.
-* `Unittest - Unit Testing Framework
-  <http://docs.python.org/2.6/library/unittest.html>`_ - We will be writing
-  tests from here forward. Start learning how.
-
-Please also skim this:
-
-* `sqlite3 - DB API for sqlite3
-  <http://www.doughellmann.com/PyMOTW/sqlite3/index.html>`_ - We'll need a bit
-  of familiarity with the sqlite3 module. How to open connections, execute
-  queries, and read the results from a cursor. Just read the first two
-  sections ('Creating a Database' and 'Retrieving Data').
-
-Before Class
-************
-
-* Install Flask in a virtualenv on your local machine.
-* Walk through the examples in the Quickstart section.
-* You can play with the tutorial if you want. We'll be doing this in class as
-  our lab work
-  
-Reference
-*********
-
-* `Bottle: Python Web Framework <http://bottlepy.org/docs/dev/>`_
-* `CherryPy: A Minimalize Python Web Framework <http://www.cherrypy.org/>`_
-* `Web.py: Think about the ideal way to write a web app. Write the code to
-  make it happen. <http://webpy.org/>`_
-
-These are only a few of the many python web frameworks available in the
-'microframework' class. I offer these resources as a starting point. For your
-assignment, pick one of these to work with, or select one from the list at the
-python wiki below. **Do Not Use Django or Pyramid**. We will be covering those
-specifically in class.
-
-* `Python Web Frameworks <http://wiki.python.org/moin/WebFrameworks>`_
-
-You may also want to do more reading on the unittest module:
-
-* `PyMOTW - unittest
-  <http://www.doughellmann.com/PyMOTW/unittest/index.html>`_
+`Lecture Slides <presentations/session05.html>`_
 
 
 Day 3 PM - A Flask Application
 ------------------------------
+
 
 In this class we'll get introduced to arguably the most popular full-stack
 Python web framework, Django. We'll build a simple application that introduces
