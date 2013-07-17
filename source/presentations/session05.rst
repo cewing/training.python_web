@@ -33,11 +33,8 @@ We've been at this for a couple of days now.  We've learned a great deal:
 
 .. class:: incremental
 
-These technologies are foundational.
-
-.. class:: incremental
-
-Everything we do from here out will be based on tools *built* using them.
+Everything we do from here out will be based on tools built using these
+*foundational technologies*.
 
 
 From Now On
@@ -292,7 +289,6 @@ Flask has similar functionality. Make the following changes to your
 .. code-block:: python
     :class: small
 
-    @app.route('/')
     def hello_world():
         bar = 1 / 0
         return 'Hello World!'
@@ -300,26 +296,142 @@ Flask has similar functionality. Make the following changes to your
     if __name__ == '__main__':
         app.run(debug=True)
 
-In your terminal, quit the app with ``^C`` and then restart it. Then reload
-your browser and see what happens.
+.. class:: incremental
+
+Restart your app and then reload your browser to see what happens (clean up
+the error when you're done).
 
 
 What's Happening Here?
 ----------------------
 
 Flask the framework provides a Python class called `Flask`. This class
-represents a single *application* in the WSGI sense.
+functions as a single *application* in the WSGI sense.
 
 .. class:: incremental
 
-* You instantiate a `Flask` app with a name that represents the package or
-  module containing the app.
-* If your application is a single module, this should be `__name__`
-* This is used to help the `Flask` app figure out where to look for
-  *resources*
-* *Resources* can be static files (css, images, javascript), templates, or
-  additional python modules you create and need to import.
-* You define a function and route a URL to call it
+Remember, a WSGI application must be a *callable* that takes the arguments
+*environ* and *start_response*.
+
+.. class:: incremental
+
+It has to call the *start_response* method, providing status and headers.
+
+.. class:: incremental
+
+And it has to return an *iterable* that represents the HTTP response body.
+
+
+Under the Covers
+----------------
+
+In Python, an object is a *callable* if it has a ``__call__`` method.
+
+.. container:: incremental
+
+    Here's the ``__call__`` method of the ``Flask`` class:
+    
+    .. code-block:: python
+    
+        def __call__(self, environ, start_response):
+            """Shortcut for :attr:`wsgi_app`."""
+            return self.wsgi_app(environ, start_response)
+
+.. class:: incremental
+
+As you can see, it calls another method, called ``wsgi_app``.  Let's follow
+this down...
+
+
+Flask.wsgi_app
+--------------
+
+.. code-block:: python
+    :class: small
+
+    def wsgi_app(self, environ, start_response):
+        """The actual WSGI application.  
+        ...
+        """
+        ctx = self.request_context(environ)
+        ctx.push()
+        error = None
+        try:
+            try:
+                response = self.full_dispatch_request()
+            except Exception as e:
+                error = e
+                response = self.make_response(self.handle_exception(e))
+            return response(environ, start_response)
+        #...
+
+.. class:: incremental
+
+``response`` is another WSGI app.  ``Flask`` is actually *middleware*
+
+
+Abstraction Layers
+------------------
+
+Finally, way down in a package called *werkzeug*, we find this response object
+and it's ``__call__`` method:
+
+.. code-block:: python
+    :class: small
+
+    def __call__(self, environ, start_response):
+        """Process this response as WSGI application.
+
+        :param environ: the WSGI environment.
+        :param start_response: the response callable provided by the WSGI
+                               server.
+        :return: an application iterator
+        """
+        app_iter, status, headers = self.get_wsgi_response(environ)
+        start_response(status, headers)
+        return app_iter
+
+
+Common Threads
+--------------
+
+All Python web frameworks that operate under the WSGI spec will do this same
+sort of thing.
+
+.. class:: incremental
+
+They have to do it.
+
+.. class:: incremental
+
+And these layers of abstraction allow you, the developer to focus only on the
+thing that really matters to you.
+
+.. class:: incremental
+
+Getting input from a request, and returning a response.
+
+
+Popping Back Up the Stack
+-------------------------
+
+Returning up to the level where we will be working, remember what you've done:
+
+.. class:: incremental
+
+* You instantiated a `Flask` app with a name that represents the package or
+  module containing the app
+
+  * Because our app is a single Python module, this should be ``__name__``
+  * This is used to help the `Flask` app figure out where to look for
+    *resources*
+
+* You defined a function that returned a response body
+* You told the app which requests should use that function with a *route*
+
+.. class:: incremental
+
+Let's take a look at how that last bit works for a moment...
 
 
 URL Routing
@@ -343,12 +455,54 @@ When a request arrives at a URL that matches a known rule, the function is
 called.
 
 
+URL Rules
+---------
+
+URL Rules are strings that represent what environ['PATH_INFO'] will look like.
+
+.. class:: incremental
+
+They are added to a *mapping* on the Flask object called the *url_map*
+
+.. class:: incremental
+
+You can call ``app.add_url_rule()`` to add a new one
+
+.. class:: incremental
+
+Or you can use what we've used, the ``app.route()`` decorator
+
+
+Function or Decorator
+---------------------
+
+.. code-block:: python
+    :class: small
+
+    def index():
+        """some function that returns something"""
+        # ...
+    
+    app.add_url_rule('/', 'homepage', index)
+
+.. container:: incremental
+
+    is identical to
+
+    .. code-block:: python
+        :class: small
+    
+        @app.route('/', 'homepage')
+        def index():
+            """some function that returns something"""
+            # ...
+
+
 Routes Can Be Dynamic
 ---------------------
 
-You can provide *placeholders* in dynamic urls. Each *placeholder* is then a
-named arg to your function (add these to ``flask_intro.py`` (and delete the
-1/0 bit)):
+A *placeholder* in a URL rule becomes a named arg to your function (add these
+to ``flask_intro.py``):
 
 .. code-block:: python
     :class: incremental small
@@ -359,8 +513,7 @@ named arg to your function (add these to ``flask_intro.py`` (and delete the
 
 .. class:: incremental
 
-These *placeholders* can also include *converters* that will ensure the
-incoming argument is of the correct type.
+And *converters* ensure the incoming argument is of the correct type.
 
 .. code-block:: python
     :class: incremental small
@@ -368,6 +521,7 @@ incoming argument is of the correct type.
     @app.route('/div/<float:val>/')
     def divide(val):
         return "%0.2f divided by 2 is %0.2f" % (val, val / 2)
+
 
 Routes Can Be Filtered
 ----------------------
@@ -419,7 +573,7 @@ In Flask, you reverse a url with the ``url_for`` function.
 * ``url_for`` requires an HTTP request context to work
 * You can fake an HTTP request when working in a terminal (or testing)
 * Use the ``test_request_context`` method of your app object
-* This is a great chance to learn about the Python ``with`` statement
+* This is a great chance to use the Python ``with`` statement
 * **Don't type this**
 
 .. code-block:: python
@@ -448,4 +602,238 @@ terminal and import your ``flask_intro.py`` module:
     '/div/23.7/'
 
 
+Break Time
+----------
+
+Now's a good time to take a rest.
+
+.. class:: incremental
+
+When we return, we'll take a look at templating and data persistence.
+
+
+Generating HTML
+---------------
+
+.. class:: big-centered
+
+"I enjoy writing HTML in Python"
+
+.. class:: incremental right
+
+-- nobody, ever
+
+
+Templating
+----------
+
+A good framework will provide some way of generating HTML with a templating
+system.
+
+.. class:: incremental
+
+There are nearly as many templating systems as there are frameworks
+
+.. class:: incremental
+
+Each has advantages and disadvantages
+
+.. class:: incremental
+
+Flask includes the *Jinja2* templating system (perhaps because it's built by
+the same folks)
+
+
+Jinja2 Template Basics
+----------------------
+
+Let's start with the absolute basics.
+
+.. container:: incremental
+
+    Fire up a Python interpreter, using your flask virtualenv:
     
+    .. code-block:: python
+        :class: small
+    
+        (flaskenv)$ python
+        >>> from jinja2 import Template
+
+.. container:: incremental
+
+    A template is built of a simple string:
+    
+    .. code-block:: python
+        :class: small
+
+        >>> t1 = Template("Hello {{ name }}, how are you?")
+
+
+Rendering a Template
+--------------------
+
+Call the ``render`` method, providing some *context*:
+
+.. code-block:: python
+    :class: incremental small
+
+    >>> t1.render(name="Freddy")
+    u'Hello Freddy, how are you?'
+    >>> t1.render({'name': "Roberto"})
+    u'Hello Roberto, how are you?'
+    >>>
+
+.. class:: incremental
+
+*Context* can either be keyword arguments, or a dictionary
+
+
+Dictionaries in Context
+-----------------------
+
+Dictionaries passed in as part of the *context* can be addressed with *either*
+subscript or dotted notation:
+
+.. code-block:: python
+    :class: incremental small
+
+    >>> person = {'first_name': 'Frank',
+    ...           'last_name': 'Herbert'}
+    >>> t2 = Template("{{ person.last_name }}, {{ person['first_name'] }}")
+    >>> t2.render(person=person)
+    u'Herbert, Frank'
+
+.. class:: incremental
+
+* Jinja2 will try the *correct* way first (attr for dotted, item for
+  subscript).
+* If nothing is found, it will try the opposite.
+* If nothing is found, it will return an *undefined* object.
+
+
+Objects in Context
+------------------
+
+The exact same is true of objects passed in as part of *context*:
+
+.. code-block:: python
+    :class: incremental small
+
+    >>> t3 = Template("{{ obj.x }} + {{ obj['y'] }} = Fun!")
+    >>> class Game(object):
+    ...   x = 'babies'
+    ...   y = 'bubbles'
+    ...
+    >>> bathtime = Game()
+    >>> t3.render(obj=bathtime)
+    u'babies + bubbles = Fun!'
+
+.. class:: incremental
+
+This means your templates can be a bit agnostic as to the nature of the things
+in *context*
+
+
+Filtering values in Templates
+-----------------------------
+
+You can apply *filters* to the data passed in *context* with the pipe ('|')
+operator:
+
+.. code-block:: python
+    :class: incremental small
+
+    t4 = Template("shouted: {{ phrase|upper }}")
+    >>> t4.render(phrase="this is very important")
+    u'shouted: THIS IS VERY IMPORTANT'
+
+.. container:: incremental
+
+    You can also chain filters together:
+    
+    .. code-block:: python
+        :class: small
+    
+        t5 = Template("confusing: {{ phrase|upper|reverse }}")
+        >>> t5.render(phrase="howdy doody")
+        u'confusing: YDOOD YDWOH'
+
+
+Control Flow
+------------
+
+Logical control structures are also available:
+
+.. code-block:: python
+    :class: incremental small
+
+    tmpl = """
+    ... {% for item in list %}{{ item }}, {% endfor %}
+    ... """
+    >>> t6 = Template(tmpl)
+    >>> t6.render(list=[1,2,3,4,5,6])
+    u'\n1, 2, 3, 4, 5, 6, '
+
+.. class:: incremental
+
+Any control structure introduced in a template **must** be paired with an 
+explicit closing tag ({% for %}...{% endfor %})
+
+
+Template Tests
+--------------
+
+There are a number of specialized *tests* available for use with the
+``if...elif...else`` control structure:
+
+.. code-block:: python
+    :class: incremental small
+
+    >>> tmpl = """
+    ... {% if phrase is upper %}
+    ...   {{ phrase|lower }}
+    ... {% elif phrase is lower %}
+    ...   {{ phrase|upper }}
+    ... {% else %}{{ phrase }}{% endif %}"""
+    >>> t7 = Template(tmpl)
+    >>> t7.render(phrase="FOO")
+    u'\n\n  foo\n'
+    >>> t7.render(phrase="bar")
+    u'\n\n  BAR\n'
+    >>> t7.render(phrase="This should print as-is")
+    u'\nThis should print as-is'
+
+
+Basic Python Expressions
+------------------------
+
+Basic Python expressions are also supported:
+
+.. code-block:: python
+    :class: incremental small
+
+    tmpl = """
+    ... {% set sum = 0 %}
+    ... {% for val in values %}
+    ... {{ val }}: {{ sum + val }}
+    ...   {% set sum = sum + val %}
+    ... {% endfor %}
+    ... """
+    >>> t8 = Template(tmpl)
+    >>> t8.render(values=range(1,11))
+    u'\n\n\n1: 1\n  \n\n2: 3\n  \n\n3: 6\n  \n\n4: 10\n
+      \n\n5: 15\n  \n\n6: 21\n  \n\n7: 28\n  \n\n8: 36\n
+      \n\n9: 45\n  \n\n10: 55\n  \n'
+
+
+Much, Much More
+---------------
+
+There's more that Jinja2 templates can do, and we'll see more in the next
+session when we write templates for our Flask app.
+
+.. container:: incremental
+
+    Make sure that you bookmark the Jinja2 documentation for later use::
+    
+        http://jinja.pocoo.org/docs/templates/
