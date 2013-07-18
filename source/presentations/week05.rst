@@ -130,46 +130,6 @@ micro-blog app using flask.
 This is based almost entirely on the `Flaskr tutorial
 <http://flask.pocoo.org/docs/tutorial/>`_ from the Flask website.
 
-Data Persistence
-----------------
-
-There are many models for persistance of data.
-
-.. class:: incremental
-
-* Flat files
-* Relational Database (SQL RDBMs like PostgreSQL, MySQL, SQLServer, Oracle)
-* Object Stores (Pickle, ZODB)
-* NoSQL Databases (CouchDB, MongoDB, etc)
-
-.. class:: incremental
-
-It's also one of the most contentious issues in app design.
-
-.. class:: incremental
-
-For this reason, it's one of the things that most Small Frameworks leave
-undecided.
-
-Simple SQL
-----------
-
-For our second lab exercise today, we're going to use a simple SQL database.
-
-.. class:: incremental
-
-Python `PEP 249 <http://www.python.org/dev/peps/pep-0249/>`_ describes a
-common API for database connections called DB API.
-
-.. class:: incremental
-
-The Python Standard Library comes with an implementation of this for a common,
-light-weight sql database, sqlite3
-
-.. class:: incremental
-
-I am *not* going to talk a lot about SQL.  It's too deep a pool for us to get
-into.  We'll concentrate only on those bits we need to get along.
 
 Our Database
 ------------

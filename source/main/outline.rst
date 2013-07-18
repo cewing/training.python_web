@@ -117,13 +117,12 @@ the right one for you.
 
 After an introduction to the idea of frameworks, we'll look at a specific
 implementation of a *microframework*, `Flask <http://flask.pocoo.org/>`_.
-We'll install the framework and start working our way toward building a simple
-project using it.
+We'll install the framework and take a look at how it works. What does it have
+in common with work we've already done?
 
 Along the way we'll learn about Jinja2, the templating language that Flask
 uses, and a bit about the DBAPI2 and communicating with SQL databases from
-within Python.  We'll also begin to talk about unit testing and how to develop
-using a test-driven approach.
+within Python.
 
 `Lecture Slides <presentations/session05.html>`_
 
@@ -131,6 +130,26 @@ using a test-driven approach.
 Day 3 PM - A Flask Application
 ------------------------------
 
+In this class we will exercise our new-won knowledge by building a small
+application using Flask. We'll write templates and forms, persist data,
+implement login and logout. When we're done, we'll have a fully-functional
+microblog.
+
+We'll use a test-driven development style as we go. We'll decide the
+functionality we need, write tests to prove it works, and then write the code
+to make those tests pass. We'll be using the ``unittest`` module from the
+Python Standard Library.
+
+Along the way, we'll learn a bit more about how flask operates in a real
+application. We'll learn some more about the Jinja2 templating language, and
+we'll learn to tie the transactions of our database interaction to the cycles
+of request and response.
+
+`Week 6 Presentation <presentations/week06.html>`_
+
+
+Day 4 AM - Intro to Django
+--------------------------
 
 In this class we'll get introduced to arguably the most popular full-stack
 Python web framework, Django. We'll build a simple application that introduces
@@ -144,7 +163,7 @@ Django ORM (and ORMs in general) can help shield Python developers from SQL.
 For our homework, we'll take a look at a set of specifications for a project
 and create a set of Django Models that will fulfill the specification.
 
-`Week 6 Presentation <presentations/week06.html>`_
+
 
 Reading
 *******
@@ -186,8 +205,9 @@ Reference
   <https://docs.djangoproject.com/en/dev/misc/design-philosophies/>`_ - some
   well-considered words on why Django is the way it is.
 
-Day 4 AM - Intro to Django
---------------------------
+
+Day 4 PM - A Django Application
+-------------------------------
 
 In this class we'll dive a bit further into Django. We'll start with a
 duplicate of the micro-blog we built in week 5 and work in teams to extend the
@@ -250,9 +270,6 @@ Reference
   Pyramid framework. Also available in `video form
   <http://www.youtube.com/watch?v=eN7h6ZbzMy0>`_.
 
-
-Day 4 PM - A Django Application
--------------------------------
 
 Day 5 AM - Intro to Pyramid
 ---------------------------
