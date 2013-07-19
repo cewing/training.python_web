@@ -145,7 +145,7 @@ application. We'll learn some more about the Jinja2 templating language, and
 we'll learn to tie the transactions of our database interaction to the cycles
 of request and response.
 
-`Week 6 Presentation <presentations/week06.html>`_
+`Lecture Slides <presentations/session06.html>`_
 
 
 Day 4 AM - Intro to Django
