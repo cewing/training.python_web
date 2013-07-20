@@ -382,4 +382,390 @@ Success?
 
 .. class:: big-centered incremental
 
- \o/ Wahoooo!
+ \\o/ Wahoooo!
+
+
+Initialize the DB IRL
+---------------------
+
+Our test passed, so we have confidence that ``init_db`` does what it should
+
+.. class:: incremental
+
+We'll need to have a working database for our app, so let's go ahead and do
+this "in real life"
+
+.. class:: incremental
+
+    (flaskenv)$ python
+
+.. code-block:: python
+    :class: incremental
+
+    >>> import microblog
+    >>> microblog.init_db()
+    >>> ^D
+
+
+Reading and Writing Data
+------------------------
+
+After you quit the interpreter, you should see ``microblog.db`` in your 
+directory.
+
+.. class:: incremental
+
+It's time now to think about writing and reading data for our blog.
+
+.. class:: incremental
+
+We'll start by writing tests.
+
+.. class:: incremental
+
+But first, a word or two about the circle of life.
+
+
+The Request/Response Cycle
+--------------------------
+
+Every interaction in HTTP is bounded by the interchange of one request and one
+response.
+
+.. class:: incremental
+
+No HTTP application can do anything until some client makes a request.
+
+.. class:: incremental
+
+And no action by an application is complete until a response has been sent
+back to the client.
+
+.. class:: incremental
+
+This is the lifecycle of an http web application.
+
+
+Managing DB Connections
+-----------------------
+
+It makes sense to bind the lifecycle of a database connection to this same
+border.
+
+.. class:: incremental
+
+Flask does not dictate that we write an application that uses a database.
+
+.. class:: incremental
+
+Because of this, managing the lifecycle of database connection so that they
+are connected to the request/response cycle is up to us.
+
+.. class:: incremental
+
+Happily, Flask *does* have a way to help us.
+
+
+Request Boundary Decorators
+---------------------------
+
+The Flask *app* provides decorators we can use on our database lifecycle
+functions:
+
+.. class:: incremental
+
+* ``@app.before_request``: any method decorated by this will be called before
+  the cycle begins
+
+* ``@app.after_request``: any method decorated by this will be called after
+  the cycle is complete. If an unhandled exception occurs, these functions are
+  skipped.
+
+* ``@app.teardown_request``: any method decorated by this will be called at
+  the end of the cycle, *even if* an unhandled exception occurs.
+
+
+Managing our DB
+---------------
+
+Think about the following functions:
+
+.. code-block:: python
+    :class: small
+
+    def get_database_connection():
+        db = connect_db()
+        return db
+
+    @app.teardown_request
+    def teardown_request(exception):
+        db.close()
+
+.. class:: incremental
+
+How does the ``db`` object get from one place to the other?
+
+
+Global Context in Flask
+-----------------------
+
+Our flask ``app`` is only really instantiated once
+
+.. class:: incremental
+
+This means that anything we tie to it will be shared across all requests.
+
+.. class:: incremental
+
+This is what we call ``global`` context.
+
+.. class:: incremental
+
+What happens if two clients make a request at the same time?
+
+
+Local Context in Flask
+----------------------
+
+Flask provides something it calls a ``local global``: "g".
+
+.. class:: incremental
+
+This is an object that *looks* global (you can import it anywhere)
+
+.. class:: incremental
+
+But in reality, it is *local* to a single request.
+
+.. class:: incremental
+
+Resources tied to this object are *not* shared among requests. Perfect for
+things like a database connection.
+
+
+Working DB Functions
+--------------------
+
+Add the following, working methods to ``microblog.py``:
+
+.. code-block:: python
+    :class: small
+
+    # add this import at the top:
+    from flask import g
+
+    # add these function after init_db
+    def get_database_connection():
+        db = getattr(g, 'db', None)
+        if db is None:
+            g.db = db = connect_db()
+        return db
+
+    @app.teardown_request
+    def teardown_request(exception):
+        db = getattr(g, 'db', None)
+        if db is not None:
+            db.close()
+
+
+Writing Blog Entries
+--------------------
+
+Our microblog will have *entries*. We've set up a simple database schema to
+represent them.
+
+.. class:: incremental
+
+To write an entry, what would we need to do?
+
+.. class:: incremental
+
+* Provide a title
+* Provide some body text
+* Write them to a row in the database
+
+.. class:: incremental
+
+Let's write a test of a function that would do that.
+
+
+Test Writing Entries
+--------------------
+
+The database connection is bound by a request. We'll need to mock one (in
+``microblog_tests.py``)
+
+.. container:: incremental
+
+    Flask provides ``app.test_request_context`` to do just that
+
+    .. code-block:: python
+        :class: small
+
+        def test_write_entry(self):
+            expected = ("My Title", "My Text")
+            with self.app.test_request_context('/'):
+                microblog.write_entry(*expected)
+                con = microblog.connect_db()
+                cur = con.execute("select * from entries;")
+                rows = cur.fetchall()
+            self.assertEquals(len(rows), 1)
+            for val in expected:
+                self.assertTrue(val in rows[0])
+
+
+Run Your Test
+-------------
+
+.. class:: small
+
+::
+
+    (flaskenv)$ python microblog_tests.py
+    .E
+    ======================================================================
+    ERROR: test_write_entry (__main__.MicroblogTestCase)
+    ----------------------------------------------------------------------
+    Traceback (most recent call last):
+      File "microblog_tests.py", line 30, in test_write_entry
+        microblog.write_entry(*expected)
+    AttributeError: 'module' object has no attribute 'write_entry'
+
+    ----------------------------------------------------------------------
+    Ran 2 tests in 0.018s
+
+    FAILED (errors=1)
+
+.. class:: incremental
+
+Great.  Two tests, one passing.
+
+
+Make It Pass
+------------
+
+Now we are ready to write an entry to our database. Add this function to
+``microblog.py``:
+
+.. code-block:: python
+    :class: small incremental
+
+    def write_entry(title, text):
+        con = get_database_connection()
+        con.execute('insert into entries (title, text) values (?, ?)',
+                     [title, text])
+        con.commit()
+
+.. class:: incremental small
+
+::
+
+    (flaskenv)$ python microblog_tests.py
+    ..
+    ----------------------------------------------------------------------
+    Ran 2 tests in 0.146s
+
+    OK
+
+
+Reading Entries
+---------------
+
+We'd also like to be able to read the entries in our blog
+
+.. container:: incremental
+
+    We need a method that returns all of them for a listing page
+
+    .. class:: incremental
+
+    * The return value should be a list of entries
+    * If there are none, it should return an empty list
+    * Each entry in the list should be a dictionary of 'title' and 'text'
+
+.. class:: incremental
+
+Let's begin by writing tests.
+
+
+Test Reading Entries
+--------------------
+
+In ``microblog_tests.py``:
+
+.. code-block:: python
+    :class: small
+
+    def test_get_all_entries_empty(self):
+        with self.app.test_request_context('/'):
+            entries = microblog.get_all_entries()
+            self.assertEquals(len(entries), 0)
+
+    def test_get_all_entries(self):
+        expected = ("My Title", "My Text")
+        with self.app.test_request_context('/'):
+            microblog.write_entry(*expected)
+            entries = microblog.get_all_entries()
+            self.assertEquals(len(entries), 1)
+            for entry in entries:
+                self.assertEquals(expected[0], entry['title'])
+                self.assertEquals(expected[1], entry['text'])
+
+
+Run Your Tests
+--------------
+
+.. class:: small
+
+::
+
+    (flaskenv)$ python microblog_tests.py
+    .EE.
+    ======================================================================
+    ERROR: test_get_all_entries (__main__.MicroblogTestCase)
+    ----------------------------------------------------------------------
+    Traceback (most recent call last):
+      File "microblog_tests.py", line 47, in test_get_all_entries
+        entries = microblog.get_all_entries()
+    AttributeError: 'module' object has no attribute 'get_all_entries'
+
+    ======================================================================
+    ERROR: test_get_all_entries_empty (__main__.MicroblogTestCase)
+    ----------------------------------------------------------------------
+    Traceback (most recent call last):
+      File "microblog_tests.py", line 40, in test_get_all_entries_empty
+        entries = microblog.get_all_entries()
+    AttributeError: 'module' object has no attribute 'get_all_entries'
+
+    ----------------------------------------------------------------------
+    Ran 4 tests in 0.021s
+
+    FAILED (errors=2)
+
+Make Them Pass
+--------------
+
+Now we have 4 tests, and two fail, add this function to ``microblog.py``:
+
+.. code-block:: python
+    :class: small
+
+    def get_all_entries():
+        con = get_database_connection()
+        cur = con.execute('SELECT title, text FROM entries ORDER BY id DESC')
+        return [dict(title=row[0], text=row[1]) for row in cur.fetchall()]
+
+.. container:: incremental small
+
+    And back in your terminal:
+    
+    .. class:: small
+    
+    ::
+
+        (flaskenv)$ python microblog_tests.py
+        ....
+        ----------------------------------------------------------------------
+        Ran 4 tests in 0.021s
+
+        OK
