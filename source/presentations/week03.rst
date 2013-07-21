@@ -1,51 +1,12 @@
 Internet Programming with Python
 ================================
 
+blah blah blah
 
-Scraping HTML
--------------
 
-The next step is to figure out what it is from the HTML page that you want to
-scrape.
 
-.. class:: incremental
 
-**Goal**: Sort the blog post titles and URLs into two lists, one for Django
-and one for PostgreSQL
 
-.. class:: incremental
-
-What tools do we have to allow us to look at the source and find our targets?
-
-HTML Inspection Demo
---------------------
-
-We can use the developer tools that come in Safari, Chrome and IE, or use the 
-Firebug extension to FireFox.
-
-.. class:: incremental
-
-So, we need to find ``<div>`` elements with the class ``feedEntry``.
-
-Searching Your Soup
--------------------
-
-BeautifulSoup has parsed our document
-
-.. class:: incremental
-
-* A parsed document acts like a ``tag``
-* A ``tag`` can be searched using the ``find_all`` method
-* The ``find_all`` method searches the descendents of the tag on which it is
-  called.
-* The ``find_all`` method takes arguments which act as *filters* on the search
-  results
-
-.. class:: incremental
-
-| like so: 
-| 
-| ``tag.find_all(name, attrs, recursive, text, limit, **kwargs)``
 
 Searching by CSS Class
 ----------------------

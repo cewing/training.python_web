@@ -301,6 +301,28 @@ BeautifulSoup will choose the best available, you don't need to worry about it
 (though you can specify).
 
 
+Install Requests
+----------------
+
+Python provides tools for opening urls and communicating with servers. It's
+spread across the ``urllib`` and ``urllib2`` packages.
+
+.. class:: incremental
+
+These packages have pretty unintuitive APIs.
+
+.. class:: incremental
+
+The ``requests`` library is becoming the de-facto standard for this type of
+work.  Let's install it too.
+
+.. class:: incremental
+
+::
+
+    (soupenv)$ pip install requests
+
+
 Our Class Mashup
 ----------------
 
@@ -342,59 +364,124 @@ formula for a search URL
 * price: ``minAsk=NNN maxAsk=NNN``
 * bedrooms: ``bedrooms=N`` (N in range 1-8)
 
+.. class:: incremental
 
-Build a Search URL
-------------------
+We can make a request with these parameters using the ``requests`` library we
+installed a moment ago
 
-First, let's build a function ``build_url`` that generates a good search url
+
+Opening URLs with Requests
+--------------------------
+
+Requests has a very nice API for doing HTTP requests.
 
 .. class:: incremental
 
-The standard library modules ``urllib`` and ``urllib2`` can help us
+Each HTTP method is represented by a module-level function:
+
+.. class:: incremental
+
+* ``GET`` == ``requests.get(url, **kwargs)``
+* ``POST`` == ``requests.post(url, **kwargs)``
+* ...
+
+.. class:: incremental
+
+Keyword arguments allow for other parts of an HTTP request:
+    
+.. class:: incremental
+
+* ``params``: url parameters (?foo=bar&baz=bim)
+* ``headers``: headers to send with the request
+* ``data``: the body of the request, if any (form data for POST goes here)
+* ...
+
+
+Getting Responses with Requests
+-------------------------------
+
+Once you've made a request using one of these methods, the return value is a
+``response``.
+
+.. class:: incremental
+
+This object has a number of useful attributes:
+
+.. class:: incremental
+
+* ``response.status_code``: see the HTTP Status Code returned
+* ``response.ok``: True if ``response.status_code`` is not an error code
+* ``response.headers``: The headers sent in the response from the server
+* ``response.text``: Body of the response, decoded to a unicode string
+* ``response.encoding``: The encoding used to decode ``response.text``
+* ``response.content``: The original response body, not decoded (useful for
+  binary content)
+
+.. class:: incremental
+
+If an error status is returned, you can raise a Python error by calling
+``response.raise_for_status``.
+
+
+Fetch Search Results
+--------------------
+
+We can start our work by writing a function ``fetch_search_results``
 
 .. class:: incremental
 
 * It will accept one keyword argument for each of the possible query values
-* It will combine the values passed into an HTTP query
-* It will combine that query with the base URL for the search and return the
-  result
+* It will build a dictionary of request query parameters from incoming keywords
+* It will make a request to the craigslist server using this query
+* It will return the body of the response if there is no error
+* It will raise an error if there is a problem with the response
 
 .. class:: incremental
 
-Go ahead and write your version into ``mashup.py``
+Using what you've learned, take a stab at writing this function. Put it in
+``mashup.py``
 
 
 My Solution
 -----------
 
+Here's the one I created:
+
 .. code-block:: python
     :class: small incremental
 
-    def build_url(**kwargs):
+    import requests
+
+    def fetch_search_results(**kwargs):
         base = 'http://raleigh.craigslist.org/search/apa'
         valid_kws = ('query', 'minAsk', 'maxAsk', 'bedrooms')
-        use_kwargs = {}
-        for kw in valid_kws:
-            if kw in kwargs:
-                use_kwargs[key] = kwargs[key]
+        use_kwargs = dict(
+            [(key, val) for key, val in kwargs.items() if key in valid_kws])
         if not use_kwargs:
             raise ValueError("No valid keywords")
-        query = urllib.urlencode(use_kwargs)
-        return '%s?%s' % (base, query)
+
+        resp = requests.get(base, params=use_kwargs, timeout=3)
+        if resp.ok:
+            return resp.text, resp.encoding
+        else:
+            resp.raise_for_status()
 
 
-Grab and Parse a Page
----------------------
+Parse the Results
+-----------------
 
 Next, we need a function ``parse_source`` to set up HTML for scraping. It will
 need to:
 
 .. class:: incremental
 
-* Take the constructed URL from before as an argument
-* Open the url
-* If appropriate, attempt to parse the page with BeautifulSoup
-* Return the parsed HTML for processing
+* Take the response body from the previous method (or some other source)
+* Parse it using BeautifulSoup
+* Return the parsed object for further processing
+
+.. class:: incremental
+
+Before you start, a word about parsing HTML with BeautifulSoup
 
 
 Parsing HTML with BeautifulSoup
@@ -416,17 +503,26 @@ object as the sole argument:
     parsed = BeautifulSoup(page)
 
 
+.. class:: incremental
+
+You might want to open the documentation as reference
+(http://www.crummy.com/software/BeautifulSoup/bs4/doc)
+
+
 My Solution
 -----------
 
-.. code-block:: python
-    :class: incremental
+Take a shot at writing this new function in ``mashup.py``
 
-    def parse_source(url):
-        resp = urllib2.urlopen(url)
-        if resp.code != 200:
-            raise IOError("Error reading source URL")
-        parsed = BeautifulSoup(resp)
+.. code-block:: python
+    :class: incremental small
+    
+    # add this import at the top
+    from bs4 import BeautifulSoup
+
+    # then add this function lower down
+    def parse_source(html, encoding='utf-8'):
+        parsed = BeautifulSoup(html, from_encoding=encoding)
         return parsed
 
 
@@ -439,10 +535,10 @@ To see how we're doing, we'll need to make our script do something when run.
 
 Add an ``if __name__ == '__main__`:`` block to the bottom of our library
 
-.. class:: incremental small
+.. class:: incremental
 
-* Build a good search url
-* Parse the resulting search page
+* Fetch a search results page
+* Parse the resulting HTML
 * For now, print out the results so we can see what we get
 
 .. container:: incremental small
@@ -455,20 +551,27 @@ Add an ``if __name__ == '__main__`:`` block to the bottom of our library
 My Solution
 -----------
 
+Try to come up with the proper code on your own.  Add it to ``mashup.py``
+
 .. code-block:: python
     :class: incremental
 
     if __name__ == '__main__':
-        url = build_url(minAsk=500, maxAsk=1000, bedrooms=2)
-        doc = parse_source(url)
-        print doc.prettify()
+        params = {'minAsk': 500, 'maxAsk': 1000, 'bedrooms': 2}
+        html, encoding = fetch_search_results(**params)
+        doc = parse_source(html, encoding)
+        print doc.prettify(encoding=encoding)
 
 
 Test Your Work
 --------------
 
 Assuming your virtualenv is still active, you should be able to execute the
-script::
+script.
+
+.. class:: incremental small
+
+::
 
     (soupenv)$ python mashup.py
     <!DOCTYPE html>
@@ -479,4 +582,128 @@ script::
       </title>
     ...
 
+.. container:: incremental
 
+    Try it again, this time redirect the output to a local file, so we can use
+    it without needing to hit the craiglist servers each time:
+    
+    .. class:: small
+    
+    ::
+
+        (soupenv)$ python mashup.py > craigslist_results.html
+
+
+Finding The Needle
+------------------
+
+The next step is to find the bits of this pile of HTML that matter to us.
+
+.. class:: incremental
+
+We've got this HTML file, so let's open it in a browser and take a look
+
+.. class:: incremental
+
+We'll want to find:
+
+.. class:: incremental
+
+* The HTML element that contains a single listing
+* The source of location data, listings without location should be abandoned
+* The description of a listing
+* The link to a full listing page on craigslist
+* Relevant price or size data.
+
+
+Pulling it Out
+--------------
+
+Now that we know what we are looking for, we can extract it. In BeautifulSoup:
+
+.. class:: incremental
+
+* All HTML elements (including the parsed document itself) act like ``tags``
+* A ``tag`` can be searched using the ``find_all`` method
+* The ``find_all`` method searches the descendents of the tag on which it is
+  called.
+* The ``find_all`` method takes arguments which act as *filters* on the search
+  results
+
+.. class:: incremental
+
+| like so: 
+| 
+| ``tag.find_all(name, attrs, recursive, text, limit, **kwargs)``
+
+
+Searching by CSS Class
+----------------------
+
+The items we are looking for are ``p`` tags which have the CSS class
+``row``:
+
+.. class:: incremental
+
+``find_all`` supports keyword arguments. If the keyword you use isn't one of
+the listed arguments, it is treated as an ``attribute``
+
+.. class:: incremental
+
+In Python, ``class`` is a reserved word, so we can't use it as a keyword, but
+you can use ``class_``!
+
+.. class:: incremental small
+
+::
+
+    parsed.find_all('p', class_='row')
+
+
+Try It Out
+----------
+
+Let's fire up a python interpreter and get our hands dirty here::
+
+    (soupenv)$ python
+
+.. code-block:: python
+    :class: small incremental
+
+    >>> html = open('craigslist_results.html', 'r').read()
+    >>> from bs4 import BeautifulSoup
+    >>> parsed = BeautifulSoup(html)
+    >>> listings = parsed.find_all('p', class_='row')
+    >>> len(entries)
+    100
+
+
+.. class:: incremental
+
+That sounds about right. Let's see if we can get only those with location
+data.
+
+
+Filtering Tricks
+----------------
+
+Attribute filters given a ``True`` value match tags with that attribute
+
+.. class:: incremental
+
+Location data was in the ``data-latitude`` and ``data-longitude`` attributes.
+
+.. code-block:: python
+    :class: small incremental
+
+    >>> location_attrs = {
+    ...     'data-longitude': True,
+    ...     'data-latitude': True}
+    >>> locatable = parsed.find_all(
+    ...     'p', class_='row', attrs=location_attrs)
+    >>> len(locatable)
+    43
+
+.. class:: incremental
+
+Great.  That worked nicely
