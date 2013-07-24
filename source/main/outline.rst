@@ -152,16 +152,19 @@ Day 4 AM - Intro to Django
 --------------------------
 
 In this class we'll get introduced to arguably the most popular full-stack
-Python web framework, Django. We'll build a simple application that introduces
-us to the basics of Models, Views and Templates.  We'll also learn about the 
-Django admin and how it can help us rapidly develop effective applications.
+Python web framework, Django. We'll install the framework, learn about how to
+get it running and how to get started creating your very own app.
 
-We'll cover basic relational modeling and talk about how to create effective
-database schemas to model real-world problems.  We'll take a look at how the 
-Django ORM (and ORMs in general) can help shield Python developers from SQL.
+We'll be learning about the Django ORM and how Django Models can help shield
+developers from much of the complexity of SQL. We'll learn how to use the tools
+Django provides to explore and interact with your models while designing them.
 
-For our homework, we'll take a look at a set of specifications for a project
-and create a set of Django Models that will fulfill the specification.
+Along the way, we'll continue our test-driven development style: writing tests
+to demonstrate the functionality we desire and then implementing code to make
+them pass. We'll get a chance to see how to build tests within the framework 
+offered by Django's testrunner. 
+
+`Lecture Slides <presentations/session07.html>`_
 
 
 
