@@ -1592,7 +1592,7 @@ Making an API Call
     (soupenv)$ python
 
 .. code-block:: python
-    :small:
+    :class: small
 
     >>> import requests
     >>> import json
