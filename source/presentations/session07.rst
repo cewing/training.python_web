@@ -443,7 +443,7 @@ Django already includes some *apps* for you.
 
 .. container:: incremental
 
-    They're ``settings.py`` in the ``INSTALLED_APPS`` setting:
+    They're in ``settings.py`` in the ``INSTALLED_APPS`` setting:
 
     .. code-block:: python
         :class: small
@@ -487,4 +487,295 @@ These *apps* define models of their own, tables must be created.
 .. class:: incremental
 
 Add your first user at this prompt (remember the password)
+
+
+Our Class App
+-------------
+
+We are going to build an *app* to add to our *project*. To start with our app
+will:
+
+.. class:: incremental
+
+* allow a user to create and edit blog posts
+* allow a user to define categories
+* allow a user to place a post in one or more categories
+
+.. class:: incremental
+
+As stated above, an *app* represents a unit within a system, the *project*. We
+have a project, we need to create an *app*
+
+
+Create an App
+-------------
+
+This is accomplished using ``manage.py``.
+
+.. class:: incremental
+
+In your terminal, make sure you are in the *outer* mysite directory, where the
+file ``manage.py`` is located.  Then:
+
+.. class:: incremental
+
+::
+
+    (djangoenv)$ python manage.py startapp myblog
+
+
+What is Created
+---------------
+
+This should leave you with the following structure:
+
+.. class:: small
+
+::
+
+    mysite/
+        manage.py
+        mysite/
+            ...
+        myblog/
+            __init__.py
+            models.py
+            tests.py
+            views.py
+
+.. class:: incremental
+
+We'll start by defining the main Python class in our blog system, a ``Post``.
+
+
+Django Models
+-------------
+
+Any Python class in Django that is meant to be persisted *must* inherit from 
+the Django ``Model`` class.
+
+.. class:: incremental
+
+This base class provides all the functionality that connects the Python code
+you write to your database.
+
+.. class:: incremental
+
+You can override methods from the base ``Model`` class to alter how this works.
+
+.. class:: incremental
+
+You can also write new methods on your class that provide new functionality.
+
+
+Our Post Model
+--------------
+
+Open the ``models.py`` file created in our ``myblog`` package. Add the
+following:
+
+.. code-block:: python
+    :class: small
+
+    from django.db import models
+    from django.contrib.auth.models import User
+    
+    class Post(models.Model):
+        title = models.CharField(max_length=128)
+        text = models.TextField(blank=True)
+        author = models.ForeignKey(User)
+        created_date = models.DateTimeField(auto_now_add=True)
+        modified_date = models.DateTimeField(auto_now=True)
+        published_date = models.DateTimeField(blank=True, null=True)
+
+
+Model Fields
+------------
+
+We've created a subclass of the Django ``Model`` class and added a bunch of
+attributes.
+
+.. class:: incremental
+
+* These attributes are all instances of ``Field`` classes defined in Django
+* Field attributes on a model map to columns in a database table
+* The arguments you provide to each Field customize how it works
+
+  * This means *both* how it operates in Django *and* how it is defined in SQL
+
+* There are arguments shared by all Field types
+* There are also arguments specific to individual types
+
+.. class:: incremental
+
+You can read much more about `Model Fields and options
+<https://docs.djangoproject.com/en/1.5/ref/models/fields/>`_
+
+
+Field Details
+-------------
+
+There are some features of our fields worth mentioning in specific:
+
+.. class:: incremental
+
+Notice we have no field that is designated as the *primary key*
+
+.. class:: incremental
+
+* You *can* make a field the primary key by adding ``primary_key=True`` in the
+  arguments
+* If you do not, Django will automatically create one. This field is always
+  called ``id``
+* No matter what the primary key field is called, its value is always
+  available on a model instance as ``pk``
+
+
+Field Details
+-------------
+
+.. code-block:: python
+    :class: small
+    
+    title = models.CharField(max_length=128)
+
+.. class:: incremental
+
+The required ``max_length`` argument is specific to ``CharField`` fields.
+
+.. class:: incremental
+
+It affects *both* the Python and SQL behavior of a field.
+
+.. class:: incremental
+
+In python, it is used to *validate* supplied values during *model validation*
+
+.. class:: incremental
+
+In SQL it is used in the column definition: ``VARCHAR(128)``
+
+
+Field Details
+-------------
+
+.. code-block:: python
+    :class: small
+
+    text = models.TextField(blank=True)
+    # ...
+    published_date = models.DateTimeField(blank=True, null=True)
+
+.. class:: incremental
+
+The argument ``blank`` is shared across all field types. The default is
+``False``
+
+.. class:: incremental
+
+This argument affects only the Python behavior of a field, determining if the 
+field is *required*
+
+.. class:: incremental
+
+The related ``null`` argument affects the SQL definition of a field: is the
+column NULL or NOT NULL
+
+
+Field Details
+-------------
+
+.. code-block:: python
+    :class: small
+
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
+
+.. class:: incremental
+
+``auto_now_add`` is available on all date and time fields. It sets the value
+of the field to *now* when an instance is first saved.
+
+.. class:: incremental
+
+``auto_now`` is similar, but sets the value anew each time an instance is
+saved.
+
+.. class:: incremental
+
+Setting either of these will cause the ``editable`` attribute of a field to be
+set to ``False``.
+
+
+Field Details
+-------------
+
+.. code-block:: python
+    :class: small
+
+    author = models.ForeignKey(User)
+
+.. class:: incremental
+
+Django also models SQL *relationships* as specific field types.
+
+.. class:: incremental
+
+The required positional argument is the class of the related Model.
+
+.. class:: incremental
+
+By default, the reverse relation is implemented as the attribute
+``<fieldname>_set``.
+
+.. class:: incremental
+
+You can override this by providing the ``related_name`` argument.
+
+
+Our Category Model
+------------------
+
+Our app specification says that a user should be able to place a post in one
+or more categories.
+
+.. class:: incremental
+
+We'll create a second Model to represent this. It should:
+
+.. class:: incremental
+
+* Have a unique name
+* Have a description
+* Be in a many-to-many relationship with our ``Post`` model
+* Instances of ``Category`` should have a ``posts`` attribute that provides
+  access to all posts in that category
+* Instances of ``Post`` should have a ``categories`` attribute that provides
+  access to all the categories it has been placed in.
+
+
+My Solution
+-----------
+
+Add this new Model class to ``models.py``.
+
+.. class:: incremental small
+
+https://docs.djangoproject.com/en/1.5/ref/models/fields/
+
+.. container:: incremental
+
+    Here's my model code:
+
+    .. code-block:: python
+        :class: small
+
+        class Category(models.Model):
+            name = models.CharField(max_length=128)
+            description = models.TextField(blank=True)
+            posts = models.ManyToManyField(Post, 
+                blank=True,
+                null=True,
+                related_name='categories'
+            )
 
