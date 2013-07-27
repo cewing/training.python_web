@@ -2,18 +2,13 @@ Course Presentations
 ====================
 .. _index:
 
-* `Day 1 AM - Networking and Sockets <session01.html>`_
-* `Day 1 PM - Web Protocols <session02.html>`_
-* `Day 2 AM - APIs and Mashups <session03.html>`_
-* `Day 2 PM - CGI and WSGI <session04.html>`_
-* `Day 3 AM - Frameworks and Flask <session05.html>`_
-* `Day 3 PM - A Flask Application <session06.html>`_
-* `Day 4 AM - Introducing Django <session07.html>`_
-* `Week 8 - Pyramid`_
-* `Week 9 - The Cloud`_
-* `Week 10 - Plone`_
-
-
-.. _Week 8 - Pyramid: week08.html
-.. _Week 9 - The Cloud: week09.html
-.. _Week 10 - Plone: week10.html
+* `Session 1 - Networking and Sockets <session01.html>`_
+* `Session 2 - Web Protocols <session02.html>`_
+* `Session 3 - APIs and Mashups <session03.html>`_
+* `Session 4 - CGI and WSGI <session04.html>`_
+* `Session 5 - Frameworks and Flask <session05.html>`_
+* `Session 6 - A Flask Application <session06.html>`_
+* `Session 7 - Introducing Django <session07.html>`_
+* `Session 8 - A Django Application <session08.html>`_
+* `Session 9 - Intro to Pyramid <session09.html>`_
+* `Session 10 - A Pyramid Application <session10.html>`_

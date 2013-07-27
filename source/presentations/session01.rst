@@ -5,7 +5,7 @@ Python Web Programming
     :align: left
     :width: 33%
 
-Day 1 AM: Networking and Sockets
+Session 1: Networking and Sockets
 
 .. class:: intro-blurb
 

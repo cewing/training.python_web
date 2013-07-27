@@ -5,7 +5,7 @@ Python Web Programming
     :align: left
     :width: 50%
 
-Week 3: Scraping, APIs and Mashups
+Session 3: Scraping, APIs and Mashups
 
 .. class:: intro-blurb
 

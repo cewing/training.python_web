@@ -5,7 +5,7 @@ Python Web Programming
     :align: left
     :width: 50%
 
-Day 3 PM: A Flask Application
+Session 6: A Flask Application
 
 .. class:: intro-blurb right
 

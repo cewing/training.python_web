@@ -155,3 +155,7 @@ If you like, you can see your work by running the new project::
 Visit ``http://localhost:6543`` to see your work in action. then go grab a
 beer and curl up with the reading for the week. There's a lot.
 
+
+
+
+http://wiki.cython.org/64BitCythonExtensionsOnWindows

@@ -5,7 +5,7 @@ Python Web Programming
     :align: left
     :width: 50%
 
-Day 4 AM: Introducing Django
+Session 7: Introducing Django
 
 .. class:: intro-blurb right
 

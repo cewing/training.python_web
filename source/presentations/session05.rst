@@ -5,7 +5,7 @@ Python Web Programming
     :align: left
     :width: 50%
 
-Day 3 AM: Frameworks and Flask
+Session 5: Frameworks and Flask
 
 .. class:: intro-blurb right
 
