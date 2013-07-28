@@ -1721,7 +1721,7 @@ development server:
 Viewing the Admin
 -----------------
 
-Load ``http://localhost:8000/``.  You should see this:
+Load ``http://localhost:8000/admin/``.  You should see this:
 
 .. image:: img/django-admin-login.png
     :align: center

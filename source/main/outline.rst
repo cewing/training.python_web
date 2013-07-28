@@ -178,6 +178,12 @@ We'll create and test view functions that present our application to the world
 and we'll provide front-end access to forms that allow us to create, edit and
 publish blog entries without needing to use the admin.
 
+Along the way we'll learn that the Django template language is quite similar
+to the Jinja2 language (in fact, Jinja2 was modelled on the Django version).
+We'll also get a chance to learn a bit more about the features that the Django
+test framework provides over and above the standard Python ``unittest``
+library.
+
 Finally, we'll discuss some of the strengths and weaknesses of Django.  What 
 makes it a good choice for some projects but not for others.
 
