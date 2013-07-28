@@ -45,7 +45,6 @@ We have noted, however, that the admin isn't exactly right for our needs.
 
 * Listing of posts should show created, modified and published dates
 * Listing of posts should show the author of a post, with a link to the author
-* The date information for a post should be displayed on the edit page
 * It should be possible to add a post to a category while creating or editing
   it
 
@@ -365,142 +364,6 @@ column.
 Not bad, eh?
 
 
-Change Form Fields
-------------------
-
-Date fields that have ``auto_now`` or ``auto_now_add`` set automatically 
-become uneditable.
-
-.. class:: incremental
-
-Because they are uneditable, the Django Admin leaves them out.
-
-.. class:: incremental
-
-We'd like to see them, though.
-
-.. class:: incremental
-
-We can use another built-in Admin option to help us: ``readonly_fields``
-
-
-Update PostAdmin
-----------------
-
-Again, in ``admin.py`` let's add the following to our PostAdmin class:
-
-.. code-block:: python
-    :class: small
-
-    class PostAdmin(admin.ModelAdmin):
-        list_display = (...)
-        readonly_fields = ('created_date', 'modified_date')
-        #...
-
-.. class:: incremental
-
-Reload the Admin and click on a single post.  Did that work?
-
-.. class:: incremental
-
-Add a new post and look at the form.  How do those fields look?
-
-
-Hide Fields on Add
-------------------
-
-Our readonly fields really shouldn't be there when we add a new object.
-
-.. class:: incremental
-
-ModelAdmin provides a hook to customize this: ``get_readonly_fields``.
-
-.. class:: incremental
-
-Overriding this is altering standard functionality, so let's add a test
-proving:
-
-.. class:: incremental
-
-* If we load the form to add a post, we don't see these fields
-* If we load the form to edit a post, we do.
-
-
-Add A Test
-----------
-
-In our PostAdminTestCase class, add:
-
-.. code-block:: python
-    :class: small
-    
-    # add this to the setUp() method:
-    def setUp(self):
-        #...
-        self.client.login(username='admin', password='secret')
-
-    # and add a new test method:
-    def test_readonly_fields_in_page(self):
-        readonly_fields = self.ma.readonly_fields
-        add_resp = self.client.get('/admin/myblog/post/add/')
-        for fieldname in readonly_fields:
-            self.assertFalse(fieldname in add_resp.content)
-        for post in Post.objects.all():
-            edit_resp = self.client.get('/admin/myblog/post/%d/' % post.pk)
-            for fieldname in readonly_fields:
-                self.assertTrue(fieldname in edit_resp.content)
-
-
-Run The Test
-------------
-
-We're using the test client. Django provides this automatically on TestCase
-subclasses.
-
-.. container:: incremental
-
-    Quit the django browser and run your tests:
-
-    .. class:: small
-    
-    :: 
-    
-        (djangoenv)$ python manage.py test myblog
-        ...
-        ----------------------------------------------------------------------
-        Ran 5 tests in 0.302s
-
-        FAILED (failures=1)
-
-
-Make It Pass
-------------
-
-.. container:: incremental
-
-    Override ``get_readonly_fields`` on the PostAdmin class:
-    
-    .. code-block:: python
-        :class: small incremental
-
-        def get_readonly_fields(self, request, obj=None):
-            fields = ()
-            # if there is no object, we must be adding a new post
-            # otherwise we are editing one that exists.
-            if obj is not None:
-                fields = self.readonly_fields
-            return fields
-
-.. class:: incremental small
-
-::
-
-    (djangoenv)$ python manage.py test myblog
-    ...
-    Ran 5 tests in 0.364s
-    OK
-
-
 Categorize Posts
 ----------------
 
@@ -545,6 +408,7 @@ In ``admin.py`` add the following code *above* the definition of PostAdmin:
             inlines = [CategoryInlineAdmin, ]
             
             #... methods
+
 
 Try It Out
 ----------
@@ -764,7 +628,6 @@ What should our users be able to see when they visit our blog?
 
 * A list view that shows blog posts, most recent first.
 * An individual post view, showing a single post (a permalink).
-* An archive view that shows all posts for a year, or a month within a year.
 * A category view that shows all posts in a given category.
 
 .. class:: incremental
@@ -822,27 +685,744 @@ How you declare a capture group in your url pattern regexp influenced how it
 will be passed to the view callable.
 
 
-Archive View URLs
+Category View URL
 -----------------
 
-Consider our archive requirement.
+Try writing the URL pattern for the category view on your own.
 
 .. container:: incremental
 
-    Can you think of a way to use one view for that?
+    My version looks like this:
     
     .. code-block:: python
-        :class: small incremental
+        :class: small
     
-        url(r'^archive/(?P<year>[\d]{4})/$',
-            'stub_view', #<- this can be the same view
-            name="yearly_archive"),
-        url(r'^archive/(?P<year>[\d]{4})/(?P<month>[\d]{2})/$',
-            'stub_view', #<- in multiple urls
-            name="monthly_archive"),
+        url(r'^category/(?P<category_id>\d+)/$',
+            'stub_view',
+            name="category_view"),
 
 .. class:: incremental
 
-In this case, month is *optional*, so it **must** be a kwarg
+At this point, we should have three url patterns in our urlconf
+
+
+Full Urlconf
+------------
+
+.. code-block:: python
+    :class: small
+
+    from django.conf.urls import patterns, url
+
+    urlpatterns = patterns('myblog.views',
+        url(r'^$',
+            'stub_view',
+            name="blog_index"),
+        url(r'^posts/(?P<post_id>\d+)/$',
+            'stub_view',
+            name="blog_detail"),
+        url(r'^category/(?P<category_id>\d+)/$',
+            'stub_view',
+            name="category_view")
+    )
+
+
+Testing Views
+-------------
+
+Before we begin, we need to add some tests for the views we are about to 
+create.
+
+.. class:: incremental
+
+We'll need tests for a list view, a detail view and a category view
+
+.. class:: incremental
+
+To save us time, I've written these tests already
+
+.. class:: incremental
+
+You can find them in the class resources directory: ``blog_view_tests.py``
+
+.. class:: incremental
+
+Copy the TestCase and imports from that file into our blog ``tests.py`` file.
+
+
+Run The Tests
+-------------
+
+::
+
+    (djangoenv)$ python manage.py test myblog
+    ...
+    ----------------------------------------------------------------------
+    Ran 8 tests in 0.478s
+
+    FAILED (failures=3)
+    Destroying test database for alias 'default'...
+
+
+Our First View
+--------------
+
+Add the view for listing blog posts to ``views.py``.
+    
+.. code-block:: python
+    :class: small
+
+    # add these imports
+    from django.template import RequestContext, loader
+    from myblog.models import Post
+    
+    # and this view
+    def list_view(request):
+        published = Post.objects.exclude(published_date__exact=None)
+        posts = published.order_by('-published_date')
+        template = loader.get_template('list.html')
+        context = RequestContext(request, {
+            'posts': posts,
+        })
+        body = template.render(context)
+        return HttpResponse(body, content_type="text/html")
+
+
+Getting Posts
+-------------
+
+.. code-block:: python
+    :class: small
+
+    published = Post.objects.exclude(published_date__exact=None)
+    posts = published.order_by('-published_date')
+
+.. class:: incremental
+
+We begin by using the QuerySet API to fetch all the posts that have
+``published_date`` set
+
+.. class:: incremental
+
+Using the chaining nature of the API we order these posts by
+``published_date``
+
+.. class:: incremental
+
+Remember, at this point, no query has actually been issued to the database.
+
+
+Getting a Template
+------------------
+
+.. code-block:: python
+    :class: small
+
+    template = loader.get_template('list.html')
+
+.. class:: incremental
+
+Django uses configuration to determine how to find templates.
+
+.. class:: incremental
+
+By default, Django looks in installed *apps* for a ``templates`` directory
+
+.. class:: incremental
+
+It also provides a place to list specific directories.
+
+.. class:: incremental
+
+Let's set that up in ``settings.py``
+
+
+Project Templates
+-----------------
+
+In ``settings.py`` find ``TEMPLATE_DIRS`` and add the absolute path to your 
+``mysite`` project package:
+
+.. code-block:: python
+    :class: small
+    
+    TEMPLATE_DIRS = ('/absolute/path/to/mysite/mysite/templates', )
+
+.. class:: incremental
+
+Then add a ``templates`` directory to your ``mysite`` project package
+
+.. class:: incremental
+
+Finally, in that directory add a new file ``base.html`` and populate it with
+the following:
+
+
+base.html
+---------
+
+.. code-block:: jinja
+    :class: small
+    
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>My Django Blog</title>
+      </head>
+      <body>
+        <div id="container">
+          <div id="content">
+          {% block content %}
+           [content will go here]
+          {% endblock %}
+          </div>
+        </div>
+      </body>
+    </html>
+
+
+Templates in Django
+-------------------
+
+Before we move on, a quick word about Django templates.
+
+.. class:: incremental
+
+We've seen Jinja2 which was "inspired by Django's templating system".
+
+.. class:: incremental
+
+Basically, you already know how to write Django templates.
+
+.. class:: incremental
+
+Django templates **do not** allow any python expressions.
+
+.. class:: incremental center small
+
+https://docs.djangoproject.com/en/1.5/ref/templates/builtins/
+
+
+Blog Templates
+--------------
+
+Our view tries to load ``list.html``.
+
+.. class:: incremental
+
+This template is probably specific to the blog functionality of our site
+
+.. class:: incremental
+
+It is common to keep shared templates in your project directory and
+specialized ones in app directories.
+
+.. class:: incremental 
+
+Add a ``templates`` directory to your ``myblog`` app, too.
+
+.. class:: incremental
+
+In it, create a new file ``list.html`` and add this:
+
+
+list.html
+---------
+
+.. code-block:: jinja
+    :class: tiny
+    
+    {% extends "base.html" %}
+
+    {% block content %}
+      <h1>Recent Posts</h1>
+
+      {% comment %} here is where the query happens {% endcomment %}
+      {% for post in posts %}
+      <div class="post">
+        <h2>{{ post }}</h2>
+        <p class="byline">
+          Posted by {{ post.author_name }} &mdash; {{ post.published_date }}
+        </p>
+        <div class="post-body">
+          {{ post.text }}
+        </div>
+        <ul class="categories">
+          {% for category in post.categories.all %}
+            <li>{{ category }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endfor %}
+    {% endblock %}
+
+
+Template Context
+----------------
+
+.. code-block:: python
+    :class: small
+
+    context = RequestContext(request, {
+        'posts': posts,
+    })
+    body = template.render(context)
+
+.. class:: incremental
+
+Like Jinja2, django templates are rendered by passing in a *context*
+
+.. class:: incremental
+
+Django's RequestContext provides common bits, similar to the global context in
+Flask
+
+.. class:: incremental
+
+We add our posts to that context so they can be used by the template.
+
+
+Return a Response
+-----------------
+
+.. code-block:: python
+    :class: small
+
+    return HttpResponse(body, content_type="text/html")
+
+.. class:: incremental
+
+Finally, we build an HttpResponse and return it.
+
+.. class:: incremental
+
+This is, fundamentally, no different from the ``stub_view`` just above.
+
+
+Fix URLs
+--------
+
+We need to fix the url for our blog index page
+
+.. container:: incremental
+
+    Update ``urls.py`` in ``myblog``:
+
+    .. code-block:: python
+        :class: small
+    
+        url(r'^$',
+            'list_view',
+            name="blog_index"),
+
+.. class:: incremental small
+
+::
+
+    (djangoenv)$ python manage.py test myblog
+    ...
+    Ran 8 tests in 0.494s
+    FAILED (failures=2)
+
+
+Common Patterns
+---------------
+
+This is a common pattern in Django views:
+
+.. class:: incremental
+
+* get a template from the loader
+* build a context, usually using a RequestContext 
+* render the template
+* return an HttpResponse
+
+.. class:: incremental
+
+So common in fact that Django provides two shortcuts for us to use:
+
+.. class:: incremental
+
+* ``render(request, template[, ctx][, ctx_instance])`` 
+* ``render_to_response(template[, ctx][, ctx_instance])``
+
+
+Shorten Our View
+----------------
+
+Let's replace most of our view with the ``render`` shortcut
+
+.. code-block:: python
+    :class: small
+
+    # replace RequestContext and loader import
+    from django.shortcuts import render
+    
+    # rewrite our view
+    def list_view(request):
+        published = Post.objects.exclude(published_date__exact=None)
+        posts = published.order_by('-published_date')
+        context = {'posts': posts}
+        return render(request, 'list.html', context)
+
+.. class:: incremental
+
+Remember though, all we did manually before is still happening
+
+
+Detail View
+-----------
+
+Next, let's write a view function for the detail view of a post
+
+.. container:: incremental
+
+    It should have the following signature:
+
+    .. code-block:: python
+        :class: small
+    
+        detail_view(request, post_id)
+
+.. class:: incremental
+
+We will call the template ``detail.html``
+
+.. class:: incremental
+
+Let's start with the code in ``views.py``
+
+
+detail_view
+-----------
+
+.. code-block:: python
+    :class: incremental small
+
+    def detail_view(request, post_id):
+        published = Post.objects.exclude(published_date__exact=None)
+        try:
+            post = published.get(pk=post_id)
+        except Post.DoesNotExist:
+            raise Http404
+        context = {'post': post}
+        return render(request, 'detail.html', context)
+
+.. class:: incremental
+
+All models raise a DoesNotExist exception if ``get`` returns nothing.
+
+.. class:: incremental
+
+We can use that fact to raise a Not Found exception.
+
+.. class:: incremental
+
+Django will handle the rest for us.
+
+
+detail.html
+-----------
+
+.. code-block:: jinja
+    :class: small
+    
+    {% extends "base.html" %}
+
+    {% block content %}
+    <a class="backlink" href="/">Home</a>
+    <h1>{{ post }}</h1>
+    <p class="byline">
+      Posted by {{ post.author_name }} &mdash; {{ post.published_date }}
+    </p>
+    <div class="post-body">
+      {{ post.text }}
+    </div>
+    <ul class="categories">
+      {% for category in post.categories.all %}
+        <li>{{ category }}</li>
+      {% endfor %}
+    </ul>
+    {% endblock %}
+
+
+Hook it Up
+----------
+
+In order to view a single post, we'll need a link from the list view
+
+.. container:: incremental
+
+    We can use the ``url`` template tag (like flask url_for):
+
+    .. code-block:: jinja
+        :class: small
+    
+        {% url '<view_name>' arg1 arg2 %}
+
+.. class:: incremental
+
+In our ``list.html`` template, let's link the post titles:
+
+.. code-block:: jinja
+    :class: small incremental
+    
+    {% for post in posts %}
+    <div class="post">
+      <h2>
+        <a href="{% url 'blog_detail' post.pk %}">{{ post }}</a>
+      </h2>
+      ...
+
+
+Fix URLs
+--------
+
+Again, we need to insert our new view into the existing ``urls.py`` in
+``myblog``:
+
+.. code-block:: python
+    :class: small
+    
+    url(r'^posts/(?P<post_id>\d+)/$',
+        'detail_view',
+        name="blog_detail"),
+
+.. class:: incremental small
+
+::
+
+    (djangoenv)$ python manage.py test myblog
+    ...
+    Ran 8 tests in 0.513s
+    FAILED (failures=1)
+
+
+A Moment To Play
+----------------
+
+We've got some good stuff to look at now.  Fire up the server
+
+.. class:: incremental
+
+Reload your blog index page and click around a bit.
+
+.. class:: incremental
+
+You can now move back and forth between list and detail view.
+
+.. class:: incremental
+
+Try loading the detail view for a post that doesn't exist
+
+
+Category Lists
+--------------
+
+Let's implement the category listing next
+
+.. class:: incremental
+
+Before we do so, make sure you have added categories to any posts you've
+created.
+
+.. class:: incremental
+
+Go to http://localhost:8000/admin/ and make sure:
+
+.. class:: incremental
+
+* you have at least three or four posts
+* each post is in one or more categories
+* at least one category has more than one post
+
+
+Category View
+-------------
+
+The view should have the following signature:
+
+.. code-block:: python
+    :class: small
+
+    category_view(request, category_id):
+
+.. class:: incremental
+
+We can re-use the ``list.html`` template with some minor modifications
+
+.. class:: incremental
+
+Let's start by adding view code to ``views.py``
+
+
+category_view
+-------------
+
+.. code-block:: python
+    :class: small incremental
+    
+    # add an import
+    from myblog.models import Category
+    
+    # and this function
+    def category_view(request, category_id):
+        try:
+            category = Category.objects.get(pk=category_id)
+        except Category.DoesNotExist:
+            raise Http404
+        published = category.posts.exclude(published_date__exact=None)
+        context = {
+            'posts': published.order_by('-published_date'),
+            'title': "Posts in %s" % category.name,
+            'description': category.description
+        }
+        return render(request, 'list.html', context)
+
+
+Backport Changes
+----------------
+
+We've added two new items to the template context
+
+.. class:: incremental
+
+Let's update ``list.html`` to use ``title`` and ``description``
+
+.. code-block:: jinja
+    :class: small incremental
+    
+    {% block content %}
+      <h1>{{ title }}</h1>
+      <p class="pageDescription">{{ description }}</p>
+
+.. container:: incremental
+
+    Also go back and update the template context in ``list_view``
+
+    .. code-block:: jinja
+        :class: small
+    
+        context = {'posts': posts, 'title': 'Recent Posts',
+                   'description': ''}
+
+
+Hook It Up
+----------
+
+To view a category, we'll need to link categories to in templates to this view
+
+.. class:: incremental
+
+Again, use the ``url`` template tag
+
+.. class:: incremental
+
+The categories for a post are listed in both ``list.html`` and ``detail.html``
+
+.. class:: incremental
+
+Add links to both places now.
+
+
+My Version
+----------
+
+.. code-block:: jinja
+    :class: small incremental
+    
+    # in both templates
+    <ul class="categories">
+      {% for category in post.categories.all %}
+        <li>
+          <a href="{% url 'category_view' category.pk %}">
+            {{ category }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+
+.. class:: incremental
+
+
+Fix URLs
+--------
+
+Substitute the view name ``category_view`` into ``urls.py``:
+
+.. code-block:: python
+    :class: small
+    
+    url(r'^category/(?P<category_id>\d+)/$',
+        'category_view',
+        name="category_view")
+
+.. class:: incremental
+
+::
+
+    (djangoenv)$ python manage.py test myblog
+    ...
+    Ran 8 tests in 0.547s
+    OK
+
+
+Congratulations
+---------------
+
+You've got a functional Blog
+
+.. class:: incremental
+
+It's not very pretty, though.
+
+.. class:: incremental
+
+We can fix that by adding some css
+
+.. class:: incremental
+
+This gives us a chance to learn about Django's handling of *static files*
+
+
+Static Files
+------------
+
+Like templates, Django expects to find static files in particular locations
+
+.. class:: incremental
+
+It will look for them in a directory named ``static`` in any installed apps.
+
+.. class:: incremental
+
+They will be served from the url path in the STATIC_URL setting.
+
+.. class:: incremental
+
+By default, this is ``/static/``
+
+
+Add CSS
+-------
+
+I've prepared a css file for us to use. You can find it in the class resources
+
+.. class:: incremental
+
+Create a new directory ``static`` in the ``myblog`` app.
+
+.. class:: incremental
+
+Copy the ``django_css`` file into that new directory.
+
+.. container:: incremental
+
+    Then add this link to the <head> of ``base.html``:
+
+    .. code-block:: html
+        :class: small
+    
+        <title>My Django Blog</title>
+        <link type="text/css" rel="stylesheet" href="/static/django_blog.css">
 
 

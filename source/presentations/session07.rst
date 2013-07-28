@@ -957,7 +957,7 @@ South supports forward, backward and data migrations.
 
 .. class:: incremental
 
-We'll learn a bit more about this in our next session.
+We won't have time to cover it in this class, but know it's there.
 
 
 Break Time
