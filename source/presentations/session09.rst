@@ -5,7 +5,7 @@ Internet Programming with Python
     :align: left
     :width: 50%
 
-Week 8: Pyramid
+Session 9: Intro To Pyramid
 
 .. class:: intro-blurb right
 
