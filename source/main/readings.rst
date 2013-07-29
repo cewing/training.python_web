@@ -143,7 +143,7 @@ more minimal and may be easier to comprehend off the bat.
 .. _Getting Started with WSGI: http://lucumr.pocoo.org/2007/5/21/getting-started-with-wsgi/
 
 
-Sessions 4 & 5 - Flask
+Sessions 5 & 6 - Flask
 ----------------------
 
 * `Web Application Frameworks
