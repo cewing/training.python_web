@@ -205,16 +205,14 @@ frameworks. We will look at the specific problems that the creators of Pyramid
 are looking to solve, and we will investigate how those decisions have
 influenced the design of the framework.
 
-Along the way we'll be taking a good look at a very different templating
-system, Chameleon. It grew out of Zope Page Templates (ZPT) and the Template
-Attribute Language (TAL). It's chief advantage is that it provides structure
-and variable interpolation via XML namespaced attributes. This allows you to 
-write templates that load in a browser and look 'right' without needing the
-framework to render them.
+Along the way, we'll learn how Pyramid works under the covers, and how this is
+like and unlike other frameworks we've seen so far. We'll get started building
+the Data Model and configuration structure for the wiki application we'll be 
+completing in the next session.
 
-We'll also take a good look at the ZODB, a venerable persistent object store
-that was NoSQL before NoSQL was a thing. We'll see how objects in the ZODB can
-be created, saved and connected to eachother in a number of ways.
+And we'll continue focusing on test-driven development, specifying
+functionality and writing tests to demostrate it before ever writing the code
+that provides it.
 
 `Lecture Slides <presentations/session09.html>`_
 
@@ -227,7 +225,14 @@ implementing a simple wiki, using traversal dispatch, ZODB persistence and
 Chameleon templates. We'll get a chance to work with simple forms, see how
 views work in Pyramid, and implement an ACL-based authorization scheme.
 
-Along the way, we'll continue our drive for test-driven development by writing
+Along the way we'll be taking a good look at a very different templating
+system, Chameleon. It grew out of Zope Page Templates (ZPT) and the Template
+Attribute Language (TAL). It's chief advantage is that it provides structure
+and variable interpolation via XML namespaced attributes. This allows you to 
+write templates that load in a browser and look 'right' without needing the
+framework to render them.
+
+And we'll continue our drive for test-driven development by writing
 tests that cover the functionality we want and then writing the code to make
 them pass. 
 
