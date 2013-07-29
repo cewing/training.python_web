@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Course Outline &mdash; Internet Programming with Python 1.0 documentation</title>
+    <title>Course Outline &mdash; Python Web Programming Workshop 1.0 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -25,9 +25,9 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Internet Programming with Python 1.0 documentation" href="index.html" />
-    <link rel="next" title="Assignments" href="assignments.html" />
-    <link rel="prev" title="Internet Programming with Python" href="index.html" /> 
+    <link rel="top" title="Python Web Programming Workshop 1.0 documentation" href="index.html" />
+    <link rel="next" title="Course Readings" href="readings.html" />
+    <link rel="prev" title="Python Web Programming Workshop" href="index.html" /> 
   </head>
   <body>
     <div class="related">
@@ -37,12 +37,12 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="assignments.html" title="Assignments"
+          <a href="readings.html" title="Course Readings"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="index.html" title="Internet Programming with Python"
+          <a href="index.html" title="Python Web Programming Workshop"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Internet Programming with Python 1.0 documentation</a> &raquo;</li> 
+        <li><a href="index.html">Python Web Programming Workshop 1.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -53,216 +53,84 @@
             
   <div class="section" id="course-outline">
 <h1>Course Outline<a class="headerlink" href="#course-outline" title="Permalink to this headline">¶</a></h1>
-<p>Each week will have in-class lectures, lab time, and lightning talks.  There
-will be recommended reading, additional reading for the curious, and an
-assignment to be completed.</p>
-<div class="section" id="week-1-introduction-and-sockets">
-<h2>Week 1 - Introduction and Sockets<a class="headerlink" href="#week-1-introduction-and-sockets" title="Permalink to this headline">¶</a></h2>
-<p><strong>Date</strong>: Jan. 8, 2013</p>
-<p>In this class, we will discuss the fundamental concepts and structures that
-underly the internet and networked computing. We will learn about the TCP/IP
-stack (Internet Protocol Suite) and gain insight into how that model is
-manifested in real life. We will learn about sockets and how to use them to
-communicate between processes on a single machine or across a network.</p>
-<p>Our class laboratory will focus on creating a small server-client program that
-demonstrates the use of sockets. We will install the server on our Virtual
-Machines, and accomplish our first networked communication.</p>
-<p>The class assignment will focus on extending our use of sockets to support a
-more complex use-case.</p>
-<p><a class="reference external" href="presentations/week01.html">Class Presentation</a></p>
-<div class="section" id="reading">
-<h3>Reading<a class="headerlink" href="#reading" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><a class="reference external" href="http://en.wikipedia.org/wiki/Internet_Protocol_Suite">Wikipedia - Internet Protocol Suite</a></li>
-<li><a class="reference external" href="http://www.garykessler.net/library/tcpip.html">Kessler - TCP/IP (sections 1 and 2)</a></li>
-<li><a class="reference external" href="http://en.wikipedia.org/wiki/Domain_Name_System">Wikipedia - Domain Name System</a></li>
-<li><a class="reference external" href="http://en.wikipedia.org/wiki/Internet_socket">Wikipedia - Internet Sockets</a></li>
-<li><a class="reference external" href="http://tools.ietf.org/html/rfc5321#appendix-D">RFC 5321 - SMTP (Appendix D only)</a></li>
-</ul>
-</div>
+<p>This course is five days long. Each day is split into morning and afternoon
+sessions. Each session will consist of three or so hours of instruction and
+exercises and a couple of short breaks.</p>
+<div class="section" id="session-1-tcp-ip-and-sockets">
+<h2>Session 1 - TCP/IP and Sockets<a class="headerlink" href="#session-1-tcp-ip-and-sockets" title="Permalink to this headline">¶</a></h2>
+<p>We will begin by covering basic front-matter for the course: daily schedule,
+class protocol, introductions and such. Next we will move into a disucssion of
+the fundamental concepts and structures that underly the internet and
+networked computing. We will learn about the TCP/IP stack (Internet Protocol
+Suite) and gain some insights into how that model manifests in real life. We
+will then dive into sockets and learn how to use them to communicate between
+processes on a single machine, or across a network.</p>
+<p>Along the way, we&#8217;ll build a basic Echo server and client to demonstrate the
+processes we&#8217;ve learned. By lunch, we&#8217;ll be sending messages and receiving
+replies.</p>
+<p><a class="reference external" href="presentations/session01.html">Lecture Slides</a></p>
 <div class="section" id="references">
 <h3>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><a class="reference external" href="http://docs.python.org/release/2.6.5/library/socket.html">Python Library - socket</a></li>
-<li><a class="reference external" href="http://docs.python.org/release/2.6.5/howto/sockets.html">Socket Programming How-to</a></li>
-<li><a class="reference external" href="http://docs.python.org/release/2.6.5/library/smtplib.html">Python Library - smtplib</a></li>
-</ul>
-<p>For our in-class lab and our homework, you&#8217;ll be forking a github repository
-and making pull requests.  You can read up on how this is accomplished here:</p>
-<ul class="simple">
-<li><a class="reference external" href="http://help.github.com/articles/fork-a-repo">Fork a Repo</a></li>
-<li><a class="reference external" href="http://help.github.com/articles/using-pull-requests">Using Pull Requests</a></li>
+<li><a class="reference external" href="http://docs.python.org/2/library/socket.html">Python Library - socket</a></li>
+<li><a class="reference external" href="http://docs.python.org/2/howto/sockets.html">Socket Programming How-to</a></li>
+<li><a class="reference external" href="http://pymotw.com/2/socket/">Python Module of the Week - socket</a></li>
 </ul>
 </div>
-<div class="section" id="further-reading">
-<h3>Further Reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><a class="reference external" href="http://www.doughellmann.com/PyMOTW/socket/">Python Module of the Week - socket</a></li>
-<li><a class="reference external" href="http://en.wikipedia.org/wiki/Berkeley_sockets">Wikipedia - Berkeley socket interface</a></li>
-<li><a class="reference external" href="http://tools.ietf.org/html/rfc821">RFC 821 - SMTP (initial)</a></li>
-<li><a class="reference external" href="http://tools.ietf.org/html/rfc5321">RFC 5321 - SMTP (latest)</a></li>
-</ul>
 </div>
-<div class="section" id="bonus">
-<h3>Bonus<a class="headerlink" href="#bonus" title="Permalink to this headline">¶</a></h3>
-<p><a class="reference external" href="http://zguide.zeromq.org/page:all#Chapter-Basics">ZeroMQ Guide, Chapter 1</a>:
-ZeroMQ is a modern, advanced implementation of the socket concept. Read this
-to find out what sockets can get up to these days.</p>
-</div>
-<div class="section" id="assignment">
-<h3>Assignment<a class="headerlink" href="#assignment" title="Permalink to this headline">¶</a></h3>
-<p>You can read the assignment at</p>
-<p><a class="reference external" href="http://github.com/cewing/training.python_web/blob/master/assignments/week01/athome/assignment.txt">http://github.com/cewing/training.python_web/blob/master/assignments/week01/athome/assignment.txt</a></p>
-<p>Please complete the assignment by noon on Sunday, January 13, 2013.</p>
-</div>
-</div>
-<div class="section" id="week-2-web-protocols">
-<h2>Week 2 - Web Protocols<a class="headerlink" href="#week-2-web-protocols" title="Permalink to this headline">¶</a></h2>
-<p><strong>Date</strong>: Jan. 15, 2013</p>
-<p>In this class we will discuss the various languages of the Internet. What
-differentiates one protocol from another? How are they similar? How can you
-use the inherent qualities of each to determine which is appropriate for a
-given purpose?</p>
-<p>The class laboratory will cover creating a simple web server. Using the HTTP
-protocol and information we learned in week one about sockets, we&#8217;ll create a
-simple web server that allows us to look at files and directories on our own
-computers.</p>
-<p>The class assignment will be to extend the simple web server, adding the
-ability to run dynamic processes and return the results to the client.</p>
-<p><a class="reference external" href="presentations/week02.html">Week 2 Presentation</a></p>
-<div class="section" id="id1">
-<h3>Reading<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
-<p>Read through the list of Python Internet Protocols. If you don&#8217;t know what a
-protocol is for, look it up online. Think about their relationship to each
-other, which are clients? Which are servers? Which clients talk to which
-servers?</p>
-<p><a class="reference external" href="http://docs.python.org/release/2.6.5/library/internet.html">Python Standard Library Internet Protocols</a></p>
-<p>An introduction to the HTTP protocol:
-<a class="reference external" href="http://www.jmarshall.com/easy/http/">HTTP Made Really Easy</a></p>
-</div>
+<div class="section" id="session-2-web-protocols">
+<h2>Session 2 - Web Protocols<a class="headerlink" href="#session-2-web-protocols" title="Permalink to this headline">¶</a></h2>
+<p>Protocols are the languages of the Internet. They govern how machines speak to
+one-another. We will focus on finding both the similarities and differences
+between protocols. Can you use the inherent qualities of each to determine
+which is appropriate for a given purpose?</p>
+<p>Along the way, we&#8217;ll build a simple web server. Using the HTTP protocol and
+extending what we learned in the morning about we&#8217;ll create an HTTP server
+that allows us to serve files and directories from our own computers. By the
+end of the day, you&#8217;ll be browsing your filesystem with your own web browser.</p>
+<p><a class="reference external" href="presentations/session02.html">Lecture Slides</a></p>
 <div class="section" id="id2">
 <h3>References<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
-<p>Skim these before class, you&#8217;ll need them for lab and your assignment:</p>
 <ul class="simple">
-<li><a class="reference external" href="http://docs.python.org/release/2.6.5/library/smtplib.html">smtplib</a></li>
-<li><a class="reference external" href="http://docs.python.org/release/2.6.5/library/imaplib.html">imaplib</a></li>
-<li><a class="reference external" href="http://docs.python.org/release/2.6.5/library/httplib.html">httplib</a></li>
-<li><a class="reference external" href="http://docs.python.org/release/2.6.5/library/urllib.html">urllib</a></li>
-<li><a class="reference external" href="http://docs.python.org/release/2.6.5/library/urllib2.html">urllib2</a></li>
-</ul>
-</div>
-<div class="section" id="id3">
-<h3>Bonus<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><a class="reference external" href="http://code.google.com/p/httplib2/">httplib2</a> - A comprehensive HTTP client library that supports many features
-left out of other HTTP libraries.</li>
-<li><a class="reference external" href="http://docs.python-requests.org/en/latest/">requests</a> - &#8221;... an Apache2 Licensed HTTP library, written in Python, for
-human beings.&#8221;</li>
-</ul>
-<p>Skim these four documents from different phases of HTTP&#8217;s life. Get a feel for
-how the specification has changed (and how it hasn&#8217;t!).</p>
-<ul class="simple">
-<li><a class="reference external" href="http://www.w3.org/Protocols/HTTP/AsImplemented.html">HTTP/0.9</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/HTTP/HTTP2.html">HTTP - as defined in 1992</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc1945/rfc1945">Hypertext Transfer Protocol &#8211; HTTP/1.0</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616">Hypertext Transfer Protocol &#8211; HTTP/1.1</a></li>
+<li><a class="reference external" href="http://docs.python.org/2/library/smtplib.html">smtplib</a></li>
+<li><a class="reference external" href="http://docs.python.org/2/library/imaplib.html">imaplib</a></li>
+<li><a class="reference external" href="http://docs.python.org/2/library/httplib.html">httplib</a></li>
+<li><a class="reference external" href="http://docs.python.org/2/library/urllib.html">urllib</a></li>
+<li><a class="reference external" href="http://docs.python.org/2/library/urllib2.html">urllib2</a></li>
 </ul>
 <p>If you have more curiosity about other Python Standard Library implementations
 of internet protocols, you should read Doug Hellmann&#8217;s Python Module Of The
-Week on <a class="reference external" href="http://www.doughellmann.com/PyMOTW/internet_protocols.html">Internet Protocols and Support</a>. His entries on these libraries are
+Week on <a class="reference external" href="http://pymotw.com/2/internet_protocols.html">Internet Protocols and Support</a>. His entries on these libraries are
 clear and concise and have some great code examples.</p>
 </div>
+</div>
+<div class="section" id="session-3-apis-and-mashups">
+<h2>Session 3 - APIs and Mashups<a class="headerlink" href="#session-3-apis-and-mashups" title="Permalink to this headline">¶</a></h2>
+<p>The internet is a treasure trove of information. But meaning can be hard to
+find among all that data. Mashups offer a way to combine data from disparate
+sources in order to derive meaning. Data online can be offered in forms ripe
+for consumption. APIs built in XMLRPC, SOAP or REST offer rich tools for
+extraction, but even simple websites can be scraped using tools like
+BeautifulSoup.</p>
+<p>We&#8217;ll explore the differences between various &#8216;Web Services&#8217; formats, learning
+how to serve information and consume it. We&#8217;ll also explore using BeautifulSoup
+to help extract information from the sea of HTML in the wild.</p>
+<p>Along the way, we&#8217;ll create a mashup of our own, using the tools we learn to
+build a script that can produce derived meaning out of data we find online.</p>
+<p><a class="reference external" href="presentations/session03.html">Lecture Slides</a></p>
 <div class="section" id="id4">
-<h3>Assignment<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
-<p>You can read the assignment at</p>
-<p><a class="reference external" href="http://github.com/cewing/training.python_web/blob/master/assignments/week02/athome/assignment.txt">http://github.com/cewing/training.python_web/blob/master/assignments/week02/athome/assignment.txt</a></p>
-<p>Please complete the assignment by noon on Sunday, January 20, 2013.</p>
-</div>
-</div>
-<div class="section" id="week-3-apis-and-mashups">
-<h2>Week 3 - APIs and Mashups<a class="headerlink" href="#week-3-apis-and-mashups" title="Permalink to this headline">¶</a></h2>
-<p><strong>Date</strong>: Jan. 22, 2013</p>
-<p>In this class we will explore some of the ways that you can consume and
-explore the data provided by other websites. Online data can be provided in
-ways intended for consumption. But you can also use scraping techniques to get
-at data the original author may not have considered valuable enough to present
-as consumable.</p>
-<p>We&#8217;ll explore the use of tools like BeautifulSoup to help make sense of the
-truly horrible HTML that is to be found in the wild. We will also look at &#8220;Web
-Services&#8221; formats like XMLRPC and REST so we can understand the ways in which
-we can find data, or present it ourselves. Finally, we&#8217;ll look at some &#8220;Web
-Service APIs&#8221; to help understand how to read them, and how to use them to get
-at the data they provide.</p>
-<p>In our class lab sessions we will practice scraping a website and using a
-documented web service API.</p>
-<p>For our class assignment, students will choose two (or more) sources of
-information online and combine them in a mashup.</p>
-<p><a class="reference external" href="presentations/week03.html">Week 3 Presentation</a></p>
-<div class="section" id="id5">
-<h3>Reading<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<h3>References<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><a class="reference external" href="http://en.wikipedia.org/wiki/Web_service">Wikipedia&#8217;s take on &#8216;Web Services&#8217;</a></li>
-<li><a class="reference external" href="http://www.xmlrpc.com/">xmlrpc overview</a></li>
-<li><a class="reference external" href="http://www.xmlrpc.com/spec">xmlrpc spec (short)</a></li>
-<li><a class="reference external" href="http://www.json.org/">json overview and spec (short)</a></li>
-<li><a class="reference external" href="http://tomayko.com/writings/rest-to-my-wife">How I Explained REST to My Wife (Tomayko 2004)</a></li>
-<li><a class="reference external" href="http://www.infoq.com/articles/rest-introduction">A Brief Introduction to REST (Tilkov 2007)</a></li>
-<li><a class="reference external" href="http://www.slideshare.net/trilancer/why-hateoas-1547275">Why HATEOAS - *a simple case study on the often ignored REST constraint*</a></li>
-</ul>
-</div>
-<div class="section" id="id6">
-<h3>References<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="python-standard-libraries">
-<h4>Python Standard Libraries:<a class="headerlink" href="#python-standard-libraries" title="Permalink to this headline">¶</a></h4>
-<ul class="simple">
-<li><a class="reference external" href="http://docs.python.org/release/2.6.5/library/httplib.html">httplib</a></li>
-<li><a class="reference external" href="http://docs.python.org/release/2.6.5/library/htmlparser.html">htmlparser</a></li>
-<li><a class="reference external" href="http://docs.python.org/release/2.6.5/library/xmlrpclib.html">xmlrpclib</a></li>
-<li><a class="reference external" href="http://docs.python.org/release/2.6.5/library/docxmlrpcserver.html">DocXMLRPCServer</a></li>
-<li><a class="reference external" href="http://docs.python.org/release/2.6.5/library/json.html">json</a></li>
-</ul>
-</div>
-<div class="section" id="external-libraries">
-<h4>External Libraries:<a class="headerlink" href="#external-libraries" title="Permalink to this headline">¶</a></h4>
-<ul class="simple">
-<li><a class="reference external" href="http://www.crummy.com/software/BeautifulSoup/">BeautifulSoup</a> - &#8220;You didn&#8217;t write that awful page. You&#8217;re just trying to
-get some data out of it. Right now, you don&#8217;t really care what HTML is
-supposed to look like. Neither does this parser.&#8221;</li>
-<li><a class="reference external" href="http://code.google.com/p/httplib2/">httplib2</a> - A comprehensive HTTP client library that supports many features
-left out of other HTTP libraries.</li>
-<li><a class="reference external" href="https://github.com/benoitc/restkit/">restkit</a> - an HTTP resource kit for Python. It allows you to easily access
-to HTTP resource and build objects around it.</li>
-</ul>
-</div>
-<div class="section" id="soap">
-<h4>SOAP<a class="headerlink" href="#soap" title="Permalink to this headline">¶</a></h4>
-<ul class="simple">
-<li><a class="reference external" href="https://github.com/arskom/rpclib">rpclib</a> - a simple, easily extendible soap library that provides several
-useful tools for creating, publishing and consuming soap web services</li>
-<li><a class="reference external" href="https://fedorahosted.org/suds/">Suds</a> - a lightweight SOAP python client for consuming Web Services.</li>
-<li><a class="reference external" href="http://www.w3.org/TR/soap/">the SOAP specification</a></li>
+<li><a class="reference external" href="http://docs.python.org/2/library/httplib.html">httplib</a></li>
+<li><a class="reference external" href="http://docs.python.org/2/library/htmlparser.html">htmlparser</a></li>
+<li><a class="reference external" href="http://docs.python.org/2/library/xmlrpclib.html">xmlrpclib</a></li>
+<li><a class="reference external" href="http://docs.python.org/2/library/docxmlrpcserver.html">DocXMLRPCServer</a></li>
+<li><a class="reference external" href="http://docs.python.org/2/library/json.html">json</a></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id9">
-<h3>Bonus<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><cite>Wikipedia on REST
-&lt;http://en.wikipedia.org/wiki/Representational_State_Transfer&gt;</cite></li>
-<li><cite>Original REST disertation
-&lt;http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm&gt;</cite></li>
-</ul>
-</div>
-<div class="section" id="id10">
-<h3>Assignment<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
-<p>You can read the assignment at</p>
-<p><a class="reference external" href="http://github.com/cewing/training.python_web/blob/master/assignments/week03/athome/assignment.txt">http://github.com/cewing/training.python_web/blob/master/assignments/week03/athome/assignment.txt</a></p>
-<p>Please complete the assignment by noon on Sunday, January 27, 2013.</p>
-</div>
-</div>
-<div class="section" id="week-4-cgi-and-wsgi">
-<h2>Week 4 - CGI and WSGI<a class="headerlink" href="#week-4-cgi-and-wsgi" title="Permalink to this headline">¶</a></h2>
-<p><strong>Date</strong>: Jan. 29, 2013</p>
+<div class="section" id="session-4-cgi-and-wsgi">
+<h2>Session 4 - CGI and WSGI<a class="headerlink" href="#session-4-cgi-and-wsgi" title="Permalink to this headline">¶</a></h2>
 <p>In this class we will explore ways of moving data from HTTP requests into the
 dynamic scripts that process data. We will begin by looking at the original
 specification for passing data, CGI (Common Gateway Interface). We&#8217;ll look at
@@ -272,244 +140,73 @@ simple interactions.</p>
 Services Gateway Interface). We&#8217;ll see the ways in which WSGI is similar to
 CGI, and look at the ways in which it differs. We&#8217;ll create a simple interaction
 using WSGI and see what benefits and drawbacks it confers.</p>
-<p><a class="reference external" href="presentations/week04.html">Week 4 Presentation</a></p>
-<div class="section" id="id11">
-<h3>Reading<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><a class="reference external" href="http://webpython.codepoint.net/cgi_tutorial">CGI tutorial</a> - Read the following sections: Hello World, Debugging, Form.
-Other sections optional. Follow along, hosting CGI scripts either via Apache
-on our VMs, or locally using CGIHTTPServer.</li>
-<li><a class="reference external" href="http://webpython.codepoint.net/wsgi_tutorial">WSGI tutorial</a> - Follow along, hosting WSGI scripts either via Apache on our
-VMs, or locally using wsgiref.</li>
-</ul>
-<div class="section" id="prepare-for-class">
-<h4>Prepare for class:<a class="headerlink" href="#prepare-for-class" title="Permalink to this headline">¶</a></h4>
-<ul class="simple">
-<li><a class="reference external" href="https://github.com/cewing/training.python_web/tree/master/assignments/week04/lab/cgi-bin">CGI example scripts</a> - Use these examples to get started experimenting with
-CGI.</li>
-</ul>
+<p><a class="reference external" href="presentations/session04.html">Lecture Slides</a></p>
 </div>
-</div>
-<div class="section" id="id12">
-<h3>References<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><a class="reference external" href="http://docs.python.org/release/2.6.5/library/cgi.html">CGI module</a> - utilities for CGI scripts, mostly form and query string parsing</li>
-<li><a class="reference external" href="http://docs.python.org/release/2.6.5/library/urlparse.html">Parse URLS into components</a></li>
-<li><a class="reference external" href="http://docs.python.org/release/2.6.5/library/cgihttpserver.html">CGIHTTPServer</a> - python -m CGIHTTPServer</li>
-<li><a class="reference external" href="http://docs.python.org/release/2.6.5/library/wsgiref.html">WSGI Utilities and Reference implementation</a></li>
-<li><a class="reference external" href="http://www.python.org/dev/peps/pep-0333/">WSGI 1.0 specification</a></li>
-<li><a class="reference external" href="http://python.org/dev/peps/pep-3333/">WSGI 1.0.1 (Python 3 support)</a></li>
-<li><a class="reference external" href="http://hg.moinmo.in/moin/1.8/raw-file/tip/wiki/server/test.wsgi">test WSGI server, like cgi.test()</a></li>
-</ul>
-<div class="section" id="alternate-wsgi-introductions">
-<h4>Alternate WSGI introductions:<a class="headerlink" href="#alternate-wsgi-introductions" title="Permalink to this headline">¶</a></h4>
-<ul class="simple">
-<li><a class="reference external" href="http://lucumr.pocoo.org/2007/5/21/getting-started-with-wsgi/">Getting Started with WSGI</a> - by Armin Ronacher (really solid and quick!)</li>
-<li><a class="reference external" href="http://be.groovie.org/2005/10/07/wsgi_and_wsgi_middleware_is_easy.html">very minimal introduction to WSGI</a></li>
-</ul>
-</div>
-</div>
-<div class="section" id="id13">
-<h3>Assignment<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
-<p>You can read the assignment at</p>
-<p><a class="reference external" href="http://github.com/cewing/training.python_web/blob/master/assignments/week04/athome/assignment.txt">http://github.com/cewing/training.python_web/blob/master/assignments/week04/athome/assignment.txt</a></p>
-<p>Please complete the assignment by noon on Sunday, February 3, 2013.</p>
-</div>
-</div>
-<div class="section" id="week-5-small-frameworks">
-<h2>Week 5 - Small Frameworks<a class="headerlink" href="#week-5-small-frameworks" title="Permalink to this headline">¶</a></h2>
-<p><strong>Date</strong>: Feb. 5, 2013</p>
+<div class="section" id="session-5-frameworks-and-flask">
+<h2>Session 5 - Frameworks and Flask<a class="headerlink" href="#session-5-frameworks-and-flask" title="Permalink to this headline">¶</a></h2>
 <p>In this class we learn about using frameworks to help us reach our goals. We
 will learn what makes up a framework and some criteria for evaluating which is
 the right one for you.</p>
-<p>This week we will also learn about the final project for the class and students
-will begin to think about what they wish to do to complete the project.</p>
-<p>In our class lab we will explore using a specific framework (Flask) to create
-a simple web application. We&#8217;ll learn how to install the framework, how to
-read the documentation for it, how to build a simple dynamic application, and
-how to push further on.</p>
-<p>For our assignment we will extend our knowledge by trying out a different
-framework. We will have the chance to repeat the class lab, or create another
-dynamic system using one of the many other python web frameworks available to
-us.</p>
-<p><a class="reference external" href="presentations/week05.html">Week 5 Presentation</a></p>
-<div class="section" id="id14">
-<h3>Reading<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><a class="reference external" href="http://en.wikipedia.org/wiki/Web_application_framework">Web Application Frameworks</a></li>
-<li><a class="reference external" href="http://flask.pocoo.org/docs/">Flask Documentation</a> - Read the Foreward,
-Installation and Quickstart sections.</li>
-<li><a class="reference external" href="http://docs.python.org/2.6/library/unittest.html">Unittest - Unit Testing Framework</a> - We will be writing
-tests from here forward. Start learning how.</li>
-</ul>
-<p>Please also skim this:</p>
-<ul class="simple">
-<li><a class="reference external" href="http://www.doughellmann.com/PyMOTW/sqlite3/index.html">sqlite3 - DB API for sqlite3</a> - We&#8217;ll need a bit
-of familiarity with the sqlite3 module. How to open connections, execute
-queries, and read the results from a cursor. Just read the first two
-sections (&#8216;Creating a Database&#8217; and &#8216;Retrieving Data&#8217;).</li>
-</ul>
+<p>After an introduction to the idea of frameworks, we&#8217;ll look at a specific
+implementation of a <em>microframework</em>, <a class="reference external" href="http://flask.pocoo.org/">Flask</a>.
+We&#8217;ll install the framework and take a look at how it works. What does it have
+in common with work we&#8217;ve already done?</p>
+<p>Along the way we&#8217;ll learn about Jinja2, the templating language that Flask
+uses, and a bit about the DBAPI2 and communicating with SQL databases from
+within Python.</p>
+<p><a class="reference external" href="presentations/session05.html">Lecture Slides</a></p>
 </div>
-<div class="section" id="before-class">
-<h3>Before Class<a class="headerlink" href="#before-class" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li>Install Flask in a virtualenv on your local machine.</li>
-<li>Walk through the examples in the Quickstart section.</li>
-<li>You can play with the tutorial if you want. We&#8217;ll be doing this in class as
-our lab work</li>
-</ul>
+<div class="section" id="session-6-a-flask-application">
+<h2>Session 6 - A Flask Application<a class="headerlink" href="#session-6-a-flask-application" title="Permalink to this headline">¶</a></h2>
+<p>In this class we will exercise our new-won knowledge by building a small
+application using Flask. We&#8217;ll write templates and forms, persist data,
+implement login and logout. When we&#8217;re done, we&#8217;ll have a fully-functional
+microblog.</p>
+<p>We&#8217;ll use a test-driven development style as we go. We&#8217;ll decide the
+functionality we need, write tests to prove it works, and then write the code
+to make those tests pass. We&#8217;ll be using the <tt class="docutils literal"><span class="pre">unittest</span></tt> module from the
+Python Standard Library.</p>
+<p>Along the way, we&#8217;ll learn a bit more about how flask operates in a real
+application. We&#8217;ll learn some more about the Jinja2 templating language, and
+we&#8217;ll learn to tie the transactions of our database interaction to the cycles
+of request and response.</p>
+<p><a class="reference external" href="presentations/session06.html">Lecture Slides</a></p>
 </div>
-<div class="section" id="reference">
-<h3>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><a class="reference external" href="http://bottlepy.org/docs/dev/">Bottle: Python Web Framework</a></li>
-<li><a class="reference external" href="http://www.cherrypy.org/">CherryPy: A Minimalize Python Web Framework</a></li>
-<li><a class="reference external" href="http://webpy.org/">Web.py: Think about the ideal way to write a web app. Write the code to
-make it happen.</a></li>
-</ul>
-<p>These are only a few of the many python web frameworks available in the
-&#8216;microframework&#8217; class. I offer these resources as a starting point. For your
-assignment, pick one of these to work with, or select one from the list at the
-python wiki below. <strong>Do Not Use Django or Pyramid</strong>. We will be covering those
-specifically in class.</p>
-<ul class="simple">
-<li><a class="reference external" href="http://wiki.python.org/moin/WebFrameworks">Python Web Frameworks</a></li>
-</ul>
-<p>You may also want to do more reading on the unittest module:</p>
-<ul class="simple">
-<li><a class="reference external" href="http://www.doughellmann.com/PyMOTW/unittest/index.html">PyMOTW - unittest</a></li>
-</ul>
-</div>
-<div class="section" id="id15">
-<h3>Assignment<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
-<p>You can read the assignment at</p>
-<p><a class="reference external" href="http://github.com/cewing/training.python_web/blob/master/assignments/week05/athome/assignment.txt">http://github.com/cewing/training.python_web/blob/master/assignments/week05/athome/assignment.txt</a></p>
-<p>Please complete the assignment by noon on Sunday, February 10, 2013.</p>
-</div>
-</div>
-<div class="section" id="week-6-django">
-<h2>Week 6 - Django<a class="headerlink" href="#week-6-django" title="Permalink to this headline">¶</a></h2>
-<p><strong>Date</strong>: Feb. 12, 2013</p>
+<div class="section" id="session-7-intro-to-django">
+<h2>Session 7 - Intro to Django<a class="headerlink" href="#session-7-intro-to-django" title="Permalink to this headline">¶</a></h2>
 <p>In this class we&#8217;ll get introduced to arguably the most popular full-stack
-Python web framework, Django. We&#8217;ll build a simple application that introduces
-us to the basics of Models, Views and Templates.  We&#8217;ll also learn about the
-Django admin and how it can help us rapidly develop effective applications.</p>
-<p>We&#8217;ll cover basic relational modeling and talk about how to create effective
-database schemas to model real-world problems.  We&#8217;ll take a look at how the
-Django ORM (and ORMs in general) can help shield Python developers from SQL.</p>
-<p>For our homework, we&#8217;ll take a look at a set of specifications for a project
-and create a set of Django Models that will fulfill the specification.</p>
-<p><a class="reference external" href="presentations/week06.html">Week 6 Presentation</a></p>
-<div class="section" id="id16">
-<h3>Reading<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><a class="reference external" href="https://docs.djangoproject.com/en/1.4/intro/overview/">Django at a Glance</a> - introduction to
-the concepts and execution of Django</li>
-<li><a class="reference external" href="https://docs.djangoproject.com/en/1.4/intro/install/">Quick Install Guide</a> - lightweight
-instructions on installing Django. Use Python 2.6, not 2.5.</li>
-<li><a class="reference external" href="https://docs.djangoproject.com/en/1.4/intro/tutorial01/">Django Tutorial, part 1</a> - as noted
-below, please actually follow the steps in the tutorial up until you reach
-<em>Creating Models</em></li>
-</ul>
+Python web framework, Django. We&#8217;ll install the framework, learn about how to
+get it running and how to get started creating your very own app.</p>
+<p>We&#8217;ll be learning about the Django ORM and how Django Models can help shield
+developers from much of the complexity of SQL. We&#8217;ll learn how to use the
+tools Django provides to explore and interact with your models while designing
+them. We&#8217;ll also get a brief introduction to the Django admin, Django&#8217;s
+<em>killer feature</em>.</p>
+<p>Along the way, we&#8217;ll continue our test-driven development style: writing tests
+to demonstrate the functionality we desire and then implementing code to make
+them pass. We&#8217;ll get a chance to see how to build tests within the framework
+offered by Django&#8217;s testrunner.</p>
+<p><a class="reference external" href="presentations/session07.html">Lecture Slides</a></p>
 </div>
-<div class="section" id="id17">
-<h3>Before Class<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li>Install Django 1.4.3. Use a Virtualenv and pip or easy_install. (see the
-installation quick-start above, and the more in-depth guide below)</li>
-<li>Install an RDBMS (I personally recommend PostgreSQL, but MySQL or any other
-will do. We can even live with sqlite3, so long as you understand it is
-<strong>not for production</strong>)</li>
-<li>Set up a Django project. Walk through the first part of the tutorial above
-until you reach <em>Creating Models</em>. <strong>Do Not</strong> create models)</li>
-</ul>
-</div>
-<div class="section" id="id18">
-<h3>Reference<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><a class="reference external" href="https://docs.djangoproject.com/en/1.4/topics/">Using Django</a> - far more
-in-depth information about core topics in Django. Pay particular attention
-to the installation documentation here.</li>
-<li><a class="reference external" href="https://docs.djangoproject.com/en/dev/misc/design-philosophies/">Django Design Philosophies</a> - some
-well-considered words on why Django is the way it is.</li>
-</ul>
-</div>
-<div class="section" id="id19">
-<h3>Assignment<a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h3>
-</div>
-<div class="section" id="id20">
-<h3>Assignment<a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h3>
-<p>You can read the assignment at</p>
-<p><a class="reference external" href="http://github.com/cewing/training.python_web/blob/master/assignments/week06/athome/assignment.txt">http://github.com/cewing/training.python_web/blob/master/assignments/week06/athome/assignment.txt</a></p>
-<p>Please complete the assignment by noon on Sunday, February 17, 2013.</p>
-</div>
-</div>
-<div class="section" id="week-7-django">
-<h2>Week 7 - Django<a class="headerlink" href="#week-7-django" title="Permalink to this headline">¶</a></h2>
-<p><strong>Date</strong>: Feb. 19, 2013</p>
-<p>In this class we&#8217;ll dive a bit further into Django. We&#8217;ll start with a
-duplicate of the micro-blog we built in week 5 and work in teams to extend the
-functionality by integrating existing apps. Along the way, we&#8217;ll have a chance
-to explore team-based development workflow.</p>
+<div class="section" id="session-8-a-django-application">
+<h2>Session 8 - A Django Application<a class="headerlink" href="#session-8-a-django-application" title="Permalink to this headline">¶</a></h2>
+<p>In this class we&#8217;ll complete our exploration of Django. We&#8217;ll customize the
+Django admin to help us most efficiently administer our Blog application.
+We&#8217;ll create and test view functions that present our application to the world
+and we&#8217;ll provide front-end access to forms that allow us to create, edit and
+publish blog entries without needing to use the admin.</p>
+<p>Along the way we&#8217;ll learn that the Django template language is quite similar
+to the Jinja2 language (in fact, Jinja2 was modelled on the Django version).
+We&#8217;ll also get a chance to learn a bit more about the features that the Django
+test framework provides over and above the standard Python <tt class="docutils literal"><span class="pre">unittest</span></tt>
+library.</p>
 <p>Finally, we&#8217;ll discuss some of the strengths and weaknesses of Django.  What
 makes it a good choice for some projects but not for others.</p>
-<p>Our assignment for the week will be to prepare for working with Pyramid in
-Week 8.</p>
-<p><a class="reference external" href="presentations/week07.html">Week 7 Presentation</a></p>
-<div class="section" id="id21">
-<h3>Reading<a class="headerlink" href="#id21" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><a class="reference external" href="https://docs.djangoproject.com/en/1.4/topics/">Using Django</a> - far more
-in-depth information about core topics in Django. Pay attention specifically
-to the following topics (you&#8217;ll want to follow links in these documents):<ul>
-<li><a class="reference external" href="https://docs.djangoproject.com/en/1.4/topics/db/models/">Models</a> -
-details of the django modelling system. How to represent data for,
-relationships between and the presentation of your objects.</li>
-<li><a class="reference external" href="https://docs.djangoproject.com/en/1.4/topics/db/queries/">Queries</a> -
-basic information about the Django ORM and how to use it to create,
-retrieve, update and delete objects.</li>
-<li><a class="reference external" href="https://docs.djangoproject.com/en/1.4/topics/forms/">Working with Forms</a> - how to create,
-display, and process forms in Django, including forms that are associated
-with a given model.</li>
-<li><a class="reference external" href="https://docs.djangoproject.com/en/1.4/topics/templates/">The Django Template Language</a> - learn
-template basics like variables, filters, tags and blocks, and learn about
-template inheritance.</li>
-<li><a class="reference external" href="https://docs.djangoproject.com/en/1.4/topics/class-based-views/">Class-based Generic Views</a> - an
-introduction to the simplest way to present your objects to your adoring
-public.</li>
-<li><a class="reference external" href="https://docs.djangoproject.com/en/1.4/topics/testing/">Testing Django Applications</a> - learn
-different approaches to testing Django applications, including unit
-testing and doctests.</li>
-</ul>
-</li>
-</ul>
+<p><a class="reference external" href="presentations/session08.html">Lecture Slides</a></p>
 </div>
-<div class="section" id="id23">
-<h3>Reference<a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><a class="reference external" href="http://lucumr.pocoo.org/2011/7/19/sqlachemy-and-you/">SQLAlchemy and You</a>
-- A really in-depth look at the differences between the Django ORM and the
-reigning king of Python database integration, SQLAlchemy.</li>
-<li><a class="reference external" href="http://www.djangocon.us/schedule/presentations/22/">About Django from the Pyramid Guy</a> - a talk given at
-DjangoCon 2012 by Chris McDonough, one of the driving forces behind the
-Pyramid framework. Also available in <a class="reference external" href="http://www.youtube.com/watch?v=eN7h6ZbzMy0">video form</a>.</li>
-</ul>
-</div>
-<div class="section" id="id24">
-<h3>Assignment<a class="headerlink" href="#id24" title="Permalink to this headline">¶</a></h3>
-<p>This week we will have no code assignment. Instead the assignment will be to
-install Pyramid and the ZODB.</p>
-<p><strong>WARNING</strong>: the ZODB is built with C-based extensions. Installing it requires
-a c compiler. On linux, gcc will do nicely but you&#8217;ll need to install python
-development headers. If you are using Mac OS X, you&#8217;ll need to install XCode.
-This is not fast. Be sure to start early in the week to leave time for this.</p>
-<p>Read the <a class="reference external" href="http://github.com/cewing/training.python_web/blob/master/assignments/week07/athome/assignment.rst">Instructions</a></p>
-</div>
-</div>
-<div class="section" id="week-8-pyramid">
-<h2>Week 8 - Pyramid<a class="headerlink" href="#week-8-pyramid" title="Permalink to this headline">¶</a></h2>
-<p><strong>Date</strong>: Feb. 26, 2013</p>
-<p>This week we will look at a relative newcomer to the Python Web Framework
+<div class="section" id="session-9-intro-to-pyramid">
+<h2>Session 9 - Intro to Pyramid<a class="headerlink" href="#session-9-intro-to-pyramid" title="Permalink to this headline">¶</a></h2>
+<p>In this class we will look at a relative newcomer to the Python Web Framework
 scene, Pyramid. Although the framework is a newcomer, it is represents a
 combination of several projects, notably Repoze and Pylons, that have been
 around for quite some time. In fact, the roots of Repoze go back to Zope, the
@@ -519,106 +216,34 @@ any language).</p>
 frameworks. We will look at the specific problems that the creators of Pyramid
 are looking to solve, and we will investigate how those decisions have
 influenced the design of the framework.</p>
-<p>We&#8217;ll specifically look at two technologies that set the Pyramid framework
-apart: the ZODB and URL Traversal.  We&#8217;ll do this by implementing a wiki using
-these technologies and then discuss what might make such tools appealing to a
-certain type of project.</p>
-<p>We&#8217;ll also look at a very different templating system, Chameleon, which grew
-out of Zope Page Templates and the Template Attribute Language. Chameleon
-provides code structures via XML namespaces, allowing you to write templates
-that will load in a browser looking like HTML without needing a framework to
-render them.</p>
-<p><a class="reference external" href="presentations/week08.html">Week 8 Presentation</a></p>
-<div class="section" id="id25">
-<h3>Reading<a class="headerlink" href="#id25" title="Permalink to this headline">¶</a></h3>
-<p>Why you should care about <a class="reference external" href="http://docs.pylonsproject.org/projects/pyramid/en/1.4-branch/narr/muchadoabouttraversal.html">Traversal</a>.</p>
-<p>Compare and contrast forms of dispatch in Pyramid:</p>
-<ul class="simple">
-<li><a class="reference external" href="http://docs.pylonsproject.org/projects/pyramid/en/latest/narr/urldispatch.html">URL Route Dispatch</a></li>
-<li><a class="reference external" href="http://docs.pylonsproject.org/projects/pyramid/en/1.4-branch/narr/traversal.html">Object Traversal</a></li>
-</ul>
-<p>Learn a bit about the <a class="reference external" href="http://zodb.org/index.html">ZODB</a></p>
-<ul class="simple">
-<li>Read the <a class="reference external" href="http://zodb.org/documentation/tutorial.html">tutorial</a> for a
-quick overview of usage (don&#8217;t actually do it, though).</li>
-<li>Read the <a class="reference external" href="http://zodb.org/documentation/articles/ZODB1.html">more complete walk-through here</a> altough, again, do not
-actually do the code examples.</li>
-<li>Learn about <a class="reference external" href="http://blog.startifact.com/posts/older/a-misconception-about-the-zodb.html">object references in the ZODB</a>
-- one of its greatest strengths.</li>
-</ul>
-<p>Learn a bit about the Chameleon ZPT templating language:</p>
-<ul class="simple">
-<li>Read about <a class="reference external" href="http://docs.pylonsproject.org/projects/pyramid/en/1.4-branch/narr/templates.html#chameleon-zpt-templates">Chameleon Templates in Pyramid</a></li>
-<li>A <a class="reference external" href="https://weblion.psu.edu/trac/weblion/wiki/TAL">Quick Intro to TAL</a></li>
-<li><a class="reference external" href="https://chameleon.readthedocs.org/en/latest/">Chameleon Documentation</a></li>
-</ul>
-<p>In particular, pay attention to:</p>
-<ul class="simple">
-<li><a class="reference external" href="https://chameleon.readthedocs.org/en/latest/reference.html#basics-tal">Basics (TAL)</a></li>
-<li><a class="reference external" href="https://chameleon.readthedocs.org/en/latest/reference.html#expressions-tales">Expressions (TALES)</a></li>
-</ul>
+<p>Along the way, we&#8217;ll learn how Pyramid works under the covers, and how this is
+like and unlike other frameworks we&#8217;ve seen so far. We&#8217;ll get started building
+the Data Model and configuration structure for the wiki application we&#8217;ll be
+completing in the next session.</p>
+<p>And we&#8217;ll continue focusing on test-driven development, specifying
+functionality and writing tests to demostrate it before ever writing the code
+that provides it.</p>
+<p><a class="reference external" href="presentations/session09.html">Lecture Slides</a></p>
 </div>
-<div class="section" id="id26">
-<h3>References<a class="headerlink" href="#id26" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><a class="reference external" href="http://zodb.readthedocs.org/en/latest/">The ZODB Book</a> - A work in
-progress by Carlos De La Guardia.</li>
-<li>The <a class="reference external" href="http://docs.zope.org/zope2/zope2book/AppendixC.html">ZPT Appendix</a> to
-the Zope Book</li>
-<li>Read <a class="reference external" href="http://docs.pylonsproject.org/projects/pyramid/en/latest/designdefense.html">Defending Pyramid&#8217;s Design</a>
-- an excellent point-by-point explanation of the design decisions that went
-into creating this framework.</li>
-</ul>
-</div>
-<div class="section" id="id27">
-<h3>Assignment<a class="headerlink" href="#id27" title="Permalink to this headline">¶</a></h3>
-<p>Begin work on your final project. You must communicate your plan with Dan and
-I first to ensure it is of an appropriate scope. If you are having trouble
-getting started, let us know.</p>
-<p>We will be spending most of the class over the next two weeks working. Be
-prepared to take advantage of the time with Dan and me by getting started now.</p>
-<p><a class="reference external" href="http://github.com/cewing/training.python_web/blob/master/assignments/week08/athome/assignment.rst">Reread the project specification</a></p>
-</div>
-</div>
-<div class="section" id="week-9-the-cloud">
-<h2>Week 9 - The Cloud<a class="headerlink" href="#week-9-the-cloud" title="Permalink to this headline">¶</a></h2>
-<p><strong>Date</strong>: Mar. 5, 2013</p>
-<p>This week we&#8217;ll talk a bit about deployment options, and take a quick tour of
-deploying to one of the many possible cloud solutions.</p>
-<p>The lion&#8217;s share of the class will be devoted to lab time, enabling students
-to work on their final projects with the help of Dan and Cris</p>
-<p><a class="reference external" href="presentations/week09.html">Week 9 Presentation</a></p>
-<div class="section" id="id28">
-<h3>Assignment<a class="headerlink" href="#id28" title="Permalink to this headline">¶</a></h3>
-<p>Continue working on your final project.</p>
-<p>You will have one more week to complete the project after today&#8217;s class. Your
-final version must be up and running live by Friday, March 15 at noon.</p>
-<p><a class="reference external" href="http://github.com/cewing/training.python_web/blob/master/assignments/week08/athome/assignment.rst">Reread the project specification</a></p>
-</div>
-</div>
-<div class="section" id="week-10-plone">
-<h2>Week 10 - Plone<a class="headerlink" href="#week-10-plone" title="Permalink to this headline">¶</a></h2>
-<p><strong>Date</strong>: Mar. 12, 2013</p>
-<p>This week we&#8217;ll visit a full-featured Content Management System built using
-Python: Plone. We&#8217;ll learn a bit about what Plone is and what it does. We&#8217;ll
-learn about it&#8217;s history and when it might be a good choice for a project.
-We&#8217;ll even take a quick tour of some of the features of this mature,
-enterprise CMS.</p>
-<p>We&#8217;ll also have a visit from the instructors for the third and final course in
-the Python certificate program.  They&#8217;ll be giving you a quick introduction to
-the course and what you can expect to learn.</p>
-<p>Finally, we&#8217;ll spend lab time in the class working on completing our final
-projects.  The projects will be due at the end of the week, so this will be
-your last opportunity to work with Dan and Cris to answer questions.</p>
-<p><a class="reference external" href="presentations/week10.html">Week 10 Presentation</a></p>
-<div class="section" id="id30">
-<h3>Assignment<a class="headerlink" href="#id30" title="Permalink to this headline">¶</a></h3>
-<p>Complete and submit your final project.</p>
-<p>The project will be due Friday, March 15 at noon. Late submissions will not be
-accepted.</p>
-<p><a class="reference external" href="http://github.com/cewing/training.python_web/blob/master/assignments/week08/athome/assignment.rst">Reread the project specification</a></p>
-<p>Make sure you submit all of the parts requested in the specification.</p>
-</div>
+<div class="section" id="session-10-a-pyramid-application">
+<h2>Session 10 - A Pyramid Application<a class="headerlink" href="#session-10-a-pyramid-application" title="Permalink to this headline">¶</a></h2>
+<p>In this class we&#8217;ll dive into building a real Pyramid application. We&#8217;ll be
+implementing a simple wiki, using traversal dispatch, ZODB persistence and
+Chameleon templates. We&#8217;ll get a chance to work with simple forms, see how
+views work in Pyramid, and implement an ACL-based authorization scheme.</p>
+<p>Along the way we&#8217;ll be taking a good look at a very different templating
+system, Chameleon. It grew out of Zope Page Templates (ZPT) and the Template
+Attribute Language (TAL). It&#8217;s chief advantage is that it provides structure
+and variable interpolation via XML namespaced attributes. This allows you to
+write templates that load in a browser and look &#8216;right&#8217; without needing the
+framework to render them.</p>
+<p>And we&#8217;ll continue our drive for test-driven development by writing
+tests that cover the functionality we want and then writing the code to make
+them pass.</p>
+<p>By the end of the session, you&#8217;ll have a fully functional wiki you can play
+with. Maybe you&#8217;ll use it to track the information you leared about Python
+Web Development.</p>
+<p><a class="reference external" href="presentations/session10.html">Lecture Slides</a></p>
 </div>
 </div>
 
@@ -631,90 +256,35 @@ accepted.</p>
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Course Outline</a><ul>
-<li><a class="reference internal" href="#week-1-introduction-and-sockets">Week 1 - Introduction and Sockets</a><ul>
-<li><a class="reference internal" href="#reading">Reading</a></li>
+<li><a class="reference internal" href="#session-1-tcp-ip-and-sockets">Session 1 - TCP/IP and Sockets</a><ul>
 <li><a class="reference internal" href="#references">References</a></li>
-<li><a class="reference internal" href="#further-reading">Further Reading</a></li>
-<li><a class="reference internal" href="#bonus">Bonus</a></li>
-<li><a class="reference internal" href="#assignment">Assignment</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#week-2-web-protocols">Week 2 - Web Protocols</a><ul>
-<li><a class="reference internal" href="#id1">Reading</a></li>
+<li><a class="reference internal" href="#session-2-web-protocols">Session 2 - Web Protocols</a><ul>
 <li><a class="reference internal" href="#id2">References</a></li>
-<li><a class="reference internal" href="#id3">Bonus</a></li>
-<li><a class="reference internal" href="#id4">Assignment</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#week-3-apis-and-mashups">Week 3 - APIs and Mashups</a><ul>
-<li><a class="reference internal" href="#id5">Reading</a></li>
-<li><a class="reference internal" href="#id6">References</a><ul>
-<li><a class="reference internal" href="#python-standard-libraries">Python Standard Libraries:</a></li>
-<li><a class="reference internal" href="#external-libraries">External Libraries:</a></li>
-<li><a class="reference internal" href="#soap">SOAP</a></li>
+<li><a class="reference internal" href="#session-3-apis-and-mashups">Session 3 - APIs and Mashups</a><ul>
+<li><a class="reference internal" href="#id4">References</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id9">Bonus</a></li>
-<li><a class="reference internal" href="#id10">Assignment</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#week-4-cgi-and-wsgi">Week 4 - CGI and WSGI</a><ul>
-<li><a class="reference internal" href="#id11">Reading</a><ul>
-<li><a class="reference internal" href="#prepare-for-class">Prepare for class:</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#id12">References</a><ul>
-<li><a class="reference internal" href="#alternate-wsgi-introductions">Alternate WSGI introductions:</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#id13">Assignment</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#week-5-small-frameworks">Week 5 - Small Frameworks</a><ul>
-<li><a class="reference internal" href="#id14">Reading</a></li>
-<li><a class="reference internal" href="#before-class">Before Class</a></li>
-<li><a class="reference internal" href="#reference">Reference</a></li>
-<li><a class="reference internal" href="#id15">Assignment</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#week-6-django">Week 6 - Django</a><ul>
-<li><a class="reference internal" href="#id16">Reading</a></li>
-<li><a class="reference internal" href="#id17">Before Class</a></li>
-<li><a class="reference internal" href="#id18">Reference</a></li>
-<li><a class="reference internal" href="#id19">Assignment</a></li>
-<li><a class="reference internal" href="#id20">Assignment</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#week-7-django">Week 7 - Django</a><ul>
-<li><a class="reference internal" href="#id21">Reading</a></li>
-<li><a class="reference internal" href="#id23">Reference</a></li>
-<li><a class="reference internal" href="#id24">Assignment</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#week-8-pyramid">Week 8 - Pyramid</a><ul>
-<li><a class="reference internal" href="#id25">Reading</a></li>
-<li><a class="reference internal" href="#id26">References</a></li>
-<li><a class="reference internal" href="#id27">Assignment</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#week-9-the-cloud">Week 9 - The Cloud</a><ul>
-<li><a class="reference internal" href="#id28">Assignment</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#week-10-plone">Week 10 - Plone</a><ul>
-<li><a class="reference internal" href="#id30">Assignment</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#session-4-cgi-and-wsgi">Session 4 - CGI and WSGI</a></li>
+<li><a class="reference internal" href="#session-5-frameworks-and-flask">Session 5 - Frameworks and Flask</a></li>
+<li><a class="reference internal" href="#session-6-a-flask-application">Session 6 - A Flask Application</a></li>
+<li><a class="reference internal" href="#session-7-intro-to-django">Session 7 - Intro to Django</a></li>
+<li><a class="reference internal" href="#session-8-a-django-application">Session 8 - A Django Application</a></li>
+<li><a class="reference internal" href="#session-9-intro-to-pyramid">Session 9 - Intro to Pyramid</a></li>
+<li><a class="reference internal" href="#session-10-a-pyramid-application">Session 10 - A Pyramid Application</a></li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="index.html"
-                        title="previous chapter">Internet Programming with Python</a></p>
+                        title="previous chapter">Python Web Programming Workshop</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="assignments.html"
-                        title="next chapter">Assignments</a></p>
+  <p class="topless"><a href="readings.html"
+                        title="next chapter">Course Readings</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/outline.txt"
@@ -744,16 +314,16 @@ accepted.</p>
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="assignments.html" title="Assignments"
+          <a href="readings.html" title="Course Readings"
              >next</a> |</li>
         <li class="right" >
-          <a href="index.html" title="Internet Programming with Python"
+          <a href="index.html" title="Python Web Programming Workshop"
              >previous</a> |</li>
-        <li><a href="index.html">Internet Programming with Python 1.0 documentation</a> &raquo;</li> 
+        <li><a href="index.html">Python Web Programming Workshop 1.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright 2012, Cris Ewing.
+        &copy; Copyright 2012-2013, Cris Ewing.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>
