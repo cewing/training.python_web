@@ -1,0 +1,952 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.9.1: http://docutils.sourceforge.net/" />
+<meta name="version" content="S5 1.1" />
+<title>Internet Programming with Python</title>
+<link rel="stylesheet" href="ui/uw_pce_theme/pretty.css" type="text/css" />
+<!-- configuration parameters -->
+<meta name="defaultView" content="slideshow" />
+<meta name="controlVis" content="hidden" />
+<!-- style sheet links -->
+<script src="ui/uw_pce_theme/slides.js" type="text/javascript"></script>
+<link rel="stylesheet" href="ui/uw_pce_theme/slides.css"
+      type="text/css" media="projection" id="slideProj" />
+<link rel="stylesheet" href="ui/uw_pce_theme/outline.css"
+      type="text/css" media="screen" id="outlineStyle" />
+<link rel="stylesheet" href="ui/uw_pce_theme/print.css"
+      type="text/css" media="print" id="slidePrint" />
+<link rel="stylesheet" href="ui/uw_pce_theme/opera.css"
+      type="text/css" media="projection" id="operaFix" />
+</head>
+<body>
+<div class="layout">
+<div id="controls"></div>
+<div id="currentSlide"></div>
+<div id="header">
+
+</div>
+<div id="footer">
+<h1>Internet Programming with Python</h1>
+<h2><a class="reference external" href="http://github.com/cewing/training.python_web">View document source</a>.
+</h2>
+</div>
+</div>
+<div class="presentation">
+<div class="slide" id="slide0">
+<h1 class="title">Internet Programming with Python</h1>
+
+<img alt="img/pyramid-medium.png" class="align-left" src="img/pyramid-medium.png" style="width: 50%;" />
+<p>Session 9: Intro To Pyramid</p>
+<div class="intro-blurb right line-block">
+<div class="line">The flexible framework.</div>
+<div class="line">Totally not built by aliens.</div>
+</div>
+
+</div>
+<div class="slide" id="what-is-pyramid">
+<h1>What is Pyramid?</h1>
+<p>A Web Framework</p>
+<p class="incremental">&quot;Its primary job is to make it easier for a developer to create an arbitrary
+web application&quot;</p>
+<p class="incremental">Makes as few decisions as possible for you.</p>
+<p class="incremental">Allows <em>you</em> to make decisions, and provides tools to support you when you do</p>
+<p class="incremental">&quot;Pay only for what you eat&quot;</p>
+</div>
+<div class="slide" id="why-is-pyramid">
+<h1>Why is Pyramid?</h1>
+<p>Micro-frameworks are great for lightweight apps</p>
+<p class="incremental">Micro-frameworks do not scale up or change specs easily</p>
+<p class="incremental">Full-stack frameworks have lots of opinions. <em>Bending</em> them can be difficult.</p>
+<p class="incremental">Pyramid can build a lightweight app easily, but it can also scale and bend</p>
+</div>
+<div class="slide" id="history-zope-and-repoze">
+<h1>History - Zope and Repoze</h1>
+<p>Many of the core developers of Pyramid started as Zope developers.</p>
+<p class="incremental">Born in 1996, Zope was the first Python web framework, and possibly the first
+in any language.</p>
+<p class="incremental">After 14 years, the developers of Zope had seen and learned <em>a lot</em>.</p>
+<p class="incremental">Repoze was a short-lived (2008-2010) framework intended to embody the lessons
+learned from Zope.</p>
+</div>
+<div class="slide" id="history-pylons">
+<h1>History - Pylons</h1>
+<p>Pylons was released in 2005.</p>
+<p class="incremental">It was among the first frameworks to fully embrace the WSGI specification.</p>
+<p class="incremental">The creators of Pylons built WebOb (abstracted HTTP request and response
+objects).</p>
+<p class="incremental">This forms the foundation of Pylons much as Werkzeug is the foundation of
+Flask.</p>
+</div>
+<div class="slide" id="history-2010">
+<h1>History - 2010</h1>
+<p>In 2010, the authors of Repoze and Pylons got together and made an unusual
+decision.</p>
+<p class="incremental">Why duplicate efforts when there are already so many other frameworks?</p>
+<p class="incremental">Repoze was re-named 'Pyramid' and the 'Pylons Project' was born to shepherd
+this new combined project.</p>
+</div>
+<div class="slide" id="implications">
+<h1>Implications</h1>
+<p>Pylons was a framework predicated largely on relational persistence and URL
+Dispatch.</p>
+<p class="incremental">Zope/Repoze was based on the ZODB and Object Traversal.</p>
+<p class="incremental">Each of these approaches has strengths and weaknesses.</p>
+<p class="incremental">Pyramid supports using neither, both and even combinations of the two.</p>
+</div>
+<div class="slide" id="relational-db-url-dispatch">
+<h1>Relational DB / URL Dispatch</h1>
+<p>You've seen this before, both in Flask and Django</p>
+<p class="incremental">SQLite3, the Django ORM, both are examples of relational persistence models</p>
+<p class="incremental">Routes/urlpatterns, both are examples of URL Dispatch</p>
+<p class="incremental">Pyramid can work this way too.  SQLAlchemy, Route-based views.</p>
+<p class="incremental">Been there, done that.  Let's see something else.</p>
+</div>
+<div class="slide" id="zodb">
+<h1>ZODB</h1>
+<p>ORMs allow developers to pretend that Objects are like DB Tables.</p>
+<p class="incremental">But Objects are <em>not</em> tables, so there's a <a class="reference external" href="http://en.wikipedia.org/wiki/Object-relational_impedance_mismatch">conceptual mismatch</a> between
+the two.</p>
+<p class="incremental">The ZODB is an <em>object store</em>, rather than a relational database.</p>
+<p class="incremental">If your data is best represented by <em>heterogenous</em> objects, it's a better
+persistence solution.</p>
+</div>
+<div class="slide" id="traversal">
+<h1>Traversal</h1>
+<p>In URL Dispatch, the <tt class="docutils literal">PATH</tt> is a <em>virtual</em> construct.</p>
+<p class="incremental">In our Django app <tt class="docutils literal">/admin/myblog/post/13/</tt> doesn't map to any series of
+<em>real</em> locations.</p>
+<p class="incremental">This is unlike a filesystem where <tt class="docutils literal">/usr/local/bin/python</tt> points to a <em>real</em>
+location.</p>
+<p class="incremental">When you use the <tt class="docutils literal">cd</tt> command to move from place to place in a filesystem,
+that is <em>traversal</em></p>
+</div>
+<div class="slide" id="object-graphs">
+<h1>Object Graphs</h1>
+<p>In Python, objects can <em>contain</em> other objects.</p>
+<p class="incremental">Using <em>dict</em>-like structures, you can build a <em>graph</em> of objects:</p>
+<pre class="incremental literal-block">
+Family
+├── Parents
+│  ├── Cris
+│  ├── Kristina
+├── Children
+│  ├── Kieran
+│  ├── Finnian
+</pre>
+</div>
+<div class="slide" id="we-got-both-directions">
+<h1>We Got Both Directions</h1>
+<p><tt class="docutils literal">__getitem__</tt> allows movement from <em>container</em> to <em>contained</em></p>
+<div class="incremental container">
+<p>What if the <em>contained</em> can keep track of its <em>container</em>?</p>
+<pre class="code python small literal-block">
+<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">node</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+<span class="o">...</span>   <span class="n">__parent__</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="o">...</span>   <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<span class="o">...</span>     <span class="bp">self</span><span class="o">.</span><span class="n">__parent__</span> <span class="o">=</span> <span class="n">parent</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">x</span> <span class="o">=</span> <span class="n">node</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">x</span><span class="p">[</span><span class="s">'y'</span><span class="p">]</span> <span class="o">=</span> <span class="n">node</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="s">'y'</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">y</span><span class="o">.</span><span class="n">__parent__</span> <span class="o">==</span> <span class="n">x</span>
+<span class="bp">True</span>
+</pre>
+</div>
+</div>
+<div class="slide" id="traversal-path-lookup">
+<h1>Traversal - Path Lookup</h1>
+<p>You can <em>traverse</em> across the object graph by treating a URL as a series of
+<em>object names</em></p>
+<pre class="incremental small literal-block">
+http://family/parents/cris -&gt; family['parents']['cris']
+</pre>
+<p class="incremental">If you have more names than objects, the remainder can be passed to the final
+object as data:</p>
+<pre class="incremental small literal-block">
+http://family/parents/cris/edit -&gt; subpath = /edit
+http://family/parents/cris/next/steps -&gt; subpath = /next/steps
+</pre>
+<p class="incremental">The subpath can be used to find object methods or views</p>
+</div>
+<div class="slide" id="preparation">
+<h1>Preparation</h1>
+<p>You should at this point have a virtualenv in which you have installed the
+ZODB.</p>
+<p class="incremental">Now, let's install pyramid too.</p>
+<div class="incremental container">
+<p>In your terminal, change directories to where you build that virtualenv and
+activate it:</p>
+<pre class="small literal-block">
+$ cd /path/to/right/place
+$ source pyramidenv/bin/activate
+&lt;or&gt;
+C:\&gt; pyramidenv\Scripts\activate
+</pre>
+</div>
+</div>
+<div class="slide" id="installation">
+<h1>Installation</h1>
+<p>Next, install Pyramid and the extras we'll be using:</p>
+<pre class="incremental small literal-block">
+(pyramidenv)$ pip install pyramid
+...
+(pyramidenv)$ pip install docutils nose coverage
+...
+(pyramidenv)$ pip install pyramid_zodbconn pyramid_tm
+...
+(pyramidenv)$ pip install pyramid_debugtoolbar
+</pre>
+<p class="incremental">These tools will allow us to manage ZODB connections, debug our app, and run
+cool tests.</p>
+</div>
+<div class="slide" id="required-setup">
+<h1>Required Setup</h1>
+<p>In Django <tt class="docutils literal">startproject</tt> and <tt class="docutils literal">startapp</tt> gave us the boilerplate we needed.</p>
+<p class="incremental">Pyramid uses what it calls <em>scaffolds</em> for the same purpose.</p>
+<p class="incremental">When you installed it, a new <tt class="docutils literal">pcreate</tt> command was generated in your
+virtualenv.</p>
+<div class="incremental container">
+<p>Let's use it:</p>
+<pre class="small literal-block">
+(pyramidenv)$ pcreate -s zodb wikitutorial
+...
+</pre>
+</div>
+</div>
+<div class="slide" id="scaffolds-and-opinions">
+<h1>Scaffolds and Opinions</h1>
+<p>When you ran <tt class="docutils literal">pcreate <span class="pre">-s</span> zodb wikitutorial</tt> you invoked the <em>zodb scaffold</em></p>
+<p class="incremental">Pyramid the framework is highly un-opinionated.</p>
+<p class="incremental"><em>Scaffolds</em>, conversely, can be quite opinionated.  The one we used has chosen
+our persistence mechanism (ZODB) and how we will reach our code (Traversal).</p>
+<p class="incremental">You do not have to use <em>scaffolds</em> to start a project, but it can help.</p>
+</div>
+<div class="slide" id="project-layout">
+<h1>Project Layout</h1>
+<p>Running <tt class="docutils literal">pcreate</tt> has set up a file structure for us:</p>
+<pre class="small literal-block">
+wikitutorial/
+    CHANGES.txt
+    development.ini
+    MANIFEST.in
+    production.ini
+    README.txt
+    setup.cfg
+    setup.py
+    wikitutorial/
+        __init__.py
+        models.py
+        static/
+        templates/
+        tests.py
+        views.py
+</pre>
+</div>
+<div class="slide" id="similarities-to-django">
+<h1>Similarities to Django</h1>
+<p>Our project is organized with an outer <em>project</em> folder and an inner <em>package</em>
+folder (see the <tt class="docutils literal">__init__.py</tt>?)</p>
+<p class="incremental">The name of that outer directory is not really important.</p>
+<p class="incremental">Our inner <em>package</em> folder has a models.py, tests.py and views.py module</p>
+<p class="incremental">Our inner <em>package</em> folder has a <tt class="docutils literal">static/</tt> and <tt class="docutils literal">templates/</tt> directory</p>
+</div>
+<div class="slide" id="differences-from-django">
+<h1>Differences from Django</h1>
+<p>Our <em>outer</em> module has a <tt class="docutils literal">setup.py</tt> file, which allows it to be installed
+with <tt class="docutils literal">pip</tt> or <tt class="docutils literal">easy_install</tt></p>
+<p class="incremental">There is no <tt class="docutils literal">manage.py</tt> file. Pyramid commands are console scripts (look in
+<em>pyramidenv/bin</em>).</p>
+<p class="incremental">There is nothing magical in Pyramid about the name of the <tt class="docutils literal">models.py</tt>
+module.</p>
+<p class="incremental">There is nothing magical in Pyramid about the names of the <tt class="docutils literal">static/</tt> or
+<tt class="docutils literal">templates/</tt> directories.</p>
+</div>
+<div class="slide" id="pyramid-system-configuration">
+<h1>Pyramid System Configuration</h1>
+<p>Pyramid keeps configuration intended for an entire installation in <tt class="docutils literal">.ini</tt>
+files at the top of a project.</p>
+<p class="incremental">When you deploy an app to some wsgi server, you'll reference one of these files</p>
+<p class="incremental">Settings there affect the environment of all apps that are running in that
+wsgi server.</p>
+<p class="incremental">Like Django's <tt class="docutils literal">settings.py</tt>, but <strong>not</strong> python.</p>
+</div>
+<div class="slide" id="ini-format">
+<h1>INI format</h1>
+<p>INI-style files have a particular format.</p>
+<p class="incremental">Individual sections are marked by <tt class="docutils literal">[SECTION_NAMES]</tt> in square brackets</p>
+<p class="incremental">Each section will contain <tt class="docutils literal">name = value</tt> pairs of settings.</p>
+<p class="incremental">INI files are parsed using the Python <a class="reference external" href="http://docs.python.org/2/library/configparser.html">ConfigParser</a> module.</p>
+<pre class="code python small incremental literal-block">
+<span class="p">{</span><span class="s">'SECTION_NAME'</span><span class="p">:</span> <span class="p">{</span><span class="s">'name'</span><span class="p">:</span> <span class="s">'value'</span><span class="p">,</span> <span class="o">...</span><span class="p">},</span> <span class="o">...</span><span class="p">}</span>
+</pre>
+</div>
+<div class="slide" id="pyramid-is-python">
+<h1>Pyramid is Python</h1>
+<p>Running a Pyramid application is really just like running a Python module. In
+the <tt class="docutils literal">__init__.py</tt> file of your app <em>package</em>, you'll find a <tt class="docutils literal">main</tt>
+function:</p>
+<pre class="code python small incremental literal-block">
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">global_config</span><span class="p">,</span> <span class="o">**</span><span class="n">settings</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; This function returns a Pyramid WSGI application.
+    &quot;&quot;&quot;</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">Configurator</span><span class="p">(</span><span class="n">root_factory</span><span class="o">=</span><span class="n">root_factory</span><span class="p">,</span>
+                          <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">)</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">add_static_view</span><span class="p">(</span><span class="s">'static'</span><span class="p">,</span> <span class="s">'static'</span><span class="p">,</span> <span class="n">cache_max_age</span><span class="o">=</span><span class="mi">3600</span><span class="p">)</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">scan</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">config</span><span class="o">.</span><span class="n">make_wsgi_app</span><span class="p">()</span>
+</pre>
+<p class="incremental">Let's take a closer look at this, line by line.</p>
+</div>
+<div class="slide" id="ini-configuration">
+<h1>INI Configuration</h1>
+<pre class="code python small literal-block">
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">global_config</span><span class="p">,</span> <span class="o">**</span><span class="n">settings</span><span class="p">):</span>
+</pre>
+<p class="incremental">Arguments passed to <tt class="docutils literal">main</tt> are configuration from <tt class="docutils literal">.ini</tt>.</p>
+<p class="incremental"><tt class="docutils literal">global_config</tt> is a dictionary of settings in [DEFAULT]</p>
+<p class="incremental"><tt class="docutils literal">settings</tt> will be the name-value pairs for your app.</p>
+<div class="incremental container">
+<p><tt class="docutils literal"><span class="pre">[app:&lt;name&gt;]</span></tt> sections are mapped to apps by the <tt class="docutils literal">use</tt> setting</p>
+<pre class="code ini small literal-block">
+<span class="k">[app:main]</span>
+<span class="na">use</span> <span class="o">=</span> <span class="s">egg:wikitutorial</span>
+</pre>
+</div>
+</div>
+<div class="slide" id="app-configuration">
+<h1>App Configuration</h1>
+<pre class="code python small literal-block">
+<span class="n">config</span> <span class="o">=</span> <span class="n">Configurator</span><span class="p">(</span><span class="n">root_factory</span><span class="o">=</span><span class="n">root_factory</span><span class="p">,</span>
+                      <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">add_static_view</span><span class="p">(</span><span class="s">'static'</span><span class="p">,</span> <span class="s">'static'</span><span class="p">,</span> <span class="n">cache_max_age</span><span class="o">=</span><span class="mi">3600</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">scan</span><span class="p">()</span>
+</pre>
+<p class="incremental">Pyramid configuration is done by the <tt class="docutils literal">Configurator</tt> class.</p>
+<p class="incremental">Configuration can be <em>imperative</em> (function calls) or <em>declarative</em>
+(decorators)</p>
+<p class="incremental">Either way, <tt class="docutils literal">.scan()</tt> sets it all up and reports errors.</p>
+<p class="incremental">Read more in <a class="reference external" href="http://docs.pylonsproject.org/projects/pyramid/en/1.4-branch/api/config.html">the pyramid.config documentation</a></p>
+</div>
+<div class="slide" id="wsgi-hookup">
+<h1>WSGI Hookup</h1>
+<pre class="code python small literal-block">
+<span class="k">return</span> <span class="n">config</span><span class="o">.</span><span class="n">make_wsgi_app</span><span class="p">()</span>
+</pre>
+<p class="incremental">Like Django and Flask, Pyramid runs in a WSGI world.</p>
+<p class="incremental"><tt class="docutils literal">.make_wsgi_app()</tt> returns a <tt class="docutils literal">Router</tt> object for your app.</p>
+<div class="incremental container">
+<p><tt class="docutils literal">Router</tt> has the following <tt class="docutils literal">__call__</tt> method:</p>
+<pre class="code python small literal-block">
+<span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">):</span>
+    <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request_factory</span><span class="p">(</span><span class="n">environ</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke_subrequest</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">use_tweens</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">response</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">)</span>
+</pre>
+</div>
+<p class="incremental">Familiar, no?</p>
+</div>
+<div class="slide" id="the-application-root">
+<h1>The Application Root</h1>
+<p>The <tt class="docutils literal">Configurator</tt> constructor takes a <tt class="docutils literal">root_factory</tt> kwarg.</p>
+<p class="incremental">This <em>callable</em> returns something to handle dispatching requests.</p>
+<p class="incremental">The default root factory uses URL Dispatch.</p>
+<p class="incremental">We want to use Traversal for our app, so we provide one.</p>
+</div>
+<div class="slide" id="our-root-factory">
+<h1>Our Root Factory</h1>
+<pre class="code python small literal-block">
+<span class="kn">from</span> <span class="nn">pyramid_zodbconn</span> <span class="kn">import</span> <span class="n">get_connection</span>
+<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">appmaker</span>
+
+<span class="k">def</span> <span class="nf">root_factory</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">get_connection</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">appmaker</span><span class="p">(</span><span class="n">conn</span><span class="o">.</span><span class="n">root</span><span class="p">())</span>
+</pre>
+<p class="incremental"><tt class="docutils literal">get_connection</tt> returns a connection to the ZODB.</p>
+<p class="incremental">The <tt class="docutils literal">root</tt> of this connection is then passed to <tt class="docutils literal">appmaker</tt></p>
+<p class="incremental">This is another factory method that returns the app root.</p>
+<p class="incremental">So what exactly does <tt class="docutils literal">appmaker</tt> do?</p>
+</div>
+<div class="slide" id="the-appmaker">
+<h1>The appmaker</h1>
+<pre class="code python small literal-block">
+<span class="k">def</span> <span class="nf">appmaker</span><span class="p">(</span><span class="n">zodb_root</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="s">'app_root'</span> <span class="ow">in</span> <span class="n">zodb_root</span><span class="p">:</span>
+        <span class="n">app_root</span> <span class="o">=</span> <span class="n">MyModel</span><span class="p">()</span>
+        <span class="n">zodb_root</span><span class="p">[</span><span class="s">'app_root'</span><span class="p">]</span> <span class="o">=</span> <span class="n">app_root</span>
+        <span class="kn">import</span> <span class="nn">transaction</span>
+        <span class="n">transaction</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">zodb_root</span><span class="p">[</span><span class="s">'app_root'</span><span class="p">]</span>
+</pre>
+<p class="incremental">Remember, the ZODB is an <em>object store</em>, dict-like.</p>
+<p class="incremental">We look for an <tt class="docutils literal">app_root</tt> inside this <em>container</em></p>
+<p class="incremental">If there is none, we build one and put it there.</p>
+<p class="incremental">This simple Python object will manage <em>Traversal</em> for our app.</p>
+</div>
+<div class="slide" id="install-our-app">
+<h1>Install Our App</h1>
+<p>Our app is, in fact, a Python package.</p>
+<p class="incremental">In order for us to use it, we must <em>install</em> it.</p>
+<p class="incremental"><tt class="docutils literal">setup.py</tt> allows us to do this: <tt class="docutils literal">python setup.py install</tt> <strong>BUT</strong></p>
+<p class="incremental">Install will make a copy of our code and use that.</p>
+<p class="incremental">We don't want that, since updates we make here would not be picked up.</p>
+</div>
+<div class="slide" id="develop-installation">
+<h1><em>Develop</em> Installation</h1>
+<p>We can use an alternate method called <tt class="docutils literal">develop</tt>.</p>
+<p class="incremental">This will install a <em>pointer</em> to our package, but leave the code here.</p>
+<p class="incremental">In a terminal, move to the <tt class="docutils literal">wikitutorial</tt> <em>project</em> folder (find
+<tt class="docutils literal">development.ini</tt>) and <tt class="docutils literal">develop</tt> the app:</p>
+<pre class="small incremental literal-block">
+(pyramidenv)$ cd wikitutorial
+(pyramidenv)$ python setup.py develop
+</pre>
+</div>
+<div class="slide" id="see-it-live">
+<h1>See It Live</h1>
+<p>Use the <tt class="docutils literal">pserve</tt> command installed by pyramid to serve our app:</p>
+<pre class="small literal-block">
+(pyramidenv)$ pserve development.ini
+Starting server in PID 16698.
+serving on http://0.0.0.0:6543
+</pre>
+<p class="incremental">This brings up a new <em>wsgi server</em> provided by <tt class="docutils literal">waitress</tt> serving our app.</p>
+<p class="incremental">Load <a class="reference external" href="http://localhost:6543">http://localhost:6543</a> and view your app root.</p>
+</div>
+<div class="slide" id="why-is-it-pretty">
+<h1>Why is it Pretty?</h1>
+<p>We should be looking at an instance of MyModel:</p>
+<pre class="code python small literal-block">
+<span class="k">class</span> <span class="nc">MyModel</span><span class="p">(</span><span class="n">PersistentMapping</span><span class="p">):</span>
+    <span class="n">__parent__</span> <span class="o">=</span> <span class="n">__name__</span> <span class="o">=</span> <span class="bp">None</span>
+</pre>
+<p class="incremental">What makes it look like this?</p>
+<p class="incremental">The secret sauce lies in <em>view configuration</em></p>
+</div>
+<div class="slide" id="pyramid-views">
+<h1>Pyramid Views</h1>
+<pre class="code python small literal-block">
+<span class="kn">from</span> <span class="nn">pyramid.view</span> <span class="kn">import</span> <span class="n">view_config</span>
+<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">MyModel</span>
+
+<span class="nd">&#64;view_config</span><span class="p">(</span><span class="n">context</span><span class="o">=</span><span class="n">MyModel</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="s">'templates/mytemplate.pt'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">my_view</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s">'project'</span><span class="p">:</span> <span class="s">'wikitutorial'</span><span class="p">}</span>
+</pre>
+<p class="incremental">Pyramid views can be configured with the <tt class="docutils literal">&#64;view_config()</tt> decorator.</p>
+<p class="incremental">Or call <tt class="docutils literal">config.add_view()</tt> method in your app <tt class="docutils literal">main</tt>.</p>
+<p class="incremental"><tt class="docutils literal">config.scan()</tt> in <tt class="docutils literal">main</tt> picks up all config decorators.</p>
+</div>
+<div class="slide" id="view-config-predicates">
+<h1>View Config - Predicates</h1>
+<p>View configuration takes many arguments.  Here we use two.</p>
+<p class="incremental"><tt class="docutils literal">context</tt> determines the <em>type</em> of object to which this view can be applied</p>
+<p class="incremental">It's an example of a <em>predicate</em> argument</p>
+<p class="incremental"><em>Predicates</em> place restrictions on how and when a view is used.</p>
+<p class="incremental">Read more about predicates in <a class="reference external" href="http://docs.pylonsproject.org/projects/pyramid/en/1.1-branch/narr/viewconfig.html">view configuration</a></p>
+</div>
+<div class="slide" id="view-config-renderers">
+<h1>View Config - Renderers</h1>
+<p>Pyramid separates the concerns of <em>view</em> and <em>renderer</em></p>
+<p class="incremental">So far, <em>views</em> prepare a data context <strong>and</strong> render it</p>
+<p class="incremental">In Pyramid, the <em>view</em> only prepares the data to be rendered</p>
+<p class="incremental">A <tt class="docutils literal">renderer</tt> transforms this to something suitable for an HTTP response.</p>
+<p class="incremental">In this case, <tt class="docutils literal">renderer</tt> is a template that will return HTML</p>
+</div>
+<div class="slide" id="view-config-summary">
+<h1>View Config - Summary</h1>
+<p>In summary, then, our view configuration:</p>
+<ul class="incremental simple">
+<li>checks to see that we have traversed to an instance of <tt class="docutils literal">MyModel</tt></li>
+<li>calls the <tt class="docutils literal">my_view</tt> function, which returns a simple dictionary</li>
+<li>passes that dictionary to the <tt class="docutils literal">mytemplate</tt> template</li>
+<li>the template is rendered and returned as the body of an HTTP response.</li>
+</ul>
+<p class="incremental">And that is how we end up looking at that very pretty page.</p>
+</div>
+<div class="slide" id="break-time">
+<h1>Break Time</h1>
+<p>So far:</p>
+<ul class="incremental simple">
+<li>we've taken a look at where Pyramid comes from</li>
+<li>we've seen how it is like and unlike other frameworks we've seen.</li>
+<li>we've met the ZODB <em>object store</em> and talked about how it differs from a
+database</li>
+<li>we've learned about <em>traversal</em> and how it differs from URL dispatch</li>
+<li>we've set up a Pyramid app using both</li>
+<li>we've looked at how the example code in that application works.</li>
+</ul>
+<p class="incremental">Next, we'll start working on building our app, starting with Models.</p>
+</div>
+<div class="slide" id="before-we-begin">
+<h1>Before We Begin</h1>
+<p>In your <em>package</em> directory you should see a file: <tt class="docutils literal">Data.fs</tt>.</p>
+<p class="incremental">We are going to be starting over, so let's clear it.</p>
+<p class="incremental">Make sure Pyramid is not running.</p>
+<p class="incremental">Delete Data.fs. It will be re-created as needed.</p>
+<p class="incremental">You can also delete Data.fs.* (.tmp, .index, .lock)</p>
+</div>
+<div class="slide" id="wiki-models">
+<h1>Wiki Models</h1>
+<p>First, we want a <em>wiki</em> class to serve as our app <em>root</em>.</p>
+<p class="incremental">We also need a <em>page</em> class representing a wiki page.</p>
+<p class="incremental">This will be the type we view when we are looking at the wiki.</p>
+<p class="incremental">These two classes will need to be stored in our ZODB</p>
+<p class="incremental">This means we need to talk about <em>persistence</em>.</p>
+</div>
+<div class="slide" id="persistence-magic">
+<h1>Persistence Magic</h1>
+<p>In SQL, data <em>about</em> an object is written to tables.</p>
+<p class="incremental">In the ZODB, the <em>object itself</em> is saved in the database.</p>
+<p class="incremental">The ZODB provides special classes that help us with this.</p>
+<p class="incremental">Instances of these classes are able to know when they've been changed.</p>
+<p class="incremental">When a ZODB transaction is committed, all changes objects are saved.</p>
+</div>
+<div class="slide" id="persistent-base-classes">
+<h1>Persistent Base Classes</h1>
+<p>We'll be using two of these classes in our wiki:</p>
+<ul class="incremental simple">
+<li><strong>Persistent</strong> - automatically saves changes to class attributes</li>
+<li><strong>PersistentMapping</strong> - like a <em>dictionary</em>, saves changes to itself <em>and
+its keys and values</em>.</li>
+</ul>
+<p class="incremental small">Other structures like lists and B-Trees are also available, but we wont use
+them here.</p>
+<p class="incremental">By subclassing these, we automatically gain persistence.</p>
+</div>
+<div class="slide" id="traversal-magic">
+<h1>Traversal Magic</h1>
+<p>Our wiki system will use <em>traversal</em> dispatch</p>
+<p class="incremental">Two object attributes support <em>traversal</em>:</p>
+<ul class="incremental simple">
+<li><tt class="docutils literal">__name__</tt> (who am I)</li>
+<li><tt class="docutils literal">__parent__</tt> (where am I)</li>
+</ul>
+<p class="incremental">Every object in a traversal-based system <strong>must</strong> provide these two
+attributes.</p>
+<p class="incremental">The <em>root</em> object will set these to <tt class="docutils literal">None</tt>.</p>
+</div>
+<div class="slide" id="the-wiki-class">
+<h1>The Wiki Class</h1>
+<p>Open <tt class="docutils literal">models.py</tt> from our <tt class="docutils literal">wikitutorial</tt> <em>package</em> directory.</p>
+<p class="incremental">First, delete the <tt class="docutils literal">MyModel</tt> class.  We won't need it.</p>
+<p class="incremental">Add the following in its place:</p>
+<pre class="code python incremental literal-block">
+<span class="k">class</span> <span class="nc">Wiki</span><span class="p">(</span><span class="n">PersistentMapping</span><span class="p">):</span>
+    <span class="n">__name__</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">__parent__</span> <span class="o">=</span> <span class="bp">None</span>
+</pre>
+</div>
+<div class="slide" id="the-page-class">
+<h1>The Page Class</h1>
+<p>To that same file (models.py) add one import and a second class definition:</p>
+<pre class="code python literal-block">
+<span class="kn">from</span> <span class="nn">persistent</span> <span class="kn">import</span> <span class="n">Persistent</span>
+
+<span class="k">class</span> <span class="nc">Page</span><span class="p">(</span><span class="n">Persistent</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+</pre>
+<p class="incremental">What about <tt class="docutils literal">__name__</tt> and <tt class="docutils literal">__parent__</tt>?</p>
+<p class="incremental">We'll add those to each instance when we create it.</p>
+</div>
+<div class="slide" id="update-appmaker">
+<h1>Update Appmaker</h1>
+<p>Update <tt class="docutils literal">appmaker</tt> for our new models:</p>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">appmaker</span><span class="p">(</span><span class="n">zodb_root</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="s">'app_root'</span> <span class="ow">in</span> <span class="n">zodb_root</span><span class="p">:</span>
+        <span class="n">app_root</span> <span class="o">=</span> <span class="n">Wiki</span><span class="p">()</span>
+        <span class="n">frontpage</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span><span class="s">'This is the front page'</span><span class="p">)</span>
+        <span class="n">app_root</span><span class="p">[</span><span class="s">'FrontPage'</span><span class="p">]</span> <span class="o">=</span> <span class="n">frontpage</span>
+        <span class="n">frontpage</span><span class="o">.</span><span class="n">__name__</span> <span class="o">=</span> <span class="s">'FrontPage'</span>
+        <span class="n">frontpage</span><span class="o">.</span><span class="n">__parent__</span> <span class="o">=</span> <span class="n">app_root</span>
+        <span class="n">zodb_root</span><span class="p">[</span><span class="s">'app_root'</span><span class="p">]</span> <span class="o">=</span> <span class="n">app_root</span>
+        <span class="kn">import</span> <span class="nn">transaction</span>
+        <span class="n">transaction</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">zodb_root</span><span class="p">[</span><span class="s">'app_root'</span><span class="p">]</span>
+</pre>
+</div>
+<div class="slide" id="a-last-bit-of-cleanup">
+<h1>A Last Bit of Cleanup</h1>
+<p>We've deleted the <tt class="docutils literal">MyModel</tt> class.</p>
+<p class="incremental">But we still have <em>views</em> that reference the class.</p>
+<div class="incremental container">
+<p>Open <tt class="docutils literal">views.py</tt> and delete everything except the first import</p>
+<pre class="code python small literal-block">
+<span class="kn">from</span> <span class="nn">pyramid.view</span> <span class="kn">import</span> <span class="n">view_config</span>
+</pre>
+</div>
+<p class="incremental">Next come tests for our new models.</p>
+</div>
+<div class="slide" id="test-the-wiki-model">
+<h1>Test the Wiki Model</h1>
+<p>Open <tt class="docutils literal">tests.py</tt> from the <em>package</em> directory. Delete the <tt class="docutils literal">ViewTests</tt>
+class and replace it with the following:</p>
+<pre class="code python small literal-block">
+<span class="k">class</span> <span class="nc">WikiModelTests</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">_getTargetClass</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">wikitutorial.models</span> <span class="kn">import</span> <span class="n">Wiki</span>
+        <span class="k">return</span> <span class="n">Wiki</span>
+
+    <span class="k">def</span> <span class="nf">_makeOne</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getTargetClass</span><span class="p">()()</span>
+
+    <span class="k">def</span> <span class="nf">test_constructor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">wiki</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_makeOne</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">wiki</span><span class="o">.</span><span class="n">__parent__</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">wiki</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</pre>
+</div>
+<div class="slide" id="test-the-page-model">
+<h1>Test the Page Model</h1>
+<p>Add the following test class as well:</p>
+<pre class="code python small literal-block">
+<span class="k">class</span> <span class="nc">PageModelTests</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">_getTargetClass</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">wikitutorial.models</span> <span class="kn">import</span> <span class="n">Page</span>
+        <span class="k">return</span> <span class="n">Page</span>
+
+    <span class="k">def</span> <span class="nf">_makeOne</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="s">u'some data'</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getTargetClass</span><span class="p">()(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_constructor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_makeOne</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="s">u'some data'</span><span class="p">)</span>
+</pre>
+</div>
+<div class="slide" id="test-appmaker">
+<h1>Test Appmaker</h1>
+<p>One more test class:</p>
+<pre class="code python small literal-block">
+<span class="k">class</span> <span class="nc">AppmakerTests</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">_callFUT</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zodb_root</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">wikitutorial.models</span> <span class="kn">import</span> <span class="n">appmaker</span>
+        <span class="k">return</span> <span class="n">appmaker</span><span class="p">(</span><span class="n">zodb_root</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_initialization</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_callFUT</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">root</span><span class="p">[</span><span class="s">'app_root'</span><span class="p">][</span><span class="s">'FrontPage'</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                         <span class="s">'This is the front page'</span><span class="p">)</span>
+</pre>
+</div>
+<div class="slide" id="a-side-note">
+<h1>A Side Note</h1>
+<p>Note that there are <em>few</em> module level imports in <tt class="docutils literal">tests.py</tt></p>
+<p class="incremental">Also note that each TestCase has a helper method to import the class it will
+test.</p>
+<p class="incremental">This is unusual, but it reflects Pyramid <a class="reference external" href="http://docs.pylonsproject.org/en/latest/community/testing.html">testing best practices</a></p>
+<p class="incremental">In short, the idea is to prevent import problems from breaking <em>all</em> your
+tests.</p>
+</div>
+<div class="slide" id="run-our-tests">
+<h1>Run our Tests</h1>
+<p>Finally, let's run our tests:</p>
+<pre class="literal-block">
+(pyramidenv)$ python setup.py test
+...
+Ran 3 tests in 0.000s
+
+OK
+</pre>
+<p class="incremental">We can also run tests to tell us our code-coverage:</p>
+<pre class="incremental small literal-block">
+(pyramidenv)$ nosetests --cover-package=tutorial --cover-erase\
+    --with-coverage
+</pre>
+</div>
+<div class="slide" id="preparing-for-views">
+<h1>Preparing for Views</h1>
+<p>The <tt class="docutils literal">data</tt> attribute of our <tt class="docutils literal">Page</tt> model holds the text of the page.</p>
+<p class="incremental">We'll use ReStructuredText, which can be rendered to HTML</p>
+<p class="incremental">Rendering is provided by a python package called <tt class="docutils literal">docutils</tt>.</p>
+<p class="incremental">Our application is a python package, and can declare its own dependencies.</p>
+<p class="incremental">We need to add the <tt class="docutils literal">docutils</tt> package to this list.</p>
+</div>
+<div class="slide" id="package-dependencies">
+<h1>Package Dependencies</h1>
+<p>Open the <tt class="docutils literal">setup.py</tt> file from our <em>project</em> directory. Add <tt class="docutils literal">docutils</tt> to
+the list <tt class="docutils literal">requires</tt>:</p>
+<pre class="code python literal-block">
+<span class="n">requires</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s">'pyramid'</span><span class="p">,</span>
+    <span class="s">'pyramid_zodbconn'</span><span class="p">,</span>
+    <span class="s">'transaction'</span><span class="p">,</span>
+    <span class="s">'pyramid_tm'</span><span class="p">,</span>
+    <span class="s">'pyramid_debugtoolbar'</span><span class="p">,</span>
+    <span class="s">'ZODB3'</span><span class="p">,</span>
+    <span class="s">'waitress'</span><span class="p">,</span>
+    <span class="s">'docutils'</span><span class="p">,</span> <span class="c"># &lt;- ADD THIS</span>
+    <span class="p">]</span>
+</pre>
+</div>
+<div class="slide" id="complete-the-change">
+<h1>Complete the Change</h1>
+<p>Changes to <tt class="docutils literal">setup.py</tt> always require a re-install:</p>
+<pre class="literal-block">
+(pyramidenv)$ python setup.py develop
+</pre>
+<p class="incremental">You'll see a whole bunch of stuff flicker by. In it will be a reference to
+<tt class="docutils literal">Searching for docutils</tt>.</p>
+</div>
+<div class="slide" id="adding-views">
+<h1>Adding Views</h1>
+<p>We are ready to add views now. We'll need:</p>
+<ul class="incremental simple">
+<li>A view of the Wiki itself, which redirects to the front page.</li>
+<li>A view of an existing Page</li>
+<li>A view that allows us to <em>add</em> a new Page</li>
+<li>A view that allows us to <em>edit</em> and existing Page</li>
+</ul>
+<p class="incremental">As we move forward, we'll be writing tests first, then building the code to
+pass them.</p>
+</div>
+<div class="slide" id="testing-the-wiki-view">
+<h1>Testing the Wiki View</h1>
+<p>We want our wiki to automaticall redirect to <tt class="docutils literal">FrontPage</tt>.</p>
+<div class="incremental container">
+<p>Add this new TestCase to <tt class="docutils literal">tests.py</tt>:</p>
+<pre class="code python small literal-block">
+<span class="k">class</span> <span class="nc">WikiViewTests</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">test_redirect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">wikitutorial.views</span> <span class="kn">import</span> <span class="n">view_wiki</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="n">testing</span><span class="o">.</span><span class="n">DummyResource</span><span class="p">()</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">testing</span><span class="o">.</span><span class="n">DummyRequest</span><span class="p">()</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">view_wiki</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">location</span><span class="p">,</span>
+                         <span class="s">'http://example.com/FrontPage'</span><span class="p">)</span>
+</pre>
+</div>
+</div>
+<div class="slide" id="run-the-tests">
+<h1>Run The Tests</h1>
+<pre class="small literal-block">
+(pyramidenv)$ python setup.py test
+...
+
+======================================================================
+ERROR: test_redirect (wikitutorial.tests.WikiViewTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File &quot;/path/to/wikitutorial/wikitutorial/tests.py&quot;, line 51, in test_redirect
+    from wikitutorial.views import view_wiki
+ImportError: cannot import name view_wiki
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.001s
+
+FAILED (errors=1)
+</pre>
+</div>
+<div class="slide" id="adding-view-wiki">
+<h1>Adding view_wiki</h1>
+<p>Open <tt class="docutils literal">views.py</tt> again.  Add the following:</p>
+<pre class="code python small literal-block">
+<span class="kn">from</span> <span class="nn">pyramid.httpexceptions</span> <span class="kn">import</span> <span class="n">HTTPFound</span>
+<span class="kn">from</span> <span class="nn">pyramid.view</span> <span class="kn">import</span> <span class="n">view_config</span> <span class="c"># &lt;- ALREADY THERE</span>
+
+<span class="nd">&#64;view_config</span><span class="p">(</span><span class="n">context</span><span class="o">=</span><span class="s">'.models.Wiki'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">view_wiki</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">HTTPFound</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">resource_url</span><span class="p">(</span><span class="n">context</span><span class="p">,</span>
+                                                   <span class="s">'FrontPage'</span><span class="p">))</span>
+</pre>
+<div class="incremental container">
+<p>And re-run tests:</p>
+<pre class="small literal-block">
+(pyramidenv)$ python setup.py test
+...
+Ran 4 tests in 0.001s
+OK
+</pre>
+</div>
+</div>
+<div class="slide" id="some-notes">
+<h1>Some Notes</h1>
+<p>Note that <tt class="docutils literal">&#64;view_config</tt> has no <tt class="docutils literal">renderer</tt> argument.</p>
+<p class="incremental">It will never be shown, so there's no need</p>
+<p class="incremental">Instead, it returns <tt class="docutils literal">HTTPFound</tt>, (<tt class="docutils literal">302 Found</tt>), which requires a
+<tt class="docutils literal">location</tt></p>
+<p class="incremental">The <tt class="docutils literal">.resource_url()</tt> method of a <tt class="docutils literal">request</tt> object builds a URL for us.</p>
+</div>
+<div class="slide" id="a-page-view">
+<h1>A Page View</h1>
+<p>Our view of a page will need to accomplish a few things:</p>
+<ul class="incremental simple">
+<li>convert the Page <tt class="docutils literal">data</tt> to HTML</li>
+<li>make WikiWords in the HTML into appropriate links</li>
+<li>provide a url for editing itself</li>
+</ul>
+<p class="incremental">Let's test and implement these features one at a time</p>
+</div>
+<div class="slide" id="test-html-rendering">
+<h1>Test HTML Rendering</h1>
+<p>Add the following new TestCase to <tt class="docutils literal">tests.py</tt></p>
+<pre class="code python small literal-block">
+<span class="k">class</span> <span class="nc">PageViewTests</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_callFUT</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">wikitutorial.views</span> <span class="kn">import</span> <span class="n">view_page</span>
+        <span class="k">return</span> <span class="n">view_page</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_it</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">wiki</span> <span class="o">=</span> <span class="n">testing</span><span class="o">.</span><span class="n">DummyResource</span><span class="p">()</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="n">testing</span><span class="o">.</span><span class="n">DummyResource</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="s">'Hello CruelWorld IDoExist'</span><span class="p">)</span>
+        <span class="n">context</span><span class="o">.</span><span class="n">__parent__</span> <span class="o">=</span> <span class="n">wiki</span>
+        <span class="n">context</span><span class="o">.</span><span class="n">__name__</span> <span class="o">=</span> <span class="s">'thepage'</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">testing</span><span class="o">.</span><span class="n">DummyRequest</span><span class="p">()</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_callFUT</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="s">'&lt;div class=&quot;document&quot;&gt;'</span> <span class="ow">in</span> <span class="n">info</span><span class="p">[</span><span class="s">'content'</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">context</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">word</span> <span class="ow">in</span> <span class="n">info</span><span class="p">[</span><span class="s">'content'</span><span class="p">])</span>
+</pre>
+</div>
+<div class="slide" id="id1">
+<h1>Run The Tests</h1>
+<p>Verify that you now have five, and that one is failing</p>
+<p class="incremental">Our tests is relying on an artifact of how docutils builds HTML</p>
+<p class="incremental">It makes it a weak tests, but okay for illustrative purposes.</p>
+<p class="incremental">Now, let's get it passing</p>
+</div>
+<div class="slide" id="start-view-page">
+<h1>Start view_page</h1>
+<p>Add this code to <tt class="docutils literal">views.py</tt>:</p>
+<pre class="code python small literal-block">
+<span class="c"># an import</span>
+<span class="kn">from</span> <span class="nn">docutils.core</span> <span class="kn">import</span> <span class="n">publish_parts</span>
+
+<span class="c"># and a method</span>
+<span class="nd">&#64;view_config</span><span class="p">(</span><span class="n">context</span><span class="o">=</span><span class="s">'.models.Page'</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="s">'templates/view.pt'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">view_page</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">publish_parts</span><span class="p">(</span>
+        <span class="n">context</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">writer_name</span><span class="o">=</span><span class="s">'html'</span><span class="p">)[</span><span class="s">'html_body'</span><span class="p">]</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">page</span><span class="o">=</span><span class="n">context</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">)</span>
+</pre>
+<pre class="small incremental literal-block">
+(pyramidenv)$ python setup.py test
+...
+Ran 5 tests in 0.143s
+OK
+</pre>
+</div>
+<div class="slide" id="test-link-building">
+<h1>Test Link Building</h1>
+<p>Add the following to our test:</p>
+<pre class="code python small literal-block">
+<span class="k">def</span> <span class="nf">test_it</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">wiki</span> <span class="o">=</span> <span class="n">testing</span><span class="o">.</span><span class="n">DummyResource</span><span class="p">()</span>
+    <span class="n">wiki</span><span class="p">[</span><span class="s">'IDoExist'</span><span class="p">]</span> <span class="o">=</span> <span class="n">testing</span><span class="o">.</span><span class="n">DummyResource</span><span class="p">()</span> <span class="c">#&lt;- add this</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="n">testing</span><span class="o">.</span><span class="n">DummyResource</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="s">'Hello CruelWorld IDoExist'</span><span class="p">)</span>
+    <span class="c">#...</span>
+    <span class="c"># Add the following loop and assertion</span>
+    <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">resource_url</span><span class="p">(</span><span class="n">wiki</span><span class="p">[</span><span class="s">'IDoExist'</span><span class="p">]),</span>
+                <span class="n">request</span><span class="o">.</span><span class="n">resource_url</span><span class="p">(</span><span class="n">wiki</span><span class="p">,</span> <span class="s">'add_page'</span><span class="p">,</span> <span class="s">'CruelWorld'</span><span class="p">)):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">url</span> <span class="ow">in</span> <span class="n">info</span><span class="p">[</span><span class="s">'content'</span><span class="p">])</span>
+</pre>
+<pre class="small incremental literal-block">
+(pyramidenv)$ python setup.py test
+Ran 5 tests in 0.108s
+FAILED (failures=1)
+</pre>
+</div>
+<div class="slide" id="finding-wikiwords">
+<h1>Finding WikiWords</h1>
+<p>We'll use a regular expression to find WikiWords in our page data</p>
+<div class="incremental container">
+<p>Add the following to <tt class="docutils literal">views.py</tt>:</p>
+<pre class="code python small literal-block">
+<span class="c"># one import</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="c"># and one module constant</span>
+<span class="n">WIKIWORDS</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&quot;\b([A-Z]\w+[A-Z]+\w+)&quot;</span><span class="p">)</span>
+</pre>
+</div>
+<p class="incremental">Now, we use this to build a curried function that converts WikiWords to links</p>
+</div>
+<div class="slide" id="converting-wikiwords">
+<h1>Converting WikiWords</h1>
+<pre class="code python small literal-block">
+<span class="c"># in views.py</span>
+<span class="k">def</span> <span class="nf">view_page</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+    <span class="n">wiki</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">__parent__</span>
+
+    <span class="k">def</span> <span class="nf">check</span><span class="p">(</span><span class="n">match</span><span class="p">):</span>
+        <span class="n">word</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">wiki</span><span class="p">:</span>
+            <span class="n">page</span> <span class="o">=</span> <span class="n">wiki</span><span class="p">[</span><span class="n">word</span><span class="p">]</span>
+            <span class="n">view_url</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">resource_url</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
+            <span class="k">return</span> <span class="s">'&lt;a href=&quot;</span><span class="si">%s</span><span class="s">&quot;&gt;</span><span class="si">%s</span><span class="s">&lt;/a&gt;'</span> <span class="o">%</span> <span class="p">(</span><span class="n">view_url</span><span class="p">,</span> <span class="n">word</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">add_url</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">application_url</span> <span class="o">+</span> <span class="s">'/add_page/'</span> <span class="o">+</span> <span class="n">word</span>
+            <span class="k">return</span> <span class="s">'&lt;a href=&quot;</span><span class="si">%s</span><span class="s">&quot;&gt;</span><span class="si">%s</span><span class="s">&lt;/a&gt;'</span> <span class="o">%</span> <span class="p">(</span><span class="n">add_url</span><span class="p">,</span> <span class="n">word</span><span class="p">)</span>
+
+    <span class="n">content</span> <span class="o">=</span> <span class="n">publish_parts</span><span class="p">(</span>
+        <span class="n">context</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">writer_name</span><span class="o">=</span><span class="s">'html'</span><span class="p">)[</span><span class="s">'html_body'</span><span class="p">]</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">WIKIWORDS</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">check</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span> <span class="c">#&lt;- add this line</span>
+    <span class="k">return</span> <span class="c">#... &lt;- this already exists</span>
+</pre>
+</div>
+<div class="slide" id="check-your-progress">
+<h1>Check Your Progress</h1>
+<p>Tests should now be five for five again.</p>
+</div>
+<div class="slide" id="test-edit-link">
+<h1>Test Edit Link</h1>
+<p>Finally, we need to verify that <tt class="docutils literal">view_page</tt> also returns a link to edit
+<em>this</em> page.</p>
+<div class="incremental container">
+<p>Add this to our test:</p>
+<pre class="code python small literal-block">
+<span class="k">def</span> <span class="nf">test_it</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="c">#...</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s">'edit_url'</span><span class="p">],</span>
+                     <span class="s">'http://example.com/thepage/edit_page'</span><span class="p">)</span>
+</pre>
+</div>
+<pre class="small incremental literal-block">
+(pyramidenv)$ python setup.py test
+Ran 5 tests in 0.110s
+FAILED (errors=1)
+</pre>
+</div>
+<div class="slide" id="return-edit-link">
+<h1>Return Edit Link</h1>
+<p>Update <tt class="docutils literal">view_page</tt>:</p>
+<pre class="code python small literal-block">
+<span class="k">def</span> <span class="nf">view_page</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+    <span class="c">#...</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">wikiwords</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">check</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span> <span class="c">#&lt;- already there</span>
+    <span class="n">edit_url</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">resource_url</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="s">'edit_page'</span><span class="p">)</span> <span class="c">#&lt;- add</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">page</span><span class="o">=</span><span class="n">context</span><span class="p">,</span>
+                <span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span>
+                <span class="n">edit_url</span> <span class="o">=</span> <span class="n">edit_url</span><span class="p">)</span>
+</pre>
+<pre class="small incremental literal-block">
+(pyramidenv)$ python setup.py test
+Ran 5 tests in 0.110s
+OK
+</pre>
+</div>
+<div class="slide" id="next-steps">
+<h1>Next Steps</h1>
+<p>We've learned a great deal about Pyramid so far.</p>
+<p class="incremental">We've covered <em>traversal</em> and learned about object persistence with the ZODB.</p>
+<p class="incremental">Finally, we've implemented the Data model for our wiki application and begun
+to implement views.</p>
+<p class="incremental">In our next session, we'll complete the wiki, adding page creation and editing
+and an auth mechanism.</p>
+</div>
+<div class="slide" id="id2">
+<h1>Break Time</h1>
+<p class="big-centered">See you back soon.</p>
+</div>
+</div>
+</body>
+</html>

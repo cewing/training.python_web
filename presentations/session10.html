@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.9.1: http://docutils.sourceforge.net/" />
+<meta name="version" content="S5 1.1" />
+<title>Internet Programming with Python</title>
+<link rel="stylesheet" href="ui/uw_pce_theme/pretty.css" type="text/css" />
+<!-- configuration parameters -->
+<meta name="defaultView" content="slideshow" />
+<meta name="controlVis" content="hidden" />
+<!-- style sheet links -->
+<script src="ui/uw_pce_theme/slides.js" type="text/javascript"></script>
+<link rel="stylesheet" href="ui/uw_pce_theme/slides.css"
+      type="text/css" media="projection" id="slideProj" />
+<link rel="stylesheet" href="ui/uw_pce_theme/outline.css"
+      type="text/css" media="screen" id="outlineStyle" />
+<link rel="stylesheet" href="ui/uw_pce_theme/print.css"
+      type="text/css" media="print" id="slidePrint" />
+<link rel="stylesheet" href="ui/uw_pce_theme/opera.css"
+      type="text/css" media="projection" id="operaFix" />
+</head>
+<body>
+<div class="layout">
+<div id="controls"></div>
+<div id="currentSlide"></div>
+<div id="header">
+
+</div>
+<div id="footer">
+<h1>Internet Programming with Python</h1>
+<h2><a class="reference external" href="http://github.com/cewing/training.python_web">View document source</a>.
+</h2>
+</div>
+</div>
+<div class="presentation">
+<div class="slide" id="slide0">
+<h1 class="title">Internet Programming with Python</h1>
+
+<img alt="img/pyramid-medium.png" class="align-left" src="img/pyramid-medium.png" style="width: 50%;" />
+<p>Session 10: A Pyramid Application</p>
+<div class="intro-blurb right line-block">
+<div class="line">The flexible framework.</div>
+<div class="line">Totally not built by aliens.</div>
+</div>
+
+</div>
+<div class="slide" id="adding-templates">
+<h1>Adding Templates</h1>
+<p>What is the page template name for <tt class="docutils literal">view_page</tt>?</p>
+<p class="incremental">Create <tt class="docutils literal">view.pt</tt> in your <tt class="docutils literal">templates</tt> directory.</p>
+<p class="incremental">Also copy the file <tt class="docutils literal">base.pt</tt> from the class resources.</p>
+<p class="incremental">Pyramid can use a number of different templating engines.</p>
+<p class="incremental">We'll be using Chameleon, which also supports extending other templates.</p>
+</div>
+<div class="slide" id="chameleon-templates">
+<h1>Chameleon Templates</h1>
+<p>Chameleon page templates are valid XML/HTML.</p>
+<p class="incremental">You can validate and view templates in browsers without the templating engine.</p>
+<p class="incremental">This can be helpful in working with designers or front-end folks</p>
+<p class="incremental">Instead of using special tags for processing directives, Chameleon uses XML
+tag attributes.</p>
+</div>
+<div class="slide" id="tal-metal">
+<h1>TAL/METAL</h1>
+<p>Chameleon is descended from Zope Page Templates (ZPT)</p>
+<p class="incremental">It uses two XML namespaces for directives:</p>
+<ul class="incremental simple">
+<li>TAL (Template Attribute Language)</li>
+<li>METAL (Macro Extension to the Template Attribute Language)</li>
+</ul>
+<p class="incremental">TAL provides basic directives for logical structures</p>
+<p class="incremental">METAL provides directives for creating and using template Macros</p>
+</div>
+<div class="slide" id="tal-statements">
+<h1>TAL Statements</h1>
+<p>TAL and METAL statements are XML tag attributes.</p>
+<p class="incremental">This means they look just like <tt class="docutils literal"><span class="pre">id=&quot;foo&quot;</span></tt> or <tt class="docutils literal"><span class="pre">class=&quot;bar&quot;</span></tt></p>
+<ul class="incremental simple">
+<li><tt class="docutils literal"><span class="pre">tal:&lt;operator&gt;=”&lt;expression&gt;”</span></tt></li>
+<li>The <tt class="docutils literal">tal:</tt> is a ‘namespace identifier’ (xml)<ul>
+<li>Not strictly required, but helpful</li>
+<li>Strongly encouraged :)</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="slide" id="tal-operators">
+<h1>TAL Operators</h1>
+<p>There are seven basic TAL operators, which are processed in this order</p>
+<ul class="incremental simple">
+<li><tt class="docutils literal">tal:define</tt> - set a value or values</li>
+<li><tt class="docutils literal">tal:condition</tt> - test truth value to execute</li>
+<li><tt class="docutils literal">tal:repeat</tt> - loop over sets of values</li>
+<li><tt class="docutils literal">tal:content</tt> - set the content of a tag</li>
+<li><tt class="docutils literal">tal:replace</tt> - replace an entire tag</li>
+<li><tt class="docutils literal">tal:attributes</tt> - set html/xml attributes of a tag</li>
+<li><tt class="docutils literal"><span class="pre">tal:omit-tag</span></tt> - if expression is false, omit the tag</li>
+</ul>
+<p class="incremental"><tt class="docutils literal">content</tt> and <tt class="docutils literal">replace</tt> are mutually exclusive.</p>
+</div>
+<div class="slide" id="tal-expressions">
+<h1>TAL Expressions</h1>
+<p>The right half of a TAL statement is an <em>expression</em> using the TAL expression
+syntax (TALES):</p>
+<ul class="incremental simple">
+<li>Exists - <tt class="docutils literal">exists:foo</tt></li>
+<li>Import - <tt class="docutils literal">import:foo.bar.baz</tt></li>
+<li>Load = <tt class="docutils literal"><span class="pre">load:../other_template.pt</span></tt></li>
+<li>Not - <tt class="docutils literal">not: is_anon</tt></li>
+<li>Python - <tt class="docutils literal">python: here.Title()</tt></li>
+<li>String - <tt class="docutils literal">string:my ${value}</tt></li>
+<li>Structure - <tt class="docutils literal">structure:some_html</tt></li>
+</ul>
+</div>
+<div class="slide" id="metal-operators">
+<h1>METAL Operators</h1>
+<p>METAL provides operators related to creating and using template macros:</p>
+<ul class="incremental simple">
+<li><tt class="docutils literal"><span class="pre">metal:define-macro</span></tt> - designates a DOM scope as a macro</li>
+<li><tt class="docutils literal"><span class="pre">metal:use-macro</span></tt> - indicates that a macro should be used</li>
+<li><tt class="docutils literal"><span class="pre">metal:extend-macro</span></tt> - extend an existing macro</li>
+<li><tt class="docutils literal"><span class="pre">metal:define-slot</span></tt> - designate a customization point for a macro</li>
+<li><tt class="docutils literal"><span class="pre">metal:fill-slot</span></tt> - provide custom content for a macro slot</li>
+</ul>
+<p class="incremental">Much of this will become clearer as we actually create our templates.</p>
+</div>
+<div class="slide" id="the-view-pt-template">
+<h1>The view.pt Template</h1>
+<p>Type this code into your <tt class="docutils literal">view.pt</tt> file:</p>
+<pre class="code xml literal-block">
+<span class="nt">&lt;metal:main</span> <span class="na">use-macro=</span><span class="s">&quot;load: base.pt&quot;</span><span class="nt">&gt;</span>
+ <span class="nt">&lt;metal:content</span> <span class="na">metal:fill-slot=</span><span class="s">&quot;main-content&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">tal:replace=</span><span class="s">&quot;structure:content&quot;</span><span class="nt">&gt;</span>
+    Page text goes here.
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;p&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">tal:attributes=</span><span class="s">&quot;href edit_url&quot;</span> <span class="na">href=</span><span class="s">&quot;&quot;</span><span class="nt">&gt;</span>
+      Edit this page
+    <span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/p&gt;</span>
+ <span class="nt">&lt;/metal:content&gt;</span>
+<span class="nt">&lt;/metal:main&gt;</span>
+</pre>
+</div>
+<div class="slide" id="a-few-notes">
+<h1>A Few Notes</h1>
+<p><tt class="docutils literal">&lt;metal&gt;</tt> and <tt class="docutils literal">&lt;tal&gt;</tt> tags are processed and removed by the engine.</p>
+<ul class="incremental simple">
+<li><tt class="docutils literal"><span class="pre">use-macro=&quot;load:</span> base.pt&quot;</tt>: we will be using <tt class="docutils literal">base.pt</tt> as our main
+template <em>macro</em>.</li>
+<li>Template <em>macros</em> define one or more <em>slots</em>.</li>
+<li><tt class="docutils literal"><span class="pre">metal:fill-slot=&quot;main-content&quot;</span></tt>: everything goes in the <tt class="docutils literal"><span class="pre">main-content</span></tt>
+slot.</li>
+</ul>
+</div>
+<div class="slide" id="more-notes">
+<h1>More Notes</h1>
+<pre class="code xml literal-block">
+<span class="nt">&lt;div</span> <span class="na">tal:replace=</span><span class="s">&quot;structure:content&quot;</span><span class="nt">&gt;</span>
+  Page text goes here.
+<span class="nt">&lt;/div&gt;</span>
+</pre>
+<p>The <tt class="docutils literal">tal</tt> directive <tt class="docutils literal">replace</tt> replaces the <tt class="docutils literal">&lt;div&gt;</tt> tag with <tt class="docutils literal">content</tt>.</p>
+<p>The <tt class="docutils literal">structure</tt> expression ensures that the HTML is not escaped.</p>
+<div class="incremental container">
+<pre class="code xml literal-block">
+<span class="nt">&lt;a</span> <span class="na">tal:attributes=</span><span class="s">&quot;href edit_url&quot;</span> <span class="na">href=</span><span class="s">&quot;&quot;</span><span class="nt">&gt;</span>
+  Edit this page
+<span class="nt">&lt;/a&gt;</span>
+</pre>
+<p>Here, we use the <tt class="docutils literal">tal</tt> directive <tt class="docutils literal">attributes</tt> to set the <tt class="docutils literal">href</tt> for
+our anchor to the value passed into our template as <tt class="docutils literal">edit_url</tt>.</p>
+</div>
+</div>
+<div class="slide" id="view-your-work">
+<h1>View Your Work</h1>
+<p>We've created the following:</p>
+<ul class="incremental small simple">
+<li>A wiki view that redirects to the automatically-created FrontPage page</li>
+<li>A page view that will render the <tt class="docutils literal">data</tt> from a page, along with a url for
+editing that page</li>
+<li>A page template to show a wiki page.</li>
+</ul>
+<p class="incremental">That's all we need to be able to see our work.  Start Pyramid:</p>
+<pre class="incremental small literal-block">
+(pyramidenv)$ pserve development.ini
+Starting server in PID 43925.
+serving on http://0.0.0.0:6543
+</pre>
+<p class="incremental">Load <a class="reference external" href="http://localhost:6543/">http://localhost:6543/</a></p>
+</div>
+<div class="slide" id="what-you-should-see">
+<h1>What You Should See</h1>
+<img alt="img/wiki_frontpage.png" class="align-center" src="img/wiki_frontpage.png" style="width: 95%;" />
+</div>
+<div class="slide" id="page-editing">
+<h1>Page Editing</h1>
+<p>You'll notice that the page has a link to <tt class="docutils literal">Edit This Page</tt></p>
+<p class="incremental">If you click it, you get a 404.  We haven't created that view yet.</p>
+<p class="incremental">Let's start by adding tests to ensure:</p>
+<ul class="incremental simple">
+<li>the edit view will submit to itself</li>
+<li>will save page data updates</li>
+<li>will redirect back to the page view after saving</li>
+</ul>
+</div>
+<div class="slide" id="test-page-editing">
+<h1>Test Page Editing</h1>
+<p>In <tt class="docutils literal">tests.py</tt>:</p>
+<pre class="code python small literal-block">
+<span class="k">class</span> <span class="nc">EditPageTests</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_callFUT</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">.views</span> <span class="kn">import</span> <span class="n">edit_page</span>
+        <span class="k">return</span> <span class="n">edit_page</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_it_notsubmitted</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="n">testing</span><span class="o">.</span><span class="n">DummyResource</span><span class="p">()</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">testing</span><span class="o">.</span><span class="n">DummyRequest</span><span class="p">()</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_callFUT</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s">'page'</span><span class="p">],</span> <span class="n">context</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s">'save_url'</span><span class="p">],</span>
+                         <span class="n">request</span><span class="o">.</span><span class="n">resource_url</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="s">'edit_page'</span><span class="p">))</span>
+</pre>
+</div>
+<div class="slide" id="one-more-method">
+<h1>One More Method</h1>
+<pre class="code python small literal-block">
+<span class="k">class</span> <span class="nc">EditPageTests</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="c"># ...</span>
+
+    <span class="k">def</span> <span class="nf">test_it_submitted</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="n">testing</span><span class="o">.</span><span class="n">DummyResource</span><span class="p">()</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">testing</span><span class="o">.</span><span class="n">DummyRequest</span><span class="p">({</span><span class="s">'form.submitted'</span><span class="p">:</span><span class="bp">True</span><span class="p">,</span>
+                                        <span class="s">'body'</span><span class="p">:</span><span class="s">'Chapel Hill Rocks'</span><span class="p">})</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_callFUT</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">location</span><span class="p">,</span> <span class="s">'http://example.com/'</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="s">'Chapel Hill Rocks'</span><span class="p">)</span>
+</pre>
+<pre class="small incremental literal-block">
+(pyramidenv)$ python setup.py test
+Ran 7 tests in 0.110s
+FAILED (errors=2)
+</pre>
+</div>
+<div class="slide" id="editing-a-page">
+<h1>Editing a Page</h1>
+<p>Back in <tt class="docutils literal">views.py</tt> add the following:</p>
+<pre class="code python small literal-block">
+<span class="nd">&#64;view_config</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'edit_page'</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="s">'.models.Page'</span><span class="p">,</span>
+             <span class="n">renderer</span><span class="o">=</span><span class="s">'templates/edit.pt'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">edit_page</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+    <span class="k">if</span> <span class="s">'form.submitted'</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">params</span><span class="p">:</span>
+        <span class="n">context</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s">'body'</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">HTTPFound</span><span class="p">(</span><span class="n">location</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">resource_url</span><span class="p">(</span><span class="n">context</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">page</span><span class="o">=</span><span class="n">context</span><span class="p">,</span>
+                <span class="n">save_url</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">resource_url</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="s">'edit_page'</span><span class="p">))</span>
+</pre>
+<p class="incremental">Note the <tt class="docutils literal">name</tt> in <tt class="docutils literal">view_config</tt>.</p>
+<p class="incremental">When traversal runs out of objects, it tries to find views by name</p>
+</div>
+<div class="slide" id="check-your-tests">
+<h1>Check Your Tests</h1>
+<p>Even without a template we can run our tests:</p>
+<pre class="small incremental literal-block">
+(pyramidenv)$ python setup.py test
+...
+----------------------------------------------------------------------
+Ran 7 tests in 0.112s
+
+OK
+</pre>
+</div>
+<div class="slide" id="the-edit-template">
+<h1>The Edit Template</h1>
+<p>Create and fill <tt class="docutils literal">edit.pt</tt> in <tt class="docutils literal">templates</tt>:</p>
+<pre class="code xml small literal-block">
+<span class="nt">&lt;metal:main</span> <span class="na">use-macro=</span><span class="s">&quot;load: base.pt&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;metal:pagename</span> <span class="na">metal:fill-slot=</span><span class="s">&quot;page-name&quot;</span><span class="nt">&gt;</span>
+  Editing
+  <span class="nt">&lt;b&gt;&lt;span</span> <span class="na">tal:replace=</span><span class="s">&quot;page.__name__&quot;</span><span class="nt">&gt;</span>Page Name Goes Here
+     <span class="nt">&lt;/span&gt;&lt;/b&gt;</span>
+  <span class="nt">&lt;/metal:pagename&gt;</span>
+  <span class="nt">&lt;metal:content</span> <span class="na">metal:fill-slot=</span><span class="s">&quot;main-content&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">&quot;${save_url}&quot;</span> <span class="na">method=</span><span class="s">&quot;post&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;textarea</span> <span class="na">name=</span><span class="s">&quot;body&quot;</span> <span class="na">tal:content=</span><span class="s">&quot;page.data&quot;</span> <span class="na">rows=</span><span class="s">&quot;10&quot;</span>
+                <span class="na">cols=</span><span class="s">&quot;60&quot;</span><span class="nt">/&gt;&lt;br/&gt;</span>
+      <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;submit&quot;</span> <span class="na">name=</span><span class="s">&quot;form.submitted&quot;</span> <span class="na">value=</span><span class="s">&quot;Save&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/form&gt;</span>
+  <span class="nt">&lt;/metal:content&gt;</span>
+<span class="nt">&lt;/metal:main&gt;</span>
+</pre>
+</div>
+<div class="slide" id="frontpage-content">
+<h1>FrontPage Content</h1>
+<p>Restart Pyramid, then back in your browser, click the <tt class="docutils literal">Edit this page</tt> link.</p>
+<p class="incremental">Erase the existing text and add this instead:</p>
+<pre class="incremental small literal-block">
+==========
+Front Page
+==========
+
+This is the front page.  It features
+
+* a heading
+* a list
+* a wikiword link to AnotherPage
+</pre>
+</div>
+<div class="slide" id="id1">
+<h1>View Your Work</h1>
+<p>Click the <em>Save</em> button and see what you've gotten.</p>
+<p class="incremental">If you get strangely formatted text that warns you about <em>Title overline too
+short</em>, you didn't add enough equals signs above or below the page title. Go
+back and ensure that there are the same number of equal signs as the total
+number of characters in the title.</p>
+<p class="incremental">Note that <tt class="docutils literal">AnotherPage</tt> is a link, click it.</p>
+</div>
+<div class="slide" id="page-creation">
+<h1>Page Creation</h1>
+<p>Again, we need a new view.  This one will</p>
+<ul class="incremental simple">
+<li>have the wiki itself as <tt class="docutils literal">context</tt></li>
+<li>allow us to fill out the new page content</li>
+<li>save the new page when submitted</li>
+<li>return us to a view of the new page</li>
+</ul>
+<p class="incremental">Again, we start by testing for this</p>
+</div>
+<div class="slide" id="test-adding-a-page">
+<h1>Test Adding a Page</h1>
+<p>In <tt class="docutils literal">tests.py</tt>:</p>
+<pre class="code python small literal-block">
+<span class="k">class</span> <span class="nc">AddPageTests</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_callFUT</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">.views</span> <span class="kn">import</span> <span class="n">add_page</span>
+        <span class="k">return</span> <span class="n">add_page</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_it_notsubmitted</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="n">testing</span><span class="o">.</span><span class="n">DummyResource</span><span class="p">()</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">testing</span><span class="o">.</span><span class="n">DummyRequest</span><span class="p">()</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">subpath</span> <span class="o">=</span> <span class="p">[</span><span class="s">'AnotherPage'</span><span class="p">]</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_callFUT</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s">'page'</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="s">''</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
+            <span class="n">info</span><span class="p">[</span><span class="s">'save_url'</span><span class="p">],</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">resource_url</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="s">'add_page'</span><span class="p">,</span> <span class="s">'AnotherPage'</span><span class="p">))</span>
+</pre>
+</div>
+<div class="slide" id="id2">
+<h1>One More Method</h1>
+<pre class="code python small literal-block">
+<span class="k">class</span> <span class="nc">AddPageTests</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="c">#...</span>
+
+    <span class="k">def</span> <span class="nf">test_it_submitted</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="n">testing</span><span class="o">.</span><span class="n">DummyResource</span><span class="p">()</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">testing</span><span class="o">.</span><span class="n">DummyRequest</span><span class="p">({</span><span class="s">'form.submitted'</span><span class="p">:</span><span class="bp">True</span><span class="p">,</span>
+                                        <span class="s">'body'</span><span class="p">:</span><span class="s">'Go UNC!'</span><span class="p">})</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">subpath</span> <span class="o">=</span> <span class="p">[</span><span class="s">'AnotherPage'</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_callFUT</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+        <span class="n">page</span> <span class="o">=</span> <span class="n">context</span><span class="p">[</span><span class="s">'AnotherPage'</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="s">'Go UNC!'</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="s">'AnotherPage'</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">__parent__</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+</pre>
+<pre class="small incremental literal-block">
+(pyramidenv)$ python setup.py test
+Ran 9 tests in 0.117s
+FAILED (errors=2)
+</pre>
+</div>
+<div class="slide" id="adding-a-page">
+<h1>Adding a Page</h1>
+<p>Back in <tt class="docutils literal">views.py</tt> add the code for creating a new page</p>
+<div class="incremental container">
+<p>Start with imports and the view_config:</p>
+<pre class="code python small literal-block">
+<span class="c"># add an import</span>
+<span class="kn">from</span> <span class="nn">wikitutorial.models</span> <span class="kn">import</span> <span class="n">Page</span>
+
+<span class="nd">&#64;view_config</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'add_page'</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="s">'.models.Wiki'</span><span class="p">,</span>
+             <span class="n">renderer</span><span class="o">=</span><span class="s">'templates/edit.pt'</span><span class="p">)</span>
+</pre>
+</div>
+</div>
+<div class="slide" id="the-view-function">
+<h1>The View Function</h1>
+<pre class="code python small literal-block">
+<span class="nd">&#64;view_config</span><span class="p">(</span><span class="o">...</span><span class="p">)</span> <span class="c">#&lt;- already there.</span>
+<span class="k">def</span> <span class="nf">add_page</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+    <span class="n">pagename</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">subpath</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s">'form.submitted'</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">params</span><span class="p">:</span>
+        <span class="n">body</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s">'body'</span><span class="p">]</span>
+        <span class="n">page</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+        <span class="n">page</span><span class="o">.</span><span class="n">__name__</span> <span class="o">=</span> <span class="n">pagename</span>
+        <span class="n">page</span><span class="o">.</span><span class="n">__parent__</span> <span class="o">=</span> <span class="n">context</span>
+        <span class="n">context</span><span class="p">[</span><span class="n">pagename</span><span class="p">]</span> <span class="o">=</span> <span class="n">page</span>
+        <span class="k">return</span> <span class="n">HTTPFound</span><span class="p">(</span><span class="n">location</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">resource_url</span><span class="p">(</span><span class="n">page</span><span class="p">))</span>
+    <span class="n">save_url</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">resource_url</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="s">'add_page'</span><span class="p">,</span> <span class="n">pagename</span><span class="p">)</span>
+    <span class="n">page</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span><span class="s">''</span><span class="p">)</span>
+    <span class="n">page</span><span class="o">.</span><span class="n">__name__</span> <span class="o">=</span> <span class="n">pagename</span>
+    <span class="n">page</span><span class="o">.</span><span class="n">__parent__</span> <span class="o">=</span> <span class="n">context</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">page</span><span class="o">=</span><span class="n">page</span><span class="p">,</span> <span class="n">save_url</span><span class="o">=</span><span class="n">save_url</span><span class="p">)</span>
+</pre>
+</div>
+<div class="slide" id="id3">
+<h1>A Few Notes</h1>
+<p>Note that this view also has a <tt class="docutils literal">name</tt>.</p>
+<p class="incremental"><tt class="docutils literal">pagename = request.subpath[0]</tt> gives us the first element of the path
+<em>after</em> the current context and view name. What is that?</p>
+<p class="incremental">Notice that <em>here</em> is where we set the <tt class="docutils literal">__name__</tt> and <tt class="docutils literal">__parent__</tt>
+attributes of our new Page.</p>
+<p class="incremental">We add a new Page to the wiki as if the wiki were a Python <tt class="docutils literal">dict</tt>:
+<tt class="docutils literal">context[pagename] = page</tt></p>
+</div>
+<div class="slide" id="one-more-note">
+<h1>One More Note</h1>
+<p>Look at the similarity in how a form is handled here to the way it is handled
+in Django and Flask (in pseudocode):</p>
+<pre class="incremental literal-block">
+if the_form_is_submitted:
+    handle_the_form()
+    return go_to_the_success_url()
+return an_empty_form()
+</pre>
+<p class="incremental">Forms that modify data should only be handled on POST.</p>
+<p class="incremental">Could you improve this code to ensure that?</p>
+</div>
+<div class="slide" id="and-a-question">
+<h1>And a Question</h1>
+<p class="big-centered">Why do we create a new, empty <tt class="docutils literal">Page</tt> object at the end of the add_page view?</p>
+</div>
+<div class="slide" id="id4">
+<h1>Check Your Tests</h1>
+<pre class="small literal-block">
+(pyramidenv)$ python setup.py test
+...
+test_it_notsubmitted (wikitutorial.tests.AddPageTests) ... ok
+test_it_submitted (wikitutorial.tests.AddPageTests) ... ok
+test_initialization (wikitutorial.tests.AppmakerTests) ... ok
+test_it_notsubmitted (wikitutorial.tests.EditPageTests) ... ok
+test_it_submitted (wikitutorial.tests.EditPageTests) ... ok
+test_constructor (wikitutorial.tests.PageModelTests) ... ok
+test_it (wikitutorial.tests.PageViewTests) ... ok
+test_constructor (wikitutorial.tests.WikiModelTests) ... ok
+test_redirect (wikitutorial.tests.WikiViewTests) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.111s
+
+OK
+</pre>
+<p class="incremental center"><strong>WAHOOOOOOO!!!</strong></p>
+</div>
+<div class="slide" id="in-class-exercises">
+<h1>In-Class Exercises</h1>
+<p>Try to accomplish as many of these as you can before you leave:</p>
+<ul class="incremental simple">
+<li>Make the add_page view show &quot;Adding &lt;NewPage&gt;&quot; in the header (<em>do not create
+a new template to do this</em>)</li>
+<li>Make the edit_page and add_page views <strong>only</strong> change data on POST.</li>
+<li>Make the link that says &quot;You can return to the FrontPage&quot; disappear when you
+are viewing the front page.</li>
+</ul>
+</div>
+</div>
+</body>
+</html>
