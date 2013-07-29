@@ -260,6 +260,8 @@ In particular, pay attention to:
   <https://chameleon.readthedocs.org/en/latest/reference.html#basics-tal>`_
 * `Expressions (TALES)
   <https://chameleon.readthedocs.org/en/latest/reference.html#expressions-tales>`_
+* `Macros (METAL)
+  <https://chameleon.readthedocs.org/en/latest/reference.html#macros-metal>`_
 
 You might also consider keeping the following around for reference:
 

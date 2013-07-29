@@ -9,8 +9,8 @@ Session 9: Intro To Pyramid
 
 .. class:: intro-blurb right
 
-| Wherein we learn
-| it's not built by aliens
+| The flexible framework.
+| Totally not built by aliens.
 
 
 What is Pyramid?
@@ -85,8 +85,13 @@ It was among the first frameworks to fully embrace the WSGI specification.
 
 .. class:: incremental
 
-The creators of Pylons build WebTest, WebError and WebOb (abstracted HTTP
-request and response objects)
+The creators of Pylons built WebOb (abstracted HTTP request and response
+objects).
+
+.. class:: incremental
+
+This forms the foundation of Pylons much as Werkzeug is the foundation of
+Flask.
 
 
 History - 2010
@@ -121,7 +126,7 @@ Each of these approaches has strengths and weaknesses.
 
 .. class:: incremental
 
-Pyramid supports neither, both and even combinations of the two.
+Pyramid supports using neither, both and even combinations of the two.
 
 
 Relational DB / URL Dispatch
@@ -167,10 +172,31 @@ If your data is best represented by *heterogenous* objects, it's a better
 persistence solution.
 
 
-Traversal - Object Graphs
--------------------------
+Traversal
+---------
 
-Python objects can *contain* other objects.
+In URL Dispatch, the ``PATH`` is a *virtual* construct.
+
+.. class:: incremental
+
+In our Django app ``/admin/myblog/post/13/`` doesn't map to any series of
+*real* locations.
+
+.. class:: incremental
+
+This is unlike a filesystem where ``/usr/local/bin/python`` points to a *real*
+location.
+
+.. class:: incremental
+
+When you use the ``cd`` command to move from place to place in a filesystem,
+that is *traversal*
+
+
+Object Graphs
+-------------
+
+In Python, objects can *contain* other objects.
 
 .. class:: incremental
 
@@ -189,11 +215,35 @@ Using *dict*-like structures, you can build a *graph* of objects:
     │  ├── Finnian
 
 
+We Got Both Directions
+----------------------
+
+``__getitem__`` allows movement from *container* to *contained*
+
+.. container:: incremental
+
+    What if the *contained* can keep track of its *container*?
+    
+    .. code-block:: python
+        :class: small
+    
+        >>> class node(dict):
+        ...   __parent__ = None
+        ...   def __init__(self, parent=None):
+        ...     self.__parent__ = parent
+        ...
+        >>> x = node()
+        >>> x['y'] = node(x)
+        >>> y = x['y']
+        >>> y.__parent__ == x
+        True
+
+
 Traversal - Path Lookup
 -----------------------
 
 You can *traverse* across the object graph by treating a URL as a series of
-*node names*
+*object names*
 
 .. class:: incremental small
 
@@ -203,48 +253,98 @@ You can *traverse* across the object graph by treating a URL as a series of
 
 .. class:: incremental
 
-Further path segments can be view names or information passed to the view
+If you have more names than objects, the remainder can be passed to the final
+object as data:
 
 .. class:: incremental small
 
 ::
 
-    http://family/parents/cris/edit -> edit view
+    http://family/parents/cris/edit -> subpath = /edit
     http://family/parents/cris/next/steps -> subpath = /next/steps
 
+.. class:: incremental
 
-Break Time
-----------
+The subpath can be used to find object methods or views
 
-We've got the concept of object stores and traversal
+Preparation
+-----------
+
+You should at this point have a virtualenv in which you have installed the
+ZODB.
 
 .. class:: incremental
 
-The next step is to see how those work in real life.
+Now, let's install pyramid too.
+
+.. container:: incremental
+
+    In your terminal, change directories to where you build that virtualenv and
+    activate it:
+    
+    .. class:: small
+    
+    ::
+    
+        $ cd /path/to/right/place
+        $ source pyramidenv/bin/activate
+        <or>
+        C:\> pyramidenv\Scripts\activate
+
+
+Installation
+------------
+
+Next, install Pyramid and the extras we'll be using:
+
+.. class:: incremental small
+
+::
+
+    (pyramidenv)$ pip install pyramid
+    ...
+    (pyramidenv)$ pip install docutils nose coverage
+    ...
+    (pyramidenv)$ pip install pyramid_zodbconn pyramid_tm
+    ...
+    (pyramidenv)$ pip install pyramid_debugtoolbar
 
 .. class:: incremental
 
-Take the next few minutes here to ensure that you have a working Pyramid setup
-with the ZODB and a project created with ``pcreate -s zodb``.
+These tools will allow us to manage ZODB connections, debug our app, and run
+cool tests.
 
 
-Lab - Part One
+Required Setup
 --------------
 
-.. class:: big-centered
+In Django ``startproject`` and ``startapp`` gave us the boilerplate we needed.
 
-Getting To Know Pyramid
+.. class:: incremental
+
+Pyramid uses what it calls *scaffolds* for the same purpose.
+
+.. class:: incremental
+
+When you installed it, a new ``pcreate`` command was generated in your
+virtualenv.
+
+.. container:: incremental
+
+    Let's use it:
+    
+    .. class:: small
+    
+    ::
+    
+        (pyramidenv)$ pcreate -s zodb wikitutorial
+        ...
 
 
 Scaffolds and Opinions
 ----------------------
 
-Pyramid uses what it calls *scaffolds* to get you started on a new project.
-
-.. class:: incremental
-
-When you ran ``pcreate -s zodb wikitutorial`` you were invoking the *zodb
-scaffold*
+When you ran ``pcreate -s zodb wikitutorial`` you invoked the *zodb scaffold*
 
 .. class:: incremental
 
@@ -254,6 +354,10 @@ Pyramid the framework is highly un-opinionated.
 
 *Scaffolds*, conversely, can be quite opinionated.  The one we used has chosen
 our persistence mechanism (ZODB) and how we will reach our code (Traversal).
+
+.. class:: incremental
+
+You do not have to use *scaffolds* to start a project, but it can help.
 
 
 Project Layout
@@ -309,7 +413,8 @@ with ``pip`` or ``easy_install``
 
 .. class:: incremental
 
-There is no ``manage.py`` file.  Pyramid commands are console scripts.
+There is no ``manage.py`` file. Pyramid commands are console scripts (look in
+*pyramidenv/bin*).
 
 .. class:: incremental
 
@@ -339,7 +444,31 @@ wsgi server.
 
 .. class:: incremental
 
-It is much like Django's ``settings.py`` but is not a python module.
+Like Django's ``settings.py``, but **not** python.
+
+
+INI format
+----------
+
+INI-style files have a particular format.
+
+.. class:: incremental
+
+Individual sections are marked by ``[SECTION_NAMES]`` in square brackets
+
+.. class:: incremental
+
+Each section will contain ``name = value`` pairs of settings.
+
+.. class:: incremental
+
+INI files are parsed using the Python `ConfigParser
+<http://docs.python.org/2/library/configparser.html>`_ module.
+
+.. code-block:: python
+    :class: small incremental
+    
+    {'SECTION_NAME': {'name': 'value', ...}, ...}
 
 
 Pyramid is Python
@@ -363,10 +492,10 @@ function:
 
 .. class:: incremental
 
-App-level configuration is done here.
+Let's take a closer look at this, line by line.
 
 
-App Configuration
+INI Configuration
 -----------------
 
 .. code-block:: python
@@ -376,15 +505,25 @@ App Configuration
 
 .. class:: incremental
 
-``global_config`` will be a dictionary of the settings from your ``.ini`` file
-that come in the [DEFAULT] section (if there is one).  These settings will be
-shared across all apps that are involved in the system.
+Arguments passed to ``main`` are configuration from ``.ini``.
 
 .. class:: incremental
 
-The ``settings`` passed in here are the settings from your ``.ini`` file that
-come in the section that corresponds to your application.  They will be used
-only by your app.
+``global_config`` is a dictionary of settings in [DEFAULT]
+
+.. class:: incremental
+
+``settings`` will be the name-value pairs for your app.
+
+.. container:: incremental
+
+    ``[app:<name>]`` sections are mapped to apps by the ``use`` setting
+
+    .. code-block:: ini
+        :class: small
+
+        [app:main]
+        use = egg:wikitutorial
 
 
 App Configuration
@@ -400,39 +539,72 @@ App Configuration
 
 .. class:: incremental
 
-Pyramid does configuration work when an app is run using the ``Configurator``
-class.
+Pyramid configuration is done by the ``Configurator`` class.
 
 .. class:: incremental
 
-The ``Configurator`` provides an extensible API for configuring just about
-everything.
+Configuration can be *imperative* (function calls) or *declarative*
+(decorators)
 
 .. class:: incremental
 
-You can read more in `the pyramid.config documentation
+Either way, ``.scan()`` sets it all up and reports errors.
+
+.. class:: incremental
+
+Read more in `the pyramid.config documentation
 <http://docs.pylonsproject.org/projects/pyramid/en/1.4-branch/api/config.html>`_
+
+
+WSGI Hookup
+-----------
+
+.. code-block:: python
+    :class: small
+
+    return config.make_wsgi_app()
+
+.. class:: incremental
+
+Like Django and Flask, Pyramid runs in a WSGI world.
+
+.. class:: incremental
+
+``.make_wsgi_app()`` returns a ``Router`` object for your app.
+
+.. container:: incremental
+
+    ``Router`` has the following ``__call__`` method:
+    
+    .. code-block:: python
+        :class: small
+        
+        def __call__(self, environ, start_response):
+            request = self.request_factory(environ)
+            response = self.invoke_subrequest(request, use_tweens=True)
+            return response(request.environ, start_response)
+
+.. class:: incremental
+
+Familiar, no?
 
 
 The Application Root
 --------------------
 
-The ``Configurator`` constructor can take a ``root_factory`` keyword argument.
+The ``Configurator`` constructor takes a ``root_factory`` kwarg.
 
 .. class:: incremental
 
-The ``root_factory`` of your app returns the router that determines how to
-dispatch individual requests.
+This *callable* returns something to handle dispatching requests.
 
 .. class:: incremental
 
-If you do not provide this argument, the default root factory, which uses URL
-Dispatch, will be used.
+The default root factory uses URL Dispatch.
 
 .. class:: incremental
 
-In our case, we want to use Traversal for our app, so we provide a custom
-``root_factory``.
+We want to use Traversal for our app, so we provide one.
 
 
 Our Root Factory
@@ -450,8 +622,15 @@ Our Root Factory
 
 .. class:: incremental
 
-We grab a connection to the ZODB and pass that into a call to ``appmaker``,
-the result is returned (and becomes our app root).
+``get_connection`` returns a connection to the ZODB.
+
+.. class:: incremental
+
+The ``root`` of this connection is then passed to ``appmaker``
+
+.. class:: incremental
+
+This is another factory method that returns the app root.
 
 .. class:: incremental
 
@@ -474,22 +653,70 @@ The appmaker
 
 .. class:: incremental
 
-We ensure that there is an ``app_root`` object stored in the ZODB, and return
-it. That simple Python object will manage our *Traversal* based application.
-
-
-Seeing It Live
---------------
-
-You've done this at home, but let's repeat the exercise here.
+Remember, the ZODB is an *object store*, dict-like.
 
 .. class:: incremental
 
-In a terminal, change directories into your ``wikitutorial`` *project* folder
-(where you see ``development.ini``). Fire up your pyramid virtualenv and serve
-our app:
+We look for an ``app_root`` inside this *container*
 
 .. class:: incremental
+
+If there is none, we build one and put it there.
+
+.. class:: incremental
+
+This simple Python object will manage *Traversal* for our app.
+
+
+Install Our App
+---------------
+
+Our app is, in fact, a Python package.
+
+.. class:: incremental
+
+In order for us to use it, we must *install* it.
+
+.. class:: incremental
+
+``setup.py`` allows us to do this: ``python setup.py install`` **BUT**
+
+.. class:: incremental
+
+Install will make a copy of our code and use that.
+
+.. class:: incremental
+
+We don't want that, since updates we make here would not be picked up.
+
+*Develop* Installation
+----------------------
+
+We can use an alternate method called ``develop``.
+
+.. class:: incremental
+
+This will install a *pointer* to our package, but leave the code here.
+
+.. class:: incremental
+
+In a terminal, move to the ``wikitutorial`` *project* folder (find
+``development.ini``) and ``develop`` the app:
+
+.. class:: small incremental
+
+::
+
+    (pyramidenv)$ cd wikitutorial
+    (pyramidenv)$ python setup.py develop
+
+
+See It Live
+-----------
+
+Use the ``pserve`` command installed by pyramid to serve our app:
+
+.. class:: small
 
 ::
 
@@ -499,14 +726,23 @@ our app:
 
 .. class:: incremental
 
+This brings up a new *wsgi server* provided by ``waitress`` serving our app.
+
+.. class:: incremental
+
 Load http://localhost:6543 and view your app root.
 
 
 Why is it Pretty?
 -----------------
 
-If we understand correctly what is happening so far, we are looking at an
-instance of ``MyModel``.
+We should be looking at an instance of MyModel:
+
+.. code-block:: python
+    :class: small
+
+    class MyModel(PersistentMapping):
+        __parent__ = __name__ = None
 
 .. class:: incremental
 
@@ -543,100 +779,198 @@ Or call ``config.add_view()`` method in your app ``main``.
 ``config.scan()`` in ``main`` picks up all config decorators.
 
 
-View Configuration
-------------------
+View Config - Predicates
+------------------------
 
-.. class:: small
+View configuration takes many arguments.  Here we use two.
 
-The ``view_config`` decorator (and the ``add_view`` method) take a number of
-interesting arguments.  In our case there are two.  
+.. class:: incremental
 
-.. class:: incremental small
+``context`` determines the *type* of object to which this view can be applied
 
-``renderer`` is used to designate how the results returned by the view
-callable will be handled. In our case, it's a template that will render to an
-HTML page.
+.. class:: incremental
 
-.. class:: incremental small
+It's an example of a *predicate* argument
 
-``context`` determines the *type* of object for which this view may be used. It
-is an example of a ``predicate`` argument, which can be used to place
-restrictions on when and how a view may be called.
+.. class:: incremental
 
-.. class:: incremental small
+*Predicates* place restrictions on how and when a view is used.
 
-Predicates are a very powerful system for choosing views. Read more about them
-in `view configuration
+.. class:: incremental
+
+Read more about predicates in `view configuration
 <http://docs.pylonsproject.org/projects/pyramid/en/1.1-branch/narr/viewconfig.html>`_
 
 
-Lab - Part Two
---------------
+View Config - Renderers
+-----------------------
 
-.. class:: big-centered
+Pyramid separates the concerns of *view* and *renderer*
 
-Data Models and Tests
+.. class:: incremental
+
+So far, *views* prepare a data context **and** render it
+
+.. class:: incremental
+
+In Pyramid, the *view* only prepares the data to be rendered
+
+.. class:: incremental
+
+A ``renderer`` transforms this to something suitable for an HTTP response.
+
+.. class:: incremental
+
+In this case, ``renderer`` is a template that will return HTML
+
+
+View Config - Summary
+---------------------
+
+In summary, then, our view configuration:
+
+.. class:: incremental
+
+* checks to see that we have traversed to an instance of ``MyModel``
+* calls the ``my_view`` function, which returns a simple dictionary
+* passes that dictionary to the ``mytemplate`` template
+* the template is rendered and returned as the body of an HTTP response.
+
+.. class:: incremental
+
+And that is how we end up looking at that very pretty page.
+
+
+Break Time
+----------
+
+So far:
+
+.. class:: incremental
+
+* we've taken a look at where Pyramid comes from
+* we've seen how it is like and unlike other frameworks we've seen.
+* we've met the ZODB *object store* and talked about how it differs from a
+  database
+* we've learned about *traversal* and how it differs from URL dispatch
+* we've set up a Pyramid app using both
+* we've looked at how the example code in that application works.
+
+.. class:: incremental
+
+Next, we'll start working on building our app, starting with Models.
+
+
+Before We Begin
+---------------
+
+In your *package* directory you should see a file: ``Data.fs``.
+
+.. class:: incremental
+
+We are going to be starting over, so let's clear it.
+
+.. class:: incremental
+
+Make sure Pyramid is not running.
+
+.. class:: incremental
+
+Delete Data.fs. It will be re-created as needed.
+
+.. class:: incremental
+
+You can also delete Data.fs.* (.tmp, .index, .lock)
+
 
 Wiki Models
 -----------
 
-Now that we have a basic idea of what's going on in the code generated for us,
-it's time to build our wiki models.
+First, we want a *wiki* class to serve as our app *root*.
 
 .. class:: incremental
 
-We'll need to have a Python class that corresponds to a *page* in our wiki.
+We also need a *page* class representing a wiki page.
 
 .. class:: incremental
 
-This will be the type of object we view when we are looking at the wiki.
+This will be the type we view when we are looking at the wiki.
 
 .. class:: incremental
 
-We'll also need to have a *root* object, which will be a container for all the
-*pages* we create for the wiki.
+These two classes will need to be stored in our ZODB
+
+.. class:: incremental
+
+This means we need to talk about *persistence*.
 
 
 Persistence Magic
 -----------------
 
-In an SQL database, data *about* an object is written to tables. In the ZODB,
-the *object itself* is saved in the database.
+In SQL, data *about* an object is written to tables.
 
 .. class:: incremental
 
-The ZODB provides base classes that will *automatically save themselves*. We
-will use two of these:
+In the ZODB, the *object itself* is saved in the database.
 
 .. class:: incremental
 
-* **Persistent** - a class that automatically tracks changes to class
-  attributes and saves them. 
+The ZODB provides special classes that help us with this.
 
-* **PersistentMapping** - roughly equivalent to a Python *dictionary*, this
-  class will save changes to itself *and its keys and values*.
+.. class:: incremental
+
+Instances of these classes are able to know when they've been changed.
+
+.. class:: incremental
+
+When a ZODB transaction is committed, all changes objects are saved.
+
+
+Persistent Base Classes
+-----------------------
+
+We'll be using two of these classes in our wiki:
+
+.. class:: incremental
+
+* **Persistent** - automatically saves changes to class attributes
+
+* **PersistentMapping** - like a *dictionary*, saves changes to itself *and
+  its keys and values*.
 
 .. class:: incremental small
 
-The ZODB also provides lists and more complex persistent data structures like
-BTrees.
+Other structures like lists and B-Trees are also available, but we wont use
+them here.
+
+.. class:: incremental
+
+By subclassing these, we automatically gain persistence.
 
 
 Traversal Magic
 ---------------
 
-Traversal is supported by two object properties: ``__name__`` and
-``__parent__``.
+Our wiki system will use *traversal* dispatch
 
 .. class:: incremental
 
-Every object in a system which is going to use Traversal **must** provide
-these two attributes.
+Two object attributes support *traversal*: 
 
 .. class:: incremental
 
-The *root* object in a Traversal system will have both of these attributes set
-to ``None``.
+* ``__name__`` (who am I)
+* ``__parent__`` (where am I)
+
+.. class:: incremental
+
+Every object in a traversal-based system **must** provide these two
+attributes.
+
+.. class:: incremental
+
+The *root* object will set these to ``None``.
 
 
 The Wiki Class
@@ -685,7 +1019,7 @@ We'll add those to each instance when we create it.
 Update Appmaker
 ---------------
 
-The existing ``appmaker`` function needs to be updated for our new models:
+Update ``appmaker`` for our new models:
 
 .. code-block:: python
 
@@ -705,22 +1039,24 @@ The existing ``appmaker`` function needs to be updated for our new models:
 A Last Bit of Cleanup
 ---------------------
 
-We've deleted the ``MyModel`` class.  But we still have *views* that 
-reference the class.
+We've deleted the ``MyModel`` class.
 
 .. class:: incremental
 
-Open the ``views.py`` file in your *package* directory and comment out
-everything **except** the first line:
+But we still have *views* that reference the class.
 
-.. code-block:: python
-    :class: incremental
+.. container:: incremental
 
-    from pyramid.view import view_config
+    Open ``views.py`` and delete everything except the first import
+
+    .. code-block:: python
+        :class: small
+
+        from pyramid.view import view_config
 
 .. class:: incremental
 
-Next, we'll test our models.
+Next come tests for our new models.
 
 
 Test the Wiki Model
@@ -741,7 +1077,7 @@ class and replace it with the following:
         def _makeOne(self):
             return self._getTargetClass()()
 
-        def test_it(self):
+        def test_constructor(self):
             wiki = self._makeOne()
             self.assertEqual(wiki.__parent__, None)
             self.assertEqual(wiki.__name__, None)
@@ -780,37 +1116,35 @@ One more test class:
     class AppmakerTests(unittest.TestCase):
 
         def _callFUT(self, zodb_root):
-            from .models import appmaker
+            from wikitutorial.models import appmaker
             return appmaker(zodb_root)
 
-        def test_it(self):
+        def test_initialization(self):
             root = {}
             self._callFUT(root)
             self.assertEqual(root['app_root']['FrontPage'].data,
                              'This is the front page')
 
 
-A Quick Interlude
------------------
+A Side Note
+-----------
 
-In your *package* directory you should see a file: ``Data.fs``.
-
-.. class:: incremental
-
-This is the ZODB. It contains references to a class that doesn't exist
-anymore (MyModel). This means it is broken.
+Note that there are *few* module level imports in ``tests.py``
 
 .. class:: incremental
 
-Make sure Pyramid is not running.
+Also note that each TestCase has a helper method to import the class it will
+test.
 
 .. class:: incremental
 
-Delete Data.fs. It will be re-created as needed.
+This is unusual, but it reflects Pyramid `testing best practices
+<http://docs.pylonsproject.org/en/latest/community/testing.html>`_
 
 .. class:: incremental
 
-You can also delete Data.fs.* (.tmp, .index, .lock)
+In short, the idea is to prevent import problems from breaking *all* your
+tests.
 
 
 Run our Tests
@@ -832,40 +1166,26 @@ We can also run tests to tell us our code-coverage:
 
 ::
 
-    (pyramidenv)$ nosetests --cover-package=tutorial --cover-erase --with-coverage
-
-
-Break
------
-
-.. class:: big-centered
-
-Take a few minutes to breathe
-
-
-Lab - Part Three
-----------------
-
-.. class:: big-centered
-
-Views and Templates
+    (pyramidenv)$ nosetests --cover-package=tutorial --cover-erase\
+        --with-coverage
 
 
 Preparing for Views
 -------------------
 
-Our ``Page`` model has a ``data`` attribute, which represents the text in the
-page. 
+The ``data`` attribute of our ``Page`` model holds the text of the page.
 
 .. class:: incremental
 
-Our pages will use ReStructuredText, a plain-text format that can be rendered
-to HTML with a Python module called ``docutils``.
+We'll use ReStructuredText, which can be rendered to HTML
 
 .. class:: incremental
 
-Our project is installable as a python package. It declares its own
-*dependencies* so that they will also be installed.
+Rendering is provided by a python package called ``docutils``.
+
+.. class:: incremental
+
+Our application is a python package, and can declare its own dependencies.
 
 .. class:: incremental
 
@@ -895,8 +1215,7 @@ the list ``requires``:
 Complete the Change
 -------------------
 
-Any time you make a change to ``setup.py`` for a package you are working on,
-you need to re-install that package to pick up the changes::
+Changes to ``setup.py`` always require a re-install::
 
     (pyramidenv)$ python setup.py develop
 
@@ -909,59 +1228,264 @@ You'll see a whole bunch of stuff flicker by. In it will be a reference to
 Adding Views
 ------------
 
+We are ready to add views now. We'll need:
+
+.. class:: incremental
+
+* A view of the Wiki itself, which redirects to the front page.
+* A view of an existing Page
+* A view that allows us to *add* a new Page
+* A view that allows us to *edit* and existing Page
+
+.. class:: incremental
+
+As we move forward, we'll be writing tests first, then building the code to
+pass them.
+
+
+Testing the Wiki View
+---------------------
+
+We want our wiki to automaticall redirect to ``FrontPage``.
+
+.. container:: incremental
+
+    Add this new TestCase to ``tests.py``:
+    
+    .. code-block:: python
+        :class: small
+    
+        class WikiViewTests(unittest.TestCase):
+
+            def test_redirect(self):
+                from wikitutorial.views import view_wiki
+                context = testing.DummyResource()
+                request = testing.DummyRequest()
+                response = view_wiki(context, request)
+                self.assertEqual(response.location,
+                                 'http://example.com/FrontPage')
+
+
+Run The Tests
+-------------
+
+.. class:: small
+
+::
+
+    (pyramidenv)$ python setup.py test
+    ...
+
+    ======================================================================
+    ERROR: test_redirect (wikitutorial.tests.WikiViewTests)
+    ----------------------------------------------------------------------
+    Traceback (most recent call last):
+      File "/path/to/wikitutorial/wikitutorial/tests.py", line 51, in test_redirect
+        from wikitutorial.views import view_wiki
+    ImportError: cannot import name view_wiki
+
+    ----------------------------------------------------------------------
+    Ran 4 tests in 0.001s
+
+    FAILED (errors=1)
+
+
+Adding view_wiki
+----------------
+
 Open ``views.py`` again.  Add the following:
 
 .. code-block:: python
     :class: small
-
-    from docutils.core import publish_parts
-    import re
     
     from pyramid.httpexceptions import HTTPFound
     from pyramid.view import view_config # <- ALREADY THERE
-    
-    from wikitutorial.models import Page
-    
-    # regular expression used to find WikiWords
-    wikiwords = re.compile(r"\b([A-Z]\w+[A-Z]+\w+)")
     
     @view_config(context='.models.Wiki')
     def view_wiki(context, request):
         return HTTPFound(location=request.resource_url(context,
                                                        'FrontPage'))
 
+.. container:: incremental
+
+    And re-run tests:
+    
+    .. class:: small
+    
+    ::
+    
+        (pyramidenv)$ python setup.py test
+        ...
+        Ran 4 tests in 0.001s
+        OK 
+
 
 Some Notes
 ----------
 
-New pages in a typical wiki are added by writing *WikiWords* into the page.
+Note that ``@view_config`` has no ``renderer`` argument.
 
 .. class:: incremental
 
-``r"\b([A-Z]\w+[A-Z]+\w+)"`` is a regular expression that will locate
-WikiWords.
+It will never be shown, so there's no need
 
 .. class:: incremental
 
-Note that the ``@view_config`` for the ``view_wiki`` function has no
-``renderer`` argument. It will never be *shown*
+Instead, it returns ``HTTPFound``, (``302 Found``), which requires a
+``location``
 
 .. class:: incremental
 
-Instead, it returns ``HTTPFound``, (``302 Found``). Calling
-``request.resource_url`` provides a URL for the redirect.
+The ``.resource_url()`` method of a ``request`` object builds a URL for us.
 
 
-Add a Page View
----------------
+A Page View
+-----------
+
+Our view of a page will need to accomplish a few things:
+
+.. class:: incremental
+
+* convert the Page ``data`` to HTML
+* make WikiWords in the HTML into appropriate links
+* provide a url for editing itself
+
+.. class:: incremental
+
+Let's test and implement these features one at a time
+
+
+Test HTML Rendering
+-------------------
+
+Add the following new TestCase to ``tests.py``
 
 .. code-block:: python
     :class: small
 
+    class PageViewTests(unittest.TestCase):
+        def _callFUT(self, context, request):
+            from wikitutorial.views import view_page
+            return view_page(context, request)
+
+        def test_it(self):
+            wiki = testing.DummyResource()
+            context = testing.DummyResource(data='Hello CruelWorld IDoExist')
+            context.__parent__ = wiki
+            context.__name__ = 'thepage'
+            request = testing.DummyRequest()
+            info = self._callFUT(context, request)
+            self.assertTrue('<div class="document">' in info['content'])
+            for word in context.data.split():
+                self.assertTrue(word in info['content'])
+
+
+Run The Tests
+-------------
+
+Verify that you now have five, and that one is failing
+
+.. class:: incremental
+
+Our tests is relying on an artifact of how docutils builds HTML
+
+.. class:: incremental
+
+It makes it a weak tests, but okay for illustrative purposes.
+
+.. class:: incremental
+
+Now, let's get it passing
+
+
+Start view_page
+---------------
+
+Add this code to ``views.py``:
+
+.. code-block:: python
+    :class: small
+
+    # an import
+    from docutils.core import publish_parts
+    
+    # and a method
     @view_config(context='.models.Page', renderer='templates/view.pt')
     def view_page(context, request):
-        wiki = context.__parent__
+        content = publish_parts(
+            context.data, writer_name='html')['html_body']
+        return dict(page=context, content=content)
+
+.. class:: small incremental
+
+::
+
+    (pyramidenv)$ python setup.py test
+    ...
+    Ran 5 tests in 0.143s
+    OK
+
+
+Test Link Building
+------------------
+
+Add the following to our test:
+
+.. code-block:: python
+    :class: small
+
+    def test_it(self):
+        wiki = testing.DummyResource()
+        wiki['IDoExist'] = testing.DummyResource() #<- add this
+        context = testing.DummyResource(data='Hello CruelWorld IDoExist')
+        #...
+        # Add the following loop and assertion
+        for url in (request.resource_url(wiki['IDoExist']),
+                    request.resource_url(wiki, 'add_page', 'CruelWorld')):
+            self.assertTrue(url in info['content'])
+
+.. class:: small incremental
+
+::
+
+    (pyramidenv)$ python setup.py test
+    Ran 5 tests in 0.108s
+    FAILED (failures=1)
+
+
+Finding WikiWords
+-----------------
+
+We'll use a regular expression to find WikiWords in our page data
+
+.. container:: incremental
+
+    Add the following to ``views.py``:
+
+    .. code-block:: python
+        :class: small
+    
+        # one import
+        import re
         
+        # and one module constant
+        WIKIWORDS = re.compile(r"\b([A-Z]\w+[A-Z]+\w+)")
+
+.. class:: incremental
+
+Now, we use this to build a curried function that converts WikiWords to links
+
+
+Converting WikiWords
+--------------------
+
+.. code-block:: python
+    :class: small
+    
+    # in views.py
+    def view_page(context, request):
+        wiki = context.__parent__
+
         def check(match):
             word = match.group(1)
             if word in wiki:
@@ -971,33 +1495,208 @@ Add a Page View
             else:
                 add_url = request.application_url + '/add_page/' + word 
                 return '<a href="%s">%s</a>' % (add_url, word)
-        
+
         content = publish_parts(
             context.data, writer_name='html')['html_body']
-        content = wikiwords.sub(check, content)
-        edit_url = request.resource_url(context, 'edit_page')
-        return dict(page=context, content=content, edit_url=edit_url)
+        content = WIKIWORDS.sub(check, content) #<- add this line
+        return #... <- this already exists
+
+
+Check Your Progress
+-------------------
+
+Tests should now be five for five again.
+
+
+Test Edit Link
+--------------
+
+Finally, we need to verify that ``view_page`` also returns a link to edit
+*this* page.
+
+.. container:: incremental
+
+    Add this to our test:
+    
+    .. code-block:: python
+        :class: small
+        
+        def test_it(self):
+            #...
+            self.assertEqual(info['edit_url'],
+                             'http://example.com/thepage/edit_page')
+
+.. class:: small incremental
+
+::
+
+    (pyramidenv)$ python setup.py test
+    Ran 5 tests in 0.110s
+    FAILED (errors=1)
+
+
+Return Edit Link
+----------------
+
+Update ``view_page``:
+
+.. code-block:: python
+    :class: small
+
+    def view_page(context, request):
+        #...
+        content = wikiwords.sub(check, content) #<- already there
+        edit_url = request.resource_url(context, 'edit_page') #<- add
+        return dict(page=context,
+                    content=content,
+                    edit_url = edit_url)
+
+.. class:: small incremental
+
+::
+
+    (pyramidenv)$ python setup.py test
+    Ran 5 tests in 0.110s
+    OK
 
 
 Adding Templates
 ----------------
 
-What will the page template for the ``view_page`` function need to be called?
+What is the page template name for ``view_page``?
 
 .. class:: incremental
 
-Go ahead and create ``view.pt`` in your ``templates`` directory.
+Create ``view.pt`` in your ``templates`` directory.
 
 .. class:: incremental
 
-While you're there, also copy the file ``base.pt`` from
-``assignments/week08/lab`` in the class repo.
+Also copy the file ``base.pt`` from the class resources.
 
 .. class:: incremental
 
-Like Django templates, Chameleon templates can extend other templates. Our
-``base.pt`` template will be the master, and our ``view.pt`` and ``edit.pt``
-templates will extend it.
+Pyramid can use a number of different templating engines.
+
+.. class:: incremental
+
+We'll be using Chameleon, which also supports extending other templates.
+
+
+Chameleon Templates
+-------------------
+
+Chameleon page templates are valid XML/HTML.
+
+.. class:: incremental
+
+You can validate and view templates in browsers without the templating engine.
+
+.. class:: incremental
+
+This can be helpful in working with designers or front-end folks
+
+.. class:: incremental
+
+Instead of using special tags for processing directives, Chameleon uses XML
+tag attributes.
+
+
+TAL/METAL
+---------
+
+Chameleon is descended from Zope Page Templates (ZPT)
+
+.. class:: incremental
+
+It uses two XML namespaces for directives:
+
+.. class:: incremental
+
+* TAL (Template Attribute Language)
+* METAL (Macro Extension to the Template Attribute Language)
+
+.. class:: incremental
+
+TAL provides basic directives for logical structures
+
+.. class:: incremental
+
+METAL provides directives for creating and using template Macros
+
+
+TAL Statements
+--------------
+
+TAL and METAL statements are XML tag attributes.
+
+.. class:: incremental
+
+This means they look just like ``id="foo"`` or ``class="bar"``
+
+.. class:: incremental
+
+* ``tal:<operator>=”<expression>”``
+
+* The ``tal:`` is a ‘namespace identifier’ (xml)
+
+  * Not strictly required, but helpful
+
+  * Strongly encouraged :)
+
+
+TAL Operators
+-------------
+
+There are seven basic TAL operators, which are processed in this order
+
+.. class:: incremental
+
+* ``tal:define`` - set a value or values
+* ``tal:condition`` - test truth value to execute
+* ``tal:repeat`` - loop over sets of values
+* ``tal:content`` - set the content of a tag
+* ``tal:replace`` - replace an entire tag
+* ``tal:attributes`` - set html/xml attributes of a tag
+* ``tal:omit-tag`` - if expression is false, omit the tag
+
+.. class:: incremental
+
+``content`` and ``replace`` are mutually exclusive.
+
+
+TAL Expressions
+---------------
+
+The right half of a TAL statement is an *expression* using the TAL expression
+syntax (TALES):
+
+.. class:: incremental
+
+* Exists - ``exists:foo``
+* Import - ``import:foo.bar.baz``
+* Load = ``load:../other_template.pt``
+* Not - ``not: is_anon``
+* Python - ``python: here.Title()``
+* String - ``string:my ${value}``
+* Structure - ``structure:some_html``
+
+
+METAL Operators
+---------------
+
+METAL provides operators related to creating and using template macros:
+
+.. class:: incremental
+
+* ``metal:define-macro`` - designates a DOM scope as a macro
+* ``metal:use-macro`` - indicates that a macro should be used
+* ``metal:extend-macro`` - extend an existing macro
+* ``metal:define-slot`` - designate a customization point for a macro
+* ``metal:fill-slot`` - provide custom content for a macro slot
+
+.. class:: incremental
+
+Much of this will become clearer as we actually create our templates.
 
 
 The view.pt Template
@@ -1009,7 +1708,7 @@ Type this code into your ``view.pt`` file:
 
     <metal:main use-macro="load: base.pt">
      <metal:content metal:fill-slot="main-content">
-      <div tal:replace="structure content">
+      <div tal:replace="structure:content">
         Page text goes here.
       </div>
       <p>
@@ -1024,23 +1723,15 @@ Type this code into your ``view.pt`` file:
 A Few Notes
 -----------
 
-Chameleon page templates are valid XML. The templating language uses ``tal``/``metal``
-namespace XML tag attributes.
+``<metal>`` and ``<tal>`` tags are processed and removed by the engine.
 
 .. class:: incremental
 
-``<metal:main use-macro="load: base.pt">`` tells us we will be using
-``base.pt`` as our main template *macro*.
-
-.. class:: incremental
-
-Template *macros* can define one or more *slots*. These are like the *blocks*
-in Jinja2 or Django templates.
-
-.. class:: incremental
-
-``<metal:content metal:fill-slot="main-content">`` tells us that everything
-here will go in the ``main-content`` slot.
+* ``use-macro="load: base.pt"``: we will be using ``base.pt`` as our main
+  template *macro*.
+* Template *macros* define one or more *slots*.
+* ``metal:fill-slot="main-content"``: everything goes in the ``main-content``
+  slot.
 
 
 More Notes
@@ -1048,24 +1739,24 @@ More Notes
 
 .. code-block:: xml
 
-    <div tal:replace="structure content">
+    <div tal:replace="structure:content">
       Page text goes here.
     </div>
 
-This uses the ``tal`` directive ``replace`` to completely replace the
-``<div>`` tag with whatever html is in ``content``.
+The ``tal`` directive ``replace`` replaces the ``<div>`` tag with ``content``.
 
-.. code-block:: xml
-    :class: incremental
+The ``structure`` expression ensures that the HTML is not escaped.
 
-    <a tal:attributes="href edit_url" href="">
-      Edit this page
-    </a>
+.. container:: incremental
 
-.. class:: incremental
+    .. code-block:: xml
 
-Here, we use the ``tal`` directive ``attributes`` to set the ``href`` for our
-anchor to the value passed into our template as ``edit_url``.
+        <a tal:attributes="href edit_url" href="">
+          Edit this page
+        </a>
+
+    Here, we use the ``tal`` directive ``attributes`` to set the ``href`` for
+    our anchor to the value passed into our template as ``edit_url``.
 
 
 View Your Work
@@ -1105,6 +1796,74 @@ What You Should See
     :width: 95%
 
 
+Page Editing
+------------
+
+You'll notice that the page has a link to ``Edit This Page``
+
+.. class:: incremental
+
+If you click it, you get a 404.  We haven't created that view yet.
+
+.. class:: incremental
+
+Let's start by adding tests to ensure:
+
+.. class:: incremental
+
+* the edit view will submit to itself
+* will save page data updates
+* will redirect back to the page view after saving
+
+
+Test Page Editing
+-----------------
+
+In ``tests.py``:
+
+.. code-block:: python
+    :class: small
+    
+    class EditPageTests(unittest.TestCase):
+        def _callFUT(self, context, request):
+            from .views import edit_page
+            return edit_page(context, request)
+
+        def test_it_notsubmitted(self):
+            context = testing.DummyResource()
+            request = testing.DummyRequest()
+            info = self._callFUT(context, request)
+            self.assertEqual(info['page'], context)
+            self.assertEqual(info['save_url'],
+                             request.resource_url(context, 'edit_page'))
+
+
+One More Method
+---------------
+
+.. code-block:: python
+    :class: small
+    
+    class EditPageTests(unittest.TestCase):
+        # ...
+        
+        def test_it_submitted(self):
+            context = testing.DummyResource()
+            request = testing.DummyRequest({'form.submitted':True,
+                                            'body':'Chapel Hill Rocks'})
+            response = self._callFUT(context, request)
+            self.assertEqual(response.location, 'http://example.com/')
+            self.assertEqual(context.data, 'Chapel Hill Rocks')
+
+.. class:: small incremental
+
+::
+
+    (pyramidenv)$ python setup.py test
+    Ran 7 tests in 0.110s
+    FAILED (errors=2)
+
+
 Editing a Page
 --------------
 
@@ -1122,6 +1881,31 @@ Back in ``views.py`` add the following:
 
         return dict(page=context,
                     save_url=request.resource_url(context, 'edit_page'))
+
+.. class:: incremental
+
+Note the ``name`` in ``view_config``.
+
+.. class:: incremental
+
+When traversal runs out of objects, it tries to find views by name
+
+
+Check Your Tests
+----------------
+
+Even without a template we can run our tests:
+
+.. class:: small incremental
+
+::
+
+    (pyramidenv)$ python setup.py test
+    ...
+    ----------------------------------------------------------------------
+    Ran 7 tests in 0.112s
+
+    OK
 
 
 The Edit Template
@@ -1189,16 +1973,102 @@ number of characters in the title.
 Note that ``AnotherPage`` is a link, click it.
 
 
+Page Creation
+-------------
+
+Again, we need a new view.  This one will
+
+.. class:: incremental
+
+* have the wiki itself as ``context``
+* allow us to fill out the new page content
+* save the new page when submitted
+* return us to a view of the new page
+
+.. class:: incremental
+
+Again, we start by testing for this
+
+
+Test Adding a Page
+------------------
+
+In ``tests.py``:
+
+.. code-block:: python 
+    :class: small
+    
+    class AddPageTests(unittest.TestCase):
+        def _callFUT(self, context, request):
+            from .views import add_page
+            return add_page(context, request)
+
+        def test_it_notsubmitted(self):
+            context = testing.DummyResource()
+            request = testing.DummyRequest()
+            request.subpath = ['AnotherPage']
+            info = self._callFUT(context, request)
+            self.assertEqual(info['page'].data,'')
+            self.assertEqual(
+                info['save_url'],
+                request.resource_url(context, 'add_page', 'AnotherPage'))
+
+
+One More Method
+---------------
+
+.. code-block:: python 
+    :class: small
+    
+    class AddPageTests(unittest.TestCase):
+        #...
+        
+        def test_it_submitted(self):
+            context = testing.DummyResource()
+            request = testing.DummyRequest({'form.submitted':True,
+                                            'body':'Go UNC!'})
+            request.subpath = ['AnotherPage']
+            self._callFUT(context, request)
+            page = context['AnotherPage']
+            self.assertEqual(page.data, 'Go UNC!')
+            self.assertEqual(page.__name__, 'AnotherPage')
+            self.assertEqual(page.__parent__, context)
+
+.. class:: small incremental
+
+::
+
+    (pyramidenv)$ python setup.py test
+    Ran 9 tests in 0.117s
+    FAILED (errors=2)
+
+
 Adding a Page
 -------------
 
-Back in ``views.py`` add the code for creating a new page:
+Back in ``views.py`` add the code for creating a new page
+
+.. container:: incremental
+
+    Start with imports and the view_config:
+
+    .. code-block:: python
+        :class: small
+
+        # add an import
+        from wikitutorial.models import Page
+
+        @view_config(name='add_page', context='.models.Wiki',
+                     renderer='templates/edit.pt')
+
+
+The View Function
+-----------------
 
 .. code-block:: python
     :class: small
 
-    @view_config(name='add_page', context='.models.Wiki',
-                 renderer='templates/edit.pt')
+    @view_config(...) #<- already there.
     def add_page(context, request):
         pagename = request.subpath[0]
         if 'form.submitted' in request.params:
@@ -1218,12 +2088,12 @@ Back in ``views.py`` add the code for creating a new page:
 A Few Notes
 -----------
 
-Notice that the ``context`` for this view is *the Wiki model*
+Note that this view also has a ``name``.
 
 .. class:: incremental
 
 ``pagename = request.subpath[0]`` gives us the first element of the path
-*after* the current context and view. What is that?
+*after* the current context and view name. What is that?
 
 .. class:: incremental
 
@@ -1240,7 +2110,7 @@ One More Note
 -------------
 
 Look at the similarity in how a form is handled here to the way it is handled
-in Django (in pseudocode):
+in Django and Flask (in pseudocode):
 
 .. class:: incremental
 
@@ -1266,6 +2136,35 @@ And a Question
 .. class:: big-centered
 
 Why do we create a new, empty ``Page`` object at the end of the add_page view?
+
+
+Check Your Tests
+----------------
+
+.. class:: small
+
+::
+
+    (pyramidenv)$ python setup.py test
+    ...
+    test_it_notsubmitted (wikitutorial.tests.AddPageTests) ... ok
+    test_it_submitted (wikitutorial.tests.AddPageTests) ... ok
+    test_initialization (wikitutorial.tests.AppmakerTests) ... ok
+    test_it_notsubmitted (wikitutorial.tests.EditPageTests) ... ok
+    test_it_submitted (wikitutorial.tests.EditPageTests) ... ok
+    test_constructor (wikitutorial.tests.PageModelTests) ... ok
+    test_it (wikitutorial.tests.PageViewTests) ... ok
+    test_constructor (wikitutorial.tests.WikiModelTests) ... ok
+    test_redirect (wikitutorial.tests.WikiViewTests) ... ok
+
+    ----------------------------------------------------------------------
+    Ran 9 tests in 0.111s
+
+    OK
+
+.. class:: incremental center
+
+**WAHOOOOOOO!!!**
 
 
 In-Class Exercises
