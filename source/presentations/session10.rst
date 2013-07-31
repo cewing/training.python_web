@@ -1266,7 +1266,7 @@ Check your work in a browser:
     Starting server in PID 36414.
     serving on http://0.0.0.0:6543
 
-.. class:: 
+.. class:: incremental
 
 Visit http://localhost:6543 and play for a bit
 
