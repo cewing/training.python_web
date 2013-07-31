@@ -101,7 +101,7 @@ Self Evaluation
 ---------------
 
 At this point, you can check your work. Fire up a python interpreter in your
-virtualenv:
+virtualenv::
 
     (pyramidenv)$ python
     >>> import ZODB
