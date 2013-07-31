@@ -8,24 +8,38 @@ This takes some work.  Start early.
 ---------
 
 The ZODB uses C extensions, and so installing it on OS X or Linux requires a
-compiler and python's development headers.
+compiler and python's development headers. On linux systems, this means using
+the system package manager:
 
-**Ubuntu** (our vms):
+**Ubuntu/Debian**:
 
     $ sudo apt-get install python-dev
 
-**OS X**: Ensure that you have XCode installed. It's free, but *big* expect it
+
+For **OS X** my usual approach is to install XCode. It's *big*, so expect it
 to take a while if you don't already have it. Once you've downloaded it you'll
-also need to install the command-line tools (Thanks to Jon Braam for this
-pointer):
+also need to install the command-line tools:
 
 * Open XCode
 * Open the XCode menu, then click 'Preferences' > 'Downloads' > 'Install
   Command Line Tools'
 * Once this is done, you can close XCode again
 
-**Windows**: See the next section
+If XCode is too much, there appear to be alternatives available.  I have not
+tried any of these, but would appreciate any testimonial to their effectiveness:
 
+* There is a stand-alone package of the command-line tools available through
+  the apple developer center: https://developer.apple.com/downloads
+
+* Kenneth Reitz has a github repository with instructions and installers for a
+  stand-alone gcc compiler: https://github.com/kennethreitz/osx-gcc-installer
+
+If you use either of these methods to get gcc, you will still require the
+python development headers. Installing a new version of Python using the
+python.org installers or MacPorts or Homebrew should suffice to get this done.
+
+
+**Windows**: See the next section
 
 Windows Prep
 ------------
@@ -45,10 +59,13 @@ install Visual Studio 2008 Express:
   Express Library for Visual Studio 2008, and (2) Microsoft SQL Server 2005
   Express Edition (x86).
 
-The above will work for 32-bit windows.  If you are stuck with 64-bit, try
+The above will work for 32-bit Windows.  If you are using 64-bit Windwos, try
 using the instructions on this wiki:
 
     http://wiki.cython.org/64BitCythonExtensionsOnWindows
+
+I have yet to hear of anyone getting Python or C-extensions running on Windows
+8 without a titanic struggle.
 
 
 Virtualenv
