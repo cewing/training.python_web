@@ -74,6 +74,8 @@ Virtualenv
 With that prep work out of the way, you're ready to start. First, set up a
 virtualenv:
 
+.. code-block:: bash
+
     $ python2.7 virtualenv.py pyramidenv
     ...
     $ source pyramidenv/bin/activate
@@ -101,7 +103,9 @@ Self Evaluation
 ---------------
 
 At this point, you can check your work. Fire up a python interpreter in your
-virtualenv::
+virtualenv:
+
+.. code-block:: bash
 
     (pyramidenv)$ python
     >>> import ZODB
