@@ -620,16 +620,682 @@ Check Your Tests
 **WAHOOOOOOO!!!**
 
 
-In-Class Exercises
-------------------
+Security
+--------
 
-Try to accomplish as many of these as you can before you leave:
+We've got a solid start on a wiki that works.
 
 .. class:: incremental
 
-* Make the add_page view show "Adding <NewPage>" in the header (*do not create
-  a new template to do this*)
-* Make the edit_page and add_page views **only** change data on POST.
+But everyone who visits the wiki can author and edit pages.
+
+.. class:: incremental
+
+It's a recipe for **TOTAL CHAOS**
+
+.. class:: incremental
+
+Let's lock it down a bit.
+
+
+AuthN and AuthZ
+---------------
+
+There are two aspects to the process of access control online.
+
+.. class:: incremental
+
+* **Authentication**: Verification of the identity of a *principal*
+* **Authorization**: Enumeration of the rights of that *principal* in a
+  context.
+
+.. class:: incremental
+
+All systems with access control involve both of these aspects.
+
+.. class:: incremental
+
+AuthZ in our Flask and Django apps was minimal
+
+
+Pyramid Security
+----------------
+
+In Pyramid these two aspects are handled by separate configuration settings:
+
+.. class:: incremental
+
+* ``config.set_authentication_policy(AuthnPolicy())``
+* ``config.set_authorization_policy(AuthzPolicy())``
+
+.. class:: incremental
+
+If you set one, you must set the other.
+
+.. class:: incremental
+
+Pyramid comes with a few policy classes included.
+
+.. class:: incremental
+
+You can also roll your own, so long as they fulfill the contract.
+
+
+Our Wiki Security
+-----------------
+
+We'll be using two built-in policies today:
+
+.. class:: incremental
+
+* ``AuthTktAuthenticationPolicy``: sets an expirable authentication ticket
+  cookie.
+* ``ACLAuthorizationPolicy``: uses an *Access Control List* to grant
+  permissions to *principals*
+
+.. class:: incremental
+
+Our access control system will have the following properties:
+
+.. class:: incremental
+
+* Everyone can view pages
+* Users who log in may be added to an 'editors' group
+* Editors can add and edit pages.
+
+
+Testing First
+-------------
+
+Let's begin by testing for our desired properties.
+
+.. class:: incremental
+
+We'll need to create a new TestCase for this.
+
+.. class:: incremental
+
+This TestCase will be a bit different.  We need a request to engage security
+
+.. class:: incremental
+
+These tests will be *functional tests* where our earlier tests were *unit
+tests*
+
+.. class:: incremental
+
+We'll set up a zodb and a full-fledged app.
+
+
+In tests.py
+-----------
+
+We'll need some information for testing logging in:
+
+.. code-block:: python
+    :class: small
+    
+    class FunctionalTests(unittest.TestCase):
+
+        viewer_login = '/login?login=viewer&password=viewer' \
+                       '&came_from=FrontPage&form.submitted=Login'
+        viewer_wrong_login = '/login?login=viewer&password=incorrect' \
+                       '&came_from=FrontPage&form.submitted=Login'
+        editor_login = '/login?login=editor&password=editor' \
+                       '&came_from=FrontPage&form.submitted=Login'
+
+
+Test Setup
+----------
+
+We'll also need to create an app and provide a zodb to hold it:
+
+.. code-block:: python
+    :class: tiny
+
+    class FunctionalTests(unittest.TestCase):
+        #...
+        def setUp(self):
+            import tempfile
+            import os.path
+            from wikitutorial import main
+            self.tmpdir = tempfile.mkdtemp()
+
+            dbpath = os.path.join( self.tmpdir, 'test.db')
+            uri = 'file://' + dbpath
+            settings = { 'zodbconn.uri' : uri ,
+                         'pyramid.includes': ['pyramid_zodbconn',
+                                              'pyramid_tm'] }
+
+            app = main({}, **settings)
+            self.db = app.registry._zodb_databases['']
+            from webtest import TestApp
+            self.testapp = TestApp(app)
+
+
+Test Teardown
+-------------
+
+And since we set all that up, we need to destroy it after each test, too:
+
+.. code-block:: python
+    :class: small
+
+    def tearDown(self):
+        import shutil
+        self.db.close()
+        shutil.rmtree( self.tmpdir )
+
+
+Testing Login
+-------------
+
+Let's add a few tests to demonstrate that ``AuthN`` works:
+
+.. code-block:: python
+    :class: small
+
+    def test_successful_log_in(self):
+        res = self.testapp.get( self.viewer_login, status=302)
+        self.assertEqual(res.location, 'http://localhost/FrontPage')
+
+    def test_failed_log_in(self):
+        res = self.testapp.get( self.viewer_wrong_login, status=200)
+        self.assertTrue('login' in res.body)
+
+
+Testing Anonymous Users
+-----------------------
+
+We should verify that anonymous users can see pages, but cannot edit or add:
+
+.. code-block:: python
+    :class: small
+
+    def test_anonymous_user_cannot_edit(self):
+        res = self.testapp.get('/FrontPage/edit_page', status=200)
+        self.assertTrue('Login' in res.body)
+
+    def test_anonymous_user_cannot_add(self):
+        res = self.testapp.get('/add_page/NewPage', status=200)
+        self.assertTrue('Login' in res.body)
+
+
+Testing Viewers
+---------------
+
+Authenticated users who are not editors should be the same:
+
+.. code-block:: python
+    :class: small
+
+    def test_viewer_user_cannot_edit(self):
+        res = self.testapp.get( self.viewer_login, status=302)
+        res = self.testapp.get('/FrontPage/edit_page', status=200)
+        self.assertTrue('Login' in res.body)
+
+    def test_viewer_user_cannot_add(self):
+        res = self.testapp.get( self.viewer_login, status=302)
+        res = self.testapp.get('/add_page/NewPage', status=200)
+        self.assertTrue('Login' in res.body)
+
+
+Testing Editors
+---------------
+
+Finally, editors should be able to do it all:
+
+.. code-block:: python
+    :class: small
+
+    def test_editors_member_user_can_edit(self):
+        res = self.testapp.get( self.editor_login, status=302)
+        res = self.testapp.get('/FrontPage/edit_page', status=200)
+        self.assertTrue('Editing' in res.body)
+
+    def test_editors_member_user_can_add(self):
+        res = self.testapp.get( self.editor_login, status=302)
+        res = self.testapp.get('/add_page/NewPage', status=200)
+        self.assertTrue('Editing' in res.body)
+
+    def test_editors_member_user_can_view(self):
+        res = self.testapp.get( self.editor_login, status=302)
+        res = self.testapp.get('/FrontPage', status=200)
+        self.assertTrue('FrontPage' in res.body)
+
+
+One Bit of Cleanup
+------------------
+
+These lines in our test setup will cause us problems:
+
+.. code-block:: python
+    :class: small
+    
+    from webtest import TestApp
+    self.testapp = TestApp(app)
+
+.. class:: incremental
+
+We have introduced a dependency on the package ``webtest``
+
+.. class:: incremental
+
+Our package should be explicit about its dependencies.
+
+.. class:: incremental
+
+Do you remember how to declare a dependency?  
+
+
+Fix setup.py / re-install
+-------------------------
+
+In ``setup.py`` find ``requires`` and add the following:
+
+.. code-block:: python
+    :class: small
+    
+    requires = [
+        #...
+        'docutils',
+        'webtest', #<- we are adding this line
+        ]
+
+.. class:: incremental
+
+Then, re-install our package using ``develop``:
+
+.. class:: incremental small
+
+::
+
+    (pyramidenv)$ python setup.py develop
+
+
+Run Our Tests
+-------------
+
+We can run these tests, to verify that they don't just work:
+
+.. class:: small incremental
+
+::
+
+    (pyramidenv)$ python setup.py test
+
+    ----------------------------------------------------------------------
+    Ran 18 tests in 1.032s
+
+    FAILED (failures=2, errors=7)
+
+.. class:: incremental
+
+Great!  Lot's of problems to fix!
+
+
+Contextual ACLs
+---------------
+
+In Pyramid, ACL security is *contextual*.
+
+.. class:: incremental
+
+What a user is allowed to do is dependent on *context*.
+
+.. class:: incremental
+
+In a *traversal* app, context is defined as the object you are viewing.
+
+.. class:: incremental
+
+A *view* can require a given permission.
+
+.. class:: incremental
+
+The object viewed is responsible for determining *who* has *what rights*.
+
+
+ACL Inheritance
+---------------
+
+Under the default ACL policy, permissions are inherited.
+
+.. class:: incremental
+
+If *this* object does not declare an ACL, then its ``__parent__`` is checked
+
+.. class:: incremental
+
+If you get all the way back to the root without hitting an ACL, then access is
+denied.
+
+.. class:: incremental
+
+Thus, the default ACL policy is secure by default.
+
+.. class:: incremental
+
+Let's set up our policy.
+
+
+Our Users and Groups
+--------------------
+
+Create a new file ``security.py`` in your wikitutorial package and add the
+following:
+
+.. code-block:: python
+    :class: small incremental
+    
+    USERS = {
+        'editor': 'editor',
+        'viewer': 'viewer',
+    }
+    
+    GROUPS = {
+        'editor': ['group:editors'],
+    }
+    
+    def groupfinder(userid, request):
+        if userid in USERS:
+            return GROUPS.get(userid, [])
+
+
+Security Configuration
+----------------------
+
+In our ``__init__.py`` file, add the following:
+
+.. code-block:: python
+    :class: small
+
+    # a few imports
+    from pyramid.authentication import AuthTktAuthenticationPolicy
+    from pyramid.authorization import ACLAuthorizationPolicy
+    from .security import groupfinder
+    
+    # and some configuration
+    def main(global_config, **settings):
+        """ This function returns a Pyramid WSGI application.
+        """
+        authn_policy = AuthTktAuthenticationPolicy(
+            'youdontknowit', callback=groupfinder, hashalg='sha512')
+        authz_policy = ACLAuthorizationPolicy()
+        config = Configurator(...) #<- already there
+        config.set_authentication_policy(authn_policy)
+        config.set_authorization_policy(authz_policy)
+        #...
+
+
+Add an ACL
+----------
+
+We can set a global ACL on our wiki root class:
+
+.. code-block:: python
+    :class: small
+    
+    # add an import
+    from pyramid.security import Allow, Everyone
+    
+    # and alter our wiki class:
+    class Wiki(PersistentMapping):
+        #...
+        __acl__ = [(Allow, Everyone, 'view'),
+                   (Allow, 'group:editors', 'edit')]
+
+.. class:: incremental
+
+An ACL is a list of Access Control Entries
+
+.. class:: incremental
+
+Each ACE is a tuple of *action*, *principal* and *permission*
+
+
+Require Permission
+------------------
+
+In order to match, an ACE must *Allow* the current *principal* the required
+*permission*
+
+.. class:: incremental
+
+Our ``views`` are responsible for saying what *permission* is required
+
+.. code-block:: python
+    :class: incremental small
+    
+    # for the view_page() view:
+    @view_config(context='.models.Page', renderer='templates/view.pt',
+                 permission='view')
+    
+    # for add_page() and edit_page()
+    @view_config(route_name='<name>', renderer='templates/edit.pt',
+                 permission='edit')
+
+
+Provide Login/Logout
+--------------------
+
+We need to allow users a way to log in and out.  Start with the views:
+
+.. code-block:: python
+    :class: small
+    
+    # add imports to views.py
+    from pyramid.view import forbidden_view_config
+    from pyramid.security import remember, forget
+    from wikitutorial.security import USERS
+
+    # and a logout view:
+    @view_config(context='.models.Wiki', name='logout')
+    def logout(context, request):
+        headers = forget(request)
+        return HTTPFound(location=request.resource_url(context),
+                         headers=headers)
+
+.. class:: incremental
+
+Next, add the login view
+
+
+The Login View
+--------------
+
+.. code-block:: python
+    :class: tiny
+    
+    @view_config(context='.models.Wiki', name='login',
+                 renderer='templates/login.pt')
+    @forbidden_view_config(renderer='templates/login.pt')
+    def login(request):
+        login_url = request.resource_url(request.context, 'login')
+        referrer = request.url
+        if referrer == login_url:
+            referrer = '/' # never use the login form itself as came_from
+        came_from = request.params.get('came_from', referrer)
+        message = login = password = ''
+        if 'form.submitted' in request.params:
+            login = request.params['login']
+            password = request.params['password']
+            if USERS.get(login) == password:
+                headers = remember(request, login)
+                return HTTPFound(location = came_from,
+                                 headers = headers)
+            message = 'Failed login'
+
+        ctxt = dict(message=message, came_from=came_from,
+                    login=login, password=password,
+                    url=request.application_url + '/login',)
+        return ctxt
+
+
+
+
+
+The Login Template
+------------------
+
+Add ``login.pt`` to the ``templates`` directory
+
+.. code-block:: xml
+    :class: small
+    
+    <metal:main use-macro="load: base.pt">
+      <metal:pagename metal:fill-slot="page-name">
+        <b>Login</b><br/>
+        <span tal:replace="message"/>
+      </metal:pagename>
+      <metal:login metal:fill-slot="login"></metal:login>
+      <metal:content metal:fill-slot="main-content">
+        <form action="${url}" method="post">
+          <input type="hidden" name="came_from" value="${came_from}"/>
+          <input type="text" name="login" value="${login}"/><br/>
+          <input type="password" name="password"
+                 value="${password}"/><br/>
+          <input type="submit" name="form.submitted" value="Log In"/>
+        </form>
+      </metal:content>
+    </metal:main>
+
+
+Unblock Logout Link
+-------------------
+
+All along, we've had a logout link in our ``base.pt``
+
+.. class:: incremental
+
+But we've been blocking it from showing in our templates.
+
+.. class:: incremental
+
+Let's allow it to show in the ``view.pt`` and ``edit.pt`` templates:
+
+.. code-block:: xml
+    :class: small incremental
+    
+    <!-- Delete This Line -->
+    <metal:login metal:fill-slot="login"></metal:login>
+
+
+Conditional Logout
+------------------
+
+Look at ``base.pt``:
+
+.. code-block:: xml
+    :class: small
+    
+    <metal:login define-slot="login">
+    <span tal:condition="logged_in">
+      <a href="${request.application_url}/logout">Logout</a>
+    </span>
+    </metal:login>
+
+.. class:: incremental
+
+Showing the 'logout' link is dependent on ``logged_in``
+
+.. class:: incremental
+
+We have to make sure that this boolean flag is in the template context
+
+
+Add logged_in Flag
+------------------
+
+Back in ``views.py`` add the following import:
+
+.. code-block:: python
+    :class: small
+    
+    from pyramid.security import authenticated_userid
+
+.. class:: incremental
+
+This will return the id of the authenticated user, or None.
+
+.. container:: incremental
+
+    Add this to all return contexts for our views (except ``login``):
+
+    .. code-block:: python
+        :class: small
+    
+        logged_in = authenticated_userid(request)
+
+
+Check Your Work
+---------------
+
+.. class:: small
+
+::
+
+    (pyramidenv)$ python setup.py test
+    ...
+    test_anonymous_user_cannot_add (wikitutorial.tests.FunctionalTests) ... ok
+    test_anonymous_user_cannot_edit (wikitutorial.tests.FunctionalTests) ... ok
+    test_editors_member_user_can_add (wikitutorial.tests.FunctionalTests) ... ok
+    test_editors_member_user_can_edit (wikitutorial.tests.FunctionalTests) ... ok
+    test_editors_member_user_can_view (wikitutorial.tests.FunctionalTests) ... ok
+    test_failed_log_in (wikitutorial.tests.FunctionalTests) ... ok
+    test_successful_log_in (wikitutorial.tests.FunctionalTests) ... ok
+    test_viewer_user_cannot_add (wikitutorial.tests.FunctionalTests) ... ok
+    test_viewer_user_cannot_edit (wikitutorial.tests.FunctionalTests) ... ok
+    ...
+    ----------------------------------------------------------------------
+    Ran 18 tests in 1.143s
+
+    OK
+
+
+Reap the Reward
+---------------
+
+Check your work in a browser:
+
+.. class:: small
+
+::
+
+    (pyramidenv)$ pserve development.ini
+    Starting server in PID 36414.
+    serving on http://0.0.0.0:6543
+
+.. class:: 
+
+Visit http://localhost:6543 and play for a bit
+
+
+Next Steps
+----------
+
+We've got a workable basic wiki here, but there are some improvements that
+could be nice:
+
+.. class:: incremental
+
+* Make the add_page view show "Adding <NewPage>" in the header without
+  creating a new template
+* Improve messaging to let users know when they've saved or created a page.
 * Make the link that says "You can return to the FrontPage" disappear when you
   are viewing the front page.
+* Improve security by forcing the edit_page and add_page views **only** change
+  data on POST.
+* Improve the security model a bit: 'viewers' can add pages, and retain the
+  ability to edit pages they created.
+
+
+Closing Up
+----------
+
+But all that's for another time.
+
+.. class:: incremental
+
+For this session, we are done.
 

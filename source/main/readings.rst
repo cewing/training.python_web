@@ -226,14 +226,16 @@ Sessions 9 & 10 - Pyramid
 -------------------------
 
 Why you should care about `Traversal
-<http://docs.pylonsproject.org/projects/pyramid/en/1.4-branch/narr/muchadoabouttraversal.html>`_.
+<http://docs.pylonsproject.org/projects/pyramid/en/latest/narr/muchadoabouttraversal.html>`_.
 
 Compare and contrast forms of dispatch in Pyramid:
 
 * `URL Route Dispatch
   <http://docs.pylonsproject.org/projects/pyramid/en/latest/narr/urldispatch.html>`_
 * `Object Traversal
-  <http://docs.pylonsproject.org/projects/pyramid/en/1.4-branch/narr/traversal.html>`_
+  <http://docs.pylonsproject.org/projects/pyramid/en/latest/narr/traversal.html>`_
+  
+  
 
 Learn a bit about the `ZODB <http://zodb.org/index.html>`_
 
@@ -249,7 +251,7 @@ Learn a bit about the `ZODB <http://zodb.org/index.html>`_
 Learn a bit about the Chameleon ZPT templating language:
 
 * Read about `Chameleon Templates in Pyramid
-  <http://docs.pylonsproject.org/projects/pyramid/en/1.4-branch/narr/templates.html#chameleon-zpt-templates>`_
+  <http://docs.pylonsproject.org/projects/pyramid/en/latest/narr/templates.html#chameleon-zpt-templates>`_
 * A `Quick Intro to TAL <https://weblion.psu.edu/trac/weblion/wiki/TAL>`_
 
 * `Chameleon Documentation <https://chameleon.readthedocs.org/en/latest/>`_ 
