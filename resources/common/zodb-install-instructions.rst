@@ -1,0 +1,96 @@
+Installing the ZODB
+===================
+
+This takes some work.  Start early.
+
+
+*nix Prep
+---------
+
+The ZODB uses C extensions, and so installing it on OS X or Linux requires a
+compiler and python's development headers.
+
+**Ubuntu** (our vms):
+
+    $ sudo apt-get install python-dev
+
+**OS X**: Ensure that you have XCode installed. It's free, but *big* expect it
+to take a while if you don't already have it. Once you've downloaded it you'll
+also need to install the command-line tools (Thanks to Jon Braam for this
+pointer):
+
+* Open XCode
+* Open the XCode menu, then click 'Preferences' > 'Downloads' > 'Install
+  Command Line Tools'
+* Once this is done, you can close XCode again
+
+**Windows**: See the next section
+
+
+Windows Prep
+------------
+
+Although there are pre-compiled binaries available for Windows, you'll need
+one `.bat` file to get them to work properly. To get that file, you'll need to
+install Visual Studio 2008 Express:
+
+* Download the installer (894MB):
+  http://download.microsoft.com/download/8/B/5/8B5804AD-4990-40D0-A6AA-CE894CBBB3DC/VS2008ExpressENUX1397868.iso
+* Extract the files to a folder (call it VS2008ExpressENUX1397868—it will be
+  2.68GB) using something like 7zip
+* Inside that folder double-click on Setup.hta
+* On the screen that comes up, click on the installer for Visual C++ 2008
+  Express Edition and follow the instructions. **Note**: It does work if you
+  include the following two options which are pre-selected for you: (1) MSDN
+  Express Library for Visual Studio 2008, and (2) Microsoft SQL Server 2005
+  Express Edition (x86).
+
+The above will work for 32-bit windows.  If you are stuck with 64-bit, try
+using the instructions on this wiki:
+
+    http://wiki.cython.org/64BitCythonExtensionsOnWindows
+
+
+Virtualenv
+----------
+
+With that prep work out of the way, you're ready to start. First, set up a
+virtualenv:
+
+    $ python2.7 virtualenv.py pyramidenv
+    ...
+    $ source pyramidenv/bin/activate
+    (pyramidenv)$ 
+
+Remeber, Windows users: ``> pyramidenv\Scripts\activate``
+
+
+Install ZODB
+------------
+
+If you're on OS X or Linux:
+
+    (pyramidenv)$ easy_install ZODB3==3.10.5
+
+This will take some time. If you get errors, contact me directly or via the
+Google Group.
+
+Windows users, you'll have it a bit easier here. You have to install a binary
+egg:
+
+    [pyramidenv]> pip install --egg ZODB3==3.10.5
+
+Self Evaluation
+---------------
+
+At this point, you can check your work. Fire up a python interpreter in your
+virtualenv:
+
+    (pyramidenv)$ python
+    >>> import ZODB
+    >>> ^D
+    (pyramidenv)$
+
+If you get an ImportError when you try that, you're not done.  Contact me.
+
+If you get no errors, you are ready to go for our final sessions.
