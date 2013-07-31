@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My Django Blog</title>
+    <link type="text/css" rel="stylesheet" href="/static/django_blog.css">
+  </head>
+  <body>
+    <div id="container">
+      <div id="content">
+      {% block content %}
+       [content will go here]
+      {% endblock %}
+      </div>
+    </div>
+  </body>
+</html>
