@@ -3,18 +3,22 @@
 Introduction
 ============
 
-This package provides the source for all lecture materials used for the
-`Internet Programming in Python`_ section of the `Certificate in Python
-Programming`_ offered by the University of Washington Professional & Continuing
-Education program. This version of the documentation is used for the Winter
-2013 instance of the course, taught by `Cris Ewing`_.
+This package provides the source for all lecture materials for a 10-session
+course in Web Development using Python.
 
-.. _Internet Programming in Python: http://www.pce.uw.edu/courses/internet-programming-python/downtown-seattle-winter-2013/
-.. _Certificate in Python Programming: http://www.pce.uw.edu/certificates/python-programming.html
+This version of the documentation is used for a one-week Python Web
+Programming Workshop taught by `Cris Ewing`_. This workshop is being `offered
+August 5-9, 2013`_ on the campus of the University of North Carolina in Chapel Hill, NC.
+
+.. _offered August 5-9, 2013: http://trizpug.org/boot-camp/pywebpw13/
 .. _Cris Ewing: http://www.linkedin.com/profile/view?id=19741495
 
 Building The Documentation
 --------------------------
+
+This documentation is built using docutils and Sphinx. The package uses
+`zc.buildout` to manage setup and dependencies. This package uses the v1
+`bootstrap.py` script.
 
 After cloning this package from the repository, do the following::
 
@@ -26,6 +30,9 @@ After cloning this package from the repository, do the following::
 
 At the end of a successful build, you will find a ``build/html`` directory,
 containing the completed documentation and presentations.
+
+.. _zc.buildout: https://pypi.python.org/pypi/zc.buildout/
+.. _bootstrap.py: http://downloads.buildout.org/1/bootstrap.py
 
 Reading The Documentation
 -------------------------
