@@ -583,7 +583,7 @@ is a tuple of
 * socket type
 * socket protocol
 * canonical name (usually empty, unless requested by flag)
-* socket address
+* socket address (tuple of IP and Port)
 
 
 A quick utility method
@@ -695,7 +695,7 @@ Sending a Message
 -----------------
 
 Send a message to the server on the other end of our connection (we'll
-learn later today about the message we are sending)::
+learn is session 2 about the message we are sending)::
 
     >>> msg = "GET / HTTP/1.1\r\n"
     >>> msg += "Host: crisewing.com\r\n\r\n"
@@ -758,6 +758,7 @@ First, connect and send a message:
     >>> cewing_socket = socket.socket(*info[:3])
     >>> cewing_socket.connect(info[-1])
     >>> msg = "GET / HTTP/1.1\r\n\r\n"
+    >>> msg += "Host: crisewing.com\r\n\r\n"
     >>> cewing_socket.sendall(msg)
 
 
@@ -765,6 +766,8 @@ Putting it all together
 -----------------------
 
 Then, receive a reply, iterating until it is complete:
+
+::
 
     >>> buffsize = 4096
     >>> response = ''
@@ -779,6 +782,28 @@ Then, receive a reply, iterating until it is complete:
     19427
 
 
+Break Time
+----------
+
+So far we have:
+
+.. class:: incremental
+
+* learned about the "layers" of the TCP/IP Stack
+* discussed *families*, *types* and *protocols* in sockets
+* learned some API for finding out how to connect to a remote server
+* made our first connection to a server
+* and sent and received our first messages through a socket.
+
+.. class:: incremental
+
+Not bad for a Monday morning.
+
+.. class:: incremental
+
+Let's take 10 minutes and return to learn about the other end of this wire.
+
+
 Server Side
 -----------
 
@@ -791,16 +816,18 @@ Construct a Socket
 
 **For the moment, stop typing this into your interpreter.**
 
-Again, we begin by constructing a socket. Since we are actually the server
-this time, we get to choose family, type and protocol::
+.. container:: incremental
 
-    >>> server_socket = socket.socket(
-    ...     socket.AF_INET,
-    ...     socket.SOCK_STREAM,
-    ...     socket.IPPROTO_IP)
-    ... 
-    >>> server_socket
-    <socket._socketobject object at 0x100563c90>
+    Again, we begin by constructing a socket. Since we are actually the server
+    this time, we get to choose family, type and protocol::
+
+        >>> server_socket = socket.socket(
+        ...     socket.AF_INET,
+        ...     socket.SOCK_STREAM,
+        ...     socket.IPPROTO_IP)
+        ... 
+        >>> server_socket
+        <socket._socketobject object at 0x100563c90>
 
 
 Bind the Socket
@@ -812,6 +839,7 @@ Port to which clients must connect::
     >>> address = ('127.0.0.1', 50000)
     >>> server_socket.bind(address)
 
+.. class:: incremental
 
 **Terminology Note**: In a server/client relationship, the server *binds* to
 an address and port. The client *connects*
@@ -844,7 +872,7 @@ When a socket is listening, it can receive incoming messages::
     ... # this blocks until a client connects
     >>> connection.recv(16)
 
-.. class:: incremental small
+.. class:: incremental
 
 * The ``connection`` returned by a call to ``accept`` is a **new socket**
 
@@ -864,7 +892,7 @@ Send a Reply
 The same socket that received a message from the client may be used to return
 a reply::
 
-    >>> connection.sendall("messasge received")
+    >>> connection.sendall("message received")
 
 
 Clean Up
@@ -928,11 +956,11 @@ message::
     ...     socket.SOCK_STREAM,
     ...     socket.IPPROTO_IP)
 
-.. class:: incremental
+.. container:: incremental
 
-Before connecting, keep your eye on the server interpreter::
+    Before connecting, keep your eye on the server interpreter::
 
-    >>> client_socket.connect(('127.0.0.1', 50000))
+        >>> client_socket.connect(('127.0.0.1', 50000))
 
 
 Send a Message Client->Server
@@ -1035,6 +1063,21 @@ The Echo Client - 1
 Save that and try it out
 
 
+Check Your Work
+---------------
+
+In your terminal, where you created and saved ``echo_client.py``:
+
+::
+
+    $ python echo_client.py
+
+    usage: python echo_client.py "this is my message"
+
+    $ python echo_client.py "my baloney has a first name"
+    sending "my baloney has a first name"
+
+
 The Echo Client - 2
 -------------------
 
@@ -1090,7 +1133,7 @@ The Echo Server - 1
         sock.bind(address)
         sock.listen(1)
         try:
-            pass
+            pass #<- what goes here comes in the next slide
         except KeyboardInterrupt:
             sock.close()
             return
@@ -1156,8 +1199,8 @@ You've now seen the basics of socket-based communication.
 
 .. class:: incremental
 
-This afternoon, we'll learn about the protocols that govern these types of
-communications.
+In the next session, we'll learn about the protocols that govern these types
+of communications.
 
 .. class:: incremental
 

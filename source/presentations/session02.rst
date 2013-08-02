@@ -356,10 +356,13 @@ Begin by importing the ``imaplib`` module from the Python Standard Library::
     ['AllowedVersions', 'CRLF', 'Commands', 
      'Continuation', 'Debug', 'Flags', 'IMAP4', 
      'IMAP4_PORT', 'IMAP4_SSL', 'IMAP4_SSL_PORT', 
-     'IMAP4_stream', 'Int2AP', 'InternalDate', 
-     'Internaldate2tuple', 'Literal', 'MapCRLF', 
      ...
      'socket', 'ssl', 'sys', 'time']
+    >>> imaplib.Debug = 4
+
+.. class:: incremental
+
+Setting ``imap.Debug`` shows us what is sent and received
 
 
 IMAP in Python
@@ -372,17 +375,15 @@ initialize an IMAP4_SSL client and authenticate::
     >>> conn = imaplib.IMAP4_SSL('mail.webfaction.com')
       57:04.83 imaplib version 2.58
       57:04.83 new IMAP4 connection, tag=FNHG
+      ...
     >>> conn.login(username, password)
+      12:16.50 > IMAD1 LOGIN username password
+      12:18.52 < IMAD1 OK Logged in.
     ('OK', ['Logged in.'])
 
 
 IMAP in Python
 --------------
-
-Let's set up debugging so that we can see the communication back and forth
-between client and server::
-
-    >>> conn.debug = 4 # >3 prints all messages
 
 We can start by listing the mailboxes we have on the server::
 
@@ -419,11 +420,11 @@ We can search our selected mailbox for messages matching one or more criteria.
 The return value is a string list of the UIDs of messages that match our
 search::
 
-    >>> conn.search(None, '(FROM "IPIP")')
-      18:25.41 > FNHG5 SEARCH (FROM "IPIP")
-      18:25.54 < * SEARCH 1 2
+    >>> conn.search(None, '(FROM "cris")')
+      18:25.41 > FNHG5 SEARCH (FROM "cris")
+      18:25.54 < * SEARCH 1
       18:25.54 < FNHG5 OK Search completed.
-    ('OK', ['1 2'])
+    ('OK', ['1'])
     >>>
 
 
@@ -434,11 +435,11 @@ Once we've found a message we want to look at, we can use the ``fetch``
 command to read it from the server. IMAP allows fetching each part of
 a message independently::
 
-    >>> conn.fetch('2', '(BODY[HEADER])')
+    >>> conn.fetch('1', '(BODY[HEADER])')
     ...
-    >>> conn.fetch('2', '(BODY[TEXT])')
+    >>> conn.fetch('1', '(BODY[TEXT])')
     ...
-    >>> conn.fetch('2', '(FLAGS)')
+    >>> conn.fetch('1', '(FLAGS)')
 
 
 Python Means Batteries Included
@@ -452,8 +453,8 @@ object
 ::
 
     >>> import email
-    >>> typ, data = conn.fetch('2', '(RFC822)')
-      28:08.40 > FNHG8 FETCH 2 (RFC822)
+    >>> typ, data = conn.fetch('1', '(RFC822)')
+      28:08.40 > FNHG8 FETCH 1 (RFC822)
       ...
 
 Parse the returned data to get to the actual message
@@ -472,13 +473,16 @@ Parse the returned data to get to the actual message
 IMAP in Python
 --------------
 
-Once we have that, we can play with the resulting email object::
+Once we have that, we can play with the resulting email object:
+
+.. class:: small
+
+::
 
     >>> msg['to']
     'demo@crisewing.com'
     >>> print msg.get_payload()
-    This is an email message
-
+    If you are reading this email, ...
 
 .. class:: incremental center
 
@@ -492,11 +496,11 @@ What Have We Learned?
 
 * Protocols are just a set of rules for how to communicate
 
-* Protocols tell us how to delimit messages
+* Protocols tell us how to parse and delimit messages
 
 * Protocols tell us what messages are valid
 
-* If we properly format request messages to a server, we can get answer
+* If we properly format request messages to a server, we can get response
   messages
 
 * Python supports a number of these protocols
@@ -507,6 +511,16 @@ What Have We Learned?
 
 But in every case we've seen, we could do the same thing with a socket and
 some strings
+
+
+Break Time
+----------
+
+Let's take a few minutes here to clear our heads.
+
+.. class:: incremental
+
+See you back here in 10 minutes.
 
 
 HTTP
@@ -854,17 +868,17 @@ storage:
 * DELETE = Delete
 
 
-Verbs: Safe <--> Unsafe
------------------------
+Methods: Safe <--> Unsafe
+-------------------------
 
-HTTP verbs can be categorized as **safe** or **unsafe**, based on whether they
-might change something on the server:
+HTTP methods can be categorized as **safe** or **unsafe**, based on whether
+they might change something on the server:
 
 .. class:: incremental
 
-* Safe HTTP Verbs
+* Safe HTTP Methods
     * GET
-* Unsafe HTTP Verbs
+* Unsafe HTTP Methods
     * POST
     * PUT
     * DELETE
@@ -874,19 +888,19 @@ might change something on the server:
 This is a *normative* distinction, which is to say **be careful**
 
 
-Verbs: Idempoent <--> ???
--------------------------
+Methods: Idempoent <--> ???
+---------------------------
 
-HTTP verbs can be categorized as **idempotent**, based on whether a given
+HTTP methods can be categorized as **idempotent**, based on whether a given
 request will always have the same result:
 
 .. class:: incremental
 
-* Idempotent HTTP Verbs
+* Idempotent HTTP Methods
     * GET
     * PUT
     * DELETE
-* Non-Idempotent HTTP Verbs
+* Non-Idempotent HTTP Methods
     * POST
 
 .. class:: incremental
