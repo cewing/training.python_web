@@ -20,6 +20,8 @@ Class presentations are available online for your use
 
 http://github.com/cewing/training.python_web
 
+Use the ``week-long-format`` branch for this class
+
 Licensed with Creative Commons BY-NC-SA
 
 * You must attribute the work
