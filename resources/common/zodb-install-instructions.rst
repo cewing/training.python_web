@@ -71,8 +71,15 @@ I have yet to hear of anyone getting Python or C-extensions running on Windows
 Virtualenv
 ----------
 
-With that prep work out of the way, you're ready to start. First, set up a
-virtualenv:
+With that prep work out of the way, you're ready to start. First, you'll need
+to set up a virtualenv. Working with virtualenv is something we will cover in
+session 3, so **if you are not comfortable or have never seen virtualenv
+before, you probably want to wait to take these next steps**.
+
+These instructions assume you will be manually creating a virtualenv rather
+than installing virtualenv with pip or easy_install. If you need a copy of the
+``virtualenv.py`` file, you can find it in the same ``resources/common``
+directory where these instructions are located. Once you have a copy, simply:
 
 .. code-block:: bash
 
@@ -81,7 +88,7 @@ virtualenv:
     $ source pyramidenv/bin/activate
     (pyramidenv)$ 
 
-Remeber, Windows users: ``> pyramidenv\Scripts\activate``
+Windows users: ``> pyramidenv\Scripts\activate``
 
 
 Install ZODB
