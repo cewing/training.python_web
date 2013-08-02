@@ -13,10 +13,8 @@ def fetch_search_results(**kwargs):
         raise ValueError("No valid keywords")
 
     resp = requests.get(base, params=use_kwargs, timeout=3)
-    if resp.ok:
-        return resp.content, resp.apparent_encoding
-    else:
-        resp.raise_for_status()
+    resp.raise_for_status()
+    return resp.content, resp.apparent_encoding
 
 
 def read_results(filename):
