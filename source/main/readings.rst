@@ -95,6 +95,7 @@ both from the side of production and consumption:
 * BeautifulSoup_ - "You didn't write that awful page. You're just trying to
   get some data out of it. Right now, you don't really care what HTML is
   supposed to look like. Neither does this parser."
+* requests_ - HTTP for humans
 * httplib2_ - A comprehensive HTTP client library that supports many features
   left out of other HTTP libraries.
 * rpclib_ - a simple, easily extendible soap library that provides several
@@ -104,6 +105,7 @@ both from the side of production and consumption:
   to HTTP resource and build objects around it.
 
 .. _BeautifulSoup: http://www.crummy.com/software/BeautifulSoup/
+.. _requests: http://docs.python-requests.org/en/latest/
 .. _httplib2: http://code.google.com/p/httplib2/
 .. _rpclib: https://github.com/arskom/rpclib
 .. _Suds: https://fedorahosted.org/suds/
