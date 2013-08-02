@@ -23,7 +23,7 @@ The internet makes a vast quantity of data available.
 
 .. class:: incremental
 
-But not always in the form or combination you want.  
+But not always in the form or combination you want.
 
 .. class:: incremental
 
@@ -182,13 +182,13 @@ rule):
 
 .. class:: incremental
 
-These both demand that you have already got ``pip`` or ``easy_install``. If
-you haven't, try this way instead:
+You must have ``pip`` or ``easy_install`` installed.  Try this:
 
 .. class:: incremental
 
 * download ``https://raw.github.com/pypa/virtualenv/master/virtualenv.py``
 * remember where it goes.  You'll need it
+* there is a copy in the class resources (``common``)
 
 
 Creating a Virtualenv
@@ -271,16 +271,19 @@ BeautifulSoup is built to use the Python HTMLParser.
 .. class:: incremental
 
 * Batteries Included.  It's already there
-* It kinda sucks, especially before Python 2.7.3
+* It's not great, especially before Python 2.7.3
 
 .. class:: incremental
 
-BeautifulSoup also supports using other parsers. Let's install one. There are
-two decent choices: ``lxml`` and ``html5lib``.
+BeautifulSoup also supports using other parsers.
 
 .. class:: incremental
 
-``lxml`` is better, but harder to install.  Let's use ``html5lib`` today.
+There are two good choices: ``lxml`` and ``html5lib``.
+
+.. class:: incremental
+
+``lxml`` is better, but much harder to install.  Let's use ``html5lib``.
 
 
 Install a Parsing Engine
@@ -292,13 +295,15 @@ Again, this is pretty simple::
 
 .. class:: incremental
 
-Once that is installed, BeautifulSoup will choose it instead of the standard
-library module.
+Once installed, BeautifulSoup will choose it automatically.
 
 .. class:: incremental
 
-BeautifulSoup will choose the best available, you don't need to worry about it
-(though you can specify).
+BeautifulSoup will choose the "best" available.
+
+.. class:: incremental
+
+You can specify the parser if you need to for some reason.
 
 
 Install Requests
@@ -366,18 +371,13 @@ formula for a search URL
 
 .. class:: incremental
 
-We can make a request with these parameters using the ``requests`` library we
-installed a moment ago
+We'll make an HTTP request with these parameters
 
 
 Opening URLs with Requests
 --------------------------
 
-Requests has a very nice API for doing HTTP requests.
-
-.. class:: incremental
-
-Each HTTP method is represented by a module-level function:
+In ``requests``, each HTTP method has a module-level function:
 
 .. class:: incremental
 
@@ -387,12 +387,12 @@ Each HTTP method is represented by a module-level function:
 
 .. class:: incremental
 
-Keyword arguments allow for other parts of an HTTP request:
+``kwargs`` represent other parts of an HTTP request:
     
 .. class:: incremental
 
-* ``params``: url parameters (?foo=bar&baz=bim)
-* ``headers``: headers to send with the request
+* ``params``: a dict of url parameters (?foo=bar&baz=bim)
+* ``headers``: a dict of headers to send with the request
 * ``data``: the body of the request, if any (form data for POST goes here)
 * ...
 
@@ -400,33 +400,26 @@ Keyword arguments allow for other parts of an HTTP request:
 Getting Responses with Requests
 -------------------------------
 
-Once you've made a request using one of these methods, the return value is a
-``response``.
-
-.. class:: incremental
-
-This object has a number of useful attributes:
+The return value from one of these functions is a ``response`` which provides:
 
 .. class:: incremental
 
 * ``response.status_code``: see the HTTP Status Code returned
-* ``response.ok``: True if ``response.status_code`` is not an error code
-* ``response.headers``: The headers sent in the response from the server
-* ``response.text``: Body of the response, decoded to a unicode string
-* ``response.encoding``: The encoding used to decode ``response.text``
-* ``response.content``: The original response body, not decoded (useful for
-  binary content)
+* ``response.ok``: True if ``response.status_code`` is not an error
+* ``response.raise_for_status()``: call to raise a python error if it is
+* ``response.headers``: The headers sent from the server
+* ``response.text``: Body of the response, decoded to unicode
+* ``response.encoding``: The encoding used to decode
+* ``response.content``: The original response body as bytes
 
-.. class:: incremental
+.. class:: incremental small
 
-If an error status is returned, you can raise a Python error by calling
-``response.raise_for_status``.
-
+``requests documentation``: http://docs.python-requests.org/en/latest/
 
 Fetch Search Results
 --------------------
 
-We can start our work by writing a function ``fetch_search_results``
+We'll start by writing a function ``fetch_search_results``
 
 .. class:: incremental
 
@@ -438,8 +431,7 @@ We can start our work by writing a function ``fetch_search_results``
 
 .. class:: incremental
 
-Using what you've learned, take a stab at writing this function. Put it in
-``mashup.py``
+Try writing this function. Put it in ``mashup.py``
 
 
 My Solution
@@ -461,10 +453,8 @@ Here's the one I created:
             raise ValueError("No valid keywords")
 
         resp = requests.get(base, params=use_kwargs, timeout=3)
-        if resp.ok:
-            return resp.text, resp.encoding
-        else:
-            resp.raise_for_status()
+        resp.raise_for_status() #<- no-op if status==200
+        return resp.text, resp.encoding
 
 
 Parse the Results
@@ -529,11 +519,13 @@ Take a shot at writing this new function in ``mashup.py``
 Put It Together
 ---------------
 
-To see how we're doing, we'll need to make our script do something when run.
+We'll need to make our script do something when run.
 
-.. class:: incremental
+.. code-block:: python
+    :class: incremental small
 
-Add an ``if __name__ == '__main__`:`` block to the bottom of our library
+    if __name__ == '__main__':
+        # do something
 
 .. class:: incremental
 
@@ -543,7 +535,7 @@ Add an ``if __name__ == '__main__`:`` block to the bottom of our library
 
 .. container:: incremental small
 
-    You can print nice-looking output with BeautifulSoup::
+    Use the ``prettify`` method on a BeautifulSoup object::
 
         print parsed.prettify()
 
@@ -554,7 +546,7 @@ My Solution
 Try to come up with the proper code on your own.  Add it to ``mashup.py``
 
 .. code-block:: python
-    :class: incremental
+    :class: incremental small
 
     if __name__ == '__main__':
         params = {'minAsk': 500, 'maxAsk': 1000, 'bedrooms': 2}
@@ -597,11 +589,11 @@ script.
 Finding The Needle
 ------------------
 
-The next step is to find the bits of this pile of HTML that matter to us.
+Next we find the bits of this pile of HTML that matter to us.
 
 .. class:: incremental
 
-We've got this HTML file, so let's open it in a browser and take a look
+Open your html file in a browser and take a look.
 
 .. class:: incremental
 
@@ -619,22 +611,24 @@ We'll want to find:
 Pulling it Out
 --------------
 
-Now that we know what we are looking for, we can extract it. In BeautifulSoup:
+We can extract this information now. In BeautifulSoup:
 
 .. class:: incremental
 
-* All HTML elements (including the parsed document itself) act like ``tags``
-* A ``tag`` can be searched using the ``find_all`` method
-* The ``find_all`` method searches the descendents of the tag on which it is
-  called.
-* The ``find_all`` method takes arguments which act as *filters* on the search
-  results
+* All HTML elements (including the parsed document itself) are ``tags``
+* A ``tag`` can be searched using its ``find_all`` method
+* This searches the descendents of the tag on which it is called.
+* It takes arguments which act as *filters* on the search results
 
-.. class:: incremental
+.. container:: incremental
 
-| like so: 
-| 
-| ``tag.find_all(name, attrs, recursive, text, limit, **kwargs)``
+    like so: 
+
+    .. class:: small
+
+    ::
+
+        tag.find_all(name, attrs, recursive, text, limit, **kwargs)
 
 
 Searching by CSS Class
@@ -818,7 +812,7 @@ We can get to a simple text node by navigating there.
 
 .. class:: incremental
 
-BeautifulSoup tags support navigation up, down and across document nodes.
+You can navigate up, down and across document nodes.
 
 .. container:: incremental
 
@@ -840,7 +834,7 @@ this.
 The NavigableString Element
 ---------------------------
 
-The most obvious reason is that we don't really want all the extra whitespace.
+The most obvious reason is that we don't want extra whitespace.
 
 .. class:: incremental
 
@@ -859,10 +853,6 @@ The second reason is more subtle. The values returned by ``string`` are
 
 .. class:: incremental
 
-These things hold references to their surroundings.
-
-.. class:: incremental
-
 Calling ``strip`` or casting them to ``unicode`` converts them, saving memory
 
 
@@ -875,6 +865,7 @@ Okay, a challenge.  Combine everything we've done into a function that:
 
 * Extracts all the locatable listings from our html page
 * Iterates over each of them, and builds a dictionary of data
+  
   * include ``location``, ``href``, ``description``, ``price`` and ``size``
 
 * Returns a list of these dictionaries
@@ -887,6 +878,22 @@ Call it ``extract_listings``
 
 Put this new function into ``mashup.py`` and call it from ``__main__``,
 printing the result
+
+
+Break Time
+----------
+
+Once you have this working, take a break.
+
+.. class:: incremental
+
+When we return, we'll try a saner approach to getting data from online
+
+.. container:: incremental
+
+    While you have a moment, sign up for an API key from this service:
+
+    http://www.walkscore.com/professional/api.php
 
 
 My Solution
@@ -1040,13 +1047,13 @@ Beyond XML-RPC
 
 * XML-RPC allows introspection
 * XML-RPC forces you to introspect to get information
-* *Wouldn't it be nice to get that automatically?*
+* **Wouldn't it be nice to get that automatically?**
 * XML-RPC provides data types
 * XML-RPC provides only *certain* data types
-* *Wouldn't it be nice to have an extensible system for types?*
+* **Wouldn't it be nice to have an extensible system for types?**
 * XML-RPC allows calling methods with parameters
 * XML-RPC only allows calling methods, nothing else
-* *wouldn't it be nice to have contextual data as well?*
+* **wouldn't it be nice to have contextual data as well?**
 
 .. class:: incremental center
 
@@ -1274,7 +1281,7 @@ Representational State Transfer
 
 .. class:: incremental
 
-* Originally described by Roy T. Fielding (did you read it?)
+* Originally described by Roy T. Fielding (worth reading)
 * Use HTTP for what it can do
 * Read more in `this book
   <http://www.crummy.com/writing/RESTful-Web-Services/>`_\*
@@ -1322,7 +1329,7 @@ The URL represents the *resource* we are working with
 
 .. class:: incremental
 
-The HTTP Verb represents the ``action`` to be taken
+The HTTP Method represents the ``action`` to be taken
 
 .. class:: incremental
 
@@ -1368,8 +1375,8 @@ No individual request may be assumed to know anything about any other request.
 
 .. class:: incremental
 
-All the required information for to represent the possible actions to take
-*should be present in either the request or the response*.
+All the required information representing the possible actions to take *should
+be present in every response*.
 
 .. class:: incremental big-centered
 
@@ -1451,7 +1458,7 @@ back address information:
 .. code-block:: python
     :class: small
 
-    >>> location = lookup['results'][0]['geometry']['location']
+    >>> location = data['results'][0]['geometry']['location']
     >>> latlng = '%f,%f' % (location['lat'], location['lng'])
     >>> parameters = {'latlng': latlng, 'sensor': 'false'}
     >>> resp = requests.get(url, params=paramters)
@@ -1536,7 +1543,7 @@ Go ahead and bolt the new function into our ``__main__`` block:
     ::
 
         (soupenv)$ python mashup.py
-        {'address': u'800 Bethlehem Road, Knightdale, NC 27545, USA',
+        {'address': u'123 Some Street, Chapel Hill, NC ...',
          'description': u'3 bedroom 2 bathroom unit is move in ready!'
          ...
         }
@@ -1561,8 +1568,7 @@ http://www.walkscore.com/professional/api.php
 
 .. class:: incremental
 
-Take a second here and sign up for an api key. Use a real email address,
-they'll email you an API key.
+If you haven't already, sign up for an API key now.
 
 
 Getting a Walk Score
@@ -1671,11 +1677,11 @@ My Results
             listing = add_walkscore(listing)
             pprint.pprint(listing)
 
-.. class:: incremental
+.. container:: incremental
 
-Let's try it out::
+    Let's try it out::
 
-    (soupenv)$ python mashup.py
+        (soupenv)$ python mashup.py
 
 
 Wrap Up
