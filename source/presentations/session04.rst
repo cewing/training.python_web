@@ -1051,7 +1051,7 @@ Some Questions to Ponder
 .. class:: incremental
 
 When viewing our first wsgi app, do we see the name of the wsgi application
-script anywhere?
+script anywhere in the URL?
 
 .. class:: incremental
 
@@ -1063,15 +1063,15 @@ How are we going to serve different types of information out of a single
 application?
 
 
-Routing
--------
+Dispatch
+--------
 
 We have to write an app that will map our incoming request path to some code
 that can handle that request.  
 
 .. class:: incremental
 
-This process is called ``routing``. There are many possible approaches
+This process is called ``dispatch``. There are many possible approaches
 
 .. class:: incremental
 
@@ -1098,7 +1098,7 @@ Let's declare that any request for ``/`` will map to the list page
 
 .. container:: incremental
 
-    We can furthermore say that the URL for a book will look like this::
+    We can also say that the URL for a book will look like this::
     
         http://localhost:8080/book/<identifier>
 
@@ -1156,7 +1156,7 @@ My Solution
 -----------
 
 .. code-block:: python
-    :class: small
+    :class: small incremental
 
     def application(environ, start_response):
         headers = [("Content-type", "text/html")]
