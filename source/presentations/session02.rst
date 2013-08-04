@@ -479,7 +479,11 @@ Once we have that, we can play with the resulting email object:
 
 ::
 
-    >>> msg['to']
+    >>> msg.keys()
+    ['Return-Path', 'X-Original-To', 'Delivered-To', 'Received', 
+     ...
+     'To', 'Mime-Version', 'X-Mailer']
+    >>> msg['To']
     'demo@crisewing.com'
     >>> print msg.get_payload()
     If you are reading this email, ...
