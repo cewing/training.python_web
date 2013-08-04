@@ -82,8 +82,8 @@ rest.
 
 .. class:: incremental
 
-Think back over the last four weeks. What were your pain points? Which bits do
-you wish you didn't have to think about?
+Think back over the last four sessions. What were your pain points? Which bits
+do you wish you didn't have to think about?
 
 
 Level of Abstraction
@@ -591,15 +591,15 @@ terminal and import your ``flask_intro.py`` module:
 
 .. code-block:: python
 
-    import flask_intro
-    from flask_intro import app
-    from flask import url_for
-    with app.test_request_context():
-        print url_for('show_profile', username="cris")
-        print url_for('divide', val=23.7)
-
+    >>> from flask_intro import app
+    >>> from flask import url_for
+    >>> with app.test_request_context():
+    ...     print url_for('show_profile', username="cris")
+    ...     print url_for('divide', val=23.7)
+    ... 
     '/profile/cris/'
     '/div/23.7/'
+    >>>
 
 
 Break Time
