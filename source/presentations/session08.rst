@@ -1354,3 +1354,243 @@ We need to create a new ``login.html`` template in ``mysite/templates``:
     </form>
     {% endblock %}
 
+
+Submitting Forms
+----------------
+
+In a web application, submitting forms is potentially hazardous
+
+.. class:: incremental
+
+Data is being sent to our application from some remote place
+
+.. class:: incremental
+
+If that data is going to alter the state of our application, we **must** use 
+POST
+
+.. class:: incremental
+
+Even so, we are vulnerable to Cross-Site Request Forgery, a common attack
+vector.
+
+
+Danger: CSRF
+------------
+
+Django provides a convenient system to fight this.
+
+.. class:: incremental
+
+In fact, for POST requests, it *requires* that you use it.
+
+.. class:: incremental
+
+The Django middleware that does this is enabled by default. 
+
+.. class:: incremental
+
+All you need to do is include the ``{% csrf_token %}`` tag in your form.
+
+
+Hooking It Up
+-------------
+
+In ``base.html`` make the following updates:
+
+.. code-block:: jinja
+    :class: small
+
+    <!-- admin link -->
+    <a href="{% url 'admin:index' %}">admin</a>
+    <!-- logout link -->
+    <a href="{% url 'logout' %}">logout</a>
+    <!-- login link -->
+    <a href="{% url 'login' %}">login</a>
+
+.. container:: incremental
+
+    Finally, in ``settings.py`` add the following:
+
+    .. code-block:: python
+        :class: small
+    
+        LOGIN_URL = '/login/'
+        LOGIN_REDIRECT_URL = '/'
+
+
+Handling Forms
+--------------
+
+Adding login and logout has given us a sneak peek at forms.
+
+.. class:: incremental
+
+But there is a *lot* of magic happening that we should see directly.
+
+.. class:: incremental
+
+As a last task, let's add a non-admin way to create new posts.
+
+.. class:: incremental
+
+We'll use a form, submit it to a view, and have it create a new Post object
+
+
+Django Forms
+------------
+
+Forms are, like Models, a Django *class*
+
+.. class:: incremental
+
+Like Models, you add fields to a form as class *attributes*
+
+.. class:: incremental
+
+Like Model fields, the fields on a form are also Python class instances.
+
+.. class:: incremental
+
+Unlike Model fields, Form fields are built to interact with data in a
+*request*
+
+.. class:: incremental
+
+By tradition, they are created in a module called ``forms.py``
+
+
+Post Form
+---------
+
+Create ``forms.py`` in ``myblog`` and open it in your editor.
+
+.. code-block:: python
+    :class: small
+    
+    from django import forms
+    from myblog.models import Post
+    
+    class PostForm(forms.ModelForm):
+        
+        class Meta:
+            model = Post
+            fields = ('title', 'text', 'author')
+
+.. class:: incremental
+
+The ``ModelForm`` class generates fields based on the model.
+
+.. class:: incremental
+
+Use ``fields`` to force only a subset of those.
+
+
+A View for Our Form
+-------------------
+
+The basic approach to handling forms in Django always follows this pattern:
+
+.. code-block:: python
+    :class: small
+    
+    if request.method == 'POST':
+        # bind a form instance to POST data
+        if form.is_valid():
+            # process the form data here
+            # tell the user about the success
+        else:
+            # tell the user about the problem
+    else:
+        # create an unbound form
+    # render the form template
+
+.. class:: incremental
+
+Let's create a ``add_post`` view that does this with our ``PostForm``
+
+add_post view
+-------------
+
+.. code-block:: python
+    :class: small 
+
+    # add imports to views.py
+    from django.core.exceptions import PermissionDenied
+    from django.contrib import messages
+    from django.core.urlresolvers import reverse
+    from myblog.forms import PostForm
+    
+    # and a new view function:
+    def add_view(request):
+        user = request.user
+        if not user.is_authenticated:
+            raise PermissionDenied
+        if request.method == 'POST':
+            form = PostForm(request.POST)
+            # handle form submission
+        else:
+            form = PostForm()
+        context = {'form': form}
+        return render(request, 'add.html', context)
+
+
+Add A URL
+---------
+
+In ``myblog/urls.py`` add a new entry to our urlconf:
+
+.. code-block:: python
+    :class: small
+    
+    url(r'^add/$',
+        'add_view',
+        name="add_post"),
+
+.. container:: incremental
+
+    And hook it up to the control bar link in ``base.html``
+
+    .. code-block:: jinja
+    
+        <!-- update new post link -->
+        <a href="{% url 'add_post' %}">new post</a>
+
+
+Create add.html
+---------------
+
+Finally, we need to create a template, ``add.html`` in ``myblog/templates``:
+
+.. code-block:: jinja
+    :class: small
+    
+    {% extends "base.html" %}
+
+    {% block content %}
+    <h1>New Blog Post</h1>
+    <form action="" method="POST">{% csrf_token %}
+      {{ form.as_p }}
+      <p><input type="submit" value="Save"></p>
+    </form>
+    {% endblock %}
+
+
+Try it Out
+----------
+
+You should be able to click on the 'new post' button in the control bar.
+
+.. class:: incremental
+
+How does the form look?
+
+.. class:: incremental
+
+It would be nice if the 'author' field were auto-populated, and even hidden.
+
+.. class:: incremental
+
+Let's do that next.
+
+
