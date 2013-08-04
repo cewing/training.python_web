@@ -448,13 +448,6 @@ CategoryAdmin.
     admin.site.register(Category, CategoryAdmin)
 
 
-PLACEHOLDER
------------
-
-Do we have time to do an admin action here? if so, add actions to publish,
-unpublish items in bulk
-
-
 A Public Face
 -------------
 
@@ -628,7 +621,6 @@ What should our users be able to see when they visit our blog?
 
 * A list view that shows blog posts, most recent first.
 * An individual post view, showing a single post (a permalink).
-* A category view that shows all posts in a given category.
 
 .. class:: incremental
 
@@ -685,27 +677,6 @@ How you declare a capture group in your url pattern regexp influenced how it
 will be passed to the view callable.
 
 
-Category View URL
------------------
-
-Try writing the URL pattern for the category view on your own.
-
-.. container:: incremental
-
-    My version looks like this:
-    
-    .. code-block:: python
-        :class: small
-    
-        url(r'^category/(?P<category_id>\d+)/$',
-            'stub_view',
-            name="category_view"),
-
-.. class:: incremental
-
-At this point, we should have three url patterns in our urlconf
-
-
 Full Urlconf
 ------------
 
@@ -721,9 +692,6 @@ Full Urlconf
         url(r'^posts/(?P<post_id>\d+)/$',
             'stub_view',
             name="blog_detail"),
-        url(r'^category/(?P<category_id>\d+)/$',
-            'stub_view',
-            name="category_view")
     )
 
 
@@ -735,7 +703,7 @@ create.
 
 .. class:: incremental
 
-We'll need tests for a list view, a detail view and a category view
+We'll need tests for a list view and a detail view
 
 .. class:: incremental
 
@@ -747,7 +715,7 @@ You can find them in the class resources directory: ``blog_view_tests.py``
 
 .. class:: incremental
 
-Copy the TestCase and imports from that file into our blog ``tests.py`` file.
+Copy the contents of that file into our blog ``tests.py`` file.
 
 
 Run The Tests
@@ -758,9 +726,9 @@ Run The Tests
     (djangoenv)$ python manage.py test myblog
     ...
     ----------------------------------------------------------------------
-    Ran 8 tests in 0.478s
+    Ran 7 tests in 0.478s
 
-    FAILED (failures=3)
+    FAILED (failures=2)
     Destroying test database for alias 'default'...
 
 
@@ -1021,8 +989,8 @@ We need to fix the url for our blog index page
 
     (djangoenv)$ python manage.py test myblog
     ...
-    Ran 8 tests in 0.494s
-    FAILED (failures=2)
+    Ran 7 tests in 0.494s
+    FAILED (failures=1)
 
 
 Common Patterns
@@ -1194,8 +1162,8 @@ Again, we need to insert our new view into the existing ``urls.py`` in
 
     (djangoenv)$ python manage.py test myblog
     ...
-    Ran 8 tests in 0.513s
-    FAILED (failures=1)
+    Ran 7 tests in 0.513s
+    OK
 
 
 A Moment To Play
@@ -1214,156 +1182,6 @@ You can now move back and forth between list and detail view.
 .. class:: incremental
 
 Try loading the detail view for a post that doesn't exist
-
-
-Category Lists
---------------
-
-Let's implement the category listing next
-
-.. class:: incremental
-
-Before we do so, make sure you have added categories to any posts you've
-created.
-
-.. class:: incremental
-
-Go to http://localhost:8000/admin/ and make sure:
-
-.. class:: incremental
-
-* you have at least three or four posts
-* each post is in one or more categories
-* at least one category has more than one post
-
-
-Category View
--------------
-
-The view should have the following signature:
-
-.. code-block:: python
-    :class: small
-
-    category_view(request, category_id):
-
-.. class:: incremental
-
-We can re-use the ``list.html`` template with some minor modifications
-
-.. class:: incremental
-
-Let's start by adding view code to ``views.py``
-
-
-category_view
--------------
-
-.. code-block:: python
-    :class: small incremental
-    
-    # add an import
-    from myblog.models import Category
-    
-    # and this function
-    def category_view(request, category_id):
-        try:
-            category = Category.objects.get(pk=category_id)
-        except Category.DoesNotExist:
-            raise Http404
-        published = category.posts.exclude(published_date__exact=None)
-        context = {
-            'posts': published.order_by('-published_date'),
-            'title': "Posts in %s" % category.name,
-            'description': category.description
-        }
-        return render(request, 'list.html', context)
-
-
-Backport Changes
-----------------
-
-We've added two new items to the template context
-
-.. class:: incremental
-
-Let's update ``list.html`` to use ``title`` and ``description``
-
-.. code-block:: jinja
-    :class: small incremental
-    
-    {% block content %}
-      <h1>{{ title }}</h1>
-      <p class="pageDescription">{{ description }}</p>
-
-.. container:: incremental
-
-    Also go back and update the template context in ``list_view``
-
-    .. code-block:: jinja
-        :class: small
-    
-        context = {'posts': posts, 'title': 'Recent Posts',
-                   'description': ''}
-
-
-Hook It Up
-----------
-
-To view a category, we'll need to link categories to in templates to this view
-
-.. class:: incremental
-
-Again, use the ``url`` template tag
-
-.. class:: incremental
-
-The categories for a post are listed in both ``list.html`` and ``detail.html``
-
-.. class:: incremental
-
-Add links to both places now.
-
-
-My Version
-----------
-
-.. code-block:: jinja
-    :class: small incremental
-    
-    # in both templates
-    <ul class="categories">
-      {% for category in post.categories.all %}
-        <li>
-          <a href="{% url 'category_view' category.pk %}">
-            {{ category }}</a>
-        </li>
-      {% endfor %}
-    </ul>
-
-.. class:: incremental
-
-
-Fix URLs
---------
-
-Substitute the view name ``category_view`` into ``urls.py``:
-
-.. code-block:: python
-    :class: small
-    
-    url(r'^category/(?P<category_id>\d+)/$',
-        'category_view',
-        name="category_view")
-
-.. class:: incremental
-
-::
-
-    (djangoenv)$ python manage.py test myblog
-    ...
-    Ran 8 tests in 0.547s
-    OK
 
 
 Congratulations
@@ -1425,4 +1243,114 @@ Copy the ``django_css`` file into that new directory.
         <title>My Django Blog</title>
         <link type="text/css" rel="stylesheet" href="/static/django_blog.css">
 
+
+View Your Results
+-----------------
+
+Reload http://localhost:8000/ and view the results of your work
+
+.. class:: incremental
+
+We now have a reasonable view of the posts of our blog on the front end
+
+.. class:: incremental
+
+And we have a way to create and categorize posts using the admin
+
+.. class:: incremental
+
+However, we lack a way to move between the two.
+
+.. class:: incremental
+
+Let's add that ability next.
+
+
+Adding A Control Bar
+--------------------
+
+We'll start by adding a control bar to our ``base.html`` template:
+
+.. code-block:: jinja
+    :class: small
+
+    <!DOCTYPE html>
+      ...
+        <div id="header">
+          <ul id="control-bar">
+          {% if user.is_authenticated %}
+            {% if user.is_admin %}<li>admin</li>{% endif %}
+            <li>logout</li>
+          {% else %}
+            <li>login</li>
+          {% endif %}
+          </ul>
+        </div>
+        <div id="container">
+          ...
+
+
+Request Context Revisited
+-------------------------
+
+When we set up our views, we used the ``render`` shortcut, which provides a
+``RequestContext``
+
+.. class:: incremental
+
+This gives us access to ``user`` in our templates
+
+.. class:: incremental
+
+It provides access to methods about the state and rights of that user
+
+.. class:: incremental
+
+We can use these to conditionally display links or UI elements.
+
+
+Login/Logout
+------------
+
+Django provides a reasonable set of views for login/logout.
+
+.. class:: incremental
+
+The first step to using them is to hook them into a urlconf.
+
+.. container:: incremental
+
+    Add the following to ``mysite/urls.py``:
+    
+    .. code-block:: python
+        :class: small
+    
+        url(r'^', include('myblog.urls')), #<- already there
+        url(r'^login/$',
+            'django.contrib.auth.views.login',
+            {'template_name': 'login.html'},
+            name="login"),
+        url(r'^logout/$',
+            'django.contrib.auth.views.logout',
+            {'next_page': '/'},
+            name="logout"),
+
+
+Login Template
+--------------
+
+We need to create a new ``login.html`` template in ``mysite/templates``:
+
+.. code-block:: jinja
+    :class: small
+
+    {% extends "base.html" %}
+
+    {% block content %}
+    <h1>My Blog Login</h1>
+    <form action="" method="POST">{% csrf_token %}
+      {{ form.as_p }}
+      <p><input type="submit" value="Log In"></p>
+    </form>
+    {% endblock %}
 

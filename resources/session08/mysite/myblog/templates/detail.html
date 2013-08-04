@@ -11,10 +11,7 @@
 </div>
 <ul class="categories">
   {% for category in post.categories.all %}
-    <li>
-      <a href="{% url 'category_view' category.pk %}">
-        {{ category }}</a>
-    </li>
+    <li>{{ category }}</li>
   {% endfor %}
 </ul>
 {% endblock %}

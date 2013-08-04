@@ -107,12 +107,3 @@ class FrontEndTestCase(TestCase):
                 self.assertContains(resp, title)
             else:
                 self.assertEqual(resp.status_code, 404)
-
-    def test_category_only_published(self):
-        resp = self.client.get('/category/%d/' % self.category.pk)
-        for count in range(1,11):
-            title = "Post %d Title" % count
-            if count < 6 and bool(count & 1):
-                self.assertContains(resp, title, count=1)
-            else:
-                self.assertNotContains(resp, title)
