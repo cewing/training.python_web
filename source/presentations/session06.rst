@@ -200,7 +200,7 @@ You'll want to read more about this module. See the reading list for
 suggestions.
 
 
-Testing Envrionment
+Testing Environment
 -------------------
 
 The Python ``unittest`` module defines a class called a ``TestCase``. It
@@ -218,7 +218,11 @@ These methods are run before and after *each test*, and may be used to provide
 
 .. class:: incremental
 
-Create a ``microblog_tests.py`` file.  Open it in your editor
+In your ``microblog`` folder create a ``microblog_tests.py`` file. 
+
+.. class:: incremental
+
+Open it in your editor.
 
 
 Testing Setup
@@ -745,17 +749,21 @@ Run Your Tests
 Make Them Pass
 --------------
 
-Now we have 4 tests, and two fail, add this function to ``microblog.py``:
+Now we have 4 tests, and two fail.
+
+.. class:: incremental
+
+add the ``get_all_entries`` function to ``microblog.py``:
 
 .. code-block:: python
-    :class: small
+    :class: small incremental
 
     def get_all_entries():
         con = get_database_connection()
         cur = con.execute('SELECT title, text FROM entries ORDER BY id DESC')
         return [dict(title=row[0], text=row[1]) for row in cur.fetchall()]
 
-.. container:: incremental small
+.. container:: incremental
 
     And back in your terminal:
     
@@ -789,10 +797,16 @@ We've moved quite a ways in implementing our microblog:
 We're ready now to put a face on it, so we can see what we're doing!
 
 
+Break Time
+----------
+
+But first, let's take a quick break to clear our heads.
+
+
 Templates In Flask
 ------------------
 
-First, though, a detour into templates as they work in Flask
+We'll start with a detour into templates as they work in Flask
 
 .. container:: incremental
 
@@ -1275,7 +1289,7 @@ Login Form Template
 
 Add ``login.html`` to the ``templates`` directory:
 
-.. code-block: jinja
+.. code-block:: jinja
     :class: tiny
 
     {% extends "layout.html" %}
