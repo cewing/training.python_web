@@ -211,6 +211,10 @@ Bookmark the `Django Documentation homepage
 <https://docs.djangoproject.com/en/1.5/>`_. It really is "everything you need
 to know about Django"
 
+Learn about `South <http://south.readthedocs.org/en/latest/>`_ and make a
+habit of using it in developing Django apps. It will save you time, money and
+brain cells.
+
 When you have some time, read `Django Design Philosophies
 <https://docs.djangoproject.com/en/dev/misc/design-philosophies/>`_ - for some
 well-considered words on why Django is the way it is.

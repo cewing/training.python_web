@@ -330,30 +330,25 @@ If you open ``wsgi.py``, you'll see the following:
 The Django WSGIHandler
 ----------------------
 .. code-block:: python
-    :class: tiny
+    :class: small
 
     class WSGIHandler(base.BaseHandler):
         #...
         def __call__(self, environ, start_response):
-            if self._request_middleware is None:
-                #... set up django middleware
-            #...
+            #... set up django middleware
             try:
+                #... build a request
                 request = self.request_class(environ)
             except UnicodeDecodeError:
-                #...
-                response = http.HttpResponseBadRequest()
+                #... handle request errors
             else:
+                # build a response
                 response = self.get_response(request)
-            #...
-            try:
-                status_text = STATUS_CODE_TEXT[response.status_code]
-            except KeyError:
-                status_text = 'UNKNOWN STATUS CODE'
+            #... determine response status 
             status = '%s %s' % (response.status_code, status_text)
+            #... build response headers
             response_headers = [(str(k), str(v)) for k, v in response.items()]
-            for c in response.cookies.values():
-                response_headers.append((str('Set-Cookie'), str(c.output(header=''))))
+            #... start a response with status and headers
             start_response(force_str(status), response_headers)
             return response
 
@@ -409,53 +404,26 @@ You should see this:
 Connecting A Database
 ---------------------
 
-Django comes with its own ORM (Object-Relational Mapper)
+Django supplies its own ORM (Object-Relational Mapper)
 
 .. class:: incremental
 
-The first step in working with Django is to connect it to your database (this
-is set in ``settings.py``)
-
-.. code-block:: python
-    :class: small incremental
-
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.<your_db_backend>',
-            'NAME': '<your_db_name>',
-            'USER': '<your_db_user>',
-            'PASSWORD': '<your_db_password>',
-            'HOST': '<not_needed_on_localhost>',
-            'PORT': '<not_needed_on_localhost>',
-        }
-    }
-
-
-A Quick Word about Databases
-----------------------------
-
-Sqlite3 is **not** a production-capable database. Do not attempt to use it as
-such. 
+This ORM sits on top of the DB-API implementation you choose.
 
 .. class:: incremental
 
-Do not start a real project using sqlite3, expecting to move 'when you go to
-production'.
+You must provide connection information through Django configuration.
 
 .. class:: incremental
 
-That being said, proper database administration is out-of-scope for this
-class. 
-
-.. class:: incremental
-
-So we'll be using sqlite3 for todays work.
+All Django configuration takes place in ``settings.py`` in your project
+folder.
 
 
 Your Database Settings
 ----------------------
 
-Edit ``settings.py`` in your project package to match:
+Edit your ``settings.py`` to match:
 
 .. code-block:: python
     :class: small
@@ -476,7 +444,7 @@ Edit ``settings.py`` in your project package to match:
 Django and Your Database
 ------------------------
 
-Django interfaces with the database using an ORM (Object Relational Mapping)
+Django's ORM provides a layer of *abstraction* between you and SQL
 
 .. class:: incremental
 
@@ -612,8 +580,8 @@ the Django ``Model`` class.
 
 .. class:: incremental
 
-This base class provides all the functionality that connects the Python code
-you write to your database.
+This base class hooks in to the ORM functionality converting Python code to
+SQL.
 
 .. class:: incremental
 
@@ -838,6 +806,51 @@ https://docs.djangoproject.com/en/1.5/ref/models/fields/
             )
 
 
+A Word About Development
+------------------------
+
+These models we've created are not going to change often. This is unusual for
+a development cycle.
+
+.. class:: incremental
+
+The ``syncdb`` management command only creates tables that *do not yet exist*.
+It **does not update tables**.
+
+.. class:: incremental
+
+The ``sqlclear <appname>`` command will print the ``DROP TABLE`` statements to
+remove the tables for your app.
+
+.. class:: incremental
+
+Or ``sql <appname>`` will show the ``CREATE TABLE`` statements, and you can work
+out the differences and update manually.
+
+
+ACK!!!
+------
+
+That doesn't sound very nice, does it?
+
+.. class:: incremental
+
+Luckily, there is an app available for Django that helps with this: ``South``
+
+.. class:: incremental
+
+South allows you to incrementally update your database in a simplified way.
+
+.. class:: incremental
+
+South supports forward, backward and data migrations.
+
+.. class:: incremental
+
+We won't have time to `cover it <http://south.readthedocs.org/en/latest/>`_ in
+this class, but know it's there.
+
+
 Hooking it Up
 -------------
 
@@ -914,50 +927,6 @@ We don't need to know that a join table is needed for a ManyToMany relation.
 .. class:: incremental
 
 This is but one of the ways that the ORM helps us.  More soon.
-
-
-A Word About Development
-------------------------
-
-These models we've created are not going to change often. This is unusual for
-a development cycle.
-
-.. class:: incremental
-
-The ``syncdb`` management command only creates tables that *do not yet exist*.
-It **does not update tables**.
-
-.. class:: incremental
-
-The ``sqlclear <appname>`` command will print the ``DROP TABLE`` statements to
-remove the tables for your app.
-
-.. class:: incremental
-
-Or ``sql <appname>`` will show the ``CREATE TABLE`` statements, and you can work
-out the differences and update manually.
-
-
-ACK!!!
-------
-
-That doesn't sound very nice, does it?
-
-.. class:: incremental
-
-Luckily, there is an app available for Django that helps with this: ``South``
-
-.. class:: incremental
-
-South allows you to incrementally update your database in a simplified way.
-
-.. class:: incremental
-
-South supports forward, backward and data migrations.
-
-.. class:: incremental
-
-We won't have time to cover it in this class, but know it's there.
 
 
 Break Time
@@ -1205,7 +1174,7 @@ If you are curious, you can see the SQL that a given QuerySet will use:
 
 .. class:: incremental
 
-The exact SQL will vary automatically depending on the database you are using.
+The SQL will vary depending on which DBAPI backend you use (yay ORM!!!)
 
 
 Exploring the QuerySet API
@@ -1317,7 +1286,7 @@ Create a directory called ``fixtures`` inside your ``myblog`` app directory.
 .. class:: incremental
 
 Copy the file ``myblog_test_fixture.json`` from the class resources into this
-directory, it contains a user for us.
+directory, it contains users for our tests.
 
 
 Setting Up Our Tests
