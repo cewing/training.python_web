@@ -1,7 +1,11 @@
 from django.http import HttpResponse, Http404
 from django.shortcuts import render
+from django.core.exceptions import PermissionDenied
+from django.core.urlresolvers import reverse
+from django.contrib import messages
 
-from myblog.models import Post, Category
+from myblog.models import Post
+from myblog.forms import PostForm
 
 
 def stub_view(request, *args, **kwargs):
@@ -30,3 +34,17 @@ def detail_view(request, post_id):
         raise Http404
     context = {'post': post}
     return render(request, 'detail.html', context)
+
+
+def add_view(request):
+    user = request.user
+    if not user.is_authenticated:
+        raise PermissionDenied
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        # handle form submission
+    else:
+        form = PostForm()
+    
+    context = {'form': form}
+    return render(request, 'add.html', context)

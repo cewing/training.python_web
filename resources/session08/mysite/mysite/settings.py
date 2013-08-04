@@ -111,7 +111,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/Users/cewing/projects/training/uw_pce/training.python_web/scripts/session07/mysite/mysite/templates'
+    '/Users/cewing/projects/training/uw_pce/testme/training.python_web/resources/session08/mysite/mysite/templates'
 )
 
 INSTALLED_APPS = (
@@ -156,3 +156,7 @@ LOGGING = {
         },
     }
 }
+
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'

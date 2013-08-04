@@ -6,6 +6,14 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^', include('myblog.urls')),
+    url(r'^login/$',
+        'django.contrib.auth.views.login',
+        {'template_name': 'login.html'},
+        name="login"),
+    url(r'^logout/$',
+        'django.contrib.auth.views.logout',
+        {'next_page': '/'},
+        name="logout"),
     # Examples:
     # url(r'^$', 'mysite.views.home', name='home'),
     # url(r'^mysite/', include('mysite.foo.urls')),
