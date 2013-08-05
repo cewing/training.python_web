@@ -1594,3 +1594,166 @@ It would be nice if the 'author' field were auto-populated, and even hidden.
 Let's do that next.
 
 
+Form 'initial'
+--------------
+
+When instantiating a form, you can pass it *initial* values.
+
+.. container:: incremental
+
+    In ``views.py`` make the following changes to the ``add_view``:
+
+    .. code-block:: python
+        :class: small
+    
+        def add_view(request):
+            user = request.user
+            if not user.is_authenticated:
+                raise PermissionDenied
+            if request.method == 'POST':
+                #... not quite ready for this yet.
+            else:
+                initial = {'author': user} #<- add this
+                form = PostForm(initial=initial) #<- updated
+
+
+Hidden Fields
+-------------
+
+If you reload, you should now see ``author`` pre-popluated.
+
+.. container:: incremental
+
+    To hide it, we must update the 'widget' it will use in ``forms.py``:
+
+    .. code-block:: python
+        :class: small
+    
+        class PostForm(forms.ModelForm):
+
+            class Meta:
+                #...
+                widgets = {
+                    'author': forms.HiddenInput(),
+                }
+
+.. class:: incremental
+
+Reload again to see the input disappear. Check page source to see the 'hidden'
+input.
+
+
+Form Submission
+---------------
+
+That's all we need to have for processing.  We want to:
+
+.. class:: incremental
+
+* Validate the form input
+* Report validation errors to the user and return the bound form
+* If no errors occur, save the form, creating an instance
+* Report success to the user and redirect to the list homepage.
+
+.. class:: incremental
+
+Django's ``messages`` framework will allow notifications.
+
+
+Handle a Submitted Form
+-----------------------
+
+In ``views.py``, update the ``add_view``:
+
+.. code-block:: python
+    :class: small
+    
+    def add_view(request):
+        user = request.user
+        if not user.is_authenticated:
+            raise PermissionDenied
+        if request.method == 'POST':
+            form = PostForm(request.POST)
+            if form.is_valid:
+                post = form.save()
+                msg = "post '%s' saved" % post
+                messages.add_message(request, messages.INFO, msg)
+                return HttpResponseRedirect(reverse('blog_index'))
+            else:
+                messages.add_message("please fix the errors below")
+        else:
+            #...
+
+
+Showing Messages
+----------------
+
+The ``messages`` framework pushes messages onto a stack.
+
+.. class:: incremental
+
+You can then pop them back off by printing them in a template.
+
+.. container:: incremental
+
+    In ``base.html`` let's give them a place to go:
+
+    .. code-block:: jinja
+        :class: small
+    
+        <div id="container">
+          {% if messages %}
+          <div class="notifications">
+           {% for message in messages %}
+           <p>{{ message }}</p>
+           {% endfor %}
+          </div>
+          {% endif %}
+          <!-- main content div below here -->
+
+
+Final Run
+---------
+
+That should be enough to get us going.
+
+.. class:: incremental
+
+Fill out your form, supplying title and text.  
+
+.. class:: incremental
+
+Submit the form, and notice the messaging from the system.
+
+.. class:: incremental
+
+Why is your new post not appearing in the blog list?
+
+
+Next Steps
+----------
+
+There are a number of improvements one could make to this blog system:
+
+.. class:: incremental
+
+* Send email notifications to "blog administrators" that would notify them of
+  new posts awaiting publication.
+* Provide a second list view giving users access to edit their unpublished
+  posts.
+* Provide restricted access to certain users to view all unpublished posts and
+  choose to publish them.
+* Add a form field for the post category and put the post in a category when
+  processing the form
+* Provide a list view of a category, showing all posts in it. 
+* Provide HTML editing for post text.
+
+
+That's All For Now
+------------------
+
+But this is all we have time for in this session.
+
+.. class:: big-centered incremental
+
+We'll see you next session!
