@@ -1,4 +1,5 @@
 from django.http import HttpResponse, Http404
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
@@ -42,9 +43,16 @@ def add_view(request):
         raise PermissionDenied
     if request.method == 'POST':
         form = PostForm(request.POST)
-        # handle form submission
+        if form.is_valid:
+            post = form.save()
+            msg = "post '%s' saved" % post
+            messages.add_message(request, messages.INFO, msg)
+            return HttpResponseRedirect(reverse('blog_index'))
+        else:
+            messages.add_message("please fix the errors below")
     else:
-        form = PostForm()
+        initial = {'author': user}
+        form = PostForm(initial=initial)
     
     context = {'form': form}
     return render(request, 'add.html', context)
