@@ -954,7 +954,7 @@ message::
 
     >>> import socket
     >>> client_socket = socket.socket(
-    ...     socket.AF_INET
+    ...     socket.AF_INET,
     ...     socket.SOCK_STREAM,
     ...     socket.IPPROTO_IP)
 
@@ -990,7 +990,7 @@ Receive and Respond
 Back in your server interpreter, go ahead and receive the message from your
 client::
 
-    >>> conn.receive(32)
+    >>> conn.recv(32)
     'Hey, can you hear me?'
 
 Send a message back, and then close up your connection::
