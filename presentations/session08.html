@@ -332,11 +332,6 @@ CategoryAdmin.</p>
 <span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Category</span><span class="p">,</span> <span class="n">CategoryAdmin</span><span class="p">)</span>
 </pre>
 </div>
-<div class="slide" id="placeholder">
-<h1>PLACEHOLDER</h1>
-<p>Do we have time to do an admin action here? if so, add actions to publish,
-unpublish items in bulk</p>
-</div>
 <div class="slide" id="a-public-face">
 <h1>A Public Face</h1>
 <p>Point your browser at <a class="reference external" href="http://localhost:8000/">http://localhost:8000/</a></p>
@@ -429,7 +424,6 @@ same <tt class="docutils literal">patterns</tt>.</p>
 <ul class="incremental simple">
 <li>A list view that shows blog posts, most recent first.</li>
 <li>An individual post view, showing a single post (a permalink).</li>
-<li>A category view that shows all posts in a given category.</li>
 </ul>
 <p class="incremental">Let's add urls for each of these, use the stub view for now.</p>
 </div>
@@ -461,19 +455,6 @@ Add this to <tt class="docutils literal">urlpatterns</tt>:</p>
 <p class="incremental">How you declare a capture group in your url pattern regexp influenced how it
 will be passed to the view callable.</p>
 </div>
-<div class="slide" id="category-view-url">
-<h1>Category View URL</h1>
-<p>Try writing the URL pattern for the category view on your own.</p>
-<div class="incremental container">
-<p>My version looks like this:</p>
-<pre class="code python small literal-block">
-<span class="n">url</span><span class="p">(</span><span class="s">r'^category/(?P&lt;category_id&gt;\d+)/$'</span><span class="p">,</span>
-    <span class="s">'stub_view'</span><span class="p">,</span>
-    <span class="n">name</span><span class="o">=</span><span class="s">&quot;category_view&quot;</span><span class="p">),</span>
-</pre>
-</div>
-<p class="incremental">At this point, we should have three url patterns in our urlconf</p>
-</div>
 <div class="slide" id="full-urlconf">
 <h1>Full Urlconf</h1>
 <pre class="code python small literal-block">
@@ -486,9 +467,6 @@ will be passed to the view callable.</p>
     <span class="n">url</span><span class="p">(</span><span class="s">r'^posts/(?P&lt;post_id&gt;\d+)/$'</span><span class="p">,</span>
         <span class="s">'stub_view'</span><span class="p">,</span>
         <span class="n">name</span><span class="o">=</span><span class="s">&quot;blog_detail&quot;</span><span class="p">),</span>
-    <span class="n">url</span><span class="p">(</span><span class="s">r'^category/(?P&lt;category_id&gt;\d+)/$'</span><span class="p">,</span>
-        <span class="s">'stub_view'</span><span class="p">,</span>
-        <span class="n">name</span><span class="o">=</span><span class="s">&quot;category_view&quot;</span><span class="p">)</span>
 <span class="p">)</span>
 </pre>
 </div>
@@ -496,10 +474,10 @@ will be passed to the view callable.</p>
 <h1>Testing Views</h1>
 <p>Before we begin, we need to add some tests for the views we are about to
 create.</p>
-<p class="incremental">We'll need tests for a list view, a detail view and a category view</p>
+<p class="incremental">We'll need tests for a list view and a detail view</p>
 <p class="incremental">To save us time, I've written these tests already</p>
 <p class="incremental">You can find them in the class resources directory: <tt class="docutils literal">blog_view_tests.py</tt></p>
-<p class="incremental">Copy the TestCase and imports from that file into our blog <tt class="docutils literal">tests.py</tt> file.</p>
+<p class="incremental">Copy the contents of that file into our blog <tt class="docutils literal">tests.py</tt> file.</p>
 </div>
 <div class="slide" id="run-the-tests">
 <h1>Run The Tests</h1>
@@ -507,9 +485,9 @@ create.</p>
 (djangoenv)$ python manage.py test myblog
 ...
 ----------------------------------------------------------------------
-Ran 8 tests in 0.478s
+Ran 7 tests in 0.478s
 
-FAILED (failures=3)
+FAILED (failures=2)
 Destroying test database for alias 'default'...
 </pre>
 </div>
@@ -666,8 +644,8 @@ Flask</p>
 <pre class="incremental small literal-block">
 (djangoenv)$ python manage.py test myblog
 ...
-Ran 8 tests in 0.494s
-FAILED (failures=2)
+Ran 7 tests in 0.494s
+FAILED (failures=1)
 </pre>
 </div>
 <div class="slide" id="common-patterns">
@@ -782,8 +760,8 @@ FAILED (failures=2)
 <pre class="incremental small literal-block">
 (djangoenv)$ python manage.py test myblog
 ...
-Ran 8 tests in 0.513s
-FAILED (failures=1)
+Ran 7 tests in 0.513s
+OK
 </pre>
 </div>
 <div class="slide" id="a-moment-to-play">
@@ -792,101 +770,6 @@ FAILED (failures=1)
 <p class="incremental">Reload your blog index page and click around a bit.</p>
 <p class="incremental">You can now move back and forth between list and detail view.</p>
 <p class="incremental">Try loading the detail view for a post that doesn't exist</p>
-</div>
-<div class="slide" id="category-lists">
-<h1>Category Lists</h1>
-<p>Let's implement the category listing next</p>
-<p class="incremental">Before we do so, make sure you have added categories to any posts you've
-created.</p>
-<p class="incremental">Go to <a class="reference external" href="http://localhost:8000/admin/">http://localhost:8000/admin/</a> and make sure:</p>
-<ul class="incremental simple">
-<li>you have at least three or four posts</li>
-<li>each post is in one or more categories</li>
-<li>at least one category has more than one post</li>
-</ul>
-</div>
-<div class="slide" id="category-view">
-<h1>Category View</h1>
-<p>The view should have the following signature:</p>
-<pre class="code python small literal-block">
-<span class="n">category_view</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">category_id</span><span class="p">):</span>
-</pre>
-<p class="incremental">We can re-use the <tt class="docutils literal">list.html</tt> template with some minor modifications</p>
-<p class="incremental">Let's start by adding view code to <tt class="docutils literal">views.py</tt></p>
-</div>
-<div class="slide" id="id7">
-<h1>category_view</h1>
-<pre class="code python small incremental literal-block">
-<span class="c"># add an import</span>
-<span class="kn">from</span> <span class="nn">myblog.models</span> <span class="kn">import</span> <span class="n">Category</span>
-
-<span class="c"># and this function</span>
-<span class="k">def</span> <span class="nf">category_view</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">category_id</span><span class="p">):</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">category</span> <span class="o">=</span> <span class="n">Category</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">category_id</span><span class="p">)</span>
-    <span class="k">except</span> <span class="n">Category</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">Http404</span>
-    <span class="n">published</span> <span class="o">=</span> <span class="n">category</span><span class="o">.</span><span class="n">posts</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">published_date__exact</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
-    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s">'posts'</span><span class="p">:</span> <span class="n">published</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">'-published_date'</span><span class="p">),</span>
-        <span class="s">'title'</span><span class="p">:</span> <span class="s">&quot;Posts in </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">category</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-        <span class="s">'description'</span><span class="p">:</span> <span class="n">category</span><span class="o">.</span><span class="n">description</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">'list.html'</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
-</pre>
-</div>
-<div class="slide" id="backport-changes">
-<h1>Backport Changes</h1>
-<p>We've added two new items to the template context</p>
-<p class="incremental">Let's update <tt class="docutils literal">list.html</tt> to use <tt class="docutils literal">title</tt> and <tt class="docutils literal">description</tt></p>
-<pre class="code jinja small incremental literal-block">
-<span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}</span><span class="x">
-  &lt;h1&gt;</span><span class="cp">{{</span> <span class="nv">title</span> <span class="cp">}}</span><span class="x">&lt;/h1&gt;
-  &lt;p class=&quot;pageDescription&quot;&gt;</span><span class="cp">{{</span> <span class="nv">description</span> <span class="cp">}}</span><span class="x">&lt;/p&gt;</span>
-</pre>
-<div class="incremental container">
-<p>Also go back and update the template context in <tt class="docutils literal">list_view</tt></p>
-<pre class="code jinja small literal-block">
-<span class="x">context = {'posts': posts, 'title': 'Recent Posts',
-           'description': ''}</span>
-</pre>
-</div>
-</div>
-<div class="slide" id="id8">
-<h1>Hook It Up</h1>
-<p>To view a category, we'll need to link categories to in templates to this view</p>
-<p class="incremental">Again, use the <tt class="docutils literal">url</tt> template tag</p>
-<p class="incremental">The categories for a post are listed in both <tt class="docutils literal">list.html</tt> and <tt class="docutils literal">detail.html</tt></p>
-<p class="incremental">Add links to both places now.</p>
-</div>
-<div class="slide" id="my-version">
-<h1>My Version</h1>
-<pre class="code jinja small incremental literal-block">
-<span class="x"># in both templates
-&lt;ul class=&quot;categories&quot;&gt;
-  </span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">category</span> <span class="k">in</span> <span class="nv">post.categories.all</span> <span class="cp">%}</span><span class="x">
-    &lt;li&gt;
-      &lt;a href=&quot;</span><span class="cp">{%</span> <span class="k">url</span> <span class="s1">'category_view'</span> <span class="nv">category.pk</span> <span class="cp">%}</span><span class="x">&quot;&gt;
-        </span><span class="cp">{{</span> <span class="nv">category</span> <span class="cp">}}</span><span class="x">&lt;/a&gt;
-    &lt;/li&gt;
-  </span><span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span><span class="x">
-&lt;/ul&gt;</span>
-</pre>
-</div>
-<div class="incremental slide" id="id9">
-<h1>Fix URLs</h1>
-<p>Substitute the view name <tt class="docutils literal">category_view</tt> into <tt class="docutils literal">urls.py</tt>:</p>
-<pre class="code python small literal-block">
-<span class="n">url</span><span class="p">(</span><span class="s">r'^category/(?P&lt;category_id&gt;\d+)/$'</span><span class="p">,</span>
-    <span class="s">'category_view'</span><span class="p">,</span>
-    <span class="n">name</span><span class="o">=</span><span class="s">&quot;category_view&quot;</span><span class="p">)</span>
-</pre>
-<pre class="incremental literal-block">
-(djangoenv)$ python manage.py test myblog
-...
-Ran 8 tests in 0.547s
-OK
-</pre>
 </div>
 <div class="slide" id="congratulations">
 <h1>Congratulations</h1>
@@ -914,6 +797,336 @@ OK
 <span class="nt">&lt;link</span> <span class="na">type=</span><span class="s">&quot;text/css&quot;</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;/static/django_blog.css&quot;</span><span class="nt">&gt;</span>
 </pre>
 </div>
+</div>
+<div class="slide" id="view-your-results">
+<h1>View Your Results</h1>
+<p>Reload <a class="reference external" href="http://localhost:8000/">http://localhost:8000/</a> and view the results of your work</p>
+<p class="incremental">We now have a reasonable view of the posts of our blog on the front end</p>
+<p class="incremental">And we have a way to create and categorize posts using the admin</p>
+<p class="incremental">However, we lack a way to move between the two.</p>
+<p class="incremental">Let's add that ability next.</p>
+</div>
+<div class="slide" id="adding-a-control-bar">
+<h1>Adding A Control Bar</h1>
+<p>We'll start by adding a control bar to our <tt class="docutils literal">base.html</tt> template:</p>
+<pre class="code jinja small literal-block">
+<span class="x">&lt;!DOCTYPE html&gt;
+  ...
+    &lt;div id=&quot;header&quot;&gt;
+      &lt;ul id=&quot;control-bar&quot;&gt;
+      </span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">user.is_authenticated</span> <span class="cp">%}</span><span class="x">
+        </span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">user.is_admin</span> <span class="cp">%}</span><span class="x">&lt;li&gt;admin&lt;/li&gt;</span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x">
+        &lt;li&gt;logout&lt;/li&gt;
+      </span><span class="cp">{%</span> <span class="k">else</span> <span class="cp">%}</span><span class="x">
+        &lt;li&gt;login&lt;/li&gt;
+      </span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x">
+      &lt;/ul&gt;
+    &lt;/div&gt;
+    &lt;div id=&quot;container&quot;&gt;
+      ...</span>
+</pre>
+</div>
+<div class="slide" id="request-context-revisited">
+<h1>Request Context Revisited</h1>
+<p>When we set up our views, we used the <tt class="docutils literal">render</tt> shortcut, which provides a
+<tt class="docutils literal">RequestContext</tt></p>
+<p class="incremental">This gives us access to <tt class="docutils literal">user</tt> in our templates</p>
+<p class="incremental">It provides access to methods about the state and rights of that user</p>
+<p class="incremental">We can use these to conditionally display links or UI elements.</p>
+</div>
+<div class="slide" id="login-logout">
+<h1>Login/Logout</h1>
+<p>Django provides a reasonable set of views for login/logout.</p>
+<p class="incremental">The first step to using them is to hook them into a urlconf.</p>
+<div class="incremental container">
+<p>Add the following to <tt class="docutils literal">mysite/urls.py</tt>:</p>
+<pre class="code python small literal-block">
+<span class="n">url</span><span class="p">(</span><span class="s">r'^'</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="s">'myblog.urls'</span><span class="p">)),</span> <span class="c">#&lt;- already there</span>
+<span class="n">url</span><span class="p">(</span><span class="s">r'^login/$'</span><span class="p">,</span>
+    <span class="s">'django.contrib.auth.views.login'</span><span class="p">,</span>
+    <span class="p">{</span><span class="s">'template_name'</span><span class="p">:</span> <span class="s">'login.html'</span><span class="p">},</span>
+    <span class="n">name</span><span class="o">=</span><span class="s">&quot;login&quot;</span><span class="p">),</span>
+<span class="n">url</span><span class="p">(</span><span class="s">r'^logout/$'</span><span class="p">,</span>
+    <span class="s">'django.contrib.auth.views.logout'</span><span class="p">,</span>
+    <span class="p">{</span><span class="s">'next_page'</span><span class="p">:</span> <span class="s">'/'</span><span class="p">},</span>
+    <span class="n">name</span><span class="o">=</span><span class="s">&quot;logout&quot;</span><span class="p">),</span>
+</pre>
+</div>
+</div>
+<div class="slide" id="login-template">
+<h1>Login Template</h1>
+<p>We need to create a new <tt class="docutils literal">login.html</tt> template in <tt class="docutils literal">mysite/templates</tt>:</p>
+<pre class="code jinja small literal-block">
+<span class="cp">{%</span> <span class="k">extends</span> <span class="s2">&quot;base.html&quot;</span> <span class="cp">%}</span><span class="x">
+
+</span><span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}</span><span class="x">
+&lt;h1&gt;My Blog Login&lt;/h1&gt;
+&lt;form action=&quot;&quot; method=&quot;POST&quot;&gt;</span><span class="cp">{%</span> <span class="k">csrf_token</span> <span class="cp">%}</span><span class="x">
+  </span><span class="cp">{{</span> <span class="nv">form.as_p</span> <span class="cp">}}</span><span class="x">
+  &lt;p&gt;&lt;input type=&quot;submit&quot; value=&quot;Log In&quot;&gt;&lt;/p&gt;
+&lt;/form&gt;
+</span><span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+</pre>
+</div>
+<div class="slide" id="submitting-forms">
+<h1>Submitting Forms</h1>
+<p>In a web application, submitting forms is potentially hazardous</p>
+<p class="incremental">Data is being sent to our application from some remote place</p>
+<p class="incremental">If that data is going to alter the state of our application, we <strong>must</strong> use
+POST</p>
+<p class="incremental">Even so, we are vulnerable to Cross-Site Request Forgery, a common attack
+vector.</p>
+</div>
+<div class="slide" id="danger-csrf">
+<h1>Danger: CSRF</h1>
+<p>Django provides a convenient system to fight this.</p>
+<p class="incremental">In fact, for POST requests, it <em>requires</em> that you use it.</p>
+<p class="incremental">The Django middleware that does this is enabled by default.</p>
+<p class="incremental">All you need to do is include the <tt class="docutils literal">{% csrf_token %}</tt> tag in your form.</p>
+</div>
+<div class="slide" id="id7">
+<h1>Hooking It Up</h1>
+<p>In <tt class="docutils literal">base.html</tt> make the following updates:</p>
+<pre class="code jinja small literal-block">
+<span class="x">&lt;!-- admin link --&gt;
+&lt;a href=&quot;</span><span class="cp">{%</span> <span class="k">url</span> <span class="s1">'admin:index'</span> <span class="cp">%}</span><span class="x">&quot;&gt;admin&lt;/a&gt;
+&lt;!-- logout link --&gt;
+&lt;a href=&quot;</span><span class="cp">{%</span> <span class="k">url</span> <span class="s1">'logout'</span> <span class="cp">%}</span><span class="x">&quot;&gt;logout&lt;/a&gt;
+&lt;!-- login link --&gt;
+&lt;a href=&quot;</span><span class="cp">{%</span> <span class="k">url</span> <span class="s1">'login'</span> <span class="cp">%}</span><span class="x">&quot;&gt;login&lt;/a&gt;</span>
+</pre>
+<div class="incremental container">
+<p>Finally, in <tt class="docutils literal">settings.py</tt> add the following:</p>
+<pre class="code python small literal-block">
+<span class="n">LOGIN_URL</span> <span class="o">=</span> <span class="s">'/login/'</span>
+<span class="n">LOGIN_REDIRECT_URL</span> <span class="o">=</span> <span class="s">'/'</span>
+</pre>
+</div>
+</div>
+<div class="slide" id="handling-forms">
+<h1>Handling Forms</h1>
+<p>Adding login and logout has given us a sneak peek at forms.</p>
+<p class="incremental">But there is a <em>lot</em> of magic happening that we should see directly.</p>
+<p class="incremental">As a last task, let's add a non-admin way to create new posts.</p>
+<p class="incremental">We'll use a form, submit it to a view, and have it create a new Post object</p>
+</div>
+<div class="slide" id="django-forms">
+<h1>Django Forms</h1>
+<p>Forms are, like Models, a Django <em>class</em></p>
+<p class="incremental">Like Models, you add fields to a form as class <em>attributes</em></p>
+<p class="incremental">Like Model fields, the fields on a form are also Python class instances.</p>
+<p class="incremental">Unlike Model fields, Form fields are built to interact with data in a
+<em>request</em></p>
+<p class="incremental">By tradition, they are created in a module called <tt class="docutils literal">forms.py</tt></p>
+</div>
+<div class="slide" id="post-form">
+<h1>Post Form</h1>
+<p>Create <tt class="docutils literal">forms.py</tt> in <tt class="docutils literal">myblog</tt> and open it in your editor.</p>
+<pre class="code python small literal-block">
+<span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">forms</span>
+<span class="kn">from</span> <span class="nn">myblog.models</span> <span class="kn">import</span> <span class="n">Post</span>
+
+<span class="k">class</span> <span class="nc">PostForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Post</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s">'title'</span><span class="p">,</span> <span class="s">'text'</span><span class="p">,</span> <span class="s">'author'</span><span class="p">)</span>
+</pre>
+<p class="incremental">The <tt class="docutils literal">ModelForm</tt> class generates fields based on the model.</p>
+<p class="incremental">Use <tt class="docutils literal">fields</tt> to force only a subset of those.</p>
+</div>
+<div class="slide" id="a-view-for-our-form">
+<h1>A View for Our Form</h1>
+<p>The basic approach to handling forms in Django always follows this pattern:</p>
+<pre class="code python small literal-block">
+<span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">'POST'</span><span class="p">:</span>
+    <span class="c"># bind a form instance to POST data</span>
+    <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+        <span class="c"># process the form data here</span>
+        <span class="c"># tell the user about the success</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c"># tell the user about the problem</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="c"># create an unbound form</span>
+<span class="c"># render the form template</span>
+</pre>
+<p class="incremental">Let's create a <tt class="docutils literal">add_post</tt> view that does this with our <tt class="docutils literal">PostForm</tt></p>
+</div>
+<div class="slide" id="add-post-view">
+<h1>add_post view</h1>
+<pre class="code python small literal-block">
+<span class="c"># add imports to views.py</span>
+<span class="kn">from</span> <span class="nn">django.core.exceptions</span> <span class="kn">import</span> <span class="n">PermissionDenied</span>
+<span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">messages</span>
+<span class="kn">from</span> <span class="nn">django.core.urlresolvers</span> <span class="kn">import</span> <span class="n">reverse</span>
+<span class="kn">from</span> <span class="nn">myblog.forms</span> <span class="kn">import</span> <span class="n">PostForm</span>
+
+<span class="c"># and a new view function:</span>
+<span class="k">def</span> <span class="nf">add_view</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">user</span><span class="o">.</span><span class="n">is_authenticated</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">PermissionDenied</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">'POST'</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">PostForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="c"># handle form submission</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">PostForm</span><span class="p">()</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span><span class="s">'form'</span><span class="p">:</span> <span class="n">form</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">'add.html'</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+</pre>
+</div>
+<div class="slide" id="add-a-url">
+<h1>Add A URL</h1>
+<p>In <tt class="docutils literal">myblog/urls.py</tt> add a new entry to our urlconf:</p>
+<pre class="code python small literal-block">
+<span class="n">url</span><span class="p">(</span><span class="s">r'^add/$'</span><span class="p">,</span>
+    <span class="s">'add_view'</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s">&quot;add_post&quot;</span><span class="p">),</span>
+</pre>
+<div class="incremental container">
+<p>And hook it up to the control bar link in <tt class="docutils literal">base.html</tt></p>
+<pre class="code jinja literal-block">
+<span class="x">&lt;!-- update new post link --&gt;
+&lt;a href=&quot;</span><span class="cp">{%</span> <span class="k">url</span> <span class="s1">'add_post'</span> <span class="cp">%}</span><span class="x">&quot;&gt;new post&lt;/a&gt;</span>
+</pre>
+</div>
+</div>
+<div class="slide" id="create-add-html">
+<h1>Create add.html</h1>
+<p>Finally, we need to create a template, <tt class="docutils literal">add.html</tt> in <tt class="docutils literal">myblog/templates</tt>:</p>
+<pre class="code jinja small literal-block">
+<span class="cp">{%</span> <span class="k">extends</span> <span class="s2">&quot;base.html&quot;</span> <span class="cp">%}</span><span class="x">
+
+</span><span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}</span><span class="x">
+&lt;h1&gt;New Blog Post&lt;/h1&gt;
+&lt;form action=&quot;&quot; method=&quot;POST&quot;&gt;</span><span class="cp">{%</span> <span class="k">csrf_token</span> <span class="cp">%}</span><span class="x">
+  </span><span class="cp">{{</span> <span class="nv">form.as_p</span> <span class="cp">}}</span><span class="x">
+  &lt;p&gt;&lt;input type=&quot;submit&quot; value=&quot;Save&quot;&gt;&lt;/p&gt;
+&lt;/form&gt;
+</span><span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+</pre>
+</div>
+<div class="slide" id="id8">
+<h1>Try it Out</h1>
+<p>You should be able to click on the 'new post' button in the control bar.</p>
+<p class="incremental">How does the form look?</p>
+<p class="incremental">It would be nice if the 'author' field were auto-populated, and even hidden.</p>
+<p class="incremental">Let's do that next.</p>
+</div>
+<div class="slide" id="form-initial">
+<h1>Form 'initial'</h1>
+<p>When instantiating a form, you can pass it <em>initial</em> values.</p>
+<div class="incremental container">
+<p>In <tt class="docutils literal">views.py</tt> make the following changes to the <tt class="docutils literal">add_view</tt>:</p>
+<pre class="code python small literal-block">
+<span class="k">def</span> <span class="nf">add_view</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">user</span><span class="o">.</span><span class="n">is_authenticated</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">PermissionDenied</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">'POST'</span><span class="p">:</span>
+        <span class="c">#... not quite ready for this yet.</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">initial</span> <span class="o">=</span> <span class="p">{</span><span class="s">'author'</span><span class="p">:</span> <span class="n">user</span><span class="p">}</span> <span class="c">#&lt;- add this</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">PostForm</span><span class="p">(</span><span class="n">initial</span><span class="o">=</span><span class="n">initial</span><span class="p">)</span> <span class="c">#&lt;- updated</span>
+</pre>
+</div>
+</div>
+<div class="slide" id="hidden-fields">
+<h1>Hidden Fields</h1>
+<p>If you reload, you should now see <tt class="docutils literal">author</tt> pre-popluated.</p>
+<div class="incremental container">
+<p>To hide it, we must update the 'widget' it will use in <tt class="docutils literal">forms.py</tt>:</p>
+<pre class="code python small literal-block">
+<span class="k">class</span> <span class="nc">PostForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="c">#...</span>
+        <span class="n">widgets</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">'author'</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">HiddenInput</span><span class="p">(),</span>
+        <span class="p">}</span>
+</pre>
+</div>
+<p class="incremental">Reload again to see the input disappear. Check page source to see the 'hidden'
+input.</p>
+</div>
+<div class="slide" id="form-submission">
+<h1>Form Submission</h1>
+<p>That's all we need to have for processing.  We want to:</p>
+<ul class="incremental simple">
+<li>Validate the form input</li>
+<li>Report validation errors to the user and return the bound form</li>
+<li>If no errors occur, save the form, creating an instance</li>
+<li>Report success to the user and redirect to the list homepage.</li>
+</ul>
+<p class="incremental">Django's <tt class="docutils literal">messages</tt> framework will allow notifications.</p>
+</div>
+<div class="slide" id="handle-a-submitted-form">
+<h1>Handle a Submitted Form</h1>
+<p>In <tt class="docutils literal">views.py</tt>, update the <tt class="docutils literal">add_view</tt>:</p>
+<pre class="code python small literal-block">
+<span class="k">def</span> <span class="nf">add_view</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">user</span><span class="o">.</span><span class="n">is_authenticated</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">PermissionDenied</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">'POST'</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">PostForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">:</span>
+            <span class="n">post</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;post '</span><span class="si">%s</span><span class="s">' saved&quot;</span> <span class="o">%</span> <span class="n">post</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">add_message</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">messages</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s">'blog_index'</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">add_message</span><span class="p">(</span><span class="s">&quot;please fix the errors below&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c">#...</span>
+</pre>
+</div>
+<div class="slide" id="showing-messages">
+<h1>Showing Messages</h1>
+<p>The <tt class="docutils literal">messages</tt> framework pushes messages onto a stack.</p>
+<p class="incremental">You can then pop them back off by printing them in a template.</p>
+<div class="incremental container">
+<p>In <tt class="docutils literal">base.html</tt> let's give them a place to go:</p>
+<pre class="code jinja small literal-block">
+<span class="x">&lt;div id=&quot;container&quot;&gt;
+  </span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">messages</span> <span class="cp">%}</span><span class="x">
+  &lt;div class=&quot;notifications&quot;&gt;
+   </span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">message</span> <span class="k">in</span> <span class="nv">messages</span> <span class="cp">%}</span><span class="x">
+   &lt;p&gt;</span><span class="cp">{{</span> <span class="nv">message</span> <span class="cp">}}</span><span class="x">&lt;/p&gt;
+   </span><span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span><span class="x">
+  &lt;/div&gt;
+  </span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x">
+  &lt;!-- main content div below here --&gt;</span>
+</pre>
+</div>
+</div>
+<div class="slide" id="final-run">
+<h1>Final Run</h1>
+<p>That should be enough to get us going.</p>
+<p class="incremental">Fill out your form, supplying title and text.</p>
+<p class="incremental">Submit the form, and notice the messaging from the system.</p>
+<p class="incremental">Why is your new post not appearing in the blog list?</p>
+</div>
+<div class="slide" id="next-steps">
+<h1>Next Steps</h1>
+<p>There are a number of improvements one could make to this blog system:</p>
+<ul class="incremental simple">
+<li>Send email notifications to &quot;blog administrators&quot; that would notify them of
+new posts awaiting publication.</li>
+<li>Provide a second list view giving users access to edit their unpublished
+posts.</li>
+<li>Provide restricted access to certain users to view all unpublished posts and
+choose to publish them.</li>
+<li>Add a form field for the post category and put the post in a category when
+processing the form</li>
+<li>Provide a list view of a category, showing all posts in it.</li>
+<li>Provide HTML editing for post text.</li>
+</ul>
+</div>
+<div class="slide" id="that-s-all-for-now">
+<h1>That's All For Now</h1>
+<p>But this is all we have time for in this session.</p>
+<p class="big-centered incremental">We'll see you next session!</p>
 </div>
 </div>
 </body>

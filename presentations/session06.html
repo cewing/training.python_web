@@ -146,15 +146,16 @@ As your tests pass, you know you're building what you want.</p>
 <p class="incremental">You'll want to read more about this module. See the reading list for
 suggestions.</p>
 </div>
-<div class="slide" id="testing-envrionment">
-<h1>Testing Envrionment</h1>
+<div class="slide" id="testing-environment">
+<h1>Testing Environment</h1>
 <p>The Python <tt class="docutils literal">unittest</tt> module defines a class called a <tt class="docutils literal">TestCase</tt>. It
 serves as a container for a set of tests and the code needed to run them.</p>
 <p class="incremental">This class provides <tt class="docutils literal">setUp</tt> and <tt class="docutils literal">tearDown</tt> methods to control the
 environment for each test.</p>
 <p class="incremental">These methods are run before and after <em>each test</em>, and may be used to provide
 <em>isolation</em> between tests.</p>
-<p class="incremental">Create a <tt class="docutils literal">microblog_tests.py</tt> file.  Open it in your editor</p>
+<p class="incremental">In your <tt class="docutils literal">microblog</tt> folder create a <tt class="docutils literal">microblog_tests.py</tt> file.</p>
+<p class="incremental">Open it in your editor.</p>
 </div>
 <div class="slide" id="testing-setup">
 <h1>Testing Setup</h1>
@@ -512,14 +513,15 @@ FAILED (errors=2)
 </div>
 <div class="slide" id="make-them-pass">
 <h1>Make Them Pass</h1>
-<p>Now we have 4 tests, and two fail, add this function to <tt class="docutils literal">microblog.py</tt>:</p>
-<pre class="code python small literal-block">
+<p>Now we have 4 tests, and two fail.</p>
+<p class="incremental">add the <tt class="docutils literal">get_all_entries</tt> function to <tt class="docutils literal">microblog.py</tt>:</p>
+<pre class="code python small incremental literal-block">
 <span class="k">def</span> <span class="nf">get_all_entries</span><span class="p">():</span>
     <span class="n">con</span> <span class="o">=</span> <span class="n">get_database_connection</span><span class="p">()</span>
     <span class="n">cur</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">'SELECT title, text FROM entries ORDER BY id DESC'</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">text</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">cur</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()]</span>
 </pre>
-<div class="incremental small container">
+<div class="incremental container">
 <p>And back in your terminal:</p>
 <pre class="small literal-block">
 (flaskenv)$ python microblog_tests.py
@@ -543,9 +545,13 @@ it does.</li>
 </ul>
 <p class="incremental">We're ready now to put a face on it, so we can see what we're doing!</p>
 </div>
+<div class="slide" id="break-time">
+<h1>Break Time</h1>
+<p>But first, let's take a quick break to clear our heads.</p>
+</div>
 <div class="slide" id="templates-in-flask">
 <h1>Templates In Flask</h1>
-<p>First, though, a detour into templates as they work in Flask</p>
+<p>We'll start with a detour into templates as they work in Flask</p>
 <div class="incremental container">
 <p>Jinja2 templates use the concept of an <em>Environment</em> to:</p>
 <ul class="incremental simple">
@@ -903,29 +909,28 @@ FAILED (failures=1)
 <div class="slide" id="login-form-template">
 <h1>Login Form Template</h1>
 <p>Add <tt class="docutils literal">login.html</tt> to the <tt class="docutils literal">templates</tt> directory:</p>
-<!-- code-block: jinja
-:class: tiny
-
-{% extends "layout.html" %}
-{% block body %}
-  <h2>Login</h2>
-  {% if error -%}
-    <p class="error"><strong>Error</strong> {{ error }}
-  {%- endif %}
-  <form action="{{ url_for('login') }}" method="POST">
-    <div class="field">
-      <label for="username">Username</label>
-      <input type="text" name="username" id="username"/>
-    </div>
-    <div class="field">
-      <label for="password">Password</label>
-      <input type="password" name="password" id="password"/>
-    </div>
-    <div class="control_row">
-      <input type="submit" name="Login" value="Login"/>
-    </div>
-  </form>
-{% endblock %} -->
+<pre class="code jinja tiny literal-block">
+<span class="cp">{%</span> <span class="k">extends</span> <span class="s2">&quot;layout.html&quot;</span> <span class="cp">%}</span><span class="x">
+</span><span class="cp">{%</span> <span class="k">block</span> <span class="nv">body</span> <span class="cp">%}</span><span class="x">
+  &lt;h2&gt;Login&lt;/h2&gt;
+  </span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">error</span> -<span class="cp">%}</span><span class="x">
+    &lt;p class=&quot;error&quot;&gt;&lt;strong&gt;Error&lt;/strong&gt; </span><span class="cp">{{</span> <span class="nv">error</span> <span class="cp">}}</span><span class="x">
+  </span><span class="cp">{%</span>- <span class="k">endif</span> <span class="cp">%}</span><span class="x">
+  &lt;form action=&quot;</span><span class="cp">{{</span> <span class="nv">url_for</span><span class="o">(</span><span class="s1">'login'</span><span class="o">)</span> <span class="cp">}}</span><span class="x">&quot; method=&quot;POST&quot;&gt;
+    &lt;div class=&quot;field&quot;&gt;
+      &lt;label for=&quot;username&quot;&gt;Username&lt;/label&gt;
+      &lt;input type=&quot;text&quot; name=&quot;username&quot; id=&quot;username&quot;/&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;field&quot;&gt;
+      &lt;label for=&quot;password&quot;&gt;Password&lt;/label&gt;
+      &lt;input type=&quot;password&quot; name=&quot;password&quot; id=&quot;password&quot;/&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;control_row&quot;&gt;
+      &lt;input type=&quot;submit&quot; name=&quot;Login&quot; value=&quot;Login&quot;/&gt;
+    &lt;/div&gt;
+  &lt;/form&gt;
+</span><span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+</pre>
 </div>
 <div class="slide" id="required-imports">
 <h1>Required Imports</h1>

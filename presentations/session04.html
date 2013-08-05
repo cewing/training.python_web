@@ -738,16 +738,16 @@ link back to the list</li>
 <div class="slide" id="some-questions-to-ponder">
 <h1>Some Questions to Ponder</h1>
 <p class="incremental">When viewing our first wsgi app, do we see the name of the wsgi application
-script anywhere?</p>
+script anywhere in the URL?</p>
 <p class="incremental">In our wsgi application script, how many applications did we actually have?</p>
 <p class="incremental">How are we going to serve different types of information out of a single
 application?</p>
 </div>
-<div class="slide" id="routing">
-<h1>Routing</h1>
+<div class="slide" id="dispatch">
+<h1>Dispatch</h1>
 <p>We have to write an app that will map our incoming request path to some code
 that can handle that request.</p>
-<p class="incremental">This process is called <tt class="docutils literal">routing</tt>. There are many possible approaches</p>
+<p class="incremental">This process is called <tt class="docutils literal">dispatch</tt>. There are many possible approaches</p>
 <p class="incremental">Let's begin by designing this piece of it.</p>
 <p class="incremental">Open <tt class="docutils literal">bookapp.py</tt> from the <tt class="docutils literal">wsgi</tt> folder.  We'll do our work here.</p>
 </div>
@@ -758,7 +758,7 @@ user requested when they loaded the page.</p>
 <p class="incremental">We can design the URLs that our app will use to assist us in routing.</p>
 <p class="incremental">Let's declare that any request for <tt class="docutils literal">/</tt> will map to the list page</p>
 <div class="incremental container">
-<p>We can furthermore say that the URL for a book will look like this:</p>
+<p>We can also say that the URL for a book will look like this:</p>
 <pre class="literal-block">
 http://localhost:8080/book/&lt;identifier&gt;
 </pre>
@@ -807,7 +807,7 @@ response</li>
 </div>
 <div class="slide" id="id7">
 <h1>My Solution</h1>
-<pre class="code python small literal-block">
+<pre class="code python small incremental literal-block">
 <span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">):</span>
     <span class="n">headers</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&quot;Content-type&quot;</span><span class="p">,</span> <span class="s">&quot;text/html&quot;</span><span class="p">)]</span>
     <span class="k">try</span><span class="p">:</span>

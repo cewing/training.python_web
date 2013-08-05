@@ -83,8 +83,8 @@ and they often promote code reuse</p>
 <p class="incremental">A framework allows you to build different kinds of applications.</p>
 <p class="incremental">A framework abstracts what needs to be abstracted, and allows control of the
 rest.</p>
-<p class="incremental">Think back over the last four weeks. What were your pain points? Which bits do
-you wish you didn't have to think about?</p>
+<p class="incremental">Think back over the last four sessions. What were your pain points? Which bits
+do you wish you didn't have to think about?</p>
 </div>
 <div class="slide" id="level-of-abstraction">
 <h1>Level of Abstraction</h1>
@@ -467,15 +467,15 @@ templates</em></p>
 <p>Quit your Flask app with <tt class="docutils literal">^C</tt>.  Then start a python interpreter in that same
 terminal and import your <tt class="docutils literal">flask_intro.py</tt> module:</p>
 <pre class="code python literal-block">
-<span class="kn">import</span> <span class="nn">flask_intro</span>
-<span class="kn">from</span> <span class="nn">flask_intro</span> <span class="kn">import</span> <span class="n">app</span>
-<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">url_for</span>
-<span class="k">with</span> <span class="n">app</span><span class="o">.</span><span class="n">test_request_context</span><span class="p">():</span>
-    <span class="k">print</span> <span class="n">url_for</span><span class="p">(</span><span class="s">'show_profile'</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="s">&quot;cris&quot;</span><span class="p">)</span>
-    <span class="k">print</span> <span class="n">url_for</span><span class="p">(</span><span class="s">'divide'</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="mf">23.7</span><span class="p">)</span>
-
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">flask_intro</span> <span class="kn">import</span> <span class="n">app</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">url_for</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">with</span> <span class="n">app</span><span class="o">.</span><span class="n">test_request_context</span><span class="p">():</span>
+<span class="o">...</span>     <span class="k">print</span> <span class="n">url_for</span><span class="p">(</span><span class="s">'show_profile'</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="s">&quot;cris&quot;</span><span class="p">)</span>
+<span class="o">...</span>     <span class="k">print</span> <span class="n">url_for</span><span class="p">(</span><span class="s">'divide'</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="mf">23.7</span><span class="p">)</span>
+<span class="o">...</span>
 <span class="s">'/profile/cris/'</span>
 <span class="s">'/div/23.7/'</span>
+<span class="o">&gt;&gt;&gt;</span>
 </pre>
 </div>
 <div class="slide" id="break-time">

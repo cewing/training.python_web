@@ -145,11 +145,11 @@ rule):</p>
 <li><tt class="docutils literal">pip install virtualenv</tt></li>
 <li><tt class="docutils literal">easy_install virtualenv</tt></li>
 </ul>
-<p class="incremental">These both demand that you have already got <tt class="docutils literal">pip</tt> or <tt class="docutils literal">easy_install</tt>. If
-you haven't, try this way instead:</p>
+<p class="incremental">You must have <tt class="docutils literal">pip</tt> or <tt class="docutils literal">easy_install</tt> installed.  Try this:</p>
 <ul class="incremental simple">
 <li>download <tt class="docutils literal"><span class="pre">https://raw.github.com/pypa/virtualenv/master/virtualenv.py</span></tt></li>
 <li>remember where it goes.  You'll need it</li>
+<li>there is a copy in the class resources (<tt class="docutils literal">common</tt>)</li>
 </ul>
 </div>
 <div class="slide" id="creating-a-virtualenv">
@@ -213,11 +213,11 @@ install the libraries you want:</p>
 <p>BeautifulSoup is built to use the Python HTMLParser.</p>
 <ul class="incremental simple">
 <li>Batteries Included.  It's already there</li>
-<li>It kinda sucks, especially before Python 2.7.3</li>
+<li>It's not great, especially before Python 2.7.3</li>
 </ul>
-<p class="incremental">BeautifulSoup also supports using other parsers. Let's install one. There are
-two decent choices: <tt class="docutils literal">lxml</tt> and <tt class="docutils literal">html5lib</tt>.</p>
-<p class="incremental"><tt class="docutils literal">lxml</tt> is better, but harder to install.  Let's use <tt class="docutils literal">html5lib</tt> today.</p>
+<p class="incremental">BeautifulSoup also supports using other parsers.</p>
+<p class="incremental">There are two good choices: <tt class="docutils literal">lxml</tt> and <tt class="docutils literal">html5lib</tt>.</p>
+<p class="incremental"><tt class="docutils literal">lxml</tt> is better, but much harder to install.  Let's use <tt class="docutils literal">html5lib</tt>.</p>
 </div>
 <div class="slide" id="install-a-parsing-engine">
 <h1>Install a Parsing Engine</h1>
@@ -225,10 +225,9 @@ two decent choices: <tt class="docutils literal">lxml</tt> and <tt class="docuti
 <pre class="literal-block">
 (soupenv)$ pip install html5lib
 </pre>
-<p class="incremental">Once that is installed, BeautifulSoup will choose it instead of the standard
-library module.</p>
-<p class="incremental">BeautifulSoup will choose the best available, you don't need to worry about it
-(though you can specify).</p>
+<p class="incremental">Once installed, BeautifulSoup will choose it automatically.</p>
+<p class="incremental">BeautifulSoup will choose the &quot;best&quot; available.</p>
+<p class="incremental">You can specify the parser if you need to for some reason.</p>
 </div>
 <div class="slide" id="install-requests">
 <h1>Install Requests</h1>
@@ -262,46 +261,41 @@ formula for a search URL</p>
 <li>price: <tt class="docutils literal">minAsk=NNN maxAsk=NNN</tt></li>
 <li>bedrooms: <tt class="docutils literal">bedrooms=N</tt> (N in range 1-8)</li>
 </ul>
-<p class="incremental">We can make a request with these parameters using the <tt class="docutils literal">requests</tt> library we
-installed a moment ago</p>
+<p class="incremental">We'll make an HTTP request with these parameters</p>
 </div>
 <div class="slide" id="opening-urls-with-requests">
 <h1>Opening URLs with Requests</h1>
-<p>Requests has a very nice API for doing HTTP requests.</p>
-<p class="incremental">Each HTTP method is represented by a module-level function:</p>
+<p>In <tt class="docutils literal">requests</tt>, each HTTP method has a module-level function:</p>
 <ul class="incremental simple">
 <li><tt class="docutils literal">GET</tt> == <tt class="docutils literal">requests.get(url, **kwargs)</tt></li>
 <li><tt class="docutils literal">POST</tt> == <tt class="docutils literal">requests.post(url, **kwargs)</tt></li>
 <li>...</li>
 </ul>
-<p class="incremental">Keyword arguments allow for other parts of an HTTP request:</p>
+<p class="incremental"><tt class="docutils literal">kwargs</tt> represent other parts of an HTTP request:</p>
 <ul class="incremental simple">
-<li><tt class="docutils literal">params</tt>: url parameters (?foo=bar&amp;baz=bim)</li>
-<li><tt class="docutils literal">headers</tt>: headers to send with the request</li>
+<li><tt class="docutils literal">params</tt>: a dict of url parameters (?foo=bar&amp;baz=bim)</li>
+<li><tt class="docutils literal">headers</tt>: a dict of headers to send with the request</li>
 <li><tt class="docutils literal">data</tt>: the body of the request, if any (form data for POST goes here)</li>
 <li>...</li>
 </ul>
 </div>
 <div class="slide" id="getting-responses-with-requests">
 <h1>Getting Responses with Requests</h1>
-<p>Once you've made a request using one of these methods, the return value is a
-<tt class="docutils literal">response</tt>.</p>
-<p class="incremental">This object has a number of useful attributes:</p>
+<p>The return value from one of these functions is a <tt class="docutils literal">response</tt> which provides:</p>
 <ul class="incremental simple">
 <li><tt class="docutils literal">response.status_code</tt>: see the HTTP Status Code returned</li>
-<li><tt class="docutils literal">response.ok</tt>: True if <tt class="docutils literal">response.status_code</tt> is not an error code</li>
-<li><tt class="docutils literal">response.headers</tt>: The headers sent in the response from the server</li>
-<li><tt class="docutils literal">response.text</tt>: Body of the response, decoded to a unicode string</li>
-<li><tt class="docutils literal">response.encoding</tt>: The encoding used to decode <tt class="docutils literal">response.text</tt></li>
-<li><tt class="docutils literal">response.content</tt>: The original response body, not decoded (useful for
-binary content)</li>
+<li><tt class="docutils literal">response.ok</tt>: True if <tt class="docutils literal">response.status_code</tt> is not an error</li>
+<li><tt class="docutils literal">response.raise_for_status()</tt>: call to raise a python error if it is</li>
+<li><tt class="docutils literal">response.headers</tt>: The headers sent from the server</li>
+<li><tt class="docutils literal">response.text</tt>: Body of the response, decoded to unicode</li>
+<li><tt class="docutils literal">response.encoding</tt>: The encoding used to decode</li>
+<li><tt class="docutils literal">response.content</tt>: The original response body as bytes</li>
 </ul>
-<p class="incremental">If an error status is returned, you can raise a Python error by calling
-<tt class="docutils literal">response.raise_for_status</tt>.</p>
+<p class="incremental small"><tt class="docutils literal">requests documentation</tt>: <a class="reference external" href="http://docs.python-requests.org/en/latest/">http://docs.python-requests.org/en/latest/</a></p>
 </div>
 <div class="slide" id="fetch-search-results">
 <h1>Fetch Search Results</h1>
-<p>We can start our work by writing a function <tt class="docutils literal">fetch_search_results</tt></p>
+<p>We'll start by writing a function <tt class="docutils literal">fetch_search_results</tt></p>
 <ul class="incremental simple">
 <li>It will accept one keyword argument for each of the possible query values</li>
 <li>It will build a dictionary of request query parameters from incoming keywords</li>
@@ -309,8 +303,7 @@ binary content)</li>
 <li>It will return the body of the response if there is no error</li>
 <li>It will raise an error if there is a problem with the response</li>
 </ul>
-<p class="incremental">Using what you've learned, take a stab at writing this function. Put it in
-<tt class="docutils literal">mashup.py</tt></p>
+<p class="incremental">Try writing this function. Put it in <tt class="docutils literal">mashup.py</tt></p>
 </div>
 <div class="slide" id="my-solution">
 <h1>My Solution</h1>
@@ -327,10 +320,8 @@ binary content)</li>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;No valid keywords&quot;</span><span class="p">)</span>
 
     <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">use_kwargs</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">resp</span><span class="o">.</span><span class="n">encoding</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">resp</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+    <span class="n">resp</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span> <span class="c">#&lt;- no-op if status==200</span>
+    <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">resp</span><span class="o">.</span><span class="n">encoding</span>
 </pre>
 </div>
 <div class="slide" id="parse-the-results">
@@ -376,15 +367,18 @@ object as the sole argument:</p>
 </div>
 <div class="slide" id="put-it-together">
 <h1>Put It Together</h1>
-<p>To see how we're doing, we'll need to make our script do something when run.</p>
-<p class="incremental">Add an <tt class="docutils literal">if __name__ == '__main__`:</tt> block to the bottom of our library</p>
+<p>We'll need to make our script do something when run.</p>
+<pre class="code python incremental small literal-block">
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="c"># do something</span>
+</pre>
 <ul class="incremental simple">
 <li>Fetch a search results page</li>
 <li>Parse the resulting HTML</li>
 <li>For now, print out the results so we can see what we get</li>
 </ul>
 <div class="incremental small container">
-<p>You can print nice-looking output with BeautifulSoup:</p>
+<p>Use the <tt class="docutils literal">prettify</tt> method on a BeautifulSoup object:</p>
 <pre class="literal-block">
 print parsed.prettify()
 </pre>
@@ -393,7 +387,7 @@ print parsed.prettify()
 <div class="slide" id="id2">
 <h1>My Solution</h1>
 <p>Try to come up with the proper code on your own.  Add it to <tt class="docutils literal">mashup.py</tt></p>
-<pre class="code python incremental literal-block">
+<pre class="code python incremental small literal-block">
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
     <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">'minAsk'</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span> <span class="s">'maxAsk'</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span> <span class="s">'bedrooms'</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
     <span class="n">html</span><span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="n">fetch_search_results</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span>
@@ -425,8 +419,8 @@ it without needing to hit the craiglist servers each time:</p>
 </div>
 <div class="slide" id="finding-the-needle">
 <h1>Finding The Needle</h1>
-<p>The next step is to find the bits of this pile of HTML that matter to us.</p>
-<p class="incremental">We've got this HTML file, so let's open it in a browser and take a look</p>
+<p>Next we find the bits of this pile of HTML that matter to us.</p>
+<p class="incremental">Open your html file in a browser and take a look.</p>
 <p class="incremental">We'll want to find:</p>
 <ul class="incremental simple">
 <li>The HTML element that contains a single listing</li>
@@ -438,19 +432,18 @@ it without needing to hit the craiglist servers each time:</p>
 </div>
 <div class="slide" id="pulling-it-out">
 <h1>Pulling it Out</h1>
-<p>Now that we know what we are looking for, we can extract it. In BeautifulSoup:</p>
+<p>We can extract this information now. In BeautifulSoup:</p>
 <ul class="incremental simple">
-<li>All HTML elements (including the parsed document itself) act like <tt class="docutils literal">tags</tt></li>
-<li>A <tt class="docutils literal">tag</tt> can be searched using the <tt class="docutils literal">find_all</tt> method</li>
-<li>The <tt class="docutils literal">find_all</tt> method searches the descendents of the tag on which it is
-called.</li>
-<li>The <tt class="docutils literal">find_all</tt> method takes arguments which act as <em>filters</em> on the search
-results</li>
+<li>All HTML elements (including the parsed document itself) are <tt class="docutils literal">tags</tt></li>
+<li>A <tt class="docutils literal">tag</tt> can be searched using its <tt class="docutils literal">find_all</tt> method</li>
+<li>This searches the descendents of the tag on which it is called.</li>
+<li>It takes arguments which act as <em>filters</em> on the search results</li>
 </ul>
-<div class="incremental line-block">
-<div class="line">like so:</div>
-<div class="line"><br /></div>
-<div class="line"><tt class="docutils literal">tag.find_all(name, attrs, recursive, text, limit, **kwargs)</tt></div>
+<div class="incremental container">
+<p>like so:</p>
+<pre class="small literal-block">
+tag.find_all(name, attrs, recursive, text, limit, **kwargs)
+</pre>
 </div>
 </div>
 <div class="slide" id="searching-by-css-class">
@@ -567,7 +560,7 @@ that matches the filters you provide.</p>
 <div class="slide" id="simple-navigation-and-text">
 <h1>Simple Navigation and Text</h1>
 <p>We can get to a simple text node by navigating there.</p>
-<p class="incremental">BeautifulSoup tags support navigation up, down and across document nodes.</p>
+<p class="incremental">You can navigate up, down and across document nodes.</p>
 <div class="incremental container">
 <p>We already have the <tt class="docutils literal">price</tt> span, the size text node is next at the same
 level:</p>
@@ -581,7 +574,7 @@ this.</p>
 </div>
 <div class="slide" id="the-navigablestring-element">
 <h1>The NavigableString Element</h1>
-<p>The most obvious reason is that we don't really want all the extra whitespace.</p>
+<p>The most obvious reason is that we don't want extra whitespace.</p>
 <p class="incremental">The second reason is more subtle. The values returned by <tt class="docutils literal">string</tt> are
 <strong>not</strong> simple unicode strings</p>
 <div class="incremental container">
@@ -591,7 +584,6 @@ this.</p>
 <span class="o">&lt;</span><span class="k">class</span> <span class="err">'</span><span class="nc">bs4</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">NavigableString</span><span class="s">'&gt;</span>
 </pre>
 </div>
-<p class="incremental">These things hold references to their surroundings.</p>
 <p class="incremental">Calling <tt class="docutils literal">strip</tt> or casting them to <tt class="docutils literal">unicode</tt> converts them, saving memory</p>
 </div>
 <div class="slide" id="put-it-all-together">
@@ -599,13 +591,24 @@ this.</p>
 <p>Okay, a challenge.  Combine everything we've done into a function that:</p>
 <ul class="incremental simple">
 <li>Extracts all the locatable listings from our html page</li>
-<li>Iterates over each of them, and builds a dictionary of data
-* include <tt class="docutils literal">location</tt>, <tt class="docutils literal">href</tt>, <tt class="docutils literal">description</tt>, <tt class="docutils literal">price</tt> and <tt class="docutils literal">size</tt></li>
+<li>Iterates over each of them, and builds a dictionary of data<ul>
+<li>include <tt class="docutils literal">location</tt>, <tt class="docutils literal">href</tt>, <tt class="docutils literal">description</tt>, <tt class="docutils literal">price</tt> and <tt class="docutils literal">size</tt></li>
+</ul>
+</li>
 <li>Returns a list of these dictionaries</li>
 </ul>
 <p class="incremental">Call it <tt class="docutils literal">extract_listings</tt></p>
 <p class="incremental">Put this new function into <tt class="docutils literal">mashup.py</tt> and call it from <tt class="docutils literal">__main__</tt>,
 printing the result</p>
+</div>
+<div class="slide" id="break-time">
+<h1>Break Time</h1>
+<p>Once you have this working, take a break.</p>
+<p class="incremental">When we return, we'll try a saner approach to getting data from online</p>
+<div class="incremental container">
+<p>While you have a moment, sign up for an API key from this service:</p>
+<p><a class="reference external" href="http://www.walkscore.com/professional/api.php">http://www.walkscore.com/professional/api.php</a></p>
+</div>
 </div>
 <div class="slide" id="id3">
 <h1>My Solution</h1>
@@ -713,13 +716,13 @@ not go through it here, though.</p>
 <ul class="incremental simple">
 <li>XML-RPC allows introspection</li>
 <li>XML-RPC forces you to introspect to get information</li>
-<li><em>Wouldn't it be nice to get that automatically?</em></li>
+<li><strong>Wouldn't it be nice to get that automatically?</strong></li>
 <li>XML-RPC provides data types</li>
 <li>XML-RPC provides only <em>certain</em> data types</li>
-<li><em>Wouldn't it be nice to have an extensible system for types?</em></li>
+<li><strong>Wouldn't it be nice to have an extensible system for types?</strong></li>
 <li>XML-RPC allows calling methods with parameters</li>
 <li>XML-RPC only allows calling methods, nothing else</li>
-<li><em>wouldn't it be nice to have contextual data as well?</em></li>
+<li><strong>wouldn't it be nice to have contextual data as well?</strong></li>
 </ul>
 <p class="incremental center"><strong>Enter SOAP: Simple Object Access Protocol</strong></p>
 </div>
@@ -853,7 +856,7 @@ the overhead required to use the protocol?</p>
 <h1>REST</h1>
 <p class="center">Representational State Transfer</p>
 <ul class="incremental simple">
-<li>Originally described by Roy T. Fielding (did you read it?)</li>
+<li>Originally described by Roy T. Fielding (worth reading)</li>
 <li>Use HTTP for what it can do</li>
 <li>Read more in <a class="reference external" href="http://www.crummy.com/writing/RESTful-Web-Services/">this book</a>*</li>
 </ul>
@@ -883,7 +886,7 @@ the overhead required to use the protocol?</p>
 <h1>ROA</h1>
 <p>This is <strong>Resource Oriented Architecture</strong></p>
 <p class="incremental">The URL represents the <em>resource</em> we are working with</p>
-<p class="incremental">The HTTP Verb represents the <tt class="docutils literal">action</tt> to be taken</p>
+<p class="incremental">The HTTP Method represents the <tt class="docutils literal">action</tt> to be taken</p>
 <p class="incremental">The HTTP Code returned tells us the <tt class="docutils literal">result</tt> (whether success or failure)</p>
 </div>
 <div class="slide" id="http-codes-revisited">
@@ -908,8 +911,8 @@ the overhead required to use the protocol?</p>
 <div class="slide" id="http-is-stateless">
 <h1>HTTP Is Stateless</h1>
 <p>No individual request may be assumed to know anything about any other request.</p>
-<p class="incremental">All the required information for to represent the possible actions to take
-<em>should be present in either the request or the response</em>.</p>
+<p class="incremental">All the required information representing the possible actions to take <em>should
+be present in every response</em>.</p>
 <p class="incremental big-centered">Thus:  HATEOAS</p>
 </div>
 <div class="slide" id="hateoas">
@@ -959,7 +962,7 @@ the overhead required to use the protocol?</p>
 <p>You can do the same thing in reverse, supply latitude and longitude and get
 back address information:</p>
 <pre class="code python small literal-block">
-<span class="o">&gt;&gt;&gt;</span> <span class="n">location</span> <span class="o">=</span> <span class="n">lookup</span><span class="p">[</span><span class="s">'results'</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s">'geometry'</span><span class="p">][</span><span class="s">'location'</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">location</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">'results'</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s">'geometry'</span><span class="p">][</span><span class="s">'location'</span><span class="p">]</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">latlng</span> <span class="o">=</span> <span class="s">'</span><span class="si">%f</span><span class="s">,</span><span class="si">%f</span><span class="s">'</span> <span class="o">%</span> <span class="p">(</span><span class="n">location</span><span class="p">[</span><span class="s">'lat'</span><span class="p">],</span> <span class="n">location</span><span class="p">[</span><span class="s">'lng'</span><span class="p">])</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span><span class="s">'latlng'</span><span class="p">:</span> <span class="n">latlng</span><span class="p">,</span> <span class="s">'sensor'</span><span class="p">:</span> <span class="s">'false'</span><span class="p">}</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">paramters</span><span class="p">)</span>
@@ -1023,7 +1026,7 @@ to least.</p>
 <p>And give the result a whirl:</p>
 <pre class="small literal-block">
 (soupenv)$ python mashup.py
-{'address': u'800 Bethlehem Road, Knightdale, NC 27545, USA',
+{'address': u'123 Some Street, Chapel Hill, NC ...',
  'description': u'3 bedroom 2 bathroom unit is move in ready!'
  ...
 }
@@ -1036,8 +1039,7 @@ to least.</p>
 <p class="incremental">So I'd like to find an apartment that is located somewhere 'walkable'</p>
 <p class="incremental">There's an API for that!</p>
 <p class="incremental"><a class="reference external" href="http://www.walkscore.com/professional/api.php">http://www.walkscore.com/professional/api.php</a></p>
-<p class="incremental">Take a second here and sign up for an api key. Use a real email address,
-they'll email you an API key.</p>
+<p class="incremental">If you haven't already, sign up for an API key now.</p>
 </div>
 <div class="slide" id="getting-a-walk-score">
 <h1>Getting a Walk Score</h1>
@@ -1115,10 +1117,12 @@ a walk score, along with our API key.</p>
         <span class="n">listing</span> <span class="o">=</span> <span class="n">add_walkscore</span><span class="p">(</span><span class="n">listing</span><span class="p">)</span>
         <span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">listing</span><span class="p">)</span>
 </pre>
-<p class="incremental">Let's try it out:</p>
+<div class="incremental container">
+<p>Let's try it out:</p>
 <pre class="literal-block">
 (soupenv)$ python mashup.py
 </pre>
+</div>
 </div>
 <div class="slide" id="wrap-up">
 <h1>Wrap Up</h1>

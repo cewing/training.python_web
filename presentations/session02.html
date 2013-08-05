@@ -303,11 +303,11 @@ sequence</li>
 ['AllowedVersions', 'CRLF', 'Commands',
  'Continuation', 'Debug', 'Flags', 'IMAP4',
  'IMAP4_PORT', 'IMAP4_SSL', 'IMAP4_SSL_PORT',
- 'IMAP4_stream', 'Int2AP', 'InternalDate',
- 'Internaldate2tuple', 'Literal', 'MapCRLF',
  ...
  'socket', 'ssl', 'sys', 'time']
+&gt;&gt;&gt; imaplib.Debug = 4
 </pre>
+<p class="incremental">Setting <tt class="docutils literal">imap.Debug</tt> shows us what is sent and received</p>
 </div>
 <div class="slide" id="id14">
 <h1>IMAP in Python</h1>
@@ -318,17 +318,15 @@ initialize an IMAP4_SSL client and authenticate:</p>
 &gt;&gt;&gt; conn = imaplib.IMAP4_SSL('mail.webfaction.com')
   57:04.83 imaplib version 2.58
   57:04.83 new IMAP4 connection, tag=FNHG
+  ...
 &gt;&gt;&gt; conn.login(username, password)
+  12:16.50 &gt; IMAD1 LOGIN username password
+  12:18.52 &lt; IMAD1 OK Logged in.
 ('OK', ['Logged in.'])
 </pre>
 </div>
 <div class="slide" id="id15">
 <h1>IMAP in Python</h1>
-<p>Let's set up debugging so that we can see the communication back and forth
-between client and server:</p>
-<pre class="literal-block">
-&gt;&gt;&gt; conn.debug = 4 # &gt;3 prints all messages
-</pre>
 <p>We can start by listing the mailboxes we have on the server:</p>
 <pre class="literal-block">
 &gt;&gt;&gt; conn.list()
@@ -362,11 +360,11 @@ earlier:</p>
 The return value is a string list of the UIDs of messages that match our
 search:</p>
 <pre class="literal-block">
-&gt;&gt;&gt; conn.search(None, '(FROM &quot;IPIP&quot;)')
-  18:25.41 &gt; FNHG5 SEARCH (FROM &quot;IPIP&quot;)
-  18:25.54 &lt; * SEARCH 1 2
+&gt;&gt;&gt; conn.search(None, '(FROM &quot;cris&quot;)')
+  18:25.41 &gt; FNHG5 SEARCH (FROM &quot;cris&quot;)
+  18:25.54 &lt; * SEARCH 1
   18:25.54 &lt; FNHG5 OK Search completed.
-('OK', ['1 2'])
+('OK', ['1'])
 &gt;&gt;&gt;
 </pre>
 </div>
@@ -376,11 +374,11 @@ search:</p>
 command to read it from the server. IMAP allows fetching each part of
 a message independently:</p>
 <pre class="literal-block">
-&gt;&gt;&gt; conn.fetch('2', '(BODY[HEADER])')
+&gt;&gt;&gt; conn.fetch('1', '(BODY[HEADER])')
 ...
-&gt;&gt;&gt; conn.fetch('2', '(BODY[TEXT])')
+&gt;&gt;&gt; conn.fetch('1', '(BODY[TEXT])')
 ...
-&gt;&gt;&gt; conn.fetch('2', '(FLAGS)')
+&gt;&gt;&gt; conn.fetch('1', '(FLAGS)')
 </pre>
 </div>
 <div class="slide" id="python-means-batteries-included">
@@ -389,8 +387,8 @@ a message independently:</p>
 object</p>
 <pre class="small literal-block">
 &gt;&gt;&gt; import email
-&gt;&gt;&gt; typ, data = conn.fetch('2', '(RFC822)')
-  28:08.40 &gt; FNHG8 FETCH 2 (RFC822)
+&gt;&gt;&gt; typ, data = conn.fetch('1', '(RFC822)')
+  28:08.40 &gt; FNHG8 FETCH 1 (RFC822)
   ...
 </pre>
 <p>Parse the returned data to get to the actual message</p>
@@ -405,11 +403,15 @@ object</p>
 <div class="slide" id="id19">
 <h1>IMAP in Python</h1>
 <p>Once we have that, we can play with the resulting email object:</p>
-<pre class="literal-block">
-&gt;&gt;&gt; msg['to']
+<pre class="small literal-block">
+&gt;&gt;&gt; msg.keys()
+['Return-Path', 'X-Original-To', 'Delivered-To', 'Received',
+ ...
+ 'To', 'Mime-Version', 'X-Mailer']
+&gt;&gt;&gt; msg['To']
 'demo&#64;crisewing.com'
 &gt;&gt;&gt; print msg.get_payload()
-This is an email message
+If you are reading this email, ...
 </pre>
 <p class="incremental center"><strong>Neat, huh?</strong></p>
 </div>
@@ -417,15 +419,20 @@ This is an email message
 <h1>What Have We Learned?</h1>
 <ul class="incremental simple">
 <li>Protocols are just a set of rules for how to communicate</li>
-<li>Protocols tell us how to delimit messages</li>
+<li>Protocols tell us how to parse and delimit messages</li>
 <li>Protocols tell us what messages are valid</li>
-<li>If we properly format request messages to a server, we can get answer
+<li>If we properly format request messages to a server, we can get response
 messages</li>
 <li>Python supports a number of these protocols</li>
 <li>So we don't have to remember how to format the commands ourselves</li>
 </ul>
 <p class="incremental">But in every case we've seen, we could do the same thing with a socket and
 some strings</p>
+</div>
+<div class="slide" id="break-time">
+<h1>Break Time</h1>
+<p>Let's take a few minutes here to clear our heads.</p>
+<p class="incremental">See you back here in 10 minutes.</p>
 </div>
 <div class="slide" id="http">
 <h1>HTTP</h1>
@@ -672,13 +679,13 @@ storage:</p>
 <li>DELETE = Delete</li>
 </ul>
 </div>
-<div class="slide" id="verbs-safe-unsafe">
-<h1>Verbs: Safe &lt;--&gt; Unsafe</h1>
-<p>HTTP verbs can be categorized as <strong>safe</strong> or <strong>unsafe</strong>, based on whether they
-might change something on the server:</p>
+<div class="slide" id="methods-safe-unsafe">
+<h1>Methods: Safe &lt;--&gt; Unsafe</h1>
+<p>HTTP methods can be categorized as <strong>safe</strong> or <strong>unsafe</strong>, based on whether
+they might change something on the server:</p>
 <ul class="incremental">
 <li><dl class="first docutils">
-<dt>Safe HTTP Verbs</dt>
+<dt>Safe HTTP Methods</dt>
 <dd><ul class="first last simple">
 <li>GET</li>
 </ul>
@@ -686,7 +693,7 @@ might change something on the server:</p>
 </dl>
 </li>
 <li><dl class="first docutils">
-<dt>Unsafe HTTP Verbs</dt>
+<dt>Unsafe HTTP Methods</dt>
 <dd><ul class="first last simple">
 <li>POST</li>
 <li>PUT</li>
@@ -698,13 +705,13 @@ might change something on the server:</p>
 </ul>
 <p class="incremental">This is a <em>normative</em> distinction, which is to say <strong>be careful</strong></p>
 </div>
-<div class="slide" id="verbs-idempoent">
-<h1>Verbs: Idempoent &lt;--&gt; ???</h1>
-<p>HTTP verbs can be categorized as <strong>idempotent</strong>, based on whether a given
+<div class="slide" id="methods-idempoent">
+<h1>Methods: Idempoent &lt;--&gt; ???</h1>
+<p>HTTP methods can be categorized as <strong>idempotent</strong>, based on whether a given
 request will always have the same result:</p>
 <ul class="incremental">
 <li><dl class="first docutils">
-<dt>Idempotent HTTP Verbs</dt>
+<dt>Idempotent HTTP Methods</dt>
 <dd><ul class="first last simple">
 <li>GET</li>
 <li>PUT</li>
@@ -714,7 +721,7 @@ request will always have the same result:</p>
 </dl>
 </li>
 <li><dl class="first docutils">
-<dt>Non-Idempotent HTTP Verbs</dt>
+<dt>Non-Idempotent HTTP Methods</dt>
 <dd><ul class="first last simple">
 <li>POST</li>
 </ul>

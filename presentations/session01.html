@@ -48,6 +48,7 @@ building blocks that make it possible.</p>
 <h1>But First</h1>
 <p>Class presentations are available online for your use</p>
 <p><a class="reference external" href="http://github.com/cewing/training.python_web">http://github.com/cewing/training.python_web</a></p>
+<p>Use the <tt class="docutils literal"><span class="pre">week-long-format</span></tt> branch for this class</p>
 <p>Licensed with Creative Commons BY-NC-SA</p>
 <ul class="simple">
 <li>You must attribute the work</li>
@@ -441,7 +442,7 @@ is a tuple of</p>
 <li>socket type</li>
 <li>socket protocol</li>
 <li>canonical name (usually empty, unless requested by flag)</li>
-<li>socket address</li>
+<li>socket address (tuple of IP and Port)</li>
 </ul>
 </div>
 <div class="slide" id="id20">
@@ -529,7 +530,7 @@ a real server online:</p>
 <div class="slide" id="sending-a-message">
 <h1>Sending a Message</h1>
 <p>Send a message to the server on the other end of our connection (we'll
-learn later today about the message we are sending):</p>
+learn is session 2 about the message we are sending):</p>
 <pre class="literal-block">
 &gt;&gt;&gt; msg = &quot;GET / HTTP/1.1\r\n&quot;
 &gt;&gt;&gt; msg += &quot;Host: crisewing.com\r\n\r\n&quot;
@@ -581,14 +582,14 @@ repeatedly. The last bunch will be less than <tt class="docutils literal">buffer
 &gt;&gt;&gt; cewing_socket = socket.socket(*info[:3])
 &gt;&gt;&gt; cewing_socket.connect(info[-1])
 &gt;&gt;&gt; msg = &quot;GET / HTTP/1.1\r\n\r\n&quot;
+&gt;&gt;&gt; msg += &quot;Host: crisewing.com\r\n\r\n&quot;
 &gt;&gt;&gt; cewing_socket.sendall(msg)
 </pre>
 </div>
 <div class="slide" id="id21">
 <h1>Putting it all together</h1>
 <p>Then, receive a reply, iterating until it is complete:</p>
-<blockquote>
-<pre class="doctest-block">
+<pre class="literal-block">
 &gt;&gt;&gt; buffsize = 4096
 &gt;&gt;&gt; response = ''
 &gt;&gt;&gt; done = False
@@ -601,7 +602,19 @@ repeatedly. The last bunch will be less than <tt class="docutils literal">buffer
 &gt;&gt;&gt; len(response)
 19427
 </pre>
-</blockquote>
+</div>
+<div class="slide" id="break-time">
+<h1>Break Time</h1>
+<p>So far we have:</p>
+<ul class="incremental simple">
+<li>learned about the &quot;layers&quot; of the TCP/IP Stack</li>
+<li>discussed <em>families</em>, <em>types</em> and <em>protocols</em> in sockets</li>
+<li>learned some API for finding out how to connect to a remote server</li>
+<li>made our first connection to a server</li>
+<li>and sent and received our first messages through a socket.</li>
+</ul>
+<p class="incremental">Not bad for a Monday morning.</p>
+<p class="incremental">Let's take 10 minutes and return to learn about the other end of this wire.</p>
 </div>
 <div class="slide" id="server-side">
 <h1>Server Side</h1>
@@ -610,6 +623,7 @@ repeatedly. The last bunch will be less than <tt class="docutils literal">buffer
 <div class="slide" id="id22">
 <h1>Construct a Socket</h1>
 <p><strong>For the moment, stop typing this into your interpreter.</strong></p>
+<div class="incremental container">
 <p>Again, we begin by constructing a socket. Since we are actually the server
 this time, we get to choose family, type and protocol:</p>
 <pre class="literal-block">
@@ -622,6 +636,7 @@ this time, we get to choose family, type and protocol:</p>
 &lt;socket._socketobject object at 0x100563c90&gt;
 </pre>
 </div>
+</div>
 <div class="slide" id="bind-the-socket">
 <h1>Bind the Socket</h1>
 <p>Our server socket needs to be bound to an address. This is the IP Address and
@@ -630,7 +645,7 @@ Port to which clients must connect:</p>
 &gt;&gt;&gt; address = ('127.0.0.1', 50000)
 &gt;&gt;&gt; server_socket.bind(address)
 </pre>
-<p><strong>Terminology Note</strong>: In a server/client relationship, the server <em>binds</em> to
+<p class="incremental"><strong>Terminology Note</strong>: In a server/client relationship, the server <em>binds</em> to
 an address and port. The client <em>connects</em></p>
 </div>
 <div class="slide" id="listen-for-connections">
@@ -655,7 +670,7 @@ queue</li>
 ... # this blocks until a client connects
 &gt;&gt;&gt; connection.recv(16)
 </pre>
-<ul class="incremental small simple">
+<ul class="incremental simple">
 <li>The <tt class="docutils literal">connection</tt> returned by a call to <tt class="docutils literal">accept</tt> is a <strong>new socket</strong></li>
 <li>It is this <em>new</em> socket that is used for communications with the client
 socket</li>
@@ -670,7 +685,7 @@ equal to <tt class="docutils literal">backlog</tt></li>
 <p>The same socket that received a message from the client may be used to return
 a reply:</p>
 <pre class="literal-block">
-&gt;&gt;&gt; connection.sendall(&quot;messasge received&quot;)
+&gt;&gt;&gt; connection.sendall(&quot;message received&quot;)
 </pre>
 </div>
 <div class="slide" id="clean-up">
@@ -721,10 +736,12 @@ message:</p>
 ...     socket.SOCK_STREAM,
 ...     socket.IPPROTO_IP)
 </pre>
-<p class="incremental">Before connecting, keep your eye on the server interpreter:</p>
+<div class="incremental container">
+<p>Before connecting, keep your eye on the server interpreter:</p>
 <pre class="literal-block">
 &gt;&gt;&gt; client_socket.connect(('127.0.0.1', 50000))
 </pre>
+</div>
 </div>
 <div class="slide" id="send-a-message-client-server">
 <h1>Send a Message Client-&gt;Server</h1>
@@ -798,6 +815,18 @@ it <tt class="docutils literal">echo_client.py</tt></p>
 </pre>
 <p class="incremental">Save that and try it out</p>
 </div>
+<div class="slide" id="check-your-work">
+<h1>Check Your Work</h1>
+<p>In your terminal, where you created and saved <tt class="docutils literal">echo_client.py</tt>:</p>
+<pre class="literal-block">
+$ python echo_client.py
+
+usage: python echo_client.py &quot;this is my message&quot;
+
+$ python echo_client.py &quot;my baloney has a first name&quot;
+sending &quot;my baloney has a first name&quot;
+</pre>
+</div>
 <div class="slide" id="the-echo-client-2">
 <h1>The Echo Client - 2</h1>
 <pre class="code python small literal-block">
@@ -842,7 +871,7 @@ message and send it back.  Let's make that next.</p>
     <span class="n">sock</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
     <span class="n">sock</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">pass</span>
+        <span class="k">pass</span> <span class="c">#&lt;- what goes here comes in the next slide</span>
     <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
         <span class="n">sock</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         <span class="k">return</span>
@@ -894,8 +923,8 @@ $ python echo_client.py &quot;I am sending a longer message.&quot;
 <div class="slide" id="next-steps">
 <h1>Next Steps</h1>
 <p>You've now seen the basics of socket-based communication.</p>
-<p class="incremental">This afternoon, we'll learn about the protocols that govern these types of
-communications.</p>
+<p class="incremental">In the next session, we'll learn about the protocols that govern these types
+of communications.</p>
 <p class="incremental">As an exercise, we'll extend this simple echo server into a basic HTTP
 server, and we'll be able to ditch the client and use a web browser instead.</p>
 </div>

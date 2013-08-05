@@ -244,29 +244,24 @@ getting a wsgi application:</p>
 </div>
 <div class="slide" id="the-django-wsgihandler">
 <h1>The Django WSGIHandler</h1>
-<pre class="code python tiny literal-block">
+<pre class="code python small literal-block">
 <span class="k">class</span> <span class="nc">WSGIHandler</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">BaseHandler</span><span class="p">):</span>
     <span class="c">#...</span>
     <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request_middleware</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="c">#... set up django middleware</span>
-        <span class="c">#...</span>
+        <span class="c">#... set up django middleware</span>
         <span class="k">try</span><span class="p">:</span>
+            <span class="c">#... build a request</span>
             <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request_class</span><span class="p">(</span><span class="n">environ</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">UnicodeDecodeError</span><span class="p">:</span>
-            <span class="c">#...</span>
-            <span class="n">response</span> <span class="o">=</span> <span class="n">http</span><span class="o">.</span><span class="n">HttpResponseBadRequest</span><span class="p">()</span>
+            <span class="c">#... handle request errors</span>
         <span class="k">else</span><span class="p">:</span>
+            <span class="c"># build a response</span>
             <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_response</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
-        <span class="c">#...</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">status_text</span> <span class="o">=</span> <span class="n">STATUS_CODE_TEXT</span><span class="p">[</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">]</span>
-        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-            <span class="n">status_text</span> <span class="o">=</span> <span class="s">'UNKNOWN STATUS CODE'</span>
+        <span class="c">#... determine response status</span>
         <span class="n">status</span> <span class="o">=</span> <span class="s">'</span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">'</span> <span class="o">%</span> <span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status_text</span><span class="p">)</span>
+        <span class="c">#... build response headers</span>
         <span class="n">response_headers</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">))</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
-        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">cookies</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-            <span class="n">response_headers</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="nb">str</span><span class="p">(</span><span class="s">'Set-Cookie'</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">header</span><span class="o">=</span><span class="s">''</span><span class="p">))))</span>
+        <span class="c">#... start a response with status and headers</span>
         <span class="n">start_response</span><span class="p">(</span><span class="n">force_str</span><span class="p">(</span><span class="n">status</span><span class="p">),</span> <span class="n">response_headers</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">response</span>
 </pre>
@@ -303,35 +298,15 @@ project.</p>
 </div>
 <div class="slide" id="connecting-a-database">
 <h1>Connecting A Database</h1>
-<p>Django comes with its own ORM (Object-Relational Mapper)</p>
-<p class="incremental">The first step in working with Django is to connect it to your database (this
-is set in <tt class="docutils literal">settings.py</tt>)</p>
-<pre class="code python small incremental literal-block">
-<span class="n">DATABASES</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s">'default'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">'ENGINE'</span><span class="p">:</span> <span class="s">'django.db.backends.&lt;your_db_backend&gt;'</span><span class="p">,</span>
-        <span class="s">'NAME'</span><span class="p">:</span> <span class="s">'&lt;your_db_name&gt;'</span><span class="p">,</span>
-        <span class="s">'USER'</span><span class="p">:</span> <span class="s">'&lt;your_db_user&gt;'</span><span class="p">,</span>
-        <span class="s">'PASSWORD'</span><span class="p">:</span> <span class="s">'&lt;your_db_password&gt;'</span><span class="p">,</span>
-        <span class="s">'HOST'</span><span class="p">:</span> <span class="s">'&lt;not_needed_on_localhost&gt;'</span><span class="p">,</span>
-        <span class="s">'PORT'</span><span class="p">:</span> <span class="s">'&lt;not_needed_on_localhost&gt;'</span><span class="p">,</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-</pre>
-</div>
-<div class="slide" id="a-quick-word-about-databases">
-<h1>A Quick Word about Databases</h1>
-<p>Sqlite3 is <strong>not</strong> a production-capable database. Do not attempt to use it as
-such.</p>
-<p class="incremental">Do not start a real project using sqlite3, expecting to move 'when you go to
-production'.</p>
-<p class="incremental">That being said, proper database administration is out-of-scope for this
-class.</p>
-<p class="incremental">So we'll be using sqlite3 for todays work.</p>
+<p>Django supplies its own ORM (Object-Relational Mapper)</p>
+<p class="incremental">This ORM sits on top of the DB-API implementation you choose.</p>
+<p class="incremental">You must provide connection information through Django configuration.</p>
+<p class="incremental">All Django configuration takes place in <tt class="docutils literal">settings.py</tt> in your project
+folder.</p>
 </div>
 <div class="slide" id="your-database-settings">
 <h1>Your Database Settings</h1>
-<p>Edit <tt class="docutils literal">settings.py</tt> in your project package to match:</p>
+<p>Edit your <tt class="docutils literal">settings.py</tt> to match:</p>
 <pre class="code python small literal-block">
 <span class="n">DATABASES</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s">'default'</span><span class="p">:</span> <span class="p">{</span>
@@ -348,7 +323,7 @@ class.</p>
 </div>
 <div class="slide" id="django-and-your-database">
 <h1>Django and Your Database</h1>
-<p>Django interfaces with the database using an ORM (Object Relational Mapping)</p>
+<p>Django's ORM provides a layer of <em>abstraction</em> between you and SQL</p>
 <p class="incremental">You write Python <em>models</em> describing the object that make up your system.</p>
 <p class="incremental">The ORM handles converting data from these objects into SQL statements (and
 back)</p>
@@ -434,8 +409,8 @@ mysite/
 <h1>Django Models</h1>
 <p>Any Python class in Django that is meant to be persisted <em>must</em> inherit from
 the Django <tt class="docutils literal">Model</tt> class.</p>
-<p class="incremental">This base class provides all the functionality that connects the Python code
-you write to your database.</p>
+<p class="incremental">This base class hooks in to the ORM functionality converting Python code to
+SQL.</p>
 <p class="incremental">You can override methods from the base <tt class="docutils literal">Model</tt> class to alter how this works
 or write new methods to add functionality.</p>
 <p class="incremental">Learn more about <a class="reference external" href="https://docs.djangoproject.com/en/1.5/topics/db/models/">models</a></p>
@@ -567,6 +542,26 @@ access to all the categories it has been placed in.</li>
 </pre>
 </div>
 </div>
+<div class="slide" id="a-word-about-development">
+<h1>A Word About Development</h1>
+<p>These models we've created are not going to change often. This is unusual for
+a development cycle.</p>
+<p class="incremental">The <tt class="docutils literal">syncdb</tt> management command only creates tables that <em>do not yet exist</em>.
+It <strong>does not update tables</strong>.</p>
+<p class="incremental">The <tt class="docutils literal">sqlclear &lt;appname&gt;</tt> command will print the <tt class="docutils literal">DROP TABLE</tt> statements to
+remove the tables for your app.</p>
+<p class="incremental">Or <tt class="docutils literal">sql &lt;appname&gt;</tt> will show the <tt class="docutils literal">CREATE TABLE</tt> statements, and you can work
+out the differences and update manually.</p>
+</div>
+<div class="slide" id="ack">
+<h1>ACK!!!</h1>
+<p>That doesn't sound very nice, does it?</p>
+<p class="incremental">Luckily, there is an app available for Django that helps with this: <tt class="docutils literal">South</tt></p>
+<p class="incremental">South allows you to incrementally update your database in a simplified way.</p>
+<p class="incremental">South supports forward, backward and data migrations.</p>
+<p class="incremental">We won't have time to <a class="reference external" href="http://south.readthedocs.org/en/latest/">cover it</a> in
+this class, but know it's there.</p>
+</div>
 <div class="slide" id="hooking-it-up">
 <h1>Hooking it Up</h1>
 <p>In order to use our new models, we need Django to know about our <em>app</em></p>
@@ -614,25 +609,6 @@ Installed 0 object(s) from 0 fixture(s)
 <p class="incremental">The ORM shields us, as Python developers, from SQL intricacies.</p>
 <p class="incremental">We don't need to know that a join table is needed for a ManyToMany relation.</p>
 <p class="incremental">This is but one of the ways that the ORM helps us.  More soon.</p>
-</div>
-<div class="slide" id="a-word-about-development">
-<h1>A Word About Development</h1>
-<p>These models we've created are not going to change often. This is unusual for
-a development cycle.</p>
-<p class="incremental">The <tt class="docutils literal">syncdb</tt> management command only creates tables that <em>do not yet exist</em>.
-It <strong>does not update tables</strong>.</p>
-<p class="incremental">The <tt class="docutils literal">sqlclear &lt;appname&gt;</tt> command will print the <tt class="docutils literal">DROP TABLE</tt> statements to
-remove the tables for your app.</p>
-<p class="incremental">Or <tt class="docutils literal">sql &lt;appname&gt;</tt> will show the <tt class="docutils literal">CREATE TABLE</tt> statements, and you can work
-out the differences and update manually.</p>
-</div>
-<div class="slide" id="ack">
-<h1>ACK!!!</h1>
-<p>That doesn't sound very nice, does it?</p>
-<p class="incremental">Luckily, there is an app available for Django that helps with this: <tt class="docutils literal">South</tt></p>
-<p class="incremental">South allows you to incrementally update your database in a simplified way.</p>
-<p class="incremental">South supports forward, backward and data migrations.</p>
-<p class="incremental">We won't have time to cover it in this class, but know it's there.</p>
 </div>
 <div class="slide" id="break-time">
 <h1>Break Time</h1>
@@ -800,7 +776,7 @@ constructions combining field names with field <em>lookups</em>:</p>
        <span class="n">AND</span> <span class="n">NOT</span> <span class="p">(</span><span class="s">&quot;myblog_post&quot;</span><span class="o">.</span><span class="s">&quot;text&quot;</span> <span class="n">LIKE</span> <span class="o">%</span><span class="n">created</span><span class="o">%</span> <span class="n">ESCAPE</span> <span class="s">'</span><span class="se">\'</span><span class="s"> )</span>
 <span class="p">)</span>
 </pre>
-<p class="incremental">The exact SQL will vary automatically depending on the database you are using.</p>
+<p class="incremental">The SQL will vary depending on which DBAPI backend you use (yay ORM!!!)</p>
 </div>
 <div class="slide" id="exploring-the-queryset-api">
 <h1>Exploring the QuerySet API</h1>
@@ -867,7 +843,7 @@ front-end acceptance tests.</p>
 <p class="incremental">Django provides <em>fixtures</em> to handle this need.</p>
 <p class="incremental">Create a directory called <tt class="docutils literal">fixtures</tt> inside your <tt class="docutils literal">myblog</tt> app directory.</p>
 <p class="incremental">Copy the file <tt class="docutils literal">myblog_test_fixture.json</tt> from the class resources into this
-directory, it contains a user for us.</p>
+directory, it contains users for our tests.</p>
 </div>
 <div class="slide" id="setting-up-our-tests">
 <h1>Setting Up Our Tests</h1>
