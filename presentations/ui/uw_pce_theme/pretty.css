@@ -50,7 +50,7 @@ div#controls form {position: absolute; bottom: 0; right: 0; width: 100%;
 #controls #navList #jumplist {position: absolute; bottom: 0; right: 0;
   background: #DDD; color: #227;}
 
-#currentSlide {text-align: center; font-size: 0.5em; color: #449;
+#currentSlide {text-align: center; font-size: 0.5em; color: white;
   font-family: sans-serif; font-weight: bold;}
 
 #slide0 {padding-top: 1.5em}
@@ -72,7 +72,12 @@ html>body .external {border-bottom: none;}
 img.incremental {visibility: hidden;}
 .slide .current {color: green;}
 
-
+#currentSlide span.csHere,
+#currentSlide span.csSep,
+#currentSlide span.csTotal {
+  color: white;
+  font-size: 120%;
+}
 
 .slide-display {display: inline ! important;}
 

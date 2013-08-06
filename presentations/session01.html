@@ -732,7 +732,7 @@ message:</p>
 <pre class="literal-block">
 &gt;&gt;&gt; import socket
 &gt;&gt;&gt; client_socket = socket.socket(
-...     socket.AF_INET
+...     socket.AF_INET,
 ...     socket.SOCK_STREAM,
 ...     socket.IPPROTO_IP)
 </pre>
@@ -759,7 +759,7 @@ server!</p>
 <p>Back in your server interpreter, go ahead and receive the message from your
 client:</p>
 <pre class="literal-block">
-&gt;&gt;&gt; conn.receive(32)
+&gt;&gt;&gt; conn.recv(32)
 'Hey, can you hear me?'
 </pre>
 <p>Send a message back, and then close up your connection:</p>
