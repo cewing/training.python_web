@@ -14,7 +14,7 @@ the Winter 2014 instance of the course, Taught by `Cris Ewing`_
 
 .. _Internet Programming in Python: http://www.pce.uw.edu/courses/internet-programming-python/downtown-seattle-winter-2014/
 .. _Certificate in Python Programming: http://www.pce.uw.edu/certificates/python-programming.html
-.. _University of Washington Professional & Continueing Education: http://www.pce.uw.edu/
+.. _University of Washington Professional & Continuing Education: http://www.pce.uw.edu/
 .. _Cris Ewing: http://www.linkedin.com/profile/view?id=19741495
 
 Building The Documentation
