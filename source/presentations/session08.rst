@@ -501,7 +501,7 @@ It will be a stub for our public UI.  Add this to ``views.py`` in ``myblog``
 .. code-block:: python
     :class: small incremental
 
-    from django.http import HttpResponse
+    from django.http import HttpResponse, HttpResponseRedirect, Http404
 
     def stub_view(request, *args, **kwargs):
         body = "Stub View\n\n"
@@ -1670,17 +1670,18 @@ In ``views.py``, update the ``add_view``:
     
     def add_view(request):
         user = request.user
-        if not user.is_authenticated:
+        if not user.is_authenticated():
             raise PermissionDenied
         if request.method == 'POST':
             form = PostForm(request.POST)
-            if form.is_valid:
+            if form.is_valid():
                 post = form.save()
                 msg = "post '%s' saved" % post
                 messages.add_message(request, messages.INFO, msg)
                 return HttpResponseRedirect(reverse('blog_index'))
             else:
-                messages.add_message("please fix the errors below")
+                messages.add_message(request, messages.INFO, 
+                                     "please fix the errors below")
         else:
             #...
 

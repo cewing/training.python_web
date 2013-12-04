@@ -288,8 +288,8 @@ their tests.
 
 Now, we're ready to add our first actual test..
 
-Test Databse Setup
-------------------
+Test Database Setup
+-------------------
 
 We'd like to test that our database is correctly initialized. The schema has
 one table with three columns. Let's test that.
