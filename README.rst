@@ -6,11 +6,15 @@ Introduction
 This package provides the source for all lecture materials for a 10-session
 course in Web Development using Python.
 
-This version of the documentation is used for a one-week Python Web
-Programming Workshop taught by `Cris Ewing`_. This workshop is being `offered
-August 5-9, 2013`_ on the campus of the University of North Carolina in Chapel Hill, NC.
+This package provides the source for all lecture materials used for the
+`Internet Programming in Python`_ section of the `Certificate in Python
+Programming`_ offered by the `University of Washington Professional &
+Continuing Education`_ program. This version of the documentation is used for
+the Winter 2014 instance of the course, Taught by `Cris Ewing`_
 
-.. _offered August 5-9, 2013: http://trizpug.org/boot-camp/pywebpw13/
+.. _Internet Programming in Python: http://www.pce.uw.edu/courses/internet-programming-python/downtown-seattle-winter-2014/
+.. _Certificate in Python Programming: http://www.pce.uw.edu/certificates/python-programming.html
+.. _University of Washington Professional & Continuing Education: http://www.pce.uw.edu/
 .. _Cris Ewing: http://www.linkedin.com/profile/view?id=19741495
 
 Building The Documentation
