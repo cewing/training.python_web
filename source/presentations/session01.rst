@@ -20,8 +20,6 @@ Class presentations are available online for your use
 
 http://github.com/cewing/training.python_web
 
-Use the ``week-long-format`` branch for this class
-
 Licensed with Creative Commons BY-NC-SA
 
 * You must attribute the work
@@ -34,31 +32,11 @@ Find mistakes? See improvements? Make a pull request.
 But First
 ---------
 
-Daily Schedule
-
-* 9:00 am to 10:30 am - Session 1a
-
-* 15 minute break
-
-* 10:45 am to 12:30 pm - Session 1b
-
-* 1 hour lunch
-
-* 1:30 pm to 3:00 pm - Session 2a
-
-* 15 minute break
-
-* 3:15 pm to 5:00 pm - Session 2b
-
-
-But First
----------
-
 Classroom Protocol
 
 .. class:: incremental
 
-Question to ask:
+Questions to ask:
 
 .. class:: incremental
 
@@ -75,17 +53,17 @@ Classroom Protocol
 
 .. class:: incremental
 
-Question **not** to ask:
+Questions **not** to ask:
 
 .. class:: incremental
 
-* Hypotheticals: What happens if I do X?
-* Research: Can Python do Y?
-* Syllabus: Are we going to cover Z in class?
-* Marketing questions: please just don't.
-* Performance questions: Is Python fast enough?
-* Unpythonic: Why doesn't Python do it some other way?
-* Show off: Look what I just did!
+* **Hypotheticals**: What happens if I do X?
+* **Research**: Can Python do Y?
+* **Syllabus**: Are we going to cover Z in class?
+* **Marketing questions**: please just don't.
+* **Performance questions**: Is Python fast enough?
+* **Unpythonic**: Why doesn't Python do it some other way?
+* **Show off**: Look what I just did!
 
 
 But First
@@ -537,7 +515,7 @@ prefixed by ``IPPROTO_``::
 .. class:: incremental
 
 The choice of which protocol to use for a socket is determined by the
-communications protocol you intend to use.  ``IP``? ``ICMP``? ``UDP``?
+*internet layer* protocol you intend to use.  ``IP``? ``ICMP``? ``IGMP``?
 
 
 Test your skills
