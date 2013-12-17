@@ -19,3 +19,13 @@ def get_address_info(host, port):
         print 'canonical name: ', nam
         print 'socket address: ', add
         print
+
+
+def print_address_constants():
+    addrs = get_constants('INADDR')
+    for val, name in addrs.items():
+      hexval = hex(val)
+      packed = socket.inet_aton(hexval)
+      addr = socket.inet_ntoa(packed)
+      tmpl = '{0: >24}: {1: <10} {2: <16}'
+      print tmpl.format(name, hexval, addr)
