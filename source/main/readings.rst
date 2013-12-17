@@ -1,13 +1,13 @@
 Course Readings
 ===============
 
-Web programming is a deep pool. There's more to cover than a one-week course
+Web programming is a deep pool. There's more to cover than a 10-session course
 could ever hope to accomplish. To that end, I've compiled a list of related
 readings that will support the information you'll learn in class. Think of
 this as supplemental materials. You can read it at your leisure to help
 increase both the depth and breadth of your knowledge.
 
-The readings are organized like the class, by day, time and topic. 
+The readings are organized like the class, by session and topic. 
 
 
 Session 1 - TCP/IP and Sockets
