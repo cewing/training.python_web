@@ -20,9 +20,33 @@ Session 1 - TCP/IP and Sockets
 * `Wikipedia - Domain Name System
   <http://en.wikipedia.org/wiki/Domain_Name_System>`_
 * `Wikipedia - Internet Sockets
-  <http://en.wikipedia.org/wiki/Internet_socket>`_
+  <http://en.wikipedia.org/wiki/Network_socket>`_
 * `Wikipedia - Berkeley socket interface
   <http://en.wikipedia.org/wiki/Berkeley_sockets>`_
+
+If you want to know a bit more about the lower layers of the stack, you might
+find the following readings enlightening:
+
+**Transport Layer**
+
+* `Wikipedia - Universal Datagram Protocol (UDP)
+  <http://en.wikipedia.org/wiki/User_Datagram_Protocol>`_
+* `Wikipedia - Transmission Control Protocol (TCP)
+  <http://en.wikipedia.org/wiki/Transmission_Control_Protocol>`_
+
+**Internet Layer**
+
+* `Wikipedia - Internet Protocol (IP)
+  <http://en.wikipedia.org/wiki/Internet_Protocol>`_
+* `Wikipedia - IPv4 Packet Structure
+  <http://en.wikipedia.org/wiki/IPv4#Packet_structure>`_
+* `Wikipedia - IPv6 Packet Structure
+  <http://en.wikipedia.org/wiki/IPv6_packet#Fixed_header>`_
+
+**Link Layer**
+
+* `Wikipedia - Link Layer Protocols
+  <http://en.wikipedia.org/wiki/Link_Layer#Link_layer_protocols>`_
 
 In addition, you may find it interesting to take a look at ZeroMQ, a
 next-generation implementation of the socket concept built with parallel and
