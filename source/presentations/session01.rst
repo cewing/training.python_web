@@ -18,13 +18,21 @@ But First
 
 Class presentations are available online for your use
 
-http://github.com/cewing/training.python_web
+.. class:: small
+
+https://github.com/UWPCE-PythonCert/training.python_web
+
+.. class:: incremental
 
 Licensed with Creative Commons BY-NC-SA
+
+.. class:: small incremental
 
 * You must attribute the work
 * You may not use the work for commercial purposes
 * You have to share your versions just like this one
+
+.. class:: incremental
 
 Find mistakes? See improvements? Make a pull request.
 
@@ -133,7 +141,7 @@ The bottom layer is the 'Link Layer'
 
   * what that medium is is arbitrary
 
-* Primarily uses the Network Interface Card (NIC) in your computer
+* Implemented in the Network Interface Card(s) (NIC) in your computer
 
 
 The TCP/IP Stack - Internet
@@ -209,6 +217,8 @@ The 'Transport Layer' also establishes the concept of a **port**
 
 * 192.168.1.100:80  (the *:80* part is the **port**)
 
+* [2001:db8:85a3:8d3:1319:8a2e:370:7348]:443 (*:443* is the **port**)
+
 .. class:: incremental
 
 This means that you don't have to worry about information intended for your
@@ -230,6 +240,10 @@ applications or protocols:
 * 25 - SMTP
 * ...
 
+.. class:: incremental
+
+These ports are often referred to as **well-known ports**
+
 .. class:: small
 
 (see http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers)
@@ -242,11 +256,13 @@ Ports are grouped into a few different classes
 
 .. class:: incremental
 
-* Ports numbered 0 - 1023 are *reserved* 
+* Ports numbered 0 - 1023 are *reserved*
 
 * Ports numbered 1024 - 65535 are *open*
 
-* Ports numbered 49152 - 65535 are generally considered *ephemeral*
+* Ports numbered 1024 - 49151 may be *registered*
+
+* Ports numbered 49152 - 65535 are called *ephemeral*
 
 
 The TCP/IP Stack - Application
@@ -297,15 +313,25 @@ A **Socket** is the software representation of that endpoint.
 .. class:: incremental
 
 Opening a **socket** creates a kind of transceiver that can send and/or
-receive data at a given IP address and Port.
+receive *bytes* at a given IP address and Port.
 
 
 Sockets in Python
 -----------------
 
 Python provides a standard library module which provides socket functionality.
-It is called **socket**.  Let's spend a few minutes getting to know this
-module.
+It is called **socket**.  
+
+.. class:: incremental
+
+The library is really just a very thin wrapper around the system
+implementation of *BSD Sockets*
+
+.. class:: incremental
+
+Let's spend a few minutes getting to know this module.
+
+.. class:: incremental
 
 We're going to do this next part together, so open up a terminal and start a
 python interpreter
@@ -314,11 +340,31 @@ python interpreter
 Sockets in Python
 -----------------
 
-The sockets library provides tools for finding out information about hosts on
-the network. For example, you can find out about the machine you are currently
-using::
+The Python sockets library allows us to find out what port a *service* uses:
+
+.. class:: small
 
     >>> import socket
+    >>> socket.getservbyname('ssh')
+    22
+
+.. class:: incremental
+
+You can also do a *reverse lookup*, finding what service uses a given *port*:
+
+.. class:: incremental small
+
+    >>> socket.getservbyport(80)
+    'http'
+
+
+Sockets in Python
+-----------------
+
+The sockets library also provides tools for finding out information about
+*hosts*. For example, you can find out about the hostname and IP address of
+the machine you are currently using::
+
     >>> socket.gethostname()
     'heffalump.local'
     >>> socket.gethostbyname(socket.gethostname())
@@ -333,8 +379,8 @@ know their hostname. For example::
 
     >>> socket.gethostbyname('google.com')
     '173.194.33.4'
-    >>> socket.gethostbyname('unc.edu')
-    '152.19.240.120'
+    >>> socket.gethostbyname('uw.edu')
+    '128.95.155.135'
     >>> socket.gethostbyname('crisewing.com')
     '108.59.11.99'
 
@@ -401,12 +447,17 @@ single argument, the shared prefix for a defined set of constants:
 
     >>> def get_constants(prefix):
     ...     """mapping of socket module constants to their names."""
-    ...     return dict( (getattr(socket, n), n)
-    ...                  for n in dir(socket)
-    ...                  if n.startswith(prefix)
-    ...                  )
+    ...     return dict(
+    ...         (getattr(socket, n), n)
+    ...         for n in dir(socket)
+    ...         if n.startswith(prefix)
+    ...     )
     ...
     >>>
+
+.. class:: small
+
+(you can also find this in ``resources/session01/session1.py``)
 
 
 Socket Families
@@ -423,7 +474,7 @@ stack.  There were a couple of different types of IP addresses:
 
 .. class:: incremental
 
-The *family* of a socket corresponds to the addressing system it uses for
+The **family** of a socket corresponds to the *addressing system* it uses for
 connecting.
 
 
@@ -475,6 +526,10 @@ What is the *default* family for the socket we created just a moment ago?
 
 (remember we bound the socket to the symbol ``foo``)
 
+.. class:: incremental center
+
+How did you figure this out?
+
 
 Socket Types
 ------------
@@ -490,8 +545,8 @@ Look up socket type constants with the ``SOCK_`` prefix::
 
 .. class:: incremental
 
-The most common are ``1`` (TCP type communication) and ``2`` (UDP type
-communication).
+The most common are ``1`` (Stream communication (TCP)) and ``2`` (Datagram
+communication (UDP)).
 
 
 Test your skills
@@ -515,13 +570,33 @@ prefixed by ``IPPROTO_``::
 .. class:: incremental
 
 The choice of which protocol to use for a socket is determined by the
-*internet layer* protocol you intend to use.  ``IP``? ``ICMP``? ``IGMP``?
+*internet layer* protocol you intend to use. ``TCP``? ``UPD``? ``ICMP``?
+``IGMP``?
 
 
 Test your skills
 ----------------
 
 What is the *default* protocol used by our generic socket, ``foo``?
+
+
+A Note About IPPROTO_IP
+-----------------------
+
+You may wonder about the specifics of ``IPPROTO_IP`` (I did)
+
+.. class:: incremental
+
+Notice that the integer constant for it is ``0``.
+
+.. class:: incremental
+
+Setting this value is the same as saying "I'm not sure what I want, you choose
+for me"
+
+.. class:: incremental
+
+Better to use a specific protocol if you know what you need.
 
 
 Address Information
@@ -542,12 +617,46 @@ specific communications profiles::
 Address Information
 -------------------
 
-But when you are creating a socket to communicate with a remote service, how
-can you determine the *correct* values to use?
+When you are creating a socket to communicate with a remote service, the
+remote socket will have a specific communications profile.
 
 .. class:: incremental
 
+The local socket you create must match that communications profile.
+
+.. class:: incremental
+
+How can you determine the *correct* values to use?
+
+.. class:: incremental center
+
 You ask.
+
+
+Address Information
+-------------------
+
+The function ``socket.getaddrinfo`` provides information about available
+connections on a given host.
+
+.. code-block:: python
+    :class: incremental small
+
+    socket.getaddrinfo('127.0.0.1', 80)
+
+.. class:: incremental
+
+* *host* can be specified as an IP address, a domain name or ``None``
+* *port* can be specified as an integer, a service name or ``None``
+
+.. class:: incremental
+
+Provide optional *family*, *type* and *protocol* positional arguments to
+filter results
+
+.. class:: incremental
+
+Set optional positional *flags* to control the behavior of the function
 
 
 Client Connections
@@ -555,7 +664,7 @@ Client Connections
 
 The information returned by a call to ``socket.getaddrinfo`` is all you need
 to make a proper connection to a socket on a remote host.  The value returned
-is a tuple of
+is a tuple of:
 
 .. class:: incremental
 
@@ -638,7 +747,7 @@ Construct a Socket
 
 We've already made a socket ``foo`` using the generic constructor without any
 arguments.  We can make a better one now by using real address information from
-a real server online:
+a real server online [**do not type this yet**]:
 
 .. class:: small
 
@@ -675,7 +784,7 @@ Sending a Message
 -----------------
 
 Send a message to the server on the other end of our connection (we'll
-learn is session 2 about the message we are sending)::
+learn in session 2 about the message we are sending)::
 
     >>> msg = "GET / HTTP/1.1\r\n"
     >>> msg += "Host: crisewing.com\r\n\r\n"
@@ -688,18 +797,42 @@ learn is session 2 about the message we are sending)::
 
 * success returns ``None``
 
-* failure to send raises an error 
+* failure to send raises an error
 
 * you can use the type of error to figure out why the transmission failed
 
-* you **cannot** know how much, if any, of your data was sent
+* if an error occurs you **cannot** know how much, if any, of your data was
+  sent
+
+
+Other Ways to Send
+------------------
+
+Instead of the ``sendall`` method, you could also use ``send``::
+
+    >>> bytes_sent = cewing_socket.send(msg)
+    >>> bytes_sent == len(msg)
+    True
+
+.. class:: incremental small
+
+* the method will return the number of bytes sent by the call
+
+* you are responsible for determining if your entire message was transmitted
+
+* if some data was __not__ transmitted, you must attempt to send the remainder
+
+.. class:: incremental
+
+You can also use the ``sendto`` method (which takes an address as the second
+arg) if you want to connect to an address and send all in one.
 
 
 Receiving a Reply
 -----------------
 
 Whatever reply we get is received by the socket we created. We can read it
-back out::
+back out (again, **do not type this yet**)::
 
     >>> response = cewing_socket.recv(4096)
     >>> response
@@ -714,6 +847,29 @@ back out::
   received)
 * If the response is longer than ``buffer size``, you can call the method
   repeatedly. The last bunch will be less than ``buffer size``.
+
+
+Other Ways to Receive
+---------------------
+
+The ``recvfrom`` method takes the same *buffer_size* argument as ``recv``, but
+returns a tuple of the bytes received and the address from which they came
+
+.. class:: incremental
+
+If you want to pre-allocate a buffer instead of creating a new string with the
+results, you can use the ``recv_into`` or ``recvfrom_into`` methods.
+
+.. class:: incremental small
+
+* each takes an optional *nbytes* positional argument, controlling how many
+  bytes to read at a time.
+
+* if this is not provided, the size of the provided buffer will limit the
+  amount read.
+
+* the return value of ``recvfrom_into`` is a tuple of the number of bytes
+  received and the address from which they came.
 
 
 Cleaning Up
