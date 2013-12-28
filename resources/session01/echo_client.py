@@ -17,7 +17,7 @@ def client(msg, log_buffer=sys.stderr):
         while amount_received < amount_expected:
             data = sock.recv(16)
             amount_received += len(data)
-            print >>log_buffer, 'received "{0}"'.foramt(data)
+            print >>log_buffer, 'received "{0}"'.format(data)
     finally:
         print >>log_buffer, 'closing socket'
         sock.close()

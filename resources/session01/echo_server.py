@@ -24,7 +24,7 @@ def server(log_buffer=sys.stderr):
                         print >>log_buffer, msg
                         conn.sendall(data)
                     else:
-                        msg = 'no more data from {0}:{1}'.format(addr)
+                        msg = 'no more data from {0}:{1}'.format(*addr)
                         print >>log_buffer, msg
                         break
             finally:
