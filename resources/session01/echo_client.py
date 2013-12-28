@@ -5,11 +5,11 @@ import sys
 def client(msg):
     server_address = ('localhost', 10000)
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    print >>sys.stderr, 'connecting to %s port %s' % server_address
+    print >>sys.stderr, 'connecting to {0} port {1}'.format(*server_address)
     sock.connect(server_address)
     try:
         # Send data
-        print >>sys.stderr, 'sending "%s"' % msg
+        print >>sys.stderr, 'sending "{0}"'.format(msg)
         sock.sendall(msg)
         # Look for the response
         amount_received = 0
@@ -17,7 +17,7 @@ def client(msg):
         while amount_received < amount_expected:
             data = sock.recv(16)
             amount_received += len(data)
-            print >>sys.stderr, 'received "%s"' % data
+            print >>sys.stderr, 'received "{0}"'.foramt(data)
     finally:
         print >>sys.stderr, 'closing socket'
         sock.close()
