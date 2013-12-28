@@ -580,38 +580,45 @@ Test your skills
 What is the *default* protocol used by our generic socket, ``foo``?
 
 
-A Note About IPPROTO_IP
------------------------
+Custom Sockets
+--------------
 
-You may wonder about the specifics of ``IPPROTO_IP`` (I did)
+These three properties of a socket correspond to the three positional
+arguments you may pass to the socket constructor. 
+
+.. container:: incremental
+
+    Using them allows you to create sockets with specific communications
+    profiles::
+    
+        >>> bar = socket.socket(socket.AF_INET,
+        ...                     socket.SOCK_DGRAM, 
+        ...                     socket.IPPROTO_UDP)
+        ...
+        >>> bar
+        <socket._socketobject object at 0x1005b8b40>
+
+
+Break Time
+----------
+
+So far we have:
 
 .. class:: incremental
 
-Notice that the integer constant for it is ``0``.
+* learned about the "layers" of the TCP/IP Stack
+* discussed *families*, *types* and *protocols* in sockets
+* learned how to create sockets with a specific communications profile.
 
 .. class:: incremental
 
-Setting this value is the same as saying "I'm not sure what I want, you choose
-for me"
+When we return we'll learn how to find the communcations profiles of remote
+sockets, how to connect to them, and how to send and receive messages.
 
 .. class:: incremental
 
-Better to use a specific protocol if you know what you need.
-
-
-Address Information
--------------------
-
-These three properties of a socket correspond to the three positional arguments
-you may pass to the constructor.  This allows you to create sockets that have
-specific communications profiles::
-
-    >>> bar = socket.socket(socket.AF_INET,
-    ...                     socket.SOCK_DGRAM, 
-    ...                     socket.IPPROTO_UDP)
-    ...
-    >>> bar
-    <socket._socketobject object at 0x1005b8b40>
+Take a few minutes now to clear your head (do not quit your python
+interpreter).
 
 
 Address Information
@@ -640,31 +647,14 @@ The function ``socket.getaddrinfo`` provides information about available
 connections on a given host.
 
 .. code-block:: python
-    :class: incremental small
+    :class: small
 
     socket.getaddrinfo('127.0.0.1', 80)
 
 .. class:: incremental
 
-* *host* can be specified as an IP address, a domain name or ``None``
-* *port* can be specified as an integer, a service name or ``None``
-
-.. class:: incremental
-
-Provide optional *family*, *type* and *protocol* positional arguments to
-filter results
-
-.. class:: incremental
-
-Set optional positional *flags* to control the behavior of the function
-
-
-Client Connections
-------------------
-
-The information returned by a call to ``socket.getaddrinfo`` is all you need
-to make a proper connection to a socket on a remote host.  The value returned
-is a tuple of:
+This provides all you need to make a proper connection to a socket on a remote
+host. The value returned is a tuple of:
 
 .. class:: incremental
 
@@ -678,7 +668,11 @@ is a tuple of:
 A quick utility method
 ----------------------
 
-Again, let's create a utility method in-place so we can see this in action::
+Again, let's create a utility method in-place so we can see this in action:
+
+.. class:: small
+
+::
 
     >>> def get_address_info(host, port):
     ...     for response in socket.getaddrinfo(host, port):
@@ -692,11 +686,15 @@ Again, let's create a utility method in-place so we can see this in action::
     ...
     >>>
 
+.. class:: small
+
+(you can also find this in ``resources/session01/session1.py``)
+
 
 On Your Own Machine
 -------------------
 
-Now, ask your own machine what services are available on 'http'::
+Now, ask your own machine what possible connections are available for 'http'::
 
     >>> get_address_info(socket.gethostname(), 'http')
     family:  AF_INET
@@ -805,29 +803,6 @@ learn in session 2 about the message we are sending)::
   sent
 
 
-Other Ways to Send
-------------------
-
-Instead of the ``sendall`` method, you could also use ``send``::
-
-    >>> bytes_sent = cewing_socket.send(msg)
-    >>> bytes_sent == len(msg)
-    True
-
-.. class:: incremental small
-
-* the method will return the number of bytes sent by the call
-
-* you are responsible for determining if your entire message was transmitted
-
-* if some data was __not__ transmitted, you must attempt to send the remainder
-
-.. class:: incremental
-
-You can also use the ``sendto`` method (which takes an address as the second
-arg) if you want to connect to an address and send all in one.
-
-
 Receiving a Reply
 -----------------
 
@@ -842,34 +817,11 @@ back out (again, **do not type this yet**)::
 .. class:: incremental small
 
 * The sole required argument is ``buffer_size`` (an integer). It should be a
-  power of 2 and smallish
+  power of 2 and smallish (~4096)
 * It returns a byte string of ``buffer_size`` (or smaller if less data was
   received)
 * If the response is longer than ``buffer size``, you can call the method
   repeatedly. The last bunch will be less than ``buffer size``.
-
-
-Other Ways to Receive
----------------------
-
-The ``recvfrom`` method takes the same *buffer_size* argument as ``recv``, but
-returns a tuple of the bytes received and the address from which they came
-
-.. class:: incremental
-
-If you want to pre-allocate a buffer instead of creating a new string with the
-results, you can use the ``recv_into`` or ``recvfrom_into`` methods.
-
-.. class:: incremental small
-
-* each takes an optional *nbytes* positional argument, controlling how many
-  bytes to read at a time.
-
-* if this is not provided, the size of the provided buffer will limit the
-  amount read.
-
-* the return value of ``recvfrom_into`` is a tuple of the number of bytes
-  received and the address from which they came.
 
 
 Cleaning Up
@@ -918,28 +870,6 @@ Then, receive a reply, iterating until it is complete:
     19427
 
 
-Break Time
-----------
-
-So far we have:
-
-.. class:: incremental
-
-* learned about the "layers" of the TCP/IP Stack
-* discussed *families*, *types* and *protocols* in sockets
-* learned some API for finding out how to connect to a remote server
-* made our first connection to a server
-* and sent and received our first messages through a socket.
-
-.. class:: incremental
-
-Not bad for a Monday morning.
-
-.. class:: incremental
-
-Let's take 10 minutes and return to learn about the other end of this wire.
-
-
 Server Side
 -----------
 
@@ -960,7 +890,7 @@ Construct a Socket
         >>> server_socket = socket.socket(
         ...     socket.AF_INET,
         ...     socket.SOCK_STREAM,
-        ...     socket.IPPROTO_IP)
+        ...     socket.IPPROTO_TCP)
         ... 
         >>> server_socket
         <socket._socketobject object at 0x100563c90>
@@ -993,16 +923,16 @@ connections::
 
 * The argument to ``listen`` is the *backlog*
 
-* The *backlog* is the **maximum** number of connections that the socket will
-  queue
+* The *backlog* is the **maximum** number of connection requests that the
+  socket will queue
 
-* Once the limit is reached, the socket refuses new connections
+* Once the limit is reached, the socket refuses new connections.
 
 
 Accept Incoming Messages
 ------------------------
 
-When a socket is listening, it can receive incoming messages::
+When a socket is listening, it can receive incoming connection requests::
 
     >>> connection, client_address = server_socket.accept()
     ... # this blocks until a client connects
@@ -1010,16 +940,14 @@ When a socket is listening, it can receive incoming messages::
 
 .. class:: incremental
 
-* The ``connection`` returned by a call to ``accept`` is a **new socket**
+* The ``connection`` returned by a call to ``accept`` is a **new socket**.
+  This new socket is used to communicate with the client
 
-* It is this *new* socket that is used for communications with the client
+* The ``client_address`` is a two-tuple of IP Address and Port for the client
   socket
 
-* the ``client_address`` is a two-tuple of IP Address and Port for the client
-  socket
-
-* The number of *new* sockets that can be spun off by a listening socket is 
-  equal to ``backlog``
+* When a connection request is 'accepted', it is removed from the backlog
+  queue.
 
 
 Send a Reply
@@ -1041,11 +969,8 @@ Once a transaction between the client and server is complete, the
 
 .. class:: incremental
 
-* Closing the connection socket will decrement the number of active sockets in
-  the queue
-
-* If the maximum specified by ``backlog`` had been reached, this will allow a
-  new connection to be made.
+Note that the ``server_socket`` is *never* closed as long as the server
+continues to run.
 
 
 Getting the Flow
@@ -1108,8 +1033,7 @@ new connection socket.
 
 .. class:: incremental
 
-When you're ready, type the following in the *client* interpreter. Watch the
-server!
+When you're ready, type the following in the *client* interpreter.
 
 .. class:: incremental
 
@@ -1157,196 +1081,118 @@ Congratulations!
 You've run your first client-server interaction
 
 
-Take it to the Next Level
--------------------------
+Homework
+--------
 
-That's pretty much everything we need to build a simple echo server and
-client.
-
-.. class:: incremental
-
-We are now going to move to writing python files.
+Your homework assignment for this week is to take what you've learned here
+and build a simple "echo" server.
 
 .. class:: incremental
 
-Quit both interpreters and open a new file in your favorite text editor.  Call
-it ``echo_client.py``
-
-
-The Echo Client - 1
--------------------
-
-.. code-block:: python
-    :class: small
-
-    import socket
-    import sys
-
-    def client(msg):
-        print >> sys.stderr, "sending: %s" % msg
-
-    if __name__ == '__main__':
-        if len(sys.argv) != 2:
-            usg = '\nusage: python echo_client.py "this is my message"\n'
-            print >>sys.stderr, usg
-            sys.exit(1)
-
-        msg = sys.argv[1]
-        client(msg)
+The server should automatically return to any client that connects *exactly*
+what it receives (it should **echo** all messages).
 
 .. class:: incremental
 
-Save that and try it out
+You will also write a python script that, when run, will send a message to the
+server and receive the reply, printing it to ``stdout``.
+
+.. class:: incremental
+
+Finally, you'll do all of this so that it can be tested.
 
 
-Check Your Work
----------------
+What You Have
+-------------
 
-In your terminal, where you created and saved ``echo_client.py``:
+In our class repository, there is a folder ``assignments/session01``.
+
+.. class:: incremental
+
+Inside that folder, you should find:
+
+.. class:: incremental
+
+* A file ``tasks.txt`` that contains these instructions
+
+* A skeleton for your server in ``echo_server.py``
+
+* A skeleton for your client script in ``echo_client.py``
+
+* Some simple tests in ``tests.py``
+
+.. class:: incremental
+
+Your task is to make the tests pass.
+
+
+Running the tests
+-----------------
+
+To run the tests, you'll have to set the server running in one terminal:
+
+.. class:: small
 
 ::
-
-    $ python echo_client.py
-
-    usage: python echo_client.py "this is my message"
-
-    $ python echo_client.py "my baloney has a first name"
-    sending "my baloney has a first name"
-
-
-The Echo Client - 2
--------------------
-
-.. code-block:: python
-    :class: small
-
-    def client(msg):
-        server_address = ('localhost', 10000)
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        print >>sys.stderr, 'connecting to %s port %s' % server_address
-        sock.connect(server_address)
-        try:
-            # Send data
-            print >>sys.stderr, 'sending "%s"' % msg
-            sock.sendall(msg)
-            # Look for the response
-            amount_received = 0
-            amount_expected = len(msg)
-            while amount_received < amount_expected:
-                data = sock.recv(16)
-                amount_received += len(data)
-                print >>sys.stderr, 'received "%s"' % data
-        finally:
-            print >>sys.stderr, 'closing socket'
-            sock.close()
-
-
-It Takes Two
-------------
-
-The client script at this point is no good without a server to receive the
-message and send it back.  Let's make that next.
-
-.. class:: incremental
-
-Again, open a new file in your text editor.  Call it `echo_server.py`.
-
-
-The Echo Server - 1
--------------------
-
-.. code-block:: python
-    :class: small
-
-    import socket
-    import sys
-
-    def server():
-        address = ('127.0.0.1', 10000)
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        print >>sys.stderr, "making a server on %s:%s" % address
-        sock.bind(address)
-        sock.listen(1)
-        try:
-            pass #<- what goes here comes in the next slide
-        except KeyboardInterrupt:
-            sock.close()
-            return
-
-    if __name__ == '__main__':
-        server()
-        sys.exit(0)
-
-
-The Echo Server - 2
--------------------
-
-.. code-block:: python
-    :class: small
-
-    try:
-        while True:
-            print >>sys.stderr, 'waiting for a connection'
-            conn, addr = sock.accept() # blocking
-            try:
-                print >>sys.stderr, 'connection - %s:%s' % addr
-                while True:
-                    data = conn.recv(16)
-                    print >>sys.stderr, 'received "%s"' % data
-                    if data:
-                        msg = 'sending data back to client'
-                        print >>sys.stderr, msg
-                        conn.sendall(data)
-                    else:
-                        msg = 'no more data from %s:%s' % addr
-                        print >>sys.stderr, msg
-                        break
-            finally:
-                conn.close()
-    except KeyboardInterrupt:
-        # ...
-
-
-Playing With Your Toy
----------------------
-
-In one terminal, start the server::
 
     $ python echo_server.py
-    making a server on 127.0.0.1:10000
-    waiting for a connection
+
+.. container:: incremental
+
+    Then, in a second terminal, you will execute the tests:
+    
+    .. class:: small
+    
+    ::
+    
+        $ python tests.py
+
+.. container:: incremental
+
+    You should see output like this:
+    
+    .. class:: small
+    
+    ::
+    
+        [...]
+        FAILED (failures=2)
+
+
+Submitting Your Homework
+------------------------
+
+To submit your homework:
 
 .. class:: incremental
 
-In a second, use the client to send a message:
+* In github, make a fork of my repository into *your* account.
+
+* Clone your fork of my repository to your computer.
+
+* Do your work in the ``assignments/session01/`` folder on your computer and
+  commit your changes to your fork.
+
+* When you are finished and your tests are passing, you will open a pull
+  request in github.com from your fork to mine.
 
 .. class:: incremental
 
-::
+I will review your work when I receive your pull requests, make comments on it
+there, and then close the pull request.
 
-    $ python echo_client.py "I am sending a longer message."
 
+Going Further
+-------------
 
-Next Steps
-----------
-
-You've now seen the basics of socket-based communication.
-
-.. class:: incremental
-
-In the next session, we'll learn about the protocols that govern these types
-of communications.
+In ``assignments/session01/tasks.txt`` you'll find a few extra problems to try.
 
 .. class:: incremental
 
-As an exercise, we'll extend this simple echo server into a basic HTTP
-server, and we'll be able to ditch the client and use a web browser instead.
+If you finish the first part of the homework in less than 3-4 hours give one
+or more of these a whirl.
 
+.. class:: incremental
 
-Lunch Time
-----------
-
-.. class:: big-centered
-
-We'll see you back here in an hour.  Enjoy!
+They are not required, but if you include solutions in your pull request, I'll
+review your work.
