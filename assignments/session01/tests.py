@@ -73,7 +73,7 @@ class EchoTestCase(unittest.TestCase):
                          "Unexpected closing message")
         return send_msg, lines
 
-    def testShortMessageEcho(self):
+    def test_short_message_echo(self):
         """test that a message short than 16 bytes echoes cleanly"""
         short_message = "short message"
         self.send_message(short_message)
@@ -95,7 +95,7 @@ class EchoTestCase(unittest.TestCase):
             actual_line,
             "expected {0} got {1}".format(expected_line, actual_line))
 
-    def testLongMessageEcho(self):
+    def test_long_message_echo(self):
         """test that a message longer than 16 bytes echoes in 16-byte chunks"""
         long_message = "Four score and seven years ago our fathers did stuff"
         self.send_message(long_message)
