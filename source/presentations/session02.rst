@@ -597,28 +597,74 @@ We'll do so by building a simplified HTTP server, one step at a time.
 
 .. class:: incremental
 
-We'll bootstrap ourselves by using the ``echo_server.py`` file we created 
-earlier.
+There is a copy of the echo server from last time in ``resources/session02``.
+It's called ``http_server.py``.
 
 .. class:: incremental
 
-Make a copy of that file now.  Call it ``http_server_1.py``.  Open it in your
-text editors.
+In a terminal, move into that directory. We'll be doing our work here for the
+rest of the session
+
+
+TDD IRL (a quick aside)
+-----------------------
+
+Test Driven Development (TDD) is all the rage these days.
+
+.. class:: incremental
+
+It means that before you write code, you first write tests demonstrating what
+you want your code to do.
+
+.. class:: incremental
+
+When all your tests pass, you are finished. You did this for your last
+assignment.
+
+.. class:: incremental
+
+We'll be doing it again today.
+
+
+Run the Tests
+-------------
+
+From inside ``resources/session02`` start a second python interpreter and run
+``$ python http_server.py``
+
+.. container:: incremental
+    
+    In your first interpreter run the tests. You should see similar output:
+    
+    .. class:: small
+    
+    ::
+    
+        $ python tests.py
+        [...]
+        Ran 10 tests in 0.003s
+
+        FAILED (failures=3, errors=7)
+
+
+.. class:: incremental
+
+Let's take a few minutes here to look at these tests and understand them.
 
 
 Viewing an HTTP Request
 -----------------------
 
-In a terminal, start your server running, like so::
-
-    $ python http_server_1.py
-    making a server on 127.0.0.1:10000
-    waiting for a connection
+Our job is to make all those tests pass.
 
 .. class:: incremental
 
-This time, instead of using your echo client to make a connection, let's use
-a web browser
+First, though, let's pretend this server really is a functional HTTP server.
+
+.. class:: incremental
+
+This time, instead of using the echo client to make a connection to the
+server, let's use a web browser!
 
 .. class:: incremental
 
@@ -664,7 +710,7 @@ some printed content:
     Connection: keep-alive
     Cache-Control: max-age=0
 
-.. class:: incremental small
+.. class:: incremental
 
 Your results will vary from mine.
 
@@ -672,18 +718,50 @@ HTTP Debugging
 --------------
 
 When working on applications, it's nice to be able to see all this going back
-and forth.  There are several apps that can help with this:
+and forth.  
 
-* windows: http://www.fiddler2.com/fiddler2/
-* firefox: http://getfirebug.com/
-* safari: built in 
-* chrome: built in
-* IE (7.0+): built in
+.. container:: incremental
+
+    Good browsers support this with a set of developer tools built-in.
+
+    .. class:: small incremental
+
+    * firefox -> ctrl-shift-K or cmd-opt-K (os X)
+    * safari -> enable in preferences:advanced then cmd-opt-i
+    * chrome -> ctrl-shift-i or cmd-opt-i (os X)
+    * IE (7.0+) -> F12 or tools menu -> developer tools
 
 .. class:: incremental
 
-These tools can show you both request and response, headers and all. Very
-useful.
+The 'Net(work)' pane of these tools can show you both request and response,
+headers and all. Very useful.
+
+
+Stop! Demo Time
+---------------
+
+.. class:: big-centered
+
+Let's take a quick look
+
+
+Other Debugging Options
+-----------------------
+
+Sometimes you need or want to debug http requests that are not going through
+your browser.
+
+.. class:: incremental
+
+Or perhaps you need functionality that is not supported by in-browser tools
+(request munging, header mangling, decryption of https request/responses)
+
+.. container:: incremental
+
+    Then it might be time for an HTTP debugging proxy:
+
+    * windows: http://www.fiddler2.com/fiddler2/
+    * win/osx/linux: http://www.charlesproxy.com/
 
 
 HTTP Requests
@@ -728,25 +806,29 @@ Let's update our server to return such a response.
 Basic HTTP Protocol
 -------------------
 
-Begin by implementing a new function in your ``http_server_1.py`` script called
+Begin by implementing a new function in your ``http_server.py`` script called
 `response_ok`.
 
 .. class:: incremental
 
 It can be super-simple for now.  We'll improve it later.
 
-.. class:: incremental
+.. container:: incremental
 
-It needs to return our minimal response from above:
+    It needs to return our minimal response from above:
 
-.. class:: small incremental
+    .. class:: small
+    
+    ::
+    
+        HTTP/1.1 200 OK
+        Content-Type: text/plain
+        <CRLF>
+        this is a pretty minimal response
 
-::
+.. class:: incremental small
 
-    HTTP/1.1 200 OK
-    Content-Type: text/plain
-    <CRLF>
-    this is a pretty minimal response
+**Remember, <CRLF> is a placeholder for an intentionally blank line**
 
 
 My Solution
@@ -765,6 +847,27 @@ My Solution
         return "\r\n".join(resp)
 
 
+Run The Tests
+-------------
+
+We've now implemented a function that is tested by our tests. Let's run them
+again:
+
+.. class:: incremental small
+
+::
+
+    $ python tests.py
+    [...]
+    ----------------------------------------------------------------------
+    Ran 10 tests in 0.002s
+
+    FAILED (failures=3, errors=3)
+
+.. class:: incremental
+
+Great!  We've now got 4 tests that pass.  Good work.
+
 Server Modifications
 --------------------
 
@@ -773,13 +876,18 @@ purpose:
 
 .. class:: incremental
 
-It should be able to return a response built by our function when a request
-is finished
+It should now wait for an incoming request to be *finished*, *then* send a
+response back to the client.
 
 .. class:: incremental
 
-We could also bump up the buffer size to something more reasonable for HTTP
-traffic, say 1024
+The response it sends can be the result of calling our new ``response_ok``
+function for now.
+
+.. class:: incremental
+
+We could also bump up the ``recv`` buffer size to something more reasonable
+for HTTP traffic, say 1024.
 
 My Solution
 -----------
@@ -807,17 +915,31 @@ My Solution
     # ...
 
 
-Test Your Work
---------------
+Run The Tests
+-------------
 
 Once you've got that set, restart your server::
 
-    $ python http_server_1.py
+    $ python http_server.py
+
+.. container:: incremental
+
+    Then you can re-run your tests:
+
+    .. class:: small
+
+    ::
+
+        $ python tests.py
+        [...]
+        ----------------------------------------------------------------------
+        Ran 10 tests in 0.003s
+
+        FAILED (failures=2, errors=3)
 
 .. class:: incremental
 
-reload your browser pointing to ``http://localhost:10000`` and watch the magic!
-
+Five tests now pass!
 
 Parts of a Request
 ------------------
@@ -892,8 +1014,8 @@ they might change something on the server:
 This is a *normative* distinction, which is to say **be careful**
 
 
-Methods: Idempoent <--> ???
----------------------------
+Methods: Idempotent <--> ???
+----------------------------
 
 HTTP methods can be categorized as **idempotent**, based on whether a given
 request will always have the same result:
@@ -940,7 +1062,7 @@ My Solution
 
     def parse_request(request):
         first_line = request.split("\r\n", 1)[0]
-        method, uri, protocol = first_line.split()
+        protocol, method, uri = first_line.split()
         if method != "GET":
             raise NotImplementedError("We only accept GET")
         print >>sys.stderr, 'request is okay'
@@ -984,8 +1106,29 @@ My Solution
     # ...
 
 
-Test Your Work
---------------
+Run The Tests
+-------------
+
+Quit and restart your server now that you've updated the code::
+
+    $ python http_server.py
+
+.. container:: incremental
+
+    At this point, we should have seven tests passing:
+    
+    .. class:: small
+    
+    ::
+    
+        $ python tests.py
+        Ran 10 tests in 0.002s
+        
+        FAILED (failures=1, errors=2)
+
+
+What About a Browser?
+---------------------
 
 Quit and restart your server, now that you've updated the code.
 
@@ -995,14 +1138,14 @@ Reload your browser.  It should work fine.
 
 .. class:: incremental
 
-We can use the ``echo_client.py`` script from yesterday to test our error
+We can use the ``simple_client.py`` script in our resources to test our error
 condition.  In a second terminal window run the script like so:
 
 .. class:: incremental
 
 :: 
 
-    $ python echo_client.py "POST / HTTP/1.0\r\n\r\n"
+    $ python simple_client.py "POST / HTTP/1.0\r\n\r\n"
 
 .. class:: incremental
 
@@ -1136,25 +1279,28 @@ My Solution
     # ...
 
 
-Test Your Work
---------------
+Run The Tests
+-------------
 
 Start your server (or restart it if by some miracle it's still going).
 
+.. container:: incremental
+
+    Then run the tests again:
+    
+    .. class:: small
+    
+    ::
+    
+        $ python tests.py
+        [...]
+        Ran 10 tests in 0.002s
+        
+        OK
+
 .. class:: incremental
 
-Then test this out by using the ``echo_client.py`` script again:
-
-.. class:: incremental
-
-::
-
-    $ python echo_client.py "POST / HTTP/1.1\r\n\r\n"
-    connecting to localhost port 10000
-    sending "POST / HTTP/1.1\r\n\r\n"
-    received "HTTP/1.1 405 Met"
-    received "hod Not Allowed
-    closing socket
+Wahoo! All our tests are passing. That means we are done writing code for now.
 
 
 HTTP - Resources
