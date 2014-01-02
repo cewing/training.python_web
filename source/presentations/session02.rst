@@ -1390,11 +1390,11 @@ Take the following steps one at a time. Run the tests in
 
 * Update ``parse_request`` to return the URI it parses from the request.
 
-* Update ``response_ok`` so that it can use the resource and mimetype
-  of the URI.
+* Update ``response_ok`` so that it uses the resource and mimetype identified
+  by the URI.
 
 * Write a new function ``resolve_uri`` that handles looking up resources on
-  disk.
+  disk using the URI.
 
 * Write a new function ``response_not_found`` that returns a 404 response if the
   resource does not exist.
@@ -1492,8 +1492,8 @@ Your ``resolve_uri`` function will need to accomplish the following tasks:
 
 * It should have a 'home directory', and look only in that location.
 
-* If the URI is a directory, it should return a listing and the mimetype
-  ``text/plain``.
+* If the URI is a directory, it should return a plain-text listing and the
+  mimetype ``text/plain``.
 
 * If the URI is a file, it should return the contents of that file and its
   correct mimetype.
@@ -1545,8 +1545,7 @@ one or more of the following challenges:
 
 .. class:: incremental
 
-* Format directory listings as actual HTML, so you can make file names into
-  links.
+* Format directory listings as HTML, so you can link to files.
 * Add a GMT ``Date:`` header in the proper format (RFC-1123) to responses.
   *hint: see email.utils.formatdate in the python standard library*
 * Add a ``Content-Length:`` header for ``OK`` responses that provides a
