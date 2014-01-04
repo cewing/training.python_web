@@ -1,0 +1,79 @@
+Session 2 Homework
+==================
+
+Required Tasks:
+---------------
+
+in assignments/session02/http_server.py:
+
+* Update the parse_request function to return the URI it parses from the
+  request.
+
+* Update the response_ok function so that it accepts a body and mimetype
+  argument and properly includes these in the response it generates.
+
+* Write a new function resolve_uri that handles looking up resources on
+  disk using the URI.
+
+  * It should take a URI as the sole argument
+
+  * It should map the pathname represented by the URI to a filesystem
+    location.
+
+  * It should have a 'home directory', and look only in that location.
+
+  * If the URI is a directory, it should return a plain-text listing and the
+    mimetype ``text/plain``.
+
+  * If the URI is a file, it should return the contents of that file and its
+    correct mimetype.
+
+  * If the URI does not map to a real location, it should raise an exception
+    that the server can catch to return a 404 response.
+
+* Write a new function response_not_found that returns a 404 response if the
+  resource does not exist.
+
+When you have successfully completed these tasks as described, all the tests
+in assignments/session02/tests.py will pass as written. If you have to update
+the tests to get them to pass, think again about how you are implementing the
+feature under test.
+
+To run the tests:
+
+* Open one terminal while in this folder and execute this command:
+
+    $ python http_server.py
+
+* Open a second terminal in this same folder and execute this command:
+
+    $ python tests.py
+
+Make sure to run the tests early and often during your work. Remember, TDD
+means that as soon as a test passes you are finished working.
+
+
+Optional Tasks:
+---------------
+
+* Update all error responses so that they return something that can be seen in
+  a web browser.
+
+* Format directory listings as HTML, so you can link to files. Update the
+  mimetype appropriately.
+
+* Add a GMT ``Date:`` header in the proper format (RFC-1123) to responses.
+  *hint: see email.utils.formatdate in the python standard library*
+
+* Add a ``Content-Length:`` header for ``OK`` responses that provides a
+  correct value.
+
+* Protect your server against errors by providing, and using, a function that
+  returns a ``500 Internal Server Error`` response.
+
+* Instead of returning the python script in ``webroot`` as plain text, execute
+  the file and return the results as HTML.
+
+If you choose to take on any of these optional tasks, try start by writing
+tests in tests.py that demostrate what the task should accomplish. Then write
+code that makes the tests pass.

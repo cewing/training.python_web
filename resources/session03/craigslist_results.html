@@ -2,122 +2,165 @@
 <html class="nojs">
  <head>
   <title>
-   raleigh apts/housing for rent classifieds  - craigslist
+   seattle apts/housing for rent classifieds  - craigslist
   </title>
-  <meta content="raleigh apts/housing for rent classifieds  - craigslist" name="description"/>
-  <link href="http://raleigh.craigslist.org/search/apa?bedrooms=2&amp;maxAsk=1000&amp;minAsk=500&amp;format=rss" rel="alternate" title="RSS feed for craigslist | apts/housing for rent  in raleigh " type="application/rss+xml"/>
+  <meta content="seattle apts/housing for rent classifieds  - craigslist" name="description"/>
+  <link href="http://seattle.craigslist.org/search/apa?bedrooms=2&amp;maxAsk=1000&amp;minAsk=500&amp;format=rss" rel="alternate" title="RSS feed for craigslist | apts/housing for rent  in seattle " type="application/rss+xml"/>
   <meta content="initial-scale=1.0, user-scalable=1" name="viewport"/>
-  <link href="//www.craigslist.org/styles/clnew.css?v=7f439fd704b2b9c24345a268155d1f13" media="all" rel="stylesheet" type="text/css"/>
+  <link href="//www.craigslist.org/styles/clnew.css?v=ea10f746e3f02f1250ccc168f08223fc" media="all" rel="stylesheet" type="text/css"/>
   <link href="//www.craigslist.org/styles/jquery-ui-1.9.2.custom.css?v=cb67f2e720fe8a2c7d83234590b2d1ed" media="all" rel="stylesheet" type="text/css"/>
   <script type="text/javascript">
    <!--
-			var unmappableNotShownText = "unmappable items not shown";
-var showImageText = "show images";
-var showMapTabs = 1;
+			var currencySymbol = "&#x0024;";
+var zoomToPosting = null;
+var showInfoText = "show info";
+var imageHost = "http://images.craigslist.org";
+var areaId = "2";
 var lessInfoText = "less info";
-var areaID = "36";
-var removeFromShortlistText = "remove from shortlist";
+var showMapTabs = 1;
+var areaCountry = "US";
 var starHint = "save this post in your favorites list";
 var expFaves = "";
-var shortlistViewText = "shortlist view";
-var shortlistNoteText = "SHORTLISTED";
-var catAbb = null;
-var currencySymbol = "$";
-var viewPostingText = "view posting";
-var clearShortlistText = "clear shortlist";
-var moreInfoText = "more info";
-var showInfoText = "show info";
-var zoomToPosting = null;
-var imageHost = "http://images.craigslist.org";
 var pID = null;
-var addToShortlistText = "add to shortlist";
+var catAbb = "apa";
+var catType = "hhh";
+
+		-->
+  </script>
+  <script type="text/javascript">
+   <!--
+			var lsDomain = "www";
 
 		-->
   </script>
   <!--[if lt IE 9]>
-<script type="text/javascript" src="//www.craigslist.org/js/html5shiv.js?v=ed7af45dcbda983c8455631037ebcdda"></script>
+<script type="text/javascript" src="//www.craigslist.org/js/html5shiv.js?v=ed7af45dcbda983c8455631037ebcdda" ></script>
 <![endif]-->
  </head>
- <body class="toc ">
+ <body class="toc search">
   <script type="text/javascript">
    <!--
-	var h = document.documentElement;
-	h.className = h.className.replace('nojs', '');
-	var pagetype;
 	function C(k){return(document.cookie.match('(^|; )'+k+'=([^;]*)')||0)[2]}
-	var fmt = C('cl_fmt');
-	var b = document.body;
-	pagetype = b.className.replace(' ', '');
-	if (fmt) { b.className += " " + fmt; }
-	var width = window.innerWidth || document.documentElement.clientWidth;
-	if (width > 1000) { b.className += ' w1024'; }
-	var mode = C('cl_img');
-	if (mode && b.className.indexOf('map') == -1) { b.className += " " + mode; }
+	var pagetype, pagemode;
+	(function(){
+		var h = document.documentElement;
+		h.className = h.className.replace('nojs', '');
+		var b = document.body;
+		var bodyClassList = b.className.split(/\s+/);;
+		pagetype = bodyClassList[0];
+		var fmt = C('cl_fmt');
+		if (fmt) {
+			pagemode = fmt;
+			bodyClassList.push(fmt);
+		} else if (screen.width <= 480) {
+			pagemode = 'mobile';
+			bodyClassList.push(pagemode);
+		}
+		var width = window.innerWidth || document.documentElement.clientWidth;
+		if (width > 1000) { bodyClassList.push('w1024'); }
+		if (typeof catType !== 'undefined') {
+			var mode = (decodeURIComponent(C('cl_img') || '').match(new RegExp(catType + ':([^,]+)', 'i')) || {})[1];
+			for (var i = 0, len = bodyClassList.length; i < len; i++){
+				if (bodyClassList[i] === 'map') { mode = undefined; }
+			}
+			if (mode) { bodyClassList.push(mode); }
+		}
+		b.className = bodyClassList.join(' ');
+	}());
 -->
   </script>
   <article id="pagecontainer">
    <header class="bchead">
     <div class="contents closed">
-     <div class="topright_box">
-      <div id="ef">
-       [
-       <a href="http://www.craigslist.org/about/help/">
-        help
-       </a>
-       ] 
-	[
-       <a href="https://post.craigslist.org/c/ral?lang=en">
+     <div class="breadbox">
+      <div class="mi post">
+       <em>
+        [
+       </em>
+       <a href="https://post.craigslist.org/c/sea?lang=en">
         post
        </a>
-       ]
+       <em>
+        ]
+       </em>
       </div>
-      <div id="favorites">
-       <a href="#">
-        <span class="n">
-         0
-        </span>
-        favorites
+      <div class="mi account">
+       <em>
+        [
+       </em>
+       <a href="https://accounts.craigslist.org">
+        account
        </a>
+       <em>
+        ]
+       </em>
       </div>
-     </div>
-     <div class="dropdown down">
-      &#8744;
-     </div>
-     <div class="dropdown up">
-      &#8743;
-     </div>
-     <div class="leftside">
-      <button class="back">
-       &lt;
-      </button>
-      <div class="breadbox">
-       <div class="breadcrumbs">
-        <span class="crumb">
-         <a href="//www.craigslist.org/about/sites">
-          CL
-         </a>
-        </span>
-        <span class="crumb">
-         <a href="/">
-          raleigh
-         </a>
-        </span>
-        <span class="crumb">
-         <a href="/hhh/">
-          housing
-         </a>
-        </span>
-        <span class="crumb">
-         <a href="/apa/">
-          apts/housing for rent
-         </a>
-        </span>
+      <div class="mi fav">
+       <div id="favorites">
+        <a class="favlink" href="#">
+         <span class="n">
+          0
+         </span>
+         favorites
+        </a>
        </div>
       </div>
+      <span class="crumb">
+       <a href="//www.craigslist.org/about/sites">
+        CL
+       </a>
+       &gt;
+      </span>
+      <span class="crumb">
+       <a href="/">
+        seattle
+       </a>
+       &gt;
+      </span>
+      <span class="crumb">
+       <a href="/hhh/">
+        housing
+       </a>
+       &gt;
+      </span>
+      <span class="crumb">
+       <a href="/apa/">
+        apts/housing for rent
+       </a>
+      </span>
+     </div>
+     <div class="dropdown">
+      — — —
+     </div>
+     <div class="tabcontainer" id="satabs">
+      <b>
+       all seattle
+      </b>
+      <a href="/search/apa/see?bedrooms=2&amp;maxAsk=1000&amp;minAsk=500">
+       seattle
+      </a>
+      <a href="/search/apa/est?bedrooms=2&amp;maxAsk=1000&amp;minAsk=500">
+       eastside
+      </a>
+      <a href="/search/apa/sno?bedrooms=2&amp;maxAsk=1000&amp;minAsk=500">
+       snohomish co
+      </a>
+      <a href="/search/apa/kit?bedrooms=2&amp;maxAsk=1000&amp;minAsk=500">
+       kitsap co
+      </a>
+      <a href="/search/apa/tac?bedrooms=2&amp;maxAsk=1000&amp;minAsk=500">
+       tacoma
+      </a>
+      <a href="/search/apa/oly?bedrooms=2&amp;maxAsk=1000&amp;minAsk=500">
+       olympia
+      </a>
+      <a href="/search/apa/skc?bedrooms=2&amp;maxAsk=1000&amp;minAsk=500">
+       south king
+      </a>
      </div>
     </div>
    </header>
-   <blockquote>
+   <blockquote class="searchform">
     <script type="text/javascript">
      <!--
 			var catAbb = "apa";
@@ -127,128 +170,114 @@ var addToShortlistText = "add to shortlist";
     <form accept-charset="utf-8" action="/search/apa" id="searchform" method="get">
      <fieldset id="searchfieldset">
       <legend id="searchlegend">
-       apts/housing for rent
+       <select id="catAbb" name="catAbb">
+        <option value="ccc">
+         all community
+        </option>
+        <option value="eee">
+         all event
+        </option>
+        <option value="sss">
+         all for sale / wanted
+        </option>
+        <option value="ggg">
+         all gigs
+        </option>
+        <option value="hhh">
+         all housing
+        </option>
+        <option disabled="" value="">
+         --
+        </option>
+        <option selected="" value="apa">
+         apts/housing for rent
+        </option>
+        <option value="hou">
+         apts wanted
+        </option>
+        <option value="swp">
+         housing swap
+        </option>
+        <option value="hsw">
+         housing wanted
+        </option>
+        <option value="off">
+         office &amp; commercial
+        </option>
+        <option value="prk">
+         parking &amp; storage
+        </option>
+        <option data-acat="rea" value="reb">
+         real estate - by broker
+        </option>
+        <option data-acat="rea" value="reo">
+         real estate - by owner
+        </option>
+        <option value="rea">
+         real estate for sale
+        </option>
+        <option value="rew">
+         real estate wanted
+        </option>
+        <option value="roo">
+         rooms &amp; shares
+        </option>
+        <option value="sha">
+         rooms wanted
+        </option>
+        <option value="sub">
+         sublets &amp; temporary
+        </option>
+        <option value="sbw">
+         sublet/temp wanted
+        </option>
+        <option value="vac">
+         vacation rentals
+        </option>
+        <option disabled="" value="">
+         --
+        </option>
+        <option value="jjj">
+         all jobs
+        </option>
+        <option value="ppp">
+         all personals
+        </option>
+        <option value="res">
+         all resume
+        </option>
+        <option value="bbb">
+         all services offered
+        </option>
+       </select>
       </legend>
+      <div class="experimentalFeature">
+      </div>
       <div id="searchtable">
        <span class="searchgroup">
-        search for:
-        <input autocapitalize="off" autocorrect="off" id="query" name="query" size="24" value=""/>
+        <span>
+         <input autocapitalize="off" autocorrect="off" data-suggest="search" id="query" name="query" placeholder="search" size="24" value=""/>
+        </span>
+        <input id="searchbtn" type="submit" value="search"/>
        </span>
        <span class="searchgroup">
-        in:
-        <select id="catAbb" name="catAbb">
-         <option value="ccc">
-          all community
-         </option>
-         <option value="eee">
-          all event
-         </option>
-         <option value="sss">
-          all for sale / wanted
-         </option>
-         <option value="ggg">
-          all gigs
-         </option>
-         <option value="hhh">
-          all housing
-         </option>
-         <option disabled="" value="">
-          --
-         </option>
-         <option value="hou">
-          apts wanted
-         </option>
-         <option selected="" value="apa">
-          apts/housing for rent
-         </option>
-         <option value="swp">
-          housing swap
-         </option>
-         <option value="hsw">
-          housing wanted
-         </option>
-         <option value="off">
-          office &amp; commercial
-         </option>
-         <option value="prk">
-          parking &amp; storage
-         </option>
-         <option value="reb">
-          real estate - by broker
-         </option>
-         <option value="reo">
-          real estate - by owner
-         </option>
-         <option value="rea">
-          real estate for sale
-         </option>
-         <option value="rew">
-          real estate wanted
-         </option>
-         <option value="roo">
-          rooms &amp; shares
-         </option>
-         <option value="sha">
-          rooms wanted
-         </option>
-         <option value="sbw">
-          sublet/temp wanted
-         </option>
-         <option value="sub">
-          sublets &amp; temporary
-         </option>
-         <option value="vac">
-          vacation rentals
-         </option>
-         <option disabled="" value="">
-          --
-         </option>
-         <option value="jjj">
-          all jobs
-         </option>
-         <option value="ppp">
-          all personals
-         </option>
-         <option value="res">
-          all resume
-         </option>
-         <option value="bbb">
-          all services offered
-         </option>
-        </select>
-        <input type="submit" value="Search"/>
-       </span>
-       <span class="searchgroup">
-        <div id="searchchecks">
-         <label id="usemapcheck" style="display:none;">
-          <input name="useMap" type="checkbox" value="1"/>
-          show map
-         </label>
-         <label id="shortlistcheck" style="display:none;">
-          <input name="shortlistOnly" type="checkbox" value="1"/>
-          show shortlisted items only
-         </label>
+        <span id="searchchecks">
+         <input id="useMap" name="useMap" style="display:none;" type="checkbox" value="1"/>
          <input id="zoomtoposting" name="zoomToPosting" type="hidden" value=""/>
-        </div>
-        <label>
-         <input name="srchType" title="search only posting titles" type="radio" value="T"/>
-         title
-        </label>
-        <label>
-         <input checked="checked" name="srchType" title="search the entire posting" type="radio" value="A"/>
-         entire post
-        </label>
+        </span>
        </span>
        <span class="searchgroup">
         rent:
-        <input class="min" name="minAsk" size="5" value="500"/>
-        <input class="max" name="maxAsk" size="5" value="1000"/>
+        <input class="min" name="minAsk" placeholder="min" size="5" value="500"/>
+        <input class="max" name="maxAsk" placeholder="max" size="5" value="1000"/>
+       </span>
+       <span class="searchgroup">
         <select name="bedrooms">
          <option value="">
           0+ BR
          </option>
          <option value="1">
-          1 BR
+          1+ BR
          </option>
          <option selected="selected" value="2">
           2+ BR
@@ -272,6 +301,49 @@ var addToShortlistText = "add to shortlist";
           8+ BR
          </option>
         </select>
+        <select name="housing_type">
+         <option value="">
+          any housing type
+         </option>
+         <option value="1">
+          apartment
+         </option>
+         <option value="2">
+          condo
+         </option>
+         <option value="3">
+          cottage/cabin
+         </option>
+         <option value="4">
+          duplex
+         </option>
+         <option value="5">
+          flat
+         </option>
+         <option value="6">
+          house
+         </option>
+         <option value="7">
+          in-law
+         </option>
+         <option value="8">
+          loft
+         </option>
+         <option value="9">
+          townhouse
+         </option>
+         <option value="10">
+          manufactured
+         </option>
+         <option value="11">
+          assisted living
+         </option>
+         <option value="12">
+          land
+         </option>
+        </select>
+       </span>
+       <span class="searchgroup">
         <label>
          <input name="addTwo" type="checkbox" value="purrr"/>
          cats
@@ -284,7 +356,13 @@ var addToShortlistText = "add to shortlist";
        <span class="searchgroup">
         <label>
          <input name="hasPic" type="checkbox" value="1"/>
-         has image
+         <span class="haspic">
+          pic
+         </span>
+        </label>
+        <label>
+         <input name="srchType" title="search only posting titles" type="checkbox" value="T"/>
+         title
         </label>
        </span>
       </div>
@@ -292,3621 +370,3310 @@ var addToShortlistText = "add to shortlist";
     </form>
    </blockquote>
    <section class="body">
-    <div class="sortby">
-     sort by:
-     <strong>
-      most recent
-     </strong>
-     <a href="/search/apa?sort=priceasc&amp;bedrooms=2&amp;maxAsk=1000&amp;minAsk=500">
-      low price
-     </a>
-     <a href="/search/apa?sort=pricedsc&amp;bedrooms=2&amp;maxAsk=1000&amp;minAsk=500">
-      high price
-     </a>
-    </div>
-    <blockquote class="modebtns">
-     <button id="listview">
-      list view
-     </button>
-     <button id="picview">
-      pic view
-     </button>
-     <button id="gridview">
-      grid view
-     </button>
-     <button id="mapview">
-      map view
-     </button>
-    </blockquote>
-    <blockquote id="toc_rows">
-     <div class="resulttotal">
-      found 2500 postings
-     </div>
-     <h4 class="ban resultshdr">
-      <span class="nplink first" title="first page">
-       |&lt;
-       <span class="nplabel">
-        first
+    <section class="favlistinfo">
+    </section>
+    <div id="toc_rows">
+     <div class="toc_legend">
+      <div class="center">
+       <span class="tocview buttongroup">
+        <a class="mode button" data-view="list" href="#list" id="listview" title="show results in a list">
+         list
+        </a>
+        <a class="mode button" data-view="pic" href="#pic" id="picview" title="show results in a list with thumbnail pictures">
+         thumb
+        </a>
+        <a class="mode button" data-view="grid" href="#grid" id="gridview" title="show results side-by-side with larger pictures">
+         gallery
+        </a>
+        <a class="mapview mode button" data-view="map" href="#map" id="mapview" title="show results on a map">
+         map
+        </a>
        </span>
-      </span>
-      <div class="npcontrols">
-       <div class="npcontrolcenter">
-        <span class="nplink prev" title="previous page">
-         &lt;
-         <span class="nplabel">
-          prev
+       <span class="paginator buttongroup">
+        <span class="button first" title="first page">
+         &lt;&lt;
+        </span>
+        <span class="button prev" title="previous page">
+         &lt; prev
+        </span>
+        <span class="button pagenum">
+         1 - 100 of
+         <span class="resultcount">
+          2500
          </span>
         </span>
-        <span class="nplink next" title="next page">
-         <a href="http://raleigh.craigslist.org/search/apa?s=100&amp;bedrooms=2&amp;maxAsk=1000&amp;minAsk=500">
-          <span class="nplabel">
-           next
+        <a class="button next" href="/search/apa?s=100&amp;bedrooms=2&amp;maxAsk=1000&amp;minAsk=500" title="next page">
+         next &gt;
+        </a>
+       </span>
+       <span class="tocsort buttongroup">
+        <span class="button sel">
+         newest
+        </span>
+        <a class="button" href="/search/apa?sort=priceasc&amp;bedrooms=2&amp;maxAsk=1000&amp;minAsk=500" title="sort by price, lowest to highest">
+         <span class="pricesort">
+          <span class="pricesort">
+           $
           </span>
-          &gt;
-         </a>
-        </span>
-        <span class="pagenum">
-         1 - 100
-        </span>
-       </div>
+          $
+         </span>
+         $
+        </a>
+        <a class="button" href="/search/apa?sort=pricedsc&amp;bedrooms=2&amp;maxAsk=1000&amp;minAsk=500" title="sort by price, highest to lowest">
+         $
+         <span class="pricesort">
+          $
+          <span class="pricesort">
+           $
+          </span>
+         </span>
+        </a>
+       </span>
       </div>
-     </h4>
-     <p class="row" data-latitude="35.8625743108992" data-longitude="-78.6232739959049" data-pid="3949023084">
-      <a class="i" data-id="0:01414_qgcJ1ij08Y" href="/apa/3949023084.html">
-      </a>
-      <span class="pl">
+     </div>
+     <div class="content">
+      <p class="row" data-latitude="46.9989830869194" data-longitude="-122.847250593816" data-pid="4271041577">
+       <a class="i" data-id="0:01212_lBs1mi3bY5l" href="/oly/apa/4271041577.html">
+       </a>
        <span class="star">
        </span>
-       <small>
+       <span class="pl">
         <span class="date">
-         Jul 20
+         Jan  3
         </span>
-       </small>
-       <a href="/apa/3949023084.html">
-        NEW Listing! Town Home in Mid-Town with a Huge Back Yard, FP, Storage
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
+        <a href="/oly/apa/4271041577.html">
+         Last Home at this Price! Gorgeous Views from your Private Patio!
+        </a>
+       </span>
+       <span class="l2">
         <span class="price">
-         $895
+         $992
         </span>
-        / 2br - 1160ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Raleigh, NC - near North Hills)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-          <a class="maptag" data-pid="3949023084" href="#">
-           map
-          </a>
+        / 2br - 912ft² -
+        <span class="pnr">
+         <small>
+          (Olympia)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4271041577" href="#">
+            map
+           </a>
+          </span>
          </span>
         </span>
        </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.990172011868" data-longitude="-78.5110315638448" data-pid="3949020721">
-      <a class="i" data-id="0:01212_7qAejqDNoyR" href="/apa/3949020721.html">
-      </a>
-      <span class="pl">
+      </p>
+      <p class="row" data-latitude="47.2554962917856" data-longitude="-122.53458752503" data-pid="4239811753">
+       <a class="i" data-id="0:00V0V_3BAI3G0eDTV" href="/tac/apa/4239811753.html">
+       </a>
        <span class="star">
        </span>
-       <small>
+       <span class="pl">
         <span class="date">
-         Jul 20
+         Jan  3
         </span>
-       </small>
-       <a href="/apa/3949020721.html">
-        122 Andrew: Quiet cul-de-sac in Wake Forest! Ranch!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
+        <a href="/tac/apa/4239811753.html">
+         HUGE 2BD over 1600 sqft FREE POWER,WSG,RENT IN Tell 1/15/14
+        </a>
+       </span>
+       <span class="l2">
         <span class="price">
          $995
         </span>
-        / 3br - 1100ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Wake Forest: Available 9/3/13)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-          <a class="maptag" data-pid="3949020721" href="#">
-           map
-          </a>
+        / 2br - 1600ft² -
+        <span class="pnr">
+         <small>
+          (Tacoma)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4239811753" href="#">
+            map
+           </a>
+          </span>
          </span>
         </span>
        </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948993727">
-      <a class="i" data-id="0:00O0O_cieAthXGSj1" href="/apa/3948993727.html">
-      </a>
-      <span class="pl">
+      </p>
+      <p class="row" data-latitude="47.1464051275986" data-longitude="-122.457180926912" data-pid="4271041480">
+       <a class="i" href="/tac/apa/4271041480.html">
+       </a>
        <span class="star">
        </span>
-       <small>
+       <span class="pl">
         <span class="date">
-         Jul 20
+         Jan  3
         </span>
-       </small>
-       <a href="/apa/3948993727.html">
-        Large Pets Welcome
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
+        <a href="/tac/apa/4271041480.html">
+         Dont miss out- 2br apts are going FAST!
+        </a>
+       </span>
+       <span class="l2">
         <span class="price">
-         $775
+         $749
         </span>
-        / 2br - 1095ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Raleigh)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
+        / 2br -
+        <span class="pnr">
+         <small>
+          (Tacoma)
+         </small>
+         <span class="px">
+          <span class="p">
+           <a class="maptag" data-pid="4271041480" href="#">
+            map
+           </a>
+          </span>
          </span>
         </span>
        </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.9026240607767" data-longitude="-78.7308754698246" data-pid="3931682456">
-      <a class="i" data-id="0:00T0T_4lgAa83if35" href="/apa/3931682456.html">
-      </a>
-      <span class="pl">
+      </p>
+      <p class="row" data-pid="4271057395">
+       <a class="i" data-id="0:00A0A_63N5Ftafhc1" href="/sno/apa/4271057395.html">
+       </a>
        <span class="star">
        </span>
-       <small>
+       <span class="pl">
         <span class="date">
-         Jul 20
+         Jan  3
         </span>
-       </small>
-       <a href="/apa/3931682456.html">
-        NEW Listing!! Great Home w/ Hardwoods, Fenced in Yard, Garage
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $995
-        </span>
-        / 2br - 912ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Raleigh, NC )
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-          <a class="maptag" data-pid="3931682456" href="#">
-           map
-          </a>
-         </span>
-        </span>
+        <a href="/sno/apa/4271057395.html">
+         Call Today, Fully Equipped Kitchen, Easy Access to Ferry
+        </a>
        </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.7764014585162" data-longitude="-78.7430221750808" data-pid="3931694916">
-      <a class="i" data-id="0:00R0R_8LELZUfR1EX" href="/apa/3931694916.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3931694916.html">
-        NEW Listing Great Condo off Western Blvd w/ Patio, Washer &amp; Dryer
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $925
-        </span>
-        / 2br - 1296ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Raleigh, NC )
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-          <a class="maptag" data-pid="3931694916" href="#">
-           map
-          </a>
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948839053">
-      <a class="i" href="/apa/3948839053.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948839053.html">
-        Brand New 3 BR, 2 BA
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $600
-        </span>
-        / 3br -
-        <span class="pp">
-        </span>
-        <small>
-         (Raleigh nc)
-        </small>
-        <span class="px">
-         <span class="p">
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948971577">
-      <a class="i" data-id="0:00I0I_1P0rwfbsMxg" href="/apa/3948971577.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948971577.html">
-        Find your perfect home!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $750
-        </span>
-        / 2br - 1075ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Raleigh)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.8699081706765" data-longitude="-78.6971855514727" data-pid="3943469183">
-      <a class="i" data-id="0:00v0v_5pq1W3a04UD" href="/apa/3943469183.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3943469183.html">
-        New Listing!! Great Condo in N Raleigh w/ Hardwoods, Deck Storage
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $895
-        </span>
-        / 2br - 1392ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Raleigh, NC )
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-          <a class="maptag" data-pid="3943469183" href="#">
-           map
-          </a>
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948915455">
-      <a class="i" data-id="0:01212_7yzP7VYrMA" href="/apa/3948915455.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948915455.html">
-        Get Lucky with Us!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $960
-        </span>
-        / 3br - 1185ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Raleigh)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic�img
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948781874">
-      <a class="i" href="/apa/3948781874.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948781874.html">
-        Quaint 3 bedroom, close to beach
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $550
-        </span>
-        / 3br -
-        <span class="pp">
-        </span>
-        <small>
-         (Raleigh, nc)
-        </small>
-        <span class="px">
-         <span class="p">
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.7297053982155" data-longitude="-78.8326900700139" data-pid="3948691675">
-      <a class="i" href="/apa/3948691675.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948691675.html">
-        Almost new property in irresistible community!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $500
-        </span>
-        / 2br - 1075ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Apex)
-        </small>
-        <span class="px">
-         <span class="p">
-          <a class="maptag" data-pid="3948691675" href="#">
-           map
-          </a>
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.8480211829037" data-longitude="-78.8978926670963" data-pid="3948850355">
-      <a class="i" href="/apa/3948850355.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948850355.html">
-        Brand NEW LUXURY Community...This One's a NO BRAINER!!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $995
-        </span>
-        / 2br - 1065ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Cary/Morrisville/Apex/RTP/Hwy 55)
-        </small>
-        <span class="px">
-         <span class="p">
-          img
-          <a class="maptag" data-pid="3948850355" href="#">
-           map
-          </a>
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948853327">
-      <a class="i" data-id="0:00h0h_agquXfXx9Il" href="/apa/3948853327.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948853327.html">
-        Pick Me, Pick Me!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $835
-        </span>
-        / 2br - 951ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Chapel Hill)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948774473">
-      <a class="i" data-id="0:00808_bXbfeUX4F9G" href="/apa/3948774473.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948774473.html">
-        Our Best Kept Secret!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $900
-        </span>
-        / 3br - 1298ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (North Raleigh)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic�img
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948842753">
-      <a class="i" href="/apa/3948842753.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948842753.html">
-        Trinity Park has everything except you!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $779
-        </span>
-        / 2br - 901ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (5301 Creek Ridge Lane)
-        </small>
-        <span class="px">
-         <span class="p">
-          img
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.9135102588836" data-longitude="-78.9609180245573" data-pid="3948800967">
-      <a class="i" href="/apa/3948800967.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948800967.html">
-        A Unique Two Bedroom Layout! Very Open and Inviting!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
+       <span class="l2">
         <span class="price">
          $890
         </span>
-        / 2br - 1254ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Southpoint Mall Area)
-        </small>
-        <span class="px">
-         <span class="p">
-          img
-          <a class="maptag" data-pid="3948800967" href="#">
-           map
-          </a>
+        / 2br - 1026ft² -
+        <span class="pnr">
+         <small>
+          (Everett)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+          </span>
          </span>
         </span>
        </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948823688">
-      <a class="i" data-id="0:00Z0Z_8Q7veoq74vR" href="/apa/3948823688.html">
-      </a>
-      <span class="pl">
+      </p>
+      <p class="row" data-latitude="47.2816231672422" data-longitude="-122.510466001857" data-pid="4271031916">
+       <a class="i" data-id="0:00P0P_cbJ4ZLGzMGO" href="/tac/apa/4271031916.html">
+       </a>
        <span class="star">
        </span>
-       <small>
+       <span class="pl">
         <span class="date">
-         Jul 20
+         Jan  3
         </span>
-       </small>
-       <a href="/apa/3948823688.html">
-        Come in NOW!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
+        <a href="/tac/apa/4271031916.html">
+         Full washer/dryer, storage, large rooms and free parking!
+        </a>
+       </span>
+       <span class="l2">
         <span class="price">
-         $952
+         $857
         </span>
-        / 2br - 1198ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Wake Forest)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
+        / 2br -
+        <span class="pnr">
+         <small>
+          (North Tacoma)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4271031916" href="#">
+            map
+           </a>
+          </span>
          </span>
         </span>
        </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948785698">
-      <a class="i" data-id="0:01111_lLf49MyZMcp" href="/apa/3948785698.html">
-      </a>
-      <span class="pl">
+      </p>
+      <p class="row" data-pid="4270912458">
+       <a class="i" data-id="0:00303_8TDdDCTpQrn" href="/see/apa/4270912458.html">
+       </a>
        <span class="star">
        </span>
-       <small>
+       <span class="pl">
         <span class="date">
-         Jul 20
+         Jan  3
         </span>
-       </small>
-       <a href="/apa/3948785698.html">
-        Multi-Million Dollar Renovations!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
+        <a href="/see/apa/4270912458.html">
+         Townhouse Ideal For Roommates
+        </a>
+       </span>
+       <span class="l2">
         <span class="price">
-         $990
+         $500
         </span>
-        / 2br - 1291ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Chapel Hill)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
+        / 2br -
+        <span class="pnr">
+         <small>
+          (Seattle-tacoma WA)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+          </span>
          </span>
         </span>
        </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948765229">
-      <a class="i" data-id="0:00n0n_bZEnksHRclc" href="/apa/3948765229.html">
-      </a>
-      <span class="pl">
+      </p>
+      <p class="row" data-pid="4262477355">
+       <a class="i" data-id="0:00101_bxN5P2bUkLB" href="/tac/apa/4262477355.html">
+       </a>
        <span class="star">
        </span>
-       <small>
+       <span class="pl">
         <span class="date">
-         Jul 20
+         Jan  3
         </span>
-       </small>
-       <a href="/apa/3948765229.html">
-        Get Lucky with Us!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $840
-        </span>
-        / 2br - 1298ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (North Raleigh)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic�img
-         </span>
-        </span>
+        <a href="/tac/apa/4262477355.html">
+         Come Look and Lease! 1 Month FREE! HURRY IN!
+        </a>
        </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948807622">
-      <a class="i" href="/apa/3948807622.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948807622.html">
-        Washer and Dryer included!!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $703
-        </span>
-        / 2br - 950ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Durham)
-        </small>
-        <span class="px">
-         <span class="p">
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948797396">
-      <a class="i" href="/apa/3948797396.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948797396.html">
-        Great location, affordable rent!!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $635
-        </span>
-        / 2br - 950ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Durham)
-        </small>
-        <span class="px">
-         <span class="p">
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948728049">
-      <a class="i" data-id="0:00K0K_gJzJZLwsfRn" href="/apa/3948728049.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948728049.html">
-        Students Are Welcome!!!!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $870
-        </span>
-        / 2br - 1031ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Durham NC)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948665018">
-      <a class="i" href="/apa/3948665018.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948665018.html">
-        three BR home
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $925
-        </span>
-        / 3br - 1625ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Morrisville)
-        </small>
-        <span class="px">
-         <span class="p">
-          img
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.7710729510217" data-longitude="-78.6334726446576" data-pid="3948791714">
-      <a class="i" href="/apa/3948791714.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948791714.html">
-        2 bedroom apt in downtown raleigh----great location
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $695
-        </span>
-        / 2br - 700ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (721 S. Bloodworth st. 27603)
-        </small>
-        <span class="px">
-         <span class="p">
-          <a class="maptag" data-pid="3948791714" href="#">
-           map
-          </a>
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948782704">
-      <a class="i" data-id="0:00d0d_1Cmgs2y8xr2" href="/apa/3948782704.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948782704.html">
-        Townhouse de 2 cuartos
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $925
-        </span>
-        / 2br - 1200ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Old Wake Forest Rd. y Millbrook)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.5968937813113" data-longitude="-78.4857068293013" data-pid="3924008877">
-      <a class="i" data-id="0:00r0r_kudF7xePslC" href="/apa/3924008877.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3924008877.html">
-        Beautiful 4 bd/2.5 bath
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $900
-        </span>
-        / 4br - 2000ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Clayton)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-          <a class="maptag" data-pid="3924008877" href="#">
-           map
-          </a>
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.9399236132377" data-longitude="-78.8970332304036" data-pid="3948720381">
-      <a class="i" href="/apa/3948720381.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948720381.html">
-        RELAX! IT'S ALL HERE...
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $850
-        </span>
-        / 2br - 1094ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Southpoint, Durham)
-        </small>
-        <span class="px">
-         <span class="p">
-          img
-          <a class="maptag" data-pid="3948720381" href="#">
-           map
-          </a>
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948752395">
-      <a class="i" href="/apa/3948752395.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948752395.html">
-        *****Upgraded 2 Bedroom Apartments starting at $799*****
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $799
-        </span>
-        / 2br - 11263ft&#178; -
-        <span class="pp">
-        </span>
-        <span class="px">
-         <span class="p">
-          img
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948757788">
-      <a class="i" data-id="0:00U0U_bKcXL2Zp7Lq" href="/apa/3948757788.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948757788.html">
-        Total City Access
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $960
-        </span>
-        / 3br - 1185ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Raleigh)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.6854730564338" data-longitude="-78.5949125850474" data-pid="3948549292">
-      <a class="i" data-id="0:00M0M_91L9eVjT3DK" href="/apa/3948549292.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948549292.html">
-        *You should View this beautiful 3 bedroom 2.5 bathroom unit*
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $675
-        </span>
-        / 3br - 1350ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Garner)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-          <a class="maptag" data-pid="3948549292" href="#">
-           map
-          </a>
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948723513">
-      <a class="i" data-id="0:00000_4bfYzoRp0h6" href="/apa/3948723513.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948723513.html">
-        Save some GREEN at Ashbrook
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $805
-        </span>
-        / 2br - 1052ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Carrboro)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="36.0313103815562" data-longitude="-78.9109561048246" data-pid="3948767548">
-      <a class="i" data-id="0:00T0T_eKBhJok1VoD" href="/apa/3948767548.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948767548.html">
-        ***WELCOME HOME***
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $904
-        </span>
-        / 2br - 1120ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (NEAR DUKE ) )
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-          <a class="maptag" data-pid="3948767548" href="#">
-           map
-          </a>
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948736036">
-      <a class="i" data-id="0:00b0b_gs7OgNn1a7P" href="/apa/3948736036.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948736036.html">
-        2-Story Townhome for Rent (38127)
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $975
-        </span>
-        / 3br - 1700ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Memphis )
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.9662796718123" data-longitude="-78.5603632300029" data-pid="3948748216">
-      <a class="i" href="/apa/3948748216.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948748216.html">
-        2 Minutes to 98 Bypass! Contemporary Upgraded 2BR/2BA! Only 1!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
+       <span class="l2">
         <span class="price">
          $899
         </span>
         / 2br -
-        <span class="pp">
-        </span>
-        <small>
-         (Wakefield, Open 12-4)
-        </small>
-        <span class="px">
-         <span class="p">
-          img
-          <a class="maptag" data-pid="3948748216" href="#">
-           map
-          </a>
+        <span class="pnr">
+         <small>
+          (Fife)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+          </span>
          </span>
         </span>
        </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3941836646">
-      <a class="i" data-id="0:00I0I_bYHzhAHGmop" href="/apa/3941836646.html">
-      </a>
-      <span class="pl">
+      </p>
+      <p class="row" data-latitude="47.5930257288791" data-longitude="-122.640240942447" data-pid="4271031542">
+       <a class="i" data-id="0:00404_eTfsxiGfOCC" href="/kit/apa/4271031542.html">
+       </a>
        <span class="star">
        </span>
-       <small>
+       <span class="pl">
         <span class="date">
-         Jul 20
+         Jan  3
         </span>
-       </small>
-       <a href="/apa/3941836646.html">
-        In a great location close to Cary/Raleigh right off the beltline
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
+        <a href="/kit/apa/4271031542.html">
+         3 bedroom 2 bathroom you will LOVE
+        </a>
+       </span>
+       <span class="l2">
         <span class="price">
-         $795
+         $983
         </span>
-        / 2br - 827ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Raleigh - Brook Hill)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
+        / 3br - 1090ft² -
+        <span class="pnr">
+         <small>
+          (3232 Pine Road NE Bremerton WA)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4271031542" href="#">
+            map
+           </a>
+          </span>
          </span>
         </span>
        </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.9400955005762" data-longitude="-78.8899285537444" data-pid="3948730565">
-      <a class="i" href="/apa/3948730565.html">
-      </a>
-      <span class="pl">
+      </p>
+      <p class="row" data-latitude="47.2883840692244" data-longitude="-122.097993685164" data-pid="4271009552">
+       <a class="i" href="/skc/apa/4271009552.html">
+       </a>
        <span class="star">
        </span>
-       <small>
+       <span class="pl">
         <span class="date">
-         Jul 20
+         Jan  3
         </span>
-       </small>
-       <a href="/apa/3948730565.html">
-        Spacious First Floor 2 BR 2 BA Apartment with Huge Closet Space
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $884
-        </span>
-        / 2br - 1121ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Durham/RTP area)
-        </small>
-        <span class="px">
-         <span class="p">
-          img
-          <a class="maptag" data-pid="3948730565" href="#">
-           map
-          </a>
-         </span>
-        </span>
+        <a href="/skc/apa/4271009552.html">
+         Pet Friendly, Wooded Setting, Close To Schools
+        </a>
        </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948709312">
-      <a class="i" data-id="0:00f0f_dneKIw9HLGl" href="/apa/3948709312.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948709312.html">
-        Make your friends jealous!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $780
-        </span>
-        / 2br - 1062ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (North Raleigh)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic�img
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.7165846647077" data-longitude="-78.6524375476754" data-pid="3948723881">
-      <a class="i" data-id="0:01010_bsbDDQAQzqe" href="/apa/3948723881.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948723881.html">
-        It's All About Style &amp; Comfort...Specials!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $850
-        </span>
-        / 2br - 1028ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Pine Winds Apartments- Raleigh,NC)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic�img
-          <a class="maptag" data-pid="3948723881" href="#">
-           map
-          </a>
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948697520">
-      <a class="i" data-id="0:00L0L_h6Ut2tjGkNT" href="/apa/3948697520.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948697520.html">
-        A Great Townhouse Floorplan!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $830
-        </span>
-        / 2br - 1030ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Chapel Hill - Booker Creek)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.7798392052868" data-longitude="-78.7298441457935" data-pid="3948712777">
-      <a class="i" data-id="0:00Z0Z_g2S3qpuKyck" href="/apa/3948712777.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948712777.html">
-        Capture the Excitement at Arbor Creek
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $675
-        </span>
-        / 2br - 810ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Raleigh)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-          <a class="maptag" data-pid="3948712777" href="#">
-           map
-          </a>
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948708957">
-      <a class="i" href="/apa/3948708957.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948708957.html">
-        Get a Great Apartment FAST! Look Today, Move-in Tomorrow!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $985
-        </span>
-        / 2br - 900ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Carrboro, UNC, Chapel Hill)
-        </small>
-        <span class="px">
-         <span class="p">
-          img
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3900657528">
-      <a class="i" data-id="3r83q43Hf5I45sd5qed6s694aaaa99e34152d.jpg" href="/apa/3900657528.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3900657528.html">
-        U Suites NCSU -- Save $710--1st month free! Plus best monthly rate!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $530
-        </span>
-        / 4br -
-        <span class="pp">
-        </span>
-        <small>
-         (Raleigh, NCSU)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948704128">
-      <a class="i" href="/apa/3948704128.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948704128.html">
-        Large 2x2 with sunroom, walkin closets, laundry room and much more!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $985
-        </span>
-        / 2br - 1151ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (231 Calibre Chase Dr)
-        </small>
-        <span class="px">
-         <span class="p">
-          img
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948684905">
-      <a class="i" data-id="0:00Y0Y_her0WcYjlk7" href="/apa/3948684905.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948684905.html">
-        Catch The Bus To UNC At Your Front Door!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $935
-        </span>
-        / 2br - 1000ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Chapel Hill - Franklin Woods)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948670127">
-      <a class="i" href="/apa/3948670127.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948670127.html">
-        Awesome 2 Bedroom Townhomes!!!!!$600 off This Weekend Only***
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $849
-        </span>
-        / 2br - 1163ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Carrboro/Chapel Hill)
-        </small>
-        <span class="px">
-         <span class="p">
-          img
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="36.0568070034381" data-longitude="-78.9337598250695" data-pid="3948669401">
-      <a class="i" href="/apa/3948669401.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948669401.html">
-        2 bed $750 2nd floor
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $750
-        </span>
-        / 2br - 1137ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Durham)
-        </small>
-        <span class="px">
-         <span class="p">
-          <a class="maptag" data-pid="3948669401" href="#">
-           map
-          </a>
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948649320">
-      <a class="i" data-id="0:00101_gWN8s4KNMeX" href="/apa/3948649320.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948649320.html">
-        Style and Convenience with Landmark
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $977
-        </span>
-        / 2br - 1270ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Wake Forest)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.3970461023805" data-longitude="-78.8211736183324" data-pid="3938415013">
-      <a class="i" data-id="0:01515_k0Muvs3xe2u" href="/apa/3938415013.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3938415013.html">
-        4 BR 2 BA home for Rent $1000
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $1000
-        </span>
-        / 4br - 2100ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Lillington )
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-          <a class="maptag" data-pid="3938415013" href="#">
-           map
-          </a>
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948662286">
-      <a class="i" data-id="0:01313_k8R0C3RVKAh" href="/apa/3948662286.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948662286.html">
-        ▬▬Don't miss this opportunity! Apts available, Great prices!!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $603
-        </span>
-        / 2br - 940ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Pines of Ashton)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="36.0075326330595" data-longitude="-78.9462503050027" data-pid="3948643048">
-      <a class="i" data-id="0:00D0D_d0Bqf1lI0pE" href="/apa/3948643048.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948643048.html">
-        Welcome Home!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $640
-        </span>
-        / 2br - 770ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Durham, NC)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-          <a class="maptag" data-pid="3948643048" href="#">
-           map
-          </a>
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948638408">
-      <a class="i" data-id="0:01717_2X5Tm9bz11H" href="/apa/3948638408.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948638408.html">
-        Pick Me, Pick Me!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $775
-        </span>
-        / 2br - 1095ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Raleigh)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic�img
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.9054888497522" data-longitude="-79.0901200073523" data-pid="3948654050">
-      <a class="i" data-id="0:00d0d_1BvAvNpnTZ0" href="/apa/3948654050.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948654050.html">
-        Two Bedroom Two Bath Perfect for Roommates on J Bus Line
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $979
-        </span>
-        / 2br -
-        <span class="pp">
-        </span>
-        <small>
-         (Chapel Hill)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic�img
-          <a class="maptag" data-pid="3948654050" href="#">
-           map
-          </a>
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948645900">
-      <a class="i" href="/apa/3948645900.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948645900.html">
-        2 Bedrooms/2Bathrooms near NCSU
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $695
-        </span>
-        / 2br - 900ft&#178; -
-        <span class="pp">
-        </span>
-        <span class="px">
-         <span class="p">
-          img
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948629989">
-      <a class="i" href="/apa/3948629989.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948629989.html">
-        WOW!!!!! Call us at 919-544-1779
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $795
-        </span>
-        / 2br - 945ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (3207 Stonesthrow Lane  )
-        </small>
-        <span class="px">
-         <span class="p">
-          img
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948609399">
-      <a class="i" data-id="0:00a0a_1UZD3cwheE5" href="/apa/3948609399.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948609399.html">
-        Hurry in limited units leasing quickly
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $650
-        </span>
-        / 2br - 900ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Royal Park)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948623742">
-      <a class="i" href="/apa/3948623742.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948623742.html">
-        Don't Miss July Specials! Huge 2 BR/2 BA Only $749! 7 Miles To DT!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $749
-        </span>
-        / 2br - 1355ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Raleigh)
-        </small>
-        <span class="px">
-         <span class="p">
-          img
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948536929">
-      <a class="i" data-id="0:01212_7JHYCcteVLD" href="/apa/3948536929.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948536929.html">
-        Wow what a deal!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
+       <span class="l2">
         <span class="price">
          $825
         </span>
-        / 2br - 1151ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (North Raleigh)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic�img
+        / 2br - 970ft² -
+        <span class="pnr">
+         <small>
+          (Auburn)
+         </small>
+         <span class="px">
+          <span class="p">
+           <a class="maptag" data-pid="4271009552" href="#">
+            map
+           </a>
+          </span>
          </span>
         </span>
        </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.9054888497522" data-longitude="-79.0901200073523" data-pid="3948600670">
-      <a class="i" data-id="0:00s0s_8Ec2JnBDP54" href="/apa/3948600670.html">
-      </a>
-      <span class="pl">
+      </p>
+      <p class="row" data-latitude="47.2883840692244" data-longitude="-122.097993685164" data-pid="4271008577">
+       <a class="i" href="/skc/apa/4271008577.html">
+       </a>
        <span class="star">
        </span>
-       <small>
+       <span class="pl">
         <span class="date">
-         Jul 20
+         Jan  3
         </span>
-       </small>
-       <a href="/apa/3948600670.html">
-        WOWZERS!! THAT PRICE IS UNBEATABLE!!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $677
-        </span>
-        / 2br - 824ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Carrboro NC)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic�img
-          <a class="maptag" data-pid="3948600670" href="#">
-           map
-          </a>
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.832665913995" data-longitude="-78.8378466901698" data-pid="3903610796">
-      <a class="i" data-id="3I73L73q95L85K65J7d6tf3000b1d0fff1e66.jpg" href="/apa/3903610796.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3903610796.html">
-        Two Bedroom Two Bathroom Apartments Available
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $927
-        </span>
-        / 2br - 1100ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Morrisville, Cary)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-          <a class="maptag" data-pid="3903610796" href="#">
-           map
-          </a>
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948546667">
-      <a class="i" data-id="0:00202_e68pSEvI90u" href="/apa/3948546667.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948546667.html">
-        Move on Up with Landmark
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $952
-        </span>
-        / 2br - 1198ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Wake Forest)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948570265">
-      <a class="i" data-id="0:01212_htRcsij0Hgc" href="/apa/3948570265.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948570265.html">
-        Friendly Staff!!!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $560
-        </span>
-        / 2br - 770ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Estes Park, Carrboro)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948515680">
-      <a class="i" data-id="0:00Y0Y_jnLxZshJVDd" href="/apa/3948515680.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948515680.html">
-        Find your perfect home!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $925
-        </span>
-        / 2br - 1298ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (North Raleigh)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic�img
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948526118">
-      <a class="i" data-id="0:00E0E_bCnNvWAYAaD" href="/apa/3948526118.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948526118.html">
-        Pet-Friendly Home with All the Right Amenities
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $780
-        </span>
-        / 2br - 1062ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (North Raleigh)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic�img
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.8308897448302" data-longitude="-78.8357840421074" data-pid="3907853507">
-      <a class="i" data-id="3t33G93Nf5N75s75Jed711cb2c5578e2a1f00.jpg" href="/apa/3907853507.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3907853507.html">
-        Morrisville Town Home Ready in September
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $942
-        </span>
-        / 2br - 1100ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Morrisville, Cary)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-          <a class="maptag" data-pid="3907853507" href="#">
-           map
-          </a>
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.9076087935941" data-longitude="-78.9209255704593" data-pid="3948371570">
-      <a class="i" href="/apa/3948371570.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948371570.html">
-        A Must See! Fantastic Location! Beautiful Townhome
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $855
-        </span>
-        / 3br - 1310ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Durham Hwy 54)
-        </small>
-        <span class="px">
-         <span class="p">
-          img
-          <a class="maptag" data-pid="3948371570" href="#">
-           map
-          </a>
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948510670">
-      <a class="i" href="/apa/3948510670.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948510670.html">
-        RENOVATED TUB SURROUNDS, SINKS, VANITIES, &amp; MORE! COME SEE TODAY!!!!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $753
-        </span>
-        / 2br - 840ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Cary, NC)
-        </small>
-        <span class="px">
-         <span class="p">
-          img
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948537663">
-      <a class="i" href="/apa/3948537663.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948537663.html">
-        New to Market! Stunning 2BR/2BA! Posh Wakefield Plantation! Only 1!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $899
-        </span>
-        / 2br - 1242ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Wakefield/North Raleigh)
-        </small>
-        <span class="px">
-         <span class="p">
-          img
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948533112">
-      <a class="i" href="/apa/3948533112.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948533112.html">
-        TWO BED TWO BATH for $661!!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $661
-        </span>
-        / 2br - 945ft&#178; -
-        <span class="pp">
-        </span>
-        <span class="px">
-         <span class="p">
-          img
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.8827424252867" data-longitude="-79.0828434433546" data-pid="3948460844">
-      <a class="i" href="/apa/3948460844.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948460844.html">
-        $799 LAST MINUTE HOUSING AVAILABLE!!!!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $799
-        </span>
-        / 2br -
-        <span class="pp">
-        </span>
-        <small>
-         (CHAPEL HILL/CARRBORO/UNC)
-        </small>
-        <span class="px">
-         <span class="p">
-          img
-          <a class="maptag" data-pid="3948460844" href="#">
-           map
-          </a>
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.9329335281375" data-longitude="-79.0189586492009" data-pid="3948514525">
-      <a class="i" href="/apa/3948514525.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948514525.html">
-        Available July 25th -Cozy 2 BR Large living area with great kitchen!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $887
-        </span>
-        / 2br - 1070ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Chapel Hill )
-        </small>
-        <span class="px">
-         <span class="p">
-          img
-          <a class="maptag" data-pid="3948514525" href="#">
-           map
-          </a>
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948512976">
-      <a class="i" href="/apa/3948512976.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948512976.html">
-        Apartamento de Lujoso de 2 Recamaras con Vestidor y Lavadora y Secador
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $860
-        </span>
-        / 2br - 1120ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Cary, NC)
-        </small>
-        <span class="px">
-         <span class="p">
-          img
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.7640828659215" data-longitude="-78.7786028541565" data-pid="3948512885">
-      <a class="i" data-id="0:00k0k_hPgAOblgcwK" href="/apa/3948512885.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948512885.html">
-        This Apartment is a Great Value!!!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $695
-        </span>
-        / 2br - 890ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Cary, NC)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-          <a class="maptag" data-pid="3948512885" href="#">
-           map
-          </a>
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.8846904817901" data-longitude="-78.5904435142456" data-pid="3948512746">
-      <a class="i" href="/apa/3948512746.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948512746.html">
-        Minutes From Durant Nature Park
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $915
-        </span>
-        / 2br - 1004ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (North Raleigh)
-        </small>
-        <span class="px">
-         <span class="p">
-          img
-          <a class="maptag" data-pid="3948512746" href="#">
-           map
-          </a>
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948487844">
-      <a class="i" data-id="0:00U0U_jPF5gM81pq" href="/apa/3948487844.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948487844.html">
-        Pet-Friendly and Loving It
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $900
-        </span>
-        / 3br - 1298ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (North Raleigh)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic�img
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.8858363973803" data-longitude="-78.589813260671" data-pid="3944084770">
-      <a class="i" href="/apa/3944084770.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3944084770.html">
-        Feel At Home At Autumn Pointe!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $915
-        </span>
-        / 2br - 1004ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (North Raleigh)
-        </small>
-        <span class="px">
-         <span class="p">
-          img
-          <a class="maptag" data-pid="3944084770" href="#">
-           map
-          </a>
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.8668141985829" data-longitude="-78.6545001957378" data-pid="3948475578">
-      <a class="i" href="/apa/3948475578.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948475578.html">
-        ~~Amazing 2 bd Townhome! W/D Conn.! Pets Welcome! Close to everything
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $855
-        </span>
-        / 2br - 1150ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (North Hills Drive)
-        </small>
-        <span class="px">
-         <span class="p">
-          img
-          <a class="maptag" data-pid="3948475578" href="#">
-           map
-          </a>
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.6506372224917" data-longitude="-78.4748206311944" data-pid="3931449937">
-      <a class="i" data-id="0:00u0u_bKUhacufdLv" href="/apa/3931449937.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3931449937.html">
-        Spacious 2BR/ Immediate Move-In
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $899
-        </span>
-        / 2br - 1085ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Amelia Village)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-          <a class="maptag" data-pid="3931449937" href="#">
-           map
-          </a>
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948503774">
-      <a class="i" href="/apa/3948503774.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948503774.html">
-        It's All About Location!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $804
-        </span>
-        / 2br - 847ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (The Timbers)
-        </small>
-        <span class="px">
-         <span class="p">
-          img
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.9054888497522" data-longitude="-79.0901200073523" data-pid="3948478856">
-      <a class="i" data-id="0:00Y0Y_5jQlbaVcFBt" href="/apa/3948478856.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948478856.html">
-        Got Pets? We want to meet them!!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $769
-        </span>
-        / 2br -
-        <span class="pp">
-        </span>
-        <small>
-         (Super Pet Friendly BMW)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic�img
-          <a class="maptag" data-pid="3948478856" href="#">
-           map
-          </a>
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948463910">
-      <a class="i" data-id="0:00k0k_eomjzJI5pQm" href="/apa/3948463910.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948463910.html">
-        Move in with your Sweetheart!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $977
-        </span>
-        / 2br - 1270ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Wake Forest)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948501481">
-      <a class="i" href="/apa/3948501481.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948501481.html">
-        North Raleigh Apartment Community
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $915
-        </span>
-        / 2br -
-        <span class="pp">
-        </span>
-        <span class="px">
-         <span class="p">
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.6506372224917" data-longitude="-78.4748206311944" data-pid="3928717101">
-      <a class="i" data-id="0:00u0u_bKUhacufdLv" href="/apa/3928717101.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3928717101.html">
-        State/Gov't Workers take 3% off per month!!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $939
-        </span>
-        / 2br -
-        <span class="pp">
-        </span>
-        <small>
-         (Amelia Village)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-          <a class="maptag" data-pid="3928717101" href="#">
-           map
-          </a>
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.9162031605206" data-longitude="-79.0999175856485" data-pid="3948499020">
-      <a class="i" data-id="0:00g0g_3oSUadUpkIY" href="/apa/3948499020.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948499020.html">
-        Spacious 2 Bedroom Apartment homes
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $690
-        </span>
-        / 2br - 800ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Kingswood, Chapel Hill (919) 967-2231)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-          <a class="maptag" data-pid="3948499020" href="#">
-           map
-          </a>
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.8827424252867" data-longitude="-79.0828434433546" data-pid="3948468002">
-      <a class="i" href="/apa/3948468002.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948468002.html">
-        UPGRADED TOWNHOMES!!!! $849..THIS WEEKEND ONLY!!!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $799
-        </span>
-        / 2br -
-        <span class="pp">
-        </span>
-        <small>
-         (CHAPEL Hill/Carrboro/UNC)
-        </small>
-        <span class="px">
-         <span class="p">
-          img
-          <a class="maptag" data-pid="3948468002" href="#">
-           map
-          </a>
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.6506372224917" data-longitude="-78.4748206311944" data-pid="3931855203">
-      <a class="i" data-id="0:00000_3HMd2kmbFBH" href="/apa/3931855203.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3931855203.html">
-        Move In Ready 2 Bedrooms
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $899
-        </span>
-        / 2br - 1085ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Amelia Village)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-          <a class="maptag" data-pid="3931855203" href="#">
-           map
-          </a>
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3926846210">
-      <a class="i" href="/apa/3926846210.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3926846210.html">
-        Don't miss out on this greal deal!!!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $889
-        </span>
-        / 2br - 1075ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Raleigh, NC)
-        </small>
-        <span class="px">
-         <span class="p">
-          img
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.6506372224917" data-longitude="-78.4748206311944" data-pid="3931886412">
-      <a class="i" data-id="0:00u0u_bKUhacufdLv" href="/apa/3931886412.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3931886412.html">
-        Great Clayton Location
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $899
-        </span>
-        / 2br -
-        <span class="pp">
-        </span>
-        <small>
-         (Amelia Village)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-          <a class="maptag" data-pid="3931886412" href="#">
-           map
-          </a>
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.6506372224917" data-longitude="-78.4748206311944" data-pid="3928778018">
-      <a class="i" data-id="0:00000_3HMd2kmbFBH" href="/apa/3928778018.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3928778018.html">
-        Pet Friendly!!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $939
-        </span>
-        / 2br -
-        <span class="pp">
-        </span>
-        <small>
-         (Amelia Village)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-          <a class="maptag" data-pid="3928778018" href="#">
-           map
-          </a>
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3942449606">
-      <a class="i" data-id="0:00808_eosnfMGbYTi" href="/apa/3942449606.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3942449606.html">
-        Stop in today and take a tour
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $795
-        </span>
-        / 2br - 827ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Raleigh - Brook Hill)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948480522">
-      <a class="i" data-id="0:00r0r_iadQZ4EmNW" href="/apa/3948480522.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3948480522.html">
-        Townhouse on Guess Road--2br/1.5bath
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $825
-        </span>
-        / 2br -
-        <span class="pp">
-        </span>
-        <span class="px">
-         <span class="p">
-          pic
-         </span>
-        </span>
+        <a href="/skc/apa/4271008577.html">
+         Stop Looking!!! Come See Us!!!!
+        </a>
        </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3939232854">
-      <a class="i" href="/apa/3939232854.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3939232854.html">
-        HUGE Walk In Closet!!!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $889
-        </span>
-        / 2br - 1075ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Raleigh, NC)
-        </small>
-        <span class="px">
-         <span class="p">
-          img
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3931801890">
-      <a class="i" href="/apa/3931801890.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3931801890.html">
-        Call today before they are all gone!!!!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
-        <span class="price">
-         $889
-        </span>
-        / 2br - 1075ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Raleigh, NC)
-        </small>
-        <span class="px">
-         <span class="p">
-          img
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3914523823">
-      <a class="i" data-id="0:00O0O_fYjvaW6qe4A" href="/apa/3914523823.html">
-      </a>
-      <span class="pl">
-       <span class="star">
-       </span>
-       <small>
-        <span class="date">
-         Jul 20
-        </span>
-       </small>
-       <a href="/apa/3914523823.html">
-        AWESOME 2BR 2.5 BATHS CONDO $975.00
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
+       <span class="l2">
         <span class="price">
          $975
         </span>
-        / 2br -
-        <span class="pp">
-        </span>
-        <small>
-         (RALEIGH)
-        </small>
-        <span class="px">
-         <span class="p">
-          pic
+        / 3br -
+        <span class="pnr">
+         <small>
+          (South Auburn )
+         </small>
+         <span class="px">
+          <span class="p">
+           <a class="maptag" data-pid="4271008577" href="#">
+            map
+           </a>
+          </span>
          </span>
         </span>
        </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3939912898">
-      <a class="i" href="/apa/3939912898.html">
-      </a>
-      <span class="pl">
+      </p>
+      <p class="row" data-latitude="47.2766384344248" data-longitude="-122.215220850042" data-pid="4266770516">
+       <a class="i" data-id="0:00U0U_8RLzAAKZ8eX" href="/skc/apa/4266770516.html">
+       </a>
        <span class="star">
        </span>
-       <small>
+       <span class="pl">
         <span class="date">
-         Jul 20
+         Jan  3
         </span>
-       </small>
-       <a href="/apa/3939912898.html">
-        Summer Savings!!!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
+        <a href="/skc/apa/4266770516.html">
+         "Spacious" New Premium Carpet and Linoleum, W/D in Unit.
+        </a>
+       </span>
+       <span class="l2">
         <span class="price">
-         $795
+         $845
         </span>
-        / 2br - 945ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Durham)
-        </small>
-        <span class="px">
-         <span class="p">
-          img
+        / 2br - 884ft² -
+        <span class="pnr">
+         <small>
+          (auburn)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4266770516" href="#">
+            map
+           </a>
+          </span>
          </span>
         </span>
        </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.8261914909104" data-longitude="-78.6045382760051" data-pid="3948461804">
-      <a class="i" href="/apa/3948461804.html">
-      </a>
-      <span class="pl">
+      </p>
+      <p class="row" data-latitude="47.2765811386453" data-longitude="-122.215278145821" data-pid="4259329491">
+       <a class="i" data-id="0:00f0f_j9rJ7UwCw2f" href="/skc/apa/4259329491.html">
+       </a>
        <span class="star">
        </span>
-       <small>
+       <span class="pl">
         <span class="date">
-         Jul 20
+         Jan  3
         </span>
-       </small>
-       <a href="/apa/3948461804.html">
-        Duplex Apartment
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
+        <a href="/skc/apa/4259329491.html">
+         Must See!  New Carpet, W/D, dishwasher incld
+        </a>
+       </span>
+       <span class="l2">
         <span class="price">
-         $695
+         $810
         </span>
-        / 2br - 950ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (North Raleigh)
-        </small>
-        <span class="px">
-         <span class="p">
-          <a class="maptag" data-pid="3948461804" href="#">
-           map
-          </a>
+        / 2br - 800ft² -
+        <span class="pnr">
+         <small>
+          (Auburn)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4259329491" href="#">
+            map
+           </a>
+          </span>
          </span>
         </span>
        </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.8014970099415" data-longitude="-78.7746494453703" data-pid="3948438712">
-      <a class="i" href="/apa/3948438712.html">
-      </a>
-      <span class="pl">
+      </p>
+      <p class="row" data-latitude="47.5930257288791" data-longitude="-122.640240942447" data-pid="4271026058">
+       <a class="i" data-id="0:00o0o_ceBPY00cDt4" href="/kit/apa/4271026058.html">
+       </a>
        <span class="star">
        </span>
-       <small>
+       <span class="pl">
         <span class="date">
-         Jul 20
+         Jan  3
         </span>
-       </small>
-       <a href="/apa/3948438712.html">
-        Start Yor Day With Northwoods Townhomes
+        <a href="/kit/apa/4271026058.html">
+         Do not let this 2 bedroom 2 bathroom apartment pass you by!
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $841
+        </span>
+        / 2br - 870ft² -
+        <span class="pnr">
+         <small>
+          (3232 Pine Road NE Bremerton WA)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4271026058" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.1889758917745" data-longitude="-122.285694658839" data-pid="4271010297">
+       <a class="i" data-id="0:00u0u_c0SUXWJMXOT" href="/tac/apa/4271010297.html">
        </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4271010297.html">
+         1/2 1st Month &amp; Move in Ready
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $710
+        </span>
+        / 2br - 728ft² -
+        <span class="pnr">
+         <small>
+          (Puyallup)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4271010297" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-pid="4270996967">
+       <a class="i" data-id="0:00s0s_fWiU1BtNbbN" href="/tac/apa/4270996967.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4270996967.html">
+         B303: AMAZING, READY &amp; WAITING JUST FOR YOU!! LEASE TODAY ONLY $811!!
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $811
+        </span>
+        / 2br - 950ft² -
+        <span class="pnr">
+         <small>
+          (Tacoma, WA)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.2321196137456" data-longitude="-122.494595070932" data-pid="4270988157">
+       <a class="i" data-id="0:00w0w_azoH2iMUEX5" href="/tac/apa/4270988157.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4270988157.html">
+         Don't Miss Our Specials! This Deal is in the Bag! 253-272-1025
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $930
+        </span>
+        / 2br - 970ft² -
+        <span class="pnr">
+         <small>
+          (Tacoma)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4270988157" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.1719017494805" data-longitude="-122.295091166679" data-pid="4271011941">
+       <a class="i" data-id="0:00606_2YSs5xIdvvJ" href="/tac/apa/4271011941.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4271011941.html">
+         Now Available, Ideal Chestnut Hills Location, Outdoor Pool and Hot Tub
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $910
+        </span>
+        / 2br - 935ft² -
+        <span class="pnr">
+         <small>
+          (Puyallup)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4271011941" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.2380210790351" data-longitude="-122.347058438694" data-pid="4271011175">
+       <a class="i" data-id="0:00t0t_aizNSvr6gI9" href="/tac/apa/4271011175.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4271011175.html">
+         2 Bedroom Ready In January Pre Lease This Unit Today!
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $825
+        </span>
+        / 2br - 890ft² -
+        <span class="pnr">
+         <small>
+          (Fife/Milton/Tacoma/Federal Way)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4271011175" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.4653134363513" data-longitude="-122.204105468817" data-pid="4271005132">
+       <a class="i" data-id="0:00z0z_8W9115aXY6n" href="/skc/apa/4271005132.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/skc/apa/4271005132.html">
+         Realize Luxury, Minutes to Boeing, Spacious Patio or Balcony
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $985
+        </span>
+        / 2br - 800ft² -
+        <span class="pnr">
+         <small>
+          (Renton)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4271005132" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.2151600630106" data-longitude="-122.43403343199" data-pid="4271004500">
+       <a class="i" data-id="0:00e0e_eMfbZX4k8Ps" href="/tac/apa/4271004500.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4271004500.html">
+         BCI Prop Great apt 4602 Pacific Ave (Upper Unit)
+        </a>
+       </span>
+       <span class="l2">
         <span class="price">
          $995
         </span>
-        / 2br -
-        <span class="pp">
-        </span>
-        <small>
-         (Cary, Chapel Hill)
-        </small>
-        <span class="px">
-         <span class="p">
-          img
-          <a class="maptag" data-pid="3948438712" href="#">
-           map
-          </a>
+        / 3br - 1105ft² -
+        <span class="pnr">
+         <small>
+          (Tacoma, WA)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4271004500" href="#">
+            map
+           </a>
+          </span>
          </span>
         </span>
        </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948416283">
-      <a class="i" href="/apa/3948416283.html">
-      </a>
-      <span class="pl">
+      </p>
+      <p class="row" data-latitude="47.2918791117745" data-longitude="-122.635829167424" data-pid="4270997420">
+       <a class="i" data-id="0:00p0p_1TNlYifrdj" href="/tac/apa/4270997420.html">
+       </a>
        <span class="star">
        </span>
-       <small>
+       <span class="pl">
         <span class="date">
-         Jul 20
+         Jan  3
         </span>
-       </small>
-       <a href="/apa/3948416283.html">
-        Chambers Ridge - A Great Place for Roommates!
+        <a href="/tac/apa/4270997420.html">
+         Beautiful 2 Bedroom Duplex in Gig Harbor (TAC)
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $795
+        </span>
+        / 2br - 1110ft² -
+        <span class="pnr">
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4270997420" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-pid="4270983254">
+       <a class="i" data-id="0:01010_XG9AQF72sX" href="/tac/apa/4270983254.html">
        </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4270983254.html">
+         ***ONLY ONE DUPLEX AVAILABLE...HURRY***
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $880
+        </span>
+        / 2br - 900ft² -
+        <span class="pnr">
+         <small>
+          (University Place/Tacoma)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.2350989942801" data-longitude="-122.351699396834" data-pid="4265607053">
+       <a class="i" data-id="0:00K0K_kUpyulf1FD0" href="/tac/apa/4265607053.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4265607053.html">
+         2 Bedroom/ 1 Bath, Includes W/D, Extra Storage Room, Free Carport
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $785
+        </span>
+        / 2br - 864ft² -
+        <span class="pnr">
+         <small>
+          (Fife WA)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4265607053" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-pid="4270994640">
+       <a class="i" data-id="0:00404_9NTGCNqBU7W" href="/tac/apa/4270994640.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4270994640.html">
+         Nice and Cozy...You'll Enjoy Living in Your New HOME!!!!!
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $850
+        </span>
+        / 2br - 900ft² -
+        <span class="pnr">
+         <small>
+          (University Place/Tacoma)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.0165155954494" data-longitude="-122.91812547307" data-pid="4270991939">
+       <a class="i" data-id="0:00O0O_2VuLlZwBnU5" href="/oly/apa/4270991939.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/oly/apa/4270991939.html">
+         Call Today, Private Balcony or Patio, Covered Parking
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $870
+        </span>
+        / 2br - 884ft² -
+        <span class="pnr">
+         <small>
+          (Tumwater, Olympia)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4270991939" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.0245943003603" data-longitude="-122.293601476411" data-pid="4270985289">
+       <a class="i" data-id="0:00X0X_1PiLpcDNEjY" href="/tac/apa/4270985289.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4270985289.html">
+         Lovely three bedroom house in Graham!!
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $850
+        </span>
+        / 3br - 900ft² -
+        <span class="pnr">
+         <small>
+          (Graham)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4270985289" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-pid="4270984891">
+       <a class="i" data-id="0:00707_3S1WJZ8VoaQ" href="/tac/apa/4270984891.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4270984891.html">
+         Treat Yourself to A Gorgeous View, Upgraded Home, and Free Rent!
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $960
+        </span>
+        / 2br - 962ft² -
+        <span class="pnr">
+         <small>
+          (Tacoma)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.2341822618079" data-longitude="-122.487203915376" data-pid="4270982088">
+       <a class="i" data-id="0:00c0c_izCbzJDDoYG" href="/tac/apa/4270982088.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4270982088.html">
+         Save $$, Huge 2 Bedroom, Great Views, Call Now 253-572-6206
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $945
+        </span>
+        / 2br - 962ft² -
+        <span class="pnr">
+         <small>
+          (Tacoma)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4270982088" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.2321196137456" data-longitude="-122.494595070932" data-pid="4270980771">
+       <a class="i" data-id="0:00w0w_deleHnNhzh4" href="/tac/apa/4270980771.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4270980771.html">
+         Everything You Want + Huge Savings At Madrona Pointe Call 253-272-1025
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $850
+        </span>
+        / 2br - 820ft² -
+        <span class="pnr">
+         <small>
+          (North Tacoma, Fircrest)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4270980771" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="46.7097539919529" data-longitude="-122.996907169897" data-pid="4270980243">
+       <a class="i" data-id="0:00I0I_dmGmHhC1AEC" href="/oly/apa/4270980243.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/oly/apa/4270980243.html">
+         Washer/dryer hookups. Friendly staff. Huge kitchens.
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $832
+        </span>
+        / 3br -
+        <span class="pnr">
+         <small>
+          (Centralia - south of Centralia Mall)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4270980243" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.3001869998034" data-longitude="-122.608384489039" data-pid="4270980121">
+       <a class="i" data-id="0:00d0d_7awqIJouBJH" href="/tac/apa/4270980121.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4270980121.html">
+         BCI Prop nice 2bd duplex 3814 73rd ave ct nw
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $950
+        </span>
+        / 2br - 1444ft² -
+        <span class="pnr">
+         <small>
+          (Gig Harbor)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4270980121" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.9218462074869" data-longitude="-122.260255332736" data-pid="4270945191">
+       <a class="i" data-id="0:00b0b_hf9hwjGUIN1" href="/sno/apa/4270945191.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/sno/apa/4270945191.html">
+         Limited time offer! Great apartment for a great price!
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $798
+        </span>
+        / 2br - 820ft² -
+        <span class="pnr">
+         <small>
+          (Everett Boeing)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4270945191" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.9421289134335" data-longitude="-122.199865581133" data-pid="4270977831">
+       <a class="i" href="/sno/apa/4270977831.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/sno/apa/4270977831.html">
+         2 bedroom,one bath $775.
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $775
+        </span>
+        / 2br - 880ft² -
+        <span class="pnr">
+         <small>
+          (2416 61st st se)
+         </small>
+         <span class="px">
+          <span class="p">
+           <a class="maptag" data-pid="4270977831" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.2554962917856" data-longitude="-122.53458752503" data-pid="4230072922">
+       <a class="i" data-id="0:00V0V_3BAI3G0eDTV" href="/tac/apa/4230072922.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4230072922.html">
+         2BD over 880 sqft only $795
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $795
+        </span>
+        / 2br - 880ft² -
+        <span class="pnr">
+         <small>
+          (Tacoma)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4230072922" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.2554962917856" data-longitude="-122.53458752503" data-pid="4230316215">
+       <a class="i" data-id="0:00V0V_3BAI3G0eDTV" href="/tac/apa/4230316215.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4230316215.html">
+         HUGE 2BD over 1600 sqft FREE POWER,HEAT,WSG &amp; rent tell Jan 15th
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $995
+        </span>
+        / 2br - 1600ft² -
+        <span class="pnr">
+         <small>
+          (Tacoma)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4230316215" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-pid="4265650048">
+       <a class="i" href="/tac/apa/4265650048.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4265650048.html">
+         2bed 1 bath house - 500.00 Deposit
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $800
+        </span>
+        / 2br - 800ft² -
+        <span class="pnr">
+         <small>
+          (Graham/Kapowsin)
+         </small>
+         <span class="px">
+          <span class="p">
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.3887089791464" data-longitude="-122.312623675209" data-pid="4270943471">
+       <a class="i" data-id="0:00g0g_59BQUlQPnM4" href="/skc/apa/4270943471.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/skc/apa/4270943471.html">
+         ✲Warm up in our 2 BR Apt Home! This is your new home for the new year
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $932
+        </span>
+        / 2br - 950ft² -
+        <span class="pnr">
+         <small>
+          (Des Moines, Washington)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4270943471" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.2554389960061" data-longitude="-122.472478900041" data-pid="4270910422">
+       <a class="i" data-id="0:01313_aPlTsBoY4e1" href="/tac/apa/4270910422.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4270910422.html">
+         2 Bedroom with Deck Available January 20th
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $740
+        </span>
+        / 2br - 800ft² -
+        <span class="pnr">
+         <small>
+          (Tacoma, Wa)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4270910422" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.2186551055607" data-longitude="-122.48084408385" data-pid="4270962073">
+       <a class="i" data-id="0:00O0O_9HiLt4yRghb" href="/tac/apa/4270962073.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4270962073.html">
+         BCI Prop 2bd/1ba apt 3418 S 43rd St
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $850
+        </span>
+        / 2br -
+        <span class="pnr">
+         <small>
+          (Tacoma, WA)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4270962073" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.1677191575763" data-longitude="-122.502387296946" data-pid="4270961356">
+       <a class="i" data-id="0:00u0u_7dXJb9jER7t" href="/tac/apa/4270961356.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4270961356.html">
+         Private Lake View! MOVE NOW - $500 Off 1st Months Rent
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $849
+        </span>
+        / 2br - 958ft² -
+        <span class="pnr">
+         <small>
+          (Lakewood)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4270961356" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.423487517309" data-longitude="-123.173893832803" data-pid="4247216057">
+       <a class="i" data-id="0:00P0P_7Sa8aFd6xDT" href="/oly/apa/4247216057.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/oly/apa/4247216057.html">
+         3 BEDROOM HOUSE
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $900
+        </span>
+        / 3br - 1100ft² -
+        <span class="pnr">
+         <small>
+          (hoodsport,shelton,hoodcanal,olympia)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4247216057" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.423487517309" data-longitude="-123.173893832803" data-pid="4260946197">
+       <a class="i" data-id="0:00e0e_2aAa7CeDmgh" href="/kit/apa/4260946197.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/kit/apa/4260946197.html">
+         House for Rent
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $900
+        </span>
+        / 3br - 1100ft² -
+        <span class="pnr">
+         <small>
+          (hoodsport,mason county,shelton,hoodcanal)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4260946197" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-pid="4270954991">
+       <a class="i" data-id="0:00n0n_3uPPmZsvenB" href="/tac/apa/4270954991.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4270954991.html">
+         Orchard Ridge- LIMITED AVAILABILITY!! HURRY OR IT WILL BE GONE!!
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $850
+        </span>
+        / 2br - 900ft² -
+        <span class="pnr">
+         <small>
+          (N TACOMA)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.3164017054048" data-longitude="-122.199464510676" data-pid="4261473309">
+       <a class="i" data-id="0:00j0j_7qog7S9iJtU" href="/skc/apa/4261473309.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/skc/apa/4261473309.html">
+         HOME IS JUST UP THE HILL!! $99 DEPOSIT
+        </a>
+       </span>
+       <span class="l2">
         <span class="price">
          $985
         </span>
-        / 2br - 900ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Carrboro, UNC, Chapel Hill)
-        </small>
-        <span class="px">
-         <span class="p">
-          img
+        / 2br - 880ft² -
+        <span class="pnr">
+         <small>
+          (Auburn)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4261473309" href="#">
+            map
+           </a>
+          </span>
          </span>
         </span>
        </span>
-      </span>
-     </p>
-     <p class="row" data-pid="3948438830">
-      <a class="i" href="/apa/3948438830.html">
-      </a>
-      <span class="pl">
+      </p>
+      <p class="row" data-pid="4270946763">
+       <a class="i" data-id="0:00202_hLUFM7yLHSj" href="/tac/apa/4270946763.html">
+       </a>
        <span class="star">
        </span>
-       <small>
+       <span class="pl">
         <span class="date">
-         Jul 20
+         Jan  3
         </span>
-       </small>
-       <a href="/apa/3948438830.html">
-        July Special! Only $749! Massive 2 BR/2 BA Includes W/D! Last One!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
+        <a href="/tac/apa/4270946763.html">
+         The Perfect Location! Full Size Washer &amp; Dryer!!!
+        </a>
+       </span>
+       <span class="l2">
         <span class="price">
-         $749
+         $879
         </span>
-        / 2br - 1355ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Raleigh)
-        </small>
-        <span class="px">
-         <span class="p">
-          img
+        / 2br - 1000ft² -
+        <span class="pnr">
+         <small>
+          (tacoma)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+          </span>
          </span>
         </span>
        </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.9085828218457" data-longitude="-79.0235423115617" data-pid="3948407138">
-      <a class="i" href="/apa/3948407138.html">
-      </a>
-      <span class="pl">
+      </p>
+      <p class="row" data-latitude="47.3146828320195" data-longitude="-122.200896905164" data-pid="4266611809">
+       <a class="i" data-id="0:00505_31sFuMLhd38" href="/skc/apa/4266611809.html">
+       </a>
        <span class="star">
        </span>
-       <small>
+       <span class="pl">
         <span class="date">
-         Jul 20
+         Jan  3
         </span>
-       </small>
-       <a href="/apa/3948407138.html">
-        Lovely 2BR 1BA Traditional Apartment For Only $809! 2 mi from UNC!
-       </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
+        <a href="/skc/apa/4266611809.html">
+         GROUND FLOOR TWO BEDROOM** $99 DEPOSIT
+        </a>
+       </span>
+       <span class="l2">
         <span class="price">
-         $809
+         $985
         </span>
-        / 2br - 718ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Chapel Hill)
-        </small>
-        <span class="px">
-         <span class="p">
-          img
-          <a class="maptag" data-pid="3948407138" href="#">
-           map
-          </a>
+        / 2br - 880ft² -
+        <span class="pnr">
+         <small>
+          (AUBURN)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4266611809" href="#">
+            map
+           </a>
+          </span>
          </span>
         </span>
        </span>
-      </span>
-     </p>
-     <p class="row" data-latitude="35.9338502606096" data-longitude="-78.89628838527" data-pid="3897054091">
-      <a class="i" href="/apa/3897054091.html">
-      </a>
-      <span class="pl">
+      </p>
+      <p class="row" data-pid="4270939114">
+       <a class="i" data-id="0:01515_2emY5HisST1" href="/tac/apa/4270939114.html">
+       </a>
        <span class="star">
        </span>
-       <small>
+       <span class="pl">
         <span class="date">
-         Jul 20
+         Jan  3
         </span>
-       </small>
-       <a href="/apa/3897054091.html">
-        Hang The Home Sweet Home Sign At Balfour West Townhomes!
+        <a href="/tac/apa/4270939114.html">
+         For Rent
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $850
+        </span>
+        / 2br -
+        <span class="pnr">
+         <small>
+          (Tacoma, South side)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.7985456899814" data-longitude="-122.501986226489" data-pid="4270936551">
+       <a class="i" data-id="0:00o0o_iqIkpsWHzyF" href="/kit/apa/4270936551.html">
        </a>
-      </span>
-      <span class="l2">
-       <span class="pnr">
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/kit/apa/4270936551.html">
+         Affordable Senior Community, Walk to Town, Brand New, Water Views
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $722
+        </span>
+        / 2br - 761ft² -
+        <span class="pnr">
+         <small>
+          (Kingston)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4270936551" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.389224641162" data-longitude="-122.25395279699" data-pid="4270934220">
+       <a class="i" data-id="0:00y0y_7PU1ZhpqWQt" href="/skc/apa/4270934220.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/skc/apa/4270934220.html">
+         Call Today, Near Shops at Kent Station, Private Balcony
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $970
+        </span>
+        / 2br - 891ft² -
+        <span class="pnr">
+         <small>
+          (south king)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4270934220" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.2554962917856" data-longitude="-122.53458752503" data-pid="4261254227">
+       <a class="i" data-id="0:00R0R_dHo38kY3EpP" href="/tac/apa/4261254227.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4261254227.html">
+         Large 2 Bdrm with huge deck
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $795
+        </span>
+        / 2br - 880ft² -
+        <span class="pnr">
+         <small>
+          (Tacoma, WA)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4261254227" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.2554962917856" data-longitude="-122.53458752503" data-pid="4261686707">
+       <a class="i" data-id="0:00V0V_3BAI3G0eDTV" href="/tac/apa/4261686707.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4261686707.html">
+         HUGE 2BD over 1600 sqft FREE POWER,WSG,RENT IN Tell 1/15/14
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $995
+        </span>
+        / 2br - 1600ft² -
+        <span class="pnr">
+         <small>
+          (Tacoma)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4261686707" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.297551393946" data-longitude="-122.212699835743" data-pid="4270931776">
+       <a class="i" data-id="0:00y0y_5rZQy8Z8vyf" href="/skc/apa/4270931776.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/skc/apa/4270931776.html">
+         HAVING PROBLEMS RENTING DUE TO YOUR CREDIT? LET US HELP!! Studio, 1, 2
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $899
+        </span>
+        / 2br -
+        <span class="pnr">
+         <small>
+          (Auburn)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4270931776" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.9858455931996" data-longitude="-122.212929018861" data-pid="4270930736">
+       <a class="i" data-id="0:00909_aKOPdK8trV4" href="/sno/apa/4270930736.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/sno/apa/4270930736.html">
+         Spectacular View Bayside Community/ Remodeled with View &amp; Free WIFI
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $975
+        </span>
+        / 2br -
+        <span class="pnr">
+         <small>
+          (N. Everett)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4270930736" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.2293121205496" data-longitude="-122.457066335353" data-pid="4248065086">
+       <a class="i" data-id="0:00a0a_fycLnDr93XB" href="/tac/apa/4248065086.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4248065086.html">
+         BCI Prop. 2bd apt 3301 S Asotin
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $695
+        </span>
+        / 2br -
+        <span class="pnr">
+         <small>
+          (Tacoma, wa)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4248065086" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-pid="4270930479">
+       <a class="i" href="/tac/apa/4270930479.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4270930479.html">
+         house bonney lake
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $800
+        </span>
+        / 2br -
+        <span class="pnr">
+         <small>
+          (bonney lake)
+         </small>
+         <span class="px">
+          <span class="p">
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.2599653625874" data-longitude="-122.51590910091" data-pid="4270906594">
+       <a class="i" data-id="0:00s0s_aWVxlsViBJV" href="/tac/apa/4270906594.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4270906594.html">
+         Your new home for the New Year
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $775
+        </span>
+        / 2br - 834ft² -
+        <span class="pnr">
+         <small>
+          (Tacoma, WA)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4270906594" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.1758551582667" data-longitude="-122.578877162592" data-pid="4261505058">
+       <a class="i" data-id="0:00I0I_4ucRLuUNHaN" href="/tac/apa/4261505058.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4261505058.html">
+         New EVERYTHING, ground floor 2BR 1BA 950sf
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $960
+        </span>
+        / 2br - 950ft² -
+        <span class="pnr">
+         <small>
+          (Steilacoom, WA)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4261505058" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.1736779186454" data-longitude="-122.584205670086" data-pid="4262134886">
+       <a class="i" data-id="0:00v0v_dYKwms6uKmR" href="/tac/apa/4262134886.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4262134886.html">
+         Two Bedroom 1028SF Condo ready now!
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $985
+        </span>
+        / 2br - 1028ft² -
+        <span class="pnr">
+         <small>
+          (steilacoom)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4262134886" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.2148162883335" data-longitude="-122.480557604952" data-pid="4249791617">
+       <a class="i" href="/tac/apa/4249791617.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4249791617.html">
+         Stop this is it You found home!!!
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $903
+        </span>
+        / 2br - 800ft² -
+        <span class="pnr">
+         <small>
+          (Tacoma)
+         </small>
+         <span class="px">
+          <span class="p">
+           <a class="maptag" data-pid="4249791617" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.9218462074869" data-longitude="-122.260255332736" data-pid="4270891772">
+       <a class="i" data-id="0:00G0G_kycBYUdhGAl" href="/sno/apa/4270891772.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/sno/apa/4270891772.html">
+         ٩(-̮̮̃- ̃)۶  Raise your hands for a deal!!
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $798
+        </span>
+        / 2br - 820ft² -
+        <span class="pnr">
+         <small>
+          (South Everett)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4270891772" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.8207764524313" data-longitude="-122.327577873661" data-pid="4270896838">
+       <a class="i" data-id="0:00h0h_8b9BsWUgUSH" href="/sno/apa/4270896838.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/sno/apa/4270896838.html">
+         Spacious and move in ready 2 bed 1 bath apartment. WSG included
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $825
+        </span>
+        / 2br - 735ft² -
+        <span class="pnr">
+         <small>
+          ( 19614 69th PL W  #2 )
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4270896838" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-pid="4270863271">
+       <a class="i" data-id="0:00W0W_iqFkPGe0DNG" href="/skc/apa/4270863271.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/skc/apa/4270863271.html">
+         2 Bedroom 1 Bath available now! We pay for Water, Sewer, &amp; Garabge!
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $785
+        </span>
+        / 2br - 650ft² -
+        <span class="pnr">
+         <small>
+          (Auburn, Lea Hill, WA)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="48.2103304573198" data-longitude="-122.686134861834" data-pid="4270890860">
+       <a class="i" href="/kit/apa/4270890860.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/kit/apa/4270890860.html">
+         3 Bed Available for immediate occupancy
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $705
+        </span>
+        / 3br - 1089ft² -
+        <span class="pnr">
+         <small>
+          (Coupeville, WA)
+         </small>
+         <span class="px">
+          <span class="p">
+           <a class="maptag" data-pid="4270890860" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.2063365129661" data-longitude="-122.531436257157" data-pid="4270890787">
+       <a class="i" data-id="0:00Z0Z_kdPR4qeegoC" href="/tac/apa/4270890787.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4270890787.html">
+         Recreation and Easy Access to the Sound and Seattle 1315
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $990
+        </span>
+        / 3br - 1315ft² -
+        <span class="pnr">
+         <small>
+          (University Place)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4270890787" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.0240213425652" data-longitude="-122.782678250309" data-pid="4270885244">
+       <a class="i" data-id="0:00g0g_hvW8R5J1YIv" href="/oly/apa/4270885244.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/oly/apa/4270885244.html">
+         Two Bedroom One Bathroom Apartment Available!
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $900
+        </span>
+        / 2br - 900ft² -
+        <span class="pnr">
+         <small>
+          (Lacey)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4270885244" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.2456987134894" data-longitude="-122.461879180832" data-pid="4256625962">
+       <a class="i" data-id="0:00202_LirxTwQP30" href="/tac/apa/4256625962.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4256625962.html">
+         BCI Prop. Remarkable rambler 1618 S Hosmer St S
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $999
+        </span>
+        / 3br - 1152ft² -
+        <span class="pnr">
+         <small>
+          (Tacoma, WA)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4256625962" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-pid="4270756427">
+       <a class="i" data-id="0:00F0F_ltM7R3YcTm3" href="/tac/apa/4270756427.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4270756427.html">
+         G-04 Need to move in 1/18/2014 Last 2 bedroom for $795! Hurry &amp; apply!
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $795
+        </span>
+        / 2br - 1030ft² -
+        <span class="pnr">
+         <small>
+          (Tacoma)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.0265996526432" data-longitude="-122.820493464785" data-pid="4270881330">
+       <a class="i" data-id="0:01212_9VMtirQwjHg" href="/oly/apa/4270881330.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/oly/apa/4270881330.html">
+         2 Bed duplex
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $800
+        </span>
+        / 2br - 900ft² -
+        <span class="pnr">
+         <small>
+          (Lacey)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4270881330" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.8016969578545" data-longitude="-122.499121437514" data-pid="4270880363">
+       <a class="i" data-id="0:00b0b_lPvgXKIyINk" href="/kit/apa/4270880363.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/kit/apa/4270880363.html">
+         KINGSTON $775/mo.
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $775
+        </span>
+        / 2br -
+        <span class="pnr">
+         <small>
+          (Kingston, WA)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4270880363" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.1610155513737" data-longitude="-122.293429589073" data-pid="4270857376">
+       <a class="i" data-id="0:00A0A_1jglZH24nP8" href="/tac/apa/4270857376.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4270857376.html">
+         Call Today, Swimming Pool, Playground Area and More
+        </a>
+       </span>
+       <span class="l2">
         <span class="price">
          $915
         </span>
-        / 2br - 1162ft&#178; -
-        <span class="pp">
-        </span>
-        <small>
-         (Durham, NC)
-        </small>
-        <span class="px">
-         <span class="p">
-          img
-          <a class="maptag" data-pid="3897054091" href="#">
-           map
-          </a>
-         </span>
-        </span>
-       </span>
-      </span>
-     </p>
-     <h4 class="ban resultshdr">
-      <span class="nplink first" title="first page">
-       |&lt;
-       <span class="nplabel">
-        first
-       </span>
-      </span>
-      <div class="npcontrols">
-       <div class="npcontrolcenter">
-        <span class="nplink prev" title="previous page">
-         &lt;
-         <span class="nplabel">
-          prev
-         </span>
-        </span>
-        <span class="nplink next" title="next page">
-         <a href="http://raleigh.craigslist.org/search/apa?s=100&amp;bedrooms=2&amp;maxAsk=1000&amp;minAsk=500">
-          <span class="nplabel">
-           next
+        / 2br - 878ft² -
+        <span class="pnr">
+         <small>
+          (tacoma)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4270857376" href="#">
+            map
+           </a>
           </span>
-          &gt;
-         </a>
+         </span>
         </span>
-        <span class="pagenum">
-         1 - 100
+       </span>
+      </p>
+      <p class="row" data-pid="4270817747">
+       <a class="i" href="/tac/apa/4270817747.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4270817747.html">
+         ***APARTMENT FOR RENT***
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $750
+        </span>
+        / 2br - 850ft² -
+        <span class="pnr">
+         <small>
+          (South Tacoma)
+         </small>
+         <span class="px">
+          <span class="p">
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-pid="4270864178">
+       <a class="i" data-id="0:00a0a_ggb7quoM4R6" href="/tac/apa/4270864178.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4270864178.html">
+         4bd 1bth House New Remodel
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $995
+        </span>
+        / 4br - 1750ft² -
+        <span class="pnr">
+         <span class="px">
+          <span class="p">
+           pic
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.0586852891688" data-longitude="-122.953476969028" data-pid="4264917472">
+       <a class="i" data-id="0:00g0g_cDqdrOx8DHK" href="/oly/apa/4264917472.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/oly/apa/4264917472.html">
+         2 Bed 2.5 Bath Townhome
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $899
+        </span>
+        / 2br - 1200ft² -
+        <span class="pnr">
+         <small>
+          (West Olympia)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4264917472" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.9127361785448" data-longitude="-122.300476969952" data-pid="4270863273">
+       <a class="i" href="/sno/apa/4270863273.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/sno/apa/4270863273.html">
+         Comfortable interiors at a great value! Income Maximum applies for M/I
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $842
+        </span>
+        / 2br - 780ft² -
+        <span class="pnr">
+         <small>
+          (Mukilteo/Lynnwood)
+         </small>
+         <span class="px">
+          <span class="p">
+           <a class="maptag" data-pid="4270863273" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.0586279933893" data-longitude="-122.953476969028" data-pid="4264918958">
+       <a class="i" data-id="0:00s0s_8tyBTlovvYo" href="/oly/apa/4264918958.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/oly/apa/4264918958.html">
+         2 Bed, 2 Bath Townhouse 12
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $899
+        </span>
+        / 2br - 1000ft² -
+        <span class="pnr">
+         <small>
+          (West Olympia)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4264918958" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-pid="4260750335">
+       <a class="i" data-id="0:00707_8MZ72lNMltR" href="/tac/apa/4260750335.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4260750335.html">
+         ☼☼ JUMBO Patio w/attached Storage, W+D In Unit!! Fire Place!!!!!
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $930
+        </span>
+        / 2br - 750ft² -
+        <span class="pnr">
+         <small>
+          (Milton, fife,)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.6621244389681" data-longitude="-122.698109679752" data-pid="4270850550">
+       <a class="i" data-id="0:00p0p_8LXCsHIooIO" href="/kit/apa/4270850550.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/kit/apa/4270850550.html">
+         LOOKING FOR A LUXURY 2BEDROOM? WELCOME HOME!!
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $875
+        </span>
+        / 2br - 920ft² -
+        <span class="pnr">
+         <small>
+          (Silverdale)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4270850550" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-pid="4270853094">
+       <a class="i" data-id="0:00Z0Z_kd498Jh0Bit" href="/oly/apa/4270853094.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/oly/apa/4270853094.html">
+         House for rent
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $825
+        </span>
+        / 2br - 850ft² -
+        <span class="pnr">
+         <small>
+          (Centralia)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-pid="4270802633">
+       <a class="i" data-id="0:00t0t_dDpFNOb8Ijk" href="/sno/apa/4270802633.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/sno/apa/4270802633.html">
+         View Ridge Condo.
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $950
+        </span>
+        / 2br - 1029ft² -
+        <span class="pnr">
+         <small>
+          (south everett)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.1234868157946" data-longitude="-122.43758577032" data-pid="4270839249">
+       <a class="i" data-id="0:01111_jkss8072WDC" href="/tac/apa/4270839249.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4270839249.html">
+         2BED Top Floor Ready To Go w/$250 Off Rent!
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $770
+        </span>
+        / 2br - 833ft² -
+        <span class="pnr">
+         <small>
+          (Parkland/Spanaway)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4270839249" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.3202978184115" data-longitude="-122.311706942736" data-pid="4270828845">
+       <a class="i" data-id="0:00y0y_4HUpyvWnb5o" href="/skc/apa/4270828845.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/skc/apa/4270828845.html">
+         Living Life at Riverstone Apartment Homes!
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $895
+        </span>
+        / 2br - 850ft² -
+        <span class="pnr">
+         <small>
+          (Federal Way)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4270828845" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.2554962917856" data-longitude="-122.53458752503" data-pid="4261104821">
+       <a class="i" data-id="0:00y0y_8GI3z2FDAnH" href="/tac/apa/4261104821.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4261104821.html">
+         last chance rent me now 2bdroom $795
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $795
+        </span>
+        / 2br - 880ft² -
+        <span class="pnr">
+         <small>
+          (tacoma)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4261104821" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.2554962917856" data-longitude="-122.53458752503" data-pid="4230227855">
+       <a class="i" data-id="0:00y0y_8GI3z2FDAnH" href="/tac/apa/4230227855.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4230227855.html">
+         HUGE 2 Bdrm with fireplace. FREE POWER/HEAT/WSG &amp; rent tell Jan 15th -
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $995
+        </span>
+        / 2br - 1600ft² -
+        <span class="pnr">
+         <small>
+          (tacoma)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4230227855" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.1677191575763" data-longitude="-122.502387296946" data-pid="4261101695">
+       <a class="i" data-id="0:00I0I_aolCz4QqkeC" href="/tac/apa/4261101695.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4261101695.html">
+         MOVE IN SPECIALS !!!
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $895
+        </span>
+        / 2br - 958ft² -
+        <span class="pnr">
+         <small>
+          (Lakewood)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4261101695" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.9205284045582" data-longitude="-122.240316401467" data-pid="4270805798">
+       <a class="i" data-id="0:00M0M_eE3IVc2tL8n" href="/sno/apa/4270805798.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/sno/apa/4270805798.html">
+         It May Be Chilly Outside but Our Specials Are Red Hot! Reduced Prices!
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $847
+        </span>
+        / 2br - 1000ft² -
+        <span class="pnr">
+         <small>
+          (south everett)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4270805798" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.595833222075" data-longitude="-122.697765905075" data-pid="4229881996">
+       <a class="i" data-id="0:00O0O_flKiObzckTW" href="/kit/apa/4229881996.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/kit/apa/4229881996.html">
+         Ho! Ho! Ho! Free Rent!!!
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $815
+        </span>
+        / 2br - 1000ft² -
+        <span class="pnr">
+         <small>
+          (Erlands Point)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4229881996" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.595833222075" data-longitude="-122.697765905075" data-pid="4270807092">
+       <a class="i" data-id="0:01616_8eqoKboIdVz" href="/kit/apa/4270807092.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/kit/apa/4270807092.html">
+         Let Your Story Begin Here!
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $815
+        </span>
+        / 2br - 1000ft² -
+        <span class="pnr">
+         <small>
+          (Erlands Point)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4270807092" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.9016780930994" data-longitude="-122.247191895008" data-pid="4270805787">
+       <a class="i" data-id="0:00m0m_k317GhYRXoj" href="/sno/apa/4270805787.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/sno/apa/4270805787.html">
+         2BD2BATH 1000sqft OPEN Concept w/Fireplace &amp; Balcony! CALL FOR DETAILS
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $821
+        </span>
+        / 2br - 1000ft² -
+        <span class="pnr">
+         <small>
+          (Copperstone Apartments)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4270805787" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.0579404440352" data-longitude="-122.759072389151" data-pid="4270797309">
+       <a class="i" data-id="0:00Y0Y_5O7mC92FJpV" href="/oly/apa/4270797309.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/oly/apa/4270797309.html">
+         Lots of Storage Cozy Apt! Come Home!!!
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $975
+        </span>
+        / 2br - 891ft² -
+        <span class="pnr">
+         <small>
+          (lacey )
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4270797309" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.595833222075" data-longitude="-122.697765905075" data-pid="4270804610">
+       <a class="i" data-id="0:01616_8eqoKboIdVz" href="/kit/apa/4270804610.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/kit/apa/4270804610.html">
+         Blast From the Past Pricing!
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $815
+        </span>
+        / 2br - 1000ft² -
+        <span class="pnr">
+         <small>
+          (Erlands Point)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4270804610" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.1700682845362" data-longitude="-122.435924192714" data-pid="4270803078">
+       <a class="i" data-id="0:00h0h_5f4nS6dbFaZ" href="/tac/apa/4270803078.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4270803078.html">
+         The Woodmark Apartments
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $735
+        </span>
+        / 2br - 950ft² -
+        <span class="pnr">
+         <small>
+          (Tacoma)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4270803078" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-pid="4270800709">
+       <a class="i" data-id="0:00K0K_5lWbeXZWesf" href="/oly/apa/4270800709.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/oly/apa/4270800709.html">
+         Recently Renovated 2x1
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $795
+        </span>
+        / 2br - 922ft² -
+        <span class="pnr">
+         <small>
+          (Olympia WA)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-pid="4270800171">
+       <a class="i" data-id="0:00p0p_crciOcFLGKR" href="/sno/apa/4270800171.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/sno/apa/4270800171.html">
+         Apt for rent
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $925
+        </span>
+        / 2br - 910ft² -
+        <span class="pnr">
+         <small>
+          (Marysville)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-pid="4270796945">
+       <a class="i" href="/tac/apa/4270796945.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4270796945.html">
+         They Say Big Things Come in Small Packages, But Bigger is Better Here!
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $730
+        </span>
+        / 2br - 685ft² -
+        <span class="pnr">
+         <small>
+          (Tacoma)
+         </small>
+         <span class="px">
+          <span class="p">
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.2083418652489" data-longitude="-122.427157938449" data-pid="4270791684">
+       <a class="i" data-id="0:00z0z_4n09OMLawz1" href="/tac/apa/4270791684.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4270791684.html">
+         VERY CLEAN REMODELED HOUSE...QUIET NEIGHBORHOOD
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $995
+        </span>
+        / 4br - 1100ft² -
+        <span class="pnr">
+         <small>
+          (5406 E. Clarkston St.)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4270791684" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.1580934666186" data-longitude="-122.438674390131" data-pid="4270789992">
+       <a class="i" data-id="0:00h0h_2xD70ojKI6s" href="/tac/apa/4270789992.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4270789992.html">
+         ✿2 bedroom 1 bath! Available for January!!✿
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $945
+        </span>
+        / 2br - 930ft² -
+        <span class="pnr">
+         <small>
+          (Tacoma/Parkland/PLU/Ft Lewis/Near HWY-512 and I-5)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4270789992" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-pid="4270724318">
+       <a class="i" data-id="0:01616_d4KDoQPkHl2" href="/tac/apa/4270724318.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4270724318.html">
+         Spacious 2bed 1bath unit with FREE water/sewer/garbage
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $799
+        </span>
+        / 2br - 886ft² -
+        <span class="pnr">
+         <small>
+          (Tacoma)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-latitude="47.1665159462066" data-longitude="-122.432085375487" data-pid="4261096044">
+       <a class="i" data-id="0:00202_6Q1kaJ8OHFD" href="/tac/apa/4261096044.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4261096044.html">
+         Spacious 3 Bedroom 2 bath Apt. available  now
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $995
+        </span>
+        / 3br - 1050ft² -
+        <span class="pnr">
+         <small>
+          (SE Tacoma )
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+           <a class="maptag" data-pid="4261096044" href="#">
+            map
+           </a>
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-pid="4270757331">
+       <a class="i" data-id="0:00l0l_6v8u89mQzBM" href="/tac/apa/4270757331.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4270757331.html">
+         Happy New Year ~*~*~ Happy New Home! No Application Fee!
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $920
+        </span>
+        / 2br - 1017ft² -
+        <span class="pnr">
+         <small>
+          (University Place, Tacoma, Lakewood)
+         </small>
+         <span class="px">
+          <span class="p">
+           pic
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+      <p class="row" data-pid="4270781999">
+       <a class="i" href="/tac/apa/4270781999.html">
+       </a>
+       <span class="star">
+       </span>
+       <span class="pl">
+        <span class="date">
+         Jan  3
+        </span>
+        <a href="/tac/apa/4270781999.html">
+         Edgewood-Milton-Puyallup
+        </a>
+       </span>
+       <span class="l2">
+        <span class="price">
+         $845
+        </span>
+        / 2br - 1100ft² -
+        <span class="pnr">
+         <small>
+          (2418 98th Av E.)
+         </small>
+         <span class="px">
+          <span class="p">
+          </span>
+         </span>
+        </span>
+       </span>
+      </p>
+     </div>
+     <div class="toc_legend bottom">
+      <div class="center">
+       <div class="bottompaginator">
+        <span class="paginator buttongroup">
+         <span class="button first" title="first page">
+          &lt;&lt;
+         </span>
+         <span class="button prev" title="previous page">
+          &lt; prev
+         </span>
+         <span class="button pagenum">
+          1 - 100 of
+          <span class="resultcount">
+           2500
+          </span>
+         </span>
+         <a class="button next" href="/search/apa?s=100&amp;bedrooms=2&amp;maxAsk=1000&amp;minAsk=500" title="next page">
+          next &gt;
+         </a>
         </span>
        </div>
       </div>
-     </h4>
-     <div id="floater">
-      <img class="loading" src="http://www.craigslist.org/images/map/animated-spinny.gif"/>
-      <img class="payload" src="http://www.craigslist.org/images/map/animated-spinny.gif"/>
      </div>
-    </blockquote>
+    </div>
+    <div id="floater">
+     <img class="loading" src="http://www.craigslist.org/images/map/animated-spinny.gif"/>
+     <img class="payload" src="http://www.craigslist.org/images/map/animated-spinny.gif"/>
+    </div>
+    <section class="blurbs">
+    </section>
    </section>
-   <ul id="fmtsel">
-    <li>
-     <b>
-      FORMAT:
-     </b>
-    </li>
-    <li class="fsel" data-mode="mobile">
-     mobile
-    </li>
-    <li class="fsel" data-mode="regular">
-     regular
-    </li>
-   </ul>
    <footer>
     <span class="rss">
-     <a class="l" href="http://raleigh.craigslist.org/search/apa?bedrooms=2&amp;maxAsk=1000&amp;minAsk=500&amp;format=rss">
+     <a class="l" href="http://seattle.craigslist.org/search/apa?bedrooms=2&amp;maxAsk=1000&amp;minAsk=500&amp;format=rss">
       RSS
      </a>
      <a href="http://www.craigslist.org/about/rss">
@@ -3916,11 +3683,37 @@ var addToShortlistText = "add to shortlist";
     </span>
     <ul class="clfooter">
      <li>
-      &#169; 2013 craigslist
+      © 2014
+      <span class="desktop">
+       craigslist
+      </span>
+      <span class="mobile">
+       CL
+      </span>
      </li>
      <li>
       <a href="//www.craigslist.org/about/help/">
        help
+      </a>
+     </li>
+     <li>
+      <a href="//www.craigslist.org/about/scams">
+       safety
+      </a>
+     </li>
+     <li class="desktop">
+      <a href="//www.craigslist.org/about/privacy.policy">
+       privacy
+      </a>
+     </li>
+     <li class="desktop">
+      <a href="https://forums.craigslist.org/?forumID=8">
+       feedback
+      </a>
+     </li>
+     <li class="desktop">
+      <a href="//www.craigslist.org/about/craigslist_is_hiring">
+       cl jobs
       </a>
      </li>
      <li>
@@ -3929,57 +3722,43 @@ var addToShortlistText = "add to shortlist";
       </a>
      </li>
      <li>
-      <a href="//www.craigslist.org/about/privacy.policy">
-       privacy
-      </a>
-     </li>
-     <li>
-      <a href="//www.craigslist.org/about/scams">
-       safety
-      </a>
-     </li>
-     <li>
-      <a href="https://forums.craigslist.org/?forumID=8">
-       feedback
-      </a>
-     </li>
-     <li>
       <a href="//www.craigslist.org/about/">
        about
       </a>
      </li>
-     <li>
-      <a href="//www.craigslist.org/about/craigslist_is_hiring" style="color: #0b0">
-       cl jobs
+     <li class="fsel desktop" data-mode="mobile">
+      <a href="#">
+       mobile
+      </a>
+     </li>
+     <li class="fsel mobile" data-mode="regular">
+      <a href="#">
+       desktop
       </a>
      </li>
     </ul>
    </footer>
   </article>
   <!--[if lte IE 7]>
-		<script type="text/javascript" src="//www.craigslist.org/js/json2.js?v=c1da07f5953739dffc17fd1db3c5313c"></script>
-	<![endif]-->
+        <script type="text/javascript" src="//www.craigslist.org/js/json2.js?v=c1da07f5953739dffc17fd1db3c5313c" ></script>
+    <![endif]-->
   <script src="//www.craigslist.org/js/jquery-1.9.1.js?v=56eaef3b8a28d9d45bb4f86004b0eaae" type="text/javascript">
   </script>
   <script src="//www.craigslist.org/js/jquery-ui-1.9.2.custom.js?v=32c38510c8db71f2fbef00da891aeaac" type="text/javascript">
   </script>
-  <script src="//www.craigslist.org/js/formats.js?v=b5cfddd80f1abf346d80b96a8e9e12d1" type="text/javascript">
+  <script src="//www.craigslist.org/js/formats.js?v=5073b3dc61c933687ba35b2a7b84506e" type="text/javascript">
   </script>
   <script src="//www.craigslist.org/js/toChecklist.js?v=b163a7aa23a6dad79076f92e56c622f7" type="text/javascript">
   </script>
   <script src="//www.craigslist.org/js/jquery.form-defaults.js?v=421648d06bad2f29bbfc2f66c5205aeb" type="text/javascript">
   </script>
-  <script src="//www.craigslist.org/js/cookie.js?v=0cce2559d540be0bb52211e4105921c4" type="text/javascript">
+  <script src="//www.craigslist.org/js/tocs.js?v=8c97e2a9b48e0b9595ca0b6618008f50" type="text/javascript">
   </script>
-  <script src="//www.craigslist.org/js/localstorage.js?v=0dcff58ebaf4af52c0b82d96a5fd7000" type="text/javascript">
+  <script src="//www.craigslist.org/js/favorites.js?v=1e1d66b56ad41646aa50ee33f4533c04" type="text/javascript">
   </script>
-  <script src="//www.craigslist.org/js/tocs.js?v=004d30a9837a64eb2303b9d95911eb57" type="text/javascript">
+  <script src="//www.craigslist.org/js/suggestions.js?v=3402c47237951f68650469f3b15ad2c4" type="text/javascript">
   </script>
-  <script src="//www.craigslist.org/js/favorites.js?v=0cfed33a4437b25490c10b7ef176cafc" type="text/javascript">
-  </script>
-  <script src="//www.craigslist.org/js/search-suggestions.js?v=0a8fbde1d8aaeb2f28317aadcc11f14d" type="text/javascript">
-  </script>
-  <script src="//www.craigslist.org/js/postings.js?v=b17a7bf5ec42baf99fa171a6fe3de6ad" type="text/javascript">
+  <script async="" defer="" src="//www.craigslist.org/js/postings.js?v=0ef01ee0f08afce3a82e77611ee210dd" type="text/javascript">
   </script>
  </body>
 </html>

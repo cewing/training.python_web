@@ -1,10 +1,16 @@
 import socket
 
-
 def get_constants(prefix):
-    return dict( (getattr(socket, n), n)
-                 for n in dir(socket)
-                 if n.startswith(prefix))
+    return dict( 
+        (getattr(socket, n), n)
+        for n in dir(socket)
+        if n.startswith(prefix)
+    )
+
+# this example is more 'pythonic' for 2.7 and above (where dictionary
+# comprehensions exist)  It will not work in Python 2.6 or below.
+def get_constants_27(prefix):
+    return {getattr(socket, n):n for n in dir(socket) if n.startswith(prefix)}
 
 
 def get_address_info(host, port):

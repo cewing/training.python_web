@@ -21,8 +21,10 @@ Building The Documentation
 --------------------------
 
 This documentation is built using docutils and Sphinx. The package uses
-`zc.buildout` to manage setup and dependencies. This package uses the v1
-`bootstrap.py` script.
+`zc.buildout` to manage setup and dependencies. This package uses the version
+2 `bootstrap.py` script. This version of the script will attempt to use
+setuptools 0.7 or better. If you have an earlier version of setuptools
+installed, please upgrade prior to bootstrapping this buildout.
 
 After cloning this package from the repository, do the following::
 
@@ -36,7 +38,7 @@ At the end of a successful build, you will find a ``build/html`` directory,
 containing the completed documentation and presentations.
 
 .. _zc.buildout: https://pypi.python.org/pypi/zc.buildout/
-.. _bootstrap.py: http://downloads.buildout.org/1/bootstrap.py
+.. _bootstrap.py: http://downloads.buildout.org/2/bootstrap.py
 
 Reading The Documentation
 -------------------------

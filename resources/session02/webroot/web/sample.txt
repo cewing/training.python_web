@@ -1,3 +1,0 @@
-This is a very simple text file.
-Just to show that we can server it up.
-It is three lines long.

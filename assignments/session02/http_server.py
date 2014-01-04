@@ -1,16 +1,14 @@
 import socket
 import sys
-import os
-import mimetypes
 
 
-def response_ok(body, mimetype):
+def response_ok():
     """returns a basic HTTP response"""
     resp = []
     resp.append("HTTP/1.1 200 OK")
-    resp.append("Content-Type: %s" % mimetype)
+    resp.append("Content-Type: text/plain")
     resp.append("")
-    resp.append(body)
+    resp.append("this is a pretty minimal response")
     return "\r\n".join(resp)
 
 
@@ -22,38 +20,12 @@ def response_method_not_allowed():
     return "\r\n".join(resp)
 
 
-def response_not_found():
-    """return a 404 Not Found response"""
-    resp = []
-    resp.append("HTTP/1.1 404 Not Found")
-    resp.append("")
-    return "\r\n".join(resp)
-
-
 def parse_request(request):
     first_line = request.split("\r\n", 1)[0]
     method, uri, protocol = first_line.split()
     if method != "GET":
         raise NotImplementedError("We only accept GET")
-    print >>sys.stderr, 'serving request for %s' % uri
-    return uri
-
-
-def resolve_uri(uri):
-    """return the filesystem resources identified by 'uri'"""
-    home = 'webroot' # this is relative to the location of
-                     # the server script, could be a full path
-    filename = os.path.join(home, uri.lstrip('/'))
-    if os.path.isfile(filename):
-        ext = os.path.splitext(filename)[1]
-        mimetype = mimetypes.types_map.get(ext, 'text/plain')
-        contents = open(filename, 'rb').read()
-        return contents, mimetype
-    elif os.path.isdir(filename):
-        listing = "\n".join(os.listdir(filename))
-        return listing, 'text/plain'
-    else:
-        raise ValueError("Not Found")
+    print >>sys.stderr, 'request is okay'
 
 
 def server():
@@ -78,14 +50,11 @@ def server():
                         break
 
                 try:
-                    uri = parse_request(request)
-                    content, mimetype = resolve_uri(uri)
+                    parse_request(request)
                 except NotImplementedError:
                     response = response_method_not_allowed()
-                except ValueError:
-                    response = response_not_found()
                 else:
-                    response = response_ok(content, mimetype)
+                    response = response_ok()
 
                 print >>sys.stderr, 'sending response'
                 conn.sendall(response)

@@ -1,24 +1,24 @@
 Course Outline
 ==============
 
-This course is five days long. Each day is split into morning and afternoon
-sessions. Each session will consist of three or so hours of instruction and
-exercises and a couple of short breaks.
+This course takes place over 10 sessions. Each session is three hours long.
+Each session contains lecture material and exercises you will type at a python
+prompt. Each session has associated assignments which you will complete
+between sessions.
 
 Session 1 - TCP/IP and Sockets
 ------------------------------
 
-We will begin by covering basic front-matter for the course: daily schedule,
-class protocol, introductions and such. Next we will move into a disucssion of
-the fundamental concepts and structures that underly the internet and
-networked computing. We will learn about the TCP/IP stack (Internet Protocol
-Suite) and gain some insights into how that model manifests in real life. We
-will then dive into sockets and learn how to use them to communicate between
-processes on a single machine, or across a network.
+We will begin with a disucssion of the fundamental concepts and structures
+that underly the internet and networked computing. We'll learn about the
+TCP/IP stack (Internet Protocol Suite) and gain some insights into how that
+model manifests in real life. We will then dive into sockets and learn how to
+use them to communicate between processes on a single machine, or across a
+network.
 
 Along the way, we'll build a basic Echo server and client to demonstrate the
-processes we've learned. By lunch, we'll be sending messages and receiving 
-replies.
+processes we've learned. By the end of the session, we'll be sending messages
+and receiving replies.
 
 `Lecture Slides <presentations/session01.html>`_
 

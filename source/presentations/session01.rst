@@ -18,37 +18,23 @@ But First
 
 Class presentations are available online for your use
 
-http://github.com/cewing/training.python_web
+.. class:: small
 
-Use the ``week-long-format`` branch for this class
+https://github.com/UWPCE-PythonCert/training.python_web
+
+.. class:: incremental
 
 Licensed with Creative Commons BY-NC-SA
+
+.. class:: small incremental
 
 * You must attribute the work
 * You may not use the work for commercial purposes
 * You have to share your versions just like this one
 
+.. class:: incremental
+
 Find mistakes? See improvements? Make a pull request.
-
-
-But First
----------
-
-Daily Schedule
-
-* 9:00 am to 10:30 am - Session 1a
-
-* 15 minute break
-
-* 10:45 am to 12:30 pm - Session 1b
-
-* 1 hour lunch
-
-* 1:30 pm to 3:00 pm - Session 2a
-
-* 15 minute break
-
-* 3:15 pm to 5:00 pm - Session 2b
 
 
 But First
@@ -58,7 +44,7 @@ Classroom Protocol
 
 .. class:: incremental
 
-Question to ask:
+Questions to ask:
 
 .. class:: incremental
 
@@ -75,17 +61,17 @@ Classroom Protocol
 
 .. class:: incremental
 
-Question **not** to ask:
+Questions **not** to ask:
 
 .. class:: incremental
 
-* Hypotheticals: What happens if I do X?
-* Research: Can Python do Y?
-* Syllabus: Are we going to cover Z in class?
-* Marketing questions: please just don't.
-* Performance questions: Is Python fast enough?
-* Unpythonic: Why doesn't Python do it some other way?
-* Show off: Look what I just did!
+* **Hypotheticals**: What happens if I do X?
+* **Research**: Can Python do Y?
+* **Syllabus**: Are we going to cover Z in class?
+* **Marketing questions**: please just don't.
+* **Performance questions**: Is Python fast enough?
+* **Unpythonic**: Why doesn't Python do it some other way?
+* **Show off**: Look what I just did!
 
 
 But First
@@ -155,7 +141,7 @@ The bottom layer is the 'Link Layer'
 
   * what that medium is is arbitrary
 
-* Primarily uses the Network Interface Card (NIC) in your computer
+* Implemented in the Network Interface Card(s) (NIC) in your computer
 
 
 The TCP/IP Stack - Internet
@@ -231,6 +217,8 @@ The 'Transport Layer' also establishes the concept of a **port**
 
 * 192.168.1.100:80  (the *:80* part is the **port**)
 
+* [2001:db8:85a3:8d3:1319:8a2e:370:7348]:443 (*:443* is the **port**)
+
 .. class:: incremental
 
 This means that you don't have to worry about information intended for your
@@ -252,6 +240,10 @@ applications or protocols:
 * 25 - SMTP
 * ...
 
+.. class:: incremental
+
+These ports are often referred to as **well-known ports**
+
 .. class:: small
 
 (see http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers)
@@ -264,11 +256,13 @@ Ports are grouped into a few different classes
 
 .. class:: incremental
 
-* Ports numbered 0 - 1023 are *reserved* 
+* Ports numbered 0 - 1023 are *reserved*
 
 * Ports numbered 1024 - 65535 are *open*
 
-* Ports numbered 49152 - 65535 are generally considered *ephemeral*
+* Ports numbered 1024 - 49151 may be *registered*
+
+* Ports numbered 49152 - 65535 are called *ephemeral*
 
 
 The TCP/IP Stack - Application
@@ -319,15 +313,25 @@ A **Socket** is the software representation of that endpoint.
 .. class:: incremental
 
 Opening a **socket** creates a kind of transceiver that can send and/or
-receive data at a given IP address and Port.
+receive *bytes* at a given IP address and Port.
 
 
 Sockets in Python
 -----------------
 
 Python provides a standard library module which provides socket functionality.
-It is called **socket**.  Let's spend a few minutes getting to know this
-module.
+It is called **socket**.  
+
+.. class:: incremental
+
+The library is really just a very thin wrapper around the system
+implementation of *BSD Sockets*
+
+.. class:: incremental
+
+Let's spend a few minutes getting to know this module.
+
+.. class:: incremental
 
 We're going to do this next part together, so open up a terminal and start a
 python interpreter
@@ -336,11 +340,31 @@ python interpreter
 Sockets in Python
 -----------------
 
-The sockets library provides tools for finding out information about hosts on
-the network. For example, you can find out about the machine you are currently
-using::
+The Python sockets library allows us to find out what port a *service* uses:
+
+.. class:: small
 
     >>> import socket
+    >>> socket.getservbyname('ssh')
+    22
+
+.. class:: incremental
+
+You can also do a *reverse lookup*, finding what service uses a given *port*:
+
+.. class:: incremental small
+
+    >>> socket.getservbyport(80)
+    'http'
+
+
+Sockets in Python
+-----------------
+
+The sockets library also provides tools for finding out information about
+*hosts*. For example, you can find out about the hostname and IP address of
+the machine you are currently using::
+
     >>> socket.gethostname()
     'heffalump.local'
     >>> socket.gethostbyname(socket.gethostname())
@@ -355,8 +379,8 @@ know their hostname. For example::
 
     >>> socket.gethostbyname('google.com')
     '173.194.33.4'
-    >>> socket.gethostbyname('unc.edu')
-    '152.19.240.120'
+    >>> socket.gethostbyname('uw.edu')
+    '128.95.155.135'
     >>> socket.gethostbyname('crisewing.com')
     '108.59.11.99'
 
@@ -423,12 +447,17 @@ single argument, the shared prefix for a defined set of constants:
 
     >>> def get_constants(prefix):
     ...     """mapping of socket module constants to their names."""
-    ...     return dict( (getattr(socket, n), n)
-    ...                  for n in dir(socket)
-    ...                  if n.startswith(prefix)
-    ...                  )
+    ...     return dict(
+    ...         (getattr(socket, n), n)
+    ...         for n in dir(socket)
+    ...         if n.startswith(prefix)
+    ...     )
     ...
     >>>
+
+.. class:: small
+
+(you can also find this in ``resources/session01/session1.py``)
 
 
 Socket Families
@@ -445,7 +474,7 @@ stack.  There were a couple of different types of IP addresses:
 
 .. class:: incremental
 
-The *family* of a socket corresponds to the addressing system it uses for
+The **family** of a socket corresponds to the *addressing system* it uses for
 connecting.
 
 
@@ -497,6 +526,10 @@ What is the *default* family for the socket we created just a moment ago?
 
 (remember we bound the socket to the symbol ``foo``)
 
+.. class:: incremental center
+
+How did you figure this out?
+
 
 Socket Types
 ------------
@@ -512,8 +545,8 @@ Look up socket type constants with the ``SOCK_`` prefix::
 
 .. class:: incremental
 
-The most common are ``1`` (TCP type communication) and ``2`` (UDP type
-communication).
+The most common are ``1`` (Stream communication (TCP)) and ``2`` (Datagram
+communication (UDP)).
 
 
 Test your skills
@@ -537,7 +570,8 @@ prefixed by ``IPPROTO_``::
 .. class:: incremental
 
 The choice of which protocol to use for a socket is determined by the
-communications protocol you intend to use.  ``IP``? ``ICMP``? ``UDP``?
+*internet layer* protocol you intend to use. ``TCP``? ``UPD``? ``ICMP``?
+``IGMP``?
 
 
 Test your skills
@@ -546,38 +580,81 @@ Test your skills
 What is the *default* protocol used by our generic socket, ``foo``?
 
 
-Address Information
--------------------
+Custom Sockets
+--------------
 
-These three properties of a socket correspond to the three positional arguments
-you may pass to the constructor.  This allows you to create sockets that have
-specific communications profiles::
+These three properties of a socket correspond to the three positional
+arguments you may pass to the socket constructor. 
 
-    >>> bar = socket.socket(socket.AF_INET,
-    ...                     socket.SOCK_DGRAM, 
-    ...                     socket.IPPROTO_UDP)
-    ...
-    >>> bar
-    <socket._socketobject object at 0x1005b8b40>
+.. container:: incremental
+
+    Using them allows you to create sockets with specific communications
+    profiles::
+    
+        >>> bar = socket.socket(socket.AF_INET,
+        ...                     socket.SOCK_DGRAM, 
+        ...                     socket.IPPROTO_UDP)
+        ...
+        >>> bar
+        <socket._socketobject object at 0x1005b8b40>
 
 
-Address Information
--------------------
+Break Time
+----------
 
-But when you are creating a socket to communicate with a remote service, how
-can you determine the *correct* values to use?
+So far we have:
 
 .. class:: incremental
+
+* learned about the "layers" of the TCP/IP Stack
+* discussed *families*, *types* and *protocols* in sockets
+* learned how to create sockets with a specific communications profile.
+
+.. class:: incremental
+
+When we return we'll learn how to find the communcations profiles of remote
+sockets, how to connect to them, and how to send and receive messages.
+
+.. class:: incremental
+
+Take a few minutes now to clear your head (do not quit your python
+interpreter).
+
+
+Address Information
+-------------------
+
+When you are creating a socket to communicate with a remote service, the
+remote socket will have a specific communications profile.
+
+.. class:: incremental
+
+The local socket you create must match that communications profile.
+
+.. class:: incremental
+
+How can you determine the *correct* values to use?
+
+.. class:: incremental center
 
 You ask.
 
 
-Client Connections
-------------------
+Address Information
+-------------------
 
-The information returned by a call to ``socket.getaddrinfo`` is all you need
-to make a proper connection to a socket on a remote host.  The value returned
-is a tuple of
+The function ``socket.getaddrinfo`` provides information about available
+connections on a given host.
+
+.. code-block:: python
+    :class: small
+
+    socket.getaddrinfo('127.0.0.1', 80)
+
+.. class:: incremental
+
+This provides all you need to make a proper connection to a socket on a remote
+host. The value returned is a tuple of:
 
 .. class:: incremental
 
@@ -591,7 +668,11 @@ is a tuple of
 A quick utility method
 ----------------------
 
-Again, let's create a utility method in-place so we can see this in action::
+Again, let's create a utility method in-place so we can see this in action:
+
+.. class:: small
+
+::
 
     >>> def get_address_info(host, port):
     ...     for response in socket.getaddrinfo(host, port):
@@ -605,11 +686,15 @@ Again, let's create a utility method in-place so we can see this in action::
     ...
     >>>
 
+.. class:: small
+
+(you can also find this in ``resources/session01/session1.py``)
+
 
 On Your Own Machine
 -------------------
 
-Now, ask your own machine what services are available on 'http'::
+Now, ask your own machine what possible connections are available for 'http'::
 
     >>> get_address_info(socket.gethostname(), 'http')
     family:  AF_INET
@@ -660,7 +745,7 @@ Construct a Socket
 
 We've already made a socket ``foo`` using the generic constructor without any
 arguments.  We can make a better one now by using real address information from
-a real server online:
+a real server online [**do not type this yet**]:
 
 .. class:: small
 
@@ -697,7 +782,7 @@ Sending a Message
 -----------------
 
 Send a message to the server on the other end of our connection (we'll
-learn is session 2 about the message we are sending)::
+learn in session 2 about the message we are sending)::
 
     >>> msg = "GET / HTTP/1.1\r\n"
     >>> msg += "Host: crisewing.com\r\n\r\n"
@@ -710,18 +795,19 @@ learn is session 2 about the message we are sending)::
 
 * success returns ``None``
 
-* failure to send raises an error 
+* failure to send raises an error
 
 * you can use the type of error to figure out why the transmission failed
 
-* you **cannot** know how much, if any, of your data was sent
+* if an error occurs you **cannot** know how much, if any, of your data was
+  sent
 
 
 Receiving a Reply
 -----------------
 
 Whatever reply we get is received by the socket we created. We can read it
-back out::
+back out (again, **do not type this yet**)::
 
     >>> response = cewing_socket.recv(4096)
     >>> response
@@ -731,7 +817,7 @@ back out::
 .. class:: incremental small
 
 * The sole required argument is ``buffer_size`` (an integer). It should be a
-  power of 2 and smallish
+  power of 2 and smallish (~4096)
 * It returns a byte string of ``buffer_size`` (or smaller if less data was
   received)
 * If the response is longer than ``buffer size``, you can call the method
@@ -784,28 +870,6 @@ Then, receive a reply, iterating until it is complete:
     19427
 
 
-Break Time
-----------
-
-So far we have:
-
-.. class:: incremental
-
-* learned about the "layers" of the TCP/IP Stack
-* discussed *families*, *types* and *protocols* in sockets
-* learned some API for finding out how to connect to a remote server
-* made our first connection to a server
-* and sent and received our first messages through a socket.
-
-.. class:: incremental
-
-Not bad for a Monday morning.
-
-.. class:: incremental
-
-Let's take 10 minutes and return to learn about the other end of this wire.
-
-
 Server Side
 -----------
 
@@ -826,7 +890,7 @@ Construct a Socket
         >>> server_socket = socket.socket(
         ...     socket.AF_INET,
         ...     socket.SOCK_STREAM,
-        ...     socket.IPPROTO_IP)
+        ...     socket.IPPROTO_TCP)
         ... 
         >>> server_socket
         <socket._socketobject object at 0x100563c90>
@@ -859,16 +923,16 @@ connections::
 
 * The argument to ``listen`` is the *backlog*
 
-* The *backlog* is the **maximum** number of connections that the socket will
-  queue
+* The *backlog* is the **maximum** number of connection requests that the
+  socket will queue
 
-* Once the limit is reached, the socket refuses new connections
+* Once the limit is reached, the socket refuses new connections.
 
 
 Accept Incoming Messages
 ------------------------
 
-When a socket is listening, it can receive incoming messages::
+When a socket is listening, it can receive incoming connection requests::
 
     >>> connection, client_address = server_socket.accept()
     ... # this blocks until a client connects
@@ -876,16 +940,14 @@ When a socket is listening, it can receive incoming messages::
 
 .. class:: incremental
 
-* The ``connection`` returned by a call to ``accept`` is a **new socket**
+* The ``connection`` returned by a call to ``accept`` is a **new socket**.
+  This new socket is used to communicate with the client
 
-* It is this *new* socket that is used for communications with the client
+* The ``client_address`` is a two-tuple of IP Address and Port for the client
   socket
 
-* the ``client_address`` is a two-tuple of IP Address and Port for the client
-  socket
-
-* The number of *new* sockets that can be spun off by a listening socket is 
-  equal to ``backlog``
+* When a connection request is 'accepted', it is removed from the backlog
+  queue.
 
 
 Send a Reply
@@ -907,11 +969,8 @@ Once a transaction between the client and server is complete, the
 
 .. class:: incremental
 
-* Closing the connection socket will decrement the number of active sockets in
-  the queue
-
-* If the maximum specified by ``backlog`` had been reached, this will allow a
-  new connection to be made.
+Note that the ``server_socket`` is *never* closed as long as the server
+continues to run.
 
 
 Getting the Flow
@@ -974,8 +1033,7 @@ new connection socket.
 
 .. class:: incremental
 
-When you're ready, type the following in the *client* interpreter. Watch the
-server!
+When you're ready, type the following in the *client* interpreter.
 
 .. class:: incremental
 
@@ -1023,196 +1081,118 @@ Congratulations!
 You've run your first client-server interaction
 
 
-Take it to the Next Level
--------------------------
+Homework
+--------
 
-That's pretty much everything we need to build a simple echo server and
-client.
-
-.. class:: incremental
-
-We are now going to move to writing python files.
+Your homework assignment for this week is to take what you've learned here
+and build a simple "echo" server.
 
 .. class:: incremental
 
-Quit both interpreters and open a new file in your favorite text editor.  Call
-it ``echo_client.py``
-
-
-The Echo Client - 1
--------------------
-
-.. code-block:: python
-    :class: small
-
-    import socket
-    import sys
-
-    def client(msg):
-        print >> sys.stderr, "sending: %s" % msg
-
-    if __name__ == '__main__':
-        if len(sys.argv) != 2:
-            usg = '\nusage: python echo_client.py "this is my message"\n'
-            print >>sys.stderr, usg
-            sys.exit(1)
-
-        msg = sys.argv[1]
-        client(msg)
+The server should automatically return to any client that connects *exactly*
+what it receives (it should **echo** all messages).
 
 .. class:: incremental
 
-Save that and try it out
+You will also write a python script that, when run, will send a message to the
+server and receive the reply, printing it to ``stdout``.
+
+.. class:: incremental
+
+Finally, you'll do all of this so that it can be tested.
 
 
-Check Your Work
----------------
+What You Have
+-------------
 
-In your terminal, where you created and saved ``echo_client.py``:
+In our class repository, there is a folder ``assignments/session01``.
+
+.. class:: incremental
+
+Inside that folder, you should find:
+
+.. class:: incremental
+
+* A file ``tasks.txt`` that contains these instructions
+
+* A skeleton for your server in ``echo_server.py``
+
+* A skeleton for your client script in ``echo_client.py``
+
+* Some simple tests in ``tests.py``
+
+.. class:: incremental
+
+Your task is to make the tests pass.
+
+
+Running the tests
+-----------------
+
+To run the tests, you'll have to set the server running in one terminal:
+
+.. class:: small
 
 ::
-
-    $ python echo_client.py
-
-    usage: python echo_client.py "this is my message"
-
-    $ python echo_client.py "my baloney has a first name"
-    sending "my baloney has a first name"
-
-
-The Echo Client - 2
--------------------
-
-.. code-block:: python
-    :class: small
-
-    def client(msg):
-        server_address = ('localhost', 10000)
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        print >>sys.stderr, 'connecting to %s port %s' % server_address
-        sock.connect(server_address)
-        try:
-            # Send data
-            print >>sys.stderr, 'sending "%s"' % msg
-            sock.sendall(msg)
-            # Look for the response
-            amount_received = 0
-            amount_expected = len(msg)
-            while amount_received < amount_expected:
-                data = sock.recv(16)
-                amount_received += len(data)
-                print >>sys.stderr, 'received "%s"' % data
-        finally:
-            print >>sys.stderr, 'closing socket'
-            sock.close()
-
-
-It Takes Two
-------------
-
-The client script at this point is no good without a server to receive the
-message and send it back.  Let's make that next.
-
-.. class:: incremental
-
-Again, open a new file in your text editor.  Call it `echo_server.py`.
-
-
-The Echo Server - 1
--------------------
-
-.. code-block:: python
-    :class: small
-
-    import socket
-    import sys
-
-    def server():
-        address = ('127.0.0.1', 10000)
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        print >>sys.stderr, "making a server on %s:%s" % address
-        sock.bind(address)
-        sock.listen(1)
-        try:
-            pass #<- what goes here comes in the next slide
-        except KeyboardInterrupt:
-            sock.close()
-            return
-
-    if __name__ == '__main__':
-        server()
-        sys.exit(0)
-
-
-The Echo Server - 2
--------------------
-
-.. code-block:: python
-    :class: small
-
-    try:
-        while True:
-            print >>sys.stderr, 'waiting for a connection'
-            conn, addr = sock.accept() # blocking
-            try:
-                print >>sys.stderr, 'connection - %s:%s' % addr
-                while True:
-                    data = conn.recv(16)
-                    print >>sys.stderr, 'received "%s"' % data
-                    if data:
-                        msg = 'sending data back to client'
-                        print >>sys.stderr, msg
-                        conn.sendall(data)
-                    else:
-                        msg = 'no more data from %s:%s' % addr
-                        print >>sys.stderr, msg
-                        break
-            finally:
-                conn.close()
-    except KeyboardInterrupt:
-        # ...
-
-
-Playing With Your Toy
----------------------
-
-In one terminal, start the server::
 
     $ python echo_server.py
-    making a server on 127.0.0.1:10000
-    waiting for a connection
+
+.. container:: incremental
+
+    Then, in a second terminal, you will execute the tests:
+    
+    .. class:: small
+    
+    ::
+    
+        $ python tests.py
+
+.. container:: incremental
+
+    You should see output like this:
+    
+    .. class:: small
+    
+    ::
+    
+        [...]
+        FAILED (failures=2)
+
+
+Submitting Your Homework
+------------------------
+
+To submit your homework:
 
 .. class:: incremental
 
-In a second, use the client to send a message:
+* In github, make a fork of my repository into *your* account.
+
+* Clone your fork of my repository to your computer.
+
+* Do your work in the ``assignments/session01/`` folder on your computer and
+  commit your changes to your fork.
+
+* When you are finished and your tests are passing, you will open a pull
+  request in github.com from your fork to mine.
 
 .. class:: incremental
 
-::
+I will review your work when I receive your pull requests, make comments on it
+there, and then close the pull request.
 
-    $ python echo_client.py "I am sending a longer message."
 
+Going Further
+-------------
 
-Next Steps
-----------
-
-You've now seen the basics of socket-based communication.
-
-.. class:: incremental
-
-In the next session, we'll learn about the protocols that govern these types
-of communications.
+In ``assignments/session01/tasks.txt`` you'll find a few extra problems to try.
 
 .. class:: incremental
 
-As an exercise, we'll extend this simple echo server into a basic HTTP
-server, and we'll be able to ditch the client and use a web browser instead.
+If you finish the first part of the homework in less than 3-4 hours give one
+or more of these a whirl.
 
+.. class:: incremental
 
-Lunch Time
-----------
-
-.. class:: big-centered
-
-We'll see you back here in an hour.  Enjoy!
+They are not required, but if you include solutions in your pull request, I'll
+review your work.

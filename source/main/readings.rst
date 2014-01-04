@@ -1,13 +1,13 @@
 Course Readings
 ===============
 
-Web programming is a deep pool. There's more to cover than a one-week course
+Web programming is a deep pool. There's more to cover than a 10-session course
 could ever hope to accomplish. To that end, I've compiled a list of related
 readings that will support the information you'll learn in class. Think of
 this as supplemental materials. You can read it at your leisure to help
 increase both the depth and breadth of your knowledge.
 
-The readings are organized like the class, by day, time and topic. 
+The readings are organized like the class, by session and topic. 
 
 
 Session 1 - TCP/IP and Sockets
@@ -20,9 +20,33 @@ Session 1 - TCP/IP and Sockets
 * `Wikipedia - Domain Name System
   <http://en.wikipedia.org/wiki/Domain_Name_System>`_
 * `Wikipedia - Internet Sockets
-  <http://en.wikipedia.org/wiki/Internet_socket>`_
+  <http://en.wikipedia.org/wiki/Network_socket>`_
 * `Wikipedia - Berkeley socket interface
   <http://en.wikipedia.org/wiki/Berkeley_sockets>`_
+
+If you want to know a bit more about the lower layers of the stack, you might
+find the following readings enlightening:
+
+**Transport Layer**
+
+* `Wikipedia - Universal Datagram Protocol (UDP)
+  <http://en.wikipedia.org/wiki/User_Datagram_Protocol>`_
+* `Wikipedia - Transmission Control Protocol (TCP)
+  <http://en.wikipedia.org/wiki/Transmission_Control_Protocol>`_
+
+**Internet Layer**
+
+* `Wikipedia - Internet Protocol (IP)
+  <http://en.wikipedia.org/wiki/Internet_Protocol>`_
+* `Wikipedia - IPv4 Packet Structure
+  <http://en.wikipedia.org/wiki/IPv4#Packet_structure>`_
+* `Wikipedia - IPv6 Packet Structure
+  <http://en.wikipedia.org/wiki/IPv6_packet#Fixed_header>`_
+
+**Link Layer**
+
+* `Wikipedia - Link Layer Protocols
+  <http://en.wikipedia.org/wiki/Link_Layer#Link_layer_protocols>`_
 
 In addition, you may find it interesting to take a look at ZeroMQ, a
 next-generation implementation of the socket concept built with parallel and
