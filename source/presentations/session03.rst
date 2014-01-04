@@ -1724,20 +1724,36 @@ you have the time and the interest, please try them out.
 Homework
 --------
 
-
-
-
-Next Steps
-----------
-
-We've spent this session consuming data produced by other people.
+For your homework this week, you'll be creating a mashup of your own.
 
 .. class:: incremental
 
-In the next session we'll see how to take input from clients and use it to
-create our own responses.
+Use the programmable web api directory from above as a source of inspiration.
 
 .. class:: incremental
 
-See you back here soon!
+Your mashup should combine at least two sources of data in some way that
+tickles your fancy.
 
+.. class:: incremental
+
+Your results need not look pretty. Focus on data acquisition and processing.
+
+
+Submitting Your Homework
+------------------------
+
+To submit your homework:
+
+* Create a new python script in ``assignments/session03``. It should be
+  something I can run with::
+
+    $ python your_script.py
+
+* Provide me with a text file describing what you did. Tell me about the
+  sources you use, how you combine them, what you hoped to achieve.
+
+* Include any instruction I might need to successfully run your script.
+
+* Commit your changes to your fork of the repo in github, then open a pull
+  request.
