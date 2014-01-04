@@ -96,6 +96,8 @@ remain unchanged) over time, skim these specifications for HTTP and SMTP:
 Session 3 - APIs and Mashups
 ----------------------------
 
+* `Introduction to HTML (from the Mozilla Developer Network)
+  <https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Introduction>`_
 * `Wikipedia's take on 'Web Services'
   <http://en.wikipedia.org/wiki/Web_service>`_
 * `xmlrpc overview <http://www.xmlrpc.com/>`_
