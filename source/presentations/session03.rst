@@ -175,7 +175,7 @@ Getting Virtualenv
 Three options for installing virtualenv (this is the exception to the above
 rule):
 
-.. class:: incremental
+.. class:: incremental small
 
 * ``pip install virtualenv``
 * ``easy_install virtualenv``
@@ -184,11 +184,18 @@ rule):
 
 You must have ``pip`` or ``easy_install`` installed.  Try this:
 
+.. class:: incremental small
+
+::
+
+    $ curl -O \
+    https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.11.tar.gz
+    $ tar -xzvf virtualenv-1.11.tar.gz
+
 .. class:: incremental
 
-* download ``https://raw.github.com/pypa/virtualenv/master/virtualenv.py``
 * remember where it goes.  You'll need it
-* there is a copy in the class resources (``common``)
+* there is a copy in the class resources (``resources/common``)
 
 
 Creating a Virtualenv
@@ -210,10 +217,10 @@ Creating a new virtualenv is very very simple:
     arbitrary. Let's make one for our BeautifulSoup install::
 
         $ python virtualenv.py soupenv
-        New python executable in soupenv/bin/python2.6
-        New python executable in soupenv/bin/python
-        Installing setuptools........................done.
-        Installing pip...................done.
+        Using real prefix '/Users/cewing/newpythons/parts/opt'
+        New python executable in soupenv26/bin/python2.6
+        Also creating executable in soupenv26/bin/python
+        Installing setuptools, pip...done.
 
 
 What Happened?
@@ -251,7 +258,7 @@ Or, on Windows::
 .. class:: image-credit
 
 If you use Powershell, read the note here:
-http://www.virtualenv.org/en/latest/#activate-script
+http://www.virtualenv.org/en/latest/virtualenv.html#activate-script
 
 
 Install BeautifulSoup
@@ -364,7 +371,7 @@ formula for a search URL
 
 .. class:: incremental
 
-* Base URL: ``http://raleigh.craigslist.org/search/apa``
+* Base URL: ``http://seattle.craigslist.org/search/apa``
 * keywords: ``query=keyword+values+here``
 * price: ``minAsk=NNN maxAsk=NNN``
 * bedrooms: ``bedrooms=N`` (N in range 1-8)
@@ -410,7 +417,7 @@ The return value from one of these functions is a ``response`` which provides:
 * ``response.headers``: The headers sent from the server
 * ``response.text``: Body of the response, decoded to unicode
 * ``response.encoding``: The encoding used to decode
-* ``response.content``: The original response body as bytes
+* ``response.content``: The original encoded response body as bytes
 
 .. class:: incremental small
 
@@ -444,17 +451,19 @@ Here's the one I created:
 
     import requests
 
-    def fetch_search_results(**kwargs):
-        base = 'http://raleigh.craigslist.org/search/apa'
-        valid_kws = ('query', 'minAsk', 'maxAsk', 'bedrooms')
-        use_kwargs = dict(
-            [(key, val) for key, val in kwargs.items() if key in valid_kws])
-        if not use_kwargs:
+    def fetch_search_results(
+        query=None, minAsk=None, maxAsk=None, bedrooms=None
+    ):
+        incoming = locals().copy()
+        base = 'http://seattle.craigslist.org/search/apa'
+        search_params = dict(
+            [(key, val) for key, val in incoming.items() if val is not None])
+        if not search_params:
             raise ValueError("No valid keywords")
 
-        resp = requests.get(base, params=use_kwargs, timeout=3)
+        resp = requests.get(base, params=search_params, timeout=3)
         resp.raise_for_status() #<- no-op if status==200
-        return resp.text, resp.encoding
+        return resp.content, resp.encoding
 
 
 Parse the Results
@@ -549,8 +558,9 @@ Try to come up with the proper code on your own.  Add it to ``mashup.py``
     :class: incremental small
 
     if __name__ == '__main__':
-        params = {'minAsk': 500, 'maxAsk': 1000, 'bedrooms': 2}
-        html, encoding = fetch_search_results(**params)
+        html, encoding = fetch_search_results(
+            minAsk=500, maxAsk=1000, bedrooms=2
+        )
         doc = parse_source(html, encoding)
         print doc.prettify(encoding=encoding)
 
@@ -561,7 +571,7 @@ Test Your Work
 Assuming your virtualenv is still active, you should be able to execute the
 script.
 
-.. class:: incremental small
+.. class:: incremental
 
 ::
 
@@ -570,20 +580,18 @@ script.
     <html class="nojs">
      <head>
       <title>
-       raleigh apts/housing for rent classifieds  - craigslist
+       seattle apts/housing for rent classifieds  - craigslist
       </title>
-    ...
+    ...  
 
-.. container:: incremental
 
-    Try it again, this time redirect the output to a local file, so we can use
-    it without needing to hit the craiglist servers each time:
-    
-    .. class:: small
-    
-    ::
+Preserve the Results
+--------------------
 
-        (soupenv)$ python mashup.py > craigslist_results.html
+Try it again, this time redirect the output to a local file, so we can use
+it without needing to hit the craiglist servers each time::
+
+    (soupenv)$ python mashup.py > craigslist_results.html
 
 
 Finding The Needle
@@ -593,7 +601,7 @@ Next we find the bits of this pile of HTML that matter to us.
 
 .. class:: incremental
 
-Open your html file in a browser and take a look.
+Open your html file in a browser and take a look (w/ dev tools).
 
 .. class:: incremental
 
@@ -668,7 +676,7 @@ Let's fire up a python interpreter and get our hands dirty here::
     >>> from bs4 import BeautifulSoup
     >>> parsed = BeautifulSoup(html)
     >>> listings = parsed.find_all('p', class_='row')
-    >>> len(entries)
+    >>> len(listings)
     100
 
 
@@ -739,7 +747,7 @@ Location data is in the ``data-`` attributes we used to filter rows.
         >>> lat = row1.attrs.get('data-latitude', None)
         >>> lon = row1.attrs.get('data-longitude', None)
         >>> print lat, lon
-        35.8625743108992 -78.6232739959049
+        46.9989830869194 -122.847250593816
 
 
 Extracting Description and Link
@@ -779,12 +787,12 @@ that matches the filters you provide.
 Extracting Price and Size
 -------------------------
 
-Both price and size are held in the ``pnr`` span:
+Both price and size are held in the ``l2`` span:
 
 .. code-block:: python
     :class: small
 
-    >>> pnr = row1.find('span', class_='pnr')
+    >>> l2 = row1.find('span', class_='l2')
 
 .. container:: incremental
 
@@ -793,7 +801,7 @@ Both price and size are held in the ``pnr`` span:
     .. code-block:: python
         :class: small
     
-        >>> price_span = pnr.find('span', class_='price')
+        >>> price_span = l2.find('span', class_='price')
         >>> price = price_span.string.strip()
 
 .. class:: incremental
@@ -802,7 +810,7 @@ But the size element is not. It is a standalone *text node*.
 
 .. class:: incremental
 
-Try finding it by reading the ``string`` property of our `pnr` tag.
+Try finding it by reading the ``string`` property of our ``l2`` tag.
 
 
 Simple Navigation and Text
@@ -822,8 +830,8 @@ You can navigate up, down and across document nodes.
     .. code-block:: python
         :class: small
 
-        >>> size = price.next_sibling.strip(' \n-/')
-        u'2br - 1160ft\xb2'
+        >>> size = price_span.next_sibling.strip(' \n-/')
+        u'2br - 912ft\xb2'
 
 .. class:: incremental
 
@@ -848,7 +856,7 @@ The second reason is more subtle. The values returned by ``string`` are
     .. code-block:: python
         :class: small
 
-        >>> price.next_sibling.__class__
+        >>> price_span.next_sibling.__class__
         <class 'bs4.element.NavigableString'>
 
 .. class:: incremental
@@ -928,11 +936,12 @@ My Solution
     :class: small
 
     if __name__ == '__main__':
-        params = {'minAsk': 500, 'maxAsk': 1000, 'bedrooms': 2}
-        html, encoding = fetch_search_results(**params)
+        html, encoding = fetch_search_results(
+            minAsk=500, maxAsk=1000, bedrooms=2
+        )
         doc = parse_source(html, encoding)
         for listing in extract_listings(doc):
-            pprint.pprint(listing)
+            print listing
 
 
 Another Approach
@@ -1229,7 +1238,7 @@ Remember duck-typing. Anything with a ``.write`` and a ``.read`` method is
 
 .. class:: incremental
 
-Have we seen any network-related classes recently that behave that way?
+This usage can be much more memory-friendly with large files/sources
 
 
 What about WSDL?
@@ -1440,7 +1449,7 @@ https://developers.google.com/maps/documentation/geocoding
     >>> import json
     >>> from pprint import pprint
     >>> url = 'http://maps.googleapis.com/maps/api/geocode/json'
-    >>> addr = '120 E. Cameron Avenue Chapel Hill, NC 27599'
+    >>> addr = '1325 4th Ave, Seattle, 98101'
     >>> parameters = {'address': addr, 'sensor': 'false' }
     >>> resp = requests.get(url, params=parameters)
     >>> data = json.loads(resp.text)
@@ -1459,7 +1468,7 @@ back address information:
     :class: small
 
     >>> location = data['results'][0]['geometry']['location']
-    >>> latlng = '%f,%f' % (location['lat'], location['lng'])
+    >>> latlng="{lat},{lng}".format(**location)
     >>> parameters = {'latlng': latlng, 'sensor': 'false'}
     >>> resp = requests.get(url, params=paramters)
     >>> data = json.loads(resp.text)
@@ -1503,10 +1512,10 @@ My Solution
     def add_address(listing):
         api_url = 'http://maps.googleapis.com/maps/api/geocode/json'
         loc = listing['location']
+        latlng_tmpl = "{data-latitude},{data-longitude}"
         parameters = {
             'sensor': 'false',
-            'latlng': "%s,%s" % (loc['data-latitude'],
-                                 loc['data-longitude'])
+            'latlng': latlng_tmpl.format(**loc),
         }
         resp = requests.get(api_url, params=parameters)
         data = json.loads(resp.text)
@@ -1710,6 +1719,12 @@ you have the time and the interest, please try them out.
 .. class:: center
 
 `Web Service API Addenda <session03-addenda.html>`_
+
+
+Homework
+--------
+
+
 
 
 Next Steps
