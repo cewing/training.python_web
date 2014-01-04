@@ -1757,3 +1757,10 @@ To submit your homework:
 
 * Commit your changes to your fork of the repo in github, then open a pull
   request.
+
+
+Extra Credit
+------------
+
+Bonus points if you write unit tests for the elements of your mashup.  
+

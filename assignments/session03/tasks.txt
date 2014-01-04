@@ -30,3 +30,9 @@ Any instructions I need.
 The data you produce need not be pretty, or even particularly visible. In
 class we only produced a simple dictionary of values for each listing. Focus
 on getting data sources combined rather than on what the output looks like.
+
+
+Optional Tasks:
+---------------
+
+Write unit tests supporting the functions of your mashup script.
