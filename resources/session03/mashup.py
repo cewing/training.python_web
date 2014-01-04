@@ -1,27 +1,22 @@
-import requests
 from bs4 import BeautifulSoup
-import pprint
 import json
+import pprint
+import requests
 
 
-def fetch_search_results(**kwargs):
-    base = 'http://raleigh.craigslist.org/search/apa'
-    valid_kws = ('query', 'minAsk', 'maxAsk', 'bedrooms')
-    use_kwargs = dict(
-        [(key, val) for key, val in kwargs.items() if key in valid_kws])
-    if not use_kwargs:
+def fetch_search_results(
+    query=None, minAsk=None, maxAsk=None, bedrooms=None
+):
+    incoming = locals().copy()
+    base = 'http://seattle.craigslist.org/search/apa'
+    search_params = dict(
+        [(key, val) for key, val in incoming.items() if val is not None])
+    if not search_params:
         raise ValueError("No valid keywords")
 
-    resp = requests.get(base, params=use_kwargs, timeout=3)
-    resp.raise_for_status()
-    return resp.content, resp.apparent_encoding
-
-
-def read_results(filename):
-    fh = open(filename, 'r')
-    body = fh.read()
-    fh.close()
-    return body
+    resp = requests.get(base, params=search_params, timeout=3)
+    resp.raise_for_status() #<- no-op if status==200
+    return resp.content, resp.encoding
 
 
 def parse_source(html, encoding='utf-8'):
@@ -51,10 +46,10 @@ def extract_listings(doc):
 def add_address(listing):
     api_url = 'http://maps.googleapis.com/maps/api/geocode/json'
     loc = listing['location']
+    latlng_tmpl = "{data-latitude},{data-longitude}"
     parameters = {
         'sensor': 'false',
-        'latlng': "%s,%s" % (loc['data-latitude'],
-                             loc['data-longitude'])
+        'latlng': latlng_tmpl.format(**loc),
     }
     resp = requests.get(api_url, params=parameters)
     data = json.loads(resp.text)
@@ -68,7 +63,7 @@ def add_address(listing):
 
 def add_walkscore(listing):
     api_url = 'http://api.walkscore.com/score'
-    apikey = 'YOURAPIKEYGOESHERE'
+    apikey = '<your api key goes here>'
     loc = listing['location']
     if listing['address'] == 'unavailable':
         return listing
@@ -87,8 +82,9 @@ def add_walkscore(listing):
 
 
 if __name__ == '__main__':
-    params = {'minAsk': 500, 'maxAsk': 1000, 'bedrooms': 2}
-    html, encoding = fetch_search_results(**params)
+    html, encoding = fetch_search_results(
+        minAsk=500, maxAsk=1000, bedrooms=2
+    )
     doc = parse_source(html, encoding)
     for listing in extract_listings(doc):
         listing = add_address(listing)
