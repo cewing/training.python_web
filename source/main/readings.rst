@@ -109,9 +109,9 @@ Session 3 - APIs and Mashups
 * `A Brief Introduction to REST (Tilkov 2007)
   <http://www.infoq.com/articles/rest-introduction>`_
 * `Wikipedia on REST
-  <http://en.wikipedia.org/wiki/Representational_State_Transfer>`
+  <http://en.wikipedia.org/wiki/Representational_State_Transfer>`_
 * `Original REST disertation
-  <http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm>`
+  <http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm>`_
 * `Why HATEOAS - *a simple case study on the often ignored REST constraint*
   <http://www.slideshare.net/trilancer/why-hateoas-1547275>`_
 
