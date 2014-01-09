@@ -15,23 +15,23 @@ Wherein we discover the gateways to dynamic processes on a server.
 
 image: The Wandering Angel http://www.flickr.com/photos/wandering_angel/1467802750/ - CC-BY
 
-Yesterday
----------
+Previously
+----------
 
 .. class:: incremental
 
-* We learned about passing messages back and forth with sockets
-* We created a simple HTTP server using sockets
-* We may even have made our server *dynamic* by returning the output of a
+* You've learned about passing messages back and forth with sockets
+* You've created a simple HTTP server using sockets
+* You may even have made your server *dynamic* by returning the output of a
   python script.
 
 .. class:: incremental
 
-What if we want to pass information to that script?
+What if you want to pass information to that script?
 
 .. class:: incremental
 
-How do we let the script have access to information about the HTTP request
+How can you give the script access to information about the HTTP request
 itself?
 
 
@@ -665,8 +665,8 @@ server that handles CGI scripts.
 
 .. class:: incremental
 
-FastCGI and SCGI are existing implementations of CGI in this fashion.
-**mod_python** offers a similar capability for Python code.
+FastCGI and SCGI are existing implementations of CGI in this fashion. The
+Apache module **mod_python** offers a similar capability for Python code.
 
 .. class:: incremental
 
@@ -1224,9 +1224,9 @@ My Solution
     def books():
         all_books = DB.titles()
         body = ['<h1>My Bookshelf</h1>', '<ul>']
-        item_template = '<li><a href="/book/%(id)s">%(title)s</a></li>'
+        item_template = '<li><a href="/book/{id}">{title}</a></li>'
         for book in all_books:
-            body.append(item_template % book)
+            body.append(item_template.format(**book))
         body.append('</ul>')
         return '\n'.join(body)
 
@@ -1277,18 +1277,18 @@ My Solution
 
     def book(book_id):
         page = """
-    <h1>%(title)s</h1>
+    <h1>{title}</h1>
     <table>
-        <tr><th>Author</th><td>%(author)s</td></tr>
-        <tr><th>Publisher</th><td>%(publisher)s</td></tr>
-        <tr><th>ISBN</th><td>%(isbn)s</td></tr>
+        <tr><th>Author</th><td>{author}</td></tr>
+        <tr><th>Publisher</th><td>{publisher}</td></tr>
+        <tr><th>ISBN</th><td>{isbn}</td></tr>
     </table>
     <a href="/">Back to the list</a>
     """
         book = DB.title_info(book_id)
         if book is None:
             raise NameError
-        return page % book
+        return page.format(**book)
 
 
 Revel in Your Success
@@ -1335,4 +1335,4 @@ the ``wsgiref`` module. It's the canonical example of a simple wsgi server
 
 .. class:: incremental center
 
-**See You Tomorrow!**
+**See you Next Time**
