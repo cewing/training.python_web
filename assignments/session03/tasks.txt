@@ -13,8 +13,8 @@ interests, the Web has tools.  Put them together to make something.
 Use the API directory at http://www.programmableweb.com/apis/directory to get
 some ideas of data sources and what you might do with them.
 
-Place the following in the ``assignments/week03/athome`` directory and make a
-pull request:
+Place the following in the assignments/session03 directory and make a pull
+request:
 
 A textual description of your mashup.
   What data sources did you scan, what tools did you use, what is the
