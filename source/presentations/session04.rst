@@ -1322,6 +1322,63 @@ Next steps for an app like this might be:
   it serves
 
 
+Homework
+--------
+
+For your homework this week, you'll be creating a wsgi application of your
+own.
+
+.. class:: incremental
+
+As the source of your data, use the mashup you created last week.
+
+.. class:: incremental
+
+Your application should have at least two separate "pages" in it.
+
+.. class:: incremental
+
+The HTML you produce does not need to be pretty, but it should be something
+that shows up in a browser.
+
+
+Submitting Your Homework
+------------------------
+
+To submit your homework:
+
+.. class:: small
+
+* Create a new python script in ``assignments/session04``. It should be
+  something I can run with:
+
+.. class:: small
+
+::
+
+    $ python your_script.py
+
+.. class:: small
+
+* Once your script is running, I should be able to view your application in my
+  browser.
+
+* Include all instructions I need to successfully run and view your script.
+
+* Add tests for your code. I should be able to run the tests like so:
+
+.. class:: small
+
+::
+
+    $ python tests.py
+
+.. class:: small
+
+* Commit your changes to your fork of the repo in github, then open a pull
+  request.
+
+
 Wrap-Up
 -------
 
