@@ -485,7 +485,7 @@ Once we have that, we can play with the resulting email object:
      'To', 'Mime-Version', 'X-Mailer']
     >>> msg['To']
     'demo@crisewing.com'
-    >>> print msg.get_payload()
+    >>> print msg.get_payload()[0]
     If you are reading this email, ...
 
 .. class:: incremental center
