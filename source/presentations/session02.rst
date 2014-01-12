@@ -580,7 +580,7 @@ Both share a common basic format:
 .. class:: incremental
 
 * Line separators are <CRLF> (familiar, no?)
-* An required initial line (a command or a response code)
+* A required initial line (a command or a response code)
 * A (mostly) optional set of headers, one per line
 * A blank line
 * An optional body
@@ -898,16 +898,16 @@ My Solution
     # ...
     try:
         while True:
-            print >>sys.stderr, 'waiting for a connection'
+            print >>log_buffer, 'waiting for a connection'
             conn, addr = sock.accept() # blocking
             try:
-                print >>sys.stderr, 'connection - %s:%s' % addr
+                print >>log_buffer, 'connection - {0}{1}'.format(*addr)
                 while True:
                     data = conn.recv(1024)
                     if len(data) < 1024:
                         break
                 
-                print >>sys.stderr, 'sending response'
+                print >>log_buffer, 'sending response'
                 response = response_ok()
                 conn.sendall(response)
             finally:
@@ -1062,7 +1062,7 @@ My Solution
 
     def parse_request(request):
         first_line = request.split("\r\n", 1)[0]
-        protocol, method, uri = first_line.split()
+        method, uri, protocol = first_line.split()
         if method != "GET":
             raise NotImplementedError("We only accept GET")
         print >>sys.stderr, 'request is okay'
@@ -1089,7 +1089,7 @@ My Solution
     # ...
     conn, addr = sock.accept() # blocking
     try:
-        print >>sys.stderr, 'connection - %s:%s' % addr
+        print >>log_buffer, 'connection - {0}{1}'.format(*addr)
         request = ""
         while True:
             data = conn.recv(1024)
@@ -1098,7 +1098,7 @@ My Solution
                 break
 
         parse_request(request)
-        print >>sys.stderr, 'sending response'
+        print >>log_buffer, 'sending response'
         response = response_ok()
         conn.sendall(response)
     finally:
