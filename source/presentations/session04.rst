@@ -58,7 +58,7 @@ A computer has an *environment*:
     
     .. class:: small
     
-    ::    
+    ::
     
         C:\> set
         ALLUSERSPROFILE=C:\ProgramData
@@ -76,7 +76,7 @@ This can be manipulated:
     
     .. class:: small
     
-    ::    
+    ::
     
         $ export VARIABLE='some value'
         $ echo $VARIABLE
@@ -139,7 +139,7 @@ We can see this *environment* in Python, too::
     >>> print os.environ['VARIABLE']
     some_value
     >>> print os.environ.keys()
-    ['VERSIONER_PYTHON_PREFER_32_BIT', 'VARIABLE', 
+    ['VERSIONER_PYTHON_PREFER_32_BIT', 'VARIABLE',
      'LOGNAME', 'USER', 'PATH', ...]
 
 Altering the Environment
@@ -183,11 +183,11 @@ Lessons Learned
 
 ::
 
-    subprocess.Popen(args, bufsize=0, executable=None, 
-                     stdin=None, stdout=None, stderr=None, 
-                     preexec_fn=None, close_fds=False, 
+    subprocess.Popen(args, bufsize=0, executable=None,
+                     stdin=None, stdout=None, stderr=None,
+                     preexec_fn=None, close_fds=False,
                      shell=False, cwd=None, env=None, # <-------
-                     universal_newlines=False, startupinfo=None, 
+                     universal_newlines=False, startupinfo=None,
                      creationflags=0)
 
 
@@ -346,7 +346,7 @@ Back in your editor, add the following lines, just below ``import cgi``:
 
 .. class:: incremental
 
-Now, reload again.  
+Now, reload again.
 
 cgitb Output
 ------------
@@ -724,7 +724,7 @@ A WSGI Appliction must:
 
 .. class:: incremental small
 
-* Be a callable (function, method, class) 
+* Be a callable (function, method, class)
 * Take an environment and a ``start_response`` callable as arguments
 * Call the ``start_response`` method.
 * Return an iterable of 0 or more strings, which are treated as the body of
@@ -1067,7 +1067,7 @@ Dispatch
 --------
 
 We have to write an app that will map our incoming request path to some code
-that can handle that request.  
+that can handle that request.
 
 .. class:: incremental
 
@@ -1138,7 +1138,7 @@ My Solution
 Application Updates
 -------------------
 
-We need to hook our new router into the application.  
+We need to hook our new router into the application.
 
 .. class:: incremental
 
@@ -1256,7 +1256,7 @@ Click on a link to view the detail page. Does it load without error?
 Showing Details
 ---------------
 
-The next step of course is to polish up those detail pages.  
+The next step of course is to polish up those detail pages.
 
 .. class:: incremental
 
