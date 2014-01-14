@@ -12,6 +12,30 @@ Session 2: Web Protocols
 Wherein we learn about the languages that machines speak to each other
 
 
+But First
+---------
+
+.. class:: big-centered
+
+Some boring business of identification
+
+
+But Second
+----------
+
+.. class:: big-centered
+
+Questions from the Homework?
+
+
+And Third
+---------
+
+.. class:: big-centered
+
+Examples of an echo server using ``select``
+
+
 What is a Protocol?
 -------------------
 
