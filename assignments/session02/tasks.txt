@@ -34,6 +34,9 @@ in assignments/session02/http_server.py:
 * Write a new function response_not_found that returns a 404 response if the
   resource does not exist.
 
+* Update the code in the server loop to use the new and changed functions you
+  completed for the tasks above.
+
 When you have successfully completed these tasks as described, all the tests
 in assignments/session02/tests.py will pass as written. If you have to update
 the tests to get them to pass, think again about how you are implementing the
