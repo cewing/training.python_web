@@ -27,7 +27,7 @@ But not always in the form or combination you want.
 
 .. class:: incremental
 
-It would be nice to be able to combine data from different source to create
+It would be nice to be able to combine data from different sources to create
 *meaning*.
 
 
@@ -457,7 +457,8 @@ Here's the one I created:
         incoming = locals().copy()
         base = 'http://seattle.craigslist.org/search/apa'
         search_params = dict(
-            [(key, val) for key, val in incoming.items() if val is not None])
+            [(key, val) for key, val in incoming.items() 
+                        if val is not None])
         if not search_params:
             raise ValueError("No valid keywords")
 
@@ -831,6 +832,7 @@ You can navigate up, down and across document nodes.
         :class: small
 
         >>> size = price_span.next_sibling.strip(' \n-/')
+        >>> size
         u'2br - 912ft\xb2'
 
 .. class:: incremental
@@ -1164,7 +1166,7 @@ JSON provides a few basic data types (see http://json.org/):
 .. class:: incremental
 
 * string: unicode, anything but ", \\ and control characters
-* number: any number, but json does not use octal or hexidecimal
+* number: any number, but json does not use octal or hexadecimal
 * object, array (we've seen these above)
 * true
 * false
@@ -1212,6 +1214,7 @@ You can encode python to json, and decode json back to python:
     >>> import json
     >>> array = [1,2,3]
     >>> json.dumps(array)
+    >>> '[1, 2, 3]'
     >>> orig = {'foo': [1,2,3], 'bar': u'my resumé', 'baz': True}
     >>> encoded = json.dumps(orig)
     >>> encoded
@@ -1535,6 +1538,7 @@ Go ahead and bolt the new function into our ``__main__`` block:
 .. code-block:: python
     :class: small incremental
 
+    import pprint
     if __name__ == '__main__':
         params = {'minAsk': 500, 'maxAsk': 1000, 'bedrooms': 2}
         html, encoding = fetch_search_results(**params)
