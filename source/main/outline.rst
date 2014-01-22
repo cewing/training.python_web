@@ -80,6 +80,7 @@ Along the way, we'll create a mashup of our own, using the tools we learn to
 build a script that can produce derived meaning out of data we find online.
 
 `Lecture Slides <presentations/session03.html>`_
+`As Plain HTML <presentations/session03-plain.html>`_
 
 References
 **********
