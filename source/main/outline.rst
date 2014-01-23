@@ -238,7 +238,7 @@ tests that cover the functionality we want and then writing the code to make
 them pass. 
 
 By the end of the session, you'll have a fully functional wiki you can play
-with. Maybe you'll use it to track the information you leared about Python
+with. Maybe you'll use it to track the information you learned about Python
 Web Development.
 
 `Lecture Slides <presentations/session10.html>`_
