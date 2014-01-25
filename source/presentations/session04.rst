@@ -494,7 +494,7 @@ browser?
 
 .. class:: incremental
 
-A CGI Script must print it's results to stdout.
+A CGI Script must print its results to stdout.
 
 .. class:: incremental
 
@@ -767,8 +767,8 @@ app:
     def application(environ, start_response)
         status = "200 OK"
         body = "Hello World\n"
-        response_headers = [('Content-type', 'text/plain',
-                             'Content-length', len(body))]
+        response_headers = [('Content-type', 'text/plain'),
+                            ('Content-length', len(body))]
         start_response(status, response_headers)
         return [body]
 
