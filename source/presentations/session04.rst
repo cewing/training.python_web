@@ -855,7 +855,7 @@ server:
 The WSGI Environment
 --------------------
 
-.. class:: small incremental
+.. class:: small
 
 REQUEST_METHOD
   The HTTP request method, such as "GET" or "POST". This cannot ever be an
