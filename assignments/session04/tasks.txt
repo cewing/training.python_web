@@ -1,0 +1,32 @@
+Session 4 Homework
+==================
+
+Required Tasks:
+---------------
+
+The Mashup you created for the last session produces interesting data. This
+session we learned how to build simple WSGI applications that expose data
+using information from the request.
+
+For your homework this week, I want you to combine the two. Using your mashup
+as a data source, build a simple WSGI application that shows that data to the
+user. Make it minimally interactive. A user should be able to click links or 
+provide input via simple HTML forms.
+
+Place the following in the assignments/session04 directory and make a pull
+request:
+
+Instructions
+  If any extra stuff needs to be installed or executed for your application
+  to work, make sure I know about it.
+
+Your source code.
+  Give me an executable python script that I can run to start a WSGI server
+  serving your application.  Use the standard library wsgiref module.
+
+Your tests.
+  Last session, tests were optional.  This week they are not.
+
+Your application should produce HTML output that I can view in a browser. That
+output does not need to be attractive. Continue to focus on the mechanics of
+making this work, rather than the aesthetics of making it pretty.

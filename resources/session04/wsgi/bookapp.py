@@ -13,7 +13,7 @@ def books():
     return "<h1>a list of books</h1>"
 
 
-def application(environ, start_response):    
+def application(environ, start_response):
     status = "200 OK"
     headers = [('Content-type', 'text/html')]
     start_response(status, headers)

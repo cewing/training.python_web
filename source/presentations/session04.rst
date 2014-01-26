@@ -15,23 +15,23 @@ Wherein we discover the gateways to dynamic processes on a server.
 
 image: The Wandering Angel http://www.flickr.com/photos/wandering_angel/1467802750/ - CC-BY
 
-Yesterday
----------
+Previously
+----------
 
 .. class:: incremental
 
-* We learned about passing messages back and forth with sockets
-* We created a simple HTTP server using sockets
-* We may even have made our server *dynamic* by returning the output of a
+* You've learned about passing messages back and forth with sockets
+* You've created a simple HTTP server using sockets
+* You may even have made your server *dynamic* by returning the output of a
   python script.
 
 .. class:: incremental
 
-What if we want to pass information to that script?
+What if you want to pass information to that script?
 
 .. class:: incremental
 
-How do we let the script have access to information about the HTTP request
+How can you give the script access to information about the HTTP request
 itself?
 
 
@@ -58,7 +58,7 @@ A computer has an *environment*:
     
     .. class:: small
     
-    ::    
+    ::
     
         C:\> set
         ALLUSERSPROFILE=C:\ProgramData
@@ -76,7 +76,7 @@ This can be manipulated:
     
     .. class:: small
     
-    ::    
+    ::
     
         $ export VARIABLE='some value'
         $ echo $VARIABLE
@@ -139,7 +139,7 @@ We can see this *environment* in Python, too::
     >>> print os.environ['VARIABLE']
     some_value
     >>> print os.environ.keys()
-    ['VERSIONER_PYTHON_PREFER_32_BIT', 'VARIABLE', 
+    ['VERSIONER_PYTHON_PREFER_32_BIT', 'VARIABLE',
      'LOGNAME', 'USER', 'PATH', ...]
 
 Altering the Environment
@@ -183,11 +183,11 @@ Lessons Learned
 
 ::
 
-    subprocess.Popen(args, bufsize=0, executable=None, 
-                     stdin=None, stdout=None, stderr=None, 
-                     preexec_fn=None, close_fds=False, 
+    subprocess.Popen(args, bufsize=0, executable=None,
+                     stdin=None, stdout=None, stderr=None,
+                     preexec_fn=None, close_fds=False,
                      shell=False, cwd=None, env=None, # <-------
-                     universal_newlines=False, startupinfo=None, 
+                     universal_newlines=False, startupinfo=None,
                      creationflags=0)
 
 
@@ -346,7 +346,7 @@ Back in your editor, add the following lines, just below ``import cgi``:
 
 .. class:: incremental
 
-Now, reload again.  
+Now, reload again.
 
 cgitb Output
 ------------
@@ -494,7 +494,7 @@ browser?
 
 .. class:: incremental
 
-A CGI Script must print it's results to stdout.
+A CGI Script must print its results to stdout.
 
 .. class:: incremental
 
@@ -665,8 +665,8 @@ server that handles CGI scripts.
 
 .. class:: incremental
 
-FastCGI and SCGI are existing implementations of CGI in this fashion.
-**mod_python** offers a similar capability for Python code.
+FastCGI and SCGI are existing implementations of CGI in this fashion. The
+Apache module **mod_python** offers a similar capability for Python code.
 
 .. class:: incremental
 
@@ -724,7 +724,7 @@ A WSGI Appliction must:
 
 .. class:: incremental small
 
-* Be a callable (function, method, class) 
+* Be a callable (function, method, class)
 * Take an environment and a ``start_response`` callable as arguments
 * Call the ``start_response`` method.
 * Return an iterable of 0 or more strings, which are treated as the body of
@@ -767,8 +767,8 @@ app:
     def application(environ, start_response)
         status = "200 OK"
         body = "Hello World\n"
-        response_headers = [('Content-type', 'text/plain',
-                             'Content-length', len(body))]
+        response_headers = [('Content-type', 'text/plain'),
+                            ('Content-length', len(body))]
         start_response(status, response_headers)
         return [body]
 
@@ -855,7 +855,7 @@ server:
 The WSGI Environment
 --------------------
 
-.. class:: small incremental
+.. class:: small
 
 REQUEST_METHOD
   The HTTP request method, such as "GET" or "POST". This cannot ever be an
@@ -1067,7 +1067,7 @@ Dispatch
 --------
 
 We have to write an app that will map our incoming request path to some code
-that can handle that request.  
+that can handle that request.
 
 .. class:: incremental
 
@@ -1138,7 +1138,7 @@ My Solution
 Application Updates
 -------------------
 
-We need to hook our new router into the application.  
+We need to hook our new router into the application.
 
 .. class:: incremental
 
@@ -1224,9 +1224,9 @@ My Solution
     def books():
         all_books = DB.titles()
         body = ['<h1>My Bookshelf</h1>', '<ul>']
-        item_template = '<li><a href="/book/%(id)s">%(title)s</a></li>'
+        item_template = '<li><a href="/book/{id}">{title}</a></li>'
         for book in all_books:
-            body.append(item_template % book)
+            body.append(item_template.format(**book))
         body.append('</ul>')
         return '\n'.join(body)
 
@@ -1256,7 +1256,7 @@ Click on a link to view the detail page. Does it load without error?
 Showing Details
 ---------------
 
-The next step of course is to polish up those detail pages.  
+The next step of course is to polish up those detail pages.
 
 .. class:: incremental
 
@@ -1277,18 +1277,18 @@ My Solution
 
     def book(book_id):
         page = """
-    <h1>%(title)s</h1>
+    <h1>{title}</h1>
     <table>
-        <tr><th>Author</th><td>%(author)s</td></tr>
-        <tr><th>Publisher</th><td>%(publisher)s</td></tr>
-        <tr><th>ISBN</th><td>%(isbn)s</td></tr>
+        <tr><th>Author</th><td>{author}</td></tr>
+        <tr><th>Publisher</th><td>{publisher}</td></tr>
+        <tr><th>ISBN</th><td>{isbn}</td></tr>
     </table>
     <a href="/">Back to the list</a>
     """
         book = DB.title_info(book_id)
         if book is None:
             raise NameError
-        return page % book
+        return page.format(**book)
 
 
 Revel in Your Success
@@ -1322,6 +1322,63 @@ Next steps for an app like this might be:
   it serves
 
 
+Homework
+--------
+
+For your homework this week, you'll be creating a wsgi application of your
+own.
+
+.. class:: incremental
+
+As the source of your data, use the mashup you created last week.
+
+.. class:: incremental
+
+Your application should have at least two separate "pages" in it.
+
+.. class:: incremental
+
+The HTML you produce does not need to be pretty, but it should be something
+that shows up in a browser.
+
+
+Submitting Your Homework
+------------------------
+
+To submit your homework:
+
+.. class:: small
+
+* Create a new python script in ``assignments/session04``. It should be
+  something I can run with:
+
+.. class:: small
+
+::
+
+    $ python your_script.py
+
+.. class:: small
+
+* Once your script is running, I should be able to view your application in my
+  browser.
+
+* Include all instructions I need to successfully run and view your script.
+
+* Add tests for your code. I should be able to run the tests like so:
+
+.. class:: small
+
+::
+
+    $ python tests.py
+
+.. class:: small
+
+* Commit your changes to your fork of the repo in github, then open a pull
+  request.
+
+
 Wrap-Up
 -------
 
@@ -1335,4 +1392,4 @@ the ``wsgiref`` module. It's the canonical example of a simple wsgi server
 
 .. class:: incremental center
 
-**See You Tomorrow!**
+**See you Next Time**

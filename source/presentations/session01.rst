@@ -570,7 +570,7 @@ prefixed by ``IPPROTO_``::
 .. class:: incremental
 
 The choice of which protocol to use for a socket is determined by the
-*internet layer* protocol you intend to use. ``TCP``? ``UPD``? ``ICMP``?
+*internet layer* protocol you intend to use. ``TCP``? ``UDP``? ``ICMP``?
 ``IGMP``?
 
 
@@ -837,6 +837,8 @@ Putting it all together
 
 First, connect and send a message:
 
+.. class:: small
+
 ::
 
     >>> streams = [info
@@ -845,7 +847,7 @@ First, connect and send a message:
     >>> info = streams[0]
     >>> cewing_socket = socket.socket(*info[:3])
     >>> cewing_socket.connect(info[-1])
-    >>> msg = "GET / HTTP/1.1\r\n\r\n"
+    >>> msg = "GET / HTTP/1.1\r\n"
     >>> msg += "Host: crisewing.com\r\n\r\n"
     >>> cewing_socket.sendall(msg)
 
@@ -866,6 +868,7 @@ Then, receive a reply, iterating until it is complete:
     ...         done = True
     ...         cewing_socket.close()
     ...     response += msg_part
+    ...     
     >>> len(response)
     19427
 
@@ -1068,7 +1071,7 @@ then be sure to close your client socket too::
     >>> client_socket.close()
 
 And now that we're done, we can close up the server too (back in the server
-iterpreter)::
+interpreter)::
 
     >>> server_socket.close()
 
