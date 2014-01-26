@@ -22,6 +22,13 @@ But First
 
 A look at some of the cool mashups you built over the week.
 
+
+But First
+---------
+
+Clean up the git situation.
+
+
 But First
 ---------
 
