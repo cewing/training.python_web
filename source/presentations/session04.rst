@@ -15,6 +15,30 @@ Wherein we discover the gateways to dynamic processes on a server.
 
 image: The Wandering Angel http://www.flickr.com/photos/wandering_angel/1467802750/ - CC-BY
 
+But First
+---------
+
+.. class:: big-centered
+
+A look at some of the cool mashups you built over the week.
+
+But First
+---------
+
+Before you leave the classroom today, please complete the following tasks:
+
+1. Create a virtualenv called ``flaskenv``
+2. Activate that virtualenv
+3. ``pip install flask`` to your virtualenv
+
+You will need this for some of your homework this week.
+
+But First
+---------
+
+A special note to pay attention to the readings.  You will be expected to have
+read the basics on Jinja2, SQLite3 and Flask **before** class starts.
+
 Previously
 ----------
 
@@ -1377,6 +1401,15 @@ To submit your homework:
 
 * Commit your changes to your fork of the repo in github, then open a pull
   request.
+
+
+But Wait, There's More
+----------------------
+
+In addition, read and step through the quick tutorials on templates and
+database persistence in the assignments directory.
+
+Use your flaskenv Python, it has everything you need installed.
 
 
 Wrap-Up

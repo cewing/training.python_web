@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Microblog!</title>
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <h1>My Microblog</h1>
+    <div class="content">
+    {% block body %}{% endblock %}
+    </div>
+  </body>
+</html>

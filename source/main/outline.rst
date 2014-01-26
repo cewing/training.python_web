@@ -79,8 +79,8 @@ to help extract information from the sea of HTML in the wild.
 Along the way, we'll create a mashup of our own, using the tools we learn to
 build a script that can produce derived meaning out of data we find online.
 
-`Lecture Slides <presentations/session03.html>`_
-`As Plain HTML <presentations/session03-plain.html>`_
+* `Lecture Slides <presentations/session03.html>`_
+* `As Plain HTML <presentations/session03-plain.html>`_
 
 References
 **********
@@ -106,7 +106,8 @@ Services Gateway Interface). We'll see the ways in which WSGI is similar to
 CGI, and look at the ways in which it differs. We'll create a simple interaction
 using WSGI and see what benefits and drawbacks it confers.
 
-`Lecture Slides <presentations/session04.html>`_
+* `Lecture Slides <presentations/session04.html>`_
+* `As Plain HTML <presentations/session04-plain.html>`_
 
 
 Session 5 - Frameworks and Flask
