@@ -99,6 +99,14 @@ This last part is important when it comes to choosing a framework
 * *Every* framework makes *different* choices
 
 
+Impedance Mismatch
+------------------
+
+.. class:: big-centered
+
+Don't Fight the Framework
+
+
 Python Web Frameworks
 ---------------------
 
@@ -171,85 +179,11 @@ You can't know unless you try
 so let's try
 
 
-Practice Safe Development
--------------------------
+From Your Homework
+------------------
 
-We are going to install Flask, and the packages it requires, into a
-virtualenv.
-
-.. class:: incremental
-
-This will ensure that it is isolated from everything else we do in class (and
-vice versa)
-
-.. container:: incremental
-
-    Remember the basic format for creating a virtualenv:
-
-    .. class:: small
-
-    ::
-
-        $ python virtualenv.py [options] <ENV>
-        <or>
-        $ virtualenv [options] <ENV>
-
-
-Set Up a VirtualEnv
--------------------
-
-Start by creating your virtualenv::
-
-    $ python virtualenv.py flaskenv
-    <or>
-    $ virtualenv flaskenv
-    ...
-
-.. container:: incremental
-
-    Then, activate it::
-    
-        $ source flaskenv/bin/activate
-        <or>
-        C:\> flaskenv\Scripts\activate
-
-
-Install Flask
--------------
-
-Finally, install Flask using `setuptools` or `pip`::
-
-    (flaskenv)$ pip install flask
-    Downloading/unpacking flask
-      Downloading Flask-0.10.1.tar.gz (544kB): 544kB downloaded
-    ...
-    Installing collected packages: flask, Werkzeug, Jinja2, 
-      itsdangerous, markupsafe
-    ...
-    Successfully installed flask Werkzeug Jinja2 itsdangerous 
-      markupsafe
-
-
-Kicking the Tires
------------------
-
-We've installed the Flask microframework and all of its dependencies.
-
-.. class:: incremental
-
-Now, let's see what it can do
-
-.. class:: incremental
-
-In your class working directory, create a file called ``flask_intro.py`` and 
-open it in your text editor.
-
-
-Flask
------
-
-Getting started with Flask is pretty straightforward. Here's a complete,
-simple app.  Type it into `flask_intro.py`:
+During the week, you walked through an introduction to the *Flask* web
+framework. You wrote a file that looked like this:
 
 .. code-block:: python
     :class: small
@@ -265,41 +199,15 @@ simple app.  Type it into `flask_intro.py`:
         app.run()
 
 
-Running our App
----------------
+The outcome
+-----------
 
-As you might expect by now, the last block in our ``flask_intro.py`` file
-allows us to run this as a python program. Save your file, and in your
-terminal try this::
+When you ran this file, you should have seen something like this in your
+browser:
 
-    (flaskenv)$ python flask_intro.py
-
-.. class:: incremental
-
-Load ``http://localhost:5000`` in your browser to see it in action.
-
-
-Debugging our App
------------------
-
-Last week, ``cgitb`` provided us with useful feedback when building an app.
-Flask has similar functionality. Make the following changes to your
-``flask_intro.py`` file:
-
-.. code-block:: python
-    :class: small
-
-    def hello_world():
-        bar = 1 / 0
-        return 'Hello World!'
-
-    if __name__ == '__main__':
-        app.run(debug=True)
-
-.. class:: incremental
-
-Restart your app and then reload your browser to see what happens (clean up
-the error when you're done).
+.. image:: img/flask_hello.png
+    :align: center
+    :width: 80%
 
 
 What's Happening Here?
@@ -310,7 +218,7 @@ functions as a single *application* in the WSGI sense.
 
 .. class:: incremental
 
-Remember, a WSGI application must be a *callable* that takes the arguments
+We know a WSGI application must be a *callable* that takes the arguments
 *environ* and *start_response*.
 
 .. class:: incremental
@@ -412,1055 +320,1334 @@ thing that really matters to you.
 Getting input from a request, and returning a response.
 
 
-Popping Back Up the Stack
--------------------------
+A Quick Reminder
+----------------
 
-Returning up to the level where we will be working, remember what you've done:
-
-.. class:: incremental
-
-* You instantiated a `Flask` app with a name that represents the package or
-  module containing the app
-
-  * Because our app is a single Python module, this should be ``__name__``
-  * This is used to help the `Flask` app figure out where to look for
-    *resources*
-
-* You defined a function that returned a response body
-* You told the app which requests should use that function with a *route*
+Over the week, in addition to walking through a Flask intro you did two other
+tasks:
 
 .. class:: incremental
 
-Let's take a look at how that last bit works for a moment...
-
-
-URL Routing
------------
-
-Remember our bookdb exercise? How did you end up solving the problem of
-mapping an HTTP request to the right function?
+You walked through a tutorial on the Python DB API2, and learned how
+to use ``sqlite3`` to store and retrieve data.
 
 .. class:: incremental
 
-Flask solves this problem by using the `route` decorator from your app.
-
-.. class:: incremental
-
-A 'route' takes a URL rule (more on that in a minute) and maps it to an
-*endpoint* and a *function*.
-
-.. class:: incremental
-
-When a request arrives at a URL that matches a known rule, the function is
-called.
+You also read a bit about ``Jinja2``, the templating language Flask
+uses out of the box, and ran some code to explore its abilities.
 
 
-URL Rules
+Moving On
 ---------
 
-URL Rules are strings that represent what environ['PATH_INFO'] will look like.
+Now it is time to put all that together.
 
 .. class:: incremental
 
-They are added to a *mapping* on the Flask object called the *url_map*
+We'll spend this session building a "microblog" application.
 
 .. class:: incremental
 
-You can call ``app.add_url_rule()`` to add a new one
+Let's dive right in.
 
 .. class:: incremental
 
-Or you can use what we've used, the ``app.route()`` decorator
+Start by activating your Flask virtualenv
 
 
-Function or Decorator
----------------------
+Our Database
+------------
 
-.. code-block:: python
-    :class: small
+We need first to define what an *entry* for our microblog might look like.
 
-    def index():
-        """some function that returns something"""
-        # ...
-    
-    app.add_url_rule('/', 'homepage', index)
+.. class:: incremental
 
-.. container:: incremental
+Let's keep it a simple as possible for now.
 
-    is identical to
+.. class:: incremental
 
-    .. code-block:: python
-        :class: small
-    
-        @app.route('/', 'homepage')
-        def index():
-            """some function that returns something"""
-            # ...
+Create a new directory ``microblog``, and open a new file in it:
+``schema.sql``
 
-
-Routes Can Be Dynamic
----------------------
-
-A *placeholder* in a URL rule becomes a named arg to your function (add these
-to ``flask_intro.py``):
-
-.. code-block:: python
+.. code-block:: sql
     :class: incremental small
 
-    @app.route('/profile/<username>')
-    def show_profile(username):
-        return "My username is %s" % username
+    drop table if exists entries;
+    create table entries (
+        id integer primary key autoincrement,
+        title string not null,
+        text string not null
+    );
+
+
+App Configuration
+-----------------
+
+For any but the most trivial applications, you'll need some configuration.
 
 .. class:: incremental
 
-And *converters* ensure the incoming argument is of the correct type.
+Flask provides a number of ways of loading configuration.  We'll be using a
+config file
+
+.. class:: incremental
+
+Create a new file ``microblog.cfg`` in the same directory.  
 
 .. code-block:: python
-    :class: incremental small
+    :class: small incremental
+    
+    # application configuration for a Flask microblog
+    DATABASE = 'microblog.db'
 
-    @app.route('/div/<float:val>/')
-    def divide(val):
-        return "%0.2f divided by 2 is %0.2f" % (val, val / 2)
 
+Our App Skeleton
+----------------
 
-Routes Can Be Filtered
-----------------------
-
-You can also determine which HTTP *methods* a given route will accept:
-
-.. code-block:: python
-    :class: small
-
-    @app.route('/blog/entry/<int:id>/', methods=['GET',])
-    def read_entry(id):
-        return "reading entry %d" % id
-
-    @app.route('/blog/entry/<int:id>/', methods=['POST', ])
-    def write_entry(id):
-        return 'writing entry %d' % id
+Finally, we'll need a basic app skeleton to work from.
 
 .. class:: incremental
 
-After adding that to ``flask_intro.py`` and saving, try loading
-``http://localhost:5000/blog/entry/23/`` into your browser. Which was called?
-
-Routes Can Be Reversed
-----------------------
-
-Reversing a URL means the ability to generate the url that would result in a
-given endpoint being called.
-
-.. class:: incremental
-
-This means *you don't have to hard-code your URLs when building links*
-
-.. class:: incremental
-
-That means *you can change the URLs for your app without changing code or
-templates*
-
-.. class:: incremental
-
-This is called **decoupling** and it is a good thing
-
-Reversing URLs in Flask
------------------------
-
-In Flask, you reverse a url with the ``url_for`` function.
-
-.. class:: incremental
-
-* ``url_for`` requires an HTTP request context to work
-* You can fake an HTTP request when working in a terminal (or testing)
-* Use the ``test_request_context`` method of your app object
-* This is a great chance to use the Python ``with`` statement
-* **Don't type this**
+Create one more file ``microblog.py`` in the same directory, and enter the
+following:
 
 .. code-block:: python
     :class: small incremental
 
-    from flask import url_for
-    with app.test_request_context():
-      print url_for('endpoint', **kwargs)
+    from flask import Flask
 
-Reversing in Action
--------------------
+    app = Flask(__name__)
 
-Quit your Flask app with ``^C``.  Then start a python interpreter in that same
-terminal and import your ``flask_intro.py`` module:
+    app.config.from_pyfile('microblog.cfg')
 
-.. code-block:: python
+    if __name__ == '__main__':
+        app.run(debug=True)
 
-    >>> from flask_intro import app
-    >>> from flask import url_for
-    >>> with app.test_request_context():
-    ...     print url_for('show_profile', username="cris")
-    ...     print url_for('divide', val=23.7)
-    ... 
-    '/profile/cris/'
-    '/div/23.7/'
-    >>>
 
-
-Break Time
-----------
-
-Now's a good time to take a rest.
-
-.. class:: incremental
-
-When we return, we'll take a look at templating and data persistence.
-
-
-Generating HTML
----------------
-
-.. class:: big-centered
-
-"I enjoy writing HTML in Python"
-
-.. class:: incremental right
-
--- nobody, ever
-
-
-Templating
-----------
-
-A good framework will provide some way of generating HTML with a templating
-system.
-
-.. class:: incremental
-
-There are nearly as many templating systems as there are frameworks
-
-.. class:: incremental
-
-Each has advantages and disadvantages
-
-.. class:: incremental
-
-Flask includes the *Jinja2* templating system (perhaps because it's built by
-the same folks)
-
-
-Jinja2 Template Basics
-----------------------
-
-Let's start with the absolute basics.
-
-.. container:: incremental
-
-    Fire up a Python interpreter, using your flask virtualenv:
-    
-    .. code-block:: python
-        :class: small
-    
-        (flaskenv)$ python
-        >>> from jinja2 import Template
-
-.. container:: incremental
-
-    A template is built of a simple string:
-    
-    .. code-block:: python
-        :class: small
-
-        >>> t1 = Template("Hello {{ name }}, how are you?")
-
-
-Rendering a Template
---------------------
-
-Call the ``render`` method, providing some *context*:
-
-.. code-block:: python
-    :class: incremental small
-
-    >>> t1.render(name="Freddy")
-    u'Hello Freddy, how are you?'
-    >>> t1.render({'name': "Roberto"})
-    u'Hello Roberto, how are you?'
-    >>>
-
-.. class:: incremental
-
-*Context* can either be keyword arguments, or a dictionary
-
-
-Dictionaries in Context
------------------------
-
-Dictionaries passed in as part of the *context* can be addressed with *either*
-subscript or dotted notation:
-
-.. code-block:: python
-    :class: incremental small
-
-    >>> person = {'first_name': 'Frank',
-    ...           'last_name': 'Herbert'}
-    >>> t2 = Template("{{ person.last_name }}, {{ person['first_name'] }}")
-    >>> t2.render(person=person)
-    u'Herbert, Frank'
-
-.. class:: incremental
-
-* Jinja2 will try the *correct* way first (attr for dotted, item for
-  subscript).
-* If nothing is found, it will try the opposite.
-* If nothing is found, it will return an *undefined* object.
-
-
-Objects in Context
-------------------
-
-The exact same is true of objects passed in as part of *context*:
-
-.. code-block:: python
-    :class: incremental small
-
-    >>> t3 = Template("{{ obj.x }} + {{ obj['y'] }} = Fun!")
-    >>> class Game(object):
-    ...   x = 'babies'
-    ...   y = 'bubbles'
-    ...
-    >>> bathtime = Game()
-    >>> t3.render(obj=bathtime)
-    u'babies + bubbles = Fun!'
-
-.. class:: incremental
-
-This means your templates can be a bit agnostic as to the nature of the things
-in *context*
-
-
-Filtering values in Templates
------------------------------
-
-You can apply *filters* to the data passed in *context* with the pipe ('|')
-operator:
-
-.. code-block:: python
-    :class: incremental small
-
-    t4 = Template("shouted: {{ phrase|upper }}")
-    >>> t4.render(phrase="this is very important")
-    u'shouted: THIS IS VERY IMPORTANT'
-
-.. container:: incremental
-
-    You can also chain filters together:
-    
-    .. code-block:: python
-        :class: small
-    
-        t5 = Template("confusing: {{ phrase|upper|reverse }}")
-        >>> t5.render(phrase="howdy doody")
-        u'confusing: YDOOD YDWOH'
-
-
-Control Flow
-------------
-
-Logical control structures are also available:
-
-.. code-block:: python
-    :class: incremental small
-
-    tmpl = """
-    ... {% for item in list %}{{ item }}, {% endfor %}
-    ... """
-    >>> t6 = Template(tmpl)
-    >>> t6.render(list=[1,2,3,4,5,6])
-    u'\n1, 2, 3, 4, 5, 6, '
-
-.. class:: incremental
-
-Any control structure introduced in a template **must** be paired with an 
-explicit closing tag ({% for %}...{% endfor %})
-
-
-Template Tests
+Test Your Work
 --------------
 
-There are a number of specialized *tests* available for use with the
-``if...elif...else`` control structure:
+This is enough to get us off the ground.
+
+.. container:: incremental
+
+    From a terminal in the ``microblog`` directory, run the app:
+    
+    .. class:: small
+    
+    ::
+
+        (flaskenv)$ python microblog.py
+        * Running on http://127.0.0.1:5000/
+        * Restarting with reloader
+
+.. class:: incremental
+
+Then point your browser at http://localhost:5000/
+
+.. class:: incremental
+
+What do you see in your browser?  In the terminal?  Why?
+
+
+Creating the Database
+---------------------
+
+Quit the app with ``^C``. Then return to ``microblog.py`` and add the
+following:
 
 .. code-block:: python
     :class: incremental small
 
-    >>> tmpl = """
-    ... {% if phrase is upper %}
-    ...   {{ phrase|lower }}
-    ... {% elif phrase is lower %}
-    ...   {{ phrase|upper }}
-    ... {% else %}{{ phrase }}{% endif %}"""
-    >>> t7 = Template(tmpl)
-    >>> t7.render(phrase="FOO")
-    u'\n\n  foo\n'
-    >>> t7.render(phrase="bar")
-    u'\n\n  BAR\n'
-    >>> t7.render(phrase="This should print as-is")
-    u'\nThis should print as-is'
+    # add this up at the top
+    import sqlite3
+
+    # add the rest of this below the app.config statement
+    def connect_db():
+        return sqlite3.connect(app.config['DATABASE'])
+
+.. class:: incremental
+
+This should look familiar. What will happen?
+
+.. class:: incremental
+
+This convenience method allows us to write our very first test.
 
 
-Basic Python Expressions
+Tests and TDD
+-------------
+
+.. class:: center
+
+**If it isn't tested, it's broken**
+
+.. class:: incremental
+
+We are going to write tests at every step of this exercise using the
+``unittest`` module.
+
+.. class:: incremental
+
+In your ``microblog`` folder create a ``microblog_tests.py`` file. 
+
+.. class:: incremental
+
+Open it in your editor.
+
+
+Testing Setup
+-------------
+
+Add the following to provide minimal test setup.
+
+.. code-block:: python
+    :class: small
+
+    import os
+    import tempfile
+    import unittest
+    
+    import microblog
+
+    class MicroblogTestCase(unittest.TestCase):
+
+        def setUp(self):
+            db_fd = tempfile.mkstemp()
+            self.db_fd, microblog.app.config['DATABASE'] = db_fd
+            microblog.app.config['TESTING'] = True
+            self.client = microblog.app.test_client()
+            self.app = microblog.app
+
+
+Testing Teardown
+----------------
+
+**Add** this method to your existing test case class to tear down after each
+test:
+
+.. code-block:: python
+
+    class MicroblogTestCase(unittest.TestCase):
+        # ...
+
+        def tearDown(self):
+            os.close(self.db_fd)
+            os.unlink(microblog.app.config['DATABASE'])
+
+
+Make Tests Runnable
+-------------------
+
+Finally, we make our tests runnable by adding a ``main`` block:
+
+.. container:: incremental
+
+    Add the following at the end of ``microblog_tests.py``:
+
+    .. code-block:: python
+        :class: small
+
+        if __name__ == '__main__':
+            unittest.main()
+
+.. class:: incremental
+
+Now, we're ready to add our first actual test..
+
+
+Test Database Setup
+-------------------
+
+We'd like to test that our database is correctly initialized. The schema has
+one table with three columns. Let's test that.
+
+.. container:: incremental
+
+    **Add** the following method to your test class in ``microblog_tests.py``:
+
+    .. code-block:: python
+        :class: small
+
+        def test_database_setup(self):
+            con = microblog.connect_db()
+            cur = con.execute('PRAGMA table_info(entries);')
+            rows = cur.fetchall()
+            self.assertEquals(len(rows), 3)
+
+
+Run the Tests
+-------------
+
+We can now run our test module:
+
+.. class:: small
+
+::
+
+    (flaskenv)$ python microblog_tests.py
+    F
+    ======================================================================
+    FAIL: test_database_setup (__main__.MicroblogTestCase)
+    ----------------------------------------------------------------------
+    Traceback (most recent call last):
+      File "microblog_tests.py", line 23, in test_database_setup
+        self.assertEquals(len(rows) == 3)
+    AssertionError: 0 != 3
+
+    ----------------------------------------------------------------------
+    Ran 1 test in 0.011s
+
+    FAILED (failures=1)
+
+
+Make the Test Pass
+------------------
+
+This is an expected failure. Why?
+
+.. container:: incremental
+
+    Let's add some code to ``microblog.py`` that will actually create our
+    database schema:
+
+    .. code-block:: python
+        :class: small
+
+        # add this import at the top
+        from contextlib import closing
+
+        # add this function after the connect_db function
+        def init_db():
+            with closing(connect_db()) as db:
+                with app.open_resource('schema.sql') as f:
+                    db.cursor().executescript(f.read())
+                db.commit()
+
+
+Initialize the DB in Tests
+--------------------------
+
+We also need to call that function in our ``microblog_tests.py`` to set up the
+database schema for each test.
+
+.. container:: incremental
+
+    Add the following line at the end of that ``setUp`` method:
+
+    .. code-block:: python
+        :class: small
+
+        def setUp(self):
+            # ...
+            microblog.init_db() # <- add this at the end
+
+.. class:: incremental
+
+::
+
+    (flaskenv)$ python microblog_tests.py
+
+
+Success?
+--------
+
+.. class:: big-centered incremental
+
+ \\o/ Wahoooo!
+
+
+Initialize the DB IRL
+---------------------
+
+Our test passed, so we have confidence that ``init_db`` does what it should
+
+.. class:: incremental
+
+We'll need to have a working database for our app, so let's go ahead and do
+this "in real life"
+
+.. class:: incremental
+
+    (flaskenv)$ python
+
+.. code-block:: python
+    :class: incremental
+
+    >>> import microblog
+    >>> microblog.init_db()
+    >>> ^D
+
+
+First Break
+-----------
+
+After you quit the interpreter, you should see ``microblog.db`` in your 
+directory.
+
+.. class:: incremental
+
+Let's take a few minutes here to rest and consider what we've done.
+
+.. class:: incremental
+
+When we return, we'll start writing data to our database, and reading it back
+out.
+
+
+Reading and Writing Data
 ------------------------
 
-Basic Python expressions are also supported:
+Before the break, we created a function that would initialize our database.
 
-.. code-block:: python
-    :class: incremental small
+.. class:: incremental
 
-    tmpl = """
-    ... {% set sum = 0 %}
-    ... {% for val in values %}
-    ... {{ val }}: {{ sum + val }}
-    ...   {% set sum = sum + val %}
-    ... {% endfor %}
-    ... """
-    >>> t8 = Template(tmpl)
-    >>> t8.render(values=range(1,11))
-    u'\n\n\n1: 1\n  \n\n2: 3\n  \n\n3: 6\n  \n\n4: 10\n
-      \n\n5: 15\n  \n\n6: 21\n  \n\n7: 28\n  \n\n8: 36\n
-      \n\n9: 45\n  \n\n10: 55\n  \n'
+It's time now to think about writing and reading data for our blog.
+
+.. class:: incremental
+
+We'll start by writing tests.
+
+.. class:: incremental
+
+But first, a word or two about the circle of life.
 
 
-Much, Much More
+The Request/Response Cycle
+--------------------------
+
+Every interaction in HTTP is bounded by the interchange of one request and one
+response.
+
+.. class:: incremental
+
+No HTTP application can do anything until some client makes a request.
+
+.. class:: incremental
+
+And no action by an application is complete until a response has been sent
+back to the client.
+
+.. class:: incremental
+
+This is the lifecycle of an http web application.
+
+
+Managing DB Connections
+-----------------------
+
+It makes sense to bind the lifecycle of a database connection to this same
+border.
+
+.. class:: incremental
+
+Flask does not dictate that we write an application that uses a database.
+
+.. class:: incremental
+
+Because of this, managing the lifecycle of database connection so that they
+are connected to the request/response cycle is up to us.
+
+.. class:: incremental
+
+Happily, Flask *does* have a way to help us.
+
+
+Request Boundary Decorators
+---------------------------
+
+The Flask *app* provides decorators we can use on our database lifecycle
+functions:
+
+.. class:: incremental
+
+* ``@app.before_request``: any method decorated by this will be called before
+  the cycle begins
+
+* ``@app.after_request``: any method decorated by this will be called after
+  the cycle is complete. If an unhandled exception occurs, these functions are
+  skipped.
+
+* ``@app.teardown_request``: any method decorated by this will be called at
+  the end of the cycle, *even if* an unhandled exception occurs.
+
+
+Managing our DB
 ---------------
 
-There's more that Jinja2 templates can do, and we'll see more in the next
-session when we write templates for our Flask app.
+Consider the following functions:
+
+.. code-block:: python
+    :class: small
+
+    def get_database_connection():
+        db = connect_db()
+        return db
+
+    @app.teardown_request
+    def teardown_request(exception):
+        db.close()
+
+.. class:: incremental
+
+How does the ``db`` object get from one place to the other?
+
+
+Global Context in Flask
+-----------------------
+
+Our flask ``app`` is only really instantiated once
+
+.. class:: incremental
+
+This means that anything we tie to it will be shared across all requests.
+
+.. class:: incremental
+
+This is what we call ``global`` context.
+
+.. class:: incremental
+
+What happens if two clients make a request at the same time?
+
+
+Local Context in Flask
+----------------------
+
+Flask provides something it calls a ``local global``: "g".
+
+.. class:: incremental
+
+This is an object that *looks* global (you can import it anywhere)
+
+.. class:: incremental
+
+But in reality, it is *local* to a single request.
+
+.. class:: incremental
+
+Resources tied to this object are *not* shared among requests. Perfect for
+things like a database connection.
+
+
+Working DB Functions
+--------------------
+
+Add the following, working methods to ``microblog.py``:
+
+.. code-block:: python
+    :class: small
+
+    # add this import at the top:
+    from flask import g
+
+    # add these function after init_db
+    def get_database_connection():
+        db = getattr(g, 'db', None)
+        if db is None:
+            g.db = db = connect_db()
+        return db
+
+    @app.teardown_request
+    def teardown_request(exception):
+        db = getattr(g, 'db', None)
+        if db is not None:
+            db.close()
+
+
+Writing Blog Entries
+--------------------
+
+Our microblog will have *entries*. We've set up a simple database schema to
+represent them.
+
+.. class:: incremental
+
+To write an entry, what would we need to do?
+
+.. class:: incremental
+
+* Provide a title
+* Provide some body text
+* Write them to a row in the database
+
+.. class:: incremental
+
+Let's write a test of a function that would do that.
+
+
+Test Writing Entries
+--------------------
+
+The database connection is bound by a request. We'll need to mock one (in
+``microblog_tests.py``)
 
 .. container:: incremental
 
-    Make sure that you bookmark the Jinja2 documentation for later use::
+    Flask provides ``app.test_request_context`` to do just that
+
+    .. code-block:: python
+        :class: small
+
+        def test_write_entry(self):
+            expected = ("My Title", "My Text")
+            with self.app.test_request_context('/'):
+                microblog.write_entry(*expected)
+                con = microblog.connect_db()
+                cur = con.execute("select * from entries;")
+                rows = cur.fetchall()
+            self.assertEquals(len(rows), 1)
+            for val in expected:
+                self.assertTrue(val in rows[0])
+
+
+Run Your Test
+-------------
+
+.. class:: small
+
+::
+
+    (flaskenv)$ python microblog_tests.py
+    .E
+    ======================================================================
+    ERROR: test_write_entry (__main__.MicroblogTestCase)
+    ----------------------------------------------------------------------
+    Traceback (most recent call last):
+      File "microblog_tests.py", line 30, in test_write_entry
+        microblog.write_entry(*expected)
+    AttributeError: 'module' object has no attribute 'write_entry'
+
+    ----------------------------------------------------------------------
+    Ran 2 tests in 0.018s
+
+    FAILED (errors=1)
+
+.. class:: incremental
+
+Great.  Two tests, one passing.
+
+
+Make It Pass
+------------
+
+Now we are ready to write an entry to our database. Add this function to
+``microblog.py``:
+
+.. code-block:: python
+    :class: small incremental
+
+    def write_entry(title, text):
+        con = get_database_connection()
+        con.execute('insert into entries (title, text) values (?, ?)',
+                     [title, text])
+        con.commit()
+
+.. class:: incremental small
+
+::
+
+    (flaskenv)$ python microblog_tests.py
+    ..
+    ----------------------------------------------------------------------
+    Ran 2 tests in 0.146s
+
+    OK
+
+
+Reading Entries
+---------------
+
+We'd also like to be able to read the entries in our blog
+
+.. container:: incremental
+
+    We need a method that returns all of them for a listing page
+
+    .. class:: incremental
+
+    * The return value should be a list of entries
+    * If there are none, it should return an empty list
+    * Each entry in the list should be a dictionary of 'title' and 'text'
+
+.. class:: incremental
+
+Let's begin by writing tests.
+
+
+Test Reading Entries
+--------------------
+
+In ``microblog_tests.py``:
+
+.. code-block:: python
+    :class: small
+
+    def test_get_all_entries_empty(self):
+        with self.app.test_request_context('/'):
+            entries = microblog.get_all_entries()
+            self.assertEquals(len(entries), 0)
     
-        http://jinja.pocoo.org/docs/templates/
+    def test_get_all_entries(self):
+        expected = ("My Title", "My Text")
+        with self.app.test_request_context('/'):
+            microblog.write_entry(*expected)
+            entries = microblog.get_all_entries()
+            self.assertEquals(len(entries), 1)
+            for entry in entries:
+                self.assertEquals(expected[0], entry['title'])
+                self.assertEquals(expected[1], entry['text'])
 
 
-Data Persistence
-----------------
+Run Your Tests
+--------------
 
-There are many models for persistance of data.
+.. class:: small
+
+::
+
+    (flaskenv)$ python microblog_tests.py
+    .EE.
+    ======================================================================
+    ERROR: test_get_all_entries (__main__.MicroblogTestCase)
+    ----------------------------------------------------------------------
+    Traceback (most recent call last):
+      File "microblog_tests.py", line 47, in test_get_all_entries
+        entries = microblog.get_all_entries()
+    AttributeError: 'module' object has no attribute 'get_all_entries'
+
+    ======================================================================
+    ERROR: test_get_all_entries_empty (__main__.MicroblogTestCase)
+    ----------------------------------------------------------------------
+    Traceback (most recent call last):
+      File "microblog_tests.py", line 40, in test_get_all_entries_empty
+        entries = microblog.get_all_entries()
+    AttributeError: 'module' object has no attribute 'get_all_entries'
+
+    ----------------------------------------------------------------------
+    Ran 4 tests in 0.021s
+
+    FAILED (errors=2)
+
+Make Them Pass
+--------------
+
+Now we have 4 tests, and two fail.
 
 .. class:: incremental
 
-* Flat files
-* Relational Database (SQL RDBMs like PostgreSQL, MySQL, SQLServer, Oracle)
-* Object Stores (Pickle, ZODB)
-* NoSQL Databases (CouchDB, MongoDB, etc)
+add the ``get_all_entries`` function to ``microblog.py``:
 
-.. class:: incremental
+.. code-block:: python
+    :class: small incremental
 
-It's also one of the most contentious issues in app design.
-
-.. class:: incremental
-
-For this reason, it's one of the things that most Small Frameworks leave
-undecided, Flask included.
-
-
-Simple SQL
-----------
-
-`PEP 249 <http://www.python.org/dev/peps/pep-0249/>`_ describes a
-common API for database connections called DB-API 2.
+    def get_all_entries():
+        con = get_database_connection()
+        cur = con.execute('SELECT title, text FROM entries ORDER BY id DESC')
+        return [dict(title=row[0], text=row[1]) for row in cur.fetchall()]
 
 .. container:: incremental
 
-    The goal was to
+    And back in your terminal:
+    
+    .. class:: small
+    
+    ::
 
-        achieve a consistency leading to more easily understood modules, code
-        that is generally more portable across databases, and a broader reach
-        of database connectivity from Python
+        (flaskenv)$ python microblog_tests.py
+        ....
+        ----------------------------------------------------------------------
+        Ran 4 tests in 0.021s
 
-        .. class:: image-credit
-
-        source: http://www.python.org/dev/peps/pep-0248/
+        OK
 
 
-A Note on DB API
+Where We Stand
+--------------
+
+We've moved quite a ways in implementing our microblog:
+
+.. class:: incremental
+
+* We've created code to initialize our database schema
+* We've added functions to manage the lifecycle of our database connection
+* We've put in place functions to write and read blog entries
+* And, since it's tested, we are reasonably sure our code does what we think
+  it does.
+
+.. class:: incremental
+
+We're ready now to put a face on it, so we can see what we're doing!
+
+
+Second Break
+------------
+
+But first, let's take a quick break to clear our heads.
+
+
+Templates In Flask
+------------------
+
+We'll start with a detour into templates as they work in Flask
+
+.. container:: incremental
+
+    Jinja2 templates use the concept of an *Environment* to:
+    
+    .. class:: incremental
+    
+    * Figure out where to look for templates
+    * Set configuration for the templating system
+    * Add some commonly used functionality to the template *context*
+
+.. class:: incremental
+
+Flask sets up a proper Jinja2 Environment when you instantiate your ``app``.
+
+
+Flask Environment
+-----------------
+
+Flask uses the value you pass to the ``app`` constructor to calculate the root
+of your application on the filesystem.
+
+.. class:: incremental
+
+From that root, it expects to find templates in a directory name ``templates``
+
+.. container:: incremental
+
+    This allows you to use the ``render_template`` command from ``flask`` like
+    so:
+    
+    .. code-block:: python
+        :class: small
+    
+        from flask import render_template
+        page_html = render_template('hello_world.html', name="Cris")
+
+
+Flask Context
+-------------
+
+Keyword arguments you pass to ``render_template`` become the *context* passed
+to the template for rendering.
+
+.. class:: incremental
+
+Flask will add a few things to this context.
+
+.. class:: incremental
+
+* **config**: contains the current configuration object
+* **request**: contains the current request object
+* **session**: any session data that might be available
+* **g**: the request-local object to which global variables are bound
+* **url_for**: so you can easily *reverse* urls from within your templates
+* **get_flashed_messages**: a function that returns messages you flash to your
+  users (more on this later).
+
+
+Setting Up Our Templates
+------------------------
+
+In your ``microblog`` directory, add a new ``templates`` directory
+
+.. container:: incremental
+
+    In this directory create a new file ``layout.html``
+
+    .. code-block:: jinja
+        :class: small
+    
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <title>Microblog!</title>
+          </head>
+          <body>
+            <h1>My Microblog</h1>
+            <div class="content">
+            {% block body %}{% endblock %}
+            </div>
+          </body>
+        </html>
+
+Template Inheritance
+--------------------
+
+You can combine templates in a number of different ways.
+
+.. class:: incremental
+
+* you can make replaceable blocks in templates with blocks
+
+  * ``{% block foo %}{% endblock %}``
+
+* you can build on a template in a second template by extending
+
+  * ``{% extends "layout.html" %}`` 
+  * this *must* be the first text in the template
+
+* you can re-use common structure with *include*:
+
+  * ``{% include "footer.html" %}``
+
+
+Displaying an Entries List
+--------------------------
+
+Create a new file, ``show_entries.html`` in ``templates``:
+
+.. code-block:: jinja
+    :class: small
+
+    {% extends "layout.html" %}
+    {% block body %}
+      <h2>Posts</h2>
+      <ul class="entries">
+      {% for entry in entries %}
+        <li>
+          <h2>{{ entry.title }}</h2>
+          <div class="entry_body">
+          {{ entry.text|safe }}
+          </div>
+        </li>
+      {% else %}
+        <li><em>No entries here so far</em></li>
+      {% endfor %}
+      </ul>
+    {% endblock %}
+
+
+Viewing Entries
+---------------
+
+We just need a Python function that will: 
+
+.. class:: incremental
+
+* build a list of entries
+* pass the list to our template to be rendered
+* return the result to a client's browser
+
+.. class:: incremental
+
+As usual, we'll start by writing tests for this new function
+
+
+Test Viewing Entries
+--------------------
+
+Add the following two tests to ``microblog_tests.py``:
+
+.. code-block:: python
+    :class: small
+
+    def test_empty_listing(self):
+        actual = self.client.get('/').data
+        expected = 'No entries here so far'
+        self.assertTrue(expected in actual)
+
+    def test_listing(self):
+        expected = ("My Title", "My Text")
+        with self.app.test_request_context('/'):
+            microblog.write_entry(*expected)
+        actual = self.client.get('/').data
+        for value in expected:
+            self.assertTrue(value in actual)
+
+.. class:: incremental
+
+``app.test_client()`` creates a mock http client for us.
+
+
+Run Your Tests
+--------------
+
+.. class:: small
+
+::
+
+    (flaskenv)$ python microblog_tests.py
+    .F..F.
+    ======================================================================
+    FAIL: test_empty_listing (__main__.MicroblogTestCase)
+    ----------------------------------------------------------------------
+    Traceback (most recent call last):
+      File "microblog_tests.py", line 55, in test_empty_listing
+        assert 'No entries here so far' in response.data
+    AssertionError
+    ======================================================================
+    FAIL: test_listing (__main__.MicroblogTestCase)
+    ----------------------------------------------------------------------
+    Traceback (most recent call last):
+      File "microblog_tests.py", line 63, in test_listing
+        assert value in response.data
+    AssertionError
+    ----------------------------------------------------------------------
+    Ran 6 tests in 0.138s
+
+    FAILED (failures=2)
+
+
+Make Them Pass
+--------------
+
+In ``microblog.py``:
+
+.. code-block:: python
+    :class: small
+
+    # at the top, import
+    from flask import render_template
+
+    # and after our last functions:
+    @app.route('/')
+    def show_entries():
+        entries = get_all_entries()
+        return render_template('show_entries.html', entries=entries)
+
+.. class:: incremental small
+
+::
+
+    (flaskenv)$ python microblog_tests.py
+    ......
+    ----------------------------------------------------------------------
+    Ran 6 tests in 0.100s
+
+    OK
+
+
+Creating Entries
 ----------------
+
+We still lack a way to add an entry. We need a view that will:
+
+.. class:: incremental
+
+* Accept incoming form data from a request
+* Get the data for ``title`` and ``text``
+* Create a new entry in the database
+* Throw an appropriate HTTP error if that fails
+* Show the user the list of entries when done.
+
+.. class:: incremental
+
+Again, first come the tests.
+
+
+Testing Add an Entry
+--------------------
+
+Add this to ``microblog_tests.py``:
+
+.. code-block:: python
+    :class: small
+
+    def test_add_entries(self):
+        actual = self.client.post('/add', data=dict(
+            title='Hello',
+            text='This is a post'
+        ), follow_redirects=True).data
+        self.assertFalse('No entries here so far' in actual)
+        self.assertTrue('Hello' in actual)
+        self.assertTrue('This is a post' in actual)
+
+
+Run Your Tests
+--------------
+
+Verify that our test fails as expected:
+
+.. class:: small
+
+::
+
+    (flaskenv)$ python microblog_tests.py
+    F......
+    ======================================================================
+    FAIL: test_add_entries (__main__.MicroblogTestCase)
+    ----------------------------------------------------------------------
+    Traceback (most recent call last):
+      File "microblog_tests.py", line 72, in test_add_entries
+        self.assertTrue('Hello' in actual)
+    AssertionError: False is not true
+
+    ----------------------------------------------------------------------
+    Ran 7 tests in 0.050s
+
+    FAILED (failures=1)
+
+
+Make Them Pass
+--------------
+
+We have all we need to write entries, all we lack is an endpoint (in
+``microblog.py``):
+
+.. code-block:: python
+    :class: small
+
+    # add imports
+    from flask import abort
+    from flask import request
+    from flask import url_for
+    from flask import redirect
+
+    @app.route('/add', methods=['POST'])
+    def add_entry():
+        try:
+            write_entry(request.form['title'], request.form['text'])
+        except sqlite3.Error:
+            abort(500)
+        return redirect(url_for('show_entries'))
+
+
+And...?
+-------
+
+.. class:: small
+
+::
+
+    (flaskenv)$ python microblog_tests.py
+    .......
+    ----------------------------------------------------------------------
+    Ran 7 tests in 0.047s
+
+    OK
 
 .. class:: incremental center
 
-It is important to remember that PEP 249 is **only a specification**.
+**Hooray!**
+
+
+Where do Entries Come From
+--------------------------
+
+Finally, we're almost done. We can add entries and view them. But look at that
+last view. Do you see a call to ``render_template`` in there at all?
 
 .. class:: incremental
 
-There is no code or package for DB-API 2 on it's own.  
+There isn't one. That's because that view is never meant to be be visible.
+Look carefully at the logic. What happens?
 
 .. class:: incremental
 
-Since 2.5, the Python Standard Library has provided a `reference
-implementation of the api <http://docs.python.org/2/library/sqlite3.html>`_
-based on SQLite3
+So where do the form values come from?
 
 .. class:: incremental
 
-Before Python 2.5, this package was available as ``pysqlite``
+Let's add a form to the main view.  Open ``show_entries.html``
 
 
-Using DB API
-------------
-
-To use the DB API with any database other than SQLite3, you must have an
-underlying API package available.
-
-.. container:: incremental
-
-    Implementations are available for:
-
-    * PostgreSQL (**psycopg2**, txpostgres, ...)
-    * MySQL (**mysql-python**, PyMySQL, ...)
-    * MS SQL Server (**adodbapi**, pymssql, mxODBC, pyodbc, ...)
-    * Oracle (**cx_Oracle**, mxODBC, pyodbc, ...)
-    * and many more...
-
-    .. class:: image-credit
-
-    source: http://wiki.python.org/moin/DatabaseInterfaces
-
-
-Installing API Packages
------------------------
-
-Most db api packages can be installed using typical Pythonic methods::
-
-    $ easy_install psycopg2
-    $ pip install mysql-python
-    ...
-
-.. class:: incremental
-
-Most api packages will require that the development headers for the underlying
-database system be available. Without these, the C symbols required for
-communication with the db are not present and the wrapper cannot work.
-
-
-Not Today
----------
-
-We don't want to spend the next hour getting a package installed, so let's use
-``sqlite3`` instead.
-
-.. class:: incremental
-
-I **do not** recommend using sqlite3 for production web applications, there are
-too many ways in which it falls short
-
-.. class:: incremental
-
-But it will provide a solid learning tool
-
-
-Getting Started
----------------
-
-In the class resources folder, you'll find an ``sql`` directory. Copy that to
-your working directory.
-
-.. class:: incremental
-
-Open the file ``createdb.py`` in your text editor.  Edit ``main`` like so:
-
-.. code-block:: python
-    :class: incremental small
-
-    def main():
-        conn =  sqlite3.connect(DB_FILENAME)
-        if DB_IS_NEW:
-            print 'Need to create database and schema'
-        else:
-            print 'Database exists, assume schema does, too.'
-        conn.close()
-
-
-Try It Out
-----------
-
-Run the ``createdb.py`` script to see it in effect::
-
-    $ python createdb.py
-    Need to create database and schema
-    $ python createdb.py
-    Database exists, assume schema does, too.
-    $ ls
-    books.db
-    ...
-
-.. class:: incremental
-
-Sqlite3 will automatically create a new database when you connect for the
-first time, if one does not exist.
-
-
-Set Up A Schema
----------------
-
-Make the following changes to ``createdb.py``:
-
-.. code-block:: python
-    :class: small
-
-    DB_FILENAME = 'books.db'
-    SCHEMA_FILENAME = 'ddl.sql' # <- this is new
-    DB_IS_NEW = not os.path.exists(DB_FILENAME)
-
-    def main():
-        with sqlite3.connect(DB_FILENAME) as conn: # <- context mgr
-            if DB_IS_NEW: # A whole new if clause:
-                print 'Creating schema'
-                with open(SCHEMA_FILENAME, 'rt') as f:
-                    schema = f.read()
-                conn.executescript(schema)
-            else:
-                print 'Database exists, assume schema does, too.'
-        # delete the `conn.close()` that was here.
-
-
-Verify Your Work
-----------------
-
-Quit your python interpreter and delete the file ``books.db``
-
-.. container:: incremental
-
-    Then run the script from the command line again to try it out::
-
-        $ python createdb.py
-        Creating schema
-        $ python createdb.py
-        Database exists, assume schema does, too.
-
-Introspect the Database
------------------------
-
-Add the following to ``createdb.py``:
-
-.. code-block:: python
-    :class: small
-
-    # in the imports, add this line:
-    from utils import show_table_metadata
-
-    else:
-        # in the else clause, replace the print statement with this:
-        print "Database exists, introspecting:"
-        tablenames = ['author', 'book']
-        cursor = conn.cursor()
-        for name in tablenames:
-            print "\n"
-            show_table_metadata(cursor, name)
-
-.. class:: incremental
-
-Then try running ``python createdb.py`` again
-
-My Results
-----------
-
-.. class:: small
-
-::
-
-    $ python createdb.py
-    Table Metadata for 'author':
-    cid        | name       | type       | notnull    | dflt_value | pk         |
-    -----------+------------+------------+------------+------------+------------+-
-    0          | authorid   | INTEGER    | 1          | None       | 1          |
-    -----------+------------+------------+------------+------------+------------+-
-    1          | name       | TEXT       | 0          | None       | 0          |
-    -----------+------------+------------+------------+------------+------------+-
-
-
-    Table Metadata for 'book':
-    cid        | name       | type       | notnull    | dflt_value | pk         |
-    -----------+------------+------------+------------+------------+------------+-
-    0          | bookid     | INTEGER    | 1          | None       | 1          |
-    -----------+------------+------------+------------+------------+------------+-
-    1          | title      | TEXT       | 0          | None       | 0          |
-    -----------+------------+------------+------------+------------+------------+-
-    2          | author     | INTEGER    | 1          | None       | 0          |
-    -----------+------------+------------+------------+------------+------------+-
-
-
-Inserting Data
+Provide a Form
 --------------
 
-Let's load up some data. Fire up your interpreter and type:
-
-.. code-block:: python
+.. code-block:: jinja
     :class: small
 
-    >>> import sqlite3
-    >>> insert = """
-    ... INSERT INTO author (name) VALUES("Iain M. Banks");"""
-    >>> with sqlite3.connect("books.db") as conn:
-    ...     cur = conn.cursor()
-    ...     cur.execute(insert)
-    ...     cur.rowcount
-    ...     cur.close()
-    ...     
-    <sqlite3.Cursor object at 0x10046e880>
-    1
-    >>> 
-
-.. class:: incremental
-
-Did that work?
-
-
-Querying Data
--------------
-
-Let's query our database to find out:
-
-.. code-block:: python
-    :class: small
-
-    >>> query = """
-    ... SELECT * from author;"""
-    >>> with sqlite3.connect("books.db") as conn:
-    ...     cur = conn.cursor()
-    ...     cur.execute(query)
-    ...     rows = cur.fetchall()
-    ...     for row in rows:
-    ...         print row
-    ...
-    <sqlite3.Cursor object at 0x10046e8f0>
-    (1, u'Iain M. Banks')
-
-.. class:: incremental
-
-Alright!  We've got data in there.  Let's make it more efficient
+    {% block body %}  <!-- already there -->
+    <form action="{{ url_for('add_entry') }}" method="POST" class="add_entry">
+      <div class="field">
+        <label for="title">Title</label>
+        <input type="text" size="30" name="title" id="title"/>
+      </div>
+      <div class="field">
+        <label for="text">Text</label>
+        <textarea name="text" id="text" rows="5" cols="80"></textarea>
+      </div>
+      <div class="control_row">
+        <input type="submit" value="Share" name="Share"/>
+      </div>
+    </form>
+    <h2>Posts</h2>  <!-- already there -->
 
 
-Parameterized Statements
-------------------------
-
-Try this:
-
-.. code-block:: python
-    :class: small
-
-    >>> insert = """
-    ... INSERT INTO author (name) VALUES(?);"""
-    >>> authors = [["China Mieville"], ["Frank Herbert"],
-    ... ["J.R.R. Tolkien"], ["Susan Cooper"], ["Madeline L'Engle"]]
-    >>> with sqlite3.connect("books.db") as conn:
-    ...     cur = conn.cursor()
-    ...     cur.executemany(insert, authors)
-    ...     print cur.rowcount
-    ...     cur.close()
-    ...
-    <sqlite3.Cursor object at 0x10046e8f0>
-    5
-
-
-Check Your Work
----------------
-
-Again, query the database:
-
-.. code-block:: python
-    :class: small
-
-    >>> query = """
-    ... SELECT * from author;"""
-    >>> with sqlite3.connect("books.db") as conn:
-    ...     cur = conn.cursor()
-    ...     cur.execute(query)
-    ...     rows = cur.fetchall()
-    ...     for row in rows:
-    ...         print row
-    ...
-    <sqlite3.Cursor object at 0x10046e8f0>
-    (1, u'Iain M. Banks')
-    ...
-    (4, u'J.R.R. Tolkien')
-    (5, u'Susan Cooper')
-    (6, u"Madeline L'Engle")
-
-
-Transactions
-------------
-
-Transactions group operations together, allowing you to verify them *before*
-the results hit the database.
-
-.. class:: incremental
-
-In SQLite3, data-altering statements require an explicit ``commit`` unless
-auto-commit has been enabled.
-
-.. class:: incremental
-
-The ``with`` statements we've used take care of committing when the context
-manager closes.
-
-.. class:: incremental
-
-Let's change that so we can see what happens explicitly
-
-
-Populating the Database
------------------------
-
-Let's start by seeing what happens when you try to look for newly added data
-before the ``insert`` transaction is committed.
-
-.. class:: incremental
-
-Begin by quitting your interpreter and deleting ``books.db``.  
-
-.. container:: incremental
-
-    Then re-create the database, empty::
-
-        $ python createdb.py
-        Creating schema
-
-
-Setting Up the Test
--------------------
-
-.. class:: small
-
-Open ``populatedb.py`` in your editor, replace the final ``print``:
-
-.. code-block:: python
-    :class: small
-
-    conn1 = sqlite3.connect(DB_FILENAME)
-    conn2 = sqlite3.connect(DB_FILENAME)
-    print "\nOn conn1, before insert:"
-    show_authors(conn1)
-    authors = ([author] for author in AUTHORS_BOOKS.keys())
-    cur = conn1.cursor()
-    cur.executemany(author_insert, authors)
-    print "\nOn conn1, after insert:"
-    show_authors(conn1)
-    print "\nOn conn2, before commit:"
-    show_authors(conn2)
-    conn1.commit()
-    print "\nOn conn2, after commit:"
-    show_authors(conn2)
-    conn1.close()
-    conn2.close()
-
-
-Running the Test
-----------------
-
-.. class:: small
-
-Quit your python interpreter and run the ``populatedb.py`` script:
-
-.. class:: small incremental
-
-::
-
-    On conn1, before insert:
-    no rows returned
-    On conn1, after insert:
-    (1, u'China Mieville')
-    (2, u'Frank Herbert')
-    (3, u'Susan Cooper')
-    (4, u'J.R.R. Tolkien')
-    (5, u"Madeline L'Engle")
-
-    On conn2, before commit:
-    no rows returned
-    On conn2, after commit:
-    (1, u'China Mieville')
-    (2, u'Frank Herbert')
-    (3, u'Susan Cooper')
-    (4, u'J.R.R. Tolkien')
-    (5, u"Madeline L'Engle")
-
-
-Rollback
+All Done
 --------
 
-That's all well and good, but what happens if an error occurs?
+Okay.  That's it.  We've got an app all written.
 
 .. class:: incremental
 
-Transactions can be rolled back in order to wipe out partially completed work.
+So far, we haven't actually touched our browsers at all, but we have
+reasonable certainty that this works because of our tests. Let's try it.
+
 
 .. class:: incremental
 
-Like with commit, using ``connect`` as a context manager in a ``with``
-statement will automatically rollback for exceptions.
+In the terminal where you've been running tests, run our microblog app:
 
 .. class:: incremental
-
-Let's rewrite our populatedb script so it explicitly commits or rolls back a
-transaction depending on exceptions occurring
-
-
-Edit populatedb.py (slide 1)
-----------------------------
-
-.. class:: small
-
-First, add the following function above the ``if __name__ == '__main__'``
-block:
-
-.. code-block:: python
-    :class: small
-
-    def populate_db(conn):
-        authors = ([author] for author in AUTHORS_BOOKS.keys())
-        cur = conn.cursor()
-        cur.executemany(author_insert, authors)
-
-        for author in AUTHORS_BOOKS.keys():
-            params = ([book, author] for book in AUTHORS_BOOKS[author])
-            cur.executemany(book_insert, params)
-
-
-Edit populatedb.py (slide 2)
-----------------------------
-
-.. class:: small
-
-Then, in the runner:
-
-.. code-block:: python
-    :class: small
-
-    with sqlite3.connect(DB_FILENAME) as conn1:
-        with sqlite3.connect(DB_FILENAME) as conn2:
-            try:
-                populate_db(conn1)
-                print "\nauthors and books on conn2 before commit:"
-                show_authors(conn2)
-                show_books(conn2)
-            except sqlite3.Error:
-                conn1.rollback()
-                print "\nauthors and books on conn2 after rollback:"
-                show_authors(conn2)
-                show_books(conn2)
-                raise
-            else:
-                conn1.commit()
-                print "\nauthors and books on conn2 after commit:"
-                show_authors(conn2)
-                show_books(conn2)
-
-
-Try it Out
-----------
-
-Remove ``books.db`` and recrete the database, then run our script:
-
-.. class:: small
 
 ::
 
-    $ rm books.db
-    $ python createdb.py
-    Creating schema
-    $ python populatedb.py
+    (flaskenv)$ python microblog.py
+    * Running on http://127.0.0.1:5000/
+    * Restarting with reloader
 
-.. class:: small incremental
 
-::
-
-    authors and books on conn2 after rollback:
-    no rows returned
-    no rows returned
-    Traceback (most recent call last):
-      File "populatedb.py", line 57, in <module>
-        populate_db(conn1)
-      File "populatedb.py", line 46, in populate_db
-        cur.executemany(book_insert, params)
-    sqlite3.InterfaceError: Error binding parameter 0 - probably unsupported type.
-
-Oooops, Fix It
+The Big Payoff
 --------------
 
-.. class:: small
-
-Okay, we got an error, and the transaction was rolled back correctly.
-
-.. container:: incremental small
-
-    Open ``utils.py`` and find this:
-
-    .. code-block:: python 
-
-        'Susan Cooper': ["The Dark is Rising", ["The Greenwitch"]],
-
-.. container:: incremental small
-
-    Fix it like so:
-
-    .. code-block:: python
-
-        'Susan Cooper': ["The Dark is Rising", "The Greenwitch"],
-
-.. class:: small incremental
-
-It appears that we were attempting to bind a list as a parameter.  Ooops.
+Now load ``http://localhost:5000/`` in your browser and enjoy your reward.
 
 
-Try It Again
+Making It Pretty
+----------------
+
+What we've got here is pretty ugly.
+
+.. class:: incremental
+
+If you've fallen behind, or want to start fresh, you can find the finished
+``microblog`` directory in the class resources.
+
+.. class:: incremental
+
+In that directory inside the ``static`` directory you will find
+``styles.css``. Open it in your editor.  It contains basic CSS for this app.
+
+.. class:: incremental
+
+We'll need to include this file in our ``layout.html``.
+
+
+Static Files
 ------------
 
-.. container:: small
-
-    Now that the error in our data is repaired, let's try again::
-
-        $ python populatedb.py
-
-.. class:: small incremental
-
-::
-
-    Reporting authors and books on conn2 before commit:
-    no rows returned
-    no rows returned
-    Reporting authors and books on conn2 after commit:
-    (1, u'China Mieville')
-    (2, u'Frank Herbert')
-    (3, u'Susan Cooper')
-    (4, u'J.R.R. Tolkien')
-    (5, u"Madeline L'Engle")
-    (1, u'Perdido Street Station', 1)
-    (2, u'The Scar', 1)
-    (3, u'King Rat', 1)
-    (4, u'Dune', 2)
-    (5, u"Hellstrom's Hive", 2)
-    (6, u'The Dark is Rising', 3)
-    (7, u'The Greenwitch', 3)
-    (8, u'The Hobbit', 4)
-    (9, u'The Silmarillion', 4)
-    (10, u'A Wrinkle in Time', 5)
-    (11, u'A Swiftly Tilting Planet', 5)
-
-
-Next Steps
-----------
-
-We've learned a bit about the basics of using Flask, writing templates and
-using DB API to persist data.
+Like page templates, Flask locates static resources like images, css and
+javascript by looking for a ``static`` directory relative to the app root.
 
 .. class:: incremental
 
-This afternoon, we'll put this to use by writing a small application in Flask
+You can use the special url endpoint ``static`` to build urls that point here.
+Open ``layout.html`` and add the following:
+
+.. code-block:: jinja
+    :class: small incremental
+
+    <head>  <!-- you only need to add the <link> below -->
+      <title>Flaskr</title>
+      <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" type="text/css">
+    </head>
+
+
+Reap the Rewards
+----------------
+
+Make sure that your `microblog` folder has a `static` folder inside it, and
+that the `styles.css` file is in it.
 
 .. class:: incremental
 
-By the end of the day, we'll have a fully-tested microblog ready to go.
+Then, reload your web browser and see the difference a bit of style can make.
+
+Homework
+--------
+
+We've built a simple microblog application in the *Flask* web framework.
+
+.. class:: incremental
+
+For your homework this week I'd like you to add two features to this app.
+
+.. class:: incremental
+
+1. Authentication
+2. Flash messaging
 
 
-Lunch Time
-----------
+Authentication Specifications
+-----------------------------
 
-.. class:: big-centered
+Writing new entries should be restricted to users who have logged in. This
+means that:
 
-We'll see you back here in an hour.  Enjoy!
+.. class:: incremental
+
+* The form to create a new entry should only be visible to logged in users
+* There should be a visible link to allow a user to log in
+* This link should display a login form that expects a username and password
+* If the user provides incorrect login information, this form should tell her
+  so.
+* If the user provides correct login information, she should end up at the
+  list page
+* Once logged in, the user should see a link to log out.
+* Upon clicking that link, the system should no longer show the entry form and
+  the log in link should re-appear.
+
+
+Flash Messaging Specifications
+------------------------------
+
+A flask app provides a method called `flash` that allows passing messages from
+a view function into a template context so that they can be viewed by a user.
+
+.. class:: incremental
+
+Use this method to provide the following messages to users:
+
+.. class:: incremental
+
+* Upon a successful login, display the message "You are logged in"
+* Upon a successful logout, display the message "You have logged out"
+* Upon posting a successful new entry, display the message "New entry posted"
+* If adding an entry causes an error, instead of returning a 500 response,
+  alert the user to the error by displaying the error message to the user.
+
+
+Resources to Use
+----------------
+
+The microblog we created today comes from the tutorial on the `flask` website.
+I've modified that tutorial to omit authentication and flash messaging. You can
+refer to the tutorial and to the flask api documentation to learn what you need
+to accomplish these tasks.
+
+`The Flask Tutorial <http://flask.pocoo.org/docs/tutorial/>`_
+
+`Flask API Documentation <http://flask.pocoo.org/docs/api/>`_
+
+Both features depend on *sessions*, so you will want to pay particular
+attention to how a session is enabled and what you can do with it once it
+exists.
+
+
+Next Week
+---------
+
+Next week we are going to mix things up a little and do something quite
+different.
+
+.. class:: incremental
+
+We'll be starting from the app you have just built (with the additional
+features you complete over the week).
+
+.. class:: incremental
+
+We will divide into pairs and each pair will select one feature from a list I
+will provide.
+
+.. class:: incremental
+
+We'll spend the entire class implementing this feature, and at 8:15, each pair
+will show their work to the class.
+
+
+Wrap-Up
+-------
+
+For educational purposes you might try taking a look at the source code for
+Flask and Werkzeug.  Neither is too large a package.
+
+.. class:: incremental
+
+In particular seeing how Werkzeug sets up a Request and Response--and how
+these relate to the WSGI specification--can be very enlightening.
