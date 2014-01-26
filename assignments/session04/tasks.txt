@@ -25,7 +25,8 @@ Your source code.
   serving your application.  Use the standard library wsgiref module.
 
 Your tests.
-  Last session, tests were optional.  This week they are not.
+  Last session, tests were optional.  This week they are not. Write at least
+  two tests that prove some of your code works as intended.
 
 Your application should produce HTML output that I can view in a browser. That
 output does not need to be attractive. Continue to focus on the mechanics of
