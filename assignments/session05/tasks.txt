@@ -1,0 +1,64 @@
+Session 5 Homework
+==================
+
+Required Tasks
+--------------
+
+1. Add authentication so a user can log in and log out.
+2. Add flash messaging so the app can inform a user about events that happen
+
+
+Authentication Specifications
+-----------------------------
+
+Writing new entries should be restricted to users who have logged in. This
+means that:
+
+.. class:: incremental
+
+* The form to create a new entry should only be visible to logged in users
+* There should be a visible link to allow a user to log in
+* This link should display a login form that expects a username and password
+* If the user provides incorrect login information, this form should tell her
+  so.
+* If the user provides correct login information, she should end up at the
+  list page
+* Once logged in, the user should see a link to log out.
+* Upon clicking that link, the system should no longer show the entry form and
+  the log in link should re-appear.
+
+
+Flash Messaging Specifications
+------------------------------
+
+A flask app provides a method called `flash` that allows passing messages from
+a view function into a template context so that they can be viewed by a user.
+
+.. class:: incremental
+
+Use this method to provide the following messages to users:
+
+.. class:: incremental
+
+* Upon a successful login, display the message "You are logged in"
+* Upon a successful logout, display the message "You have logged out"
+* Upon posting a successful new entry, display the message "New entry posted"
+* If adding an entry causes an error, instead of returning a 500 response,
+  alert the user to the error by displaying the error message to the user.
+
+
+Resources to Use
+----------------
+
+The microblog we created today comes from the tutorial on the `flask` website.
+I've modified that tutorial to omit authentication and flash messaging. You can
+refer to the tutorial and to the flask api documentation to learn what you need
+to accomplish these tasks.
+
+`The Flask Tutorial <http://flask.pocoo.org/docs/tutorial/>`_
+
+`Flask API Documentation <http://flask.pocoo.org/docs/api/>`_
+
+Both features depend on *sessions*, so you will want to pay particular
+attention to how a session is enabled and what you can do with it once it
+exists.
