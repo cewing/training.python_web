@@ -174,8 +174,16 @@ more minimal and may be easier to comprehend off the bat.
 Sessions 5 & 6 - Flask
 ----------------------
 
-* `Web Application Frameworks
-  <http://en.wikipedia.org/wiki/Web_application_framework>`_
+In order to properly prepare for class, you *must* work through the three
+tutorials linked below. You will be expected to know this material before
+session 5 begins. The documentation readings associated with these tutorials
+are there for further reference, and to help you find answers to questions that
+arise while you do the tutorials themselves.
+
+Jinja2
+++++++
+
+* `Jinja2 Template Tutorial <presentations/template_tutorial-plain.html>`_
 
 * `Jinja2 - Python page templates <http://jinja.pocoo.org/docs/>`_ - We'll
   learn something about templating in Python, starting with the Jinja2
@@ -183,13 +191,30 @@ Sessions 5 & 6 - Flask
   <http://jinja.pocoo.org/docs/templates/>`_, which provides a reasonable,
   non-technical introduction to the language and how it is used.
 
+SQLite3
++++++++
+
+* `SQL Persistence Tutorial <presentations/sql_persistence_tutorial-plain.html>`_
+
 * `sqlite3 - DB API for sqlite3 <http://pymotw.com/2/sqlite3/index.html>`_ -
   We'll need a bit of familiarity with the sqlite3 module. How to open
   connections, execute queries, and read the results from a cursor. Just read
   the first two sections ('Creating a Database' and 'Retrieving Data').
 
+Flask
++++++
+
+* `Flask Walkthrough <presentations/lask_walkthrough-plain.html>`_
+
 * `Flask Documentation <http://flask.pocoo.org/docs/>`_ - Read the Foreward,
   Installation and Quickstart sections.
+
+
+Additional Readings
++++++++++++++++++++
+
+* `Web Application Frameworks
+  <http://en.wikipedia.org/wiki/Web_application_framework>`_
 
 * `Unittest - Unit Testing Framework
   <http://docs.python.org/2/library/unittest.html>`_ - Starting in this module
