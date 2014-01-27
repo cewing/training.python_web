@@ -109,6 +109,15 @@ using WSGI and see what benefits and drawbacks it confers.
 * `Lecture Slides <presentations/session04.html>`_
 * `As Plain HTML <presentations/session04-plain.html>`_
 
+Homework Tutorials
+++++++++++++++++++
+
+Please walk through all three of these tutorials before session 5 begins.
+
+* `Jinja2 Template Tutorial <presentations/template_tutorial-plain.html>`_
+* `SQL Persistence Tutorial <presentations/sql_persistence_tutorial-plain.html>`_
+* `Flask Walkthrough <presentations/lask_walkthrough-plain.html>`_
+
 
 Session 5 - Frameworks and Flask
 --------------------------------
