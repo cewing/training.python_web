@@ -162,36 +162,36 @@ our work quickly across different environments.
 
 `Lecture Slides <presentations/session06.html>`_
 
+Homework Tutorials
+******************
 
-Session 7 - Intro to Django
----------------------------
+Please walk through this tutorial before session 7 begins.
+
+* `An Introduction to Django <presentations/django_intro-plain.html>`_
+
+
+Session 7 - Basic Django
+------------------------
 
 In this class we'll get introduced to arguably the most popular full-stack
 Python web framework, Django. We'll install the framework, learn about how to
 get it running and how to get started creating your very own app.
 
 We'll be learning about the Django ORM and how Django Models can help shield
-developers from much of the complexity of SQL. We'll learn how to use the
-tools Django provides to explore and interact with your models while designing
-them. We'll also get a brief introduction to the Django admin, Django's
-*killer feature*.
+developers from much of the complexity of SQL.
 
-Along the way, we'll continue our test-driven development style: writing tests
-to demonstrate the functionality we desire and then implementing code to make
-them pass. We'll get a chance to see how to build tests within the framework 
-offered by Django's testrunner.
+During the week leading up to this session, we'll `get started building`_ a
+blog app in Django. We'll learn how to use the tools Django provides to explore
+and interact with your models while designing them. We'll also get a brief
+introduction to the Django admin, Django's *killer feature*.
 
-`Lecture Slides <presentations/session07.html>`_
+.. _get started building: presentations/django_intro-plain.html
 
 
-Session 8 - A Django Application
---------------------------------
-
-In this class we'll complete our exploration of Django. We'll customize the
-Django admin to help us most efficiently administer our Blog application.
-We'll create and test view functions that present our application to the world
-and we'll provide front-end access to forms that allow us to create, edit and
-publish blog entries without needing to use the admin.
+Along the way, we'll build a nicely functional blog application.  We'll learn
+about model relationships, customizing the Django admin, and adding front-end
+views so users can see our work. We'll even learn how we can update our
+database code and keep it in sync with our progressing development work.
 
 Along the way we'll learn that the Django template language is quite similar
 to the Jinja2 language (in fact, Jinja2 was modelled on the Django version).
@@ -199,7 +199,17 @@ We'll also get a chance to learn a bit more about the features that the Django
 test framework provides over and above the standard Python ``unittest``
 library.
 
-Finally, we'll discuss some of the strengths and weaknesses of Django.  What 
+`Lecture Slides <presentations/session07.html>`_
+
+
+Session 8 - Extending Django
+----------------------------
+
+During this session, we will continue our exploration of Django, and of pair
+programming. Students will once again pair up and work together to implement
+one or more feature extending the basic Django app we created previously.
+
+Finally, we'll discuss some of the strengths and weaknesses of Django.  What
 makes it a good choice for some projects but not for others.
 
 `Lecture Slides <presentations/session08.html>`_

@@ -164,3 +164,16 @@ Now, when you switch roles during your work, here's the workflow you can use:
 .. class:: small
 
 3. The new driver continues working from where their partner left off.
+
+
+Homework
+--------
+
+For this week, please read and complete the Introduction to Django tutorial
+linked from the class website and from the course outline.
+
+You will be expected to have successfully completed that tutorial upon arrival
+in class for our next session.
+
+We will begin our work starting from where it leaves off.
+
