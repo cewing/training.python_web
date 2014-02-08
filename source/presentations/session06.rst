@@ -83,16 +83,22 @@ Preparation
 
 In order for this to work properly, we'll need to have a few things in place.
 
-.. container:: incremental
+.. container:: incremental small
 
     First, we'll start from a canonical copy of the microblog.  Make a fork of
-    the following repository to your github account::
+    the following repository to your github account:
+
+    .. code-block::
+        :class: small
 
         https://github.com/UWPCE-PythonCert/training.sample-flask-app
 
-.. container:: incremental
+.. container:: incremental small
 
-    Then, clone that repository to your local machine::
+    Then, clone that repository to your local machine:
+
+    .. code-block:: bash
+        :class: small
 
         $ git clone https://github.com/<your_name>/training.sample-flask-app.git
         or
@@ -104,31 +110,49 @@ Connect to Your Partner
 Finally, you'll want to connect to your partner's repository, so that you can
 each work on your own laptop and still share the changes you make.
 
-.. container:: incremental
+.. container:: incremental small
 
-    First, add your partner's repository as ``upstream`` to yours::
+    First, add your partner's repository as ``upstream`` to yours:
+
+    .. code-block:: bash
+        :class: small
 
         $ git remote add upstream https://github.com/<partner>/training.sample-flask-app.git
         or
         $ git remote add upstream git@github.com:<partner>/training.sample-flask-app.git
 
-.. container:: incremental
+.. container:: incremental small
 
-    Then, fetch their copy so that you can easily merge their changes later::
+    Then, fetch their copy so that you can easily merge their changes later:
+
+    .. code-block:: bash
+        :class: small
 
         $ git fetch upstream
 
 While You Work
 --------------
 
+.. class:: small
+
 Now, when you switch roles during your work, here's the workflow you can use:
 
-1. The current driver commits all changes and pushes to their repository::
+.. class:: small
+
+1. The current driver commits all changes and pushes to their repository:
+
+.. code-block:: bash
+    :class: small
 
     $ git commit -a -m "Time to switch roles"
     $ git push origin master
 
-2. The new driver fetches and merges changes made upstream.
+.. class:: small
+
+2. The new driver fetches and merges changes made upstream:
+
+.. code-block:: bash
+    :class: small
 
     $ git fetch upstream master
     $ git branch -a
@@ -136,5 +160,7 @@ Now, when you switch roles during your work, here's the workflow you can use:
       remotes/origin/master
       remotes/upstream/master
     $ git merge upstream/master
+
+.. class:: small
 
 3. The new driver continues working from where their partner left off.

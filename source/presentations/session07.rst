@@ -108,20 +108,16 @@ Popularity translates into:
 Active Development
 ------------------
 
-Django releases in the last 12+ months:
+Django releases in the last 12+ months (a short list):
 
 .. class:: incremental
 
-* 1.5.1 (March 2013)
+* 1.6.2 (February 2014)
+* 1.6.1 (December 2013)
+* 1.6 (November 2013)
+* 1.4.10 (Novermber 2013)
+* 1.5.5 (October 2013)
 * 1.5 (February 2013)
-* 1.4.5 (February 2013)
-* 1.3.7 (February 2013)
-* 1.4.3 (December 2012)
-* 1.3.5 (December 2012)
-* 1.4.2 (November 2012)
-* 1.3.3 (August 2012)
-* 1.4.1 (July 2012)
-* 1.3.2 (July 2012)
 * 1.4 (March 2012)
 
 

@@ -110,7 +110,7 @@ using WSGI and see what benefits and drawbacks it confers.
 * `As Plain HTML <presentations/session04-plain.html>`_
 
 Homework Tutorials
-++++++++++++++++++
+******************
 
 Please walk through all three of these tutorials before session 5 begins.
 
@@ -131,9 +131,15 @@ implementation of a *microframework*, `Flask <http://flask.pocoo.org/>`_.
 We'll install the framework and take a look at how it works. What does it have
 in common with work we've already done?
 
-Along the way we'll learn about Jinja2, the templating language that Flask
-uses, and a bit about the DBAPI2 and communicating with SQL databases from
-within Python.
+Finally, we'll spend our class implementing a simple application using Flask.
+We'll decide the functionality we need, write tests to demonstrate that it
+works, and then write the code to make the tests pass. When we finish, we'll
+have a tested, simple app that we can view through the browser.
+
+Along the way, we'll learn a bit about how flask operates in a real
+application. We'll learn some more about the Jinja2 templating language, and
+we'll learn to tie the transactions of our database interaction to the cycles
+of request and response.
 
 `Lecture Slides <presentations/session05.html>`_
 
@@ -141,20 +147,18 @@ within Python.
 Session 6 - A Flask Application
 -------------------------------
 
-In this class we will exercise our new-won knowledge by building a small
-application using Flask. We'll write templates and forms, persist data,
-implement login and logout. When we're done, we'll have a fully-functional
-microblog.
+During this class, we will explore the technique of `pair programming`_ in the
+process of extending and improving our Flask application. Students will divide
+into pairs and each pair will work together to implement one or more new
+features for the Flask app we finished in the previous class.
 
-We'll use a test-driven development style as we go. We'll decide the
-functionality we need, write tests to prove it works, and then write the code
-to make those tests pass. We'll be using the ``unittest`` module from the
-Python Standard Library.
+Along the way, we'll gain insight into how to build a more complex Flask
+application, how to integrate with existing front-end design frameworks, and
+even how to use alternate storage strategies. Most importantly, we'll gain a
+bit of experience in the workflow of a small team as we explore how to share
+our work quickly across different environments.
 
-Along the way, we'll learn a bit more about how flask operates in a real
-application. We'll learn some more about the Jinja2 templating language, and
-we'll learn to tie the transactions of our database interaction to the cycles
-of request and response.
+.. _pair programming: http://en.wikipedia.org/wiki/Pair_programming
 
 `Lecture Slides <presentations/session06.html>`_
 
