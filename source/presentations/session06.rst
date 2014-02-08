@@ -74,7 +74,7 @@ One of you will start as the driver, the other as the observer.
 
 .. class:: incremental
 
-About every 20 minutes, we will switch, so that each of you can take a turn
+About every 20-30 minutes, we will switch, so that each of you can take a turn
 driving.
 
 
@@ -85,15 +85,56 @@ In order for this to work properly, we'll need to have a few things in place.
 
 .. container:: incremental
 
-    First, you'll all need to make sure that you have the very latest code from the
-    class repository available on your local machine::
+    First, we'll start from a canonical copy of the microblog.  Make a fork of
+    the following repository to your github account::
 
-        $ git add remote uwpce git@github.com:UWPCE-PythonCert/training.python_web.git
+        https://github.com/UWPCE-PythonCert/training.sample-flask-app
 
 .. container:: incremental
 
-    First, you both will need to make a branch of the class repository that you
-    can work on::
+    Then, clone that repository to your local machine::
 
-        $ git checkout -b session06-class
+        $ git clone https://github.com/<your_name>/training.sample-flask-app.git
+        or
+        $ git clone git@github.com:<your_name>/training.sample-flask-app.git
 
+Connect to Your Partner
+-----------------------
+
+Finally, you'll want to connect to your partner's repository, so that you can
+each work on your own laptop and still share the changes you make.
+
+.. container:: incremental
+
+    First, add your partner's repository as ``upstream`` to yours::
+
+        $ git remote add upstream https://github.com/<partner>/training.sample-flask-app.git
+        or
+        $ git remote add upstream git@github.com:<partner>/training.sample-flask-app.git
+
+.. container:: incremental
+
+    Then, fetch their copy so that you can easily merge their changes later::
+
+        $ git fetch upstream
+
+While You Work
+--------------
+
+Now, when you switch roles during your work, here's the workflow you can use:
+
+1. The current driver commits all changes and pushes to their repository::
+
+    $ git commit -a -m "Time to switch roles"
+    $ git push origin master
+
+2. The new driver fetches and merges changes made upstream.
+
+    $ git fetch upstream master
+    $ git branch -a
+    * master
+      remotes/origin/master
+      remotes/upstream/master
+    $ git merge upstream/master
+
+3. The new driver continues working from where their partner left off.
