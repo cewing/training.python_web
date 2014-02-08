@@ -1,0 +1,1246 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.11: http://docutils.sourceforge.net/" />
+<title>An Introduction To Django</title>
+<style type="text/css">
+
+/*
+:Author: David Goodger (goodger@python.org)
+:Id: $Id: html4css1.css 7614 2013-02-21 15:55:51Z milde $
+:Copyright: This stylesheet has been placed in the public domain.
+
+Default cascading style sheet for the HTML output of Docutils.
+
+See http://docutils.sf.net/docs/howto/html-stylesheets.html for how to
+customize this style sheet.
+*/
+
+/* used to remove borders from tables and images */
+.borderless, table.borderless td, table.borderless th {
+  border: 0 }
+
+table.borderless td, table.borderless th {
+  /* Override padding for "table.docutils td" with "! important".
+     The right padding separates the table cells. */
+  padding: 0 0.5em 0 0 ! important }
+
+.first {
+  /* Override more specific margin styles with "! important". */
+  margin-top: 0 ! important }
+
+.last, .with-subtitle {
+  margin-bottom: 0 ! important }
+
+.hidden {
+  display: none }
+
+a.toc-backref {
+  text-decoration: none ;
+  color: black }
+
+blockquote.epigraph {
+  margin: 2em 5em ; }
+
+dl.docutils dd {
+  margin-bottom: 0.5em }
+
+object[type="image/svg+xml"], object[type="application/x-shockwave-flash"] {
+  overflow: hidden;
+}
+
+/* Uncomment (and remove this text!) to get bold-faced definition list terms
+dl.docutils dt {
+  font-weight: bold }
+*/
+
+div.abstract {
+  margin: 2em 5em }
+
+div.abstract p.topic-title {
+  font-weight: bold ;
+  text-align: center }
+
+div.admonition, div.attention, div.caution, div.danger, div.error,
+div.hint, div.important, div.note, div.tip, div.warning {
+  margin: 2em ;
+  border: medium outset ;
+  padding: 1em }
+
+div.admonition p.admonition-title, div.hint p.admonition-title,
+div.important p.admonition-title, div.note p.admonition-title,
+div.tip p.admonition-title {
+  font-weight: bold ;
+  font-family: sans-serif }
+
+div.attention p.admonition-title, div.caution p.admonition-title,
+div.danger p.admonition-title, div.error p.admonition-title,
+div.warning p.admonition-title, .code .error {
+  color: red ;
+  font-weight: bold ;
+  font-family: sans-serif }
+
+/* Uncomment (and remove this text!) to get reduced vertical space in
+   compound paragraphs.
+div.compound .compound-first, div.compound .compound-middle {
+  margin-bottom: 0.5em }
+
+div.compound .compound-last, div.compound .compound-middle {
+  margin-top: 0.5em }
+*/
+
+div.dedication {
+  margin: 2em 5em ;
+  text-align: center ;
+  font-style: italic }
+
+div.dedication p.topic-title {
+  font-weight: bold ;
+  font-style: normal }
+
+div.figure {
+  margin-left: 2em ;
+  margin-right: 2em }
+
+div.footer, div.header {
+  clear: both;
+  font-size: smaller }
+
+div.line-block {
+  display: block ;
+  margin-top: 1em ;
+  margin-bottom: 1em }
+
+div.line-block div.line-block {
+  margin-top: 0 ;
+  margin-bottom: 0 ;
+  margin-left: 1.5em }
+
+div.sidebar {
+  margin: 0 0 0.5em 1em ;
+  border: medium outset ;
+  padding: 1em ;
+  background-color: #ffffee ;
+  width: 40% ;
+  float: right ;
+  clear: right }
+
+div.sidebar p.rubric {
+  font-family: sans-serif ;
+  font-size: medium }
+
+div.system-messages {
+  margin: 5em }
+
+div.system-messages h1 {
+  color: red }
+
+div.system-message {
+  border: medium outset ;
+  padding: 1em }
+
+div.system-message p.system-message-title {
+  color: red ;
+  font-weight: bold }
+
+div.topic {
+  margin: 2em }
+
+h1.section-subtitle, h2.section-subtitle, h3.section-subtitle,
+h4.section-subtitle, h5.section-subtitle, h6.section-subtitle {
+  margin-top: 0.4em }
+
+h1.title {
+  text-align: center }
+
+h2.subtitle {
+  text-align: center }
+
+hr.docutils {
+  width: 75% }
+
+img.align-left, .figure.align-left, object.align-left {
+  clear: left ;
+  float: left ;
+  margin-right: 1em }
+
+img.align-right, .figure.align-right, object.align-right {
+  clear: right ;
+  float: right ;
+  margin-left: 1em }
+
+img.align-center, .figure.align-center, object.align-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.align-left {
+  text-align: left }
+
+.align-center {
+  clear: both ;
+  text-align: center }
+
+.align-right {
+  text-align: right }
+
+/* reset inner alignment in figures */
+div.align-right {
+  text-align: inherit }
+
+/* div.align-center * { */
+/*   text-align: left } */
+
+ol.simple, ul.simple {
+  margin-bottom: 1em }
+
+ol.arabic {
+  list-style: decimal }
+
+ol.loweralpha {
+  list-style: lower-alpha }
+
+ol.upperalpha {
+  list-style: upper-alpha }
+
+ol.lowerroman {
+  list-style: lower-roman }
+
+ol.upperroman {
+  list-style: upper-roman }
+
+p.attribution {
+  text-align: right ;
+  margin-left: 50% }
+
+p.caption {
+  font-style: italic }
+
+p.credits {
+  font-style: italic ;
+  font-size: smaller }
+
+p.label {
+  white-space: nowrap }
+
+p.rubric {
+  font-weight: bold ;
+  font-size: larger ;
+  color: maroon ;
+  text-align: center }
+
+p.sidebar-title {
+  font-family: sans-serif ;
+  font-weight: bold ;
+  font-size: larger }
+
+p.sidebar-subtitle {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+p.topic-title {
+  font-weight: bold }
+
+pre.address {
+  margin-bottom: 0 ;
+  margin-top: 0 ;
+  font: inherit }
+
+pre.literal-block, pre.doctest-block, pre.math, pre.code {
+  margin-left: 2em ;
+  margin-right: 2em }
+
+pre.code .ln { color: grey; } /* line numbers */
+pre.code, code { background-color: #eeeeee }
+pre.code .comment, code .comment { color: #5C6576 }
+pre.code .keyword, code .keyword { color: #3B0D06; font-weight: bold }
+pre.code .literal.string, code .literal.string { color: #0C5404 }
+pre.code .name.builtin, code .name.builtin { color: #352B84 }
+pre.code .deleted, code .deleted { background-color: #DEB0A1}
+pre.code .inserted, code .inserted { background-color: #A3D289}
+
+span.classifier {
+  font-family: sans-serif ;
+  font-style: oblique }
+
+span.classifier-delimiter {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+span.interpreted {
+  font-family: sans-serif }
+
+span.option {
+  white-space: nowrap }
+
+span.pre {
+  white-space: pre }
+
+span.problematic {
+  color: red }
+
+span.section-subtitle {
+  /* font-size relative to parent (h1..h6 element) */
+  font-size: 80% }
+
+table.citation {
+  border-left: solid 1px gray;
+  margin-left: 1px }
+
+table.docinfo {
+  margin: 2em 4em }
+
+table.docutils {
+  margin-top: 0.5em ;
+  margin-bottom: 0.5em }
+
+table.footnote {
+  border-left: solid 1px black;
+  margin-left: 1px }
+
+table.docutils td, table.docutils th,
+table.docinfo td, table.docinfo th {
+  padding-left: 0.5em ;
+  padding-right: 0.5em ;
+  vertical-align: top }
+
+table.docutils th.field-name, table.docinfo th.docinfo-name {
+  font-weight: bold ;
+  text-align: left ;
+  white-space: nowrap ;
+  padding-left: 0 }
+
+/* "booktabs" style (no vertical lines) */
+table.docutils.booktabs {
+  border: 0px;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-collapse: collapse;
+}
+table.docutils.booktabs * {
+  border: 0px;
+}
+table.docutils.booktabs th {
+  border-bottom: thin solid;
+  text-align: left;
+}
+
+h1 tt.docutils, h2 tt.docutils, h3 tt.docutils,
+h4 tt.docutils, h5 tt.docutils, h6 tt.docutils {
+  font-size: 100% }
+
+ul.auto-toc {
+  list-style-type: none }
+
+</style>
+</head>
+<body>
+<div class="document" id="an-introduction-to-django">
+<h1 class="title">An Introduction To Django</h1>
+
+<p>In this tutorial, you'll walk through creating a very simple microblog
+application using Django.</p>
+<div class="section" id="practice-safe-development">
+<h1>Practice Safe Development</h1>
+<p>We'll install Django and any other packages we use with it in a virtualenv.</p>
+<p class="incremental">This will ensure that it is isolated from everything else we do in class (and
+vice versa)</p>
+<div class="incremental container">
+<p>Remember the basic format for creating a virtualenv:</p>
+<pre class="small literal-block">
+$ python virtualenv.py [options] &lt;ENV&gt;
+&lt;or&gt;
+$ virtualenv [options] &lt;ENV&gt;
+</pre>
+</div>
+</div>
+<div class="section" id="set-up-a-virtualenv">
+<h1>Set Up a VirtualEnv</h1>
+<p>Start by creating your virtualenv:</p>
+<pre class="literal-block">
+$ python virtualenv.py djangoenv
+&lt;or&gt;
+$ virtualenv djangoenv
+...
+</pre>
+<div class="incremental container">
+<p>Then, activate it:</p>
+<pre class="literal-block">
+$ source djangoenv/bin/activate
+&lt;or&gt;
+C:\&gt; djangoenv\Scripts\activate
+</pre>
+</div>
+</div>
+<div class="section" id="install-django">
+<h1>Install Django</h1>
+<p>Finally, install Django 1.6.2 using <tt class="docutils literal">pip</tt>:</p>
+<pre class="small literal-block">
+(djangoenv)$ pip install Django==1.6.2
+Downloading/unpacking Django==1.5.2
+  Downloading Django-1.6.2.tar.gz (8.0MB): 8.0MB downloaded
+  Running setup.py egg_info for package Django
+     changing mode of /path/to/djangoenv/bin/django-admin.py to 755
+Successfully installed Django
+Cleaning up...
+(djangoenv)$
+</pre>
+</div>
+<div class="section" id="starting-a-project">
+<h1>Starting a Project</h1>
+<p>Everything in Django stems from the <em>project</em></p>
+<p class="incremental">To get started learning, we'll create one</p>
+<p class="incremental">We'll use a script installed by Django, <tt class="docutils literal"><span class="pre">django-admin.py</span></tt>:</p>
+<pre class="code incremental literal-block">
+(djangoenv)$ django-admin.py startproject mysite
+</pre>
+<p class="incremental">This will create a folder called 'mysite'.  Let's take a look at it:</p>
+</div>
+<div class="section" id="project-layout">
+<h1>Project Layout</h1>
+<p>The folder created by <tt class="docutils literal"><span class="pre">django-admin.py</span></tt> contains the following structure:</p>
+<pre class="code literal-block">
+mysite
+├── manage.py
+└── mysite
+    ├── __init__.py
+    ├── settings.py
+    ├── urls.py
+    └── wsgi.py
+</pre>
+<p class="incremental">If what you see doesn't match that, you're using an older version of Django.
+Make sure you've installed 1.6.2.</p>
+</div>
+<div class="section" id="what-got-created">
+<h1>What Got Created</h1>
+<ul class="incremental simple">
+<li><strong>outer *mysite* folder</strong>: this is just a container and can be renamed or
+moved at will</li>
+<li><strong>inner *mysite* folder</strong>: this is your project directory. It should not be
+renamed.</li>
+<li><strong>__init__.py</strong>: magic file that makes <em>mysite</em> a python package.</li>
+<li><strong>settings.py</strong>: file which holds configuration for your project, more soon.</li>
+<li><strong>urls.py</strong>: file which holds top-level URL configuration for your project,
+more soon.</li>
+<li><strong>wsgi.py</strong>: binds a wsgi application created from your project to the
+symbol <tt class="docutils literal">application</tt></li>
+<li><strong>manage.py</strong>: a management control script.</li>
+</ul>
+</div>
+<div class="section" id="django-admin-py-and-manage-py">
+<h1><em>django-admin.py</em> and <em>manage.py</em></h1>
+<p><em>django-admin.py</em> provides a hook for administrative tasks and abilities:</p>
+<ul class="incremental simple">
+<li>creating a new project or app</li>
+<li>running the development server</li>
+<li>executing tests</li>
+<li>entering a python interpreter</li>
+<li>entering a database shell session with your database</li>
+<li>much much more (run <tt class="docutils literal"><span class="pre">django-admin.py</span></tt> without an argument)</li>
+</ul>
+<p class="incremental"><em>manage.py</em> wraps this functionality, adding the full environment of your
+project.</p>
+</div>
+<div class="section" id="how-manage-py-works">
+<h1>How <em>manage.py</em> Works</h1>
+<p>Look in the <tt class="docutils literal">manage.py</tt> script Django created for you. You'll see this:</p>
+<pre class="code python small literal-block">
+<span class="c">#!/usr/bin/env python</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s">&quot;DJANGO_SETTINGS_MODULE&quot;</span><span class="p">,</span> <span class="s">&quot;mysite.settings&quot;</span><span class="p">)</span>
+    <span class="o">...</span>
+</pre>
+<p class="incremental">The environmental var <tt class="docutils literal">DJANGO_SETTINGS_MODULE</tt> is how the <tt class="docutils literal">manage.py</tt>
+script is made aware of your project's environment. This is why you shouldn't
+rename the project package.</p>
+</div>
+<div class="section" id="development-server">
+<h1>Development Server</h1>
+<p>At this point, you should be ready to use the development server:</p>
+<pre class="literal-block">
+(djangoenv)$ cd mysite
+(djangoenv)$ python manage.py runserver
+...
+</pre>
+<p class="incremental">Load <tt class="docutils literal"><span class="pre">http://localhost:8000</span></tt> in your browser.</p>
+</div>
+<div class="section" id="a-blank-slate">
+<h1>A Blank Slate</h1>
+<p>You should see this:</p>
+<img alt="img/django-start.png" class="align-center" src="img/django-start.png" style="width: 98%;" />
+<p class="incremental center"><strong>Do you?</strong></p>
+</div>
+<div class="section" id="connecting-a-database">
+<h1>Connecting A Database</h1>
+<p>Django supplies its own ORM (Object-Relational Mapper)</p>
+<p class="incremental">This ORM sits on top of the DB-API implementation you choose.</p>
+<p class="incremental">You must provide connection information through Django configuration.</p>
+<p class="incremental">All Django configuration takes place in <tt class="docutils literal">settings.py</tt> in your project
+folder.</p>
+</div>
+<div class="section" id="your-database-settings">
+<h1>Your Database Settings</h1>
+<p>Edit your <tt class="docutils literal">settings.py</tt> to match:</p>
+<pre class="code python small literal-block">
+<span class="n">DATABASES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">'default'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">'ENGINE'</span><span class="p">:</span> <span class="s">'django.db.backends.sqlite3'</span><span class="p">,</span>
+        <span class="s">'NAME'</span><span class="p">:</span> <span class="s">'mysite.db'</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+<p class="incremental">There are other database settings, but they are not used with sqlite3, we'll
+ignore them for now.</p>
+</div>
+<div class="section" id="django-and-your-database">
+<h1>Django and Your Database</h1>
+<p>Django's ORM provides a layer of <em>abstraction</em> between you and SQL</p>
+<p class="incremental">You write Python classes called <em>models</em> describing the object that make up
+your system.</p>
+<p class="incremental">The ORM handles converting data from these objects into SQL statements (and
+back)</p>
+<p class="incremental">We'll learn much more about this in a bit</p>
+</div>
+<div class="section" id="django-organization">
+<h1>Django Organization</h1>
+<p>We've created a Django <em>project</em>. In Django a project represents a whole
+website:</p>
+<ul class="incremental simple">
+<li>global configuration settings</li>
+<li>inclusion points for additional functionality</li>
+<li>master list of URL endpoints</li>
+</ul>
+<p class="incremental">A Django <em>app</em> encapsulates a unit of functionality:</p>
+<ul class="incremental simple">
+<li>A blog section</li>
+<li>A discussion forum</li>
+<li>A content tagging system</li>
+</ul>
+</div>
+<div class="section" id="apps-make-up-a-project">
+<h1>Apps Make Up a Project</h1>
+<p class="big-centered">One <em>project</em> can (and likely will) consist of many <em>apps</em></p>
+</div>
+<div class="section" id="core-django-apps">
+<h1>Core Django <em>Apps</em></h1>
+<p>Django already includes some <em>apps</em> for you.</p>
+<div class="incremental container">
+<p>They're in <tt class="docutils literal">settings.py</tt> in the <tt class="docutils literal">INSTALLED_APPS</tt> setting:</p>
+<pre class="code python small literal-block">
+<span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s">'django.contrib.auth'</span><span class="p">,</span>
+    <span class="s">'django.contrib.contenttypes'</span><span class="p">,</span>
+    <span class="s">'django.contrib.sessions'</span><span class="p">,</span>
+    <span class="s">'django.contrib.sites'</span><span class="p">,</span>
+    <span class="s">'django.contrib.messages'</span><span class="p">,</span>
+    <span class="s">'django.contrib.staticfiles'</span><span class="p">,</span>
+    <span class="c"># Uncomment the next line to enable the admin:</span>
+    <span class="c"># 'django.contrib.admin',</span>
+    <span class="c"># Uncomment the next line to enable admin documentation:</span>
+    <span class="c"># 'django.contrib.admindocs',</span>
+<span class="p">)</span>
+</pre>
+</div>
+</div>
+<div class="section" id="creating-the-database">
+<h1>Creating the Database</h1>
+<p>These <em>apps</em> define models of their own, tables must be created.</p>
+<div class="incremental container">
+<p>You make them by running the <tt class="docutils literal">syncdb</tt> management command:</p>
+<pre class="small literal-block">
+(djangoenv)$ python manage.py syncdb
+Creating tables ...
+Creating table auth_permission
+Creating table auth_group_permissions
+Creating table auth_group
+...
+You just installed Django's auth system, ...
+Would you like to create one now? (yes/no):
+</pre>
+</div>
+<p class="incremental">Add your first user at this prompt. I strongly suggest you use the username
+'admin' and give it the password 'admin'.  If you don't, make sure you remember
+the values you use.</p>
+</div>
+<div class="section" id="our-class-app">
+<h1>Our Class App</h1>
+<p>We are going to build an <em>app</em> to add to our <em>project</em>. To start with our app
+will be a lot like the Flask app we finished last time.</p>
+<p class="incremental">As stated above, an <em>app</em> represents a unit within a system, the <em>project</em>. We
+have a project, we need to create an <em>app</em></p>
+</div>
+<div class="section" id="create-an-app">
+<h1>Create an App</h1>
+<p>This is accomplished using <tt class="docutils literal">manage.py</tt>.</p>
+<p class="incremental">In your terminal, make sure you are in the <em>outer</em> mysite directory, where the
+file <tt class="docutils literal">manage.py</tt> is located.  Then:</p>
+<pre class="incremental literal-block">
+(djangoenv)$ python manage.py startapp myblog
+</pre>
+</div>
+<div class="section" id="what-is-created">
+<h1>What is Created</h1>
+<p>This should leave you with the following structure:</p>
+<pre class="small literal-block">
+mysite
+├── manage.py
+├── myblog
+│&nbsp;&nbsp; ├── __init__.py
+│&nbsp;&nbsp; ├── admin.py
+│&nbsp;&nbsp; ├── models.py
+│&nbsp;&nbsp; ├── tests.py
+│&nbsp;&nbsp; └── views.py
+└── mysite
+    ├── __init__.py
+    ...
+</pre>
+<p class="incremental">We'll start by defining the main Python class for our blog system, a <tt class="docutils literal">Post</tt>.</p>
+</div>
+<div class="section" id="django-models">
+<h1>Django Models</h1>
+<p>Any Python class in Django that is meant to be persisted <em>must</em> inherit from
+the Django <tt class="docutils literal">Model</tt> class.</p>
+<p class="incremental">This base class hooks in to the ORM functionality converting Python code to
+SQL.</p>
+<p class="incremental">You can override methods from the base <tt class="docutils literal">Model</tt> class to alter how this works
+or write new methods to add functionality.</p>
+<p class="incremental">Learn more about <a class="reference external" href="https://docs.djangoproject.com/en/1.6/topics/db/models/">models</a></p>
+</div>
+<div class="section" id="our-post-model">
+<h1>Our Post Model</h1>
+<p>Open the <tt class="docutils literal">models.py</tt> file created in our <tt class="docutils literal">myblog</tt> package. Add the
+following:</p>
+<pre class="code python small literal-block">
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span> <span class="c">#&lt;-- This is already in the file</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
+
+<span class="k">class</span> <span class="nc">Post</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">author</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>
+    <span class="n">created_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">modified_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">published_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre>
+</div>
+<div class="section" id="model-fields">
+<h1>Model Fields</h1>
+<p>We've created a subclass of the Django <tt class="docutils literal">Model</tt> class and added a bunch of
+attributes.</p>
+<ul class="incremental simple">
+<li>These attributes are all instances of <tt class="docutils literal">Field</tt> classes defined in Django</li>
+<li>Field attributes on a model map to columns in a database table</li>
+<li>The arguments you provide to each Field customize how it works<ul>
+<li>This means <em>both</em> how it operates in Django <em>and</em> how it is defined in SQL</li>
+</ul>
+</li>
+<li>There are arguments shared by all Field types</li>
+<li>There are also arguments specific to individual types</li>
+</ul>
+<p class="incremental">You can read much more about <a class="reference external" href="https://docs.djangoproject.com/en/1.6/ref/models/fields/">Model Fields and options</a></p>
+</div>
+<div class="section" id="field-details">
+<h1>Field Details</h1>
+<p>There are some features of our fields worth mentioning in specific:</p>
+<p class="incremental">Notice we have no field that is designated as the <em>primary key</em></p>
+<ul class="incremental simple">
+<li>You <em>can</em> make a field the primary key by adding <tt class="docutils literal">primary_key=True</tt> in the
+arguments</li>
+<li>If you do not, Django will <strong>automatically</strong> create one. This field is always
+called <tt class="docutils literal">id</tt></li>
+<li>No matter what the primary key field is called, its value is always
+available on a model instance as the <tt class="docutils literal">pk</tt> attribute.</li>
+</ul>
+</div>
+<div class="section" id="id1">
+<h1>Field Details</h1>
+<pre class="code python small literal-block">
+<span class="n">title</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
+</pre>
+<p class="incremental">The required <tt class="docutils literal">max_length</tt> argument is specific to <tt class="docutils literal">CharField</tt> fields.</p>
+<p class="incremental">It affects <em>both</em> the Python and SQL behavior of a field.</p>
+<p class="incremental">In python, it is used to <em>validate</em> supplied values during <em>model validation</em></p>
+<p class="incremental">In SQL it is used in the column definition: <tt class="docutils literal">VARCHAR(128)</tt></p>
+</div>
+<div class="section" id="id2">
+<h1>Field Details</h1>
+<pre class="code python small literal-block">
+<span class="n">author</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>
+</pre>
+<p class="incremental">Django also models SQL <em>relationships</em> as specific field types.</p>
+<p class="incremental">The required positional argument is the class of the related Model.</p>
+<p class="incremental">By default, the reverse relation is implemented as the attribute
+<tt class="docutils literal">&lt;fieldname&gt;_set</tt>.</p>
+<p class="incremental">You can override this by providing the <tt class="docutils literal">related_name</tt> argument.</p>
+</div>
+<div class="section" id="id3">
+<h1>Field Details</h1>
+<pre class="code python small literal-block">
+<span class="n">created_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">modified_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre>
+<p class="incremental"><tt class="docutils literal">auto_now_add</tt> is available on all date and time fields. It sets the value
+of the field to <em>now</em> when an instance is first saved.</p>
+<p class="incremental"><tt class="docutils literal">auto_now</tt> is similar, but sets the value anew each time an instance is
+saved.</p>
+<p class="incremental">Setting either of these will cause the <tt class="docutils literal">editable</tt> attribute of a field to be
+set to <tt class="docutils literal">False</tt>.</p>
+</div>
+<div class="section" id="id4">
+<h1>Field Details</h1>
+<pre class="code python small literal-block">
+<span class="n">text</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="c"># ...</span>
+<span class="n">published_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre>
+<p class="incremental">The argument <tt class="docutils literal">blank</tt> is shared across all field types. The default is
+<tt class="docutils literal">False</tt></p>
+<p class="incremental">This argument affects only the Python behavior of a field, determining if the
+field is <em>required</em></p>
+<p class="incremental">The related <tt class="docutils literal">null</tt> argument affects the SQL definition of a field: is the
+column NULL or NOT NULL</p>
+</div>
+<div class="section" id="hooking-it-up">
+<h1>Hooking it Up</h1>
+<p>In order to use our new model, we need Django to know about our <em>app</em></p>
+<p class="incremental">This is accomplished by configuration in the <tt class="docutils literal">settings.py</tt> file.</p>
+<p class="incremental">Open that file now, in your editor, and find the INSTALLED_APPS setting.</p>
+</div>
+<div class="section" id="installing-apps">
+<h1>Installing Apps</h1>
+<p>You extend Django functionality by <em>installing apps</em>. This is pretty simple:</p>
+<pre class="code python small literal-block">
+<span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s">'django.contrib.auth'</span><span class="p">,</span>
+    <span class="s">'django.contrib.contenttypes'</span><span class="p">,</span>
+    <span class="s">'django.contrib.sessions'</span><span class="p">,</span>
+    <span class="s">'django.contrib.sites'</span><span class="p">,</span>
+    <span class="s">'django.contrib.messages'</span><span class="p">,</span>
+    <span class="s">'django.contrib.staticfiles'</span><span class="p">,</span>
+    <span class="s">'myblog'</span><span class="p">,</span> <span class="c"># &lt;- YOU ADD THIS PART</span>
+<span class="p">)</span>
+</pre>
+</div>
+<div class="section" id="setting-up-the-database">
+<h1>Setting Up the Database</h1>
+<p>You know what the next step will be:</p>
+<pre class="code incremental literal-block">
+(djangoenv)$ python manage.py syncdb
+Creating tables ...
+Creating table myblog_post
+Installing custom SQL ...
+Installing indexes ...
+Installed 0 object(s) from 0 fixture(s)
+</pre>
+<p class="incremental">Django has now created a table for our model.</p>
+<p class="incremental">Notice that the table name is a combination of the name of our app <em>and</em> the
+name of our model.</p>
+</div>
+<div class="section" id="the-django-shell">
+<h1>The Django Shell</h1>
+<p>Django provides a management command <tt class="docutils literal">shell</tt>:</p>
+<ul class="incremental simple">
+<li>Shares the same <tt class="docutils literal">sys.path</tt> as your project, so all installed python
+packages are present.</li>
+<li>Imports the <tt class="docutils literal">settings.py</tt> file from your project, and so shares all
+installed apps and other settings.</li>
+<li>Handles connections to your database, so you can interact with live data
+directly.</li>
+</ul>
+<p class="incremental">Let's explore the Model Instance API directly using this shell:</p>
+<pre class="incremental literal-block">
+(djangoenv)$ python manage.py shell
+</pre>
+</div>
+<div class="section" id="creating-instances">
+<h1>Creating Instances</h1>
+<p>Instances of our model can be created by simple instantiation:</p>
+<pre class="code python small literal-block">
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">myblog.models</span> <span class="kn">import</span> <span class="n">Post</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p1</span> <span class="o">=</span> <span class="n">Post</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">&quot;My first post&quot;</span><span class="p">,</span>
+<span class="o">...</span>           <span class="n">text</span><span class="o">=</span><span class="s">&quot;This is the first post I've written&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p1</span>
+<span class="o">&lt;</span><span class="n">Post</span><span class="p">:</span> <span class="n">Post</span> <span class="nb">object</span><span class="o">&gt;</span>
+</pre>
+<div class="incremental container">
+<p>We can also validate that our new object is okay before we try to save it:</p>
+<pre class="code python small literal-block">
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p1</span><span class="o">.</span><span class="n">full_clean</span><span class="p">()</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="o">...</span>
+<span class="n">ValidationError</span><span class="p">:</span> <span class="p">{</span><span class="s">'author'</span><span class="p">:</span> <span class="p">[</span><span class="s">u'This field cannot be null.'</span><span class="p">]}</span>
+</pre>
+</div>
+</div>
+<div class="section" id="django-model-managers">
+<h1>Django Model Managers</h1>
+<p>We have to hook our <tt class="docutils literal">Post</tt> to an author, which must be a <tt class="docutils literal">User</tt>.</p>
+<p class="incremental">To do this, we need to have an instance of the <tt class="docutils literal">User</tt> class.</p>
+<p class="incremental">We can use the <tt class="docutils literal">User</tt> <em>model manager</em> to run table-level operations like
+<tt class="docutils literal">SELECT</tt>:</p>
+<p class="incremental">All Django models have a <em>manager</em>. By default it is accessed through the
+<tt class="docutils literal">objects</tt> class attribute.</p>
+</div>
+<div class="section" id="making-a-foreignkey-relation">
+<h1>Making a ForeignKey Relation</h1>
+<p>Let's use the <em>manager</em> to get an instance of the <tt class="docutils literal">User</tt> class:</p>
+<pre class="code python small literal-block">
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">all_users</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">all_users</span>
+<span class="p">[</span><span class="o">&lt;</span><span class="n">User</span><span class="p">:</span> <span class="n">cewing</span><span class="o">&gt;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">u1</span> <span class="o">=</span> <span class="n">all_users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p1</span><span class="o">.</span><span class="n">author</span> <span class="o">=</span> <span class="n">u1</span>
+</pre>
+<div class="incremental container">
+<p>And now our instance should validate properly:</p>
+<pre class="code python small literal-block">
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p1</span><span class="o">.</span><span class="n">full_clean</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span>
+</pre>
+</div>
+</div>
+<div class="section" id="saving-new-objects">
+<h1>Saving New Objects</h1>
+<p>Our model has three date fields, two of which are supposed to be
+auto-populated:</p>
+<pre class="python class small doctest-block">
+&gt;&gt;&gt; print(p1.created_date)
+None
+&gt;&gt;&gt; print(p1.modified_date)
+None
+</pre>
+<div class="incremental container">
+<p>When we save our post, these fields will get values assigned:</p>
+<pre class="code python small literal-block">
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p1</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p1</span><span class="o">.</span><span class="n">created_date</span>
+<span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2013</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">38</span><span class="p">,</span> <span class="mi">104217</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=&lt;</span><span class="n">UTC</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p1</span><span class="o">.</span><span class="n">modified_date</span>
+<span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2013</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">38</span><span class="p">,</span> <span class="mi">104826</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=&lt;</span><span class="n">UTC</span><span class="o">&gt;</span><span class="p">)</span>
+</pre>
+</div>
+</div>
+<div class="section" id="updating-an-instance">
+<h1>Updating An Instance</h1>
+<p>Models operate much like 'normal' python objects.</p>
+<div class="incremental container">
+<p>To change the value of a field, simply set the instance attribute to a new
+value. Call <tt class="docutils literal">save()</tt> to persist the change:</p>
+<pre class="code python small literal-block">
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p1</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">p1</span><span class="o">.</span><span class="n">title</span> <span class="o">+</span> <span class="s">&quot; (updated)&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p1</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p1</span><span class="o">.</span><span class="n">title</span>
+<span class="s">'My first post (updated)'</span>
+</pre>
+</div>
+</div>
+<div class="section" id="create-a-few-posts">
+<h1>Create a Few Posts</h1>
+<p>Let's create a few more posts so we can explore the Django model manager query
+API:</p>
+<pre class="code python small literal-block">
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p2</span> <span class="o">=</span> <span class="n">Post</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">&quot;Another post&quot;</span><span class="p">,</span>
+<span class="o">...</span>           <span class="n">text</span><span class="o">=</span><span class="s">&quot;The second one created&quot;</span><span class="p">,</span>
+<span class="o">...</span>           <span class="n">author</span><span class="o">=</span><span class="n">u1</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p3</span> <span class="o">=</span> <span class="n">Post</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">&quot;The third one&quot;</span><span class="p">,</span>
+<span class="o">...</span>           <span class="n">text</span><span class="o">=</span><span class="s">&quot;With the word 'heffalump'&quot;</span><span class="p">,</span>
+<span class="o">...</span>           <span class="n">author</span><span class="o">=</span><span class="n">u1</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p4</span> <span class="o">=</span> <span class="n">Post</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">&quot;Posters are great decoration&quot;</span><span class="p">,</span>
+<span class="o">...</span>           <span class="n">text</span><span class="o">=</span><span class="s">&quot;When you are a poor college student&quot;</span><span class="p">,</span>
+<span class="o">...</span>           <span class="n">author</span><span class="o">=</span><span class="n">u1</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<span class="mi">4</span>
+</pre>
+</div>
+<div class="section" id="the-django-query-api">
+<h1>The Django Query API</h1>
+<p>The <em>manager</em> on each model class supports a full-featured query API.</p>
+<p class="incremental">API methods take keyword arguments, where the keywords are special
+constructions combining field names with field <em>lookups</em>:</p>
+<ul class="incremental small simple">
+<li>title__exact=&quot;The exact title&quot;</li>
+<li>text__contains=&quot;decoration&quot;</li>
+<li>id__in=range(1,4)</li>
+<li>published_date__lte=datetime.datetime.now()</li>
+</ul>
+<p class="incremental">Each keyword argument generates an SQL clause.</p>
+</div>
+<div class="section" id="querysets">
+<h1>QuerySets</h1>
+<p>API methods can be divided into two basic groups: methods that return
+<tt class="docutils literal">QuerySets</tt> and those that do not.</p>
+<p class="incremental">The former may be chained without hitting the database:</p>
+<pre class="code python small incremental literal-block">
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span> <span class="c">#&lt;-- no query yet</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">title__icontains</span><span class="o">=</span><span class="s">&quot;post&quot;</span><span class="p">)</span> <span class="c">#&lt;-- not yet</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">text__contains</span><span class="o">=</span><span class="s">&quot;created&quot;</span><span class="p">)</span> <span class="c">#&lt;-- nope</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[(</span><span class="n">p</span><span class="o">.</span><span class="n">title</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">text</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">c</span><span class="p">]</span> <span class="c">#&lt;-- This will issue the query</span>
+</pre>
+<div class="incremental container">
+<p>Conversely, the latter will issue an SQL query when executed.</p>
+<pre class="code python small literal-block">
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="c"># immediately executes an SQL query</span>
+</pre>
+</div>
+</div>
+<div class="section" id="querysets-and-sql">
+<h1>QuerySets and SQL</h1>
+<p>If you are curious, you can see the SQL that a given QuerySet will use:</p>
+<pre class="code python small incremental literal-block">
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">query</span><span class="p">)</span>
+<span class="n">SELECT</span> <span class="s">&quot;myblog_post&quot;</span><span class="o">.</span><span class="s">&quot;id&quot;</span><span class="p">,</span> <span class="s">&quot;myblog_post&quot;</span><span class="o">.</span><span class="s">&quot;title&quot;</span><span class="p">,</span>
+    <span class="s">&quot;myblog_post&quot;</span><span class="o">.</span><span class="s">&quot;text&quot;</span><span class="p">,</span> <span class="s">&quot;myblog_post&quot;</span><span class="o">.</span><span class="s">&quot;author_id&quot;</span><span class="p">,</span>
+    <span class="s">&quot;myblog_post&quot;</span><span class="o">.</span><span class="s">&quot;created_date&quot;</span><span class="p">,</span> <span class="s">&quot;myblog_post&quot;</span><span class="o">.</span><span class="s">&quot;modified_date&quot;</span><span class="p">,</span>
+    <span class="s">&quot;myblog_post&quot;</span><span class="o">.</span><span class="s">&quot;published_date&quot;</span>
+<span class="n">FROM</span> <span class="s">&quot;myblog_post&quot;</span>
+<span class="n">WHERE</span> <span class="p">(</span><span class="s">&quot;myblog_post&quot;</span><span class="o">.</span><span class="s">&quot;title&quot;</span> <span class="n">LIKE</span> <span class="o">%</span><span class="n">post</span><span class="o">%</span> <span class="n">ESCAPE</span> <span class="s">'</span><span class="se">\'</span>
+       <span class="n">AND</span> <span class="n">NOT</span> <span class="p">(</span><span class="s">&quot;myblog_post&quot;</span><span class="o">.</span><span class="s">&quot;text&quot;</span> <span class="n">LIKE</span> <span class="o">%</span><span class="n">created</span><span class="o">%</span> <span class="n">ESCAPE</span> <span class="s">'</span><span class="se">\'</span><span class="s"> )</span>
+<span class="p">)</span>
+</pre>
+<p class="incremental">The SQL will vary depending on which DBAPI backend you use (yay ORM!!!)</p>
+</div>
+<div class="section" id="exploring-the-queryset-api">
+<h1>Exploring the QuerySet API</h1>
+<p>See <a class="reference external" href="https://docs.djangoproject.com/en/1.6/ref/models/querysets">https://docs.djangoproject.com/en/1.6/ref/models/querysets</a></p>
+<pre class="code python small literal-block">
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">pk</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">'created_date'</span><span class="p">)]</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">pk</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">'-created_date'</span><span class="p">)]</span>
+<span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">pk</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">title__contains</span><span class="o">=</span><span class="s">'post'</span><span class="p">)]</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">pk</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">title__contains</span><span class="o">=</span><span class="s">'post'</span><span class="p">)]</span>
+<span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">qs</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">title__contains</span><span class="o">=</span><span class="s">'post'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">qs</span> <span class="o">=</span> <span class="n">qs</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">id__exact</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">pk</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">qs</span><span class="p">]</span>
+<span class="p">[]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">qs</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">title__contains</span><span class="o">=</span><span class="s">'post'</span><span class="p">,</span> <span class="n">id__exact</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">pk</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">qs</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+</pre>
+</div>
+<div class="section" id="updating-via-querysets">
+<h1>Updating via QuerySets</h1>
+<p>You can update all selected objects at the same time.</p>
+<p class="incremental">Changes are persisted without needing to call <tt class="docutils literal">save</tt>.</p>
+<pre class="code python small incremental literal-block">
+<span class="o">&gt;&gt;&gt;</span> <span class="n">qs</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">published_date</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">qs</span><span class="p">]</span>
+<span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">django.utils.timezone</span> <span class="kn">import</span> <span class="n">UTC</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">utc</span> <span class="o">=</span> <span class="n">UTC</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">utc</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">qs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">published_date</span><span class="o">=</span><span class="n">now</span><span class="p">)</span>
+<span class="mi">4</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">published_date</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">qs</span><span class="p">]</span>
+<span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2013</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">27</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">505307</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=&lt;</span><span class="n">UTC</span><span class="o">&gt;</span><span class="p">),</span>
+ <span class="o">...</span><span class="p">]</span>
+</pre>
+</div>
+<div class="section" id="testing-our-model">
+<h1>Testing Our Model</h1>
+<p>As with any project, we want to test our work. Django provides a testing
+framework to allow this.</p>
+<p class="incremental">Django supports both <em>unit tests</em> and <em>doctests</em>. I strongly suggest using
+<em>unit tests</em>.</p>
+<p class="incremental">You add tests for your <em>app</em> to the file <tt class="docutils literal">tests.py</tt>, which should be at the
+same package level as <tt class="docutils literal">models.py</tt>.</p>
+<p class="incremental">Locate and open this file in your editor.</p>
+</div>
+<div class="section" id="django-testcase-classes">
+<h1>Django TestCase Classes</h1>
+<p><strong>SimpleTestCase</strong> is for basic unit testing with no ORM requirements</p>
+<p class="incremental"><strong>TransactionTestCase</strong> is useful if you need to test transactional
+actions (commit and rollback) in the ORM</p>
+<p class="incremental"><strong>TestCase</strong> is used when you require ORM access and a test client</p>
+<p class="incremental"><strong>LiveServerTestCase</strong> launches the django server during test runs for
+front-end acceptance tests.</p>
+</div>
+<div class="section" id="testing-data">
+<h1>Testing Data</h1>
+<p>Sometimes testing requires base data to be present. We need a User for ours.</p>
+<p class="incremental">Django provides <em>fixtures</em> to handle this need.</p>
+<p class="incremental">Create a directory called <tt class="docutils literal">fixtures</tt> inside your <tt class="docutils literal">myblog</tt> app directory.</p>
+<p class="incremental">Copy the file <tt class="docutils literal">myblog_test_fixture.json</tt> from the class resources into this
+directory, it contains users for our tests.</p>
+</div>
+<div class="section" id="setting-up-tests">
+<h1>Setting Up Tests</h1>
+<p>Now that we have a fixture, we need to instruct our tests to use it.</p>
+<div class="incremental container">
+<p>Edit <tt class="docutils literal">tests.py</tt> (which comes with one test already) to look like this:</p>
+<pre class="code python small literal-block">
+<span class="kn">from</span> <span class="nn">django.test</span> <span class="kn">import</span> <span class="n">TestCase</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
+
+<span class="k">class</span> <span class="nc">PostTestCase</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="n">fixtures</span> <span class="o">=</span> <span class="p">[</span><span class="s">'myblog_test_fixture.json'</span><span class="p">,</span> <span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre>
+</div>
+</div>
+<div class="section" id="our-first-enhancement">
+<h1>Our First Enhancement</h1>
+<p>Look at the way our Post represents itself in the Django shell:</p>
+<pre class="code python small literal-block">
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()]</span>
+<span class="p">[</span><span class="o">&lt;</span><span class="n">Post</span><span class="p">:</span> <span class="n">Post</span> <span class="nb">object</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">Post</span><span class="p">:</span> <span class="n">Post</span> <span class="nb">object</span><span class="o">&gt;</span><span class="p">,</span>
+ <span class="o">&lt;</span><span class="n">Post</span><span class="p">:</span> <span class="n">Post</span> <span class="nb">object</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">Post</span><span class="p">:</span> <span class="n">Post</span> <span class="nb">object</span><span class="o">&gt;</span><span class="p">]</span>
+</pre>
+<p class="incremental">Wouldn't it be nice if the posts showed their titles instead?</p>
+<p class="incremental">In Django, the <tt class="docutils literal">__unicode__</tt> method is used to determine how a Model
+instance represents itself.</p>
+<p class="incremental">Then, calling <tt class="docutils literal">unicode(instance)</tt> gives the desired result.</p>
+</div>
+<div class="section" id="write-the-test">
+<h1>Write The Test</h1>
+<p>Let's write a test that demonstrates our desired outcome:</p>
+<pre class="code python small literal-block">
+<span class="c"># add this import at the top</span>
+<span class="kn">from</span> <span class="nn">myblog.models</span> <span class="kn">import</span> <span class="n">Post</span>
+
+<span class="c"># and this test method to the PostTestCase</span>
+<span class="k">def</span> <span class="nf">test_unicode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">expected</span> <span class="o">=</span> <span class="s">&quot;This is a title&quot;</span>
+    <span class="n">p1</span> <span class="o">=</span> <span class="n">Post</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">expected</span><span class="p">)</span>
+    <span class="n">actual</span> <span class="o">=</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">p1</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">actual</span><span class="p">)</span>
+</pre>
+</div>
+<div class="section" id="run-the-test">
+<h1>Run The Test</h1>
+<p>To run tests, use the <tt class="docutils literal">test</tt> management command</p>
+<p class="incremental">Without arguments, it will run all TestCases it finds in all installed <em>apps</em></p>
+<p class="incremental">You can pass the name of a single app to focus on those tests</p>
+<p class="incremental">Quit your Django shell and in your terminal run the test we wrote:</p>
+<pre class="code bash small incremental literal-block">
+<span class="o">(</span>djangoenv<span class="o">)</span><span class="nv">$ </span>python manage.py <span class="nb">test </span>myblog
+</pre>
+</div>
+<div class="section" id="the-result">
+<h1>The Result</h1>
+<p>We have yet to implement this enhancement, so our test should fail:</p>
+<pre class="small literal-block">
+Creating test database for alias 'default'...
+F
+======================================================================
+FAIL: test_unicode (myblog.tests.PostTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File &quot;/Users/cewing/projects/training/uw_pce/training.python_web/scripts/session07/mysite/myblog/tests.py&quot;, line 15, in test_unicode
+    self.assertEqual(expected, actual)
+AssertionError: 'This is a title' != u'Post object'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.007s
+
+FAILED (failures=1)
+Destroying test database for alias 'default'...
+</pre>
+</div>
+<div class="section" id="make-it-pass">
+<h1>Make it Pass</h1>
+<p>Let's add an appropriate <tt class="docutils literal">__unicode__</tt> method to our Post class</p>
+<p class="incremental">It will take <tt class="docutils literal">self</tt> as its only argument</p>
+<p class="incremental">And it should return its own title as the result</p>
+<p class="incremental">Go ahead and take a stab at this in <tt class="docutils literal">models.py</tt></p>
+<pre class="code python small incremental literal-block">
+<span class="k">class</span> <span class="nc">Post</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="c">#...</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span>
+</pre>
+</div>
+<div class="section" id="did-it-work">
+<h1>Did It Work?</h1>
+<p>Re-run the tests to see:</p>
+<pre class="code bash small literal-block">
+<span class="o">(</span>djangoenv<span class="o">)</span><span class="nv">$ </span>python manage.py <span class="nb">test </span>myblog
+Creating <span class="nb">test </span>database <span class="k">for </span><span class="nb">alias</span> <span class="s1">'default'</span>...
+.
+----------------------------------------------------------------------
+Ran 1 <span class="nb">test </span>in 0.007s
+
+OK
+Destroying <span class="nb">test </span>database <span class="k">for </span><span class="nb">alias</span> <span class="s1">'default'</span>...
+</pre>
+<p class="incremental center"><strong>YIPEEEE!</strong></p>
+</div>
+<div class="section" id="what-to-test">
+<h1>What to Test</h1>
+<p>In any framework, the question arises of what to test. Much of your app's
+functionality is provided by framework tools. Does that need testing?</p>
+<p class="incremental">I <em>usually</em> don't write tests covering features provided directly by the
+framework.</p>
+<p class="incremental">I <em>do</em> write tests for functionality I add, and for places where I make
+changes to how the default functionality works.</p>
+<p class="incremental">This is largely a matter of style and taste (and of budget).</p>
+</div>
+<div class="section" id="more-later">
+<h1>More Later</h1>
+<p>We've only begun to test our blog app.</p>
+<p class="incremental">We'll be adding many more tests later</p>
+<p class="incremental">In between, you might want to take a look at the Django testing documentation:</p>
+<p class="incremental center"><a class="reference external" href="https://docs.djangoproject.com/en/1.6/topics/testing/">https://docs.djangoproject.com/en/1.6/topics/testing/</a></p>
+</div>
+<div class="section" id="the-django-admin">
+<h1>The Django Admin</h1>
+<p>There are some who believe that Django has been Python's <em>killer app</em></p>
+<p class="incremental">And without doubt the Django Admin is a <em>killer feature</em> for Django.</p>
+<p class="incremental">To demonstrate this, we are going to set up the admin for our blog</p>
+</div>
+<div class="section" id="using-the-admin">
+<h1>Using the Admin</h1>
+<p>The Django Admin is, itself, an <em>app</em>, installed by default (as of 1.6).</p>
+<p class="incremental">Open the <tt class="docutils literal">settings.py</tt> file from our <tt class="docutils literal">mysite</tt> project package and
+verify that you see it in the list:</p>
+<pre class="code python incremental small literal-block">
+<span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s">'django.contrib.admin'</span><span class="p">,</span> <span class="c"># &lt;- already present</span>
+    <span class="c"># ...</span>
+    <span class="s">'django.contrib.staticfiles'</span><span class="p">,</span> <span class="c"># &lt;- already present</span>
+    <span class="s">'myblog'</span><span class="p">,</span> <span class="c"># &lt;- already present</span>
+<span class="p">)</span>
+</pre>
+</div>
+<div class="section" id="accessing-the-admin">
+<h1>Accessing the Admin</h1>
+<p>What we need now is to allow the admin to be seen through a web browser.</p>
+<p class="incremental">To do that, we'll have to add some URLs to our project.</p>
+</div>
+<div class="section" id="django-url-resolution">
+<h1>Django URL Resolution</h1>
+<p>Django too has a system for dispatching requests to code: the <em>urlconf</em>.</p>
+<ul class="incremental simple">
+<li>A urlconf is a an iterable of calls to the <tt class="docutils literal">django.conf.urls.url</tt> function</li>
+<li>This function takes:<ul>
+<li>a regexp <em>rule</em>, representing the URL</li>
+<li>a <tt class="docutils literal">callable</tt> to be invoked (or a name identifying one)</li>
+<li>an optional <em>name</em> kwarg, used to <em>reverse</em> the URL</li>
+<li>other optional arguments we will skip for now</li>
+</ul>
+</li>
+<li>The function returns a <em>resolver</em> that matches the request path to the
+callable</li>
+</ul>
+</div>
+<div class="section" id="urlpatterns">
+<h1><em>urlpatterns</em></h1>
+<p>I said above that a urlconf is an iterable.</p>
+<p class="incremental">That iterable is generally built by calling the <tt class="docutils literal">django.conf.urls.patterns</tt>
+function.</p>
+<p class="incremental">It's best to build it that way, but in reality, any iterable will do.</p>
+<p class="incremental">However, the name you give this iterable is <strong>not flexible</strong>.</p>
+<p class="incremental">Django will load the urlconf named <tt class="docutils literal">urlpatterns</tt> that it finds in the file
+named in <tt class="docutils literal">settings.ROOT_URLCONF</tt>.</p>
+</div>
+<div class="section" id="including-urls">
+<h1>Including URLs</h1>
+<p>Many Django add-on <em>apps</em>, like the Django Admin, come with their own urlconf</p>
+<p class="incremental">It is standard to include these urlconfs by rooting them at some path in your
+site.</p>
+<div class="incremental container">
+<p>You can do this by using the <tt class="docutils literal">django.conf.urls.include</tt> function as the
+callable in a <tt class="docutils literal">url</tt> call:</p>
+<pre class="code python small literal-block">
+<span class="n">url</span><span class="p">(</span><span class="s">r'^forum/'</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="s">'random.forum.app.urls'</span><span class="p">))</span>
+</pre>
+</div>
+</div>
+<div class="section" id="including-the-admin">
+<h1>Including the Admin</h1>
+<p>We can use this to add <em>all</em> the URLs provided by the Django admin in one
+stroke.</p>
+<div class="incremental container">
+<p>verify the following lines in <tt class="docutils literal">urls.py</tt>:</p>
+<pre class="code python small literal-block">
+<span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">admin</span> <span class="c">#&lt;- make sure these two are</span>
+<span class="n">admin</span><span class="o">.</span><span class="n">autodiscover</span><span class="p">()</span>             <span class="c">#&lt;- present and uncommented</span>
+
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="n">patterns</span><span class="p">(</span><span class="s">''</span><span class="p">,</span>
+    <span class="o">...</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r'^admin/'</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">urls</span><span class="p">)),</span> <span class="c">#&lt;- and this</span>
+<span class="p">)</span>
+</pre>
+</div>
+</div>
+<div class="section" id="using-the-development-server">
+<h1>Using the Development Server</h1>
+<p>We can now view the admin.  We'll use the Django development server.</p>
+<p class="incremental">In your terminal, use the <tt class="docutils literal">runserver</tt> management command to start the
+development server:</p>
+<pre class="incremental literal-block">
+(djangoenv)$ python manage.py runserver
+Validating models...
+
+0 errors found
+Django version 1.4.3, using settings 'mysite.settings'
+Development server is running at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+</pre>
+</div>
+<div class="section" id="viewing-the-admin">
+<h1>Viewing the Admin</h1>
+<p>Load <tt class="docutils literal"><span class="pre">http://localhost:8000/admin/</span></tt>.  You should see this:</p>
+<img alt="img/django-admin-login.png" class="align-center" src="img/django-admin-login.png" style="width: 50%;" />
+<p class="incremental">Login with the name and password you created before.</p>
+</div>
+<div class="section" id="the-admin-index">
+<h1>The Admin Index</h1>
+<p>The index will provide a list of all the installed <em>apps</em> and each model
+registered.  You should see this:</p>
+<img alt="img/admin_index.png" class="align-center" src="img/admin_index.png" style="width: 90%;" />
+<p class="incremental">Click on <tt class="docutils literal">Users</tt>. Find yourself? Edit yourself, but <strong>don't</strong> uncheck
+<tt class="docutils literal">superuser</tt>.</p>
+</div>
+<div class="section" id="add-posts-to-the-admin">
+<h1>Add Posts to the Admin</h1>
+<p>Okay, let's add our app model to the admin.</p>
+<p class="incremental">Find the <tt class="docutils literal">admin.py</tt> file in the <tt class="docutils literal">myblog</tt> package. Open it, add the
+following and save the file:</p>
+<pre class="code python incremental literal-block">
+<span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">admin</span> <span class="c"># &lt;- this is already there.</span>
+<span class="kn">from</span> <span class="nn">myblog.models</span> <span class="kn">import</span> <span class="n">Post</span>
+
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Post</span><span class="p">)</span>
+</pre>
+<p class="incremental">Reload the admin index page.</p>
+</div>
+<div class="section" id="play-a-bit">
+<h1>Play A Bit</h1>
+<p>Visit the admin page for Posts. You should see the posts we created earlier in
+the Django shell.</p>
+<p class="incremental">Look at the listing of Posts. Because of our <tt class="docutils literal">__unicode__</tt> method we see a
+nice title.</p>
+<p class="incremental">Are there other fields you'd like to see listed?</p>
+<p class="incremental">Click on a Post, note what is and is not shown.</p>
+</div>
+<div class="section" id="next-steps">
+<h1>Next Steps</h1>
+<p>We've learned a great deal about Django's ORM and Models.</p>
+<p class="incremental">We've also spent some time getting to know the Query API provided by model
+managers and QuerySets.</p>
+<p class="incremental">We've also hooked up the Django Admin and noted some shortcomings.</p>
+<p class="incremental">In class we'll learn how to put a front end on this, add new models, and
+customize the admin experience.</p>
+</div>
+</div>
+<div class="footer">
+<hr class="footer" />
+<a class="reference external" href="http://github.com/cewing/training.python_web">View document source</a>.
+
+</div>
+</body>
+</html>

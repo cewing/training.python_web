@@ -1,0 +1,7 @@
+Session 6 Homework
+==================
+
+For your homework this week, walk through the Introduction to Django tutorial.
+
+Make sure to save your work and bring it to class.  We'll be using it as a
+starting point for our work in Session 7.
