@@ -6,6 +6,7 @@ from flask import session
 
 import microblog
 
+
 class MicroblogTestCase(unittest.TestCase):
 
     def setUp(self):
@@ -82,7 +83,7 @@ class MicroblogTestCase(unittest.TestCase):
 
     def test_login_fails(self):
         with self.app.test_request_context('/'):
-            self.assertRaises(ValueError, 
+            self.assertRaises(ValueError,
                               microblog.do_login,
                               microblog.app.config['USERNAME'],
                               'incorrectpassword')
