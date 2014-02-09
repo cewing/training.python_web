@@ -1,0 +1,49 @@
+Session 7 Homework
+==================
+
+We noted in class that it is awkward to have to add a post to a category,
+instead of being able to designate a category for a post when authoring the
+post. You will update your blog admin so that this is fixed.
+
+Required Tasks
+--------------
+
+Take the following steps:
+
+1. Read the documentation about the Django admin.
+2. You'll need to create a customized ModelAdmin class for the Post and
+   Category models.
+3. And you'll need to create an InlineModelAdmin to represent Categories on the
+   Post admin view.
+4. Finally, you'll need to suppress the display of the 'posts' field on your
+   Category admin view.
+
+resources:
+
+https://docs.djangoproject.com/en/1.6/ref/contrib/admin/
+https://docs.djangoproject.com/en/1.6/ref/contrib/admin/#modeladmin-objects
+https://docs.djangoproject.com/en/1.6/ref/contrib/admin/#inlinemodeladmin-objects
+https://docs.djangoproject.com/en/1.6/ref/contrib/admin/#modeladmin-options
+
+
+Optional Tasks
+--------------
+
+If you complete the above in less than 3-4 hours of work, consider looking into
+other ways of customizing the admin.
+
+Tasks you might consider:
+
+* Change the admin index to say 'Categories' instead of 'Categorys'.
+* Add columns for the date fields to the list display of Posts.
+* Display the created and modified dates for your posts when viewing them in
+  the admin.
+* Add a column to the list display of Posts that shows the author.  For more
+  fun, make this a link that takes you to the admin page for that user.
+* For the biggest challenge, look into `admin actions`_ and add an action to
+  the Post admin that allows you to bulk publish posts from the Post list
+  display
+
+resources:
+
+https://docs.djangoproject.com/en/1.6/ref/contrib/admin/actions/
