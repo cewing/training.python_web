@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 class Post(models.Model):
     title = models.CharField(max_length=128)
-    text = models.TextField(blank=True)
+    text = models.TextField(blank=True, null=True)
     author = models.ForeignKey(User)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
@@ -13,19 +13,12 @@ class Post(models.Model):
     def __unicode__(self):
         return self.title
 
-    def author_name(self):
-        raw_name = "%s %s" % (self.author.first_name,
-                              self.author.last_name)
-        name = raw_name.strip()
-        if not name:
-            name = self.author.username
-        return name
-
 
 class Category(models.Model):
     name = models.CharField(max_length=128)
     description = models.TextField(blank=True)
-    posts = models.ManyToManyField(Post, 
+    posts = models.ManyToManyField(
+        Post,
         blank=True,
         null=True,
         related_name='categories'
@@ -33,4 +26,3 @@ class Category(models.Model):
 
     def __unicode__(self):
         return self.name
-

@@ -1,12 +1,7 @@
-from django.http import HttpResponse, Http404
-from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.core.exceptions import PermissionDenied
-from django.core.urlresolvers import reverse
-from django.contrib import messages
-
+from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.template import RequestContext, loader
 from myblog.models import Post
-from myblog.forms import PostForm
 
 
 def stub_view(request, *args, **kwargs):
@@ -23,8 +18,12 @@ def stub_view(request, *args, **kwargs):
 def list_view(request):
     published = Post.objects.exclude(published_date__exact=None)
     posts = published.order_by('-published_date')
-    context = {'posts': posts}
-    return render(request, 'list.html', context)
+    template = loader.get_template('list.html')
+    context = RequestContext(request, {
+        'posts': posts,
+    })
+    body = template.render(context)
+    return HttpResponse(body, content_type="text/html")
 
 
 def detail_view(request, post_id):
@@ -35,24 +34,3 @@ def detail_view(request, post_id):
         raise Http404
     context = {'post': post}
     return render(request, 'detail.html', context)
-
-
-def add_view(request):
-    user = request.user
-    if not user.is_authenticated:
-        raise PermissionDenied
-    if request.method == 'POST':
-        form = PostForm(request.POST)
-        if form.is_valid:
-            post = form.save()
-            msg = "post '%s' saved" % post
-            messages.add_message(request, messages.INFO, msg)
-            return HttpResponseRedirect(reverse('blog_index'))
-        else:
-            messages.add_message("please fix the errors below")
-    else:
-        initial = {'author': user}
-        form = PostForm(initial=initial)
-    
-    context = {'form': form}
-    return render(request, 'add.html', context)

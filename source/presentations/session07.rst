@@ -1690,8 +1690,7 @@ Post admin*.
 Your Assignment
 ---------------
 
-You'll be reversing that editing relationship so that you can add categories to
-posts, and cannot choose posts from categories.
+You'll be reverse that relationship so that you can only add categories to posts
 
 Take the following steps:
 
@@ -1721,7 +1720,9 @@ The trick of course is reading and finding out which fifteen lines to write.
 If you complete that task in less than 3-4 hours of work, consider looking into
 other ways of customizing the admin.
 
-Tasks you might consider:
+
+Tasks you might consider
+------------------------
 
 * Change the admin index to say 'Categories' instead of 'Categorys'.
 * Add columns for the date fields to the list display of Posts.

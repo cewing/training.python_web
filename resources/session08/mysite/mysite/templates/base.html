@@ -8,22 +8,15 @@
     <div id="header">
       <ul id="control-bar">
       {% if user.is_authenticated %}
-        <li><a href="{% url 'add_post' %}">new post</a></li>
-        {% if user.is_superuser %}<li><a href="{% url 'admin:index' %}">admin</a></li>{% endif %}
+        {% if user.is_staff %}<li><a href="{% url 'admin:index' %}">admin</a></li>{% endif %}
         <li><a href="{% url 'logout' %}">logout</a></li>
       {% else %}
         <li><a href="{% url 'login' %}">login</a></li>
       {% endif %}
       </ul>
     </div>
+    <p>this is my user: {{user}}</p>
     <div id="container">
-      {% if messages %}
-      <div class="notification">
-       {% for message in messages %}
-       <p>{{ message }}</p>
-       {% endfor %}
-      </div>
-      {% endif %}
       <div id="content">
       {% block content %}
        [content will go here]
