@@ -1249,7 +1249,7 @@ Django too has a system for dispatching requests to code: the *urlconf*.
 
 .. class:: incremental
 
-* A urlconf is a an iterable of calls to the ``django.conf.urls.url`` function
+* A urlconf is an iterable of calls to the ``django.conf.urls.url`` function
 * This function takes:
   
   * a regexp *rule*, representing the URL
