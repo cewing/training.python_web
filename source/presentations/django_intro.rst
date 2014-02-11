@@ -246,7 +246,7 @@ Django's ORM provides a layer of *abstraction* between you and SQL
 
 .. class:: incremental
 
-You write Python classes called *models* describing the object that make up
+You write Python classes called *models* describing the objects that make up
 your system.
 
 .. class:: incremental
