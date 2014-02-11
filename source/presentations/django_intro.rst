@@ -1000,7 +1000,7 @@ Now that we have a fixture, we need to instruct our tests to use it.
 
 .. container:: incremental
 
-    Edit ``tests.py`` (which comes with one test already) to look like this:
+    Edit ``tests.py`` to look like this:
 
     .. code-block:: python
         :class: small
