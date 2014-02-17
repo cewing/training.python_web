@@ -1690,7 +1690,7 @@ Post admin*.
 Your Assignment
 ---------------
 
-You'll be reverse that relationship so that you can only add categories to posts
+You'll be reversing that relationship so that you can only add categories to posts
 
 Take the following steps:
 
