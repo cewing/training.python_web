@@ -1435,7 +1435,7 @@ Create a new directory ``static`` in the ``myblog`` app.
 
 .. class:: incremental
 
-Copy the ``django_css`` file into that new directory.
+Copy the ``django_blog.css`` file into that new directory.
 
 .. container:: incremental
 
