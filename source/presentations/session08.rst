@@ -61,6 +61,7 @@ In order for this to work properly, we'll need to have a few things in place.
         or
         $ git clone git@github.com:<your_name>/django-microblog.git
 
+
 Connect to Your Partner
 -----------------------
 
@@ -136,3 +137,4 @@ Instructions for this `may be found here`_.
 
 This is not trivial work.  Please be sure to start early in the week so if
 there is trouble, you'll be able to recover.
+
