@@ -1545,7 +1545,7 @@ Update ``view_page``:
 
     def view_page(context, request):
         #...
-        content = wikiwords.sub(check, content) #<- already there
+        content = WIKIWORDS.sub(check, content) #<- already there
         edit_url = request.resource_url(context, 'edit_page') #<- add
         return dict(page=context,
                     content=content,
