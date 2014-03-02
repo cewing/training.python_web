@@ -924,7 +924,7 @@ Instances of these classes are able to know when they've been changed.
 
 .. class:: incremental
 
-When a ZODB transaction is committed, all changes objects are saved.
+When a ZODB transaction is committed, all changed objects are saved.
 
 
 Persistent Base Classes
