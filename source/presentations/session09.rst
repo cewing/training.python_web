@@ -1235,7 +1235,7 @@ We are ready to add views now. We'll need:
 * A view of the Wiki itself, which redirects to the front page.
 * A view of an existing Page
 * A view that allows us to *add* a new Page
-* A view that allows us to *edit* and existing Page
+* A view that allows us to *edit* an existing Page
 
 .. class:: incremental
 
