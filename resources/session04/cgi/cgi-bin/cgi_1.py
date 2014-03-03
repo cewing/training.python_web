@@ -1,5 +1,5 @@
-#!/usr/bin/python
-import cgi
+#!/usr/bin/env python
 
+import cgi
 
 cgi.test()
