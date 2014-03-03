@@ -42,9 +42,11 @@
         </div>
         <div id="right" class="app-welcome align-right">
           <metal:login define-slot="login">
+          <!--
           <span tal:condition="logged_in">
             <a href="${request.application_url}/logout">Logout</a>
           </span>
+          -->
           </metal:login>
         </div>
       </div>
