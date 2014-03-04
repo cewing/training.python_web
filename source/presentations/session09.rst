@@ -1560,6 +1560,130 @@ Update ``view_page``:
     OK
 
 
+What's in the ZODB?
+-------------------
+
+We can inspect the database directly.
+
+.. class:: incremental
+
+Start an interactive session with:
+
+::
+
+    (pyramidenv)$ pshell development.ini
+    ...
+    >>> root
+    {'FrontPage': <wikitutorial.models.Page object at 0x1029795f0>}
+
+.. class:: incremental small
+
+::
+
+    >>> root['FrontPage'].data
+    'This is the front page'
+    
+.. class:: incremental small
+
+::
+
+    >>> root['FrontPage'].__dict__
+    {'__name__': 'FrontPage', 'data': 'This is the front page', '__parent__': {'FrontPage': <wikitutorial.models.Page object at 0x1029795f0>}}
+
+
+
+
+Adding Templates
+----------------
+
+What is the page template name for ``view_page``?
+
+.. class:: incremental
+
+Create ``view.pt`` in your ``templates`` directory.
+
+.. class:: incremental
+
+Also copy the file ``base.pt`` from the class resources.
+
+.. class:: incremental
+
+Pyramid can use a number of different templating engines.
+
+.. class:: incremental
+
+We'll be using Chameleon, which also supports extending other templates.
+
+
+The view.pt Template
+--------------------
+
+Type this code into your ``view.pt`` file:
+
+.. code-block:: xml
+
+    <metal:main use-macro="load: base.pt">
+     <metal:login metal:fill-slot="login"></metal:login>
+     <metal:content metal:fill-slot="main-content">
+      <div tal:replace="structure:content">
+        Page text goes here.
+      </div>
+      <p>
+        <a tal:attributes="href edit_url" href="">
+          Edit this page
+        </a>
+      </p>
+     </metal:content>
+    </metal:main>
+
+
+View Your Work
+--------------
+
+We've created the following:
+
+.. class:: incremental small
+
+* A wiki view that redirects to the automatically-created FrontPage page
+* A page view that will render the ``data`` from a page, along with a url for
+  editing that page
+* A page template to show a wiki page.
+
+.. class:: incremental
+
+That's all we need to be able to see our work.  Start Pyramid:
+
+.. class:: incremental small
+
+::
+
+    (pyramidenv)$ pserve development.ini
+    Starting server in PID 43925.
+    serving on http://0.0.0.0:6543
+
+.. class:: incremental
+
+Load http://localhost:6543/
+
+
+What You Should See
+-------------------
+
+.. image:: img/wiki_frontpage.png
+    :align: center
+    :width: 95%
+
+
+Page Editing
+------------
+
+You'll notice that the page has a link to ``Edit This Page``
+
+.. class:: incremental
+
+If you click it, you get a 404.  We haven't created that view yet.
+
+
 Next Steps
 ----------
 
