@@ -783,7 +783,7 @@ Full Urlconf
 Testing Views
 -------------
 
-Before we begin writin real views, we need to add some tests for the views we
+Before we begin writing real views, we need to add some tests for the views we
 are about to create.
 
 .. class:: incremental
