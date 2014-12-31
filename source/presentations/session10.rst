@@ -13,28 +13,6 @@ Session 10: A Pyramid Application
 | Totally not built by aliens.
 
 
-Adding Templates
-----------------
-
-What is the page template name for ``view_page``?
-
-.. class:: incremental
-
-Create ``view.pt`` in your ``templates`` directory.
-
-.. class:: incremental
-
-Also copy the file ``base.pt`` from the class resources.
-
-.. class:: incremental
-
-Pyramid can use a number of different templating engines.
-
-.. class:: incremental
-
-We'll be using Chameleon, which also supports extending other templates.
-
-
 Chameleon Templates
 -------------------
 
@@ -152,29 +130,12 @@ METAL provides operators related to creating and using template macros:
 Much of this will become clearer as we actually create our templates.
 
 
-The view.pt Template
---------------------
-
-Type this code into your ``view.pt`` file:
-
-.. code-block:: xml
-
-    <metal:main use-macro="load: base.pt">
-     <metal:content metal:fill-slot="main-content">
-      <div tal:replace="structure:content">
-        Page text goes here.
-      </div>
-      <p>
-        <a tal:attributes="href edit_url" href="">
-          Edit this page
-        </a>
-      </p>
-     </metal:content>
-    </metal:main>
-
-
 A Few Notes
 -----------
+
+Take a look at our ``view.pt`` template again.
+
+.. class:: incremental
 
 ``<metal>`` and ``<tal>`` tags are processed and removed by the engine.
 
@@ -210,43 +171,6 @@ The ``structure`` expression ensures that the HTML is not escaped.
 
     Here, we use the ``tal`` directive ``attributes`` to set the ``href`` for
     our anchor to the value passed into our template as ``edit_url``.
-
-
-View Your Work
---------------
-
-We've created the following:
-
-.. class:: incremental small
-
-* A wiki view that redirects to the automatically-created FrontPage page
-* A page view that will render the ``data`` from a page, along with a url for
-  editing that page
-* A page template to show a wiki page.
-
-.. class:: incremental
-
-That's all we need to be able to see our work.  Start Pyramid:
-
-.. class:: incremental small
-
-::
-
-    (pyramidenv)$ pserve development.ini
-    Starting server in PID 43925.
-    serving on http://0.0.0.0:6543
-
-.. class:: incremental
-
-Load http://localhost:6543/
-
-
-What You Should See
--------------------
-
-.. image:: img/wiki_frontpage.png
-    :align: center
-    :width: 95%
 
 
 Page Editing

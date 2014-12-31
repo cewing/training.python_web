@@ -32,3 +32,9 @@ bin
 build
 include
 lib
+cast-offs
+develop-eggs
+development
+*.db
+*.sublime-project
+*.sublime-workspace
