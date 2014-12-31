@@ -77,7 +77,7 @@ class ResponseOkTestCase(unittest.TestCase):
 
     def test_passed_body_in_response(self):
         bodies = [
-            "a body", 
+            "a body",
             "a longer body\nwith two lines",
             open("webroot/sample.txt", 'r').read(),
         ]
