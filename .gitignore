@@ -38,3 +38,6 @@ development
 *.db
 *.sublime-project
 *.sublime-workspace
+.mr.developer.cfg
+outline_improvements.txt
+src
