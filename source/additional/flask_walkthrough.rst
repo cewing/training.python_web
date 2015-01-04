@@ -1,5 +1,13 @@
+.. slideconf::
+    :autoslides: False
+
 A Quick Flask Walkthrough
 =========================
+
+.. slide:: A Quick Flask Walkthrough
+    :level: 1
+
+    This document contains no slides.
 
 If you've already set up your virtualenv and installed flask, you can simply
 activate it and skip down to **Kicking the Tires**
