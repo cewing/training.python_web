@@ -1,6 +1,703 @@
-Python Web Programming
+.. slideconf::
+    :autoslides: True
+
+**********
+Session 01
+**********
+
+.. image:: /_static/python.png
+    :align: left
+    :width: 40%
+
+
+MVC and Data Persistence
+========================
+
+.. rst-class:: large centered
+
+Wherin we learn about the Model View Controller approach to app design and
+explore data persistence in Python.
+
+But First
+---------
+
+.. rst-class:: left
+.. container::
+
+    Class presentations are available online for your use
+
+    .. rst-class:: small
+
+    https://github.com/UWPCE-PythonCert/training.python_web
+
+    .. rst-class:: build
+    .. container::
+
+        Licensed with Creative Commons BY-NC-SA
+
+        .. rst-class:: build
+
+        * You must attribute the work
+        * You may not use the work for commercial purposes
+        * You have to share your versions just like this one
+
+        Find mistakes? See improvements? Make a pull request.
+
+.. nextslide::
+
+**Classroom Protocol**
+
+.. rst-class:: build
+.. container::
+
+    Questions to ask:
+
+    .. rst-class:: build
+
+    * What did you just say?
+    * Please explain what we just did again?
+    * How did that work?
+    * Why didn't that work for me?
+    * Is that a typo?
+
+.. nextslide::
+
+**Classroom Protocol**
+
+.. rst-class:: build
+.. container::
+
+    Questions **not** to ask:
+
+    .. rst-class:: build
+
+    * **Hypotheticals**: What happens if I do X?
+    * **Research**: Can Python do Y?
+    * **Syllabus**: Are we going to cover Z in class?
+    * **Marketing questions**: please just don't.
+    * **Performance questions**: Is Python fast enough?
+    * **Unpythonic**: Why doesn't Python do it some other way?
+    * **Show off**: Look what I just did!
+
+.. nextslide::
+
+.. rst-class:: large center
+
+Introductions
+
+*******************
+Environmental Setup
+*******************
+
+.. rst-class:: large
+
+| For every
+| add-on package installed
+| in a system Python,
+| the gods kill a kitten
+|
+| - me
+
+Working with Virtualenv
+=======================
+
+.. rst-class:: left
+.. container::
+
+    Reasons Why:
+
+    .. rst-class:: build
+
+    * You will need to install packages that aren't in the Python standard
+      Library
+    * You often need to install *different* versions of the *same* library for
+      different projects
+    * Conflicts arising from having the wrong version of a dependency installed can
+      cause long-term nightmares
+    * Use `virtualenv`_ ...
+    * **Always**
+
+.. _virtualenv: http://www.virtualenv.org/
+
+Installing Virtualenv
+---------------------
+
+The best way is to install directly in your system Python (one exception to the
+rule).
+
+.. rst-class:: build
+.. container::
+
+    To do so you will have to have `pip`_ installed.
+
+    Try the following command:
+
+    .. code-block:: bash
+
+        $ which pip
+        /usr/local/bin/pip
+
+    If the ``which`` command returns no value for you, then ``pip`` is not
+    installed in your system. To fix this, follow `the instructions here`_.
+
+.. _pip: https://pip.pypa.io/en/latest/index.html
+.. _the instructions here: https://pip.pypa.io/en/latest/installing.html
+
+.. nextslide::
+
+Once you have ``pip`` installed in your system, you can use it to install
+`virtualenv`_.
+
+.. rst-class:: build
+.. container::
+
+    Because you are installing it into your system python, you will most likely
+    need ``superuser`` privileges to do so:
+
+    .. code-block:: bash
+
+        $ sudo pip install virtualenv
+        Downloading/unpacking virtualenv
+          Downloading virtualenv-1.11.2-py2.py3-none-any.whl (2.8MB): 2.8MB downloaded
+        Installing collected packages: virtualenv
+        Successfully installed virtualenv
+        Cleaning up...
+
+.. nextslide::
+
+Great.  Once that's done, you should find that you have a ``virtualenv``
+command available to you from your shell:
+
+.. code-block:: bash
+
+    $ virtualenv --help
+    Usage: virtualenv [OPTIONS] DEST_DIR
+
+    Options:
+      --version             show program's version number and exit
+      -h, --help            ...
+
+Using Virtuelenv
+----------------
+
+Creating a new virtualenv is very very simple:
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: bash
+
+        $ virtualenv [options] <ENV>
+
+
+    ``<ENV>`` is just the name of the environment you want to create.
+
+    It's arbitrary, so name them to be easily remembered.
+
+.. nextslide::
+
+Let's make one for demonstration purposes:
+
+.. code-block:: bash
+
+    $ virtualenv demoenv
+    New python executable in demoenv/bin/python
+    Installing setuptools, pip...done.
+
+
+.. nextslide:: What Happened?
+
+When you ran that command, a couple of things took place:
+
+.. rst-class:: build
+
+* A new directory with your requested name was created
+* A new Python executable was created in <ENV>/bin (<ENV>/Scripts on Windows)
+* The new Python was cloned from your system Python (where virtualenv was
+  installed)
+* The new Python was isolated from any libraries installed in the old Python
+* Setuptools was installed so you have ``easy_install`` for this new python
+* Pip was installed so you have ``pip`` for this new python
+
+Activation
+----------
+
+Every virtualenv you create contains an executable Python command.
+
+.. rst-class:: build
+.. container::
+
+    If you do a quick check to see which Python executable is found by your
+    terminal, you'll see that it is not the one:
+
+    .. code-block:: bash
+
+        $ which python
+        /usr/bin/python
+
+    You can execute the new Python by explicitly pointing to it:
+
+    .. code-block:: bash
+
+        $ ./demoenv/bin/python -V
+        Python 2.7.5
+
+.. nextslide::
+
+But that's tedious and hard to remember.
+
+.. rst-class:: build
+.. container::
+
+    Instead, ``activate`` your virtualenv using the ``source`` shell command:
+
+    .. code-block:: bash
+
+        $ source demoenv/bin/activate
+        (demoenv)$ which python
+        /Users/cewing/demoenv/bin/python
+
+    Notice that when a virtualenv is *active* you can see it in your command
+    prompt.
+
+    So long as the virtualenv is *active* the ``python`` executable that will
+    be used will be the new one in your ``demoenv``.
+
+Installing Packages
+-------------------
+
+Since ``pip`` is also installed, the ``pip`` that is used to install new
+software will also be the one in ``demoenv``.
+
+.. code-block:: bash
+
+    (demoenv)$ which pip
+    /Users/cewing/demoenv/bin/pip
+
+.. rst-class:: build
+.. container::
+
+    This means that using these tools to install packages will install them
+    *into your virtual environment only*
+
+    The are not installed into the system Python.
+
+    Let's see this in action.
+
+.. nextslide::
+
+We'll install a package called ``docutils``
+
+.. rst-class:: build
+.. container::
+
+    It provides tools for creating documentation using ReStructuredText
+
+    Install it using pip (while your virtualenv is active):
+
+    .. code-block:: bash
+
+        (demoenv)$ pip install docutils
+        Downloading/unpacking docutils
+          Downloading docutils-0.11.tar.gz (1.6MB): 1.6MB downloaded
+          Running setup.py (path:/Users/cewing/demoenv/build/docutils/setup.py) egg_info for package docutils
+            ...
+            changing mode of /Users/cewing/demoenv/bin/rst2xml.py to 755
+            changing mode of /Users/cewing/demoenv/bin/rstpep2html.py to 755
+        Successfully installed docutils
+        Cleaning up...
+
+.. nextslide::
+
+And now, when we fire up our Python interpreter, the docutils package is
+available to us:
+
+.. code-block:: pycon
+
+    (demoenv)$ python
+    Python 2.7.5 (default, Aug 25 2013, 00:04:04)
+    [GCC 4.2.1 Compatible Apple LLVM 5.0 (clang-500.0.68)] on darwin
+    Type "help", "copyright", "credits" or "license" for more information.
+    >>> import docutils
+    >>> docutils.__path__
+    ['/Users/cewing/demoenv/lib/python2.7/site-packages/docutils']
+    >>> ^d
+    (demoenv)$
+
+.. nextslide:: Side Effects
+
+Like some other Python libraries, the ``docutils`` package provides a number of
+executable scripts when it is installed.
+
+.. rst-class:: build
+.. container::
+
+    You can see these in the ``bin`` directory inside your virtualenv:
+
+    .. code-block:: bash
+
+        (demoenv)$ ls ./demoenv/bin
+        ...
+        python
+        rst2html.py
+        rst2latex.py
+        ...
+
+    These scripts are set up to execute using the Python with which they were
+    built.
+
+    Running these scripts will use the Python executable in your virtualenv,
+    *even if that virtualenv is not active*!
+
+Deactivation
+------------
+
+So you've got a virtual environment created and activated so you can work with
+it.
+
+.. rst-class:: build
+.. container::
+
+    Eventually you'll need to stop working with this ``virtualenv`` and switch
+    to another
+
+    It's a good idea to keep a separate ``virtualenv`` for every project you
+    work on.
+
+    When a ``virtualenv`` is active, all you have to do is use the
+    ``deactivate`` command:
+
+    .. code-block:: bash
+
+        (demoenv)$ deactivate
+        $ which python
+        /usr/bin/python
+
+    Note that your shell prompt returns to normal, and now the executable
+    Python found when you check ``python`` is the system one again.
+
+Cleaning Up
+-----------
+
+The final advantage that ``virtualenv`` offers you as a developer is
+the ability to easily remove a batch of installed Python software from your
+system.
+
+.. rst-class:: build
+.. container::
+
+    Consider a situation where you installed a library that breaks your Python
+    (it happens)
+
+    If you are working in your system Python, you now have to figure out what
+    that package installed
+
+    You have to figure out where it is
+
+    And you have to go clean it out manually.
+
+    With ``virtualenv`` you simply remove the directory ``virtualenv`` created
+    when you started out.
+
+.. nextslide::
+
+Let's do that with our ``demoenv``:
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: bash
+
+        $ rm -rf demoenv
+
+    And that's it.
+
+    The entire environment and all the packages you installed into it are now
+    gone.
+
+    There are no traces left to pollute your world.
+
+.. nextslide:: Break Time
+
+Let's take a moment to rest up and absorb what we've learned.
+
+When we return, we'll begin talking about a particular approach to thinking
+about application design:
+
+.. rst-class:: centered
+
+**Model View Controller**
+
+
+****************
+MVC Applications
+****************
+
+.. figure:: http://upload.wikimedia.org/wikipedia/commons/4/40/MVC_passive_view.png
+    :align: center
+    :width: 50%
+
+    By Alan Evangelista (Own work) [CC0], via Wikimedia Commons
+
+Separation of Concerns
 ======================
 
-.. image:: img/python.png
-    :align: left
-    :width: 33%
+.. rst-class:: left build
+.. container::
+
+    In the first part of this course, you were introduced to the concept of
+    *Object Oriented Programming*
+
+    OOP was `first formalized`_ in the 1970s in *Smalltalk*, invented by Alan
+    Kay at *Xerox PARC*
+
+    *Smalltalk* was also the first language which utilized the
+    `Model View Controller`_ design pattern.
+
+    This pattern (like all `design patterns`_) seeks to provide a way of
+    thinking that helps to make software design easier.
+
+    In this case, the goal is to help clarify the high-level *separation of
+    concerns* in a system.
+
+.. _first formalized: http://en.wikipedia.org/wiki/Object-oriented_programming#History
+.. _Model View Controller: http://en.wikipedia.org/wiki/Model–view–controller
+.. _design patterns: http://en.wikipedia.org/wiki/Software_design_pattern
+
+Three Components
+----------------
+
+The pattern divides the elements of a system into three parts:
+
+.. rst-class:: build
+
+Model:
+  This component represents the *data* that comprises the system, and the
+  *logic* used to manipulate that data.
+
+View:
+  This component can be any *representation* of the data to the outside world:
+  a chart, diagram, table, user interface, etc.
+
+  It also includes representations of the *actions* available in the system.
+
+Controller:
+  This component coordinates the Model and the View in a system.
+
+  It accepts input from a user and channels that input into the Model.
+
+  It accepts information about the current state of the Model and transmits
+  that information to the View.
+
+On the Web
+----------
+
+This pattern has proven useful for thinking about the applications we build for
+the web.
+
+.. rst-class:: build
+.. container::
+
+    A web browser provides a convenient container for *views* of data.
+
+    These *views* are created by *controller* software hosted on a server.
+
+    This *controller* software accepts input from users via *HTTP requests*,
+    channeling it into a *data model* usually stored in some database.
+
+    The *controller* returns information about the state of the *data model* to
+    the user via *HTTP responses*
+
+.. nextslide::
+
+This approach is so common, that it has been formalized into any number of *web
+frameworks*
+
+.. rst-class:: build
+.. container::
+
+    *Web frameworks* abstract away the specifics of the *HTTP request/response
+    cycle*, leaving simple MVC components for the developer to use.
+
+    *Web frameworks* exist in nearly all modern languages.
+
+    Python has scores of them.
+
+    Over the weeks to come, we'll learn about two of them, `Pyramid`_ and
+    `Django`_.
+
+.. _Pyramid: http://www.pylonsproject.org/projects/pyramid/about
+.. _Django: https://www.djangoproject.com/
+
+A Word About Terminology
+------------------------
+
+Although the MVC pattern is a useful abstraction, there are a few differences
+in how things are named in Python web frameworks
+
+.. rst-class:: build centered
+.. container::
+
+    model <--> model
+
+    controller <--> view
+
+    view <--> template (or even HTTP response)
+
+    .. rst-class:: left
+
+    For more on this difference, you can `read this`_ from the Pyramid design
+    documentation.
+
+.. _read this: http://docs.pylonsproject.org/projects/pyramid/en/latest/designdefense.html#pyramid-gets-its-terminology-wrong-mvc
+
+Our First Application
+=====================
+
+.. rst-class:: left
+
+But enough abstract blabbering.
+
+.. rst-class:: build left
+.. container::
+
+    There's no better way to make concepts like these concrete than to build
+    something using them.
+
+    Let's make an application!
+
+    We're going to build a Learning Journal.
+
+    When we're done, you'll have a live, online application you can use to keep
+    note of the things you are learning about Python development.
+
+    We'll use one of our Python web framework to do this: `Pyarmid`_
+
+Starting the Project
+--------------------
+
+The first step is to prepare for the project.
+
+.. rst-class:: build
+.. container::
+
+    Begin by creating a location where you'll do your work.
+
+    I generally put all my work in a folder called ``projects`` in my home
+    directory:
+
+    .. code-block:: bash
+
+        $ cd
+        $ mkdir projects
+        $ cd projects
+        $ mkdir learning-journal
+        $ cd learning-journal
+        $ pwd
+        /Users/cewing/project/learning-journal
+
+.. nextslide:: Creating an Environment
+
+We continue our preparations by creating a virtualenv we will use for it.
+
+.. rst-class:: build
+.. container::
+
+    Again, this will help us to keep our work here isolated from anything else
+    we do.
+
+    Remember how to make a new virtualenv?
+
+    .. code-block:: bash
+
+        $ virtualenv ljenv
+        New python executable in ljenv/bin/python
+        Installing setuptools, pip...done.
+
+    And then, how to activate it?
+
+    .. code-block:: bash
+
+        $ source ljenv/bin/activate
+        (ljenv)$
+
+.. nextslide:: Installing Pyramid
+
+Next, we install the Pyramid web framework into our new virtualenv.
+
+.. rst-class:: build
+.. container::
+
+    We can do this with the ``pip`` in our active ``ljenv``:
+
+    .. code-block:: bash
+    
+        (ljenv)$ pip install pyramid
+        Collecting pyramid
+          Downloading pyramid-1.5.2-py2.py3-none-any.whl (545kB)
+            100% |################################| 548kB 172kB/s
+        ...
+        Successfully installed PasteDeploy-1.5.2 WebOb-1.4
+        pyramid-1.5.2 repoze.lru-0.6 translationstring-1.3
+        venusian-1.0 zope.deprecation-4.1.1 zope.interface-4.1.2
+
+    Once that is complete, we are ready to create a *scaffold* for our project.
+
+.. nextslide:: Scaffolding in Pyramid
+
+Many web frameworks require at least a bit of *boilerplate* code to get
+started.
+
+.. rst-class:: build
+.. container::
+
+    Pyramid does not.
+
+    However, our application will require a database and handling that does
+    require some.
+
+    Pyramid provides a system for creating boilerplate called ``pcreate``.
+
+    You use it to generate the skeleton for a project based on some pattern:
+
+    .. code-block:: bash
+
+        (ljenv)$ pcreate -s alchemy learning_journal
+        Creating directory /Users/cewing/projects/learning-journal/learning_journal
+        ...
+        Welcome to Pyramid.  Sorry for the convenience.
+        ===============================================================================
+
+    Let's take a quick look at what that did
+
+.. nextslide:: What You Get
+
+.. code-block:: bash
+
+    (ljenv)$ tree learning_journal/
+    learning_journal/
+    ...
+    ├── development.ini
+    ├── learning_journal
+    │   ├── __init__.py
+    │   ├── models.py
+    │   ├── scripts
+    │   │   ├── __init__.py
+    │   │   └── initializedb.py
+    │   ├── static
+    ...
+    │   ├── templates
+    │   │   └── mytemplate.pt
+    │   ├── tests.py
+    │   └── views.py
+    ├── production.ini
+    └── setup.py
+
+
+
+
+**************
+Pyramid Models
+**************
+
+
