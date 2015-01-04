@@ -1,5 +1,13 @@
+.. slideconf::
+    :autoslides: False
+
 Course Readings
 ===============
+
+.. slide:: Course Readings
+    :level: 1
+
+    This document contains no slides.
 
 Web programming is a deep pool. There's more to cover than a 10-session course
 could ever hope to accomplish. To that end, I've compiled a list of related

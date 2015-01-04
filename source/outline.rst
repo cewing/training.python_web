@@ -1,5 +1,13 @@
+.. slideconf::
+    :autoslides: False
+
 Course Outline
 ==============
+
+.. slide:: Course Outline
+    :level: 1
+
+    This document contains no slides.
 
 This course takes place over 10 sessions. Each session is three hours long.
 Each session contains lecture material and exercises you will type at a python

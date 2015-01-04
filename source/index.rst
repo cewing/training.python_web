@@ -1,6 +1,9 @@
 .. Internet Programming with Python documentation master file, created by
    sphinx-quickstart on Sat Nov  3 13:22:19 2012.
 
+.. slideconf::
+    :autoslides: False
+
 `UW PCE Certificate Program in Python Programming
 <http://www.pce.uw.edu/certificates/python-programming.html>`_
 
@@ -8,18 +11,22 @@
 Internet Programming with Python
 ================================
 
-.. sidebar:: Table of Contents
+.. slide:: Internet Programming with Python
+    :level: 1
+
+    This document contains no slides.
+
+.. sidebar:: In This Class
 
     .. toctree::
        :maxdepth: 2
 
-       self
        outline
        readings
 
-Winter Term, 2014 (10 sessions)
+Winter Term, 2015 (10 sessions)
 
-Tuesdays, 6-9 pm, January 7 - March 11
+Tuesdays, 6-9 pm, January 6 - March 10
 
 
 Overview
@@ -46,8 +53,8 @@ Requirements
 ============
 
 This workshop does not provide a computer laboratory. You will have to have a
-portable computer in order to participate. Network access is provided, but you will need to know how to operate the
-network settings for your computer.
+portable computer in order to participate. Network access is provided, but you
+will need to know how to operate the network settings for your computer.
 
 Your computer must have Python version 2.6 or 2.7 installed. No additional
 libraries will be required, but we will be installing some as the workshop
