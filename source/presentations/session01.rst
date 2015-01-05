@@ -6,8 +6,8 @@ Session 01
 **********
 
 .. image:: /_static/python.png
-    :align: left
-    :width: 40%
+    :align: center
+    :width: 43%
 
 
 Introductions
