@@ -18,7 +18,38 @@ increase both the depth and breadth of your knowledge.
 The readings are organized like the class, by session and topic. 
 
 
-Session 1 - TCP/IP and Sockets
+Session 1 - MVC Applications and Data Persistence
+-------------------------------------------------
+
+As we'll be learning about Pyramid over the first three sessions, please take
+some time to read and digest some of the `copious documentation`_ for thie
+powerful framework.
+
+In particular, to cover the topics we address in this session you'll want to
+read the following:
+
+* `Pyramid Configuration
+  <http://docs.pylonsproject.org/projects/pyramid/en/latest/api/config.html>`_
+* `Defending Pyramid's Design
+  <http://docs.pylonsproject.org/projects/pyramid/en/latest/designdefense.html>`_
+
+.. _copious documentation: http://docs.pylonsproject.org/projects/pyramid/en/latest/index.html
+
+You may also wish to read a bit about `SQLAlchemy`_.  In particular you may
+want to work through the `Object Relational Tutorial`_ to get a more complete
+understanding of how the SQLAlchemy ORM works.
+
+.. _SQLAlchemy: http://docs.sqlalchemy.org/en/rel_0_9/
+.. _Object Relational Tutorial: http://docs.sqlalchemy.org/en/rel_0_9/orm/tutorial.html
+
+
+Session 2 - Pyramid Views, Renderers and Forms
+----------------------------------------------
+
+Sesstion 3 - Pyramid Authentication and Deployment
+--------------------------------------------------
+
+Session 4 - TCP/IP and Sockets
 ------------------------------
 
 * `Wikipedia - Internet Protocol Suite
@@ -63,7 +94,7 @@ networked computing in mind:
 * `ZeroMQ Guide, Chapter 1 <http://zguide.zeromq.org/py:all#Chapter-Basics>`_
 
 
-Session 2 - Web Protocols
+Session 5 - Web Protocols
 -------------------------
 
 * `Python Standard Library Internet Protocols
@@ -101,7 +132,7 @@ remain unchanged) over time, skim these specifications for HTTP and SMTP:
 * `RFC 5321 - SMTP (latest) <http://tools.ietf.org/html/rfc5321>`_
 
 
-Session 3 - APIs and Mashups
+Session 6 - APIs and Mashups
 ----------------------------
 
 * `Introduction to HTML (from the Mozilla Developer Network)
@@ -146,7 +177,7 @@ both from the side of production and consumption:
 .. _restkit: https://github.com/benoitc/restkit/
 
 
-Session 4 - CGI and WSGI
+Session 7 - CGI and WSGI
 ------------------------
 
 * `CGI tutorial`_ - Read the following sections: Hello World, Debugging, Form.
@@ -179,167 +210,41 @@ more minimal and may be easier to comprehend off the bat.
 .. _Getting Started with WSGI: http://lucumr.pocoo.org/2007/5/21/getting-started-with-wsgi/
 
 
-Sessions 5 & 6 - Flask
-----------------------
-
-In order to properly prepare for class, you *must* work through the three
-tutorials linked below. You will be expected to know this material before
-session 5 begins. The documentation readings associated with these tutorials
-are there for further reference, and to help you find answers to questions that
-arise while you do the tutorials themselves.
-
-Jinja2
-++++++
-
-* `Jinja2 Template Tutorial <presentations/template_tutorial-plain.html>`_
-
-* `Jinja2 - Python page templates <http://jinja.pocoo.org/docs/>`_ - We'll
-  learn something about templating in Python, starting with the Jinja2
-  templating language. Focus primarily on the `templating documentation
-  <http://jinja.pocoo.org/docs/templates/>`_, which provides a reasonable,
-  non-technical introduction to the language and how it is used.
-
-SQLite3
-+++++++
-
-* `SQL Persistence Tutorial <presentations/sql_persistence_tutorial-plain.html>`_
-
-* `sqlite3 - DB API for sqlite3 <http://pymotw.com/2/sqlite3/index.html>`_ -
-  We'll need a bit of familiarity with the sqlite3 module. How to open
-  connections, execute queries, and read the results from a cursor. Just read
-  the first two sections ('Creating a Database' and 'Retrieving Data').
-
-Flask
-+++++
-
-* `Flask Walkthrough <presentations/lask_walkthrough-plain.html>`_
-
-* `Flask Documentation <http://flask.pocoo.org/docs/>`_ - Read the Foreward,
-  Installation and Quickstart sections.
-
-
-Additional Readings
-+++++++++++++++++++
-
-* `Web Application Frameworks
-  <http://en.wikipedia.org/wiki/Web_application_framework>`_
-
-* `Unittest - Unit Testing Framework
-  <http://docs.python.org/2/library/unittest.html>`_ - Starting in this module
-  we'll begin writing tests to cover our code. Start learning how. For more,
-  read the `Python Module of the Week on unittest
-  <http://pymotw.com/2/unittest/index.html>`_
-
-Flask is the microframework I've chosen as the subject of this course, but it
-is by no means the only choice. A strong argument can be made in favor of any
-of the following options, or even others. Your best bet is to experiment and
-pick the one that fits your brain best.
-
-* `Bottle <http://bottlepy.org/docs/dev/>`_: Python Web Framework.
-* `CherryPy <http://www.cherrypy.org/>`_: A Minimalize Python Web Framework.
-* `Web.py <http://webpy.org/>`_: Think about the ideal way to write a web app.
-  Write the code to make it happen.
-* `Aspen <http://aspen.io/>`_: A Python web framework that makes the most of
-  the filesystem.
-
-
-Sessions 7 & 8 - Django
------------------------
+Sessions 8, 9, & 10 - Django
+----------------------------
 
 Though it's way too much to read in any one sitting (or even in 10 or 20), the
 Django documentation is excellent and thorough. As a start, take a look at
 these sections:
 
 * `Django at a Glance
-  <https://docs.djangoproject.com/en/1.5/intro/overview/>`_ - introduction to
+  <https://docs.djangoproject.com/en/1.7/intro/overview/>`_ - introduction to
   the concepts and execution of Django
 
 * `Quick Install Guide
-  <https://docs.djangoproject.com/en/1.5/intro/install/>`_ - lightweight
-  instructions on installing Django. Use Python 2.6, or 2.7.
+  <https://docs.djangoproject.com/en/1.7/intro/install/>`_ - lightweight
+  instructions on installing Django. Use Python 2.7.
 
-* `Django Tutorial <https://docs.djangoproject.com/en/1.5/intro/tutorial01/>`_
+* `Django Tutorial <https://docs.djangoproject.com/en/1.7/intro/tutorial01/>`_
   - The tutorial covers many of the same concepts we will in class. Go over it
   to re-enforce the lessons you learn
 
-* `Using Django <https://docs.djangoproject.com/en/1.5/topics/>`_ - far more
+* `Using Django <https://docs.djangoproject.com/en/1.7/topics/>`_ - far more
   in-depth information about core topics in Django. In particular, the
   installation instructions here can be helpful when you run into trouble.
 
 Bookmark the `Django Documentation homepage
-<https://docs.djangoproject.com/en/1.5/>`_. It really is "everything you need
+<https://docs.djangoproject.com/en/1.7/>`_. It really is "everything you need
 to know about Django"
-
-Learn about `South <http://south.readthedocs.org/en/latest/>`_ and make a
-habit of using it in developing Django apps. It will save you time, money and
-brain cells.
 
 When you have some time, read `Django Design Philosophies
 <https://docs.djangoproject.com/en/dev/misc/design-philosophies/>`_ - for some
 well-considered words on why Django is the way it is.
 
-Conversely, for some well-considered criticisms of Django and the way it is, 
+Conversely, for some well-considered criticisms of Django and the way it is,
 read this in-depth comparison of SQLAlchemy and the Django ORM by the creator
 of Flask: `SQLAlchemy and You <http://lucumr.pocoo.org/2011/7/19/sqlachemy-and-you/>`_
 
 Or consider viewing `this video <http://www.youtube.com/watch?v=eN7h6ZbzMy0>`_
 of a talk given at DjangoCon 2012 by Chris McDonough, one of the driving
 forces behind the Pyramid framework.
-
-
-Sessions 9 & 10 - Pyramid
--------------------------
-
-Why you should care about `Traversal
-<http://docs.pylonsproject.org/projects/pyramid/en/latest/narr/muchadoabouttraversal.html>`_.
-
-Compare and contrast forms of dispatch in Pyramid:
-
-* `URL Route Dispatch
-  <http://docs.pylonsproject.org/projects/pyramid/en/latest/narr/urldispatch.html>`_
-* `Object Traversal
-  <http://docs.pylonsproject.org/projects/pyramid/en/latest/narr/traversal.html>`_
-  
-  
-
-Learn a bit about the `ZODB <http://zodb.org/index.html>`_
-
-* Read the `tutorial <http://zodb.org/documentation/tutorial.html>`_ for a
-  quick overview of usage (don't actually do it, though).
-* Read the `more complete walk-through here
-  <http://zodb.org/documentation/articles/ZODB1.html>`_ altough, again, do not
-  actually do the code examples.
-* Learn about `object references in the ZODB
-  <http://blog.startifact.com/posts/older/a-misconception-about-the-zodb.html>`_
-  - one of its greatest strengths.
-
-Learn a bit about the Chameleon ZPT templating language:
-
-* Read about `Chameleon Templates in Pyramid
-  <http://docs.pylonsproject.org/projects/pyramid/en/latest/narr/templates.html#chameleon-zpt-templates>`_
-* A `Quick Intro to TAL <https://weblion.psu.edu/trac/weblion/wiki/TAL>`_
-
-* `Chameleon Documentation <https://chameleon.readthedocs.org/en/latest/>`_ 
-
-In particular, pay attention to:
-
-* `Basics (TAL)
-  <https://chameleon.readthedocs.org/en/latest/reference.html#basics-tal>`_
-* `Expressions (TALES)
-  <https://chameleon.readthedocs.org/en/latest/reference.html#expressions-tales>`_
-* `Macros (METAL)
-  <https://chameleon.readthedocs.org/en/latest/reference.html#macros-metal>`_
-
-You might also consider keeping the following around for reference:
-
-* `The ZODB Book <http://zodb.readthedocs.org/en/latest/>`_ - A work in
-  progress by Carlos De La Guardia.
-
-* The `ZPT Appendix <http://docs.zope.org/zope2/zope2book/AppendixC.html>`_ to
-  the Zope Book. It was written for ZPT, but applies also to Chameleon.
-
-Finally, if you are interested in such things, read this eloquent explanation
-of the decisions that went into Pyramid's design:
-
-* `Defending Pyramid's Design
-  <http://docs.pylonsproject.org/projects/pyramid/en/latest/designdefense.html>`_
