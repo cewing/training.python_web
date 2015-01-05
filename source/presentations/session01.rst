@@ -551,8 +551,9 @@ in how things are named in Python web frameworks
 
 .. _read this: http://docs.pylonsproject.org/projects/pyramid/en/latest/designdefense.html#pyramid-gets-its-terminology-wrong-mvc
 
+*********************
 Our First Application
-=====================
+*********************
 
 .. rst-class:: left
 
@@ -571,7 +572,29 @@ But enough abstract blabbering.
     When we're done, you'll have a live, online application you can use to keep
     note of the things you are learning about Python development.
 
-    We'll use one of our Python web framework to do this: `Pyarmid`_
+    We'll use one of our Python web framework to do this: `Pyramid`_
+
+Pyramid
+=======
+
+.. rst-class:: left
+.. container::
+
+    First published in 2010, Pyramid is a powerful, flexible web framework.
+
+    .. rst-class:: build
+    .. container::
+    
+        You can create compelling one-page applications, much like in
+        microframeworks like Flask
+
+        You can also create powerful, scalable applications using the full
+        power of Python
+
+        Created by the combined powers of the teams behind Pylons and Zope
+
+        It represents the first true second-generation web framework in
+        existence.
 
 Starting the Project
 --------------------
@@ -643,7 +666,8 @@ Next, we install the Pyramid web framework into our new virtualenv.
 
     Once that is complete, we are ready to create a *scaffold* for our project.
 
-.. nextslide:: Scaffolding in Pyramid
+Working with Pyramid
+--------------------
 
 Many web frameworks require at least a bit of *boilerplate* code to get
 started.
@@ -693,11 +717,273 @@ started.
     ├── production.ini
     └── setup.py
 
+.. nextslide:: Saving Your Work
 
+You've now created something worth saving.
 
+.. rst-class:: build
+.. container::
 
-**************
-Pyramid Models
-**************
+    Start by initializing a new git repository in the `learning_journal` folder
+    you just created:
+
+    .. code-block:: bash
+
+        (ljenv)$ cd learning_journal
+        (ljenv)$ git init
+        Initialized empty Git repository in
+         /Users/cewing/projects/learning-journal/learning_journal/.git/
+
+.. nextslide:: Saving Your Work
+
+    Check ``git status`` to see where things stand:
+
+    .. code-block:: bash
+
+        (ljenv)$ git status
+        On branch master
+
+        Initial commit
+
+        Untracked files:
+          (use "git add <file>..." to include in what will be committed)
+
+            CHANGES.txt
+            MANIFEST.in
+            README.txt
+            development.ini
+            learning_journal/
+            production.ini
+            setup.py
+
+.. nextslide:: Add the Project Code
+
+Add your work to this new repository:
+
+.. code-block:: bash
+
+    (ljenv)$ git add .
+    (ljenv)$ git status
+    ...
+    Changes to be committed:
+      (use "git rm --cached <file>..." to unstage)
+
+        new file:   CHANGES.txt
+        new file:   MANIFEST.in
+        ...
+        new file:   production.ini
+        new file:   setup.py
+
+.. nextslide:: Ignore Irrelevant Files
+
+Python creates ``.pyc`` files when it executes your code.
+
+.. rst-class:: build
+.. container::
+
+    There are many other files you don't want or need in your repository
+
+    You can ignore this in ``git`` with the ``.gitignore`` file.
+
+    Create one now, in this same directory, and add the following basic lines::
+
+        *.pyc
+        *.egg-info
+        .DS_Store
+
+    Finally, add this new file to your repository, too.
+
+.. nextslide:: Make It Permanent
+
+To preserve all these changes, you'll need to commit what you've done:
+
+.. code-block:: bash
+
+    (ljenv)$ git commit -m "initial commit of the Pyramid learning journal"
+
+.. rst-class:: build
+.. container::
+
+    This will make a first commit here in this local repository.
+
+    For homework, you'll put this into GitHub, but this is enough for now.
+
+    Let's move on to learning about what we've built so far.
+
+.. nextslide:: Project Structure
+
+When you ran the ``pcreate`` command, a new folder was created:
+``learning_journal``.
+
+.. rst-class:: build
+.. container::
+
+    This folder contains your *project*.
+
+    At the top level, you have *configuration* (.ini files)
+
+    You also have a file called ``setup.py``
+
+    This file turns this collection of Python code and configuration into an
+    *installable Python distribution*
+
+    Let's take a moment to look over the code in that file
+
+.. nextslide:: ``setup.py``
+
+.. code-block:: python
+
+    from setuptools import setup, find_packages
+    ...
+    requires = [
+        'pyramid',
+        ... # packages on which this software depends (dependencies)
+        ]
+    setup(name='learning_journal',
+          version='0.0',
+          ... # package metadata (used by PyPI)
+          install_requires=requires,
+          # Entry points are ways that we can run our code once installed
+          entry_points="""\
+          [paste.app_factory]
+          main = learning_journal:main
+          [console_scripts]
+          initialize_learning_journal_db = learning_journal.scripts.initializedb:main
+          """,
+          )
+
+Pyramid is Python
+-----------------
+
+In the ``__init__.py`` file of your app *package*, you'll find a ``main``
+function:
+
+.. code-block:: python
+
+    def main(global_config, **settings):
+        """ This function returns a Pyramid WSGI application.
+        """
+        engine = engine_from_config(settings, 'sqlalchemy.')
+        DBSession.configure(bind=engine)
+        Base.metadata.bind = engine
+        config = Configurator(settings=settings)
+        config.include('pyramid_chameleon')
+        config.add_static_view('static', 'static', cache_max_age=3600)
+        config.add_route('home', '/')
+        config.scan()
+        return config.make_wsgi_app()
+
+Let's take a closer look at this, line by line.
+
+.. nextslide:: System Configuration
+
+.. code-block:: python
+
+    def main(global_config, **settings):
+
+Configuration is passed in to an application after being read from the
+``.ini`` file we saw above.
+
+.. rst-class:: build
+.. container::
+
+    These files contain sections (``[app:main]``) containing ``name = value``
+    pairs of *configuration data*
+
+    This data is parsed with the Python
+    `ConfigParser <http://docs.python.org/2/library/configparser.html>`_ module.
+
+    The result is a dict of values:
+
+    .. code-block:: python
+
+        {'app:main': {'pyramid.reload_templates': True, ...}, ...}
+
+    The default section of the file is passed in as ``global_config``, the
+    section for *this app* as ``settings``.
+
+.. nextslide:: Database Configuration
+
+.. code-block:: python
+
+    from sqlalchemy import engine_from_config
+    from .models import DBSession, Base
+    ...
+    engine = engine_from_config(settings, 'sqlalchemy.')
+    DBSession.configure(bind=engine)
+    Base.metadata.bind = engine
+
+We will use a package called ``SQLAlchemy`` to interact with our database.
+
+.. rst-class:: build
+.. container::
+
+    Our connection is set up using settings read from the ``.ini`` file.
+
+    Can you find the settings for the database?
+
+    The ``DBSession`` ensures that each *database transaction* is tied to HTTP
+    requests.
+
+    The ``Base`` provides a parent class that will hook our *models* to the
+    database.
+
+.. nextslide:: App Configuration
+
+.. code-block:: python
+
+    config = Configurator(settings=settings)
+    config.include('pyramid_chameleon')
+    config.add_static_view('static', 'static', cache_max_age=3600)
+    config.add_route('home', '/')
+    config.scan()
+
+Pyramid controlls application-level configuration using a ``Configurator`` class.
+
+.. rst-class:: build
+.. container::
+
+    It uses app-specific settings passed in from the ``.ini`` file
+
+    We can also ``include`` configuration from other add-on packages
+
+    Additionally, we can configure *routes* and *views* needed to connect our
+    application to the outside world here (more on this next week).
+
+    Finally, the ``Configurator`` instance performs a ``scan`` to ensure there
+    are no problems with what we've created.
+
+.. nextslide:: A Last Word on Configuration
+
+We will return to the configuration of our application repeatedly over the next
+sessions.
+
+.. rst-class:: build
+.. container::
+
+    Pyramid configuration is powerful and flexible.
+
+    We'll use a few of its features
+
+    But there's a lot more you could (and should) learn.
+
+    Read about it in the `configuration chapter`_ of the Pyramid documentation.
+
+.. _configuration chapter: http://docs.pylonsproject.org/projects/pyramid/en/latest/api/config.html
+
+.. nextslide:: Break Time
+
+Let's take a moment to rest up and absorb what we've learned.
+
+When we return, we'll see how we can create *models* that will embody the data
+for our Learning Journal application.
+
+.. rst-class:: centered
+
+**Pyramid Models**
+
+*****************
+Models in Pyramid
+*****************
 
 
