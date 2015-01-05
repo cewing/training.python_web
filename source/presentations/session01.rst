@@ -10,8 +10,8 @@ Session 01
     :width: 40%
 
 
-MVC and Data Persistence
-========================
+Introductions
+=============
 
 .. rst-class:: large centered
 
@@ -85,9 +85,9 @@ But First
 
 Introductions
 
-*******************
-Environmental Setup
-*******************
+
+Working with Virtualenv
+=======================
 
 .. rst-class:: large
 
@@ -98,24 +98,19 @@ Environmental Setup
 |
 | - me
 
-Working with Virtualenv
-=======================
+Why Virtualenv?
+---------------
 
-.. rst-class:: left
-.. container::
+.. rst-class:: build
 
-    Reasons Why:
-
-    .. rst-class:: build
-
-    * You will need to install packages that aren't in the Python standard
-      Library
-    * You often need to install *different* versions of the *same* library for
-      different projects
-    * Conflicts arising from having the wrong version of a dependency installed can
-      cause long-term nightmares
-    * Use `virtualenv`_ ...
-    * **Always**
+* You will need to install packages that aren't in the Python standard
+  Library
+* You often need to install *different* versions of the *same* library for
+  different projects
+* Conflicts arising from having the wrong version of a dependency installed can
+  cause long-term nightmares
+* Use `virtualenv`_ ...
+* **Always**
 
 .. _virtualenv: http://www.virtualenv.org/
 
@@ -428,10 +423,8 @@ about application design:
 
 **Model View Controller**
 
-
-****************
 MVC Applications
-****************
+================
 
 .. figure:: http://upload.wikimedia.org/wikipedia/commons/4/40/MVC_passive_view.png
     :align: center
@@ -440,9 +433,9 @@ MVC Applications
     By Alan Evangelista (Own work) [CC0], via Wikimedia Commons
 
 Separation of Concerns
-======================
+----------------------
 
-.. rst-class:: left build
+.. rst-class:: build
 .. container::
 
     In the first part of this course, you were introduced to the concept of
@@ -551,9 +544,8 @@ in how things are named in Python web frameworks
 
 .. _read this: http://docs.pylonsproject.org/projects/pyramid/en/latest/designdefense.html#pyramid-gets-its-terminology-wrong-mvc
 
-*********************
 Our First Application
-*********************
+=====================
 
 .. rst-class:: left
 
@@ -575,26 +567,23 @@ But enough abstract blabbering.
     We'll use one of our Python web framework to do this: `Pyramid`_
 
 Pyramid
-=======
+-------
 
-.. rst-class:: left
+First published in 2010, `Pyramid`_ is a powerful, flexible web framework.
+
+.. rst-class:: build
 .. container::
 
-    First published in 2010, Pyramid is a powerful, flexible web framework.
+    You can create compelling one-page applications, much like in
+    microframeworks like Flask
 
-    .. rst-class:: build
-    .. container::
-    
-        You can create compelling one-page applications, much like in
-        microframeworks like Flask
+    You can also create powerful, scalable applications using the full
+    power of Python
 
-        You can also create powerful, scalable applications using the full
-        power of Python
+    Created by the combined powers of the teams behind Pylons and Zope
 
-        Created by the combined powers of the teams behind Pylons and Zope
-
-        It represents the first true second-generation web framework in
-        existence.
+    It represents the first true second-generation web framework in
+    existence.
 
 Starting the Project
 --------------------
@@ -736,25 +725,25 @@ You've now created something worth saving.
 
 .. nextslide:: Saving Your Work
 
-    Check ``git status`` to see where things stand:
+Check ``git status`` to see where things stand:
 
-    .. code-block:: bash
+.. code-block:: bash
 
-        (ljenv)$ git status
-        On branch master
+    (ljenv)$ git status
+    On branch master
 
-        Initial commit
+    Initial commit
 
-        Untracked files:
-          (use "git add <file>..." to include in what will be committed)
+    Untracked files:
+      (use "git add <file>..." to include in what will be committed)
 
-            CHANGES.txt
-            MANIFEST.in
-            README.txt
-            development.ini
-            learning_journal/
-            production.ini
-            setup.py
+        CHANGES.txt
+        MANIFEST.in
+        README.txt
+        development.ini
+        learning_journal/
+        production.ini
+        setup.py
 
 .. nextslide:: Add the Project Code
 
@@ -982,8 +971,8 @@ for our Learning Journal application.
 
 **Pyramid Models**
 
-*****************
+
 Models in Pyramid
-*****************
+=================
 
-
+this is a change so the page will re-render
