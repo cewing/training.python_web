@@ -23,6 +23,7 @@ Internet Programming with Python
 
        outline
        readings
+       presentations/index
 
 Winter Term, 2015 (10 sessions)
 
