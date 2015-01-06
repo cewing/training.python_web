@@ -643,7 +643,7 @@ Next, we install the Pyramid web framework into our new virtualenv.
     We can do this with the ``pip`` in our active ``ljenv``:
 
     .. code-block:: bash
-    
+
         (ljenv)$ pip install pyramid
         Collecting pyramid
           Downloading pyramid-1.5.2-py2.py3-none-any.whl (545kB)
@@ -777,7 +777,6 @@ Python creates ``.pyc`` files when it executes your code.
     Create one now, in this same directory, and add the following basic lines::
 
         *.pyc
-        *.egg-info
         .DS_Store
 
     Finally, add this new file to your repository, too.
@@ -975,4 +974,346 @@ for our Learning Journal application.
 Models in Pyramid
 =================
 
-this is a change so the page will re-render
+.. rst-class:: left
+.. container::
+
+    The central component of MVC, the model, captures the behavior of the
+    application in terms of its problem domain, independent of the user
+    interface. The model directly manages the data, logic and rules of the
+    application
+
+    -- from the Wikipedia article on `Model-view-controller`_
+
+.. _Model-view-controller: http://en.wikipedia.org/wiki/Model–view–controller
+
+Models and ORMs
+---------------
+
+In an MVC application, we define the *problem domain* by creating one or more
+*Models*.
+
+.. rst-class:: build
+.. container::
+
+    These capture relevant details about the information we want to preserve
+    and how we want to interact with it.
+
+    In Python-based MVC applications, these *Models* are implemented as Python
+    classes.
+
+    The individual bits of data we want to know about are *attributes* of our
+    classes.
+
+    The actions we want to take using that data are *methods* of our classes.
+
+    Together, we can refer to this as the *API* of our system.
+
+.. nextslide:: Persistence
+
+It's all well and good to have a set of Python classes that represent your
+system.
+
+.. rst-class:: build
+.. container::
+
+    But what happens when you want to *save* information.
+
+    What happens to a instance of a Python class when you quit the interprer?
+
+    When your script stops running?
+
+    The code in a website runs when an HTTP request comes in from a client.
+
+    It stops running when an HTTP response goes back out to the client.
+
+    So what happens to the data in your system in-between these moments?
+
+    The data must be *persisted*
+
+.. nextslide:: Alternatives
+
+In the last class from part one of this series, you explored a number of
+alternatives for persistence
+
+.. rst-class:: build
+
+* Python Literals
+* Pickle/Shelf
+* Interchange Files (CSV, XML, INI)
+* Object Stores (ZODB, Durus)
+* NoSQL Databases (MongoDB, CouchDB)
+* SQL Databases (sqlite, MySQL, PostgreSQL, Oracle, SQLServer)
+
+.. rst-class:: build
+.. container::
+
+    Any of these might be useful for certain types of applications.
+
+    On the web, you tend to see two used the most:
+
+    .. rst-class:: build
+
+    * NoSQL
+    * SQL
+
+.. nextslide:: Choosing One
+
+How do you choose one over the other?
+
+.. rst-class:: build
+.. container::
+
+    In general, the telling factor is going to be how you intend to use your
+    data.
+
+    In systems where the dominant feature is viewing/interacting with
+    individual objects, a NoSQL storage solution might be the best way to go.
+
+    In systems with objects that are related to eachother, SQL-based Relational
+    Databases are a better choice.
+
+    Our system is more like this latter type (trust me on that one for now).
+
+    We'll be using SQL (sqlite to start with).
+
+
+.. nextslide:: Objects and Tables
+
+So we have a system where our data is captured in Python *objects*
+
+.. rst-class:: build
+.. container::
+
+    And a storage system where our data must be rendered as database *tables*
+
+    Python provides a specification for interacting directly with databases:
+    `dbapi2`_
+
+    And there are multiple Python packages that implement this specification
+    for various databases:
+
+    .. rst-class:: build
+
+    * sqlite3
+    * python-mysql
+    * psycopg2
+    * ...
+
+    With these, you can write SQL to save your Python objects into your
+    database.
+
+.. _dbapi2: https://www.python.org/dev/peps/pep-0249/
+
+.. nextslide:: ORMs
+
+But that's a pain.
+
+.. rst-class:: build
+.. container::
+
+    SQL, while not impossible, is yet another language to learn.
+
+    And there is a viable alternative in using an *Object Relational Manager*
+    (ORM)
+
+    An ORM provides a layer of *abstraction* between you and SQL
+
+    You instantiate Python objects and set attributes on them
+
+    The ORM handles converting data from these objects into SQL statements (and
+    back)
+
+SQLAlchemy
+----------
+
+In our project we will be using the `SQLAlchemy`_ ORM.
+
+.. rst-class:: build
+.. container::
+
+    You can find SQLAlchemy among the packages in ``requires`` in ``setup.py``
+    in our new ``learning_journal`` package.
+
+    However, we don't yet have that code installed.
+
+    To do so, we will need to "install" our own package
+
+    Make sure your ``ljenv`` virtualenv is active and then type the following:
+
+    .. code-block:: bash
+    
+        (ljenv)$ python setup.py develop
+        running develop
+        running egg_info
+        creating learning_journal.egg-info
+        ...
+        Finished processing dependencies for learning-journal==0.0
+
+.. nextslide::
+
+Once that is complete, all the *dependencies* listed in our ``setup.py`` will
+be installed.
+
+.. rst-class:: build
+.. container::
+
+    You can also install the package using ``python setup.py install``
+
+    But using ``develop`` allows us to continue developing our package without
+    needing to re-install it every time we change something.
+
+    It is very similar to using the ``-e`` option to ``pip``
+
+    Now, we'll only need to re-run this command if we change ``setup.py``
+    itself.
+
+.. nextslide::
+
+We also need to adjust our ``.gitignore`` file:
+
+.. rst-class:: build
+.. code-block:: bash
+
+    (ljenv)$ git status
+    ...
+    Untracked files:
+      (use "git add <file>..." to include in what will be committed)
+
+        learning_journal.egg-info/
+
+.. rst-class:: build
+.. container::
+
+    The ``egg-info`` directory that was just created is an artifact of
+    installing a Python egg.
+
+    It should never be committed to a repository.
+
+    Let's add ``*.egg-info`` to our ``.gitignore`` file and then commit that
+    change
+
+    Remember how?
+
+.. nextslide:: Our First Model
+
+Our project skeleton contains up a first, basic model created for us:
+
+.. code-block:: python
+
+    # in models.py
+    Base = declarative_base()
+
+    class MyModel(Base):
+        __tablename__ = 'models'
+        id = Column(Integer, primary_key=True)
+        name = Column(Text)
+        value = Column(Integer)
+    Index('my_index', MyModel.name, unique=True, mysql_length=255)
+
+.. _SQLAlchemy: http://docs.sqlalchemy.org/en/rel_0_9/
+
+.. rst-class:: build
+.. container::
+
+    Our class inherits from ``Base``
+
+    We ran into ``Base`` earlier when discussing configuration.
+
+    We were binding it to the database we wanted to use (the ``engine``)
+
+.. nextslide:: ``Base``
+
+Any class we create that inherits from this ``Base`` becomes a *model*
+
+.. rst-class:: build
+.. container::
+
+    It will be connected through the ORM to a table in our database.
+
+    The name of the table is determined by the ``__tablename__`` special
+    attribute.
+
+    Other aspects of table configuration can also be controlled through special
+    attributes
+
+    Instances of the class, once saved, will become rows in the table.
+
+    Attributes of the model that are instances of ``Column`` will become
+    columns in the table.
+
+    You can learn much more in the `Declarative`_ chapter of the SQLAlchemy docs
+
+.. _Declarative: http://docs.sqlalchemy.org/en/rel_0_9/orm/extensions/declarative/
+
+Creating The Database
+---------------------
+
+We have a *model* which allows us to persist Python objects to an SQL database.
+
+.. rst-class:: build
+.. container::
+
+    But we're still missing one ingredient here.
+
+    We need to create our database, or there will be nowhere for our data to
+    go.
+
+    Luckily, our ``pcreate`` scaffold also gave us a convenient way to handle
+    this:
+
+    .. code-block:: python
+    
+        # in setup.py
+        entry_points="""\
+        [paste.app_factory]
+        main = learning_journal:main
+        [console_scripts]
+        initialize_learning_journal_db = learning_journal.scripts.initializedb:main
+        """,
+
+    The ``console_script`` set up as an entry point will help us.
+
+.. nextslide:: ``initialize_learning_journal_db``
+
+Let's look at that code for a moment.
+
+.. code-block:: python
+
+    # in scripts/intitalizedb.py
+    from ..models import DBSession, MyModel, Base
+    # ...
+    def main(argv=sys.argv):
+        if len(argv) < 2:
+            usage(argv)
+        config_uri = argv[1]
+        options = parse_vars(argv[2:])
+        setup_logging(config_uri)
+        settings = get_appsettings(config_uri, options=options)
+        engine = engine_from_config(settings, 'sqlalchemy.')
+        DBSession.configure(bind=engine)
+        Base.metadata.create_all(engine)
+        with transaction.manager:
+            model = MyModel(name='one', value=1)
+            DBSession.add(model)
+
+.. nextslide:: Console Scripts
+
+By connecting this function as a ``console script``, our Python package makes
+this command available to us.
+
+.. rst-class:: build
+.. container::
+
+    When we exectute ``initialize_learning_journal_db`` at the command line, we
+    will be running this function.
+
+    It will use the configuration we pass in on the command line (an ``.ini``
+    file)
+
+    It will connect to the database by creating a ``DBSession``
+
+    It will use the ``metadata`` property of our ``Base`` class to
+    ``create_all`` tables needed by our models.
+
+    It will create one instance of our ``MyModel`` class and add it to the
+    session.
