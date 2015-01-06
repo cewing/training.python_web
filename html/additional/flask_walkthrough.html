@@ -1,0 +1,405 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>A Quick Flask Walkthrough &mdash; Internet Programming with Python</title>
+    
+    <link rel="stylesheet" href="../_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Internet Programming with Python" href="../index.html" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head>
+  <body>
+<div class="header">
+  <div class="logo">
+    <a href="../index.html">
+      <img class="logo" src="../_static/logo_UW.png" alt="Logo"/>
+    </a>
+  </div>
+</div>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="../index.html">UWPCE Python 200</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="a-quick-flask-walkthrough">
+<h1>A Quick Flask Walkthrough<a class="headerlink" href="#a-quick-flask-walkthrough" title="Permalink to this headline">¶</a></h1>
+<span class="admonition-a-quick-flask-walkthrough"></span><p>If you&#8217;ve already set up your virtualenv and installed flask, you can simply
+activate it and skip down to <strong>Kicking the Tires</strong></p>
+<p>If not...</p>
+<div class="section" id="practice-safe-development">
+<h2>Practice Safe Development<a class="headerlink" href="#practice-safe-development" title="Permalink to this headline">¶</a></h2>
+<p>We are going to install Flask, and the packages it requires, into a
+virtualenv.</p>
+<dl class="class">
+<dt id="incremental">
+<em class="property">class </em><tt class="descname">incremental</tt><a class="headerlink" href="#incremental" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>This will ensure that it is isolated from everything else we do in class (and
+vice versa)</p>
+<div class="incremental container">
+<p>Remember the basic format for creating a virtualenv:</p>
+<dl class="class">
+<dt id="small">
+<em class="property">class </em><tt class="descname">small</tt><a class="headerlink" href="#small" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python"><div class="highlight"><pre>$ python virtualenv.py [options] &lt;ENV&gt;
+&lt;or&gt;
+$ virtualenv [options] &lt;ENV&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="set-up-a-virtualenv">
+<h2>Set Up a VirtualEnv<a class="headerlink" href="#set-up-a-virtualenv" title="Permalink to this headline">¶</a></h2>
+<p>Start by creating your virtualenv:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ python virtualenv.py flaskenv
+&lt;or&gt;
+$ virtualenv flaskenv
+...
+</pre></div>
+</div>
+<div class="incremental container">
+<p>Then, activate it:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ source flaskenv/bin/activate
+&lt;or&gt;
+C:\&gt; flaskenv\Scripts\activate
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="install-flask">
+<h2>Install Flask<a class="headerlink" href="#install-flask" title="Permalink to this headline">¶</a></h2>
+<p>Finally, install Flask using <cite>setuptools</cite> or <cite>pip</cite>:</p>
+<div class="highlight-python"><div class="highlight"><pre>(flaskenv)$ pip install flask
+Downloading/unpacking flask
+  Downloading Flask-0.10.1.tar.gz (544kB): 544kB downloaded
+...
+Installing collected packages: flask, Werkzeug, Jinja2,
+  itsdangerous, markupsafe
+...
+Successfully installed flask Werkzeug Jinja2 itsdangerous
+  markupsafe
+</pre></div>
+</div>
+</div>
+<div class="section" id="kicking-the-tires">
+<h2>Kicking the Tires<a class="headerlink" href="#kicking-the-tires" title="Permalink to this headline">¶</a></h2>
+<p>We&#8217;ve installed the Flask microframework and all of its dependencies.</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>Now, let&#8217;s see what it can do</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>With your flaskenv activated, create a file called <tt class="docutils literal"><span class="pre">flask_intro.py</span></tt> and
+open it in your text editor.</p>
+</div>
+<div class="section" id="flask">
+<h2>Flask<a class="headerlink" href="#flask" title="Permalink to this headline">¶</a></h2>
+<p>Getting started with Flask is pretty straightforward. Here&#8217;s a complete,
+simple app.  Type it into <cite>flask_intro.py</cite>:</p>
+</div>
+<div class="section" id="running-our-app">
+<h2>Running our App<a class="headerlink" href="#running-our-app" title="Permalink to this headline">¶</a></h2>
+<p>As you might expect by now, the last block in our <tt class="docutils literal"><span class="pre">flask_intro.py</span></tt> file
+allows us to run this as a python program. Save your file, and in your
+terminal try this:</p>
+<div class="highlight-python"><div class="highlight"><pre>(flaskenv)$ python flask_intro.py
+</pre></div>
+</div>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>Load <tt class="docutils literal"><span class="pre">http://localhost:5000</span></tt> in your browser to see it in action.</p>
+</div>
+<div class="section" id="debugging-our-app">
+<h2>Debugging our App<a class="headerlink" href="#debugging-our-app" title="Permalink to this headline">¶</a></h2>
+<p>Last week, <tt class="docutils literal"><span class="pre">cgitb</span></tt> provided us with useful feedback when building an app.
+Flask has similar functionality. Make the following changes to your
+<tt class="docutils literal"><span class="pre">flask_intro.py</span></tt> file:</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>Restart your app and then reload your browser to see what happens.</p>
+<p>Click in the stack trace that appears in your browser.  Notice anything fun?</p>
+<p>(clean up the error when you&#8217;re done playing).</p>
+</div>
+<div class="section" id="your-work-so-far">
+<h2>Your work so far<a class="headerlink" href="#your-work-so-far" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<ul class="simple">
+<li>You instantiated a <cite>Flask</cite> app with a name that represents the package or
+module containing the app<ul>
+<li>Because our app is a single Python module, this should be <tt class="docutils literal"><span class="pre">__name__</span></tt></li>
+<li>This is used to help the <cite>Flask</cite> app figure out where to look for
+<em>resources</em></li>
+</ul>
+</li>
+<li>You defined a function that returned a response body</li>
+<li>You told the app which requests should use that function with a <em>route</em></li>
+</ul>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>Let&#8217;s take a look at how that last bit works for a moment...</p>
+</div>
+<div class="section" id="url-routing">
+<h2>URL Routing<a class="headerlink" href="#url-routing" title="Permalink to this headline">¶</a></h2>
+<p>Remember our bookdb exercise? How did you end up solving the problem of
+mapping an HTTP request to the right function?</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>Flask solves this problem by using the <cite>route</cite> decorator from your app.</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>A &#8216;route&#8217; takes a URL rule (more on that in a minute) and maps it to an
+<em>endpoint</em> and a <em>function</em>.</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>When a request arrives at a URL that matches a known rule, the function is
+called.</p>
+</div>
+<div class="section" id="url-rules">
+<h2>URL Rules<a class="headerlink" href="#url-rules" title="Permalink to this headline">¶</a></h2>
+<p>URL Rules are strings that represent what environ[&#8216;PATH_INFO&#8217;] will look like.</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>They are added to a <em>mapping</em> on the Flask object called the <em>url_map</em></p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>You can call <tt class="docutils literal"><span class="pre">app.add_url_rule()</span></tt> to add a new one</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>Or you can use what we&#8217;ve used, the <tt class="docutils literal"><span class="pre">app.route()</span></tt> decorator</p>
+</div>
+<div class="section" id="function-or-decorator">
+<h2>Function or Decorator<a class="headerlink" href="#function-or-decorator" title="Permalink to this headline">¶</a></h2>
+<div class="incremental container">
+is identical to</div>
+</div>
+<div class="section" id="routes-can-be-dynamic">
+<h2>Routes Can Be Dynamic<a class="headerlink" href="#routes-can-be-dynamic" title="Permalink to this headline">¶</a></h2>
+<p>A <em>placeholder</em> in a URL rule becomes a named arg to your function (add these
+to <tt class="docutils literal"><span class="pre">flask_intro.py</span></tt>):</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>And <em>converters</em> ensure the incoming argument is of the correct type.</p>
+</div>
+<div class="section" id="routes-can-be-filtered">
+<h2>Routes Can Be Filtered<a class="headerlink" href="#routes-can-be-filtered" title="Permalink to this headline">¶</a></h2>
+<p>You can also determine which HTTP <em>methods</em> a given route will accept:</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>After adding that to <tt class="docutils literal"><span class="pre">flask_intro.py</span></tt> and saving, try loading
+<tt class="docutils literal"><span class="pre">http://localhost:5000/blog/entry/23/</span></tt> into your browser. Which was called?</p>
+</div>
+<div class="section" id="routes-can-be-reversed">
+<h2>Routes Can Be Reversed<a class="headerlink" href="#routes-can-be-reversed" title="Permalink to this headline">¶</a></h2>
+<p>Reversing a URL means the ability to generate the url that would result in a
+given endpoint being called.</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>This means <em>you don&#8217;t have to hard-code your URLs when building links</em></p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>That means <em>you can change the URLs for your app without changing code or
+templates</em></p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>This is called <strong>decoupling</strong> and it is a good thing</p>
+</div>
+<div class="section" id="reversing-urls-in-flask">
+<h2>Reversing URLs in Flask<a class="headerlink" href="#reversing-urls-in-flask" title="Permalink to this headline">¶</a></h2>
+<p>In Flask, you reverse a url with the <tt class="docutils literal"><span class="pre">url_for</span></tt> function.</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">url_for</span></tt> requires an HTTP request context to work</li>
+<li>You can fake an HTTP request when working in a terminal (or testing)</li>
+<li>Use the <tt class="docutils literal"><span class="pre">test_request_context</span></tt> method of your app object</li>
+<li>This is a great chance to use the Python <tt class="docutils literal"><span class="pre">with</span></tt> statement</li>
+<li><strong>Don&#8217;t type this</strong></li>
+</ul>
+</div>
+<div class="section" id="reversing-in-action">
+<h2>Reversing in Action<a class="headerlink" href="#reversing-in-action" title="Permalink to this headline">¶</a></h2>
+<p>Quit your Flask app with <tt class="docutils literal"><span class="pre">^C</span></tt>.  Then start a python interpreter in that same
+terminal and import your <tt class="docutils literal"><span class="pre">flask_intro.py</span></tt> module:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">flask_intro</span> <span class="kn">import</span> <span class="n">app</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">url_for</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">app</span><span class="o">.</span><span class="n">test_request_context</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="n">url_for</span><span class="p">(</span><span class="s">&#39;show_profile&#39;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="s">&quot;cris&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="n">url_for</span><span class="p">(</span><span class="s">&#39;divide&#39;</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="mf">23.7</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">&#39;/profile/cris/&#39;</span>
+<span class="go">&#39;/div/23.7/&#39;</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="enough-for-now">
+<h2>Enough for Now<a class="headerlink" href="#enough-for-now" title="Permalink to this headline">¶</a></h2>
+<p>That will give you plenty to think about before class.  We&#8217;ll put this all to
+good use building a real flask app in our next session.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">A Quick Flask Walkthrough</a><ul>
+<li><a class="reference internal" href="#practice-safe-development">Practice Safe Development</a></li>
+<li><a class="reference internal" href="#set-up-a-virtualenv">Set Up a VirtualEnv</a></li>
+<li><a class="reference internal" href="#install-flask">Install Flask</a></li>
+<li><a class="reference internal" href="#kicking-the-tires">Kicking the Tires</a></li>
+<li><a class="reference internal" href="#flask">Flask</a></li>
+<li><a class="reference internal" href="#running-our-app">Running our App</a></li>
+<li><a class="reference internal" href="#debugging-our-app">Debugging our App</a></li>
+<li><a class="reference internal" href="#your-work-so-far">Your work so far</a></li>
+<li><a class="reference internal" href="#url-routing">URL Routing</a></li>
+<li><a class="reference internal" href="#url-rules">URL Rules</a></li>
+<li><a class="reference internal" href="#function-or-decorator">Function or Decorator</a></li>
+<li><a class="reference internal" href="#routes-can-be-dynamic">Routes Can Be Dynamic</a></li>
+<li><a class="reference internal" href="#routes-can-be-filtered">Routes Can Be Filtered</a></li>
+<li><a class="reference internal" href="#routes-can-be-reversed">Routes Can Be Reversed</a></li>
+<li><a class="reference internal" href="#reversing-urls-in-flask">Reversing URLs in Flask</a></li>
+<li><a class="reference internal" href="#reversing-in-action">Reversing in Action</a></li>
+<li><a class="reference internal" href="#enough-for-now">Enough for Now</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/additional/flask_walkthrough.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+  <h3>Slides</h3>
+  <ul class="this-page-menu">
+    <li><a href="../.././slides/additional/flask_walkthrough.html"
+           rel="nofollow">View as slides</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="../index.html">UWPCE Python 200</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012-2015, Cris Ewing.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

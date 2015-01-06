@@ -1,0 +1,254 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Jinja2 Template Introduction &mdash; Internet Programming with Python</title>
+    
+    <link rel="stylesheet" href="../_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Internet Programming with Python" href="../index.html" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head>
+  <body>
+<div class="header">
+  <div class="logo">
+    <a href="../index.html">
+      <img class="logo" src="../_static/logo_UW.png" alt="Logo"/>
+    </a>
+  </div>
+</div>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="../index.html">UWPCE Python 200</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="jinja2-template-introduction">
+<h1>Jinja2 Template Introduction<a class="headerlink" href="#jinja2-template-introduction" title="Permalink to this headline">¶</a></h1>
+<span class="admonition-jinja2-template-introduction"></span><p>When you installed <tt class="docutils literal"><span class="pre">flask</span></tt> into your virtualenv, along with it came a
+Python-based templating engine called <tt class="docutils literal"><span class="pre">Jinja2</span></tt>.</p>
+<p>In this walkthrough, you&#8217;ll see some basics about how templates work, and get
+to know what sorts of options they provide you for creating HTML from a Python
+process.</p>
+<div class="section" id="generating-html">
+<h2>Generating HTML<a class="headerlink" href="#generating-html" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt>
+<tt class="descname">big-centered</tt></dt>
+<dd></dd></dl>
+
+<p>&#8220;I enjoy writing HTML in Python&#8221;</p>
+<dl class="class">
+<dt>
+<tt class="descname">incremental right</tt></dt>
+<dd></dd></dl>
+
+<p>&#8211; nobody, ever</p>
+</div>
+<div class="section" id="templating">
+<h2>Templating<a class="headerlink" href="#templating" title="Permalink to this headline">¶</a></h2>
+<p>A good framework will provide some way of generating HTML with a templating
+system.</p>
+<dl class="class">
+<dt id="incremental">
+<em class="property">class </em><tt class="descname">incremental</tt><a class="headerlink" href="#incremental" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>There are nearly as many templating systems as there are frameworks</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>Each has advantages and disadvantages</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>Flask includes the <em>Jinja2</em> templating system (perhaps because it&#8217;s built by
+the same folks)</p>
+</div>
+<div class="section" id="jinja2-template-basics">
+<h2>Jinja2 Template Basics<a class="headerlink" href="#jinja2-template-basics" title="Permalink to this headline">¶</a></h2>
+<p>Let&#8217;s start with the absolute basics.</p>
+<div class="incremental container">
+Fire up a Python interpreter, using your flask virtualenv:</div>
+<div class="incremental container">
+A template is built of a simple string:</div>
+</div>
+<div class="section" id="rendering-a-template">
+<h2>Rendering a Template<a class="headerlink" href="#rendering-a-template" title="Permalink to this headline">¶</a></h2>
+<p>Call the <tt class="docutils literal"><span class="pre">render</span></tt> method, providing some <em>context</em>:</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p><em>Context</em> can either be keyword arguments, or a dictionary</p>
+</div>
+<div class="section" id="dictionaries-in-context">
+<h2>Dictionaries in Context<a class="headerlink" href="#dictionaries-in-context" title="Permalink to this headline">¶</a></h2>
+<p>Dictionaries passed in as part of the <em>context</em> can be addressed with <em>either</em>
+subscript or dotted notation:</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<ul class="simple">
+<li>Jinja2 will try the <em>correct</em> way first (attr for dotted, item for
+subscript).</li>
+<li>If nothing is found, it will try the opposite.</li>
+<li>If nothing is found, it will return an <em>undefined</em> object.</li>
+</ul>
+</div>
+<div class="section" id="objects-in-context">
+<h2>Objects in Context<a class="headerlink" href="#objects-in-context" title="Permalink to this headline">¶</a></h2>
+<p>The exact same is true of objects passed in as part of <em>context</em>:</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>This means your templates can be a bit agnostic as to the nature of the things
+in <em>context</em></p>
+</div>
+<div class="section" id="filtering-values-in-templates">
+<h2>Filtering values in Templates<a class="headerlink" href="#filtering-values-in-templates" title="Permalink to this headline">¶</a></h2>
+<p>You can apply <em>filters</em> to the data passed in <em>context</em> with the pipe (&#8216;|&#8217;)
+operator:</p>
+<div class="incremental container">
+You can also chain filters together:</div>
+</div>
+<div class="section" id="control-flow">
+<h2>Control Flow<a class="headerlink" href="#control-flow" title="Permalink to this headline">¶</a></h2>
+<p>Logical control structures are also available:</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>Any control structure introduced in a template <strong>must</strong> be paired with an
+explicit closing tag ({% for %}...{% endfor %})</p>
+</div>
+<div class="section" id="template-tests">
+<h2>Template Tests<a class="headerlink" href="#template-tests" title="Permalink to this headline">¶</a></h2>
+<p>There are a number of specialized <em>tests</em> available for use with the
+<tt class="docutils literal"><span class="pre">if...elif...else</span></tt> control structure:</p>
+</div>
+<div class="section" id="basic-python-expressions">
+<h2>Basic Python Expressions<a class="headerlink" href="#basic-python-expressions" title="Permalink to this headline">¶</a></h2>
+<p>Basic Python expressions are also supported:</p>
+</div>
+<div class="section" id="much-much-more">
+<h2>Much, Much More<a class="headerlink" href="#much-much-more" title="Permalink to this headline">¶</a></h2>
+<p>There&#8217;s more that Jinja2 templates can do, and you&#8217;ll see more in class
+when we write templates for our Flask app.</p>
+<div class="incremental container">
+<p>Make sure that you bookmark the Jinja2 documentation for later use:</p>
+<div class="highlight-python"><div class="highlight"><pre>http://jinja.pocoo.org/docs/templates/
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Jinja2 Template Introduction</a><ul>
+<li><a class="reference internal" href="#generating-html">Generating HTML</a></li>
+<li><a class="reference internal" href="#templating">Templating</a></li>
+<li><a class="reference internal" href="#jinja2-template-basics">Jinja2 Template Basics</a></li>
+<li><a class="reference internal" href="#rendering-a-template">Rendering a Template</a></li>
+<li><a class="reference internal" href="#dictionaries-in-context">Dictionaries in Context</a></li>
+<li><a class="reference internal" href="#objects-in-context">Objects in Context</a></li>
+<li><a class="reference internal" href="#filtering-values-in-templates">Filtering values in Templates</a></li>
+<li><a class="reference internal" href="#control-flow">Control Flow</a></li>
+<li><a class="reference internal" href="#template-tests">Template Tests</a></li>
+<li><a class="reference internal" href="#basic-python-expressions">Basic Python Expressions</a></li>
+<li><a class="reference internal" href="#much-much-more">Much, Much More</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/additional/template_tutorial.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+  <h3>Slides</h3>
+  <ul class="this-page-menu">
+    <li><a href="../.././slides/additional/template_tutorial.html"
+           rel="nofollow">View as slides</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="../index.html">UWPCE Python 200</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012-2015, Cris Ewing.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

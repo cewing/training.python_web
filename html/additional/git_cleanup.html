@@ -1,0 +1,319 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Steps to get a clean master branch for your git fork &mdash; Internet Programming with Python</title>
+    
+    <link rel="stylesheet" href="../_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Internet Programming with Python" href="../index.html" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head>
+  <body>
+<div class="header">
+  <div class="logo">
+    <a href="../index.html">
+      <img class="logo" src="../_static/logo_UW.png" alt="Logo"/>
+    </a>
+  </div>
+</div>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="../index.html">UWPCE Python 200</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="steps-to-get-a-clean-master-branch-for-your-git-fork">
+<h1>Steps to get a clean master branch for your git fork<a class="headerlink" href="#steps-to-get-a-clean-master-branch-for-your-git-fork" title="Permalink to this headline">¶</a></h1>
+<span class="admonition-steps-to-get-a-clean-master-branch-for-your-git-fork"></span><p>Command line instructions for getting back to a pristine master branch</p>
+<ol class="arabic">
+<li><p class="first">Make sure that you have the UWPCE repostitory set up as an additional
+remote for your local repository:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ git remote add uwpce git@github.com:UWPCE-PythonCert/training.python_web.git
+</pre></div>
+</div>
+</li>
+</ol>
+<p>This will give you direct access to the original copy of the repository from
+the command line.</p>
+<ol class="arabic" start="2">
+<li><p class="first">Verify this worked by checking your remotes:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ git remote
+</pre></div>
+</div>
+<p>origin
+uwpce</p>
+</li>
+</ol>
+<p>Now you have <em>two</em> remote repositories connected to your local repository.</p>
+<ul class="simple">
+<li><em>Origin</em> represents the copy of your fork of the UW PCE repository <em>on
+github&#8217;s servers</em>.</li>
+<li><em>Uwpce</em> is the original UW PCE repository <em>on github&#8217;s servers</em>.</li>
+</ul>
+<div class="section" id="state-the-problem">
+<h2>State the Problem<a class="headerlink" href="#state-the-problem" title="Permalink to this headline">¶</a></h2>
+<p>You have a series of changes <em>you</em> have made to the <em>master</em> branch of your
+repository, both the local and the <em>origin</em> remote.</p>
+<p>Every time you make new changes for a homework and then submit a pull request,
+all these old changes are included in the pull request.</p>
+</div>
+<div class="section" id="state-the-goal">
+<h2>State the Goal<a class="headerlink" href="#state-the-goal" title="Permalink to this headline">¶</a></h2>
+<p>You would like to get a <em>master</em> branch of your repository that exactly matches
+the <em>master</em> branch of the UW PCE remote (<em>uwpce</em>).</p>
+<p>Once you have this, you can then keep that branch up to date with the UW PCE
+copy</p>
+<p>And you can continue to make clean branches for each homework <em>starting from
+that clean master</em>.</p>
+</div>
+<div class="section" id="steps-to-get-there">
+<h2>Steps to get there<a class="headerlink" href="#steps-to-get-there" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="preserve-your-old-work">
+<h3>Preserve your Old Work<a class="headerlink" href="#preserve-your-old-work" title="Permalink to this headline">¶</a></h3>
+<p>First, make a branch on your local machine of your current <em>master</em>, this will
+be a branch you keep that contains all your homework up until today:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ git branch -a
+* master
+  remotes/origin/HEAD -&gt; origin/master
+  remotes/origin/gh-pages
+  remotes/origin/instructor
+  remotes/origin/master
+  remotes/origin/week-long-format
+  remotes/uwpce/master
+$ git branch keep-old-work
+$ git branch -a
+keep-old-work
+* master
+  remotes/origin/HEAD -&gt; origin/master
+  remotes/origin/gh-pages
+  remotes/origin/instructor
+  remotes/origin/master
+  remotes/origin/week-long-format
+  remotes/uwpce/master
+</pre></div>
+</div>
+<p>Now, you have a copy of all the work you&#8217;ve done to date.  It&#8217;s on the
+<em>keep-old-work</em> branch. You have not yet pushed this branch up to your github
+account, so let&#8217;s do that next, making it safe:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ git push -u origin keep-old-work
+Total 0 (delta 0), reused 0 (delta 0)
+To git@github.com:cewing/training.python_web.git
+ * [new branch]      keep-old-work -&gt; keep-old-work
+Branch keep-old-work set up to track remote branch keep-old-work from origin.
+</pre></div>
+</div>
+<p>Okay, now there&#8217;s a copy of your old work safe in a branch on <em>your</em> github
+repository.</p>
+</div>
+<div class="section" id="revert-your-master">
+<h3>Revert Your Master<a class="headerlink" href="#revert-your-master" title="Permalink to this headline">¶</a></h3>
+<p>The next step is to <em>roll back your master</em> to a point <em>before you made any
+changes to it</em>.</p>
+<p>The key here is understanding that every change you commit to a repository in
+git is associated with a <em>hash</em>, which is a big, unique identification number
+you can use to refer to that specific change.  You can see these numbers when
+you look at the list of commits in github.</p>
+<p>You need to find the number of a commit by me that happened before you began
+making changes.</p>
+<p>First, open the &#8216;commits&#8217; page on github of your fork of the class repository.</p>
+<p>Then, scroll down until you find your first commit, which should be part of
+work for session01 homework.</p>
+<p>Then, find the last commit <em>before</em> that commit, and click on the number in the
+far right of that commit listing (it should be something like <cite>b60ea2bb70</cite>)</p>
+<p>This will open up that specific commit, and in the URL for that commit you will
+find the full hash: <cite>b60ea2bb7052a5bd300772d7d9d40b19b27f7a1b</cite>.  Copy that value.</p>
+<p>Now, we are going to reset your local <em>master</em> branch to that commit,
+abandoning all the changes you (and I) have made between then and now:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ git branch
+keep-old-work
+* master
+$ git reset --hard b60ea2bb7052a5bd300772d7d9d40b19b27f7a1b
+</pre></div>
+</div>
+<p>Now, your <em>local master</em> has been reverted to a state before you did any work.
+All your changes have been deleted, but so have all the changes I&#8217;ve made since
+the start of class.</p>
+<p>Luckily, we can fix that.  Our next step is to fetch the <em>uwpce</em> <em>master</em>
+branch, which contains all those changes I&#8217;ve made, but none of the changes you
+made:</p>
+<blockquote>
+<div><p>$ git fetch uwpce master
+remote: Counting objects: 10, done.
+remote: Compressing objects: 100% (10/10), done.
+remote: Total 10 (delta 3), reused 7 (delta 0)
+Unpacking objects: 100% (10/10), done.
+From github.com:UWPCE-PythonCert/training.python_web</p>
+<blockquote>
+<div><ul class="simple">
+<li>branch            master     -&gt; FETCH_HEAD
+8873ba1..75a8462  master     -&gt; uwpce/master</li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+<p>And finally, we can merge the changes in the <em>uwpce</em> master into our local
+<em>master</em>:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ git branch
+keep-old-work
+* master
+$ git merge uwpce/master
+Merge made by the &#39;recursive&#39; strategy.
+ source/presentations/session04.rst |    7 +
+ source/presentations/session06.rst | 1624 +-----------------------------------
+ 2 files changed, 40 insertions(+), 1591 deletions(-)
+</pre></div>
+</div>
+</div>
+<div class="section" id="forcibly-update">
+<h3>Forcibly Update<a class="headerlink" href="#forcibly-update" title="Permalink to this headline">¶</a></h3>
+<p>Now, what we have is a situation where your local master has a history that is
+completely different from the <em>origin</em> to which it is attached.  Your
+<em>origin/master</em> still has your work on it, interleaved with the changes I&#8217;ve
+made along the way, but your <em>local</em> master contains only my work.</p>
+<p>If you were to try to push these changes up to <em>origin</em> (your repository) it would
+fail because there&#8217;s no way to reconcile the two histories.</p>
+<p>But we don&#8217;t care about the history on your <em>origin</em>, we only want to keep the
+history that is represented by what is currently in your <em>local</em> master branch.
+To do that, we can push with the <cite>&#8211;force</cite> option:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ git push --force origin master
+Counting objects: 25, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (11/11), done.
+Writing objects: 100% (11/11), 2.04 KiB | 0 bytes/s, done.
+Total 11 (delta 7), reused 0 (delta 0)
+To git@github.com:cewing/training.python_web.git
+ + 782d17e...5fb97f3 master -&gt; master (forced update)
+</pre></div>
+</div>
+<p>Okay.  This means that now <em>master</em> both on your local machine and on the
+<em>origin</em> remote (your github repository) is identical to (and up to date with)
+the master in the <em>uwpce</em> repository.</p>
+</div>
+</div>
+<div class="section" id="going-forward">
+<h2>Going Forward<a class="headerlink" href="#going-forward" title="Permalink to this headline">¶</a></h2>
+<p>From now on, when you want to get the very latest copies of the <em>uwpce</em>
+repository, you can issue these commands:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ git checkout master
+$ git fetch uwpce master
+$ git merge uwpce/master
+$ git push origin master
+</pre></div>
+</div>
+<p>That will fetch the changes from the <em>uwpce</em> remote <em>master</em> branch, merge them
+into your <em>local</em> repository <em>master</em> branch, and then push those changes up to
+your <em>origin</em> repository <em>master</em> branch.</p>
+<p>And when you are ready to start work on a new homework assignment, you can
+simply start a new branch:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ git checkout -b session05-homework
+</pre></div>
+</div>
+<p>Once you&#8217;ve completed your homework, and committed all the changes to your
+<em>local</em> homework branch, you can push that branch up to your <em>origin</em>
+repository:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ git push origin session05-homework
+</pre></div>
+</div>
+<p>And then, when you open a pull request for me to review your homework, you can
+select your <em>homework branch</em> as the source of the pull request, and my
+<em>master</em> branch as the destination. The request will contain only those changes
+that are germane to your homework.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Steps to get a clean master branch for your git fork</a><ul>
+<li><a class="reference internal" href="#state-the-problem">State the Problem</a></li>
+<li><a class="reference internal" href="#state-the-goal">State the Goal</a></li>
+<li><a class="reference internal" href="#steps-to-get-there">Steps to get there</a><ul>
+<li><a class="reference internal" href="#preserve-your-old-work">Preserve your Old Work</a></li>
+<li><a class="reference internal" href="#revert-your-master">Revert Your Master</a></li>
+<li><a class="reference internal" href="#forcibly-update">Forcibly Update</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#going-forward">Going Forward</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/additional/git_cleanup.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+  <h3>Slides</h3>
+  <ul class="this-page-menu">
+    <li><a href="../.././slides/additional/git_cleanup.html"
+           rel="nofollow">View as slides</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="../index.html">UWPCE Python 200</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012-2015, Cris Ewing.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,621 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>SQL Persistence in Python &mdash; Internet Programming with Python</title>
+    
+    <link rel="stylesheet" href="../_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Internet Programming with Python" href="../index.html" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head>
+  <body>
+<div class="header">
+  <div class="logo">
+    <a href="../index.html">
+      <img class="logo" src="../_static/logo_UW.png" alt="Logo"/>
+    </a>
+  </div>
+</div>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="../index.html">UWPCE Python 200</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="sql-persistence-in-python">
+<h1>SQL Persistence in Python<a class="headerlink" href="#sql-persistence-in-python" title="Permalink to this headline">¶</a></h1>
+<span class="admonition-sql-persistence-in-python"></span><p>In this tutorial, you&#8217;ll walk through some basic concepts of data persistence
+using the Python stdlib implementation of DB API 2, <cite>sqlite3</cite></p>
+<div class="section" id="data-persistence">
+<h2>Data Persistence<a class="headerlink" href="#data-persistence" title="Permalink to this headline">¶</a></h2>
+<p>There are many models for persistance of data.</p>
+<dl class="class">
+<dt id="incremental">
+<em class="property">class </em><tt class="descname">incremental</tt><a class="headerlink" href="#incremental" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<ul class="simple">
+<li>Flat files</li>
+<li>Relational Database (SQL RDBMs like PostgreSQL, MySQL, SQLServer, Oracle)</li>
+<li>Object Stores (Pickle, ZODB)</li>
+<li>NoSQL Databases (CouchDB, MongoDB, etc)</li>
+</ul>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>It&#8217;s also one of the most contentious issues in app design.</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>For this reason, it&#8217;s one of the things that most Small Frameworks leave
+undecided.</p>
+</div>
+<div class="section" id="simple-sql">
+<h2>Simple SQL<a class="headerlink" href="#simple-sql" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="http://www.python.org/dev/peps/pep-0249/">PEP 249</a> describes a
+common API for database connections called DB-API 2.</p>
+<div class="incremental container">
+<p>The goal was to</p>
+<blockquote>
+<div><p>achieve a consistency leading to more easily understood modules, code
+that is generally more portable across databases, and a broader reach
+of database connectivity from Python</p>
+<dl class="class">
+<dt>
+<tt class="descname">image-credit</tt></dt>
+<dd></dd></dl>
+
+<p>source: <a class="reference external" href="http://www.python.org/dev/peps/pep-0248/">http://www.python.org/dev/peps/pep-0248/</a></p>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="a-note-on-db-api">
+<h2>A Note on DB API<a class="headerlink" href="#a-note-on-db-api" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt>
+<tt class="descname">incremental center</tt></dt>
+<dd></dd></dl>
+
+<p>It is important to remember that PEP 249 is <strong>only a specification</strong>.</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>There is no code or package for DB-API 2 on it&#8217;s own.</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>Since 2.5, the Python Standard Library has provided a <a class="reference external" href="http://docs.python.org/2/library/sqlite3.html">reference
+implementation of the api</a>
+based on SQLite3</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>Before Python 2.5, this package was available as <tt class="docutils literal"><span class="pre">pysqlite</span></tt></p>
+</div>
+<div class="section" id="using-db-api">
+<h2>Using DB API<a class="headerlink" href="#using-db-api" title="Permalink to this headline">¶</a></h2>
+<p>To use the DB API with any database other than SQLite3, you must have an
+underlying API package available.</p>
+<div class="incremental container">
+<p>Implementations are available for:</p>
+<ul class="simple">
+<li>PostgreSQL (<strong>psycopg2</strong>, txpostgres, ...)</li>
+<li>MySQL (<strong>mysql-python</strong>, PyMySQL, ...)</li>
+<li>MS SQL Server (<strong>adodbapi</strong>, pymssql, mxODBC, pyodbc, ...)</li>
+<li>Oracle (<strong>cx_Oracle</strong>, mxODBC, pyodbc, ...)</li>
+<li>and many more...</li>
+</ul>
+<dl class="class">
+<dt>
+<tt class="descname">image-credit</tt></dt>
+<dd></dd></dl>
+
+<p>source: <a class="reference external" href="http://wiki.python.org/moin/DatabaseInterfaces">http://wiki.python.org/moin/DatabaseInterfaces</a></p>
+</div>
+</div>
+<div class="section" id="installing-api-packages">
+<h2>Installing API Packages<a class="headerlink" href="#installing-api-packages" title="Permalink to this headline">¶</a></h2>
+<p>Most db api packages can be installed using typical Pythonic methods:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ easy_install psycopg2
+$ pip install mysql-python
+...
+</pre></div>
+</div>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>Most api packages will require that the development headers for the underlying
+database system be available. Without these, the C symbols required for
+communication with the db are not present and the wrapper cannot work.</p>
+</div>
+<div class="section" id="not-today">
+<h2>Not Today<a class="headerlink" href="#not-today" title="Permalink to this headline">¶</a></h2>
+<p>We don&#8217;t want to spend the next hour getting a package installed, so let&#8217;s use
+<tt class="docutils literal"><span class="pre">sqlite3</span></tt> instead.</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>I <strong>do not</strong> recommend using sqlite3 for production web applications, there are
+too many ways in which it falls short</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>But it will provide a solid learning tool</p>
+</div>
+<div class="section" id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<p>In the class resources folder, you&#8217;ll find an <tt class="docutils literal"><span class="pre">sql</span></tt> directory. Copy that to
+your working directory.</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>Open the file <tt class="docutils literal"><span class="pre">createdb.py</span></tt> in your text editor.  Edit <tt class="docutils literal"><span class="pre">main</span></tt> like so:</p>
+</div>
+<div class="section" id="try-it-out">
+<h2>Try It Out<a class="headerlink" href="#try-it-out" title="Permalink to this headline">¶</a></h2>
+<p>Run the <tt class="docutils literal"><span class="pre">createdb.py</span></tt> script to see it in effect:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ python createdb.py
+Need to create database and schema
+$ python createdb.py
+Database exists, assume schema does, too.
+$ ls
+books.db
+...
+</pre></div>
+</div>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>Sqlite3 will automatically create a new database when you connect for the
+first time, if one does not exist.</p>
+</div>
+<div class="section" id="set-up-a-schema">
+<h2>Set Up A Schema<a class="headerlink" href="#set-up-a-schema" title="Permalink to this headline">¶</a></h2>
+<p>Make the following changes to <tt class="docutils literal"><span class="pre">createdb.py</span></tt>:</p>
+</div>
+<div class="section" id="verify-your-work">
+<h2>Verify Your Work<a class="headerlink" href="#verify-your-work" title="Permalink to this headline">¶</a></h2>
+<p>Quit your python interpreter and delete the file <tt class="docutils literal"><span class="pre">books.db</span></tt></p>
+<div class="incremental container">
+<p>Then run the script from the command line again to try it out:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ python createdb.py
+Creating schema
+$ python createdb.py
+Database exists, assume schema does, too.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="introspect-the-database">
+<h2>Introspect the Database<a class="headerlink" href="#introspect-the-database" title="Permalink to this headline">¶</a></h2>
+<p>Add the following to <tt class="docutils literal"><span class="pre">createdb.py</span></tt>:</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>Then try running <tt class="docutils literal"><span class="pre">python</span> <span class="pre">createdb.py</span></tt> again</p>
+</div>
+<div class="section" id="my-results">
+<h2>My Results<a class="headerlink" href="#my-results" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="small">
+<em class="property">class </em><tt class="descname">small</tt><a class="headerlink" href="#small" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python"><div class="highlight"><pre>$ python createdb.py
+Table Metadata for &#39;author&#39;:
+cid        | name       | type       | notnull    | dflt_value | pk         |
+-----------+------------+------------+------------+------------+------------+-
+0          | authorid   | INTEGER    | 1          | None       | 1          |
+-----------+------------+------------+------------+------------+------------+-
+1          | name       | TEXT       | 0          | None       | 0          |
+-----------+------------+------------+------------+------------+------------+-
+
+
+Table Metadata for &#39;book&#39;:
+cid        | name       | type       | notnull    | dflt_value | pk         |
+-----------+------------+------------+------------+------------+------------+-
+0          | bookid     | INTEGER    | 1          | None       | 1          |
+-----------+------------+------------+------------+------------+------------+-
+1          | title      | TEXT       | 0          | None       | 0          |
+-----------+------------+------------+------------+------------+------------+-
+2          | author     | INTEGER    | 1          | None       | 0          |
+-----------+------------+------------+------------+------------+------------+-
+</pre></div>
+</div>
+</div>
+<div class="section" id="inserting-data">
+<h2>Inserting Data<a class="headerlink" href="#inserting-data" title="Permalink to this headline">¶</a></h2>
+<p>Let&#8217;s load up some data. Fire up your interpreter and type:</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>Did that work?</p>
+</div>
+<div class="section" id="querying-data">
+<h2>Querying Data<a class="headerlink" href="#querying-data" title="Permalink to this headline">¶</a></h2>
+<p>Let&#8217;s query our database to find out:</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>Alright!  We&#8217;ve got data in there.  Let&#8217;s make it more efficient</p>
+</div>
+<div class="section" id="parameterized-statements">
+<h2>Parameterized Statements<a class="headerlink" href="#parameterized-statements" title="Permalink to this headline">¶</a></h2>
+<p>Try this:</p>
+</div>
+<div class="section" id="check-your-work">
+<h2>Check Your Work<a class="headerlink" href="#check-your-work" title="Permalink to this headline">¶</a></h2>
+<p>Again, query the database:</p>
+</div>
+<div class="section" id="transactions">
+<h2>Transactions<a class="headerlink" href="#transactions" title="Permalink to this headline">¶</a></h2>
+<p>Transactions group operations together, allowing you to verify them <em>before</em>
+the results hit the database.</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>In SQLite3, data-altering statements require an explicit <tt class="docutils literal"><span class="pre">commit</span></tt> unless
+auto-commit has been enabled.</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>The <tt class="docutils literal"><span class="pre">with</span></tt> statements we&#8217;ve used take care of committing when the context
+manager closes.</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>Let&#8217;s change that so we can see what happens explicitly</p>
+</div>
+<div class="section" id="populating-the-database">
+<h2>Populating the Database<a class="headerlink" href="#populating-the-database" title="Permalink to this headline">¶</a></h2>
+<p>Let&#8217;s start by seeing what happens when you try to look for newly added data
+before the <tt class="docutils literal"><span class="pre">insert</span></tt> transaction is committed.</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>Begin by quitting your interpreter and deleting <tt class="docutils literal"><span class="pre">books.db</span></tt>.</p>
+<div class="incremental container">
+<p>Then re-create the database, empty:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ python createdb.py
+Creating schema
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="setting-up-the-test">
+<h2>Setting Up the Test<a class="headerlink" href="#setting-up-the-test" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">small</tt></dt>
+<dd></dd></dl>
+
+<p>Open <tt class="docutils literal"><span class="pre">populatedb.py</span></tt> in your editor, replace the final <tt class="docutils literal"><span class="pre">print</span></tt>:</p>
+</div>
+<div class="section" id="running-the-test">
+<h2>Running the Test<a class="headerlink" href="#running-the-test" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">small</tt></dt>
+<dd></dd></dl>
+
+<p>Quit your python interpreter and run the <tt class="docutils literal"><span class="pre">populatedb.py</span></tt> script:</p>
+<dl class="class">
+<dt>
+<tt class="descname">small incremental</tt></dt>
+<dd></dd></dl>
+
+<div class="highlight-python"><div class="highlight"><pre>On conn1, before insert:
+no rows returned
+On conn1, after insert:
+(1, u&#39;China Mieville&#39;)
+(2, u&#39;Frank Herbert&#39;)
+(3, u&#39;Susan Cooper&#39;)
+(4, u&#39;J.R.R. Tolkien&#39;)
+(5, u&quot;Madeline L&#39;Engle&quot;)
+
+On conn2, before commit:
+no rows returned
+On conn2, after commit:
+(1, u&#39;China Mieville&#39;)
+(2, u&#39;Frank Herbert&#39;)
+(3, u&#39;Susan Cooper&#39;)
+(4, u&#39;J.R.R. Tolkien&#39;)
+(5, u&quot;Madeline L&#39;Engle&quot;)
+</pre></div>
+</div>
+</div>
+<div class="section" id="rollback">
+<h2>Rollback<a class="headerlink" href="#rollback" title="Permalink to this headline">¶</a></h2>
+<p>That&#8217;s all well and good, but what happens if an error occurs?</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>Transactions can be rolled back in order to wipe out partially completed work.</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>Like with commit, using <tt class="docutils literal"><span class="pre">connect</span></tt> as a context manager in a <tt class="docutils literal"><span class="pre">with</span></tt>
+statement will automatically rollback for exceptions.</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">incremental</tt></dt>
+<dd></dd></dl>
+
+<p>Let&#8217;s rewrite our populatedb script so it explicitly commits or rolls back a
+transaction depending on exceptions occurring</p>
+</div>
+<div class="section" id="edit-populatedb-py-slide-1">
+<h2>Edit populatedb.py (slide 1)<a class="headerlink" href="#edit-populatedb-py-slide-1" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">small</tt></dt>
+<dd></dd></dl>
+
+<p>First, add the following function above the <tt class="docutils literal"><span class="pre">if</span> <span class="pre">__name__</span> <span class="pre">==</span> <span class="pre">'__main__'</span></tt>
+block:</p>
+</div>
+<div class="section" id="edit-populatedb-py-slide-2">
+<h2>Edit populatedb.py (slide 2)<a class="headerlink" href="#edit-populatedb-py-slide-2" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">small</tt></dt>
+<dd></dd></dl>
+
+<p>Then, in the runner:</p>
+</div>
+<div class="section" id="id1">
+<h2>Try it Out<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Remove <tt class="docutils literal"><span class="pre">books.db</span></tt> and recrete the database, then run our script:</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">small</tt></dt>
+<dd></dd></dl>
+
+<div class="highlight-python"><div class="highlight"><pre>$ rm books.db
+$ python createdb.py
+Creating schema
+$ python populatedb.py
+</pre></div>
+</div>
+<dl class="class">
+<dt>
+<tt class="descname">small incremental</tt></dt>
+<dd></dd></dl>
+
+<div class="highlight-python"><div class="highlight"><pre>authors and books on conn2 after rollback:
+no rows returned
+no rows returned
+Traceback (most recent call last):
+  File &quot;populatedb.py&quot;, line 57, in &lt;module&gt;
+    populate_db(conn1)
+  File &quot;populatedb.py&quot;, line 46, in populate_db
+    cur.executemany(book_insert, params)
+sqlite3.InterfaceError: Error binding parameter 0 - probably unsupported type.
+</pre></div>
+</div>
+</div>
+<div class="section" id="oooops-fix-it">
+<h2>Oooops, Fix It<a class="headerlink" href="#oooops-fix-it" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">small</tt></dt>
+<dd></dd></dl>
+
+<p>Okay, we got an error, and the transaction was rolled back correctly.</p>
+<div class="incremental small container">
+<p>Open <tt class="docutils literal"><span class="pre">utils.py</span></tt> and find this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="s">&#39;Susan Cooper&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;The Dark is Rising&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s">&quot;The Greenwitch&quot;</span><span class="p">]],</span>
+</pre></div>
+</div>
+</div>
+<div class="incremental small container">
+<p>Fix it like so:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="s">&#39;Susan Cooper&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;The Dark is Rising&quot;</span><span class="p">,</span> <span class="s">&quot;The Greenwitch&quot;</span><span class="p">],</span>
+</pre></div>
+</div>
+</div>
+<dl class="class">
+<dt>
+<tt class="descname">small incremental</tt></dt>
+<dd></dd></dl>
+
+<p>It appears that we were attempting to bind a list as a parameter.  Ooops.</p>
+</div>
+<div class="section" id="try-it-again">
+<h2>Try It Again<a class="headerlink" href="#try-it-again" title="Permalink to this headline">¶</a></h2>
+<div class="small container">
+<p>Now that the error in our data is repaired, let&#8217;s try again:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ python populatedb.py
+</pre></div>
+</div>
+</div>
+<dl class="class">
+<dt>
+<tt class="descname">small incremental</tt></dt>
+<dd></dd></dl>
+
+<div class="highlight-python"><div class="highlight"><pre>Reporting authors and books on conn2 before commit:
+no rows returned
+no rows returned
+Reporting authors and books on conn2 after commit:
+(1, u&#39;China Mieville&#39;)
+(2, u&#39;Frank Herbert&#39;)
+(3, u&#39;Susan Cooper&#39;)
+(4, u&#39;J.R.R. Tolkien&#39;)
+(5, u&quot;Madeline L&#39;Engle&quot;)
+(1, u&#39;Perdido Street Station&#39;, 1)
+(2, u&#39;The Scar&#39;, 1)
+(3, u&#39;King Rat&#39;, 1)
+(4, u&#39;Dune&#39;, 2)
+(5, u&quot;Hellstrom&#39;s Hive&quot;, 2)
+(6, u&#39;The Dark is Rising&#39;, 3)
+(7, u&#39;The Greenwitch&#39;, 3)
+(8, u&#39;The Hobbit&#39;, 4)
+(9, u&#39;The Silmarillion&#39;, 4)
+(10, u&#39;A Wrinkle in Time&#39;, 5)
+(11, u&#39;A Swiftly Tilting Planet&#39;, 5)
+</pre></div>
+</div>
+</div>
+<div class="section" id="congratulations">
+<h2>Congratulations<a class="headerlink" href="#congratulations" title="Permalink to this headline">¶</a></h2>
+<p>You&#8217;ve just created a small database of books and authors. The transactional
+protections you&#8217;ve used let you rest comfortable, knowing that so long as the
+process completed, you&#8217;ve got the data you sent.</p>
+<p>We&#8217;ll see more of this when we build our flask app.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">SQL Persistence in Python</a><ul>
+<li><a class="reference internal" href="#data-persistence">Data Persistence</a></li>
+<li><a class="reference internal" href="#simple-sql">Simple SQL</a></li>
+<li><a class="reference internal" href="#a-note-on-db-api">A Note on DB API</a></li>
+<li><a class="reference internal" href="#using-db-api">Using DB API</a></li>
+<li><a class="reference internal" href="#installing-api-packages">Installing API Packages</a></li>
+<li><a class="reference internal" href="#not-today">Not Today</a></li>
+<li><a class="reference internal" href="#getting-started">Getting Started</a></li>
+<li><a class="reference internal" href="#try-it-out">Try It Out</a></li>
+<li><a class="reference internal" href="#set-up-a-schema">Set Up A Schema</a></li>
+<li><a class="reference internal" href="#verify-your-work">Verify Your Work</a></li>
+<li><a class="reference internal" href="#introspect-the-database">Introspect the Database</a></li>
+<li><a class="reference internal" href="#my-results">My Results</a></li>
+<li><a class="reference internal" href="#inserting-data">Inserting Data</a></li>
+<li><a class="reference internal" href="#querying-data">Querying Data</a></li>
+<li><a class="reference internal" href="#parameterized-statements">Parameterized Statements</a></li>
+<li><a class="reference internal" href="#check-your-work">Check Your Work</a></li>
+<li><a class="reference internal" href="#transactions">Transactions</a></li>
+<li><a class="reference internal" href="#populating-the-database">Populating the Database</a></li>
+<li><a class="reference internal" href="#setting-up-the-test">Setting Up the Test</a></li>
+<li><a class="reference internal" href="#running-the-test">Running the Test</a></li>
+<li><a class="reference internal" href="#rollback">Rollback</a></li>
+<li><a class="reference internal" href="#edit-populatedb-py-slide-1">Edit populatedb.py (slide 1)</a></li>
+<li><a class="reference internal" href="#edit-populatedb-py-slide-2">Edit populatedb.py (slide 2)</a></li>
+<li><a class="reference internal" href="#id1">Try it Out</a></li>
+<li><a class="reference internal" href="#oooops-fix-it">Oooops, Fix It</a></li>
+<li><a class="reference internal" href="#try-it-again">Try It Again</a></li>
+<li><a class="reference internal" href="#congratulations">Congratulations</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/additional/sql_persistence_tutorial.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+  <h3>Slides</h3>
+  <ul class="this-page-menu">
+    <li><a href="../.././slides/additional/sql_persistence_tutorial.html"
+           rel="nofollow">View as slides</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="../index.html">UWPCE Python 200</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012-2015, Cris Ewing.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

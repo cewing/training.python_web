@@ -1,0 +1,161 @@
+body {
+  -webkit-transition: opacity 200ms ease-in;
+  -webkit-transition-delay: 50ms;
+  -moz-transition: opacity 200ms ease-in 50ms;
+  -o-transition: opacity 200ms ease-in 50ms;
+  transition: opacity 200ms ease-in 50ms; }
+
+slides {
+  -webkit-transition: opacity 200ms ease-in;
+  -webkit-transition-delay: 50ms;
+  -moz-transition: opacity 200ms ease-in 50ms;
+  -o-transition: opacity 200ms ease-in 50ms;
+  transition: opacity 200ms ease-in 50ms; }
+
+slides > slide {
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  color: #393939; }
+
+.highlight-code slide.current pre > * {
+  opacity: 0.25;
+  -webkit-transition: opacity 0.1s ease-in;
+  -moz-transition: opacity 0.1s ease-in;
+  -o-transition: opacity 0.1s ease-in;
+  transition: opacity 0.1s ease-in; }
+
+.build > *, p.build {
+  transition: opacity 0.1s ease-in-out 0.1s;
+  -o-transition: opacity 0.1s ease-in-out 0.1s;
+  -moz-transition: opacity 0.1s ease-in-out 0.1s;
+  -webkit-transition: opacity 0.1s ease-in-out 0.1s; }
+
+.note {
+  -webkit-transition: all 0.1s ease-in-out;
+  -moz-transition: all 0.1s ease-in-out;
+  -o-transition: all 0.1s ease-in-out;
+  transition: all 0.1s ease-in-out; }
+
+.with-notes.popup .note {
+  -webkit-transition: opacity 100ms ease-in-out;
+  -moz-transition: opacity 100ms ease-in-out;
+  -o-transition: opacity 100ms ease-in-out;
+  transition: opacity 100ms ease-in-out; }
+
+.auto-fadein {
+  -webkit-transition: opacity 0.25s ease-in;
+  -webkit-transition-delay: 0.25s;
+  -moz-transition: opacity 0.25s ease-in 0.25s;
+  -o-transition: opacity 0.25s ease-in 0.25s;
+  transition: opacity 0.25s ease-in 0.25s; }
+
+aside.gdbar {
+  -webkit-transition: all 0.1s ease-out;
+  -webkit-transition-delay: 0.1s;
+  -moz-transition: all 0.1s ease-out 0.1s;
+  -o-transition: all 0.1s ease-out 0.1s;
+  transition: all 0.1s ease-out 0.1s;
+  /* Better to transition only on background-size, but not sure how to do that with the mixin. */
+  width: 300px;
+  background: -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, #333), color-stop(100%, #333)) no-repeat;
+  background: -webkit-linear-gradient(left, #333, #333) no-repeat;
+  background: -moz-linear-gradient(left, #333, #333) no-repeat;
+  background: -o-linear-gradient(left, #333, #333) no-repeat;
+  background: linear-gradient(left, #333, #333) no-repeat; }
+  aside.gdbar img {
+    height: auto;
+    width: 250px;
+    position: absolute;
+    right: 0;
+    top: -8px; }
+  aside.gdbar.right img {
+    top: 4px;
+  }
+
+em {
+  font-style: italic; }
+
+strong {
+  font-weight: bold; }
+
+hgroup .docutils.literal {
+  font-family: 'Droid Sans Mono', 'Courier New', monospace; }
+
+article .center {
+  text-align: center;
+  margin-top: 20%; }
+article .centered {
+  text-align: center; }
+article .left {
+  text-align: left; }
+article .large {
+  font-weight: bold;
+  font-size: 65px;
+  line-height: 65px; }
+article .mlarge {
+  font-weight: bold;
+  font-size: 55px;
+  line-height: 55px; }
+article .medium {
+  font-weight: bold;
+  font-size: 45px;
+  line-height: 45px; }
+article .credit {
+  font-size: 75%;
+  text-align: left; }
+article .line-block .line {
+  font-size: inherit; }
+article dl {
+  margin-bottom: 10em; }
+  article dl dt {
+    font-weight: bold;
+    margin-bottom: 0.25em; }
+  article dl dd {
+    padding-left: 1em;
+    margin-bottom: 0.5em; }
+article .docutils.literal {
+  font-family: 'Droid Sans Mono', 'Courier New', monospace; }
+article .toctree-wrapper li a {
+  text-decoration: none;
+  border-bottom: none; }
+article table.docutils tr td {
+  vertical-align: top; }
+
+.level-1 h1 {
+  font-size: 65px;
+  line-height: 1.4;
+  letter-spacing: -3px;
+  color: #393939; }
+.level-1 article {
+  text-align: center; }
+  .level-1 article img {
+    margin-top: 10px; }
+
+.level-2 h2 {
+  position: static;
+  border-bottom: 1px solid #393939;
+  border-top: 1px solid #393939;
+  padding: 5px 0px;
+  color: #393939; }
+.level-2 article {
+  text-align: center; }
+
+.level-3 h3 {
+  position: static;
+  border-bottom: 1px solid #393939;
+  color: #393939;
+  font-size: 40px;
+  height: 45px;
+  line-height: 45px;
+  font-weight: bold; }
+.level-3 article {
+  text-align: left; }
+
+.figure a {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  border: none; }
+
