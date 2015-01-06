@@ -10,9 +10,9 @@ This package provides the source for all lecture materials used for the
 `Internet Programming in Python`_ section of the `Certificate in Python
 Programming`_ offered by the `University of Washington Professional &
 Continuing Education`_ program. This version of the documentation is used for
-the Winter 2014 instance of the course, Taught by `Cris Ewing`_
+the Winter 2015 instance of the course, Taught by `Cris Ewing`_
 
-.. _Internet Programming in Python: http://www.pce.uw.edu/courses/internet-programming-python/downtown-seattle-winter-2014/
+.. _Internet Programming in Python: http://www.pce.uw.edu/courses/internet-programming-python/downtown-seattle-winter-2015/
 .. _Certificate in Python Programming: http://www.pce.uw.edu/certificates/python-programming.html
 .. _University of Washington Professional & Continuing Education: http://www.pce.uw.edu/
 .. _Cris Ewing: http://www.linkedin.com/profile/view?id=19741495

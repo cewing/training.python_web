@@ -1,5 +1,13 @@
+.. slideconf::
+    :autoslides: False
+
 SQL Persistence in Python
 =========================
+
+.. slide:: SQL Persistence in Python
+    :level: 1
+
+    This document contains no slides.
 
 In this tutorial, you'll walk through some basic concepts of data persistence
 using the Python stdlib implementation of DB API 2, `sqlite3`

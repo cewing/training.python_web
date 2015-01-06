@@ -1,5 +1,14 @@
+.. slideconf::
+    :autoslides: False
+
 Jinja2 Template Introduction
 ============================
+
+.. slide:: Jinja2 Template Introduction
+    :level: 1
+
+    This document contains no slides.
+
 
 When you installed ``flask`` into your virtualenv, along with it came a
 Python-based templating engine called ``Jinja2``.

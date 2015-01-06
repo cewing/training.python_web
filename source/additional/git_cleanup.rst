@@ -1,5 +1,13 @@
+.. slideconf::
+    :autoslides: False
+
 Steps to get a clean master branch for your git fork
 ====================================================
+
+.. slide:: Steps to get a clean master branch for your git fork
+    :level: 1
+
+    This document contains no slides.
 
 Command line instructions for getting back to a pristine master branch
 
