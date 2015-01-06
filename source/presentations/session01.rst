@@ -1141,7 +1141,7 @@ In our project we will be using the `SQLAlchemy`_ ORM.
     Make sure your ``ljenv`` virtualenv is active and then type the following:
 
     .. code-block:: bash
-    
+
         (ljenv)$ python setup.py develop
         running develop
         running egg_info
@@ -1245,6 +1245,29 @@ Any class we create that inherits from this ``Base`` becomes a *model*
 
 .. _Declarative: http://docs.sqlalchemy.org/en/rel_0_9/orm/extensions/declarative/
 
+.. nextslide:: Columns
+
+Each attribute of your model that will be persisted must be an instance of
+`Column`_.
+
+.. rst-class:: build
+.. container::
+
+    Each instance requires *at least* a specific `data type`_ (such as
+    Integer).
+
+    Additionally, you can control other aspects of the column such as it being
+    a primary key.
+
+    In the *declarative* style we are using, the name of the column in the
+    database will default to the attribute name you assigned.
+
+    If you wish, you may provide a name specifically.  It must be the first
+    argument and must be a string.
+
+.. _Column: http://docs.sqlalchemy.org/en/rel_0_9/core/metadata.html#sqlalchemy.schema.Column
+.. _data type: http://docs.sqlalchemy.org/en/rel_0_9/core/types.html
+
 Creating The Database
 ---------------------
 
@@ -1262,7 +1285,7 @@ We have a *model* which allows us to persist Python objects to an SQL database.
     this:
 
     .. code-block:: python
-    
+
         # in setup.py
         entry_points="""\
         [paste.app_factory]
@@ -1307,13 +1330,463 @@ this command available to us.
     When we exectute ``initialize_learning_journal_db`` at the command line, we
     will be running this function.
 
-    It will use the configuration we pass in on the command line (an ``.ini``
-    file)
+    Let's try it out.
 
-    It will connect to the database by creating a ``DBSession``
+    We'll need to provide a configuration file name, let's use
+    ``development.ini``:
 
-    It will use the ``metadata`` property of our ``Base`` class to
-    ``create_all`` tables needed by our models.
+    .. code-block:: bash
 
-    It will create one instance of our ``MyModel`` class and add it to the
-    session.
+        (ljenv)$ initialize_learning_journal_db development.ini
+        2015-01-05 18:59:55,426 INFO  [sqlalchemy.engine.base.Engine][MainThread] SELECT CAST('test plain returns' AS VARCHAR(60)) AS anon_1
+        ...
+        2015-01-05 18:59:55,434 INFO  [sqlalchemy.engine.base.Engine][MainThread] COMMIT
+
+    The ``[loggers]`` configuration in our ``.ini`` file sends a stream of
+    INFO-level logging to sys.stdout as the console script runs.
+
+.. nextslide:: A Bit More Cleanup
+
+So what was the outcome of running that script?
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: bash
+
+        (ljenv)$ ls
+        ...
+        learning_journal.sqlite
+        ...
+
+    We've now created an sqlite database.
+
+    You'll need to add ``*.sqlite`` to ``.gitignore`` so you don't add that
+    file to your repository.
+
+    Once you've done so, commit the change to your repository
+
+Interacting with SQLA Models
+----------------------------
+
+It's pretty easy to play with your models from in an interpreter.
+
+.. rst-class:: build
+.. container::
+
+    Let's try that out and see what we have.  Start up an interpreter:
+
+    .. code-block:: pycon
+
+        >>> config = 'development.ini'
+        >>> from pyramid.paster import get_appsettings
+        >>> settings = get_appsettings(config)
+        >>> from sqlalchemy import engine_from_config
+        >>> engine = engine_from_config(settings, 'sqlalchemy.')
+        >>> from sqlalchemy.orm import sessionmaker
+        >>> Session = sessionmaker(bind=engine)
+        >>> session = Session()
+        >>> from learning_journal.models MyModel
+        >>> session.query(MyModel).all()
+        [<learning_journal.models.MyModel object at 0x10b075ed0>]
+
+    We are basically stealing the important bits from ``initializedb.py``
+
+.. nextslide:: Basic Interactions
+
+Any interaction with the database requires a ``session``.
+
+.. rst-class:: build
+.. container::
+
+    This object represents the connection to the database.
+
+    All database queries are phrased as methods of the session.
+
+    .. container::
+
+        .. code-block:: pycon
+
+            >>> query = session.query(MyModel).all()
+            >>> type(query)
+            <class 'sqlalchemy.orm.query.Query'>
+
+        The ``query`` method of the session object returns a ``Query`` object
+
+    Arguments to the ``query`` method can be a *model* class or *columns* from
+    a model class.
+
+.. nextslide:: Queries are Iterators
+
+You can iterate over a query object.  The result depends on the args you
+passed.
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: pycon
+
+        >>> q1 = session.query(MyModel)
+        >>> for row in q1:
+        ...   print row
+        ...   type(row)
+        ...
+        <learning_journal.models.MyModel object at 0x1103d9f10>
+        <class 'learning_journal.models.MyModel'>
+
+    .. code-block:: pycon
+
+        >>> q2 = session.query(MyModel.name, MyModel.id, MyModel.value)
+        >>> for name, id, val in q2:
+        ...   print name, type(name)
+        ...   print id, type(id)
+        ...   print val, type(val)
+        ...
+        one <type 'unicode'>
+        1 <type 'int'>
+        1 <type 'int'>
+
+.. nextslide:: Queries have SQL
+
+You can view the SQL that your query will use:
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: pycon
+
+        >>> str(q1)
+        'SELECT models.id AS models_id, models.name AS models_name, models.value AS models_value \nFROM models'
+        >>> str(q2)
+        'SELECT models.name AS models_name, models.id AS models_id, models.value AS models_value \nFROM models'
+
+    You can use this to check that the query the ORM is constructing looks like
+    you expect.
+
+    It can be helpful in debugging.
+
+.. nextslide:: Methods of the Query Object
+
+The methods of the ``Query`` object fall into two rough categories
+
+.. rst-class:: build
+.. container::
+
+    .. rst-class:: build
+
+    1.  Methods that return a new ``Query`` object
+    2.  Methods that return *scalar* values or *model* instances
+
+    Let's start by looking quickly at a few methods from the second category
+
+.. nextslide:: ``query.get()``
+
+A good example of this category of methods is ``get``, which returns one
+instance only.
+
+.. rst-class:: build
+.. container::
+
+    It takes a primary key as an argument:
+
+    .. code-block:: pycon
+
+        >>> session.query(MyModel).get(1)
+        <learning_journal.models.MyModel object at 0x1103d9f10>
+        >>> session.query(MyModel).get(10)
+        >>>
+
+    If no item with that primary key is present, then the method returns
+    ``None``
+
+.. nextslide:: ``query.all()``
+
+Another example is one we've already seen.
+
+.. rst-class:: build
+.. container::
+
+    ``query.all()`` returns a list of all rows returned by the database:
+
+    .. code-block:: pycon
+
+        >>> q1.all()
+        [<learning_journal.models.MyModel object at 0x1103d9f10>]
+        >>> type(q1.all())
+        <type 'list'>
+
+    ``query.count()`` returns the number of rows that would have been returned
+    by the query:
+
+    .. code-block:: pycon
+
+        >>> q1.count()
+        1
+
+.. nextslide:: Creating New Objects
+
+Before getting into the other category, let's learn how to create new objects.
+
+.. rst-class:: build
+.. container::
+
+    .. container::
+
+        We can create new instances of our *model* just like normal Python
+        objects:
+
+        .. code-block:: pycon
+
+            >>> new_model = MyModel(name='fred', value=3)
+            >>> new_model
+            <learning_journal.models.MyModel object at 0x1103e38d0>
+
+    .. container::
+
+        In this state, the instance is *ephemeral*, our ``session`` knows
+        nothing about it:
+
+        .. code-block:: pycon
+
+            >>> session.new
+            IdentitySet([])
+
+.. nextslide:: Adding Objects to the Session
+
+For the database to know about our new object, we must ``add`` it to the
+session:
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: pycon
+
+        >>> session.add(new_model)
+        >>> session.new
+        IdentitySet([<learning_journal.models.MyModel object at 0x1103e38d0>])
+
+    We can even bulk-add new objects:
+
+    .. code-block:: pycon
+
+        >>> new = []
+        >>> for name, val in [('bob', 34), ('tom', 13)]:
+        ...   new.append(MyModel(name=name, value=val))
+        ...
+        >>> session.add_all(new)
+        >>> session.new
+        IdentitySet([<learning_journal.models.MyModel object at 0x1103e3f50>,
+                     <learning_journal.models.MyModel object at 0x1103e38d0>,
+                     <learning_journal.models.MyModel object at 0x1103e3fd0>])
+
+.. nextslide:: Committing Changes
+
+Up until now, the changes you've made are not permanent.
+
+.. rst-class:: build
+.. container::
+
+    In order for these new objects to be saved to the database, the session
+    must be ``committed``:
+
+    .. code-block:: pycon
+
+        >>> other_session = Session()
+        >>> other_session.query(MyModel).count()
+        1
+        >>> session.commit()
+        >>> other_session.query(MyModel).count()
+
+    When you are using a ``scoped_session`` in Pyramid, this action is
+    automatically handled for you.
+
+    The session that is bound to a particular HTTP request is committed when a
+    response is sent back.
+
+.. nextslide:: Altering Objects
+
+You can edit objects that are already part of a session, or that are fetched by
+a query.
+
+.. rst-class:: build
+.. container::
+
+    Simply change the values of a persisted attribute, the session will know
+    it's been updated:
+
+    .. code-block:: pycon
+    
+        >>> new_model
+        <learning_journal.models.MyModel object at 0x1103e38d0>
+        >>> new_model.name
+        u'fred'
+        >>> new_model.name = 'larry'
+        >>> session.dirty
+        IdentitySet([<learning_journal.models.MyModel object at 0x1103e38d0>])
+
+    Commit the session to persist the changes:
+
+    .. code-block:: pycon
+    
+        >>> session.commit()
+
+.. nextslide:: Methods Returning Queries
+
+Returning to queries, the second category is typified by the ``filter`` method
+
+.. rst-class:: build
+.. container::
+
+    This method allows you to reduce the number of results, based on criteria:
+
+    .. code-block:: pycon
+    
+        >>> for obj in session.query(MyModel).filter(MyModel.value < 20):
+        ...   print obj.name, obj.value
+        ...
+        larry 1
+        fred 3
+        tom 13
+
+.. nextslide:: ``order_by``
+
+Another typical method in this category is ``order_by``:
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: pycon
+    
+        >>> for obj in session.query(MyModel).order_by(MyModel.value):
+        ...   print obj.name, obj.value
+        ...
+        larry 1
+        fred 3
+        tom 13
+        bob 34
+
+    .. code-block:: pycon
+
+        >>> for obj in session.query(MyModel).order_by(MyModel.name):
+        ...   print obj.name, obj.value
+        ...
+        bob 34
+        fred 3
+        larry 1
+        tom 13
+
+.. nextslide:: Method Chaining
+
+Since methods in this category return ``Query`` objects, they can be safely
+*chained* to build more complex queries:
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: pycon
+
+        >>> q1 = session.query(MyModel).filter(MyModel.value < 20)
+        >>> q1 = q1.order_by(MyModel.name)
+        >>> for obj in q1:
+        ...   print obj.name, obj.value
+        ...
+        fred 3
+        larry 1
+        tom 13
+
+    Note that you can do this inline as well
+    (``s.query(Model).filter().order_by()``)
+
+    Also note that when using chained queries like this, no query is actually
+    sent to the database until you require a result.
+
+Homework
+========
+
+Okay, that's enough for the moment.
+
+.. rst-class:: build
+.. container::
+
+    You've learned quite a bit about how *models* work in SQLAlchemy
+
+    It's time to put that knowledge to good use.
+
+    For the first part of your assignment this week you will begin to define
+    the data model for our learning journal application.
+
+    I'll provide a specification, you define the model required to do the job.
+
+    I'll also ask you to define a few methods to complete the first part of our
+    API.
+
+.. nextslide:: The Model
+
+Our model will be called an ``Entry``. Here's what you need to know:
+
+* It should be stored in a database table called ``entries``
+* It should have a primary key field called ``id``
+* It should have a ``title`` field which accepts unicode text up to 255 characters in length
+* The ``title`` should be unique and it should be impossible to save an
+  ``entry`` without a ``title``.
+* It should have a ``body`` field which accepts unicode text of any length
+  (including none)
+* It should have a ``created`` field which stores the date and time the object
+  was created.
+* It should have an ``edited`` field which stores the date and time the object
+  was last edited.
+* Both the ``created`` and ``edited`` field should default to ``now`` if not
+  provided when a new instance is constructed.
+* The ``entry`` class should support a classmethod ``all`` that returns all the
+  entries in the database, ordered so that the most recent entry is first.
+* The ``entry`` class should support a classmethod ``by_id`` that returns a
+  single entry, given an ``id``.
+
+.. nextslide:: Words of Advice
+
+Use the documentation linked in this presentation to assist you.  SQLAlchemy
+has fantastic documentation, but it can be a bit overwhelming.  Everything you
+require for this assignment is on one or more of the pages linked above.
+
+As you define this new model for our application, make frequent commits to your
+github repository. Remember to write meaningful commit messages.
+
+Don't be afraid to start up a Python interpreter and play with your model. Try
+things out. Learn how this all works by making mistakes.
+
+Errors at the SQL level can sometimes leave your session unusable. To restore
+it, use the ``session.rollback()`` method.  You'll lose uncommitted changes,
+but you'll gain a session that can be used again.
+
+.. nextslide:: Submitting Your Work
+
+I want to be able to review your code (and you want to be able to share it).
+
+To submit this assignment, you'll need to add this learning_journal repository
+to GitHub.
+
+On the GitHub website you can create a new repository.  Set it up to be
+completely empty. Name it ``learning_journal`` and give it any description you
+like.
+
+When you've created an empty repository in GitHub, you should see a set of
+directions for connecting it to a repository that you've already built. Follow
+those instructions to connect your emtpy GitHub repository as the ``origin``
+remote to your ``learning_journal`` repository on your machine.
+
+Finally, push your ``master`` branch to your new ``origin`` remote on GitHub.
+
+When you are done, send me an email with the URL for your new repository.
+
+.. nextslide::
+
+**Our work next week will assume that you have completed this assignment**
+
+Do not delay working on this until the last moment.
+
+Do not skip this assignment.
+
+Do ask questions frequently via email.
+
+See you next week!
+
