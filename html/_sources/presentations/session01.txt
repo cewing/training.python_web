@@ -45,6 +45,14 @@ But First
 
 .. nextslide::
 
+The rendered documentation is available as well:
+
+http://uwpce-pythoncert.github.io
+
+Please check frequently. I will update with great regularity
+
+.. nextslide::
+
 **Classroom Protocol**
 
 .. rst-class:: build
@@ -1786,7 +1794,8 @@ Do not delay working on this until the last moment.
 
 Do not skip this assignment.
 
-Do ask questions frequently via email.
+Do ask questions frequently via email (use the `class google group`_).
 
 See you next week!
 
+.. _class google group: https://groups.google.com/forum/#!forum/programming-in-python
