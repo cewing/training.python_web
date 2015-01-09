@@ -159,3 +159,8 @@ article table.docutils tr td {
   text-decoration: none;
   border: none; }
 
+.figure p.caption {
+  font-size: 75%;
+  text-align: center;
+}
+
