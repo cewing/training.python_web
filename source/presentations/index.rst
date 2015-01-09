@@ -16,3 +16,4 @@ course.
    :maxdepth: 2
 
    session01
+   session02
