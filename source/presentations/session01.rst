@@ -1394,7 +1394,7 @@ It's pretty easy to play with your models from in an interpreter.
         >>> from sqlalchemy.orm import sessionmaker
         >>> Session = sessionmaker(bind=engine)
         >>> session = Session()
-        >>> from learning_journal.models MyModel
+        >>> from learning_journal.models import MyModel
         >>> session.query(MyModel).all()
         [<learning_journal.models.MyModel object at 0x10b075ed0>]
 
@@ -1711,9 +1711,11 @@ Since methods in this category return ``Query`` objects, they can be safely
 Homework
 ========
 
+.. rst-class:: left
+
 Okay, that's enough for the moment.
 
-.. rst-class:: build
+.. rst-class:: build left
 .. container::
 
     You've learned quite a bit about how *models* work in SQLAlchemy
@@ -1728,7 +1730,8 @@ Okay, that's enough for the moment.
     I'll also ask you to define a few methods to complete the first part of our
     API.
 
-.. nextslide:: The Model
+The Model
+---------
 
 Our model will be called an ``Entry``. Here's what you need to know:
 
