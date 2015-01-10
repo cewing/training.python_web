@@ -132,6 +132,8 @@ Here's a demo interaction using the script to set up a session maker
         [<learning_journal.models.MyModel object at 0x105849b90>]
         ...
 
+    [demo]
+
 The Controller
 ==============
 
@@ -321,13 +323,22 @@ Let's add routes for our application.
 
     For our list page, the existing ``'home'`` route will do fine, leave it.
 
-    For a detail page, we want a URL that captures the identifier for our
-    journal entries.
+    Add the following two routes:
 
-    That way, we can use the captured identifier to pick the correct entry
-    using our models ``by_id`` api.
+    .. code-block:: python
 
-    We'll need the Pyramid pattern syntax.
+        config.add_route('home', '/') # already there
+        config.add_route('detail', '/journal/{id:\d+}')
+        config.add_route('action', '/journal/{action}')
+
+    The ``'detail'`` route will serve a single journal entry, identified by an
+    ``id``.
+
+    The ``action`` route will serve ``create`` and ``edit`` views, depending on
+    the ``action`` specified.
+
+    In both cases, we want to capture a portion of the matched path to use
+    information it provides.
 
 .. nextslide:: Matching an ID
 
@@ -341,19 +352,17 @@ marker*, a valid Python symbol surrounded by curly braces:
 
         /home/{foo}/
 
-    Matched path segments are captured in a ``matchdict``::
-
-        # pattern     # actual url    # matchdict
-        /home/{foo}/  /home/an_id/    {'foo': 'an_id'}
-
     If you want to match a particular pattern, like digits only, add a
     *regexp*::
 
         /journal/{id:\d+}
 
-    Add this new route to our configuration as ``'detail'``::
+    Matched path segments are captured in a ``matchdict``::
 
-        config.add_route('detail', '/journal/{id:\d+}')
+        # pattern          # actual url   # matchdict
+        /journal/{id:\d+}  /journal/27    {'id': '27'}
+
+    The ``matchdict`` is made available as an attribute of the *request*
 
 
 .. nextslide:: Connecting Routes to Views
@@ -429,45 +438,144 @@ So, a *view* is a callable that takes the *request* as an argument.
 
     It is the *Controller* in our MVC application.
 
+.. nextslide:: Adding Stub Views
 
-    Here, we'll use a *page template*, which renders HTML.
+Add temporary views to our application in ``views.py`` (and comment out the
+sample view):
 
-    But Pyramid has other possible renderers: ``string``, ``json``, ``jsonp``.
+.. code-block:: python
 
-    And you can build your own.
+    @view_config(route_name='home', renderer='string')
+    def index_page(request):
+        return 'list page'
 
-.. _renderer: http://docs.pylonsproject.org/projects/pyramid/en/1.5-branch/narr/renderers.html
+    @view_config(route_name='blog', renderer='string')
+    def blog_view(request):
+        return 'detail page'
 
+    @view_config(route_name='blog_action', match_param='action=create', renderer='string')
+    def blog_create(request):
+        return 'create page'
 
+    @view_config(route_name='blog_action', match_param='action=edit', renderer='string')
+    def blog_update(request):
+        return 'edit page'
+
+.. nextslide:: Testing Our Views
+
+Now we can verify that our view configuration has worked.
+
+.. rst-class:: build
+.. container::
+
+    Make sure your virtualenv is properly activated, and start the web server:
+
+    .. code-block:: bash
+
+        (ljenv)$ pserve development.ini
+        Starting server in PID 84467.
+        serving on http://0.0.0.0:6543
+
+    Then try viewing some of the expected application urls:
+
+    .. rst-class:: build
+
+    * http://localhost:6543/
+    * http://localhost:6543/journal/1
+    * http://localhost:6543/journal/create
+    * http://localhost:6543/journal/edit
+
+    What happens if you visit a URL that *isn't* in our configuration?
+
+.. nextslide:: Interacting With the Model
+
+Now that we've got temporary views that work, we can fix them to get
+information from our database
+
+.. rst-class:: build
+.. container::
+
+    We'll begin with the list view.
+
+    We need some code that will fetch all the journal entries we've written, in
+    reverse order, and hand that collection back for rendering.
+
+    .. code-block:: python
+
+        from .models import (
+            DBSession,
+            MyModel,
+            Entry, # <- Add this import
+        )
+
+        # and update this view function
+        def index_page(request):
+            entries = Entry.all()
+            return {'entries': entries}
+
+.. nextslide:: Using the ``matchdict``
+
+Next, we want to write the view for a single entry.
+
+.. rst-class:: build
+.. container::
+
+    We'll need to use the ``id`` value our route captures into the
+    ``matchdict``.
+
+    Remember that the ``matchdict`` is an attribute of the request.
+
+    We'll get the ``id`` from there, and use it to get the correct entry.
+
+    .. code-block:: python
+
+        # add this import at the top
+        from pyramid.exceptions import HTTPNotFound
+
+        # and update this view function:
+        def blog_view(request):
+            this_id = request.matchdict.get('id', -1)
+            entry = Entry.by_id(this_id)
+            if not entry:
+                return HTTPNotFound()
+            return {'entry': entry}
+
+.. nextslide:: Testing Our Views
+
+We can now verify that these views work correctly.
+
+.. rst-class:: build
+.. container::
+
+    Make sure your virtualenv is properly activated, and start the web server:
+
+    .. code-block:: bash
+
+        (ljenv)$ pserve development.ini
+        Starting server in PID 84467.
+        serving on http://0.0.0.0:6543
+
+    Then try viewing the list page and an entry page:
+
+    * http://localhost:6543
+    * http://localhost:6543/journal/1
+
+    What happens when you request an entry with an id that isn't in the
+    database?
+
+    * http://localhost:6543/journal/100
 
 outline
 -------
 
-see how it works for the current MyModel and my_view
+Here, we'll use a *page template*, which renders HTML.
 
-add route to config tells the application which urls will work
-  try urls that are not in config, see what happens
+But Pyramid has other possible renderers: ``string``, ``json``, ``jsonp``.
 
-view_config tells the view what renderer to use, which route to connect to, and
-can help discriminate between views that share the same route
+And you can build your own.
 
-renderers are the "view" in mvc
+.. _renderer: http://docs.pylonsproject.org/projects/pyramid/en/1.5-branch/narr/renderers.html
 
-our data model is the program's api for our application
-
-Think of routes as the user API for the application, it determines what the
-user can do.
-
-Add routes for our application, what do we need to be able to do?
-
-Add stub views for our application, we can see our routes, and can tell when
-we've succeeded in getting past them.
-
-Test the application routes
-
-Create a view to view all entries
-
-create a view to view one entry by id
 
 Templates
 =========
