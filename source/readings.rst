@@ -15,7 +15,7 @@ readings that will support the information you'll learn in class. Think of
 this as supplemental materials. You can read it at your leisure to help
 increase both the depth and breadth of your knowledge.
 
-The readings are organized like the class, by session and topic. 
+The readings are organized like the class, by session and topic.
 
 
 Session 1 - MVC Applications and Data Persistence
@@ -45,6 +45,26 @@ understanding of how the SQLAlchemy ORM works.
 
 Session 2 - Pyramid Views, Renderers and Forms
 ----------------------------------------------
+
+This week we'll be focusing on the connection of an HTTP request to the code
+that handles that request using `URL Dispatch`_.  Quite a lot is possible with
+the Pyramid route system.  You may wish to read a bit more about it in one of
+the following documentation sections:
+
+* `Route Pattern Syntax
+  <http://docs.pylonsproject.org/docs/pyramid/en/latest/narr/urldispatch.html#route-pattern-syntax>`_
+  discusses the syntax for pattern matching and extraction in Pyramid routes.
+
+In Pyramid, the code that handles requests is called `a view`_.
+
+A view passes data to `a renderer`_, which is responsible for turning the data
+into a response to send back.
+
+
+.. _URL Dispatch: http://docs.pylonsproject.org/docs/pyramid/en/latest/narr/urldispatch.html
+.. _a view: http://docs.pylonsproject.org/projects/pyramid/en/1.5-branch/narr/views.html
+.. _a renderer: http://docs.pylonsproject.org/projects/pyramid/en/1.5-branch/narr/renderers.html
+
 
 Sesstion 3 - Pyramid Authentication and Deployment
 --------------------------------------------------
