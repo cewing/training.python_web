@@ -88,7 +88,7 @@ Another resource I've added is the ``ljshell.py`` script.
     in class last week:
 
     .. code-block:: python
-    
+
         # the script
         from pyramid.paster import get_appsettings, setup_logging
         from sqlalchemy import engine_from_config
@@ -132,8 +132,8 @@ Here's a demo interaction using the script to set up a session maker
         [<learning_journal.models.MyModel object at 0x105849b90>]
         ...
 
-Pyramid Views
-=============
+The Controller
+==============
 
 .. rst-class:: left
 .. container::
@@ -141,25 +141,307 @@ Pyramid Views
     Let's go back to thinking for a bit about the *Model-View-Controller*
     pattern.
 
+    .. figure:: http://upload.wikimedia.org/wikipedia/commons/4/40/MVC_passive_view.png
+        :align: center
+        :width: 25%
+
+        By Alan Evangelista (Own work) [CC0], via Wikimedia Commons
+
     .. rst-class:: build
     .. container::
-    
-        .. figure:: http://upload.wikimedia.org/wikipedia/commons/4/40/MVC_passive_view.png
-            :align: center
-            :width: 25%
-
-            By Alan Evangelista (Own work) [CC0], via Wikimedia Commons
 
         We talked last week (and today) about the *model*
 
+        Today, we'll dig into *controllers* and *views*
+
+        or as we will know them in Pyramid: *views* and *renderers*
+
+
+HTTP Request/Response
+---------------------
+
+Internet software is driven by the HTTP Request/Response cycle.
+
+.. rst-class:: build
+.. container::
+
+    A *client* (perhaps a user with a web browser) makes a **request**
+
+    A *server* receives and handles that request and returns a **response**
+
+    The *client* receives the response and views it, perhaps making a new
+    **request**
+
+    And around and around it goes.
+
+.. nextslide:: URLs
+
+An HTTP request arrives at a server through the magic of a **URL**
+
+.. code-block:: bash
+
+    http://uwpce-pythoncert.github.io/training.python_web/html/index.html
+
+.. rst-class:: build
+.. container::
+
+    Let's break that up into its constituent parts:
+
+    .. rst-class:: build
+
+    \http://:
+      This part is the *protocol*, it determines how the request will be sent
+
+    uwpce-pythoncert.github.io:
+      This is a *domain name*.  It's the human-facing address for a server
+      somewhere.
+
+    /training.python_web/html/index.html:
+      This part is the *path*.  It serves as a locator for a resource *on the
+      server*
+
+.. nextslide:: Paths
+
+In a static website (like our documentation) the *path* identifies a **physical
+location** in the server's filesystem.
+
+.. rst-class:: build
+.. container::
+
+    Some directory on the server is the *home* for the web process, and the
+    *path* is looked up there.
+
+    Whatever resource (a file, an image, whatever) is located there is returned
+    to the user as a response.
+
+    If the path leads to a location that doesn't exist, the server responds
+    with a **404 Not Found** error.
+
+    In the golden days of yore, this was the only way content was served via
+    HTTP.
+
+.. nextslide:: Paths in an MVC System
+
+In todays world we have dynamic systems, server-side web frameworks like
+Pyramid.
+
+.. rst-class:: build
+.. container::
+
+    The requests that you send to a server are handled by a software process
+    that assembles a response instead of looking up a physical location.
+
+    But we still have URLs, with *protocol*, *domain* and *path*.
+
+    What is the role for a path in a process that doesn't refer to a physical
+    file system?
+
+    Most web frameworks now call the *path* a **route**.
+
+    They provide a way of matching *routes* to the code that will be run to
+    handle requests.
+
+Routes in Pyramid
+-----------------
+
+In Pyramid, routes are handled as *configuration* and are set up in the *main*
+function in ``__init__.py``:
+
+.. code-block:: python
+
+    # learning_journal/__init__.py
+    def main(global_config, **settings):
+        # ...
+        config.add_route('home', '/')
+        # ...
+
+.. rst-class:: build
+.. container::
+
+    Our code template created a sample route for us, using the ``add_route``
+    method of the ``Configurator`` class.
+
+    The ``add_route`` method has two required arguments: a *name* and a
+    *pattern*
+
+    In our sample route, the *name* is ``'home'``
+
+    In our sample route, the *pattern* is ``'/'``
+
+.. nextslide::
+
+When a request comes in to a Pyramid application, the framework looks at all
+the *routes* that have been configured.
+
+.. rst-class:: build
+.. container::
+
+    One by one, in order, it tries to match the *path* of the incoming request
+    against the *pattern* of the route.
+
+    As soon as a *pattern* matches the *path* from the incoming request, that
+    route is used and no further matching is performed.
+
+    If no route is found that matches, then the request will automatically get
+    a **404 Not Found** error response.
+
+    In our sample app, we have one sample *route* named ``'home'``, with a
+    pattern of ``/``.
+
+    This means that any request that comes in for ``/`` will be matched to this
+    route, and any other request will be **404**.
+
+.. nextslide:: Routes as API
+
+In a very real sense, the *routes* defined in an application *are* the public
+API.
+
+.. rst-class:: build
+.. container::
+
+    Any route that is present represents something the user can do.
+
+    Any route that is not present is something the user cannot do.
+
+    You can use the proper definition of routes to help conceptualize what your
+    app will do.
+
+    What routes might we want for a learning journal application?
+
+    What will our application do?
+
+.. nextslide:: Defining our Routes
+
+Let's add routes for our application.
+
+.. rst-class:: build
+.. container::
+
+    Open ``learning_journal/__init__.py``.
+
+    For our list page, the existing ``'home'`` route will do fine, leave it.
+
+    For a detail page, we want a URL that captures the identifier for our
+    journal entries.
+
+    That way, we can use the captured identifier to pick the correct entry
+    using our models ``by_id`` api.
+
+    We'll need the Pyramid pattern syntax.
+
+.. nextslide:: Matching an ID
+
+In a pattern, you can capture a ``path segment`` *replacement
+marker*, a valid Python symbol surrounded by curly braces:
+
+.. rst-class:: build
+.. container::
+
+    ::
+
+        /home/{foo}/
+
+    Matched path segments are captured in a ``matchdict``::
+
+        # pattern     # actual url    # matchdict
+        /home/{foo}/  /home/an_id/    {'foo': 'an_id'}
+
+    If you want to match a particular pattern, like digits only, add a
+    *regexp*::
+
+        /journal/{id:\d+}
+
+    Add this new route to our configuration as ``'detail'``::
+
+        config.add_route('detail', '/journal/{id:\d+}')
+
+
+.. nextslide:: Connecting Routes to Views
+
+In Pyramid, a *route* is connected by configuration to a *view*.
+
+.. rst-class:: build
+.. container::
+
+    In our app, a sample view has been created for us, in ``views.py``:
+
+    .. code-block:: python
+
+        @view_config(route_name='home', renderer='templates/mytemplate.pt')
+        def my_view(request):
+            # ...
+
+    The order in which *routes* are configured *is important*, so that must be
+    done in ``__init__.py``.
+
+    The order in which views are connected to routes *is not important*, so the
+    *declarative* ``@view_config`` decorator can be used.
+
+    When ``config.scan`` is called, all files in our application are searched
+    for such *declarative configuration* and it is added.
+
+The Pyramid View
+----------------
+
+Let's imagine that a *request* has come to our application for the path
+``'/'``.
+
+.. rst-class:: build
+.. container::
+
+    The framework made a match of that path to a *route* with the pattern ``'/'``.
+
+    Configuration connected that route to a *view* in our application.
+
+    Now, the view that was connected will be *called*, which brings us to the
+    nature of *views*
+
+    .. rst-class:: centered
+
+    --A Pyramid view is a *callable* that takes *request* as an argument--
+
+    Remember what a *callable* is?
+
+.. nextslide:: What the View Does
+
+So, a *view* is a callable that takes the *request* as an argument.
+
+.. rst-class:: build
+.. container::
+
+    It can then use information from that request to build appropriate data,
+    perhaps using the application's *models*.
+
+    Then, it returns the data it assembled, passing it on to a `renderer`_.
+
+    Which *renderer* to use is determined, again, by configuration:
+
+    .. code-block:: python
+
+        @view_config(route_name='home', renderer='templates/mytemplate.pt')
+        def my_view(request):
+            # ...
+
+    More about this in a moment.
+
+    The *view* stands at the intersection of *input data*, the application
+    *model* and *renderers* that offer rendering of the results.
+
+    It is the *Controller* in our MVC application.
+
+
+    Here, we'll use a *page template*, which renders HTML.
+
+    But Pyramid has other possible renderers: ``string``, ``json``, ``jsonp``.
+
+    And you can build your own.
+
+.. _renderer: http://docs.pylonsproject.org/projects/pyramid/en/1.5-branch/narr/renderers.html
+
+
+
 outline
 -------
-
-views are "controllers"
-
-requests come in with user input, data sent out
-
-views are connected to the outside world via "routes" and these determine URLs
 
 see how it works for the current MyModel and my_view
 
