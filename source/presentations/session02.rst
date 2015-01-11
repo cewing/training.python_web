@@ -134,8 +134,8 @@ Here's a demo interaction using the script to set up a session maker
 
     [demo]
 
-The Controller
-==============
+The MVC Controller
+==================
 
 .. rst-class:: left
 .. container::
@@ -438,6 +438,9 @@ So, a *view* is a callable that takes the *request* as an argument.
 
     It is the *Controller* in our MVC application.
 
+.. _renderer: http://docs.pylonsproject.org/projects/pyramid/en/1.5-branch/narr/renderers.html
+
+
 .. nextslide:: Adding Stub Views
 
 Add temporary views to our application in ``views.py`` (and comment out the
@@ -565,17 +568,578 @@ We can now verify that these views work correctly.
 
     * http://localhost:6543/journal/100
 
-outline
--------
+The MVC View
+============
 
-Here, we'll use a *page template*, which renders HTML.
+.. rst-class:: left
+.. container::
 
-But Pyramid has other possible renderers: ``string``, ``json``, ``jsonp``.
+    Again, back to the *Model-View-Controller* pattern.
 
-And you can build your own.
+    .. figure:: http://upload.wikimedia.org/wikipedia/commons/4/40/MVC_passive_view.png
+        :align: center
+        :width: 25%
 
-.. _renderer: http://docs.pylonsproject.org/projects/pyramid/en/1.5-branch/narr/renderers.html
+        By Alan Evangelista (Own work) [CC0], via Wikimedia Commons
 
+    .. rst-class:: build
+    .. container::
+
+        We've built a *model* and we've created some *controllers* that use it.
+
+        In Pyramid, we call *controllers* **views** and they are callables that
+        take *request* as an argument.
+
+        Let's turn to the last piece of the *MVC* patter, the *view*
+
+Presenting Data
+---------------
+
+The job of the *view* in the *MVC* pattern is to present data in a format that
+is readable to the user of the system.
+
+.. rst-class:: build
+.. container::
+
+    There are many ways to present data.
+
+    Some are readable by humans (tables, charts, graphs, HTML pages, text
+    files).
+
+    Some are more for machines (xml files, csv, json).
+
+    Which of these formats is the *right one* depends on your purpose.
+
+    What is the purpose of our learning journal?
+
+Pyramid Renderers
+-----------------
+
+In Pyramid, the job of presenting data is performed by a *renderer*.
+
+.. rst-class:: build
+.. container::
+
+    So we can consider the Pyramid **renderer** to be the *view* in our *MVC*
+    app.
+
+    We've already seen how we can connect a *renderer* to a Pyramid *view* with
+    configuration.
+
+    In fact, we have already done so, using a built-in renderer called
+    ``'string'``.
+
+    This renderer converts the return value of its *view* to a string and sends
+    that back to the client as an HTTP response.
+
+    But the result isn't so nice looking.
+
+.. nextslide:: Template Renderers
+
+The `built-in renderers` (``'string'``, ``'json'``, ``'jsonp'``) in Pyramid are
+not the only ones available.
+
+.. _built-in renderers: http://docs.pylonsproject.org/projects/pyramid/en/1.5-branch/narr/renderers.html#built-in-renderers
+
+.. rst-class:: build
+.. container::
+
+    There are add-ons to Pyramid that support using various *template
+    languages* as renderers.
+
+    In fact, one of these was installed by default when you created this
+    project.
+
+.. nextslide:: Configuring a Template Renderer
+
+.. code-block:: python
+
+    # in setup.py
+    requires = [
+        # ...
+        'pyramid_chameleon',
+        # ...
+    ]
+
+    # in learning_journal/__init__.py
+    def main(global_config, **settings):
+        # ...
+        config.include('pyramid_chameleon')
+
+.. rst-class:: build
+.. container::
+
+    The `pyramid_chameleon` package supports using the `chameleon` template
+    language.
+
+    The language is quite nice and powerful, but not so easy to learn.
+
+    Let's use a different one, *jinja2*
+
+.. nextslide:: Changing Template Renderers
+
+Change ``pyramid_chameleon`` to ``pyramid_jinja2`` in both of these files:
+
+.. code-block:: python
+
+    # in setup.py
+    requires = [
+        # ...
+        'pyramid_jinja2',
+        # ...
+    ]
+
+    # in learning_journal/__init__.py
+    def main(global_config, **settings):
+        # ...
+        config.include('pyramid_jinja2')
+
+.. nextslide:: Picking up the Changes
+
+We've changed the dependencies for our Pyramid project.
+
+.. rst-class:: build
+.. container::
+
+    As a result, we will need to re-install it so the new dependencies are also
+    installed:
+
+    .. code-block:: bash
+
+        (ljenv)$ python setup.py develop
+        ...
+        Finished processing dependencies for learning-journal==0.0
+        (ljenv)$
+
+    Now, we can use *Jinja2* templates in our project.
+
+    Let's learn a bit about how `Jinja2 templates`_ work.
+
+.. _Jinja2 templates: http://jinja.pocoo.org/docs/templates/
+
+Jinja2 Template Basics
+----------------------
+
+We'll start with the absolute basics.
+
+.. rst-class:: build
+.. container::
+
+    Fire up a Python interpreter, using your `ljenv` virtualenv:
+
+    .. code-block:: bash
+
+        (ljenv)$ python
+        >>>
+
+    Then import the ``Template`` class from the ``jinja2`` package:
+
+    .. code-block:: pycon
+
+        >>> from jinja2 import Template
+
+.. nextslide:: Templates are Strings
+
+A template is constructed with a simple string:
+
+.. code-block:: python
+
+    >>> t1 = Template("Hello {{ name }}, how are you?")
+
+.. rst-class:: build
+.. container::
+
+    Here, we've simply typed the string directly, but it is more common to
+    build a template from the contents of a *file*.
+
+    Notice that our string has some odd stuff in it: ``{{ name }}``.
+
+    This is called a placeholder and when the template is *rendered* it is
+    replaced.
+
+.. nextslide:: Rendering a Template
+
+Call the ``render`` method, providing *context*:
+
+.. code-block:: python
+
+    >>> t1.render(name="Freddy")
+    u'Hello Freddy, how are you?'
+    >>> t1.render({'name': "Roberto"})
+    u'Hello Roberto, how are you?'
+    >>>
+
+.. rst-class:: build
+.. container::
+
+    *Context* can either be keyword arguments, or a dictionary
+
+    Note the resemblance to something you've seen before:
+
+    .. code-block:: python
+    
+        >>> "This is {owner}'s string".format(owner="Cris")
+        'This is Cris's string'
+
+
+.. nextslide:: Dictionaries in Context
+
+Dictionaries passed in as part of the *context* can be addressed with *either*
+subscript or dotted notation:
+
+.. code-block:: python
+
+    >>> person = {'first_name': 'Frank',
+    ...           'last_name': 'Herbert'}
+    >>> t2 = Template("{{ person.last_name }}, {{ person['first_name'] }}")
+    >>> t2.render(person=person)
+    u'Herbert, Frank'
+
+.. rst-class:: build
+
+* Jinja2 will try the *correct* way first (attr for dotted, item for
+  subscript).
+* If nothing is found, it will try the opposite.
+* If nothing is found, it will return an *undefined* object.
+
+
+.. nextslide:: Objects in Context
+
+The exact same is true of objects passed in as part of *context*:
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: python
+
+        >>> t3 = Template("{{ obj.x }} + {{ obj['y'] }} = Fun!")
+        >>> class Game(object):
+        ...   x = 'babies'
+        ...   y = 'bubbles'
+        ...
+        >>> bathtime = Game()
+        >>> t3.render(obj=bathtime)
+        u'babies + bubbles = Fun!'
+
+    This means your templates can be a bit agnostic as to the nature of the
+    things in *context*
+
+.. nextslide:: Filtering values in Templates
+
+You can apply `filters`_ to the data passed in *context* with the pipe ('|')
+operator:
+
+.. _filters: http://jinja.pocoo.org/docs/dev/templates/#filters
+
+.. code-block:: python
+
+    t4 = Template("shouted: {{ phrase|upper }}")
+    >>> t4.render(phrase="this is very important")
+    u'shouted: THIS IS VERY IMPORTANT'
+
+.. rst-class:: build
+.. container::
+
+    You can also chain filters together:
+
+    .. code-block:: python
+
+        t5 = Template("confusing: {{ phrase|upper|reverse }}")
+        >>> t5.render(phrase="howdy doody")
+        u'confusing: YDOOD YDWOH'
+
+.. nextslide:: Control Flow
+
+Logical `control structures`_ are also available:
+
+.. _control structures: http://jinja.pocoo.org/docs/dev/templates/#list-of-control-structures
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: python
+
+        tmpl = """
+        ... {% for item in list %}{{ item }}, {% endfor %}
+        ... """
+        >>> t6 = Template(tmpl)
+        >>> t6.render(list=[1,2,3,4,5,6])
+        u'\n1, 2, 3, 4, 5, 6, '
+
+    Any control structure introduced in a template **must** be paired with an
+    explicit closing tag ({% for %}...{% endfor %})
+
+    Remember, although template tags like ``{% for %}`` or ``{% if %}`` look a
+    lot like Python, they are not.
+
+    The syntax is specific and must be followed correctly.
+
+.. nextslide:: Template Tests
+
+There are a number of specialized *tests* available for use with the
+``if...elif...else`` control structure:
+
+.. code-block:: python
+
+    >>> tmpl = """
+    ... {% if phrase is upper %}
+    ...   {{ phrase|lower }}
+    ... {% elif phrase is lower %}
+    ...   {{ phrase|upper }}
+    ... {% else %}{{ phrase }}{% endif %}"""
+    >>> t7 = Template(tmpl)
+    >>> t7.render(phrase="FOO")
+    u'\n\n  foo\n'
+    >>> t7.render(phrase="bar")
+    u'\n\n  BAR\n'
+    >>> t7.render(phrase="This should print as-is")
+    u'\nThis should print as-is'
+
+
+.. nextslide:: Basic Expressions
+
+Basic `Python-like expressions`_ are also supported:
+
+.. _Python-like expressions: http://jinja.pocoo.org/docs/dev/templates/#expressions
+
+.. code-block:: python
+
+    tmpl = """
+    ... {% set sum = 0 %}
+    ... {% for val in values %}
+    ... {{ val }}: {{ sum + val }}
+    ...   {% set sum = sum + val %}
+    ... {% endfor %}
+    ... """
+    >>> t8 = Template(tmpl)
+    >>> t8.render(values=range(1,11))
+    u'\n\n\n1: 1\n  \n\n2: 3\n  \n\n3: 6\n  \n\n4: 10\n
+      \n\n5: 15\n  \n\n6: 21\n  \n\n7: 28\n  \n\n8: 36\n
+      \n\n9: 45\n  \n\n10: 55\n  \n'
+
+
+Our Templates
+-------------
+
+There's more that Jinja2 templates can do, but it will be easier to introduce
+you to that in the context of a working template.  So let's make some.
+
+.. nextslide:: Detail Template
+
+We have a Pyramid view that returns a single entry. Let's create a template to
+show it.
+
+.. rst-class:: build
+.. container::
+
+    In ``learning_journal/templates`` create a new file ``detail.jinja2``:
+
+    .. code-block:: jinja
+    
+        <article>
+          <h1>{{ entry.title }}</h1>
+          <hr/>
+          <p>{{ entry.body }}</p>
+          <hr/>
+          <p>Created <strong title="{{ entry.created }}">{{entry.created}}</strong></p>
+        </article>
+
+    Then wire it up to the detail view in ``views.py``:
+
+    .. code-block:: python
+    
+        # views.py
+        @view_config(route_name='detail', renderer='templates/detail.jinja2')
+        def blog_view(request):
+            # ...
+
+.. nextslide:: Try It Out
+
+Now we should be able to see some rendered HTML for our journal entry details.
+
+.. rst-class:: build
+.. container::
+
+    Start up your server:
+
+    .. code-block:: bash
+
+        (ljenv)$ pserve development.ini
+        Starting server in PID 90536.
+        serving on http://0.0.0.0:6543
+
+    Then try viewing an individual journal entry
+
+    * http://localhost:6543/journal/1
+
+.. nextslide:: Listing Page
+
+The index page of our journal should show a list of journal entries, let's do
+that next.
+
+.. rst-class:: build
+.. container::
+
+    In ``learning_journal/templates`` create a new file ``list.jinja2``:
+
+    .. code-block:: jinja
+
+        {% if entries %}
+        <h2>Journal Entries</h2>
+        <ul>
+          {% for entry in entries %}
+            <li>
+            <a href="{{ request.route_url('detail', id=entry.id) }}">{{ entry.title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <p>This journal is empty</p>
+        {% endif %}
+
+.. nextslide::
+
+It's worth taking a look at a few specifics of this template.
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: jinja
+    
+        <a href="{{ request.route_url('detail', id=entry.id) }}">{{ entry.title }}</a>
+
+    Jinja2 templates are rendered with a *context*.
+
+    The return values of the Pyramid *view* for a template get included in that
+    context.
+
+    So does *request*, which is placed there by the framework.
+
+    Request has a method ``route_url`` that will create a URL for a named
+    route.
+
+    This allows you to include URLs in your template without needing to know
+    exactly what they will be.
+
+    This process is called *reversing*, since it's a bit like a reverse phone
+    book lookup.
+
+.. nextslide::
+
+Finally, you'll need to connect this new renderer to your listing view:
+
+.. code-block:: python
+
+    @view_config(route_name='home', renderer='templates/list.jinja2')
+    def index_page(request):
+        # ...
+
+.. nextslide:: Try It Out
+
+We can now see our list page too.  Let's try starting the server:
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: bash
+
+        (ljenv)$ pserve development.ini
+        Starting server in PID 90536.
+        serving on http://0.0.0.0:6543
+
+    Then try viewing the home page of your journal:
+
+    * http://localhost:6543/
+
+    Click on the link to an entry, it should work.
+
+    Can you add a link back to the homepage on your detail page?
+
+.. nextslide:: Sharing Structure
+
+These views are reasonable, if quite plain.
+
+.. rst-class:: build
+.. container::
+
+    It'd be nice to put them into something that looks a bit more like a
+    website.
+
+    Jinja2 allows you to combine templates using something called
+    `template inheritance`_.
+
+    You can create a basic page structure, and then *inherit* that structure in
+    other templates.
+
+    In our class resources I've added a page template ``layout.jinja2``.  Copy
+    that page to your templates directory
+
+.. _template inheritance: http://jinja.pocoo.org/docs/dev/templates/#template-inheritance
+
+.. nextslide:: ``layout.jinja2``
+
+.. code-block:: jinja
+
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="utf-8">
+        <title>Python Learning Journal</title>
+        <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+      </head>
+      <body>
+        <header>
+          <nav><ul><li><a href="{{ request.route_url('home') }}">Home</a></li></ul></nav>
+        </header>
+        <main>
+          <h1>My Python Journal</h1>
+          <section id="content">{% block body %}{% endblock %}</section>
+        </main>
+        <footer><p>Created in the UW PCE Python Certificate Program</p></footer>
+      </body>
+    </html>
+
+.. nextslide:: Template Blocks
+
+The important part here is the ``{% block body %}{% endblock %}`` expression.
+
+.. rst-class:: build
+.. container::
+
+    This is a template **block** and it is a kind of placeholder.
+
+    Other templates can inherit from this one, and fill that block with
+    additional HTML.
+
+    Let's update our detail and list templates:
+
+    .. code-block:: jinja
+    
+        {% extends "layout.jinja2" %}
+        {% block body %}
+        <!-- everything else that was already there goes here -->
+        {% endblock %}
+
+.. nextslide:: Try It Out
+
+Let's try starting the server so we can see the result:
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: bash
+
+        (ljenv)$ pserve development.ini
+        Starting server in PID 90536.
+        serving on http://0.0.0.0:6543
+
+    Then try viewing the home page of your journal:
+
+    * http://localhost:6543/
+
+    Click on the link to an entry, it should work.
+
+    Now you have shared page structure that is in both.
 
 Templates
 =========
