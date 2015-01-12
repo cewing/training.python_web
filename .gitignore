@@ -1,1 +1,10 @@
 .buildinfo
+build
+.installed.cfg
+.mr.developer.cfg
+bin
+develop-eggs
+outline_improvements.txt
+resources
+source
+src
