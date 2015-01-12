@@ -452,16 +452,16 @@ sample view):
     def index_page(request):
         return 'list page'
 
-    @view_config(route_name='blog', renderer='string')
-    def blog_view(request):
+    @view_config(route_name='detail', renderer='string')
+    def view(request):
         return 'detail page'
 
-    @view_config(route_name='blog_action', match_param='action=create', renderer='string')
-    def blog_create(request):
+    @view_config(route_name='action', match_param='action=create', renderer='string')
+    def create(request):
         return 'create page'
 
-    @view_config(route_name='blog_action', match_param='action=edit', renderer='string')
-    def blog_update(request):
+    @view_config(route_name='action', match_param='action=edit', renderer='string')
+    def update(request):
         return 'edit page'
 
 .. nextslide:: Testing Our Views
@@ -1053,8 +1053,6 @@ We can now see our list page too.  Let's try starting the server:
 
     Click on the link to an entry, it should work.
 
-    Can you add a link back to the homepage on your detail page?
-
 .. nextslide:: Sharing Structure
 
 These views are reasonable, if quite plain.
@@ -1139,50 +1137,440 @@ Let's try starting the server so we can see the result:
 
     Click on the link to an entry, it should work.
 
-    Now you have shared page structure that is in both.
+    And now you have shared page structure that is in both.
 
-Templates
-=========
+Static Assets
+-------------
 
-We want to use Jinja, add jinja 2 as template engine and `python setup.py
-develop` to install
+Although we have a shared structure, it isn't particularly nice to look at.
 
-quick intro to jinja2 templates.
+.. rst-class:: build
+.. container::
 
-create a nice basic html outline, see how it works
+    Aspects of how a website looks are controlled by CSS (*Cascading Style
+    Sheets*).
 
-create a template to show a single entry, hook it up to your view/route and
-test it by viewing it.
+    Stylesheets are one of what we generally speak of as *static assets*.
 
-create a template to show a list of entries, hook it up and test by viewing.
+    Other static assets include *images* that are part of the look and feel of
+    the site (logos, button images, etc) and the *JavaScript* files that add
+    client-side dynamic behavior to the site.
+
+.. nextslide:: Static Assets in Pyramid
+
+Serving static assets in Pyramid requires a *static view* to configuration.
+Luckily, ``pcreate`` already handled that for us:
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: python
+    
+        # in learning_journal/__init__.py
+        def main(global_config, **settings):
+            # ...
+            config.add_static_view('static', 'static', cache_max_age=3600)
+            # ...
+
+    The first argument to ``add_static_view`` is a *name* that will need to
+    appear in the path of URLs requesting assets.
+
+    The second argument is a *path* that is relative to the package being
+    configured.
+
+    Assets referenced by the *name* in a URL will be searched for in the
+    location defined by the *path*
+
+    Additional keyword arguments control other aspects of how the view works.
+
+.. nextslide:: Static Assets in Templates
+
+Once you have a static view configured, you can use assets in that location in
+templates.
+
+.. rst-class:: build
+.. container::
+
+    The *request* object in Pyramid provides a ``static_url`` method that
+    builds appropriate URLs
+
+    Add the following to our ``layout.jinja2`` template:
+
+    .. code-block:: jinja
+    
+        <head>
+          <!-- ... -->
+          <link href="{{ request.static_url('learning_journal:static/styles.css') }}" rel="stylesheet">
+        </head>
+
+    The one required argument to ``request.static_url`` is a *path* to an
+    asset.
+
+    Note that because any package *might* define a static view, we have to
+    specify which package we want to look in.
+
+    That's why we have ``learning_journal:static/styles.css`` in our call.
+
+.. nextslide:: Basic Styles
+
+I've created some very very basic styles for our learning journal.
+
+.. rst-class:: build
+.. container::
+
+    You can find them in ``resources/session02/styles.css``.  Go ahead and copy
+    that file.
+
+    Add it to ``learning_journal/static``.
+
+    Then restart your web server and see what a difference a little style
+    makes:
+
+    .. code-block:: bash
+
+        (ljenv)$ pserve development.ini
+        Starting server in PID 90536.
+        serving on http://0.0.0.0:6543
+
+.. nextslide:: The Outcome
+
+Your site should look something like this:
+
+.. figure:: /_static/learning_journal_styled.png
+    :align: center
+    :width: 75%
+
+    The learning journal with basic styles applied
+
+Getting Interactive
+===================
+
+.. rst-class:: left
+.. container::
+
+    We have a site that allows us to view a list of journal entries.
+
+    .. rst-class:: build
+    .. container::
+
+        We can also view the details of a single entry.
+
+        But as yet, we don't really have any *interaction* in our site yet.
+
+        We can't create new entries.
+
+        Let's add that functionality next.
+
+User Input
+----------
+
+In HTML websites, the traditional way of getting input from users is via
+`HTML forms`_.
+
+.. rst-class:: build
+.. container::
+
+    Forms use *input elements* to allow users to enter data, pick from
+    drop-down lists, or choose items via checkbox or radio button.
+
+    It is possible to create plain HTML forms in templates and use them with
+    Pyramid.
+
+    It's a lot easier, however, to work with a *form library* to create forms,
+    render them in templates and interact with data sent by a client.
+
+    We'll be using a form library called `WTForms`_ in our project
+
+.. _HTML forms: https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Forms
+.. _WTForms: http://wtforms.readthedocs.org/en/latest/
+
+.. nextslide:: Installing WTForms
+
+The first step to working with this library is to install it.
+
+.. rst-class:: build
+.. container::
+
+    Start by makin the library as a *dependency* of our package by adding it to
+    the *requires* list in ``setup.py``:
+
+    .. code-block:: python
+
+        requires = [
+            # ...
+            'wtforms', # <- add this to the list
+        ]
+
+    Then, re-install our package to download and install the new dependency:
+
+    .. code-block:: bash
+
+        (ljenv)$ python setup.py develop
+        ...
+        Finished processing dependencies for learning-journal==0.0
+
+Using WTForms
+-------------
+
+We'll want a form to allow a user to create a new Journal Entry.
+
+.. rst-class:: build
+.. container::
+
+    Add a new file called ``forms.py`` in our learning_journal package, next to
+    ``models.py``:
+
+    .. code-block:: python
+    
+        from wtforms import Form, TextField, TextAreaField, validators
+
+        strip_filter = lambda x: x.strip() if x else None
+
+        class EntryCreateForm(Form):
+            title = TextField(
+                'Entry title',
+                [validators.Length(min=1, max=255)],
+                filters=[strip_filter])
+            body = TextAreaField(
+                'Entry body',
+                [validators.Length(min=1)],
+                filters=[strip_filter])
+
+.. nextslide:: Using a Form in a View
+
+Next, we need to add a new view that uses this form to create a new entry.
+
+.. rst-class:: build
+.. container::
+
+    Add this to ``views.py``:
+
+    .. code-block:: python
+
+        # add these imports
+        from pyramid.exceptions import HTTPFound
+        from .forms import EntryCreateForm
+
+        # and update this view function
+        def create(request):
+            entry = Entry()
+            form = EntryCreateForm(request.POST)
+            if request.method == 'POST' and form.validate():
+                form.populate_obj(entry)
+                DBSession.add(entry)
+                return HTTPFound(location=request.route_url('home'))
+            return {'form': form, 'action': request.matchdict.get('action')}
+
+.. nextslide:: Testing the Route/View Connection
+
+We already have a route that connects here.  Let's test it.
+
+.. rst-class:: build
+.. container::
+
+    Start your server:
+
+    .. code-block:: bash
+
+        (ljenv)$ pserve development.ini
+        Starting server in PID 90536.
+        serving on http://0.0.0.0:6543
+
+    And then try connecting to the ``action`` route:
+
+    * http://localhost:6543/journal/create
+    
+    You should see something like this::
+
+        {'action': u'create', 'form': <learning_journal.forms.EntryCreateForm object at 0x10e7d6b90>}
+
+.. nextslide:: Rendering A Form
+
+Finally, we need to create a template that will render our form.
+
+.. rst-class:: build
+.. container::
+
+    Add a new template called ``edit.jinja2`` in
+    ``learning_journal/templates``:
+
+    .. code-block:: jinja
+
+        {% extends "templates/layout.jinja2" %}
+        {% block body %}
+        <form action="." method="POST">
+        {% for field in form %}
+          {% if field.errors %}
+            <ul>
+            {% for error in field.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+            <p>{{ field.label }}: {{ field }}</p>
+        {% endfor %}
+            <p><input type="submit" name="submit" value="Submit" /></p>
+        </form>
+        {% endblock %}
+
+.. nextslide:: Connecting the Renderer
+
+You'll need to update the view configuration to use this new renderer.
+
+.. rst-class:: build
+.. container::
+
+    Update the configuration in ``learning_journal/views.py``:
+
+    .. code-block:: python
+    
+        @view_config(route_name='action', match_param='action=create',
+                     renderer='templates/edit.jinja2')
+        def create(request):
+            # ...
+
+    And then you should be able to start your server and test:
+
+    .. code-block:: bash
+
+        (ljenv)$ pserve development.ini
+        Starting server in PID 90536.
+        serving on http://0.0.0.0:6543
+
+    * http://localhost:6543/create
+
+.. nextslide:: Providing Access
+
+Great!  Now you can add new entries to your journal.
+
+.. rst-class:: build
+.. container::
+
+    But in order to do so, you have to hand-enter the url.
+
+    You should add a new link in the UI somewhere that helps you get there more
+    easily.
+
+    Add the following to ``list.jinja2``:
+
+    .. code-block:: jinja
+
+        {% extends "layout.jinja2" %}
+        {% block body %}
+        {% if entries %}
+        ...
+        {% else %}
+        ...
+        {% endif %}
+        <!-- Add This Link -->
+        <p><a href="{{ request.route_url('action', action='create') }}">New Entry</a></p>
+        {% endblock %}
+
+Homework
+========
+
+.. rst-class:: left
+.. container::
+
+    You have a website now that allows you to create, view and list journal
+    entries
+
+    .. rst-class:: build
+    .. container::
+
+        However, there are still a few flaws in this system.
+
+        You should be able to edit a journal entry that already exists, in case
+        you make a spelling error.
+
+        It would also be nice to see a prettier site.
+
+        Let's handle that for homework this week.
+
+Part 1: Add Editing
+-------------------
+
+For part one of your assignment, add editing of existing entries. You will need:
+
+* A form that shows an existing entry (what is different about this form from
+  one for creating a new entry?)
+* A pyramid view that handles that form. It should:
+
+  * Show the form with the requested entry when the page is first loaded
+  * Accept edits only on POST
+  * Update an existing entry with new data from the form
+  * Show the view of the entry after editing so that the user can see the edits
+    saved correctly
+  * Show errors from form validation, if any are present
+
+* A link somewhere that leads to the editing page for a single entry (probably
+  on the view page for a entry)
+
+You'll need to update a bit of configuration, but not much.  Use the create
+form we did here in class as an example.
+
+Part 2: Make it Yours
+---------------------
+
+I've created for you a very bare-bones layout and stylesheet.
+
+You will certainly want to add a bit of your own style and panache.
+
+Spend a few hours this week playing with the styles and getting a site that
+looks more like you want it to look.
+
+The Mozilla Developer Network has `some excellent resources`_ for learning CSS.
+
+In particular, the `Getting Started with CSS`_ tutorial is a thorough
+introduction to the basics.
+
+You might also look at their `CSS 3 Demos`_ to help fire up your creative
+juices.
+
+Here are a few more resources:
+
+* `A List Apart <http://alistapart.com>`_ offers outstanding articles.  Their
+  `Topics list <http://alistapart.com/topics>`_ is worth a browse.
+* `Smashing Magazine <http://www.smashingmagazine.com>`_ is another excellent
+  resource for articles on design.
+
+.. _some excellent resources: https://developer.mozilla.org/en-US/docs/Web/CSS
+.. _Getting Started with CSS: https://developer.mozilla.org/en-US/docs/CSS/Getting_Started
+.. _CSS 3 Demos: https://developer.mozilla.org/en-US/demos/tag/tech:css3
 
 
+Part 3: User Model
+------------------
 
-Adding New Entries
-==================
+As it stands, our journal accepts entries from anyone who comes by.
 
-Add route, and view for creating new entry.
+Next week we will add security to allow only logged-in users to create and edit
+entries.
 
-Discuss forms.
+To do so, we'll need a user model
 
-Create form for creating a new entry
+The model should have:
 
-use form in template.
+* An ``id`` field that is a primary key
+* A ``username`` field that is unicode, no more than 255 characters, not
+  nullable, unique and indexed.
+* A ``password`` field that is unicode and not nullable
 
+In addition, the model should have a classmethod that retrieves a specific user
+when given a username.
 
-homework
---------
+Part 4: Preparation for Deployment
+----------------------------------
 
-What's the difference between creating new and editing existing?
+At the end of class next week we will be deploying our application to Heroku.
 
-add route and view for editing
+You will need to get a free account.
 
-create form for editing (subclass)
+Once you have your free account set up and you have logged in, run through the
+`getting started with Python`_ tutorial.
 
-use form in template
+Be sure to at least complete the *set up* step. It will have you install the
+Heroku Toolbelt, which you will need to have ready in class.
 
-
-homework
-
-
+.. _getting started with Python: https://devcenter.heroku.com/articles/getting-started-with-python#introduction
 
