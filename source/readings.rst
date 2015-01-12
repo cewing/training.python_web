@@ -60,10 +60,25 @@ In Pyramid, the code that handles requests is called `a view`_.
 A view passes data to `a renderer`_, which is responsible for turning the data
 into a response to send back.
 
+Getting information from a client to the server is generally handled by
+`HTML forms`_. Working with forms in a framework like Pyramid can be
+facilitated by using a *form library* like `WTForms`_.
 
 .. _URL Dispatch: http://docs.pylonsproject.org/docs/pyramid/en/latest/narr/urldispatch.html
 .. _a view: http://docs.pylonsproject.org/projects/pyramid/en/1.5-branch/narr/views.html
 .. _a renderer: http://docs.pylonsproject.org/projects/pyramid/en/1.5-branch/narr/renderers.html
+.. _HTML forms: https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Forms
+.. _WTForms: http://wtforms.readthedocs.org/en/latest/
+
+For layout and design, CSS will be your tool of choice. There is no better tool
+for learning CSS than trying things out, but you need a good reference to get
+started. You can learn a great deal from the `Mozilla Developer Network`_ CSS
+pages.  I also find `A List Apart`_ and `Smashing Magazine`_ to be fantastic
+resources.
+
+.. _Smashing Magazine: http://www.smashingmagazine.com
+.. _A List Apart: http://alistapart.com
+.. _Mozilla Developer Network: https://developer.mozilla.org/en-US/docs/Web/CSS
 
 
 Sesstion 3 - Pyramid Authentication and Deployment
