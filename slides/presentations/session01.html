@@ -53,6 +53,7 @@ URL: https://code.google.com/p/io-2012-slides
     
     <link rel="top" title="Internet Programming with Python" href="../index.html" />
     <link rel="up" title="Course Presentations" href="index.html" />
+    <link rel="next" title="Session 02" href="session02.html" />
     <link rel="prev" title="Course Presentations" href="index.html" /> 
 </head>
 <body style="opacity: 0">
@@ -1590,7 +1591,7 @@ file to your repository.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">sessionmaker</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Session</span> <span class="o">=</span> <span class="n">sessionmaker</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">learning_journal.models</span> <span class="nn">MyModel</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">learning_journal.models</span> <span class="kn">import</span> <span class="n">MyModel</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">MyModel</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
 <span class="go">[&lt;learning_journal.models.MyModel object at 0x10b075ed0&gt;]</span>
 </pre></div>
@@ -1952,8 +1953,8 @@ sent to the database until you require a result.</p>
       <h2>Homework</h2>
     </hgroup>
     <article class="">
-      <p>Okay, that's enough for the moment.</p>
-<div class="build container">
+      <p class="left">Okay, that's enough for the moment.</p>
+<div class="build left container">
 <p>You've learned quite a bit about how <em>models</em> work in SQLAlchemy</p>
 <p>It's time to put that knowledge to good use.</p>
 <p>For the first part of your assignment this week you will begin to define
@@ -1967,9 +1968,9 @@ API.</p>
 
 
     </article>
-  </slide>  <slide class="level-2">
+  </slide>  <slide class="level-3">
     <hgroup>
-      <h2>The Model</h2>
+      <h3>The Model</h3>
     </hgroup>
     <article class="">
       <p>Our model will be called an <tt class="docutils literal"><span class="pre">Entry</span></tt>. Here's what you need to know:</p>
@@ -1997,9 +1998,9 @@ single entry, given an <tt class="docutils literal"><span class="pre">id</span><
 
 
     </article>
-  </slide>  <slide class="level-2">
+  </slide>  <slide class="level-3">
     <hgroup>
-      <h2>Words of Advice</h2>
+      <h3>Words of Advice</h3>
     </hgroup>
     <article class="">
       <p>Use the documentation linked in this presentation to assist you.  SQLAlchemy
@@ -2017,9 +2018,9 @@ but you'll gain a session that can be used again.</p>
 
 
     </article>
-  </slide>  <slide class="level-2">
+  </slide>  <slide class="level-3">
     <hgroup>
-      <h2>Submitting Your Work</h2>
+      <h3>Submitting Your Work</h3>
     </hgroup>
     <article class="">
       <p>I want to be able to review your code (and you want to be able to share it).</p>
@@ -2039,9 +2040,9 @@ remote to your <tt class="docutils literal"><span class="pre">learning_journal</
 
 
     </article>
-  </slide>  <slide class="level-2">
+  </slide>  <slide class="level-3">
     <hgroup>
-      <h2>Homework</h2>
+      <h3>The Model</h3>
     </hgroup>
     <article class="">
       <p><strong>Our work next week will assume that you have completed this assignment</strong></p>

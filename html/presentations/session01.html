@@ -25,6 +25,7 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="Internet Programming with Python" href="../index.html" />
     <link rel="up" title="Course Presentations" href="index.html" />
+    <link rel="next" title="Session 02" href="session02.html" />
     <link rel="prev" title="Course Presentations" href="index.html" />
 <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
@@ -48,6 +49,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="session02.html" title="Session 02"
+             accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="index.html" title="Course Presentations"
              accesskey="P">previous</a> |</li>
@@ -971,7 +975,7 @@ file to your repository.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">sessionmaker</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Session</span> <span class="o">=</span> <span class="n">sessionmaker</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">learning_journal.models</span> <span class="nn">MyModel</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">learning_journal.models</span> <span class="kn">import</span> <span class="n">MyModel</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">MyModel</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
 <span class="go">[&lt;learning_journal.models.MyModel object at 0x10b075ed0&gt;]</span>
 </pre></div>
@@ -1197,8 +1201,8 @@ sent to the database until you require a result.</p>
 </div>
 <div class="section" id="homework">
 <h2>Homework<a class="headerlink" href="#homework" title="Permalink to this headline">¶</a></h2>
-<p>Okay, that&#8217;s enough for the moment.</p>
-<div class="build container">
+<p class="left">Okay, that&#8217;s enough for the moment.</p>
+<div class="build left container">
 <p>You&#8217;ve learned quite a bit about how <em>models</em> work in SQLAlchemy</p>
 <p>It&#8217;s time to put that knowledge to good use.</p>
 <p>For the first part of your assignment this week you will begin to define
@@ -1207,6 +1211,8 @@ the data model for our learning journal application.</p>
 <p>I&#8217;ll also ask you to define a few methods to complete the first part of our
 API.</p>
 </div>
+<div class="section" id="the-model">
+<h3>The Model<a class="headerlink" href="#the-model" title="Permalink to this headline">¶</a></h3>
 <p>Our model will be called an <tt class="docutils literal"><span class="pre">Entry</span></tt>. Here&#8217;s what you need to know:</p>
 <ul class="simple">
 <li>It should be stored in a database table called <tt class="docutils literal"><span class="pre">entries</span></tt></li>
@@ -1256,6 +1262,7 @@ remote to your <tt class="docutils literal"><span class="pre">learning_journal</
 <p>See you next week!</p>
 </div>
 </div>
+</div>
 
 
           </div>
@@ -1301,7 +1308,10 @@ remote to your <tt class="docutils literal"><span class="pre">learning_journal</
 <li><a class="reference internal" href="#interacting-with-sqla-models">Interacting with SQLA Models</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#homework">Homework</a></li>
+<li><a class="reference internal" href="#homework">Homework</a><ul>
+<li><a class="reference internal" href="#the-model">The Model</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -1309,6 +1319,9 @@ remote to your <tt class="docutils literal"><span class="pre">learning_journal</
   <h4>Previous topic</h4>
   <p class="topless"><a href="index.html"
                         title="previous chapter">Course Presentations</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="session02.html"
+                        title="next chapter">Session 02</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="../_sources/presentations/session01.txt"
@@ -1342,6 +1355,9 @@ remote to your <tt class="docutils literal"><span class="pre">learning_journal</
         <li class="right" style="margin-right: 10px">
           <a href="../genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="session02.html" title="Session 02"
+             >next</a> |</li>
         <li class="right" >
           <a href="index.html" title="Course Presentations"
              >previous</a> |</li>

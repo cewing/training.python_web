@@ -88,6 +88,25 @@ understanding of how the SQLAlchemy ORM works.</p>
 </div>
 <div class="section" id="session-2-pyramid-views-renderers-and-forms">
 <h2>Session 2 - Pyramid Views, Renderers and Forms<a class="headerlink" href="#session-2-pyramid-views-renderers-and-forms" title="Permalink to this headline">¶</a></h2>
+<p>This week we&#8217;ll be focusing on the connection of an HTTP request to the code
+that handles that request using <a class="reference external" href="http://docs.pylonsproject.org/docs/pyramid/en/latest/narr/urldispatch.html">URL Dispatch</a>.  Quite a lot is possible with
+the Pyramid route system.  You may wish to read a bit more about it in one of
+the following documentation sections:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.pylonsproject.org/docs/pyramid/en/latest/narr/urldispatch.html#route-pattern-syntax">Route Pattern Syntax</a>
+discusses the syntax for pattern matching and extraction in Pyramid routes.</li>
+</ul>
+<p>In Pyramid, the code that handles requests is called <a class="reference external" href="http://docs.pylonsproject.org/projects/pyramid/en/1.5-branch/narr/views.html">a view</a>.</p>
+<p>A view passes data to <a class="reference external" href="http://docs.pylonsproject.org/projects/pyramid/en/1.5-branch/narr/renderers.html">a renderer</a>, which is responsible for turning the data
+into a response to send back.</p>
+<p>Getting information from a client to the server is generally handled by
+<a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Forms">HTML forms</a>. Working with forms in a framework like Pyramid can be
+facilitated by using a <em>form library</em> like <a class="reference external" href="http://wtforms.readthedocs.org/en/latest/">WTForms</a>.</p>
+<p>For layout and design, CSS will be your tool of choice. There is no better tool
+for learning CSS than trying things out, but you need a good reference to get
+started. You can learn a great deal from the <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/CSS">Mozilla Developer Network</a> CSS
+pages.  I also find <a class="reference external" href="http://alistapart.com">A List Apart</a> and <a class="reference external" href="http://www.smashingmagazine.com">Smashing Magazine</a> to be fantastic
+resources.</p>
 </div>
 <div class="section" id="sesstion-3-pyramid-authentication-and-deployment">
 <h2>Sesstion 3 - Pyramid Authentication and Deployment<a class="headerlink" href="#sesstion-3-pyramid-authentication-and-deployment" title="Permalink to this headline">¶</a></h2>
