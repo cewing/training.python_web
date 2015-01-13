@@ -1,55 +1,64 @@
+**********************
 Python Web Programming
-======================
+**********************
 
-.. image:: img/python.png
-    :align: left
+.. figure:: /_static/python.png
+    :align: center
     :width: 33%
 
-Session 1: Networking and Sockets
+Session 4: Networking and Sockets
 
 
 Computer Communications
------------------------
+=======================
 
-.. image:: img/network_topology.png
+.. rst-class:: left
+.. container::
+
+    We've spent the first few weeks of this course building and deploying a
+    simple web application.
+
+    .. rst-class:: build
+    .. container::
+
+        now it's time to step back and look at the technologies underlying the
+        work we've done.
+
+        We'll begin by discussing the basics of networking computers.
+
+        You'll learn a bit here about how computers talk to each other across a
+        distance.
+
+TCP/IP
+------
+
+.. figure:: /_static/network_topology.png
     :align: left
-    :width: 40%
 
-.. class:: incremental
+    http://en.wikipedia.org/wiki/Internet_Protocol_Suite
+
+.. rst-class:: build
 
 * processes can communicate
-
 * inside one machine
-
 * between two machines
-
 * among many machines
 
-.. class:: image-credit
 
-image: http://en.wikipedia.org/wiki/Internet_Protocol_Suite
+.. nextslide::
 
-
-Computer Communications
------------------------
-
-.. image:: img/data_in_tcpip_stack.png
+.. figure:: /_static/data_in_tcpip_stack.png
     :align: left
-    :width: 55%
+    :width: 100%
 
-.. class:: incremental
+    http://en.wikipedia.org/wiki/Internet_Protocol_Suite
+
+.. rst-class:: build
 
 * Process divided into 'layers'
-
 * 'Layers' are mostly arbitrary
-
 * Different descriptions have different layers
-
 * Most common is the 'TCP/IP Stack'
-
-.. class:: image-credit
-
-image: http://en.wikipedia.org/wiki/Internet_Protocol_Suite
 
 
 The TCP/IP Stack - Link
@@ -57,13 +66,15 @@ The TCP/IP Stack - Link
 
 The bottom layer is the 'Link Layer'
 
-.. class:: incremental
+.. rst-class:: build
 
 * Deals with the physical connections between machines, 'the wire'
 
 * Packages data for physical transport
 
 * Executes transmission over a physical medium
+
+  .. rst-class:: build
 
   * what that medium is is arbitrary
 
@@ -75,9 +86,11 @@ The TCP/IP Stack - Internet
 
 Moving up, we have the 'Internet Layer'
 
-.. class:: incremental
+.. rst-class:: build
 
 * Deals with addressing and routing
+
+  .. rst-class:: build
 
   * Where are we going and how do we get there?
 
@@ -87,17 +100,16 @@ Moving up, we have the 'Internet Layer'
 
 * Two addressing systems
 
-  .. class:: incremental
+  .. rst-class:: build
 
   * IPv4 (current, limited '192.168.1.100')
 
   * IPv6 (future, 3.4 x 10^38 addresses, '2001:0db8:85a3:0042:0000:8a2e:0370:7334')
 
 
-The TCP/IP Stack - Internet
----------------------------
+.. nextslide::
 
-.. class:: big-centered
+.. rst-class:: large center
 
 That's 4.3 x 10^28 addresses *per person alive today*
 
@@ -107,7 +119,7 @@ The TCP/IP Stack - Transport
 
 Next up is the 'Transport Layer'
 
-.. class:: incremental
+.. rst-class:: build
 
 * Deals with transmission and reception of data
 
@@ -121,66 +133,65 @@ Next up is the 'Transport Layer'
 
 * Not all Transport Protocols are 'reliable'
 
-  .. class:: incremental
+  .. rst-class:: build
 
   * TCP ensures that dropped packets are resent
 
   * UDP makes no such assurance
-  
+
   * Reliability is slow and expensive
 
 
-The TCP/IP Stack - Transport
-----------------------------
+.. nextslide::
 
 The 'Transport Layer' also establishes the concept of a **port**
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-* IP Addresses designate a specific *machine* on the network
+    .. rst-class:: build
 
-* A **port** provides addressing for individual *applications* in a single host
+    * IP Addresses designate a specific *machine* on the network
 
-* 192.168.1.100:80  (the *:80* part is the **port**)
+    * A **port** provides addressing for individual *applications* in a single
+      host
 
-* [2001:db8:85a3:8d3:1319:8a2e:370:7348]:443 (*:443* is the **port**)
+    * 192.168.1.100:80  (the *:80* part is the **port**)
 
-.. class:: incremental
+    * [2001:db8:85a3:8d3:1319:8a2e:370:7348]:443 (*:443* is the **port**)
 
-This means that you don't have to worry about information intended for your
-web browser being accidentally read by your email client.
+    This means that you don't have to worry about information intended for your
+    web browser being accidentally read by your email client.
 
 
-The TCP/IP Stack - Transport
-----------------------------
+.. nextslide::
 
 There are certain **ports** which are commonly understood to belong to given
 applications or protocols:
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-* 80/443 - HTTP/HTTPS
-* 20 - FTP
-* 22 - SSH
-* 23 - Telnet
-* 25 - SMTP
-* ...
+    .. rst-class:: build
 
-.. class:: incremental
+    * 80/443 - HTTP/HTTPS
+    * 20 - FTP
+    * 22 - SSH
+    * 23 - Telnet
+    * 25 - SMTP
+    * ...
 
-These ports are often referred to as **well-known ports**
+    These ports are often referred to as **well-known ports**
 
-.. class:: small
+    .. rst-class:: small
 
-(see http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers)
+    (see http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers)
 
-
-The TCP/IP Stack - Transport
-----------------------------
+.. nextslide::
 
 Ports are grouped into a few different classes
 
-.. class:: incremental
+.. rst-class:: build
 
 * Ports numbered 0 - 1023 are *reserved*
 
@@ -196,25 +207,24 @@ The TCP/IP Stack - Application
 
 The topmost layer is the 'Application Layer'
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-* Deals directly with data produced or consumed by an application
+    .. rst-class:: build
 
-* Reads or writes data using a set of understood, well-defined **protocols**
+    * Deals directly with data produced or consumed by an application
 
-  * HTTP, SMTP, FTP etc.
+    * Reads or writes data using a set of understood, well-defined **protocols**
 
-* Does not know (or need to know) about lower layer functionality
+      * HTTP, SMTP, FTP etc.
 
-  * The exception to this rule is **endpoint** data (or IP:Port)
+    * Does not know (or need to know) about lower layer functionality
 
+      * The exception to this rule is **endpoint** data (or IP:Port)
 
-The TCP/IP Stack - Application
-------------------------------
+    .. rst-class:: centered
 
-.. class:: big-centered
-
-this is where we live and work
+    **this is where we live and work**
 
 
 Sockets
@@ -222,86 +232,83 @@ Sockets
 
 Think back for a second to what we just finished discussing, the TCP/IP stack.
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-* The *Internet* layer gives us an **IP Address**
+    .. rst-class:: build
 
-* The *Transport* layer establishes the idea of a **port**.
+    * The *Internet* layer gives us an **IP Address**
 
-* The *Application* layer doesn't care about what happens below...
+    * The *Transport* layer establishes the idea of a **port**.
 
-* *Except for* **endpoint data** (IP:Port)
+    * The *Application* layer doesn't care about what happens below...
 
-.. class:: incremental
+    * *Except for* **endpoint data** (IP:Port)
 
-A **Socket** is the software representation of that endpoint.
+    A **Socket** is the software representation of that endpoint.
 
-.. class:: incremental
-
-Opening a **socket** creates a kind of transceiver that can send and/or
-receive *bytes* at a given IP address and Port.
+    Opening a **socket** creates a kind of transceiver that can send and/or
+    receive *bytes* at a given IP address and Port.
 
 
 Sockets in Python
 -----------------
 
 Python provides a standard library module which provides socket functionality.
-It is called **socket**.  
+It is called **socket**.
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-The library is really just a very thin wrapper around the system
-implementation of *BSD Sockets*
+    The library is really just a very thin wrapper around the system
+    implementation of *BSD Sockets*
 
-.. class:: incremental
+    Let's spend a few minutes getting to know this module.
 
-Let's spend a few minutes getting to know this module.
-
-.. class:: incremental
-
-We're going to do this next part together, so open up a terminal and start a
-python interpreter
+    We're going to do this next part together, so open up a terminal and start
+    a python interpreter
 
 
-Sockets in Python
------------------
+.. nextslide::
 
 The Python sockets library allows us to find out what port a *service* uses:
 
-.. class:: small
+.. rst-class:: build
+.. container::
 
-    >>> import socket
-    >>> socket.getservbyname('ssh')
-    22
+    .. code-block:: pycon
 
-.. class:: incremental
+        >>> import socket
+        >>> socket.getservbyname('ssh')
+        22
 
-You can also do a *reverse lookup*, finding what service uses a given *port*:
+    You can also do a *reverse lookup*, finding what service uses a given *port*:
 
-.. class:: incremental small
+    .. code-block:: pycon
 
-    >>> socket.getservbyport(80)
-    'http'
+        >>> socket.getservbyport(80)
+        'http'
 
 
-Sockets in Python
------------------
+.. nextslide::
 
 The sockets library also provides tools for finding out information about
 *hosts*. For example, you can find out about the hostname and IP address of
-the machine you are currently using::
+the machine you are currently using:
+
+.. code-block:: pycon
 
     >>> socket.gethostname()
     'heffalump.local'
     >>> socket.gethostbyname(socket.gethostname())
     '10.211.55.2'
 
-
-Sockets in Python
------------------
+.. nextslide::
 
 You can also find out about machines that are located elsewhere, assuming you
-know their hostname. For example::
+know their hostname. For example:
+
+.. code-block:: pycon
 
     >>> socket.gethostbyname('google.com')
     '173.194.33.4'
@@ -311,11 +318,12 @@ know their hostname. For example::
     '108.59.11.99'
 
 
-Sockets in Python
------------------
+.. nextslide::
 
 The ``gethostbyname_ex`` method of the ``socket`` library provides more
-information about the machines we are exploring::
+information about the machines we are exploring:
+
+.. code-block:: pycon
 
     >>> socket.gethostbyname_ex('google.com')
     ('google.com', [], ['173.194.33.9', '173.194.33.14',
@@ -329,62 +337,60 @@ information about the machines we are exploring::
      ['www.rad.washington.edu'], # <- any machine aliases
      ['128.95.247.84']) # <- all active IP addresses
 
-
-Sockets in Python
------------------
+.. nextslide::
 
 To create a socket, you use the **socket** method of the ``socket`` library.
 It takes up to three optional positional arguments (here we use none to get
-the default behavior)::
+the default behavior):
+
+.. code-block:: pycon
 
     >>> foo = socket.socket()
     >>> foo
     <socket._socketobject object at 0x10046cec0>
 
-
-Sockets in Python
------------------
+.. nextslide::
 
 A socket has some properties that are immediately important to us. These
-include the *family*, *type* and *protocol* of the socket::
+include the *family*, *type* and *protocol* of the socket:
 
-    >>> foo.family
-    2
-    >>> foo.type
-    1
-    >>> foo.proto
-    0
+.. rst-class:: build
+.. container::
 
-.. class:: incremental
+    .. code-block:: pycon
 
-You might notice that the values for these properties are integers.  In fact, 
-these integers are **constants** defined in the socket library.
+        >>> foo.family
+        2
+        >>> foo.type
+        1
+        >>> foo.proto
+        0
+
+    You might notice that the values for these properties are integers.  In
+    fact, these integers are **constants** defined in the socket library.
 
 
-A quick utility method
-----------------------
+.. nextslide:: A quick utility method
 
 Let's define a method in place to help us see these constants. It will take a
 single argument, the shared prefix for a defined set of constants:
 
-.. class:: small
+.. rst-class:: build
+.. container::
 
-::
+    (you can also find this in ``resources/session04/socket_tools.py``)
 
-    >>> def get_constants(prefix):
-    ...     """mapping of socket module constants to their names."""
-    ...     return dict(
-    ...         (getattr(socket, n), n)
-    ...         for n in dir(socket)
-    ...         if n.startswith(prefix)
-    ...     )
-    ...
-    >>>
+    .. code-block:: pycon
 
-.. class:: small
-
-(you can also find this in ``resources/session01/session1.py``)
-
+        >>> def get_constants(prefix):
+        ...     """mapping of socket module constants to their names."""
+        ...     return dict(
+        ...         (getattr(socket, n), n)
+        ...         for n in dir(socket)
+        ...         if n.startswith(prefix)
+        ...     )
+        ...
+        >>>
 
 Socket Families
 ---------------
@@ -392,46 +398,48 @@ Socket Families
 Think back a moment to our discussion of the *Internet* layer of the TCP/IP
 stack.  There were a couple of different types of IP addresses:
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-* IPv4 ('192.168.1.100')
+    .. rst-class:: build
 
-* IPv6 ('2001:0db8:85a3:0042:0000:8a2e:0370:7334')
+    * IPv4 ('192.168.1.100')
 
-.. class:: incremental
-
-The **family** of a socket corresponds to the *addressing system* it uses for
-connecting.
+    * IPv6 ('2001:0db8:85a3:0042:0000:8a2e:0370:7334')
 
 
-Socket Families
----------------
+    The **family** of a socket corresponds to the *addressing system* it uses
+    for connecting.
 
-Families defined in the ``socket`` library are prefixed by ``AF_``::
+.. nextslide::
 
-    >>> families = get_constants('AF_')
-    >>> families
-    {0: 'AF_UNSPEC', 1: 'AF_UNIX', 2: 'AF_INET',
-     11: 'AF_SNA', 12: 'AF_DECnet', 16: 'AF_APPLETALK',
-     17: 'AF_ROUTE', 23: 'AF_IPX', 30: 'AF_INET6'}
+Families defined in the ``socket`` library are prefixed by ``AF_``:
 
-.. class:: small incremental
+.. rst-class:: build
+.. container::
 
-*Your results may vary*
+    .. code-block:: pycon
+    
+        >>> families = get_constants('AF_')
+        >>> families
+        {0: 'AF_UNSPEC', 1: 'AF_UNIX', 2: 'AF_INET',
+         11: 'AF_SNA', 12: 'AF_DECnet', 16: 'AF_APPLETALK',
+         17: 'AF_ROUTE', 23: 'AF_IPX', 30: 'AF_INET6'}
 
-.. class:: incremental
+    *Your results may vary*
 
-Of all of these, the ones we care most about are ``2`` (IPv4) and ``30`` (IPv6).
+    Of all of these, the ones we care most about are ``2`` (IPv4) and ``30``
+    (IPv6).
 
 
-Unix Domain Sockets
--------------------
+.. nextslide:: Unix Domain Sockets
+
 
 When you are on a machine with an operating system that is Unix-like, you will
 find another generally useful socket family: ``AF_UNIX``, or Unix Domain
 Sockets. Sockets in this family:
 
-.. class:: incremental
+.. rst-class:: build
 
 * connect processes **on the same machine**
 
@@ -443,18 +451,16 @@ Sockets. Sockets in this family:
 * use an 'address' that looks like a pathname ('/tmp/foo.sock')
 
 
-Test your skills
-----------------
+.. nextslide:: Test your skills
 
 What is the *default* family for the socket we created just a moment ago?
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-(remember we bound the socket to the symbol ``foo``)
+    (remember we bound the socket to the symbol ``foo``)
 
-.. class:: incremental center
-
-How did you figure this out?
+    How did you figure this out?
 
 
 Socket Types
@@ -462,21 +468,23 @@ Socket Types
 
 The socket *type* determines the semantics of socket communications.
 
-Look up socket type constants with the ``SOCK_`` prefix::
+.. rst-class:: build
+.. container::
 
-    >>> types = get_constants('SOCK_')
-    >>> types
-    {1: 'SOCK_STREAM', 2: 'SOCK_DGRAM',
-     ...}
+    Look up socket type constants with the ``SOCK_`` prefix:
 
-.. class:: incremental
+    .. code-block:: pycon
+    
+        >>> types = get_constants('SOCK_')
+        >>> types
+        {1: 'SOCK_STREAM', 2: 'SOCK_DGRAM',
+         ...}
 
-The most common are ``1`` (Stream communication (TCP)) and ``2`` (Datagram
-communication (UDP)).
+    The most common are ``1`` (Stream communication (TCP)) and ``2`` (Datagram
+    communication (UDP)).
 
 
-Test your skills
-----------------
+.. nextslide:: Test your skills
 
 What is the *default* type for our generic socket, ``foo``?
 
@@ -485,40 +493,45 @@ Socket Protocols
 ----------------
 
 A socket also has a designated *protocol*. The constants for these are
-prefixed by ``IPPROTO_``::
+prefixed by ``IPPROTO_``:
 
-    >>> protocols = get_constants('IPPROTO_')
-    >>> protocols
-    {0: 'IPPROTO_IP', 1: 'IPPROTO_ICMP',
-     ...,
-     255: 'IPPROTO_RAW'}
+.. rst-class:: build
+.. container::
 
-.. class:: incremental
+    .. code-block:: pycon
 
-The choice of which protocol to use for a socket is determined by the
-*internet layer* protocol you intend to use. ``TCP``? ``UDP``? ``ICMP``?
-``IGMP``?
+        >>> protocols = get_constants('IPPROTO_')
+        >>> protocols
+        {0: 'IPPROTO_IP', 1: 'IPPROTO_ICMP',
+         ...,
+         255: 'IPPROTO_RAW'}
+
+    The choice of which protocol to use for a socket is determined by the
+    *internet layer* protocol you intend to use. ``TCP``? ``UDP``? ``ICMP``?
+    ``IGMP``?
 
 
-Test your skills
-----------------
+.. nextslide:: Test your skills
 
 What is the *default* protocol used by our generic socket, ``foo``?
 
 
-Custom Sockets
---------------
+Customizing Sockets
+-------------------
 
 These three properties of a socket correspond to the three positional
-arguments you may pass to the socket constructor. 
+arguments you may pass to the socket constructor.
 
-.. container:: incremental
+.. rst-class:: build
+.. container::
 
     Using them allows you to create sockets with specific communications
-    profiles::
+    profiles:
+
+    .. code-block:: pycon
     
         >>> bar = socket.socket(socket.AF_INET,
-        ...                     socket.SOCK_DGRAM, 
+        ...                     socket.SOCK_DGRAM,
         ...                     socket.IPPROTO_UDP)
         ...
         >>> bar
@@ -530,18 +543,18 @@ Break Time
 
 So far we have:
 
-.. class:: incremental
+.. rst-class:: build
 
 * learned about the "layers" of the TCP/IP Stack
 * discussed *families*, *types* and *protocols* in sockets
 * learned how to create sockets with a specific communications profile.
 
-.. class:: incremental
+.. rst-class:: build
 
 When we return we'll learn how to find the communcations profiles of remote
 sockets, how to connect to them, and how to send and receive messages.
 
-.. class:: incremental
+.. rst-class:: build
 
 Take a few minutes now to clear your head (do not quit your python
 interpreter).
@@ -553,15 +566,15 @@ Address Information
 When you are creating a socket to communicate with a remote service, the
 remote socket will have a specific communications profile.
 
-.. class:: incremental
+.. rst-class:: build
 
 The local socket you create must match that communications profile.
 
-.. class:: incremental
+.. rst-class:: build
 
 How can you determine the *correct* values to use?
 
-.. class:: incremental center
+.. rst-class:: build center
 
 You ask.
 
@@ -577,12 +590,12 @@ connections on a given host.
 
     socket.getaddrinfo('127.0.0.1', 80)
 
-.. class:: incremental
+.. rst-class:: build
 
 This provides all you need to make a proper connection to a socket on a remote
 host. The value returned is a tuple of:
 
-.. class:: incremental
+.. rst-class:: build
 
 * socket family
 * socket type
@@ -626,14 +639,14 @@ Now, ask your own machine what possible connections are available for 'http'::
     family:  AF_INET
     type:  SOCK_DGRAM
     protocol:  IPPROTO_UDP
-    canonical name:  
+    canonical name:
     socket address:  ('10.211.55.2', 80)
-    
+
     family:  AF_INET
     ...
     >>>
 
-.. class:: incremental
+.. rst-class:: build
 
 What answers do you get?
 
@@ -653,7 +666,7 @@ On the Internet
     ...
     >>>
 
-.. class:: incremental
+.. rst-class:: build
 
 Try a few other servers you know about.
 
@@ -693,9 +706,9 @@ Once the socket is constructed with the appropriate *family*, *type* and
 *protocol*, we can connect it to the address of our remote server::
 
     >>> cewing_socket.connect(info[-1])
-    >>> 
+    >>>
 
-.. class:: incremental
+.. rst-class:: build
 
 * a successful connection returns ``None``
 
@@ -715,7 +728,7 @@ learn in session 2 about the message we are sending)::
     >>> cewing_socket.sendall(msg)
     >>>
 
-.. class:: incremental small
+.. rst-class:: build small
 
 * the transmission continues until all data is sent or an error occurs
 
@@ -740,7 +753,7 @@ back out (again, **do not type this yet**)::
     'HTTP/1.1 200 OK\r\nDate: Thu, 03 Jan 2013 05:56:53
     ...
 
-.. class:: incremental small
+.. rst-class:: build small
 
 * The sole required argument is ``buffer_size`` (an integer). It should be a
   power of 2 and smallish (~4096)
@@ -794,7 +807,7 @@ Then, receive a reply, iterating until it is complete:
     ...         done = True
     ...         cewing_socket.close()
     ...     response += msg_part
-    ...     
+    ...
     >>> len(response)
     19427
 
@@ -820,7 +833,7 @@ Construct a Socket
         ...     socket.AF_INET,
         ...     socket.SOCK_STREAM,
         ...     socket.IPPROTO_TCP)
-        ... 
+        ...
         >>> server_socket
         <socket._socketobject object at 0x100563c90>
 
@@ -834,7 +847,7 @@ Port to which clients must connect::
     >>> address = ('127.0.0.1', 50000)
     >>> server_socket.bind(address)
 
-.. class:: incremental
+.. rst-class:: build
 
 **Terminology Note**: In a server/client relationship, the server *binds* to
 an address and port. The client *connects*
@@ -848,7 +861,7 @@ connections::
 
     >>> server_socket.listen(1)
 
-.. class:: incremental
+.. rst-class:: build
 
 * The argument to ``listen`` is the *backlog*
 
@@ -867,7 +880,7 @@ When a socket is listening, it can receive incoming connection requests::
     ... # this blocks until a client connects
     >>> connection.recv(16)
 
-.. class:: incremental
+.. rst-class:: build
 
 * The ``connection`` returned by a call to ``accept`` is a **new socket**.
   This new socket is used to communicate with the client
@@ -896,7 +909,7 @@ Once a transaction between the client and server is complete, the
 
     >>> connection.close()
 
-.. class:: incremental
+.. rst-class:: build
 
 Note that the ``server_socket`` is *never* closed as long as the server
 continues to run.
@@ -908,7 +921,7 @@ Getting the Flow
 The flow of this interaction can be a bit confusing.  Let's see it in action
 step-by-step.
 
-.. class:: incremental
+.. rst-class:: build
 
 Open a second python interpreter and place it next to your first so you can
 see both of them at the same time.
@@ -927,8 +940,8 @@ connections::
     >>> server_socket.bind(('127.0.0.1', 50000))
     >>> server_socket.listen(1)
     >>> conn, addr = server_socket.accept()
-    
-.. class:: incremental
+
+.. rst-class:: build
 
 At this point, you should **not** get back a prompt. The server socket is
 waiting for a connection to be made.
@@ -960,11 +973,11 @@ As soon as you made the connection above, you should have seen the prompt
 return in your server interpreter. The ``accept`` method finally returned a
 new connection socket.
 
-.. class:: incremental
+.. rst-class:: build
 
 When you're ready, type the following in the *client* interpreter.
 
-.. class:: incremental
+.. rst-class:: build
 
 ::
 
@@ -1016,17 +1029,17 @@ Homework
 Your homework assignment for this week is to take what you've learned here
 and build a simple "echo" server.
 
-.. class:: incremental
+.. rst-class:: build
 
 The server should automatically return to any client that connects *exactly*
 what it receives (it should **echo** all messages).
 
-.. class:: incremental
+.. rst-class:: build
 
 You will also write a python script that, when run, will send a message to the
 server and receive the reply, printing it to ``stdout``.
 
-.. class:: incremental
+.. rst-class:: build
 
 Finally, you'll do all of this so that it can be tested.
 
@@ -1036,11 +1049,11 @@ What You Have
 
 In our class repository, there is a folder ``assignments/session01``.
 
-.. class:: incremental
+.. rst-class:: build
 
 Inside that folder, you should find:
 
-.. class:: incremental
+.. rst-class:: build
 
 * A file ``tasks.txt`` that contains these instructions
 
@@ -1050,7 +1063,7 @@ Inside that folder, you should find:
 
 * Some simple tests in ``tests.py``
 
-.. class:: incremental
+.. rst-class:: build
 
 Your task is to make the tests pass.
 
@@ -1069,21 +1082,21 @@ To run the tests, you'll have to set the server running in one terminal:
 .. container:: incremental
 
     Then, in a second terminal, you will execute the tests:
-    
+
     .. class:: small
-    
+
     ::
-    
+
         $ python tests.py
 
 .. container:: incremental
 
     You should see output like this:
-    
+
     .. class:: small
-    
+
     ::
-    
+
         [...]
         FAILED (failures=2)
 
@@ -1093,7 +1106,7 @@ Submitting Your Homework
 
 To submit your homework:
 
-.. class:: incremental
+.. rst-class:: build
 
 * In github, make a fork of my repository into *your* account.
 
@@ -1105,7 +1118,7 @@ To submit your homework:
 * When you are finished and your tests are passing, you will open a pull
   request in github.com from your fork to mine.
 
-.. class:: incremental
+.. rst-class:: build
 
 I will review your work when I receive your pull requests, make comments on it
 there, and then close the pull request.
@@ -1116,12 +1129,12 @@ Going Further
 
 In ``assignments/session01/tasks.txt`` you'll find a few extra problems to try.
 
-.. class:: incremental
+.. rst-class:: build
 
 If you finish the first part of the homework in less than 3-4 hours give one
 or more of these a whirl.
 
-.. class:: incremental
+.. rst-class:: build
 
 They are not required, but if you include solutions in your pull request, I'll
 review your work.
