@@ -8,7 +8,7 @@ from wtforms import (
 strip_filter = lambda x: x.strip() if x else None
 
 
-class BlogCreateForm(Form):
+class EntryCreateForm(Form):
     title = TextField(
         'Entry title',
         [validators.Length(min=1, max=255)],
