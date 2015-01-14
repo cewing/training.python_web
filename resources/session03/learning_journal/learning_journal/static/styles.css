@@ -1,0 +1,73 @@
+body{
+    color:#111;
+    padding:0;
+    margin:0;
+    background-color: #eee;}
+header{
+    margin:0;
+    padding:0 0.75em;
+    width:100%;
+    background: #222;
+    color: #ccc;
+    border-bottom: 3px solid #fff;}
+header:after{
+    content:"";
+    display:table;
+    clear:both;}
+header a,
+footer a{
+    text-decoration:none}
+header a:hover,
+footer a:hover {
+    color:#fff;
+}
+header a:visited,
+footer a:visited {
+    color:#eee;
+}
+header aside{
+    float:right;
+    text-align:right;
+    padding-right:0.75em}
+header ul{
+    list-style:none;
+    list-style-type:none;
+    display:inline-block}
+header ul li{
+    margin:0 0.25em 0 0}
+header ul li a{
+    padding:0;
+    display:inline-block}
+main{padding:0 0.75em 1em}
+main:after{
+    content:"";
+    display:table;
+    clear:both}
+main article{
+    margin-bottom:1em;
+    padding-left:0.5em}
+main article h3{margin-top:0}
+main article .entry_body{
+    margin:0.5em}
+main aside{float:right}
+main aside .field{
+    margin-bottom:1em}
+main aside .field input,
+main aside .field label,
+main aside .field textarea{
+    vertical-align:top}
+main aside .field label{
+    display:inline-block;
+    width:15%;
+    padding-top:2px}
+main aside .field input,
+main aside .field textarea{
+    width:83%}
+main aside .control_row input{
+    margin-left:16%}
+footer{
+    padding: 1em 0.75em;
+    background: #222;
+    color: #ccc;
+    border-top: 3px solid #fff;
+    border-bottom: 3px solid #fff;}
