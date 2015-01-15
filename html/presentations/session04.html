@@ -1,0 +1,962 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Python Web Programming &mdash; Internet Programming with Python</title>
+    
+    <link rel="stylesheet" href="../_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Internet Programming with Python" href="../index.html" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head>
+  <body>
+<div class="header">
+  <div class="logo">
+    <a href="../index.html">
+      <img class="logo" src="../_static/logo_UW.png" alt="Logo"/>
+    </a>
+  </div>
+</div>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="../index.html">UWPCE Python 200</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="python-web-programming">
+<h1>Python Web Programming<a class="headerlink" href="#python-web-programming" title="Permalink to this headline">¶</a></h1>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/python.png"><img alt="../_images/python.png" src="../_images/python.png" style="width: 33%;" /></a>
+</div>
+<p>Session 4: Networking and Sockets</p>
+<div class="section" id="computer-communications">
+<h2>Computer Communications<a class="headerlink" href="#computer-communications" title="Permalink to this headline">¶</a></h2>
+<div class="left container">
+<p>We&#8217;ve spent the first few weeks of this course building and deploying a
+simple web application.</p>
+<div class="build container">
+<p>now it&#8217;s time to step back and look at the technologies underlying the
+work we&#8217;ve done.</p>
+<p>We&#8217;ll begin by discussing the basics of networking computers.</p>
+<p>You&#8217;ll learn a bit here about how computers talk to each other across a
+distance.</p>
+</div>
+</div>
+<div class="section" id="tcp-ip">
+<h3>TCP/IP<a class="headerlink" href="#tcp-ip" title="Permalink to this headline">¶</a></h3>
+<div class="figure align-left">
+<img alt="../_images/network_topology.png" src="../_images/network_topology.png" />
+<p class="caption"><a class="reference external" href="http://en.wikipedia.org/wiki/Internet_Protocol_Suite">http://en.wikipedia.org/wiki/Internet_Protocol_Suite</a></p>
+</div>
+<ul class="build simple">
+<li>processes can communicate</li>
+<li>inside one machine</li>
+<li>between two machines</li>
+<li>among many machines</li>
+</ul>
+<div class="figure align-left">
+<a class="reference internal image-reference" href="../_images/data_in_tcpip_stack.png"><img alt="../_images/data_in_tcpip_stack.png" src="../_images/data_in_tcpip_stack.png" style="width: 100%;" /></a>
+<p class="caption"><a class="reference external" href="http://en.wikipedia.org/wiki/Internet_Protocol_Suite">http://en.wikipedia.org/wiki/Internet_Protocol_Suite</a></p>
+</div>
+<ul class="build simple">
+<li>Process divided into &#8216;layers&#8217;</li>
+<li>&#8216;Layers&#8217; are mostly arbitrary</li>
+<li>Different descriptions have different layers</li>
+<li>Most common is the &#8216;TCP/IP Stack&#8217;</li>
+</ul>
+</div>
+<div class="section" id="the-tcp-ip-stack-link">
+<h3>The TCP/IP Stack - Link<a class="headerlink" href="#the-tcp-ip-stack-link" title="Permalink to this headline">¶</a></h3>
+<p>The bottom layer is the &#8216;Link Layer&#8217;</p>
+<ul class="build simple">
+<li>Deals with the physical connections between machines, &#8216;the wire&#8217;</li>
+<li>Packages data for physical transport</li>
+<li>Executes transmission over a physical medium<ul class="build">
+<li>what that medium is is arbitrary</li>
+</ul>
+</li>
+<li>Implemented in the Network Interface Card(s) (NIC) in your computer</li>
+</ul>
+</div>
+<div class="section" id="the-tcp-ip-stack-internet">
+<h3>The TCP/IP Stack - Internet<a class="headerlink" href="#the-tcp-ip-stack-internet" title="Permalink to this headline">¶</a></h3>
+<p>Moving up, we have the &#8216;Internet Layer&#8217;</p>
+<ul class="build simple">
+<li>Deals with addressing and routing<ul class="build">
+<li>Where are we going and how do we get there?</li>
+</ul>
+</li>
+<li>Agnostic as to physical medium (IP over Avian Carrier - IPoAC)</li>
+<li>Makes no promises of reliability</li>
+<li>Two addressing systems<ul class="build">
+<li>IPv4 (current, limited &#8216;192.168.1.100&#8217;)</li>
+<li>IPv6 (future, 3.4 x 10^38 addresses, &#8216;2001:0db8:85a3:0042:0000:8a2e:0370:7334&#8217;)</li>
+</ul>
+</li>
+</ul>
+<p class="large center">That&#8217;s 4.3 x 10^28 addresses <em>per person alive today</em></p>
+</div>
+<div class="section" id="the-tcp-ip-stack-transport">
+<h3>The TCP/IP Stack - Transport<a class="headerlink" href="#the-tcp-ip-stack-transport" title="Permalink to this headline">¶</a></h3>
+<p>Next up is the &#8216;Transport Layer&#8217;</p>
+<ul class="build simple">
+<li>Deals with transmission and reception of data<ul>
+<li>error correction, flow control, congestion management</li>
+</ul>
+</li>
+<li>Common protocols include TCP &amp; UDP<ul>
+<li>TCP: Tranmission Control Protocol</li>
+<li>UDP: User Datagram Protocol</li>
+</ul>
+</li>
+<li>Not all Transport Protocols are &#8216;reliable&#8217;<ul class="build">
+<li>TCP ensures that dropped packets are resent</li>
+<li>UDP makes no such assurance</li>
+<li>Reliability is slow and expensive</li>
+</ul>
+</li>
+</ul>
+<p>The &#8216;Transport Layer&#8217; also establishes the concept of a <strong>port</strong></p>
+<div class="build container">
+<ul class="build simple">
+<li>IP Addresses designate a specific <em>machine</em> on the network</li>
+<li>A <strong>port</strong> provides addressing for individual <em>applications</em> in a single
+host</li>
+<li>192.168.1.100:80  (the <em>:80</em> part is the <strong>port</strong>)</li>
+<li>[2001:db8:85a3:8d3:1319:8a2e:370:7348]:443 (<em>:443</em> is the <strong>port</strong>)</li>
+</ul>
+<p>This means that you don&#8217;t have to worry about information intended for your
+web browser being accidentally read by your email client.</p>
+</div>
+<p>There are certain <strong>ports</strong> which are commonly understood to belong to given
+applications or protocols:</p>
+<div class="build container">
+<ul class="build simple">
+<li>80/443 - HTTP/HTTPS</li>
+<li>20 - FTP</li>
+<li>22 - SSH</li>
+<li>23 - Telnet</li>
+<li>25 - SMTP</li>
+<li>...</li>
+</ul>
+<p>These ports are often referred to as <strong>well-known ports</strong></p>
+<p class="small">(see <a class="reference external" href="http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers">http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers</a>)</p>
+</div>
+<p>Ports are grouped into a few different classes</p>
+<ul class="build simple">
+<li>Ports numbered 0 - 1023 are <em>reserved</em></li>
+<li>Ports numbered 1024 - 65535 are <em>open</em></li>
+<li>Ports numbered 1024 - 49151 may be <em>registered</em></li>
+<li>Ports numbered 49152 - 65535 are called <em>ephemeral</em></li>
+</ul>
+</div>
+<div class="section" id="the-tcp-ip-stack-application">
+<h3>The TCP/IP Stack - Application<a class="headerlink" href="#the-tcp-ip-stack-application" title="Permalink to this headline">¶</a></h3>
+<p>The topmost layer is the &#8216;Application Layer&#8217;</p>
+<div class="build container">
+<ul class="build simple">
+<li>Deals directly with data produced or consumed by an application</li>
+<li>Reads or writes data using a set of understood, well-defined <strong>protocols</strong><ul>
+<li>HTTP, SMTP, FTP etc.</li>
+</ul>
+</li>
+<li>Does not know (or need to know) about lower layer functionality<ul>
+<li>The exception to this rule is <strong>endpoint</strong> data (or IP:Port)</li>
+</ul>
+</li>
+</ul>
+<p class="centered"><strong>this is where we live and work</strong></p>
+</div>
+</div>
+<div class="section" id="sockets">
+<h3>Sockets<a class="headerlink" href="#sockets" title="Permalink to this headline">¶</a></h3>
+<p>Think back for a second to what we just finished discussing, the TCP/IP stack.</p>
+<div class="build container">
+<ul class="build simple">
+<li>The <em>Internet</em> layer gives us an <strong>IP Address</strong></li>
+<li>The <em>Transport</em> layer establishes the idea of a <strong>port</strong>.</li>
+<li>The <em>Application</em> layer doesn&#8217;t care about what happens below...</li>
+<li><em>Except for</em> <strong>endpoint data</strong> (IP:Port)</li>
+</ul>
+<p>A <strong>Socket</strong> is the software representation of that endpoint.</p>
+<p>Opening a <strong>socket</strong> creates a kind of transceiver that can send and/or
+receive <em>bytes</em> at a given IP address and Port.</p>
+</div>
+</div>
+<div class="section" id="sockets-in-python">
+<h3>Sockets in Python<a class="headerlink" href="#sockets-in-python" title="Permalink to this headline">¶</a></h3>
+<p>Python provides a standard library module which provides socket functionality.
+It is called <strong>socket</strong>.</p>
+<div class="build container">
+<p>The library is really just a very thin wrapper around the system
+implementation of <em>BSD Sockets</em></p>
+<p>Let&#8217;s spend a few minutes getting to know this module.</p>
+<p>We&#8217;re going to do this next part together, so open up a terminal and start
+a python interpreter</p>
+</div>
+<p>The Python sockets library allows us to find out what port a <em>service</em> uses:</p>
+<div class="build container">
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">socket</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">socket</span><span class="o">.</span><span class="n">getservbyname</span><span class="p">(</span><span class="s">&#39;ssh&#39;</span><span class="p">)</span>
+<span class="go">22</span>
+</pre></div>
+</div>
+<p>You can also do a <em>reverse lookup</em>, finding what service uses a given <em>port</em>:</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">socket</span><span class="o">.</span><span class="n">getservbyport</span><span class="p">(</span><span class="mi">80</span><span class="p">)</span>
+<span class="go">&#39;http&#39;</span>
+</pre></div>
+</div>
+</div>
+<p>The sockets library also provides tools for finding out information about
+<em>hosts</em>. For example, you can find out about the hostname and IP address of
+the machine you are currently using:</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">socket</span><span class="o">.</span><span class="n">gethostname</span><span class="p">()</span>
+<span class="go">&#39;heffalump.local&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">socket</span><span class="o">.</span><span class="n">gethostbyname</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">gethostname</span><span class="p">())</span>
+<span class="go">&#39;10.211.55.2&#39;</span>
+</pre></div>
+</div>
+<p>You can also find out about machines that are located elsewhere, assuming you
+know their hostname. For example:</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">socket</span><span class="o">.</span><span class="n">gethostbyname</span><span class="p">(</span><span class="s">&#39;google.com&#39;</span><span class="p">)</span>
+<span class="go">&#39;173.194.33.4&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">socket</span><span class="o">.</span><span class="n">gethostbyname</span><span class="p">(</span><span class="s">&#39;uw.edu&#39;</span><span class="p">)</span>
+<span class="go">&#39;128.95.155.135&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">socket</span><span class="o">.</span><span class="n">gethostbyname</span><span class="p">(</span><span class="s">&#39;crisewing.com&#39;</span><span class="p">)</span>
+<span class="go">&#39;108.59.11.99&#39;</span>
+</pre></div>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">gethostbyname_ex</span></tt> method of the <tt class="docutils literal"><span class="pre">socket</span></tt> library provides more
+information about the machines we are exploring:</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">socket</span><span class="o">.</span><span class="n">gethostbyname_ex</span><span class="p">(</span><span class="s">&#39;google.com&#39;</span><span class="p">)</span>
+<span class="go">(&#39;google.com&#39;, [], [&#39;173.194.33.9&#39;, &#39;173.194.33.14&#39;,</span>
+<span class="go">                    ...</span>
+<span class="go">                    &#39;173.194.33.6&#39;, &#39;173.194.33.7&#39;,</span>
+<span class="go">                    &#39;173.194.33.8&#39;])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">socket</span><span class="o">.</span><span class="n">gethostbyname_ex</span><span class="p">(</span><span class="s">&#39;crisewing.com&#39;</span><span class="p">)</span>
+<span class="go">(&#39;crisewing.com&#39;, [], [&#39;108.59.11.99&#39;])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">socket</span><span class="o">.</span><span class="n">gethostbyname_ex</span><span class="p">(</span><span class="s">&#39;www.rad.washington.edu&#39;</span><span class="p">)</span>
+<span class="go">(&#39;elladan.rad.washington.edu&#39;, # &lt;- canonical hostname</span>
+<span class="go"> [&#39;www.rad.washington.edu&#39;], # &lt;- any machine aliases</span>
+<span class="go"> [&#39;128.95.247.84&#39;]) # &lt;- all active IP addresses</span>
+</pre></div>
+</div>
+<p>To create a socket, you use the <strong>socket</strong> method of the <tt class="docutils literal"><span class="pre">socket</span></tt> library.
+It takes up to three optional positional arguments (here we use none to get
+the default behavior):</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">foo</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">foo</span>
+<span class="go">&lt;socket._socketobject object at 0x10046cec0&gt;</span>
+</pre></div>
+</div>
+<p>A socket has some properties that are immediately important to us. These
+include the <em>family</em>, <em>type</em> and <em>protocol</em> of the socket:</p>
+<div class="build container">
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">foo</span><span class="o">.</span><span class="n">family</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">foo</span><span class="o">.</span><span class="n">type</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">foo</span><span class="o">.</span><span class="n">proto</span>
+<span class="go">0</span>
+</pre></div>
+</div>
+<p>You might notice that the values for these properties are integers.  In
+fact, these integers are <strong>constants</strong> defined in the socket library.</p>
+</div>
+<p>Let&#8217;s define a method in place to help us see these constants. It will take a
+single argument, the shared prefix for a defined set of constants:</p>
+<div class="build container">
+<p>(you can also find this in <tt class="docutils literal"><span class="pre">resources/session04/socket_tools.py</span></tt>)</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">get_constants</span><span class="p">(</span><span class="n">prefix</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="sd">&quot;&quot;&quot;mapping of socket module constants to their names.&quot;&quot;&quot;</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">socket</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="n">n</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">socket</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="k">if</span> <span class="n">n</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="socket-families">
+<h3>Socket Families<a class="headerlink" href="#socket-families" title="Permalink to this headline">¶</a></h3>
+<p>Think back a moment to our discussion of the <em>Internet</em> layer of the TCP/IP
+stack.  There were a couple of different types of IP addresses:</p>
+<div class="build container">
+<ul class="build simple">
+<li>IPv4 (&#8216;192.168.1.100&#8217;)</li>
+<li>IPv6 (&#8216;2001:0db8:85a3:0042:0000:8a2e:0370:7334&#8217;)</li>
+</ul>
+<p>The <strong>family</strong> of a socket corresponds to the <em>addressing system</em> it uses
+for connecting.</p>
+</div>
+<p>Families defined in the <tt class="docutils literal"><span class="pre">socket</span></tt> library are prefixed by <tt class="docutils literal"><span class="pre">AF_</span></tt>:</p>
+<div class="build container">
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">families</span> <span class="o">=</span> <span class="n">get_constants</span><span class="p">(</span><span class="s">&#39;AF_&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">families</span>
+<span class="go">{0: &#39;AF_UNSPEC&#39;, 1: &#39;AF_UNIX&#39;, 2: &#39;AF_INET&#39;,</span>
+<span class="go"> 11: &#39;AF_SNA&#39;, 12: &#39;AF_DECnet&#39;, 16: &#39;AF_APPLETALK&#39;,</span>
+<span class="go"> 17: &#39;AF_ROUTE&#39;, 23: &#39;AF_IPX&#39;, 30: &#39;AF_INET6&#39;}</span>
+</pre></div>
+</div>
+<p><em>Your results may vary</em></p>
+<p>Of all of these, the ones we care most about are <tt class="docutils literal"><span class="pre">2</span></tt> (IPv4) and <tt class="docutils literal"><span class="pre">30</span></tt>
+(IPv6).</p>
+</div>
+<p>When you are on a machine with an operating system that is Unix-like, you will
+find another generally useful socket family: <tt class="docutils literal"><span class="pre">AF_UNIX</span></tt>, or Unix Domain
+Sockets. Sockets in this family:</p>
+<ul class="build simple">
+<li>connect processes <strong>on the same machine</strong></li>
+<li>are generally a bit slower than IPC connnections</li>
+<li>have the benefit of allowing the same API for programs that might run on one
+machine __or__ across the network</li>
+<li>use an &#8216;address&#8217; that looks like a pathname (&#8216;/tmp/foo.sock&#8217;)</li>
+</ul>
+<p>What is the <em>default</em> family for the socket we created just a moment ago?</p>
+<div class="build container">
+<p>(remember we bound the socket to the symbol <tt class="docutils literal"><span class="pre">foo</span></tt>)</p>
+<p>How did you figure this out?</p>
+</div>
+</div>
+<div class="section" id="socket-types">
+<h3>Socket Types<a class="headerlink" href="#socket-types" title="Permalink to this headline">¶</a></h3>
+<p>The socket <em>type</em> determines the semantics of socket communications.</p>
+<div class="build container">
+<p>Look up socket type constants with the <tt class="docutils literal"><span class="pre">SOCK_</span></tt> prefix:</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">types</span> <span class="o">=</span> <span class="n">get_constants</span><span class="p">(</span><span class="s">&#39;SOCK_&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">types</span>
+<span class="go">{1: &#39;SOCK_STREAM&#39;, 2: &#39;SOCK_DGRAM&#39;,</span>
+<span class="go"> ...}</span>
+</pre></div>
+</div>
+<p>The most common are <tt class="docutils literal"><span class="pre">1</span></tt> (Stream communication (TCP)) and <tt class="docutils literal"><span class="pre">2</span></tt> (Datagram
+communication (UDP)).</p>
+</div>
+<p>What is the <em>default</em> type for our generic socket, <tt class="docutils literal"><span class="pre">foo</span></tt>?</p>
+</div>
+<div class="section" id="socket-protocols">
+<h3>Socket Protocols<a class="headerlink" href="#socket-protocols" title="Permalink to this headline">¶</a></h3>
+<p>A socket also has a designated <em>protocol</em>. The constants for these are
+prefixed by <tt class="docutils literal"><span class="pre">IPPROTO_</span></tt>:</p>
+<div class="build container">
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">protocols</span> <span class="o">=</span> <span class="n">get_constants</span><span class="p">(</span><span class="s">&#39;IPPROTO_&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">protocols</span>
+<span class="go">{0: &#39;IPPROTO_IP&#39;, 1: &#39;IPPROTO_ICMP&#39;,</span>
+<span class="go"> ...,</span>
+<span class="go"> 255: &#39;IPPROTO_RAW&#39;}</span>
+</pre></div>
+</div>
+<p>The choice of which protocol to use for a socket is determined by the
+<em>internet layer</em> protocol you intend to use. <tt class="docutils literal"><span class="pre">TCP</span></tt>? <tt class="docutils literal"><span class="pre">UDP</span></tt>? <tt class="docutils literal"><span class="pre">ICMP</span></tt>?
+<tt class="docutils literal"><span class="pre">IGMP</span></tt>?</p>
+</div>
+<p>What is the <em>default</em> protocol used by our generic socket, <tt class="docutils literal"><span class="pre">foo</span></tt>?</p>
+</div>
+<div class="section" id="customizing-sockets">
+<h3>Customizing Sockets<a class="headerlink" href="#customizing-sockets" title="Permalink to this headline">¶</a></h3>
+<p>These three properties of a socket correspond to the three positional
+arguments you may pass to the socket constructor.</p>
+<div class="build container">
+<p>Using them allows you to create sockets with specific communications
+profiles:</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bar</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span>
+<span class="gp">... </span>                    <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_DGRAM</span><span class="p">,</span>
+<span class="gp">... </span>                    <span class="n">socket</span><span class="o">.</span><span class="n">IPPROTO_UDP</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bar</span>
+<span class="go">&lt;socket._socketobject object at 0x1005b8b40&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="break-time">
+<h3>Break Time<a class="headerlink" href="#break-time" title="Permalink to this headline">¶</a></h3>
+<p>So far we have:</p>
+<div class="build container">
+<ul class="build simple">
+<li>learned about the &#8220;layers&#8221; of the TCP/IP Stack</li>
+<li>discussed <em>families</em>, <em>types</em> and <em>protocols</em> in sockets</li>
+<li>learned how to create sockets with a specific communications profile.</li>
+</ul>
+<p>When we return we&#8217;ll learn how to find the communcations profiles of remote
+sockets, how to connect to them, and how to send and receive messages.</p>
+<p>Take a few minutes now to clear your head (do not quit your python
+interpreter).</p>
+</div>
+</div>
+<div class="section" id="address-information">
+<h3>Address Information<a class="headerlink" href="#address-information" title="Permalink to this headline">¶</a></h3>
+<p>When you are creating a socket to communicate with a remote service, the
+remote socket will have a specific communications profile.</p>
+<div class="build container">
+<p>The local socket you create must match that communications profile.</p>
+<p>How can you determine the <em>correct</em> values to use?</p>
+<p class="centered"><strong>You ask.</strong></p>
+</div>
+<p>The function <tt class="docutils literal"><span class="pre">socket.getaddrinfo</span></tt> provides information about available
+connections on a given host.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">socket</span><span class="o">.</span><span class="n">getaddrinfo</span><span class="p">(</span><span class="s">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="mi">80</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="build container">
+<p>This provides all you need to make a proper connection to a socket on a
+remote host. The value returned is a tuple of:</p>
+<ul class="build simple">
+<li>socket family</li>
+<li>socket type</li>
+<li>socket protocol</li>
+<li>canonical name (usually empty, unless requested by flag)</li>
+<li>socket address (tuple of IP and Port)</li>
+</ul>
+</div>
+<p>Again, let&#8217;s create a utility method in-place so we can see this in action:</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">get_address_info</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">response</span> <span class="ow">in</span> <span class="n">socket</span><span class="o">.</span><span class="n">getaddrinfo</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="n">fam</span><span class="p">,</span> <span class="n">typ</span><span class="p">,</span> <span class="n">pro</span><span class="p">,</span> <span class="n">nam</span><span class="p">,</span> <span class="n">add</span> <span class="o">=</span> <span class="n">response</span>
+<span class="gp">... </span>        <span class="k">print</span> <span class="s">&#39;family: &#39;</span><span class="p">,</span> <span class="n">families</span><span class="p">[</span><span class="n">fam</span><span class="p">]</span>
+<span class="gp">... </span>        <span class="k">print</span> <span class="s">&#39;type: &#39;</span><span class="p">,</span> <span class="n">types</span><span class="p">[</span><span class="n">typ</span><span class="p">]</span>
+<span class="gp">... </span>        <span class="k">print</span> <span class="s">&#39;protocol: &#39;</span><span class="p">,</span> <span class="n">protocols</span><span class="p">[</span><span class="n">pro</span><span class="p">]</span>
+<span class="gp">... </span>        <span class="k">print</span> <span class="s">&#39;canonical name: &#39;</span><span class="p">,</span> <span class="n">nam</span>
+<span class="gp">... </span>        <span class="k">print</span> <span class="s">&#39;socket address: &#39;</span><span class="p">,</span> <span class="n">add</span>
+<span class="gp">... </span>        <span class="k">print</span>
+<span class="gp">...</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<p>(you can also find this in <tt class="docutils literal"><span class="pre">resources/session01/session1.py</span></tt>)</p>
+<p>Now, ask your own machine what possible connections are available for &#8216;http&#8217;:</p>
+<div class="build container">
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">get_address_info</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">gethostname</span><span class="p">(),</span> <span class="s">&#39;http&#39;</span><span class="p">)</span>
+<span class="go">family:  AF_INET</span>
+<span class="go">type:  SOCK_DGRAM</span>
+<span class="go">protocol:  IPPROTO_UDP</span>
+<span class="go">canonical name:</span>
+<span class="go">socket address:  (&#39;10.211.55.2&#39;, 80)</span>
+
+<span class="go">family:  AF_INET</span>
+<span class="gp">...</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<p>What answers do you get?</p>
+</div>
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">get_address_info</span><span class="p">(</span><span class="s">&#39;crisewing.com&#39;</span><span class="p">,</span> <span class="s">&#39;http&#39;</span><span class="p">)</span>
+<span class="go">family:  AF_INET</span>
+<span class="go">type:  SOCK_DGRAM</span>
+<span class="gp">...</span>
+
+<span class="go">family:  AF_INET</span>
+<span class="go">type:  SOCK_STREAM</span>
+<span class="gp">...</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<div class="build container">
+Try a few other servers you know about.</div>
+</div>
+</div>
+<div class="section" id="client-side">
+<h2>Client Side<a class="headerlink" href="#client-side" title="Permalink to this headline">¶</a></h2>
+<div class="build container">
+<p class="large">Let&#8217;s put this to use</p>
+<p>We&#8217;ll communicate with a remote server as a <em>client</em></p>
+</div>
+<div class="section" id="construct-a-socket">
+<h3>Construct a Socket<a class="headerlink" href="#construct-a-socket" title="Permalink to this headline">¶</a></h3>
+<p>We&#8217;ve already made a socket <tt class="docutils literal"><span class="pre">foo</span></tt> using the generic constructor without any
+arguments.  We can make a better one now by using real address information from
+a real server online [<strong>do not type this yet</strong>]:</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">streams</span> <span class="o">=</span> <span class="p">[</span><span class="n">info</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">socket</span><span class="o">.</span><span class="n">getaddrinfo</span><span class="p">(</span><span class="s">&#39;crisewing.com&#39;</span><span class="p">,</span> <span class="s">&#39;http&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">info</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">streams</span>
+<span class="go">[(2, 1, 6, &#39;&#39;, (&#39;108.59.11.99&#39;, 80))]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="n">streams</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cewing_socket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="o">*</span><span class="n">info</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="connecting-a-socket">
+<h3>Connecting a Socket<a class="headerlink" href="#connecting-a-socket" title="Permalink to this headline">¶</a></h3>
+<p>Once the socket is constructed with the appropriate <em>family</em>, <em>type</em> and
+<em>protocol</em>, we can connect it to the address of our remote server:</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">cewing_socket</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<ul class="build simple">
+<li>a successful connection returns <tt class="docutils literal"><span class="pre">None</span></tt></li>
+<li>a failed connection raises an error</li>
+<li>you can use the <em>type</em> of error returned to tell why the connection failed.</li>
+</ul>
+</div>
+<div class="section" id="sending-a-message">
+<h3>Sending a Message<a class="headerlink" href="#sending-a-message" title="Permalink to this headline">¶</a></h3>
+<p>Send a message to the server on the other end of our connection (we&#8217;ll
+learn in session 2 about the message we are sending):</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;GET / HTTP/1.1</span><span class="se">\r\n</span><span class="s">&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">msg</span> <span class="o">+=</span> <span class="s">&quot;Host: crisewing.com</span><span class="se">\r\n\r\n</span><span class="s">&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cewing_socket</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<ul class="build small simple">
+<li>the transmission continues until all data is sent or an error occurs</li>
+<li>success returns <tt class="docutils literal"><span class="pre">None</span></tt></li>
+<li>failure to send raises an error</li>
+<li>you can use the type of error to figure out why the transmission failed</li>
+<li>if an error occurs you <strong>cannot</strong> know how much, if any, of your data was
+sent</li>
+</ul>
+</div>
+<div class="section" id="receiving-a-reply">
+<h3>Receiving a Reply<a class="headerlink" href="#receiving-a-reply" title="Permalink to this headline">¶</a></h3>
+<p>Whatever reply we get is received by the socket we created. We can read it
+back out (again, <strong>do not type this yet</strong>):</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">cewing_socket</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">4096</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span>
+<span class="go">&#39;HTTP/1.1 200 OK\r\nDate: Thu, 03 Jan 2013 05:56:53</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<ul class="build simple">
+<li>The sole required argument is <tt class="docutils literal"><span class="pre">buffer_size</span></tt> (an integer). It should be a
+power of 2 and smallish (~4096)</li>
+<li>It returns a byte string of <tt class="docutils literal"><span class="pre">buffer_size</span></tt> (or smaller if less data was
+received)</li>
+<li>If the response is longer than <tt class="docutils literal"><span class="pre">buffer</span> <span class="pre">size</span></tt>, you can call the method
+repeatedly. The last bunch will be less than <tt class="docutils literal"><span class="pre">buffer</span> <span class="pre">size</span></tt>.</li>
+</ul>
+</div>
+<div class="section" id="cleaning-up">
+<h3>Cleaning Up<a class="headerlink" href="#cleaning-up" title="Permalink to this headline">¶</a></h3>
+<p>When you are finished with a connection, you should always close it:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">cewing_socket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="putting-it-all-together">
+<h3>Putting it all together<a class="headerlink" href="#putting-it-all-together" title="Permalink to this headline">¶</a></h3>
+<p>First, connect and send a message:</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">streams</span> <span class="o">=</span> <span class="p">[</span><span class="n">info</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">socket</span><span class="o">.</span><span class="n">getaddrinfo</span><span class="p">(</span><span class="s">&#39;crisewing.com&#39;</span><span class="p">,</span> <span class="s">&#39;http&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">info</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="n">streams</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cewing_socket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="o">*</span><span class="n">info</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cewing_socket</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;GET / HTTP/1.1</span><span class="se">\r\n</span><span class="s">&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">msg</span> <span class="o">+=</span> <span class="s">&quot;Host: crisewing.com</span><span class="se">\r\n\r\n</span><span class="s">&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cewing_socket</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then, receive a reply, iterating until it is complete:</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">buffsize</span> <span class="o">=</span> <span class="mi">4096</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">done</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">msg_part</span> <span class="o">=</span> <span class="n">cewing_socket</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="n">buffsize</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">msg_part</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">buffsize</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">done</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="gp">... </span>        <span class="n">cewing_socket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="n">response</span> <span class="o">+=</span> <span class="n">msg_part</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+<span class="go">19427</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="server-side">
+<h2>Server Side<a class="headerlink" href="#server-side" title="Permalink to this headline">¶</a></h2>
+<div class="build container">
+<p class="large">What about the other half of the equation?</p>
+<p>Let&#8217;s build a server and see how that part works.</p>
+</div>
+<div class="section" id="id1">
+<h3>Construct a Socket<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p><strong>For the moment, stop typing this into your interpreter.</strong></p>
+<div class="build container">
+<p>Again, we begin by constructing a socket. Since we are actually the server
+this time, we get to choose family, type and protocol:</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">server_socket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">socket</span><span class="o">.</span><span class="n">IPPROTO_TCP</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">server_socket</span>
+<span class="go">&lt;socket._socketobject object at 0x100563c90&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="bind-the-socket">
+<h3>Bind the Socket<a class="headerlink" href="#bind-the-socket" title="Permalink to this headline">¶</a></h3>
+<p>Our server socket needs to be <strong>bound</strong> to an address. This is the IP Address
+and Port to which clients must connect:</p>
+<div class="build container">
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">address</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="mi">50000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">server_socket</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Terminology Note</strong>: In a server/client relationship, the server <em>binds</em>
+to an address and port. The client <em>connects</em></p>
+</div>
+</div>
+<div class="section" id="listen-for-connections">
+<h3>Listen for Connections<a class="headerlink" href="#listen-for-connections" title="Permalink to this headline">¶</a></h3>
+<p>Once our socket is bound to an address, we can listen for attempted
+connections:</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">server_socket</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="build simple">
+<li>The argument to <tt class="docutils literal"><span class="pre">listen</span></tt> is the <em>backlog</em></li>
+<li>The <em>backlog</em> is the <strong>maximum</strong> number of connection requests that the
+socket will queue</li>
+<li>Once the limit is reached, the socket refuses new connections.</li>
+</ul>
+</div>
+<div class="section" id="accept-incoming-messages">
+<h3>Accept Incoming Messages<a class="headerlink" href="#accept-incoming-messages" title="Permalink to this headline">¶</a></h3>
+<p>When a socket is listening, it can receive incoming connection requests:</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span><span class="p">,</span> <span class="n">client_address</span> <span class="o">=</span> <span class="n">server_socket</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+<span class="gp">... </span><span class="c"># this blocks until a client connects</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="build simple">
+<li>The <tt class="docutils literal"><span class="pre">connection</span></tt> returned by a call to <tt class="docutils literal"><span class="pre">accept</span></tt> is a <strong>new socket</strong>.
+This new socket is used to communicate with the client</li>
+<li>The <tt class="docutils literal"><span class="pre">client_address</span></tt> is a two-tuple of IP Address and Port for the client
+socket</li>
+<li>When a connection request is &#8216;accepted&#8217;, it is removed from the backlog
+queue.</li>
+</ul>
+</div>
+<div class="section" id="send-a-reply">
+<h3>Send a Reply<a class="headerlink" href="#send-a-reply" title="Permalink to this headline">¶</a></h3>
+<p>The same socket that received a message from the client may be used to return
+a reply:</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="s">&quot;message received&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="clean-up">
+<h3>Clean Up<a class="headerlink" href="#clean-up" title="Permalink to this headline">¶</a></h3>
+<p>Once a transaction between the client and server is complete, the
+<tt class="docutils literal"><span class="pre">connection</span></tt> socket should be closed:</p>
+<div class="build container">
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Note that the <tt class="docutils literal"><span class="pre">server_socket</span></tt> is <em>never</em> closed as long as the server
+continues to run.</p>
+</div>
+</div>
+</div>
+<div class="section" id="getting-the-flow">
+<h2>Getting the Flow<a class="headerlink" href="#getting-the-flow" title="Permalink to this headline">¶</a></h2>
+<div class="left container">
+<p>The flow of this interaction can be a bit confusing.  Let&#8217;s see it in
+action step-by-step.</p>
+<div class="build container">
+<div class="container">
+Open a second python interpreter and place it next to your first so
+you can see both of them at the same time.</div>
+</div>
+</div>
+<div class="section" id="create-a-server">
+<h3>Create a Server<a class="headerlink" href="#create-a-server" title="Permalink to this headline">¶</a></h3>
+<p>In your first python interpreter, create a server socket and prepare it for
+connections:</p>
+<div class="build container">
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">server_socket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">socket</span><span class="o">.</span><span class="n">IPPROTO_IP</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">server_socket</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="s">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="mi">50000</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">server_socket</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">conn</span><span class="p">,</span> <span class="n">addr</span> <span class="o">=</span> <span class="n">server_socket</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>At this point, you should <strong>not</strong> get back a prompt. The server socket is
+waiting for a connection to be made.</p>
+</div>
+</div>
+<div class="section" id="create-a-client">
+<h3>Create a Client<a class="headerlink" href="#create-a-client" title="Permalink to this headline">¶</a></h3>
+<p>In your second interpreter, create a client socket and prepare to send a
+message:</p>
+<div class="build container">
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">socket</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client_socket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">socket</span><span class="o">.</span><span class="n">IPPROTO_IP</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Before connecting, keep your eye on the server interpreter:</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">client_socket</span><span class="o">.</span><span class="n">connect</span><span class="p">((</span><span class="s">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="mi">50000</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="send-a-message-client-server">
+<h3>Send a Message Client-&gt;Server<a class="headerlink" href="#send-a-message-client-server" title="Permalink to this headline">¶</a></h3>
+<p>As soon as you made the connection above, you should have seen the prompt
+return in your server interpreter. The <tt class="docutils literal"><span class="pre">accept</span></tt> method finally returned a
+new connection socket.</p>
+<div class="build container">
+<p>When you&#8217;re ready, type the following in the <em>client</em> interpreter:</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">client_socket</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="s">&quot;Hey, can you hear me?&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="receive-and-respond">
+<h3>Receive and Respond<a class="headerlink" href="#receive-and-respond" title="Permalink to this headline">¶</a></h3>
+<p>Back in your server interpreter, go ahead and receive the message from your
+client:</p>
+<div class="build container">
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">conn</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>
+<span class="go">&#39;Hey, can you hear me?&#39;</span>
+</pre></div>
+</div>
+<p>Send a message back, and then close up your connection:</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">conn</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="s">&quot;Yes, I hear you.&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="finish-up">
+<h3>Finish Up<a class="headerlink" href="#finish-up" title="Permalink to this headline">¶</a></h3>
+<p>Back in your client interpreter, take a look at the response to your message,
+then be sure to close your client socket too:</p>
+<div class="build container">
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">client_socket</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>
+<span class="go">&#39;Yes, I hear you.&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client_socket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>And now that we&#8217;re done, we can close up the server too (back in the server
+interpreter):</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">server_socket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p class="large center">You&#8217;ve run your first client-server interaction</p>
+</div>
+</div>
+<div class="section" id="homework">
+<h2>Homework<a class="headerlink" href="#homework" title="Permalink to this headline">¶</a></h2>
+<div class="left container">
+<p>Your homework assignment for this week is to take what you&#8217;ve learned here
+and build a simple &#8220;echo&#8221; server.</p>
+<div class="build container">
+<p>The server should automatically return to any client that connects <em>exactly</em>
+what it receives (it should <strong>echo</strong> all messages).</p>
+<p>You will also write a python script that, when run, will send a message to the
+server and receive the reply, printing it to <tt class="docutils literal"><span class="pre">stdout</span></tt>.</p>
+<p>Finally, you&#8217;ll do all of this so that it can be tested.</p>
+</div>
+</div>
+<div class="section" id="your-task">
+<h3>Your Task<a class="headerlink" href="#your-task" title="Permalink to this headline">¶</a></h3>
+<p>In our class repository, there is a folder <tt class="docutils literal"><span class="pre">resources/session04</span></tt>.</p>
+<div class="build container">
+<p>Inside that folder, you should find:</p>
+<ul class="build simple">
+<li>A file <tt class="docutils literal"><span class="pre">tasks.txt</span></tt> that contains these instructions</li>
+<li>A skeleton for your server in <tt class="docutils literal"><span class="pre">echo_server.py</span></tt></li>
+<li>A skeleton for your client script in <tt class="docutils literal"><span class="pre">echo_client.py</span></tt></li>
+<li>Some simple tests in <tt class="docutils literal"><span class="pre">tests.py</span></tt></li>
+</ul>
+<p>Your task is to make the tests pass.</p>
+</div>
+</div>
+<div class="section" id="running-the-tests">
+<h3>Running the Tests<a class="headerlink" href="#running-the-tests" title="Permalink to this headline">¶</a></h3>
+<p>To run the tests, you&#8217;ll have to set the server running in one terminal:</p>
+<div class="build container">
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python echo_server.py
+</pre></div>
+</div>
+<p>Then, in a second terminal, you will execute the tests:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python tests.py
+</pre></div>
+</div>
+<p>You should see output like this:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">[</span>...<span class="o">]</span>
+FAILED <span class="o">(</span><span class="nv">failures</span><span class="o">=</span>2<span class="o">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="submitting-your-homework">
+<h3>Submitting Your Homework<a class="headerlink" href="#submitting-your-homework" title="Permalink to this headline">¶</a></h3>
+<p>To submit your homework:</p>
+<div class="build container">
+<ul class="build simple">
+<li>Create a new repository in GitHub.  Call it <tt class="docutils literal"><span class="pre">echo_sockets</span></tt>.</li>
+<li>Put the <tt class="docutils literal"><span class="pre">echo_server.py</span></tt>, <tt class="docutils literal"><span class="pre">echo_client.py</span></tt> and <tt class="docutils literal"><span class="pre">tests.py</span></tt> files in
+this repository.</li>
+<li>Send Maria and I an email with a link to your repository when you are
+done.</li>
+</ul>
+<p>We will clone your repository and run the tests as described above.</p>
+<p>And we&#8217;ll make comments inline on your repository.</p>
+</div>
+</div>
+<div class="section" id="going-further">
+<h3>Going Further<a class="headerlink" href="#going-further" title="Permalink to this headline">¶</a></h3>
+<p>In <tt class="docutils literal"><span class="pre">assignments/session01/tasks.txt</span></tt> you&#8217;ll find a few extra problems to try.</p>
+<div class="build container">
+<p>If you finish the first part of the homework in less than 3-4 hours give
+one or more of these a whirl.</p>
+<p>They are not required, but if you include solutions in your repository,
+we&#8217;ll review your work.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Python Web Programming</a><ul>
+<li><a class="reference internal" href="#computer-communications">Computer Communications</a><ul>
+<li><a class="reference internal" href="#tcp-ip">TCP/IP</a></li>
+<li><a class="reference internal" href="#the-tcp-ip-stack-link">The TCP/IP Stack - Link</a></li>
+<li><a class="reference internal" href="#the-tcp-ip-stack-internet">The TCP/IP Stack - Internet</a></li>
+<li><a class="reference internal" href="#the-tcp-ip-stack-transport">The TCP/IP Stack - Transport</a></li>
+<li><a class="reference internal" href="#the-tcp-ip-stack-application">The TCP/IP Stack - Application</a></li>
+<li><a class="reference internal" href="#sockets">Sockets</a></li>
+<li><a class="reference internal" href="#sockets-in-python">Sockets in Python</a></li>
+<li><a class="reference internal" href="#socket-families">Socket Families</a></li>
+<li><a class="reference internal" href="#socket-types">Socket Types</a></li>
+<li><a class="reference internal" href="#socket-protocols">Socket Protocols</a></li>
+<li><a class="reference internal" href="#customizing-sockets">Customizing Sockets</a></li>
+<li><a class="reference internal" href="#break-time">Break Time</a></li>
+<li><a class="reference internal" href="#address-information">Address Information</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#client-side">Client Side</a><ul>
+<li><a class="reference internal" href="#construct-a-socket">Construct a Socket</a></li>
+<li><a class="reference internal" href="#connecting-a-socket">Connecting a Socket</a></li>
+<li><a class="reference internal" href="#sending-a-message">Sending a Message</a></li>
+<li><a class="reference internal" href="#receiving-a-reply">Receiving a Reply</a></li>
+<li><a class="reference internal" href="#cleaning-up">Cleaning Up</a></li>
+<li><a class="reference internal" href="#putting-it-all-together">Putting it all together</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#server-side">Server Side</a><ul>
+<li><a class="reference internal" href="#id1">Construct a Socket</a></li>
+<li><a class="reference internal" href="#bind-the-socket">Bind the Socket</a></li>
+<li><a class="reference internal" href="#listen-for-connections">Listen for Connections</a></li>
+<li><a class="reference internal" href="#accept-incoming-messages">Accept Incoming Messages</a></li>
+<li><a class="reference internal" href="#send-a-reply">Send a Reply</a></li>
+<li><a class="reference internal" href="#clean-up">Clean Up</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#getting-the-flow">Getting the Flow</a><ul>
+<li><a class="reference internal" href="#create-a-server">Create a Server</a></li>
+<li><a class="reference internal" href="#create-a-client">Create a Client</a></li>
+<li><a class="reference internal" href="#send-a-message-client-server">Send a Message Client-&gt;Server</a></li>
+<li><a class="reference internal" href="#receive-and-respond">Receive and Respond</a></li>
+<li><a class="reference internal" href="#finish-up">Finish Up</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#homework">Homework</a><ul>
+<li><a class="reference internal" href="#your-task">Your Task</a></li>
+<li><a class="reference internal" href="#running-the-tests">Running the Tests</a></li>
+<li><a class="reference internal" href="#submitting-your-homework">Submitting Your Homework</a></li>
+<li><a class="reference internal" href="#going-further">Going Further</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/presentations/session04.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+  <h3>Slides</h3>
+  <ul class="this-page-menu">
+    <li><a href="../.././slides/presentations/session04.html"
+           rel="nofollow">View as slides</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="../index.html">UWPCE Python 200</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012-2015, Cris Ewing.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
