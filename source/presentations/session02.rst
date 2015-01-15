@@ -533,7 +533,7 @@ Next, we want to write the view for a single entry.
     .. code-block:: python
 
         # add this import at the top
-        from pyramid.exceptions import HTTPNotFound
+        from pyramid.httpexceptions import HTTPNotFound
 
         # and update this view function:
         def view(request):
@@ -1348,7 +1348,7 @@ Next, we need to add a new view that uses this form to create a new entry.
     .. code-block:: python
 
         # add these imports
-        from pyramid.exceptions import HTTPFound
+        from pyramid.httpexceptions import HTTPFound
         from .forms import EntryCreateForm
 
         # and update this view function
