@@ -102,6 +102,10 @@ article .medium {
   font-weight: bold;
   font-size: 45px;
   line-height: 45px; }
+article .small {
+  font-weight: normal;
+  font-size: 30px;
+  line-height: 30px; }
 article .credit {
   font-size: 75%;
   text-align: left; }
@@ -162,5 +166,9 @@ article table.docutils tr td {
 .figure p.caption {
   font-size: 75%;
   text-align: center;
+}
+.figure.align-left {
+  text-align: left;
+  float: left;
 }
 

@@ -533,10 +533,10 @@ Next, we want to write the view for a single entry.
     .. code-block:: python
 
         # add this import at the top
-        from pyramid.exceptions import HTTPNotFound
+        from pyramid.httpexceptions import HTTPNotFound
 
         # and update this view function:
-        def blog_view(request):
+        def view(request):
             this_id = request.matchdict.get('id', -1)
             entry = Entry.by_id(this_id)
             if not entry:
@@ -950,7 +950,7 @@ show it.
     
         # views.py
         @view_config(route_name='detail', renderer='templates/detail.jinja2')
-        def blog_view(request):
+        def view(request):
             # ...
 
 .. nextslide:: Try It Out
@@ -1348,7 +1348,7 @@ Next, we need to add a new view that uses this form to create a new entry.
     .. code-block:: python
 
         # add these imports
-        from pyramid.exceptions import HTTPFound
+        from pyramid.httpexceptions import HTTPFound
         from .forms import EntryCreateForm
 
         # and update this view function

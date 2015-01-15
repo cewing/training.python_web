@@ -619,10 +619,10 @@ reverse order, and hand that collection back for rendering.</p>
 <p>Remember that the <tt class="docutils literal"><span class="pre">matchdict</span></tt> is an attribute of the request.</p>
 <p>We'll get the <tt class="docutils literal"><span class="pre">id</span></tt> from there, and use it to get the correct entry.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c"># add this import at the top</span>
-<span class="kn">from</span> <span class="nn">pyramid.exceptions</span> <span class="kn">import</span> <span class="n">HTTPNotFound</span>
+<span class="kn">from</span> <span class="nn">pyramid.httpexceptions</span> <span class="kn">import</span> <span class="n">HTTPNotFound</span>
 
 <span class="c"># and update this view function:</span>
-<span class="k">def</span> <span class="nf">blog_view</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">view</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="n">this_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">matchdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">by_id</span><span class="p">(</span><span class="n">this_id</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">entry</span><span class="p">:</span>
@@ -1079,7 +1079,7 @@ show it.</p>
 <p>Then wire it up to the detail view in <tt class="docutils literal"><span class="pre">views.py</span></tt>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c"># views.py</span>
 <span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="s">&#39;detail&#39;</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="s">&#39;templates/detail.jinja2&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">blog_view</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">view</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="c"># ...</span>
 </pre></div>
 </div>
@@ -1523,7 +1523,7 @@ Finished processing dependencies <span class="k">for </span>learning-journal<spa
 <div class="build container">
 <p>Add this to <tt class="docutils literal"><span class="pre">views.py</span></tt>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c"># add these imports</span>
-<span class="kn">from</span> <span class="nn">pyramid.exceptions</span> <span class="kn">import</span> <span class="n">HTTPFound</span>
+<span class="kn">from</span> <span class="nn">pyramid.httpexceptions</span> <span class="kn">import</span> <span class="n">HTTPFound</span>
 <span class="kn">from</span> <span class="nn">.forms</span> <span class="kn">import</span> <span class="n">EntryCreateForm</span>
 
 <span class="c"># and update this view function</span>
