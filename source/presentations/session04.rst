@@ -419,7 +419,7 @@ Families defined in the ``socket`` library are prefixed by ``AF_``:
 .. container::
 
     .. code-block:: pycon
-    
+
         >>> families = get_constants('AF_')
         >>> families
         {0: 'AF_UNSPEC', 1: 'AF_UNIX', 2: 'AF_INET',
@@ -474,7 +474,7 @@ The socket *type* determines the semantics of socket communications.
     Look up socket type constants with the ``SOCK_`` prefix:
 
     .. code-block:: pycon
-    
+
         >>> types = get_constants('SOCK_')
         >>> types
         {1: 'SOCK_STREAM', 2: 'SOCK_DGRAM',
@@ -529,7 +529,7 @@ arguments you may pass to the socket constructor.
     profiles:
 
     .. code-block:: pycon
-    
+
         >>> bar = socket.socket(socket.AF_INET,
         ...                     socket.SOCK_DGRAM,
         ...                     socket.IPPROTO_UDP)
@@ -544,20 +544,19 @@ Break Time
 So far we have:
 
 .. rst-class:: build
+.. container::
 
-* learned about the "layers" of the TCP/IP Stack
-* discussed *families*, *types* and *protocols* in sockets
-* learned how to create sockets with a specific communications profile.
+    .. rst-class:: build
 
-.. rst-class:: build
+    * learned about the "layers" of the TCP/IP Stack
+    * discussed *families*, *types* and *protocols* in sockets
+    * learned how to create sockets with a specific communications profile.
 
-When we return we'll learn how to find the communcations profiles of remote
-sockets, how to connect to them, and how to send and receive messages.
+    When we return we'll learn how to find the communcations profiles of remote
+    sockets, how to connect to them, and how to send and receive messages.
 
-.. rst-class:: build
-
-Take a few minutes now to clear your head (do not quit your python
-interpreter).
+    Take a few minutes now to clear your head (do not quit your python
+    interpreter).
 
 
 Address Information
@@ -567,51 +566,45 @@ When you are creating a socket to communicate with a remote service, the
 remote socket will have a specific communications profile.
 
 .. rst-class:: build
+.. container::
 
-The local socket you create must match that communications profile.
+    The local socket you create must match that communications profile.
 
-.. rst-class:: build
+    How can you determine the *correct* values to use?
 
-How can you determine the *correct* values to use?
+    .. rst-class:: centered
 
-.. rst-class:: build center
+    **You ask.**
 
-You ask.
-
-
-Address Information
--------------------
+.. nextslide::
 
 The function ``socket.getaddrinfo`` provides information about available
 connections on a given host.
 
 .. code-block:: python
-    :class: small
 
     socket.getaddrinfo('127.0.0.1', 80)
 
 .. rst-class:: build
+.. container::
 
-This provides all you need to make a proper connection to a socket on a remote
-host. The value returned is a tuple of:
+    This provides all you need to make a proper connection to a socket on a
+    remote host. The value returned is a tuple of:
 
-.. rst-class:: build
+    .. rst-class:: build
 
-* socket family
-* socket type
-* socket protocol
-* canonical name (usually empty, unless requested by flag)
-* socket address (tuple of IP and Port)
+    * socket family
+    * socket type
+    * socket protocol
+    * canonical name (usually empty, unless requested by flag)
+    * socket address (tuple of IP and Port)
 
 
-A quick utility method
-----------------------
+.. nextslide:: A quick utility method
 
 Again, let's create a utility method in-place so we can see this in action:
 
-.. class:: small
-
-::
+.. code-block:: pycon
 
     >>> def get_address_info(host, port):
     ...     for response in socket.getaddrinfo(host, port):
@@ -625,36 +618,35 @@ Again, let's create a utility method in-place so we can see this in action:
     ...
     >>>
 
-.. class:: small
-
 (you can also find this in ``resources/session01/session1.py``)
 
 
-On Your Own Machine
--------------------
+.. nextslide:: On Your Own Machine
 
-Now, ask your own machine what possible connections are available for 'http'::
-
-    >>> get_address_info(socket.gethostname(), 'http')
-    family:  AF_INET
-    type:  SOCK_DGRAM
-    protocol:  IPPROTO_UDP
-    canonical name:
-    socket address:  ('10.211.55.2', 80)
-
-    family:  AF_INET
-    ...
-    >>>
+Now, ask your own machine what possible connections are available for 'http':
 
 .. rst-class:: build
+.. container::
 
-What answers do you get?
+    .. code-block:: pycon
+
+        >>> get_address_info(socket.gethostname(), 'http')
+        family:  AF_INET
+        type:  SOCK_DGRAM
+        protocol:  IPPROTO_UDP
+        canonical name:
+        socket address:  ('10.211.55.2', 80)
+
+        family:  AF_INET
+        ...
+        >>>
+
+    What answers do you get?
 
 
-On the Internet
----------------
+.. nextslide:: On the Internet
 
-::
+.. code-block:: pycon
 
     >>> get_address_info('crisewing.com', 'http')
     family:  AF_INET
@@ -667,16 +659,22 @@ On the Internet
     >>>
 
 .. rst-class:: build
+.. container::
 
-Try a few other servers you know about.
+    Try a few other servers you know about.
 
 
-First Steps
------------
+Client Side
+===========
 
-.. class:: big-centered
+.. rst-class:: build
+.. container::
 
-Let's put this to use
+    .. rst-class:: large
+
+    Let's put this to use
+
+    We'll communicate with a remote server as a *client*
 
 
 Construct a Socket
@@ -686,9 +684,7 @@ We've already made a socket ``foo`` using the generic constructor without any
 arguments.  We can make a better one now by using real address information from
 a real server online [**do not type this yet**]:
 
-.. class:: small
-
-::
+.. code-block:: pycon
 
     >>> streams = [info
     ...     for info in socket.getaddrinfo('crisewing.com', 'http')
@@ -703,7 +699,9 @@ Connecting a Socket
 -------------------
 
 Once the socket is constructed with the appropriate *family*, *type* and
-*protocol*, we can connect it to the address of our remote server::
+*protocol*, we can connect it to the address of our remote server:
+
+.. code-block:: pycon
 
     >>> cewing_socket.connect(info[-1])
     >>>
@@ -721,7 +719,9 @@ Sending a Message
 -----------------
 
 Send a message to the server on the other end of our connection (we'll
-learn in session 2 about the message we are sending)::
+learn in session 2 about the message we are sending):
+
+.. code-block:: pycon
 
     >>> msg = "GET / HTTP/1.1\r\n"
     >>> msg += "Host: crisewing.com\r\n\r\n"
@@ -746,14 +746,16 @@ Receiving a Reply
 -----------------
 
 Whatever reply we get is received by the socket we created. We can read it
-back out (again, **do not type this yet**)::
+back out (again, **do not type this yet**):
+
+.. code-block:: pycon
 
     >>> response = cewing_socket.recv(4096)
     >>> response
     'HTTP/1.1 200 OK\r\nDate: Thu, 03 Jan 2013 05:56:53
     ...
 
-.. rst-class:: build small
+.. rst-class:: build
 
 * The sole required argument is ``buffer_size`` (an integer). It should be a
   power of 2 and smallish (~4096)
@@ -776,9 +778,7 @@ Putting it all together
 
 First, connect and send a message:
 
-.. class:: small
-
-::
+.. code-block:: pycon
 
     >>> streams = [info
     ...     for info in socket.getaddrinfo('crisewing.com', 'http')
@@ -791,12 +791,11 @@ First, connect and send a message:
     >>> cewing_socket.sendall(msg)
 
 
-Putting it all together
------------------------
+.. nextslide::
 
 Then, receive a reply, iterating until it is complete:
 
-::
+.. code-block:: pycon
 
     >>> buffsize = 4096
     >>> response = ''
@@ -813,21 +812,29 @@ Then, receive a reply, iterating until it is complete:
 
 
 Server Side
------------
+===========
 
-.. class:: big-centered
+.. rst-class:: build
+.. container::
 
-What about the other half of the equation?
+    .. rst-class:: large
+
+    What about the other half of the equation?
+
+    Let's build a server and see how that part works.
 
 Construct a Socket
 ------------------
 
 **For the moment, stop typing this into your interpreter.**
 
-.. container:: incremental
+.. rst-class:: build
+.. container::
 
     Again, we begin by constructing a socket. Since we are actually the server
-    this time, we get to choose family, type and protocol::
+    this time, we get to choose family, type and protocol:
+
+    .. code-block:: pycon
 
         >>> server_socket = socket.socket(
         ...     socket.AF_INET,
@@ -841,23 +848,27 @@ Construct a Socket
 Bind the Socket
 ---------------
 
-Our server socket needs to be bound to an address. This is the IP Address and
-Port to which clients must connect::
-
-    >>> address = ('127.0.0.1', 50000)
-    >>> server_socket.bind(address)
+Our server socket needs to be **bound** to an address. This is the IP Address
+and Port to which clients must connect:
 
 .. rst-class:: build
+.. container::
 
-**Terminology Note**: In a server/client relationship, the server *binds* to
-an address and port. The client *connects*
+    .. code-block:: pycon
 
+        >>> address = ('127.0.0.1', 50000)
+        >>> server_socket.bind(address)
+
+    **Terminology Note**: In a server/client relationship, the server *binds*
+    to an address and port. The client *connects*
 
 Listen for Connections
 ----------------------
 
 Once our socket is bound to an address, we can listen for attempted
-connections::
+connections:
+
+.. code-block:: pycon
 
     >>> server_socket.listen(1)
 
@@ -874,7 +885,9 @@ connections::
 Accept Incoming Messages
 ------------------------
 
-When a socket is listening, it can receive incoming connection requests::
+When a socket is listening, it can receive incoming connection requests:
+
+.. code-block:: pycon
 
     >>> connection, client_address = server_socket.accept()
     ... # this blocks until a client connects
@@ -896,7 +909,9 @@ Send a Reply
 ------------
 
 The same socket that received a message from the client may be used to return
-a reply::
+a reply:
+
+.. code-block:: pycon
 
     >>> connection.sendall("message received")
 
@@ -905,63 +920,82 @@ Clean Up
 --------
 
 Once a transaction between the client and server is complete, the
-``connection`` socket should be closed::
-
-    >>> connection.close()
+``connection`` socket should be closed:
 
 .. rst-class:: build
+.. container::
 
-Note that the ``server_socket`` is *never* closed as long as the server
-continues to run.
+    .. code-block:: pycon
+
+        >>> connection.close()
+
+    Note that the ``server_socket`` is *never* closed as long as the server
+    continues to run.
 
 
 Getting the Flow
-----------------
+================
 
-The flow of this interaction can be a bit confusing.  Let's see it in action
-step-by-step.
+.. rst-class:: left
+.. container::
 
-.. rst-class:: build
 
-Open a second python interpreter and place it next to your first so you can
-see both of them at the same time.
+
+    The flow of this interaction can be a bit confusing.  Let's see it in
+    action step-by-step.
+
+    .. rst-class:: build
+    .. container::
+
+        .. container::
+
+            Open a second python interpreter and place it next to your first so
+            you can see both of them at the same time.
 
 
 Create a Server
 ---------------
 
 In your first python interpreter, create a server socket and prepare it for
-connections::
-
-    >>> server_socket = socket.socket(
-    ...     socket.AF_INET,
-    ...     socket.SOCK_STREAM,
-    ...     socket.IPPROTO_IP)
-    >>> server_socket.bind(('127.0.0.1', 50000))
-    >>> server_socket.listen(1)
-    >>> conn, addr = server_socket.accept()
+connections:
 
 .. rst-class:: build
+.. container::
 
-At this point, you should **not** get back a prompt. The server socket is
-waiting for a connection to be made.
+    .. code-block:: pycon
+
+        >>> server_socket = socket.socket(
+        ...     socket.AF_INET,
+        ...     socket.SOCK_STREAM,
+        ...     socket.IPPROTO_IP)
+        >>> server_socket.bind(('127.0.0.1', 50000))
+        >>> server_socket.listen(1)
+        >>> conn, addr = server_socket.accept()
+
+    At this point, you should **not** get back a prompt. The server socket is
+    waiting for a connection to be made.
 
 
 Create a Client
 ---------------
 
 In your second interpreter, create a client socket and prepare to send a
-message::
+message:
 
-    >>> import socket
-    >>> client_socket = socket.socket(
-    ...     socket.AF_INET,
-    ...     socket.SOCK_STREAM,
-    ...     socket.IPPROTO_IP)
+.. rst-class:: build
+.. container::
 
-.. container:: incremental
+    .. code-block:: pycon
 
-    Before connecting, keep your eye on the server interpreter::
+        >>> import socket
+        >>> client_socket = socket.socket(
+        ...     socket.AF_INET,
+        ...     socket.SOCK_STREAM,
+        ...     socket.IPPROTO_IP)
+
+    Before connecting, keep your eye on the server interpreter:
+
+    .. code-block:: pycon
 
         >>> client_socket.connect(('127.0.0.1', 50000))
 
@@ -974,128 +1008,132 @@ return in your server interpreter. The ``accept`` method finally returned a
 new connection socket.
 
 .. rst-class:: build
+.. container::
 
-When you're ready, type the following in the *client* interpreter.
+    When you're ready, type the following in the *client* interpreter:
 
-.. rst-class:: build
+    .. code-block:: pycon
 
-::
-
-    >>> client_socket.sendall("Hey, can you hear me?")
+        >>> client_socket.sendall("Hey, can you hear me?")
 
 
 Receive and Respond
 -------------------
 
 Back in your server interpreter, go ahead and receive the message from your
-client::
+client:
 
-    >>> conn.recv(32)
-    'Hey, can you hear me?'
+.. rst-class:: build
+.. container::
 
-Send a message back, and then close up your connection::
+    .. code-block:: pycon
 
-    >>> conn.sendall("Yes, I hear you.")
-    >>> conn.close()
+        >>> conn.recv(32)
+        'Hey, can you hear me?'
+
+    Send a message back, and then close up your connection:
+
+    .. code-block:: pycon
+
+        >>> conn.sendall("Yes, I hear you.")
+        >>> conn.close()
 
 
 Finish Up
 ---------
 
 Back in your client interpreter, take a look at the response to your message,
-then be sure to close your client socket too::
+then be sure to close your client socket too:
 
-    >>> client_socket.recv(32)
-    'Yes, I hear you.'
-    >>> client_socket.close()
+.. rst-class:: build
+.. container::
 
-And now that we're done, we can close up the server too (back in the server
-interpreter)::
+    .. code-block:: pycon
 
-    >>> server_socket.close()
+        >>> client_socket.recv(32)
+        'Yes, I hear you.'
+        >>> client_socket.close()
+
+    And now that we're done, we can close up the server too (back in the server
+    interpreter):
+
+    .. code-block:: pycon
+
+        >>> server_socket.close()
 
 
-Congratulations!
-----------------
+.. nextslide:: Congratulations!
 
-.. class:: big-centered
+.. rst-class:: large center
 
 You've run your first client-server interaction
 
 
 Homework
---------
+========
 
-Your homework assignment for this week is to take what you've learned here
-and build a simple "echo" server.
+.. rst-class:: left
+.. container::
 
-.. rst-class:: build
+    Your homework assignment for this week is to take what you've learned here
+    and build a simple "echo" server.
 
-The server should automatically return to any client that connects *exactly*
-what it receives (it should **echo** all messages).
+    .. rst-class:: build
+    .. container::
 
-.. rst-class:: build
+        The server should automatically return to any client that connects *exactly*
+        what it receives (it should **echo** all messages).
 
-You will also write a python script that, when run, will send a message to the
-server and receive the reply, printing it to ``stdout``.
+        You will also write a python script that, when run, will send a message to the
+        server and receive the reply, printing it to ``stdout``.
 
-.. rst-class:: build
-
-Finally, you'll do all of this so that it can be tested.
+        Finally, you'll do all of this so that it can be tested.
 
 
-What You Have
--------------
+Your Task
+---------
 
-In our class repository, there is a folder ``assignments/session01``.
-
-.. rst-class:: build
-
-Inside that folder, you should find:
+In our class repository, there is a folder ``resources/session04``.
 
 .. rst-class:: build
+.. container::
 
-* A file ``tasks.txt`` that contains these instructions
+    Inside that folder, you should find:
 
-* A skeleton for your server in ``echo_server.py``
+    .. rst-class:: build
 
-* A skeleton for your client script in ``echo_client.py``
+    * A file ``tasks.txt`` that contains these instructions
 
-* Some simple tests in ``tests.py``
+    * A skeleton for your server in ``echo_server.py``
 
-.. rst-class:: build
+    * A skeleton for your client script in ``echo_client.py``
 
-Your task is to make the tests pass.
+    * Some simple tests in ``tests.py``
+
+    Your task is to make the tests pass.
 
 
-Running the tests
+Running the Tests
 -----------------
 
 To run the tests, you'll have to set the server running in one terminal:
 
-.. class:: small
+.. rst-class:: build
+.. container::
 
-::
+    .. code-block:: bash
 
-    $ python echo_server.py
-
-.. container:: incremental
+        $ python echo_server.py
 
     Then, in a second terminal, you will execute the tests:
 
-    .. class:: small
-
-    ::
+    .. code-block:: bash
 
         $ python tests.py
 
-.. container:: incremental
-
     You should see output like this:
 
-    .. class:: small
-
-    ::
+    .. code-block:: bash
 
         [...]
         FAILED (failures=2)
@@ -1107,21 +1145,21 @@ Submitting Your Homework
 To submit your homework:
 
 .. rst-class:: build
+.. container::
 
-* In github, make a fork of my repository into *your* account.
+    .. rst-class:: build
 
-* Clone your fork of my repository to your computer.
+    * Create a new repository in GitHub.  Call it ``echo_sockets``.
 
-* Do your work in the ``assignments/session01/`` folder on your computer and
-  commit your changes to your fork.
+    * Put the ``echo_server.py``, ``echo_client.py`` and ``tests.py`` files in
+      this repository.
 
-* When you are finished and your tests are passing, you will open a pull
-  request in github.com from your fork to mine.
+    * Send Maria and I an email with a link to your repository when you are
+      done.
 
-.. rst-class:: build
+    We will clone your repository and run the tests as described above.
 
-I will review your work when I receive your pull requests, make comments on it
-there, and then close the pull request.
+    And we'll make comments inline on your repository.
 
 
 Going Further
@@ -1130,11 +1168,10 @@ Going Further
 In ``assignments/session01/tasks.txt`` you'll find a few extra problems to try.
 
 .. rst-class:: build
+.. container::
 
-If you finish the first part of the homework in less than 3-4 hours give one
-or more of these a whirl.
+    If you finish the first part of the homework in less than 3-4 hours give
+    one or more of these a whirl.
 
-.. rst-class:: build
-
-They are not required, but if you include solutions in your pull request, I'll
-review your work.
+    They are not required, but if you include solutions in your repository,
+    we'll review your work.
