@@ -536,7 +536,7 @@ Next, we want to write the view for a single entry.
         from pyramid.exceptions import HTTPNotFound
 
         # and update this view function:
-        def blog_view(request):
+        def view(request):
             this_id = request.matchdict.get('id', -1)
             entry = Entry.by_id(this_id)
             if not entry:
@@ -950,7 +950,7 @@ show it.
     
         # views.py
         @view_config(route_name='detail', renderer='templates/detail.jinja2')
-        def blog_view(request):
+        def view(request):
             # ...
 
 .. nextslide:: Try It Out
