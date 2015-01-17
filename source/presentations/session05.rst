@@ -1242,8 +1242,8 @@ Start your server (or restart it if by some miracle it's still going).
     now.
 
 
-HTTP - Resources
-----------------
+Step 4: Serving Resources
+-------------------------
 
 We've got a very simple server that accepts a request and sends a response.
 But what happens if we make a different request?
@@ -1264,12 +1264,14 @@ But what happens if we make a different request?
             http://localhost:10000/section/page?
 
 
-.. nextslide::
+.. nextslide:: Determining a Resource
 
 We expect different urls to result in different responses.
 
 .. rst-class:: build
 .. container::
+
+    Each separate *path* provided should map to a *resource*
 
     But this isn't happening with our server, for obvious reasons.
 
@@ -1281,8 +1283,7 @@ We expect different urls to result in different responses.
     **The Return of the URI**
 
 
-HTTP Requests: URI
-------------------
+.. nextslide:: HTTP Requests: URI
 
 ``GET`` **/path/to/index.html** ``HTTP/1.1``
 
@@ -1302,22 +1303,75 @@ HTTP Requests: URI
   * Raw data
   * API endpoints
 
+.. nextslide:: Parsing a Request
 
-Homework
---------
-
-For your homework this week you will expand your server's capabilities so that
-it can make different responses to different URIs.
+Our ``parse_request`` method actually already finds the ``uri`` in the first
+line of a request
 
 .. rst-class:: build
 .. container::
 
-    You'll allow your server to serve up directories and files from your own
-    filesystem.
+    All we need to do is update the method so that it *returns* that uri
 
-    You'll be starting from the ``http_server.py`` script that is currently in
-    the ``assignments/session02`` directory. It should be pretty much the same
-    as what you've created here.
+    Then we can use it.
+
+.. nextslide:: My Solution
+
+.. code-block:: python
+
+    def parse_request(request):
+        first_line = request.split("\r\n", 1)[0]
+        method, uri, protocol = first_line.split()
+        if method != "GET":
+            raise NotImplementedError("We only accept GET")
+        print >>sys.stderr, 'request is okay'
+        # add the following line:
+        return uri
+
+.. nextslide:: Pass It Along
+
+Now we can update our server code so that it uses the return value of
+``parse_request``.
+
+.. rst-class:: build
+.. container::
+
+    That's a pretty simple change:
+
+    .. code-block:: python
+    
+        try:
+            uri = parse_request(request)
+        except NotImplementedError:
+            response = response_method_not_allowed()
+        else:
+            content, type = resolve_uri(uri) # change this line
+        # and add this block
+        try:
+            response = response_ok(content, type)
+        except NameError:
+            response = response_not_found()
+
+Homework
+--------
+
+You may have noticed that we just added a call to functions that don't exist
+
+.. rst-class:: build
+.. container::
+
+    This is a common method for building working software, called
+    ``pseudocode``
+
+    It's a program that shows you what you want to do, but won't actually run.
+
+    For your homework this week you will create these functions, completing the
+    HTTP server.
+
+    Your starting point will be what we've made here in class.
+
+    A working copy of which is in ``resources/session05`` as
+    ``http_server_at_home.py``
 
 
 One Step At A Time
@@ -1330,14 +1384,17 @@ Take the following steps one at a time. Run the tests in
 
 * Update ``parse_request`` to return the URI it parses from the request.
 
-* Update ``response_ok`` so that it uses the resource and mimetype identified
-  by the URI.
-
 * Write a new function ``resolve_uri`` that handles looking up resources on
   disk using the URI.
 
 * Write a new function ``response_not_found`` that returns a 404 response if the
   resource does not exist.
+
+* Update ``response_ok`` so that it uses the values returned by ``resolve_uri``
+  by the URI.
+
+* You'll plug those values into the response you generate in the way required
+  by the protocol
 
 
 HTTP Headers
