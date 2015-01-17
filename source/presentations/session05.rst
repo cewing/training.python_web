@@ -1,37 +1,44 @@
+**********************
 Python Web Programming
-======================
+**********************
 
-.. image:: img/protocol.png
-    :align: left
-    :width: 45%
+.. figure:: /_static/protocol.png
+    :align: center
+    :width: 40%
 
-Session 2: Web Protocols
+    **Session 2: Web Protocols**
 
-.. class:: intro-blurb
+The Languages Computers Speak
+=============================
 
-Wherein we learn about the languages that machines speak to each other
+.. rst-class:: build left
+.. container::
+
+    Programming languages like Python are the languages we speak to computers.
+
+    *Protocols* are the languages that computers speak to each-other.
+
+    This sesson we'll look at a few of them and
+
+    .. rst-class:: build
+
+    * Learn what makes them similar
+    * Learn what makes them different
+    * Learn about Python's tools for speaking them
+    * Learn how to speak one (HTTP) ourselves
 
 
 But First
----------
-
-.. class:: big-centered
-
-Some boring business of identification
-
-
-But Second
 ----------
 
-.. class:: big-centered
+.. rst-class:: large centered
 
 Questions from the Homework?
 
 
-And Third
----------
+.. nextslide::
 
-.. class:: big-centered
+.. rst-class:: large centered
 
 Examples of an echo server using ``select``
 
@@ -39,21 +46,19 @@ Examples of an echo server using ``select``
 What is a Protocol?
 -------------------
 
-.. class:: incremental center
+.. rst-class:: build large centered
+.. container::
 
-a set of rules or conventions
+    **a set of rules or conventions**
 
-.. class:: incremental center
-
-governing communications
+    **governing communications**
 
 
-Protocols IRL
--------------
+.. nextslide:: Protocols IRL
 
 Life has lots of sets of rules for how to do things.
 
-.. class:: incremental
+.. rst-class:: build
 
 * What do you say when you get on the elevator?
 
@@ -66,24 +71,20 @@ Life has lots of sets of rules for how to do things.
 * ...?
 
 
-Protocols IRL
--------------
+.. nextslide:: Protocols IRL
 
-.. image:: img/icup.png
+.. figure:: /_static/icup.png
     :align: center
-    :width: 58%
+    :width: 65%
 
-.. class:: image-credit
-
-http://blog.xkcd.com/2009/09/02/urinal-protocol-vulnerability/
+    http://blog.xkcd.com/2009/09/02/urinal-protocol-vulnerability/
 
 
-Protocols In Computers
-----------------------
+.. nextslide:: Protocols In Computers
 
 Digital life has lots of rules too:
 
-.. class:: incremental
+.. rst-class:: build
 
 * how to say hello
 
@@ -99,15 +100,9 @@ Digital life has lots of rules too:
 Real Protocol Examples
 ----------------------
 
-.. class:: big-centered
-
 What does this look like in practice?
 
-
-Real Protocol Examples
-----------------------
-
-.. class:: incremental
+.. rst-class:: build
 
 * SMTP (Simple Message Transfer Protocol)
   http://tools.ietf.org/html/rfc5321#appendix-D
@@ -122,51 +117,53 @@ Real Protocol Examples
   http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol
 
 
-What does SMTP look like?
--------------------------
-
-SMTP (Say hello and identify yourself)::
-
-    S: 220 foo.com Simple Mail Transfer Service Ready
-    C: EHLO bar.com
-    S: 250-foo.com greets bar.com
-    S: 250-8BITMIME
-    S: 250-SIZE
-    S: 250-DSN
-    S: 250 HELP
-
+SMTP
+----
 
 What does SMTP look like?
--------------------------
+
+.. rst-class:: build
+.. container::
+
+    SMTP (Say hello and identify yourself)::
+
+        S (<--): 220 foo.com Simple Mail Transfer Service Ready
+        C (-->): EHLO bar.com
+        S (<--): 250-foo.com greets bar.com
+        S (<--): 250-8BITMIME
+        S (<--): 250-SIZE
+        S (<--): 250-DSN
+        S (<--): 250 HELP
+
+
+.. nextslide::
 
 SMTP (Ask for information, provide answers)::
 
-    C: MAIL FROM:<Smith@bar.com>
-    S: 250 OK
-    C: RCPT TO:<Jones@foo.com>
-    S: 250 OK
-    C: RCPT TO:<Green@foo.com>
-    S: 550 No such user here
-    C: DATA
-    S: 354 Start mail input; end with <CRLF>.<CRLF>
-    C: Blah blah blah...
-    C: ...etc. etc. etc.
-    C: .
-    S: 250 OK
+    C (-->): MAIL FROM:<Smith@bar.com>
+    S (<--): 250 OK
+    C (-->): RCPT TO:<Jones@foo.com>
+    S (<--): 250 OK
+    C (-->): RCPT TO:<Green@foo.com>
+    S (<--): 550 No such user here
+    C (-->): DATA
+    S (<--): 354 Start mail input; end with <CRLF>.<CRLF>
+    C (-->): Blah blah blah...
+    C (-->): ...etc. etc. etc.
+    C (-->): .
+    S (<--): 250 OK
 
-What does SMTP look like?
--------------------------
+.. nextslide::
 
 SMTP (Say goodbye)::
 
-    C: QUIT
-    S: 221 foo.com Service closing transmission channel
+    C (-->): QUIT
+    S (<--): 221 foo.com Service closing transmission channel
 
 
-SMTP Characteristics
---------------------
+.. nextslide:: SMTP Characteristics
 
-.. class:: incremental
+.. rst-class:: build
 
 * Interaction consists of commands and replies
 * Each command or reply is *one line* terminated by <CRLF>
@@ -175,241 +172,241 @@ SMTP Characteristics
 * Each reply has a formal *code* and an informal *explanation*
 
 
-What does POP3 look like?
--------------------------
-
-POP3 (Say hello and identify yourself)::
-
-    C: <client connects to service port 110> 
-    S: +OK POP3 server ready <1896.6971@mailgate.dobbs.org>
-    C: USER bob
-    S: +OK bob
-    C: PASS redqueen
-    S: +OK bob's maildrop has 2 messages (320 octets)
-
+POP3
+----
 
 What does POP3 look like?
--------------------------
+
+.. rst-class:: build
+.. container::
+
+    POP3 (Say hello and identify yourself)::
+
+        C (-->): <client connects to service port 110>
+        S (<--): +OK POP3 server ready <1896.6971@mailgate.dobbs.org>
+        C (-->): USER bob
+        S (<--): +OK bob
+        C (-->): PASS redqueen
+        S (<--): +OK bob's maildrop has 2 messages (320 octets)
+
+
+.. nextslide::
 
 POP3 (Ask for information, provide answers)::
 
-    C: STAT
-    S: +OK 2 320
-    C: LIST
-    S: +OK 1 messages (120 octets)
-    S: 1 120
-    S: .
+    C (-->): STAT
+    S (<--): +OK 2 320
+    C (-->): LIST
+    S (<--): +OK 1 messages (120 octets)
+    S (<--): 1 120
+    S (<--): .
 
 
-What does POP3 look like?
--------------------------
+.. nextslide::
 
 POP3 (Ask for information, provide answers)::
 
-    C: RETR 1
-    S: +OK 120 octets
-    S: <server sends the text of message 1>
-    S: .
-    C: DELE 1
-    S: +OK message 1 deleted
+    C (-->): RETR 1
+    S (<--): +OK 120 octets
+    S (<--): <server sends the text of message 1>
+    S (<--): .
+    C (-->): DELE 1
+    S (<--): +OK message 1 deleted
 
 
-What does POP3 look like?
--------------------------
+.. nextslide::
 
 POP3 (Say goodbye)::
 
-    C: QUIT
-    S: +OK dewey POP3 server signing off (maildrop empty)
-    C: <client hangs up>
+    C (-->): QUIT
+    S (<--): +OK dewey POP3 server signing off (maildrop empty)
+    C (-->): <client hangs up>
 
 
-POP3 Characteristics
---------------------
+.. nextslide:: POP3 Characteristics
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-* Interaction consists of commands and replies
-* Each command or reply is *one line* terminated by <CRLF>
-* The exception is message payload, terminated by <CRLF>.<CRLF>
-* Each command has a *verb* and one or more *arguments*
-* Each reply has a formal *code* and an informal *explanation*
+    .. rst-class:: build
 
-.. class:: incremental
+    * Interaction consists of commands and replies
+    * Each command or reply is *one line* terminated by <CRLF>
+    * The exception is message payload, terminated by <CRLF>.<CRLF>
+    * Each command has a *verb* and one or more *arguments*
+    * Each reply has a formal *code* and an informal *explanation*
 
-The codes don't really look the same, though, do they?
+    The codes don't really look the same, though, do they?
 
 
-One Other Difference
---------------------
+.. nextslide:: One Other Difference
 
 The exception to the one-line-per-message rule is *payload*
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-In both SMTP and POP3 this is terminated by <CRLF>.<CRLF>
+    In both SMTP and POP3 this is terminated by <CRLF>.<CRLF>
 
-.. class:: incremental
+    In SMTP, the *client* has this ability
 
-In SMTP, the *client* has this ability
+    But in POP3, it belongs to the *server*.  Why?
 
-.. class:: incremental
-
-But in POP3, it belongs to the *server*.  Why?
-
-
-What does IMAP look like?
--------------------------
-
-IMAP (Say hello and identify yourself)::
-
-    C: <client connects to service port 143>
-    S: * OK example.com IMAP4rev1 v12.264 server ready
-    C: A0001 USER "frobozz" "xyzzy"
-    S: * OK User frobozz authenticated
-
+IMAP
+----
 
 What does IMAP look like?
--------------------------
+
+.. rst-class:: build
+.. container::
+
+    IMAP (Say hello and identify yourself)::
+
+        C (-->): <client connects to service port 143>
+        S (<--): * OK example.com IMAP4rev1 v12.264 server ready
+        C (-->): A0001 USER "frobozz" "xyzzy"
+        S (<--): * OK User frobozz authenticated
+
+
+.. nextslide::
 
 IMAP (Ask for information, provide answers [connect to an inbox])::
 
-    C: A0002 SELECT INBOX
-    S: * 1 EXISTS
-    S: * 1 RECENT
-    S: * FLAGS (\Answered \Flagged \Deleted \Draft \Seen)
-    S: * OK [UNSEEN 1] first unseen message in /var/spool/mail/esr
-    S: A0002 OK [READ-WRITE] SELECT completed
+    C (-->): A0002 SELECT INBOX
+    S (<--): * 1 EXISTS
+    S (<--): * 1 RECENT
+    S (<--): * FLAGS (\Answered \Flagged \Deleted \Draft \Seen)
+    S (<--): * OK [UNSEEN 1] first unseen message in /var/spool/mail/esr
+    S (<--): A0002 OK [READ-WRITE] SELECT completed
 
 
-What does IMAP look like?
--------------------------
+.. nextslide::
 
 IMAP (Ask for information, provide answers [Get message sizes])::
 
-    C: A0003 FETCH 1 RFC822.SIZE
-    S: * 1 FETCH (RFC822.SIZE 2545)
-    S: A0003 OK FETCH completed
+    C (-->): A0003 FETCH 1 RFC822.SIZE
+    S (<--): * 1 FETCH (RFC822.SIZE 2545)
+    S (<--): A0003 OK FETCH completed
 
 
-What does IMAP look like?
--------------------------
+.. nextslide::
 
 IMAP (Ask for information, provide answers [Get first message header])::
 
-    C: A0004 FETCH 1 BODY[HEADER]
-    S: * 1 FETCH (RFC822.HEADER {1425}
+    C (-->): A0004 FETCH 1 BODY[HEADER]
+    S (<--): * 1 FETCH (RFC822.HEADER {1425}
     <server sends 1425 octets of message payload>
-    S: )
-    S: A0004 OK FETCH completed
+    S (<--): )
+    S (<--): A0004 OK FETCH completed
 
 
-What does IMAP look like?
--------------------------
+.. nextslide::
 
 IMAP (Ask for information, provide answers [Get first message body])::
 
-    C: A0005 FETCH 1 BODY[TEXT]
-    S: * 1 FETCH (BODY[TEXT] {1120}
+    C (-->): A0005 FETCH 1 BODY[TEXT]
+    S (<--): * 1 FETCH (BODY[TEXT] {1120}
     <server sends 1120 octets of message payload>
-    S: )
-    S: * 1 FETCH (FLAGS (\Recent \Seen))
-    S: A0005 OK FETCH completed
+    S (<--): )
+    S (<--): * 1 FETCH (FLAGS (\Recent \Seen))
+    S (<--): A0005 OK FETCH completed
 
-What does IMAP look like?
--------------------------
+.. nextslide::
 
 IMAP (Say goodbye)::
 
-    C: A0006 LOGOUT
-    S: * BYE example.com IMAP4rev1 server terminating connection
-    S: A0006 OK LOGOUT completed
-    C: <client hangs up>
+    C (-->): A0006 LOGOUT
+    S (<--): * BYE example.com IMAP4rev1 server terminating connection
+    S (<--): A0006 OK LOGOUT completed
+    C (-->): <client hangs up>
 
 
-IMAP Characteristics
---------------------
+.. nextslide:: IMAP Characteristics
 
-.. class:: incremental
+.. rst-class:: build
 
 * Interaction consists of commands and replies
 * Each command or reply is *one line* terminated by <CRLF>
 * Each command has a *verb* and one or more *arguments*
 * Each reply has a formal *code* and an informal *explanation*
 
-.. class:: incremental
+
+.. nextslide:: IMAP Differences
+
+.. rst-class:: build
+.. container::
+
+    .. rst-class:: build
+
+    * Commands and replies are prefixed by 'sequence identifier'
+    * Payloads are prefixed by message size, rather than terminated by reserved
+      sequence
+
+    Compared with POP3, what do these differences suggest?
 
 
-IMAP Differences
-----------------
-
-.. class:: incremental
-
-* Commands and replies are prefixed by 'sequence identifier'
-* Payloads are prefixed by message size, rather than terminated by reserved
-  sequence
-
-.. class:: incremental
-
-Compared with POP3, what do these differences suggest?
-
-
-Protocols in Python
--------------------
-
-.. class:: big-centered
+Using IMAP in Python
+--------------------
 
 Let's try this out for ourselves!
 
+.. rst-class:: build
+.. container::
 
-Protocols in Python
--------------------
+    .. container::
 
-.. class:: big-centered
-
-Fire up your python interpreters and prepare to type.
-
-
-IMAP in Python
---------------
-
-Begin by importing the ``imaplib`` module from the Python Standard Library::
-
-    >>> import imaplib
-    >>> dir(imaplib)
-    ['AllowedVersions', 'CRLF', 'Commands', 
-     'Continuation', 'Debug', 'Flags', 'IMAP4', 
-     'IMAP4_PORT', 'IMAP4_SSL', 'IMAP4_SSL_PORT', 
-     ...
-     'socket', 'ssl', 'sys', 'time']
-    >>> imaplib.Debug = 4
-
-.. class:: incremental
-
-Setting ``imap.Debug`` shows us what is sent and received
+        Fire up your python interpreters and prepare to type.
 
 
-IMAP in Python
---------------
+.. nextslide::
 
-I've prepared a server for us to use, we'll need to set up a client to speak
-to it. Our server requires SSL for connecting to IMAP servers, so let's
-initialize an IMAP4_SSL client and authenticate::
+Begin by importing the ``imaplib`` module from the Python Standard Library:
 
-    >>> conn = imaplib.IMAP4_SSL('mail.webfaction.com')
-      57:04.83 imaplib version 2.58
-      57:04.83 new IMAP4 connection, tag=FNHG
-      ...
-    >>> conn.login(username, password)
-      12:16.50 > IMAD1 LOGIN username password
-      12:18.52 < IMAD1 OK Logged in.
-    ('OK', ['Logged in.'])
+.. rst-class:: build
+.. container::
+
+    .. code-block:: pycon
+
+        >>> import imaplib
+        >>> dir(imaplib)
+        ['AllowedVersions', 'CRLF', 'Commands',
+         'Continuation', 'Debug', 'Flags', 'IMAP4',
+         'IMAP4_PORT', 'IMAP4_SSL', 'IMAP4_SSL_PORT',
+         ...
+         'socket', 'ssl', 'sys', 'time']
+        >>> imaplib.Debug = 4
+
+    Setting ``imap.Debug`` shows us what is sent and received
 
 
-IMAP in Python
---------------
+.. nextslide::
 
-We can start by listing the mailboxes we have on the server::
+I've prepared a server for us to use.
+
+.. rst-class:: build
+.. container::
+
+    We'll need to set up a client to speak to it.
+
+    Our server requires SSL (Secure Socket Layer) for connecting to IMAP
+    servers, so let's initialize an IMAP4_SSL client and authenticate:
+
+    .. code-block:: pycon
+
+        >>> conn = imaplib.IMAP4_SSL('mail.webfaction.com')
+          57:04.83 imaplib version 2.58
+          57:04.83 new IMAP4 connection, tag=FNHG
+          ...
+        >>> conn.login(username, password)
+          12:16.50 > IMAD1 LOGIN username password
+          12:18.52 < IMAD1 OK Logged in.
+        ('OK', ['Logged in.'])
+
+.. nextslide::
+
+We can start by listing the mailboxes we have on the server:
+
+.. code-block:: pycon
 
     >>> conn.list()
       00:41.91 > FNHG3 LIST "" *
@@ -418,11 +415,12 @@ We can start by listing the mailboxes we have on the server::
     ('OK', ['(\\HasNoChildren) "." "INBOX"'])
 
 
-IMAP in Python
---------------
+.. nextslide::
 
 To interact with our email, we must select a mailbox from the list we received
-earlier::
+earlier:
+
+.. code-block:: pycon
 
     >>> conn.select('INBOX')
       00:00.47 > FNHG2 SELECT INBOX
@@ -437,108 +435,73 @@ earlier::
     ('OK', ['2'])
 
 
-IMAP in Python
---------------
+.. nextslide::
 
 We can search our selected mailbox for messages matching one or more criteria.
-The return value is a string list of the UIDs of messages that match our
-search::
 
-    >>> conn.search(None, '(FROM "cris")')
-      18:25.41 > FNHG5 SEARCH (FROM "cris")
-      18:25.54 < * SEARCH 1
-      18:25.54 < FNHG5 OK Search completed.
-    ('OK', ['1'])
-    >>>
+.. rst-class:: build
+.. container::
 
+    The return value is a string list of the UIDs of messages that match our
+    search:
 
-IMAP in Python
---------------
+    .. code-block:: pycon
+
+        >>> conn.search(None, '(FROM "cris")')
+          18:25.41 > FNHG5 SEARCH (FROM "cris")
+          18:25.54 < * SEARCH 1
+          18:25.54 < FNHG5 OK Search completed.
+        ('OK', ['1'])
+        >>>
+
+.. nextslide::
 
 Once we've found a message we want to look at, we can use the ``fetch``
-command to read it from the server. IMAP allows fetching each part of
-a message independently::
+command to read it from the server.
 
-    >>> conn.fetch('1', '(BODY[HEADER])')
-    ...
-    >>> conn.fetch('1', '(BODY[TEXT])')
-    ...
-    >>> conn.fetch('1', '(FLAGS)')
+.. rst-class:: build
+.. container::
 
+    IMAP allows fetching each part of a message independently:
 
-Python Means Batteries Included
--------------------------------
+    .. code-block:: pycon
 
-So we can download an entire message and then make a Python email message
-object
+        >>> conn.fetch('1', '(BODY[HEADER])')
+        ...
+        >>> conn.fetch('1', '(BODY[TEXT])')
+        ...
+        >>> conn.fetch('1', '(FLAGS)')
 
-.. class:: small
+    What does the message say?
 
-::
+    Python even includes an *email* library that would allow us to interact
+    with this message in an *OO* style.
 
-    >>> import email
-    >>> typ, data = conn.fetch('1', '(RFC822)')
-      28:08.40 > FNHG8 FETCH 1 (RFC822)
-      ...
-
-Parse the returned data to get to the actual message
-
-.. class:: small
-
-::
-
-    >>> for part in data:
-    ...   if isinstance(part, tuple):
-    ...     msg = email.message_from_string(part[1])
-    ... 
-    >>> 
-
-
-IMAP in Python
---------------
-
-Once we have that, we can play with the resulting email object:
-
-.. class:: small
-
-::
-
-    >>> msg.keys()
-    ['Return-Path', 'X-Original-To', 'Delivered-To', 'Received', 
-     ...
-     'To', 'Mime-Version', 'X-Mailer']
-    >>> msg['To']
-    'demo@crisewing.com'
-    >>> print msg.get_payload()[0]
-    If you are reading this email, ...
-
-.. class:: incremental center
-
-**Neat, huh?**
-
+    *Neat, Huh?*
 
 What Have We Learned?
 ---------------------
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-* Protocols are just a set of rules for how to communicate
+    .. rst-class:: build
 
-* Protocols tell us how to parse and delimit messages
+    * Protocols are just a set of rules for how to communicate
 
-* Protocols tell us what messages are valid
+    * Protocols tell us how to parse and delimit messages
 
-* If we properly format request messages to a server, we can get response
-  messages
+    * Protocols tell us what messages are valid
 
-* Python supports a number of these protocols
+    * If we properly format request messages to a server, we can get response
+      messages
 
-* So we don't have to remember how to format the commands ourselves
+    * Python supports a number of these protocols
 
-.. class:: incremental
+    * So we don't have to remember how to format the commands ourselves
 
-But in every case we've seen, we could do the same thing with a socket and
-some strings
+    But in every case we've seen, we could do the same thing with a socket and
+    some strings
 
 
 Break Time
@@ -546,42 +509,46 @@ Break Time
 
 Let's take a few minutes here to clear our heads.
 
-.. class:: incremental
-
-See you back here in 10 minutes.
-
 
 HTTP
-----
+====
 
-.. class:: big-centered
+.. rst-class:: left
+.. container::
 
-HTTP is no different
+    HTTP is no different
 
+    .. rst-class:: build
+    .. container::
 
-HTTP
-----
+        HTTP is also message-centered, with two-way communications:
 
-HTTP is also message-centered, with two-way communications:
+        .. rst-class:: build
 
-.. class:: incremental
-
-* Requests (Asking for information)
-* Responses (Providing answers)
+        * Requests (Asking for information)
+        * Responses (Providing answers)
 
 What does HTTP look like?
 -------------------------
 
-HTTP (Ask for information)::
+HTTP (Ask for information):
+
+.. code-block:: http
 
     GET /index.html HTTP/1.1
     Host: www.example.com
     <CRLF>
 
-What does HTTP look like?
--------------------------
+**note**: the ``<CRLF>`` you see here is a visualization of an empty line. It's
+really just the standard line terminator on an empty line.
 
-HTTP (Provide answers)::
+You don't need to type the ``<CRLF>`` there.
+
+.. nextslide::
+
+HTTP (Provide answers):
+
+.. code-block:: http
 
     HTTP/1.1 200 OK
     Date: Mon, 23 May 2005 22:38:34 GMT
@@ -593,15 +560,16 @@ HTTP (Provide answers)::
     Connection: close
     Content-Type: text/html; charset=UTF-8
     <CRLF>
-    <438 bytes of content>
+    <!DOCTYPE html>\n<html>\n  <head>\n    <title>This is a .... </html>
+
+You don't need to type the ``<CRLF>`` here either.
 
 
-HTTP Req/Resp Format
---------------------
+.. nextslide:: HTTP Core Format
 
-Both share a common basic format:
+In HTTP, both *request* and *response* share a common basic format:
 
-.. class:: incremental
+.. rst-class:: build
 
 * Line separators are <CRLF> (familiar, no?)
 * A required initial line (a command or a response code)
@@ -610,172 +578,154 @@ Both share a common basic format:
 * An optional body
 
 
-HTTP In Real Life
+Implementing HTTP
 -----------------
 
-Let's investigate the HTTP protocol a bit in real life.  
+Let's investigate the HTTP protocol a bit in real life.
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-We'll do so by building a simplified HTTP server, one step at a time.
+    We'll do so by building a simplified HTTP server, one step at a time.
 
-.. class:: incremental
+    There is a copy of the echo server from last time in
+    ``resources/session05``. It's called ``http_server.py``.
 
-There is a copy of the echo server from last time in ``resources/session02``.
-It's called ``http_server.py``.
-
-.. class:: incremental
-
-In a terminal, move into that directory. We'll be doing our work here for the
-rest of the session
+    In a terminal, move into that directory. We'll be doing our work here for
+    the rest of the session
 
 
-TDD IRL (a quick aside)
------------------------
+.. nextslide:: TDD IRL (a quick aside)
 
 Test Driven Development (TDD) is all the rage these days.
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-It means that before you write code, you first write tests demonstrating what
-you want your code to do.
+    It means that before you write code, you first write tests demonstrating
+    what you want your code to do.
 
-.. class:: incremental
+    When all your tests pass, you are finished. You did this for your last
+    assignment.
 
-When all your tests pass, you are finished. You did this for your last
-assignment.
-
-.. class:: incremental
-
-We'll be doing it again today.
+    We'll be doing it again today.
 
 
-Run the Tests
--------------
+.. nextslide:: Run the Tests
 
-From inside ``resources/session02`` start a second python interpreter and run
+From inside ``resources/session05`` start a second python interpreter and run
 ``$ python http_server.py``
 
-.. container:: incremental
-    
+.. rst-class:: build
+.. container::
+
     In your first interpreter run the tests. You should see similar output:
-    
-    .. class:: small
-    
-    ::
-    
+
+    .. code-block:: bash
+
         $ python tests.py
         [...]
         Ran 10 tests in 0.003s
 
         FAILED (failures=3, errors=7)
 
-
-.. class:: incremental
-
-Let's take a few minutes here to look at these tests and understand them.
+    Let's take a few minutes here to look at these tests and understand them.
 
 
-Viewing an HTTP Request
------------------------
+.. nextslide:: Viewing an HTTP Request
 
 Our job is to make all those tests pass.
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-First, though, let's pretend this server really is a functional HTTP server.
+    First, though, let's pretend this server really is a functional HTTP
+    server.
 
-.. class:: incremental
+    This time, instead of using the echo client to make a connection to the
+    server, let's use a web browser!
 
-This time, instead of using the echo client to make a connection to the
-server, let's use a web browser!
-
-.. class:: incremental
-
-Point your favorite browser at ``http://localhost:10000``
+    Point your favorite browser at ``http://localhost:10000``
 
 
-A Bad Interaction
------------------
+.. nextslide:: A Bad Interaction
 
 First, look at the printed output from your echo server.
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-Second, note that your browser is still waiting to finish loading the page
+    Second, note that your browser is still waiting to finish loading the page
 
-.. class:: incremental
+    Moreover, your server should also be hung, waiting for more from the
+    'client'
 
-Moreover, your server should also be hung, waiting for more from the 'client'
+    This is because the server is waiting for the browser to respond
 
-.. class:: incremental
+    And at the same time, the browser is waiting for the server to indicate it
+    is done.
 
-This is because we are not yet following the right protocol.
+    Our server does not yet speak the HTTP protocol, but the browser is
+    expecting it.
 
-
-Echoing A Request
------------------
+.. nextslide:: Echoing A Request
 
 Kill your server with ``ctrl-c`` (the keyboard interrupt) and you should see
 some printed content:
 
-.. class:: small incremental
+.. rst-class:: build
+.. container::
 
-::
+    .. code-block:: http
 
-    GET / HTTP/1.1
-    Host: localhost:10000
-    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:22.0) Gecko/20100101 Firefox/22.0
-    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
-    Accept-Language: en-US,en;q=0.5
-    Accept-Encoding: gzip, deflate
-    DNT: 1
-    Cookie: __utma=111872281.383966302.1364503233.1364503233.1364503233.1; __utmz=111872281.1364503233.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); csrftoken=uiqj579iGRbReBHmJQNTH8PFfAz2qRJS
-    Connection: keep-alive
-    Cache-Control: max-age=0
+        GET / HTTP/1.1
+        Host: localhost:10000
+        User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:22.0) Gecko/20100101 Firefox/22.0
+        Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+        Accept-Language: en-US,en;q=0.5
+        Accept-Encoding: gzip, deflate
+        DNT: 1
+        Cookie: __utma=111872281.383966302.1364503233.1364503233.1364503233.1; __utmz=111872281.1364503233.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); csrftoken=uiqj579iGRbReBHmJQNTH8PFfAz2qRJS
+        Connection: keep-alive
+        Cache-Control: max-age=0
 
-.. class:: incremental
+    Your results will vary from mine.
 
-Your results will vary from mine.
+.. nextslide:: HTTP Debugging
 
-HTTP Debugging
---------------
 
 When working on applications, it's nice to be able to see all this going back
-and forth.  
+and forth.
 
-.. container:: incremental
+.. rst-class:: build
+.. container::
 
     Good browsers support this with a set of developer tools built-in.
 
-    .. class:: small incremental
+    .. rst-class:: build
 
     * firefox -> ctrl-shift-K or cmd-opt-K (os X)
     * safari -> enable in preferences:advanced then cmd-opt-i
     * chrome -> ctrl-shift-i or cmd-opt-i (os X)
     * IE (7.0+) -> F12 or tools menu -> developer tools
 
-.. class:: incremental
-
-The 'Net(work)' pane of these tools can show you both request and response,
-headers and all. Very useful.
+    The 'Net(work)' pane of these tools can show you both request and response,
+    headers and all. Very useful.
 
 
-Stop! Demo Time
----------------
+.. nextslide:: Stop! Demo Time
 
-.. class:: big-centered
+.. rst-class:: centered
 
-Let's take a quick look
+**Let's take a quick look**
 
 
-Other Debugging Options
------------------------
+.. nextslide:: Other Debugging Options
 
 Sometimes you need or want to debug http requests that are not going through
 your browser.
 
-.. class:: incremental
+.. rst-class:: build
 
 Or perhaps you need functionality that is not supported by in-browser tools
 (request munging, header mangling, decryption of https request/responses)
@@ -784,82 +734,83 @@ Or perhaps you need functionality that is not supported by in-browser tools
 
     Then it might be time for an HTTP debugging proxy:
 
+    .. rst-class:: build
+
     * windows: http://www.fiddler2.com/fiddler2/
     * win/osx/linux: http://www.charlesproxy.com/
 
+    We won't cover any of these tools here today.  But you can check them out
+    when you have the time.
 
-HTTP Requests
--------------
 
-In HTTP 1.0, the only required line in an HTTP request is this::
+Step 1: Basic HTTP Protocol
+---------------------------
+
+In HTTP 1.0, the only required line in an HTTP request is this:
+
+.. code-block:: http
 
     GET /path/to/index.html HTTP/1.0
     <CRLF>
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-As virtual hosting grew more common, that was not enough, so HTTP 1.1 adds a
-single required *header*, **Host**:
+    As virtual hosting grew more common, that was not enough, so HTTP 1.1 adds
+    a single required *header*, **Host**:
 
-.. class:: incremental
-
-::
-
-    GET /path/to/index.html HTTP/1.1
-    Host: www.mysite1.com:80
-    <CRLF>
+    .. code-block:: http
+    
+        GET /path/to/index.html HTTP/1.1
+        Host: www.mysite1.com:80
+        <CRLF>
 
 
-HTTP Responses
---------------
+.. nextslide:: HTTP Responses
 
 In both HTTP 1.0 and 1.1, a proper response consists of an intial line,
 followed by optional headers, a single blank line, and then optionally a
-response body::
+response body:
 
-    HTTP/1.1 200 OK
-    Content-Type: text/plain
-    <CRLF>
-    this is a pretty minimal response
+.. rst-class:: build
+.. container::
 
-.. class:: incremental
-
-Let's update our server to return such a response.
-
-
-Basic HTTP Protocol
--------------------
-
-Begin by implementing a new function in your ``http_server.py`` script called
-`response_ok`.
-
-.. class:: incremental
-
-It can be super-simple for now.  We'll improve it later.
-
-.. container:: incremental
-
-    It needs to return our minimal response from above:
-
-    .. class:: small
-    
-    ::
+    .. code-block:: http
     
         HTTP/1.1 200 OK
         Content-Type: text/plain
         <CRLF>
         this is a pretty minimal response
 
-.. class:: incremental small
+    Let's update our server to return such a response.
 
-**Remember, <CRLF> is a placeholder for an intentionally blank line**
+.. nextslide:: Returning a Canned HTTP Response
+
+Begin by implementing a new function in your ``http_server.py`` script called
+`response_ok`.
+
+.. rst-class:: build
+.. container::
+
+    It can be super-simple for now.  We'll improve it later.
+
+    .. container:: 
+
+        It needs to return our minimal response from above:
+
+        .. code-block:: http
+        
+            HTTP/1.1 200 OK
+            Content-Type: text/plain
+            <CRLF>
+            this is a pretty minimal response
+
+    **Remember, <CRLF> is a placeholder for an intentionally blank line**
 
 
-My Solution
------------
+.. nextslide:: My Solution
 
 .. code-block:: python
-    :class: incremental
 
     def response_ok():
         """returns a basic HTTP response"""
@@ -871,53 +822,45 @@ My Solution
         return "\r\n".join(resp)
 
 
-Run The Tests
--------------
+.. nextslide:: Run The Tests
 
 We've now implemented a function that is tested by our tests. Let's run them
 again:
 
-.. class:: incremental small
+.. rst-class:: build
+.. container::
 
-::
+    .. code-block:: bash
 
-    $ python tests.py
-    [...]
-    ----------------------------------------------------------------------
-    Ran 10 tests in 0.002s
+        $ python tests.py
+        [...]
+        ----------------------------------------------------------------------
+        Ran 10 tests in 0.002s
 
-    FAILED (failures=3, errors=3)
+        FAILED (failures=3, errors=3)
 
-.. class:: incremental
+    Great!  We've now got 4 tests that pass.  Good work.
 
-Great!  We've now got 4 tests that pass.  Good work.
-
-Server Modifications
---------------------
+.. nextslide:: Server Modifications
 
 Next, we need to rebuild the server loop from our echo server for it's new
 purpose:
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-It should now wait for an incoming request to be *finished*, *then* send a
-response back to the client.
+    It should now wait for an incoming request to be *finished*, *then* send a
+    response back to the client.
 
-.. class:: incremental
+    The response it sends can be the result of calling our new ``response_ok``
+    function for now.
 
-The response it sends can be the result of calling our new ``response_ok``
-function for now.
+    We could also bump up the ``recv`` buffer size to something more reasonable
+    for HTTP traffic, say 1024.
 
-.. class:: incremental
-
-We could also bump up the ``recv`` buffer size to something more reasonable
-for HTTP traffic, say 1024.
-
-My Solution
------------
+.. nextslide:: My Solution
 
 .. code-block:: python
-    :class: incremental small
 
     # ...
     try:
@@ -930,7 +873,7 @@ My Solution
                     data = conn.recv(1024)
                     if len(data) < 1024:
                         break
-                
+
                 print >>log_buffer, 'sending response'
                 response = response_ok()
                 conn.sendall(response)
@@ -939,20 +882,18 @@ My Solution
     # ...
 
 
-Run The Tests
--------------
+.. nextslide:: Run The Tests
 
 Once you've got that set, restart your server::
 
     $ python http_server.py
 
-.. container:: incremental
+.. rst-class:: build
+.. container::
 
     Then you can re-run your tests:
 
-    .. class:: small
-
-    ::
+    .. code-block:: bash
 
         $ python tests.py
         [...]
@@ -961,56 +902,51 @@ Once you've got that set, restart your server::
 
         FAILED (failures=2, errors=3)
 
-.. class:: incremental
+    Five tests now pass!
 
-Five tests now pass!
-
-Parts of a Request
-------------------
+Step 2: Handling HTTP Methods
+-----------------------------
 
 Every HTTP request **must** begin with a single line, broken by whitespace into
-three parts::
+three parts:
+
+.. code-block:: http
 
     GET /path/to/index.html HTTP/1.1
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-The three parts are the *method*, the *URI*, and the *protocol*
+    The three parts are the *method*, the *URI*, and the *protocol*
 
-.. class:: incremental
-
-Let's look at each in turn.
+    Let's look at each in turn.
 
 
-HTTP Methods
-------------
+.. nextslide:: HTTP Methods
 
 **GET** ``/path/to/index.html HTTP/1.1``
 
-.. class:: incremental
+.. rst-class:: build
 
 * Every HTTP request must start with a *method*
 * There are four main HTTP methods:
 
-    .. class:: incremental
+  .. rst-class:: build
 
-    * GET
-    * POST
-    * PUT
-    * DELETE
-
-.. class:: incremental
+  * GET
+  * POST
+  * PUT
+  * DELETE
 
 * There are others, notably HEAD, but you won't see them too much
 
 
-HTTP Methods
-------------
+.. nextslide:: HTTP Methods
 
 These four methods are mapped to the four basic steps (*CRUD*) of persistent
 storage:
 
-.. class:: incremental
+.. rst-class:: build
 
 * POST = Create
 * GET = Read
@@ -1018,71 +954,72 @@ storage:
 * DELETE = Delete
 
 
-Methods: Safe <--> Unsafe
--------------------------
+.. nextslide:: Methods: Safe <--> Unsafe
 
 HTTP methods can be categorized as **safe** or **unsafe**, based on whether
 they might change something on the server:
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-* Safe HTTP Methods
-    * GET
-* Unsafe HTTP Methods
-    * POST
-    * PUT
-    * DELETE
+    .. rst-class:: build
 
-.. class:: incremental
+    * Safe HTTP Methods
+    
+      * GET
+    
+    * Unsafe HTTP Methods
+    
+      * POST
+      * PUT
+      * DELETE
 
-This is a *normative* distinction, which is to say **be careful**
-
-
-Methods: Idempotent <--> ???
-----------------------------
-
-HTTP methods can be categorized as **idempotent**, based on whether a given
-request will always have the same result:
-
-.. class:: incremental
-
-* Idempotent HTTP Methods
-    * GET
-    * PUT
-    * DELETE
-* Non-Idempotent HTTP Methods
-    * POST
-
-.. class:: incremental
-
-Again, *normative*. The developer is responsible for ensuring that it is true.
+    This is a *normative* distinction, which is to say **be careful**
 
 
-HTTP Method Handling
---------------------
+.. nextslide:: Methods: Idempotent <--> ???
+
+HTTP methods can be categorized as **idempotent**.
+
+.. rst-class:: build
+.. container::
+
+    This means that a given request will always have the same result:
+
+    .. rst-class:: build
+
+    * Idempotent HTTP Methods
+    
+      * GET
+      * PUT
+      * DELETE
+    
+    * Non-Idempotent HTTP Methods
+    
+      * POST
+
+    Again, *normative*. The developer is responsible for ensuring that it is true.
+
+
+.. nextslide:: HTTP Method Handling
 
 Let's keep things simple, our server will only respond to *GET* requests.
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-We need to create a function that parses a request and determines if we can
-respond to it: ``parse_request``.
+    We need to create a function that parses a request and determines if we can
+    respond to it: ``parse_request``.
 
-.. class:: incremental
+    If the request method is not *GET*, our method should raise an error
 
-If the request method is not *GET*, our method should raise an error
-
-.. class:: incremental
-
-Remember, although a request is more than one line long, all we care about
-here is the first line
+    Remember, although a request is more than one line long, all we care about
+    here is the first line
 
 
-My Solution
------------
+.. nextslide:: My Solution
 
 .. code-block:: python
-    :class: incremental
 
     def parse_request(request):
         first_line = request.split("\r\n", 1)[0]
@@ -1092,23 +1029,20 @@ My Solution
         print >>sys.stderr, 'request is okay'
 
 
-Update the Server
------------------
+.. nextslide:: Update the Server
 
 We'll also need to update the server code. It should
 
-.. class:: incremental
+.. rst-class:: build
 
 * save the request as it comes in
 * check the request using our new function
 * send an OK response if things go well
 
 
-My Solution
------------
+.. nextslide:: My Solution
 
 .. code-block:: python
-    :class: incremental small
 
     # ...
     conn, addr = sock.accept() # blocking
@@ -1130,133 +1064,121 @@ My Solution
     # ...
 
 
-Run The Tests
--------------
+.. nextslide:: Run The Tests
 
 Quit and restart your server now that you've updated the code::
 
     $ python http_server.py
 
-.. container:: incremental
+.. rst-class:: build
+.. container::
 
     At this point, we should have seven tests passing:
-    
-    .. class:: small
-    
-    ::
+
+    .. code-block:: bash
     
         $ python tests.py
         Ran 10 tests in 0.002s
-        
+
         FAILED (failures=1, errors=2)
 
 
-What About a Browser?
----------------------
+.. nextslide:: What About a Browser?
 
 Quit and restart your server, now that you've updated the code.
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-Reload your browser.  It should work fine.
+    Reload your browser.  It should work fine.
 
-.. class:: incremental
+    We can use the ``simple_client.py`` script in our resources to test our
+    error condition.  In a second terminal window run the script like so::
 
-We can use the ``simple_client.py`` script in our resources to test our error
-condition.  In a second terminal window run the script like so:
+        $ python simple_client.py "POST / HTTP/1.0\r\n\r\n"
 
-.. class:: incremental
-
-:: 
-
-    $ python simple_client.py "POST / HTTP/1.0\r\n\r\n"
-
-.. class:: incremental
-
-You'll have to quit the client pretty quickly with ``ctrl-c``
+    You'll have to quit the client pretty quickly with ``ctrl-c``
 
 
-Error Responses
----------------
+Step 3: Error Responses
+-----------------------
 
 Okay, so the outcome there was pretty ugly. The client went off the rails, and
 our server has terminated as well.
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-The HTTP protocol allows us to handle errors like this more gracefully.
+    The HTTP protocol allows us to handle errors like this more gracefully.
 
-.. class:: incremental center
+    .. rst-class:: centered
 
-**Enter the Response Code**
+    **Enter the Response Code**
 
 
-HTTP Response Codes
--------------------
+.. nextslide:: HTTP Response Codes
 
 ``HTTP/1.1`` **200 OK**
 
 All HTTP responses must include a **response code** indicating the outcome of
 the request.
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-* 1xx (HTTP 1.1 only) - Informational message
-* 2xx - Success of some kind
-* 3xx - Redirection of some kind
-* 4xx - Client Error of some kind
-* 5xx - Server Error of some kind
+    .. rst-class:: build
 
-.. class:: incremental
+    * 1xx (HTTP 1.1 only) - Informational message
+    * 2xx - Success of some kind
+    * 3xx - Redirection of some kind
+    * 4xx - Client Error of some kind
+    * 5xx - Server Error of some kind
 
-The text bit makes the code more human-readable
+    The text bit makes the code more human-readable
 
 
-Common Response Codes
----------------------
+.. nextslide:: Common Response Codes
 
 There are certain HTTP response codes you are likely to see (and use) most
 often:
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-* ``200 OK`` - Everything is good
-* ``301 Moved Permanently`` - You should update your link
-* ``304 Not Modified`` - You should load this from cache
-* ``404 Not Found`` - You've asked for something that doesn't exist
-* ``500 Internal Server Error`` - Something bad happened
+    .. rst-class:: build
 
-.. class:: incremental
+    * ``200 OK`` - Everything is good
+    * ``301 Moved Permanently`` - You should update your link
+    * ``304 Not Modified`` - You should load this from cache
+    * ``404 Not Found`` - You've asked for something that doesn't exist
+    * ``500 Internal Server Error`` - Something bad happened
 
-Do not be afraid to use other, less common codes in building good apps. There
-are a lot of them for a reason. See
-http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
+    Do not be afraid to use other, less common codes in building good apps.
+    There are a lot of them for a reason. See
+
+        http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
 
 
-Handling our Error
-------------------
+.. nextslide:: Handling our Error
 
 Luckily, there's an error code that is tailor-made for this situation.
 
-..  class:: incremental
+.. rst-class:: build
+.. container::
 
-The client has made a request using a method we do not support
+    The client has made a request using a method we do not support
 
-.. class:: incremental
+    ``405 Method Not Allowed``
 
-``405 Method Not Allowed``
+    Let's add a new function that returns this error code. It should be called
+    ``response_method_not_allowed``
 
-.. class:: incremental
-
-Let's add a new function that returns this error code. It should be called
-``response_method_not_allowed``
+    Remember, it must be a complete HTTP Response with the correct *code*
 
 
-My Solution
------------
+.. nextslide:: My Solution
 
 .. code-block:: python
-    :class: incremental
 
     def response_method_not_allowed():
         """returns a 405 Method Not Allowed response"""
@@ -1266,23 +1188,21 @@ My Solution
         return "\r\n".join(resp)
 
 
-Server Updates
---------------
+.. nextslide:: Server Updates
 
 Again, we'll need to update the server to handle this error condition
 correctly.  It should
 
-.. class:: incremental
+.. rst-class:: build
 
 * catch the exception raised by the ``parse_request`` function
-* return our new error response as a result
-* if no exception is raised, then return the OK response
+* create our new error response as a result
+* if no exception is raised, then create the OK response
+* return the generated response to the user
 
-My Solution
------------
+.. nextslide:: My Solution
 
 .. code-block:: python
-    :class: incremental small
 
     # ...
     while True:
@@ -1303,28 +1223,23 @@ My Solution
     # ...
 
 
-Run The Tests
--------------
+.. nextslide:: Run The Tests
 
 Start your server (or restart it if by some miracle it's still going).
 
-.. container:: incremental
+.. rst-class:: build
+.. container::
 
-    Then run the tests again:
-    
-    .. class:: small
-    
-    ::
-    
+    Then run the tests again::
+
         $ python tests.py
         [...]
         Ran 10 tests in 0.002s
-        
+
         OK
 
-.. class:: incremental
-
-Wahoo! All our tests are passing. That means we are done writing code for now.
+    Wahoo! All our tests are passing. That means we are done writing code for
+    now.
 
 
 HTTP - Resources
@@ -1333,35 +1248,37 @@ HTTP - Resources
 We've got a very simple server that accepts a request and sends a response.
 But what happens if we make a different request?
 
-.. container:: incremental
+.. rst-class:: build
+.. container::
 
-    In your web browser, enter the following URL::
+    .. container::
+    
+        In your web browser, enter the following URL::
 
-        http://localhost:10000/page
+            http://localhost:10000/page
 
-.. container:: incremental
+    .. container::
 
-    What happened? What happens if you use this URL::
+        What happened? What happens if you use this URL::
 
-        http://localhost:10000/section/page?
+            http://localhost:10000/section/page?
 
 
-HTTP - Resources
-----------------
+.. nextslide::
 
 We expect different urls to result in different responses.
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-But this isn't happening with our server, for obvious reasons.
+    But this isn't happening with our server, for obvious reasons.
 
-.. class:: incremental
+    It brings us back to the second element of that first line of an HTTP
+    request.
 
-It brings us back to the second element of that first line of an HTTP request.
+    .. rst-class:: centered
 
-.. class:: incremental center
-
-**The Return of the URI**
+    **The Return of the URI**
 
 
 HTTP Requests: URI
@@ -1369,7 +1286,7 @@ HTTP Requests: URI
 
 ``GET`` **/path/to/index.html** ``HTTP/1.1``
 
-.. class:: incremental
+.. rst-class:: build
 
 * Every HTTP request must include a **URI** used to determine the **resource** to
   be returned
@@ -1379,11 +1296,11 @@ HTTP Requests: URI
 
 * Resource?  Files (html, img, .js, .css), but also:
 
-    .. class:: incremental
+  .. rst-class:: build
 
-    * Dynamic scripts
-    * Raw data
-    * API endpoints
+  * Dynamic scripts
+  * Raw data
+  * API endpoints
 
 
 Homework
@@ -1392,16 +1309,15 @@ Homework
 For your homework this week you will expand your server's capabilities so that
 it can make different responses to different URIs.
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-You'll allow your server to serve up directories and files from your own
-filesystem.
+    You'll allow your server to serve up directories and files from your own
+    filesystem.
 
-.. class:: incremental
-
-You'll be starting from the ``http_server.py`` script that is currently in the
-``assignments/session02`` directory. It should be pretty much the same as what
-you've created here.
+    You'll be starting from the ``http_server.py`` script that is currently in
+    the ``assignments/session02`` directory. It should be pretty much the same
+    as what you've created here.
 
 
 One Step At A Time
@@ -1410,7 +1326,7 @@ One Step At A Time
 Take the following steps one at a time. Run the tests in
 ``assignments/session02`` between to ensure that you are getting it right.
 
-.. class:: incremental
+.. rst-class:: build
 
 * Update ``parse_request`` to return the URI it parses from the request.
 
@@ -1431,14 +1347,13 @@ Along the way, you'll discover that simply returning as the body in
 response_ok is insufficient. Different *types* of content need to be
 identified to your browser
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-We can fix this by passing information about exactly what we are returning as
-part of the response.
+    We can fix this by passing information about exactly what we are returning
+    as part of the response.
 
-.. class:: incremental
-
-HTTP provides for this type of thing with the generic idea of *Headers*
+    HTTP provides for this type of thing with the generic idea of *Headers*
 
 
 HTTP Headers
@@ -1446,17 +1361,18 @@ HTTP Headers
 
 Both requests and responses can contain **headers** of the form ``Name: Value``
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-* HTTP 1.0 has 16 valid headers, 1.1 has 46
-* Any number of spaces or tabs may separate the *name* from the *value*
-* If a header line starts with spaces or tabs, it is considered part of the
-  value for the previous header
-* Header *names* are **not** case-sensitive, but *values* may be
+    .. rst-class:: build
 
-.. class:: incremental
+    * HTTP 1.0 has 16 valid headers, 1.1 has 46
+    * Any number of spaces or tabs may separate the *name* from the *value*
+    * If a header line starts with spaces or tabs, it is considered part of the
+      value for the previous header
+    * Header *names* are **not** case-sensitive, but *values* may be
 
-read more about HTTP headers: http://www.cs.tut.fi/~jkorpela/http.html
+    read more about HTTP headers: http://www.cs.tut.fi/~jkorpela/http.html
 
 
 Content-Type Header
@@ -1465,7 +1381,7 @@ Content-Type Header
 A very common header used in HTTP responses is ``Content-Type``. It tells the
 client what to expect.
 
-.. class:: incremental
+.. rst-class:: build
 
 * uses **mime-type** (Multi-purpose Internet Mail Extensions)
 * foo.jpeg - ``Content-Type: image/jpeg``
@@ -1473,7 +1389,7 @@ client what to expect.
 * bar.txt - ``Content-Type: text/plain``
 * baz.html - ``Content-Type: text/html``
 
-.. class:: incremental
+.. rst-class:: build
 
 There are *many* mime-type identifiers:
 http://www.webmaster-toolkit.com/mime-types.shtml
@@ -1484,7 +1400,7 @@ Mapping Mime-types
 
 By mapping a given file to a mime-type, we can write a header.
 
-.. class:: incremental
+.. rst-class:: build
 
 The standard lib module ``mimetypes`` does just this.
 
@@ -1493,8 +1409,7 @@ The standard lib module ``mimetypes`` does just this.
   We can guess the mime-type of a file based on the filename or map a file
   extension to a type:
 
-  .. code-block:: python 
-      :class: small
+  .. code-block:: python
 
       >>> import mimetypes
       >>> mimetypes.guess_type('file.txt')
@@ -1508,7 +1423,7 @@ Resolving a URI
 
 Your ``resolve_uri`` function will need to accomplish the following tasks:
 
-.. class:: incremental
+.. rst-class:: build
 
 * It should take a URI as the sole argument
 
@@ -1532,12 +1447,12 @@ Use Your Tests
 One of the benefits of test-driven development is that the tests that are
 failing should tell you what code you need to write.
 
-.. class:: incremental
+.. rst-class:: build
 
 As you work your way through the steps outlined above, look at your tests.
 Write code that makes them pass.
 
-.. class:: incremental
+.. rst-class:: build
 
 If all the tests in ``assignments/session02/tests.py`` are passing, you've
 completed the assignment.
@@ -1555,7 +1470,7 @@ To submit your homework:
 
 * Using the github web interface, send me a pull request.
 
-.. class:: incremental
+.. rst-class:: build
 
 I will review your work when I receive your pull requests, make comments on it
 there, and then close the pull request.
@@ -1567,7 +1482,7 @@ A Few Steps Further
 If you are able to finish the above in less than 4-6 hours, consider taking on
 one or more of the following challenges:
 
-.. class:: incremental
+.. rst-class:: build
 
 * Format directory listings as HTML, so you can link to files.
 * Add a GMT ``Date:`` header in the proper format (RFC-1123) to responses.
