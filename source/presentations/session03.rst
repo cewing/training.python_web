@@ -174,7 +174,7 @@ We'll be using two built-in policies today:
 
     .. rst-class:: build
 
-    * ``AuthTktAuthenticationPolicy``: sets an expirable 
+    * ``AuthTktAuthenticationPolicy``: sets an expirable
       `authentication ticket`_ cookie.
     * ``ACLAuthorizationPolicy``: uses an `Access Control List`_ to grant
       permissions to *principals*
@@ -199,7 +199,7 @@ By default, Pyramid uses no security. We enable it through configuration.
     Open ``learning_journal/__init__.py`` and update it as follows:
 
     .. code-block:: python
-    
+
         # add these imports
         from pyramid.authentication import AuthTktAuthenticationPolicy
         from pyramid.authorization import ACLAuthorizationPolicy
@@ -276,7 +276,7 @@ file ``security.py``
 .. container::
 
     .. code-block:: python
-    
+
         from pyramid.security import Allow, Everyone, Authenticated
 
         class EntryFactory(object):
@@ -304,7 +304,7 @@ we can tell our configuration to use it.
     for our routes:
 
     .. code-block:: python
-    
+
         # add an import at the top:
         from .security import EntryFactory
         # update the route configurations:
@@ -376,7 +376,7 @@ default ``view``.
     * http://localhost:6543/journal/1
     * http://localhost:6543/journal/create
     * http://localhost:6543/journal/edit
-    
+
     You should get a ``403 Forbidden`` for the action pages only.
 
 Implement AuthN
@@ -461,7 +461,7 @@ Python provides a number of libraries for implementing strong encryption.
     implements a simple interface for each.
 
     .. code-block:: python
-    
+
         from cryptacular.bcrypt import BCRYPTPasswordManager
         manager = BCRYPTPasswordManager()
         hashed = manager.encode('password')
@@ -479,7 +479,7 @@ To install a new package as a dependency, we add the package to our list in
 .. container::
 
     .. code-block:: python
-    
+
         requires = [
           ...
           'wtforms',
@@ -489,7 +489,7 @@ To install a new package as a dependency, we add the package to our list in
     Then, we re-install our package to pick up the new dependency:
 
     .. code-block:: bash
-    
+
         (ljenv)$ python setup.py develop
 
     *note* if you have a c compiler installed but not the Python dev headers,
@@ -508,7 +508,7 @@ The job of comparing passwords should belong to the ``User`` object.
     class:
 
     .. code-block:: python
-    
+
         # add this import at the top
         # from cryptacular.pbkdf2 import PBKDF2PassordManager as Manager
         from cryptacular.bcrypt import BCRYPTPasswordManager as Manager
@@ -532,7 +532,7 @@ We'll also need to have a user for our system.
     Open ``learning_journal/scripts/initialzedb.py``:
 
     .. code-block:: python
-    
+
         # add the import
         # from cryptacular.pbkdf2 import PBKDF2PassordManager as Manager
         from cryptacular.bcrypt import BCRYPTPasswordManager as Manager
@@ -560,13 +560,13 @@ re-build it.
     Then remove the sqlite database:
 
     .. code-block:: bash
-    
+
         (ljenv)$ rm *.sqlite
 
     And re-initialize:
 
     .. code-block:: bash
-    
+
         (ljenv)$ initialize_learning_journal_db development.ini
         ...
         2015-01-17 16:43:55,237 INFO  [sqlalchemy.engine.base.Engine][MainThread]
@@ -591,7 +591,7 @@ We now have a user in our database with a strongly encrypted password.
     ``learning_journal/__init__.py``:
 
     .. code-block:: python
-    
+
         config.add_rount('action' ...)
         # ADD THIS
         config.add_route('auth', '/sign/{action}', factory=EntryFactory)
@@ -676,7 +676,7 @@ logged in, if any.
     We can use that to update our home page in ``learning_journal/views.py``:
 
     .. code-block:: python
-    
+
         # add an import:
         from pyramid.security import authenticated_userid
 
@@ -697,7 +697,7 @@ Now we have to update our template to display the form, *if it is there*
 .. container::
 
     .. code-block:: jinja
-    
+
         {% block body %}
         {% if login_form %}
         <aside><form action="{{ request.route_url('auth', action='in') }}" method="POST">
@@ -725,7 +725,7 @@ We should be ready at this point.
     Fire up your application and see it in action:
 
     .. code-block:: bash
-    
+
         (ljenv)$ pserve development.ini
         Starting server in PID 84467.
         serving on http://0.0.0.0:6543
@@ -734,19 +734,204 @@ We should be ready at this point.
 
     * http://localhost:6543/
 
+.. nextslide:: Break Time
+
+That's enough for now.  We have a working application.
+
+When we return, we'll deploy it.
+
 
 Deploying An Application
 ========================
 
-A bit about how heroku works
+.. rst-class:: left
+.. container::
 
-running the application
+    Now that we have a working application, our next step is to deploy it.
 
-Create a runapp.py (use it locally from python to demonstrate)
+    .. rst-class:: build
+    .. container::
 
-add a shell script that will install and then run the app using the above script
+        This will allow us to interact with the application in a live setting.
 
-Create a Procfile
+        We will be able to see the application from any computer, and can share
+        it with friends and family.
+
+        To do this, we'll be using one of the most popular platforms for
+        deploying web applications today, `Heroku`_.
+
+.. _Heroku: http://heroku.com
+
+Heroku
+------
+
+.. figure:: /_static/heroku-logo.png
+    :align: center
+    :width: 40%
+
+.. rst-class:: build
+.. container::
+
+    Heroku provides all the infrastructure needed to run many types of
+    applications.
+
+    It also provides `add-on services`_ that support everything from analytics
+    to payment processing.
+
+    Elaborate applications deployed on Heroku can be quite expensive.
+
+    But for simple applications like our learning journal, the price is just
+    right: **free**
+
+.. _add-on services: https://addons.heroku.com
+
+.. nextslide:: How Heroku Works
+
+Heroku is predicated on interaction with a git repository.
+
+.. rst-class:: build
+.. container::
+
+    You initialize a new Heroku app in a repository on your machine.
+
+    This adds Heroku as a *remote* to your repository.
+
+    When you are ready to deploy your application, you ``git push heroku
+    master``.
+
+    Adding a few special files to your repository allows Heroku to tell what
+    kind of application you are creating.
+
+    It responds to your push by running an appropriate build process and then
+    starting your app with a command you provide.
+
+.. nextslide:: Running Your App
+
+In order for Heroku to deploy your application, it has to have a command it can
+run from a standard shell.
+
+.. rst-class:: build
+.. container::
+
+    We could use the ``pserve`` command we've been using locally, but the
+    server it uses is designed for development.
+
+    It's not really suitable for a public deployment.
+
+    Instead we'll use a more robust, production-ready server that came as one
+    of our dependencies: `waitress`_.
+
+    We'll start by creating a python file that can be executed to start the
+    ``waitress`` server.
+
+.. _waitress: http://waitress.readthedocs.org/en/latest/
+
+.. nextslide:: Creating ``runapp.py``
+
+At the very top level of your application project, in the same folder where you
+find ``setup.py``, create a new file: ``runapp.py``
+
+.. code-block:: python
+
+    import os
+    from paste.deploy import loadapp
+    from waitress import serve
+
+    if __name__ == "__main__":
+        port = int(os.environ.get("PORT", 5000))
+        app = loadapp('config:production.ini', relative_to='.')
+
+        serve(app, host='0.0.0.0', port=port)
+
+.. rst-class:: build
+.. container::
+
+    Once this exists, you can try running your app with it:
+
+    .. code-block:: bash
+    
+        (ljenv)$ python runapp.py
+        serving on http://0.0.0.0:5000
+
+.. nextslide:: Running Via Shell
+
+This would be enough, but we also want to *install* our application as a Python
+package.
+
+.. rst-class:: build
+.. container::
+
+    That allows us to use the database initialization script we've created.
+
+    Add a new file called simply ``run`` in the same folder:
+
+    .. code-block:: bash
+    
+        #!/bin/bash
+        python setup.py develop
+        python runapp.py
+
+    The first line of this file will install our application and verify its
+    dependencies.
+
+    The second line will execute the server script.
+
+    Now, add these two new files to your repository and commit them.
+
+.. nextslide:: Make it Executable
+
+In order for this file to run, it needs to be *executable*
+
+.. rst-class:: build
+.. container::
+
+    For OSX and Linux users this is easy:
+
+    .. code-block:: bash
+    
+        (ljenv)$ chmod 755 run
+
+    Windows users, if you have ``git-bash``, you can do the same
+
+    For the rest of you, try this:
+
+    .. code-block:: posh
+    
+        C:\views\myproject>git ls-tree HEAD
+        ...
+        100644 blob 55c0287d4ef21f15b97eb1f107451b88b479bffe    run
+        C:\views\myproject>git update-index --chmod=+x run
+        C:\views\myproject>git ls-tree HEAD
+        100755 blob 3689ebe2a18a1c8ec858cf531d8c0ec34c8405b4    run
+
+    Commit your changes to git to make them permanent.
+
+.. nextslide:: Procfile
+
+Next, we have to inform Heroku that we will be using this script to run our
+application online
+
+.. rst-class:: build
+.. container::
+
+    Heroku uses a special file called ``Procfile`` to do this.
+
+    Add that file now, in the same directory.
+
+    .. code-block:: bash
+    
+        web: ./run
+
+    This file tells Heroku that we have one ``web`` process to run, and that it
+    is the ``run`` script located right here.
+
+    Providing the ``./`` at the start of the file name allows the shell to
+    execute scripts that are not on the system PATH.
+
+
+
+outline
+-------
 
 set up heroku app for this application
 
@@ -771,9 +956,6 @@ git run initialize_learning_journal_db heroku.ini
 
 heroku logs
 
-
-outline
--------
 
 add logout??
 

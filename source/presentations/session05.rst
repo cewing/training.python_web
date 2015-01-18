@@ -1,12 +1,12 @@
-**********************
-Python Web Programming
-**********************
+**********
+Session 05
+**********
 
 .. figure:: /_static/protocol.png
     :align: center
     :width: 40%
 
-    **Session 2: Web Protocols**
+    Web Protocols
 
 The Languages Computers Speak
 =============================

@@ -45,14 +45,48 @@ In preparation for session 2, please read the following materials:
 Session 2 - Pyramid Views, Renderers and Forms
 ----------------------------------------------
 
+In this session we extend our understanding of the MVC design pattern by
+learning how Pyramid implements the *view* and *controller* aspects.
+
+Pyramid *views* represent the *controller* part of the MVC pattern, and we'll
+create a number of them. We'll also learn how Pyramid uses *routes* to properly
+connect the *path* requested by a client to the *views* run by a server.
+
+We'll meet with Pyramid's *renderers*, the *view* in MVC.  We'll start by using
+a built-in renderer that simply turns view data into strings sent back to the
+client as plain text responses.  We'll then install a template-based renderer
+and use the *jinja2* template language to create visible HTML pages the brower
+can load to show our learning journal entries.
+
+Prepraration for Session 3
+**************************
+
+In preparation for session 3, please read up on getting started with `Heroku
+and Python`_.  We'll be deploying our learning journal to Heroku by the end of
+that session.
+
+.. _Heroku and Python: https://devcenter.heroku.com/articles/getting-started-with-python#introduction
+
 Sesstion 3 - Pyramid Authentication and Deployment
 --------------------------------------------------
 
+In this session we will learn the basic elements of access control:
+authentication and authorization. We'll learn how Pyramid implements these two
+aspects of security, and will implement a basic security policy for our
+learning journal.
+
+Once complete, we will deploy our application to Heroku.  We'll make a few
+changes to how our app is configured to fit with the Heroku model and will be
+able to see our application in action by the end of the session.
+
+Time permitting, we will enhance our application with a few special features
+such as Markdown formatting, and code highlighting. A list of potential future
+enhancements will give you plenty to think about for the rest of the week.
 
 Session 4 - TCP/IP and Sockets
 ------------------------------
 
-We will begin with a disucssion of the fundamental concepts and structures
+We will continue with a disucssion of the fundamental concepts and structures
 that underly the internet and networked computing. We'll learn about the
 TCP/IP stack (Internet Protocol Suite) and gain some insights into how that
 model manifests in real life. We will then dive into sockets and learn how to

@@ -22,8 +22,8 @@ Internet Programming with Python
        :maxdepth: 2
 
        outline
-       readings
        presentations/index
+       readings
 
 Winter Term, 2015 (10 sessions)
 
