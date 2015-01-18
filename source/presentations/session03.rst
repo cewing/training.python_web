@@ -805,7 +805,8 @@ Heroku is predicated on interaction with a git repository.
     It responds to your push by running an appropriate build process and then
     starting your app with a command you provide.
 
-.. nextslide:: Running Your App
+Preparing to Run Your App
+-------------------------
 
 In order for Heroku to deploy your application, it has to have a command it can
 run from a standard shell.
@@ -928,27 +929,280 @@ application online
     Providing the ``./`` at the start of the file name allows the shell to
     execute scripts that are not on the system PATH.
 
+    Add this new file to your repository and commit it.
 
+Set Up a Heroku App
+-------------------
+
+The next step is to create a new app with heroku.
+
+.. rst-class:: build
+.. container::
+
+    You installed the Heroku toolbelt prior to class.
+
+    The toolbelt provides a command to create a new app.
+
+    From the root of your project (where the ``setup.py`` file is) run:
+
+    .. code-block:: bash
+
+        (ljenv)$ heroku create
+        Creating rocky-atoll-9934... done, stack is cedar-14
+        https://rocky-atoll-9934.herokuapp.com/ | https://git.heroku.com/rocky-atoll-9934.git
+        Git remote heroku added
+
+    Note that a new *remote* called ``heroku`` has been added:
+
+    .. code-block:: bash
+    
+        $ git remote -v
+        heroku  https://git.heroku.com/rocky-atoll-9934.git (fetch)
+        heroku  https://git.heroku.com/rocky-atoll-9934.git (push)
+
+.. nextslide:: Adding PostgreSQL
+
+Your application will require a database, but ``sqlite`` is not really
+appropriate for production.
+
+.. rst-class:: build
+.. container::
+
+    For the deployed app, you'll use `PostgreSQL`_, the best open-source
+    database.
+
+    Heroku `provides an add-on`_ that supports PostgreSQL, and you'll need to
+    set it up.
+
+    Again, use the Heroku Toolbelt:
+
+    .. code-block:: bash
+    
+        $ heroku addons:add heroku-postgresql:dev
+        Adding heroku-postgresql:dev on rocky-atoll-9934... done, v4 (free)
+        Attached as HEROKU_POSTGRESQL_MAROON_URL
+        Database has been created and is available
+         ! This database is empty. If upgrading, you can transfer
+         ! data from another database with pgbackups:restore.
+        Use `heroku addons:docs heroku-postgresql` to view documentation.
+
+.. _PostgreSQL: http://www.postgresql.org
+.. _provides an add-on: https://www.heroku.com/postgres
+
+.. nextslide:: PostgreSQL Settings
+
+You can get information about the status of your PostgreSQL service with the
+toolbelt:
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: bash
+    
+        (ljenv)$ heroku pg
+        === HEROKU_POSTGRESQL_MAROON_URL (DATABASE_URL)
+        Plan:        Dev
+        ...
+        Data Size:   6.4 MB
+        Tables:      0
+        Rows:        0/10000 (In compliance)
+
+    And there is also information about the configuration for the database (and
+    your app):
+
+    .. code-block:: bash
+    
+        (ljenv)$ heroku config
+        === rocky-atoll-9934 Config Vars
+        DATABASE_URL:                 postgres://<username>:<password>@<domain>:<port>/<database-name>
+        HEROKU_POSTGRESQL_MAROON_URL: postgres://<username>:<password>@<domain>:<port>/<database-name>
+
+Configuration for Heroku
+------------------------
+
+Notice that the configuration for our application on Heroku provides a specific
+database URL.
+
+.. rst-class:: build
+.. container::
+
+    We could copy this value and paste it into our ``production.ini``
+    configuration file.
+
+    But if we do that, then we will be storing that value in GitHub, where
+    anyone at all can see it.
+
+    That's not particularly secure.
+
+    Luckily, Heroku provides configuration like the database URL in
+    *environment variables* that we can read in Python.
+
+    In fact, we've already done this with our ``runapp.py`` script:
+
+    .. code-block:: python
+    
+        port = int(os.environ.get("PORT", 5000))
+
+.. nextslide:: Adjusting Our DB Configuration
+
+The Python standard library provides ``os.environ`` to allow access to
+*environment variables* from Python code.
+
+.. rst-class:: build
+.. container::
+
+    This attribute is a dictionary keyed by the name of the variable.
+
+    We can use it to gain access to configuration provided by Heroku.
+
+    Update ``learning_journal/__init__.py like so:
+
+    .. code-block:: python
+
+        # import the os module:
+        import os
+        # then look up the value we need for the database url
+        def main(global_config, **settings):
+            # ...
+            if 'DATABASE_URL' in os.environ:
+                settings['sqlalchemy.url'] = os.environ['DATABASE_URL']
+            engine = engine_from_config(settings, 'sqlalchemy.')
+            # ...
+
+.. nextslide:: Adjust ``initializedb.py``
+
+We'll need to make the same changes to
+``learning_journal/scripts/initializedb.py``:
+
+.. code-block:: python
+
+    def main(argv=sys.argv):
+        # ...
+        settings = get_appsettings(config_uri, options=options)
+        if 'DATABASE_URL' in os.environ:
+            settings['sqlalchemy.url'] = os.environ['DATABASE_URL']
+        engine = engine_from_config(settings, 'sqlalchemy.')
+        # ...
+
+.. nextslide:: Additional Security
+
+This mechanism allows us to defer other sensitive values such as the password
+for our initial user:
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: python
+    
+        # in learning_journal/scripts/initializedb.py
+        with transaction.manager:
+            manager = Manager
+            password = os.environ.get('ADMIN_PASSWORD', u'admin')
+            password = manager.encode(password)
+            admin = User(name=u'admin', password=password)
+
+    And for the secret value for our AuthTktAuthenticationPolicy
+
+    .. code-block:: python
+    
+        # in learning_journal/__init__.py
+        def main(global_config, **settings):
+            # ...
+            secret = os.environ.get('AUTH_SECRET', 'somesecret')
+            ...
+            authentication_policy=AuthTktAuthenticationPolicy(secret)
+            # ...
+
+.. nextslide:: Heroku Config
+
+We will now be looking for three values from the OS environment:
+
+.. rst-class:: build
+
+* DATABASE_URL
+* ADMIN_PASSWORD
+* AUTH_SECRET
+
+.. rst-class:: build
+.. container::
+
+    The ``DATABASE_URL`` value is set for us by the PosgreSQL add-on.
+
+    But the other two are not.  We must set them ourselves using ``heroku
+    config:set``:
+
+    .. code-block:: bash
+    
+        (ljenv)$ heroku config:set ADMIN_PASSWORD=<your password>
+        ...
+        (ljenv)$ heroku config:set AUTH_SECRET=<a long random string>
+        ...
+
+.. nextslide:: Checking Configuration
+
+You can see the values that you have set at any time using ``heroku config``:
+
+.. code-block:: bash
+
+    (ljenv)$ heroku config
+    === rocky-atoll-9934 Config Vars
+    ADMIN_PASSWORD:               <your password>
+    AUTH_SECRET:                  <your auth secret value>
+    DATABASE_URL:                 <your db URL>
+    HEROKU_POSTGRESQL_MAROON_URL: <your db URL>
+
+.. rst-class:: build
+.. container::
+
+    These values are sent and received using secure transport.
+
+    You do not need to worry about them being intercepted.
+
+    This mechanism allows you to place important configuration values outside
+    the code for your application.
+
+.. nextslide:: Requirements for Heroku
+
+We've been handling our application's dependencies by adding them to
+``setup.py``.
+
+.. rst-class:: build
+.. container::
+
+    But there is a new dependency we've added that is only needed for Heroku.
+
+    Because we are using a PostgreSQL database, we need to install the
+    ``psycopg2`` package, which handles communicating with the database.
+
+    We don't want to install this locally, though, where we use sqlite.
+
+    Heroku supports using a file called ``requirements.txt`` to set
+    dependencies.
+
+    Create that file now, in the same folder as ``setup.py`` and add:
+
+    .. code-block:: bash
+    
+        psycopg2==2.5.4
+
+    Add that file to your repository and commit the change.
+
+Deployment
+----------
+
+We are now ready to deploy our application.
+
+.. rst-class:: build
+.. container::
+
+    All we need to do is push our repository to the ``heroku`` master:
+
+    .. code-block:: bash
+    
+        (ljenv)$ git push heroku master
 
 outline
 -------
-
-set up heroku app for this application
-
-install postgresql plugin
-
-Show how you can get DB url from config and environment,
-
-Note how python has os.environ to allow us to access environment variables
-
-alter __init__.py to use this to set up the database url (and initializedb as well)
-
-Note how we can use the the environment for other special values too:
-
-* administrator password
-* authentication policy secret
-
-Update app to use those as well
 
 git push heroku master
 
