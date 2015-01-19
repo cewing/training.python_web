@@ -1,12 +1,12 @@
-**********************
-Python Web Programming
-**********************
+**********
+Session 04
+**********
 
 .. figure:: /_static/python.png
     :align: center
     :width: 33%
 
-Session 4: Networking and Sockets
+    Networking and Sockets
 
 
 Computer Communications

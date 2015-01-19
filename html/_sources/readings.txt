@@ -1,8 +1,8 @@
 .. slideconf::
     :autoslides: False
 
-Course Readings
-===============
+Supplementary Course Readings
+=============================
 
 .. slide:: Course Readings
     :level: 1

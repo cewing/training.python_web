@@ -17,3 +17,6 @@ course.
 
    session01
    session02
+   session03
+   session04
+   session05

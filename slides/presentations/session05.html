@@ -1,0 +1,1965 @@
+<!--
+Google IO 2012/2013 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahé <lukem@google.com>
+
+URL: https://code.google.com/p/io-2012-slides
+--><!DOCTYPE html>
+
+
+<html>
+<head>
+  <title>Session 05 &mdash; Internet Programming with Python</title>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  
+  <link rel="stylesheet" media="all"
+        href="../_static/theme/css/default.css">
+  <link rel="stylesheet" media="all"
+        href="../_static/theme/css/hieroglyph.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)"
+        href="../_static/theme/css/phone.css">
+
+    
+    <link rel="stylesheet" href="../_static/custom.css"
+          type="text/css" />
+    
+
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+
+    <script data-main="../_static/js/slides"
+            src="../_static/js/require-1.0.8.min.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    
+    <link rel="top" title="Internet Programming with Python" href="../index.html" />
+    <link rel="up" title="Course Presentations" href="index.html" />
+    <link rel="next" title="Supplementary Course Readings" href="../readings.html" />
+    <link rel="prev" title="Session 04" href="session04.html" /> 
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen">
+
+  <slide class="title-slide segue nobackground">
+  <aside class="gdbar"><img src="../_static/logo_UW.png"></aside>
+  <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+  <hgroup class="auto-fadein">
+    <h1 data-config-title><!-- populated from slide_config.json --></h1>
+    <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+    <p data-config-presenter><!-- populated from slide_config.json --></p>
+  </hgroup>
+</slide>
+
+  
+    <slide class="level-1">
+    <hgroup>
+      <h1>Session 05</h1>
+    </hgroup>
+    <article class="">
+      <div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/protocol.png"><img alt="../_images/protocol.png" src="../_images/protocol.png" style="width: 40%;" /></a>
+<p class="caption">Web Protocols</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-2">
+    <hgroup>
+      <h2>The Languages Computers Speak</h2>
+    </hgroup>
+    <article class="">
+      <div class="build left container">
+<p>Programming languages like Python are the languages we speak to computers.</p>
+<p><em>Protocols</em> are the languages that computers speak to each-other.</p>
+<p>This sesson we'll look at a few of them and</p>
+<ul class="build simple">
+<li>Learn what makes them similar</li>
+<li>Learn what makes them different</li>
+<li>Learn about Python's tools for speaking them</li>
+<li>Learn how to speak one (HTTP) ourselves</li>
+</ul>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>But First</h3>
+    </hgroup>
+    <article class="">
+      <p class="large centered">Questions from the Homework?</p>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>But First</h3>
+    </hgroup>
+    <article class="">
+      <p class="large centered">Examples of an echo server using <tt class="docutils literal"><span class="pre">select</span></tt></p>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>What is a Protocol?</h3>
+    </hgroup>
+    <article class="">
+      <div class="build large centered container">
+<p><strong>a set of rules or conventions</strong></p>
+<p><strong>governing communications</strong></p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Protocols IRL</h3>
+    </hgroup>
+    <article class="">
+      <p>Life has lots of sets of rules for how to do things.</p>
+<ul class="build simple">
+<li>What do you say when you get on the elevator?</li>
+<li>What do you do on a first date?</li>
+<li>What do you wear to a job interview?</li>
+<li>What do (and don't) you talk about at a dinner party?</li>
+<li>...?</li>
+</ul>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Protocols IRL</h3>
+    </hgroup>
+    <article class="">
+      <div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/icup.png"><img alt="../_images/icup.png" src="../_images/icup.png" style="width: 65%;" /></a>
+<p class="caption"><a class="reference external" href="http://blog.xkcd.com/2009/09/02/urinal-protocol-vulnerability/">http://blog.xkcd.com/2009/09/02/urinal-protocol-vulnerability/</a></p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Protocols In Computers</h3>
+    </hgroup>
+    <article class="">
+      <p>Digital life has lots of rules too:</p>
+<ul class="build simple">
+<li>how to say hello</li>
+<li>how to identify yourself</li>
+<li>how to ask for information</li>
+<li>how to provide answers</li>
+<li>how to say goodbye</li>
+</ul>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Real Protocol Examples</h3>
+    </hgroup>
+    <article class="">
+      <p>What does this look like in practice?</p>
+<ul class="build simple">
+<li>SMTP (Simple Message Transfer Protocol)
+<a class="reference external" href="http://tools.ietf.org/html/rfc5321#appendix-D">http://tools.ietf.org/html/rfc5321#appendix-D</a></li>
+<li>POP3 (Post Office Protocol)
+<a class="reference external" href="http://www.faqs.org/docs/artu/ch05s03.html">http://www.faqs.org/docs/artu/ch05s03.html</a></li>
+<li>IMAP (Internet Message Access Protocol)
+<a class="reference external" href="http://www.faqs.org/docs/artu/ch05s03.html">http://www.faqs.org/docs/artu/ch05s03.html</a></li>
+<li>HTTP (Hyper-Text Transfer Protocol)
+<a class="reference external" href="http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol">http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol</a></li>
+</ul>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>SMTP</h3>
+    </hgroup>
+    <article class="">
+      <p>What does SMTP look like?</p>
+<div class="build container">
+<p>SMTP (Say hello and identify yourself):</p>
+<div class="highlight-python"><div class="highlight"><pre>S (&lt;--): 220 foo.com Simple Mail Transfer Service Ready
+C (--&gt;): EHLO bar.com
+S (&lt;--): 250-foo.com greets bar.com
+S (&lt;--): 250-8BITMIME
+S (&lt;--): 250-SIZE
+S (&lt;--): 250-DSN
+S (&lt;--): 250 HELP
+</pre></div>
+</div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>SMTP</h3>
+    </hgroup>
+    <article class="">
+      <p>SMTP (Ask for information, provide answers):</p>
+<div class="highlight-python"><div class="highlight"><pre>C (--&gt;): MAIL FROM:&lt;Smith@bar.com&gt;
+S (&lt;--): 250 OK
+C (--&gt;): RCPT TO:&lt;Jones@foo.com&gt;
+S (&lt;--): 250 OK
+C (--&gt;): RCPT TO:&lt;Green@foo.com&gt;
+S (&lt;--): 550 No such user here
+C (--&gt;): DATA
+S (&lt;--): 354 Start mail input; end with &lt;CRLF&gt;.&lt;CRLF&gt;
+C (--&gt;): Blah blah blah...
+C (--&gt;): ...etc. etc. etc.
+C (--&gt;): .
+S (&lt;--): 250 OK
+</pre></div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>SMTP</h3>
+    </hgroup>
+    <article class="">
+      <p>SMTP (Say goodbye):</p>
+<div class="highlight-python"><div class="highlight"><pre>C (--&gt;): QUIT
+S (&lt;--): 221 foo.com Service closing transmission channel
+</pre></div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>SMTP Characteristics</h3>
+    </hgroup>
+    <article class="">
+      <ul class="build simple">
+<li>Interaction consists of commands and replies</li>
+<li>Each command or reply is <em>one line</em> terminated by &lt;CRLF&gt;</li>
+<li>The exception is message payload, terminated by &lt;CRLF&gt;.&lt;CRLF&gt;</li>
+<li>Each command has a <em>verb</em> and one or more <em>arguments</em></li>
+<li>Each reply has a formal <em>code</em> and an informal <em>explanation</em></li>
+</ul>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>POP3</h3>
+    </hgroup>
+    <article class="">
+      <p>What does POP3 look like?</p>
+<div class="build container">
+<p>POP3 (Say hello and identify yourself):</p>
+<div class="highlight-python"><div class="highlight"><pre>C (--&gt;): &lt;client connects to service port 110&gt;
+S (&lt;--): +OK POP3 server ready &lt;1896.6971@mailgate.dobbs.org&gt;
+C (--&gt;): USER bob
+S (&lt;--): +OK bob
+C (--&gt;): PASS redqueen
+S (&lt;--): +OK bob&#39;s maildrop has 2 messages (320 octets)
+</pre></div>
+</div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>POP3</h3>
+    </hgroup>
+    <article class="">
+      <p>POP3 (Ask for information, provide answers):</p>
+<div class="highlight-python"><div class="highlight"><pre>C (--&gt;): STAT
+S (&lt;--): +OK 2 320
+C (--&gt;): LIST
+S (&lt;--): +OK 1 messages (120 octets)
+S (&lt;--): 1 120
+S (&lt;--): .
+</pre></div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>POP3</h3>
+    </hgroup>
+    <article class="">
+      <p>POP3 (Ask for information, provide answers):</p>
+<div class="highlight-python"><div class="highlight"><pre>C (--&gt;): RETR 1
+S (&lt;--): +OK 120 octets
+S (&lt;--): &lt;server sends the text of message 1&gt;
+S (&lt;--): .
+C (--&gt;): DELE 1
+S (&lt;--): +OK message 1 deleted
+</pre></div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>POP3</h3>
+    </hgroup>
+    <article class="">
+      <p>POP3 (Say goodbye):</p>
+<div class="highlight-python"><div class="highlight"><pre>C (--&gt;): QUIT
+S (&lt;--): +OK dewey POP3 server signing off (maildrop empty)
+C (--&gt;): &lt;client hangs up&gt;
+</pre></div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>POP3 Characteristics</h3>
+    </hgroup>
+    <article class="">
+      <div class="build container">
+<ul class="build simple">
+<li>Interaction consists of commands and replies</li>
+<li>Each command or reply is <em>one line</em> terminated by &lt;CRLF&gt;</li>
+<li>The exception is message payload, terminated by &lt;CRLF&gt;.&lt;CRLF&gt;</li>
+<li>Each command has a <em>verb</em> and one or more <em>arguments</em></li>
+<li>Each reply has a formal <em>code</em> and an informal <em>explanation</em></li>
+</ul>
+<p>The codes don't really look the same, though, do they?</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>One Other Difference</h3>
+    </hgroup>
+    <article class="">
+      <p>The exception to the one-line-per-message rule is <em>payload</em></p>
+<div class="build container">
+<p>In both SMTP and POP3 this is terminated by &lt;CRLF&gt;.&lt;CRLF&gt;</p>
+<p>In SMTP, the <em>client</em> has this ability</p>
+<p>But in POP3, it belongs to the <em>server</em>.  Why?</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>IMAP</h3>
+    </hgroup>
+    <article class="">
+      <p>What does IMAP look like?</p>
+<div class="build container">
+<p>IMAP (Say hello and identify yourself):</p>
+<div class="highlight-python"><div class="highlight"><pre>C (--&gt;): &lt;client connects to service port 143&gt;
+S (&lt;--): * OK example.com IMAP4rev1 v12.264 server ready
+C (--&gt;): A0001 USER &quot;frobozz&quot; &quot;xyzzy&quot;
+S (&lt;--): * OK User frobozz authenticated
+</pre></div>
+</div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>IMAP</h3>
+    </hgroup>
+    <article class="">
+      <p>IMAP (Ask for information, provide answers [connect to an inbox]):</p>
+<div class="highlight-python"><div class="highlight"><pre>C (--&gt;): A0002 SELECT INBOX
+S (&lt;--): * 1 EXISTS
+S (&lt;--): * 1 RECENT
+S (&lt;--): * FLAGS (\Answered \Flagged \Deleted \Draft \Seen)
+S (&lt;--): * OK [UNSEEN 1] first unseen message in /var/spool/mail/esr
+S (&lt;--): A0002 OK [READ-WRITE] SELECT completed
+</pre></div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>IMAP</h3>
+    </hgroup>
+    <article class="">
+      <p>IMAP (Ask for information, provide answers [Get message sizes]):</p>
+<div class="highlight-python"><div class="highlight"><pre>C (--&gt;): A0003 FETCH 1 RFC822.SIZE
+S (&lt;--): * 1 FETCH (RFC822.SIZE 2545)
+S (&lt;--): A0003 OK FETCH completed
+</pre></div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>IMAP</h3>
+    </hgroup>
+    <article class="">
+      <p>IMAP (Ask for information, provide answers [Get first message header]):</p>
+<div class="highlight-python"><div class="highlight"><pre>C (--&gt;): A0004 FETCH 1 BODY[HEADER]
+S (&lt;--): * 1 FETCH (RFC822.HEADER {1425}
+&lt;server sends 1425 octets of message payload&gt;
+S (&lt;--): )
+S (&lt;--): A0004 OK FETCH completed
+</pre></div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>IMAP</h3>
+    </hgroup>
+    <article class="">
+      <p>IMAP (Ask for information, provide answers [Get first message body]):</p>
+<div class="highlight-python"><div class="highlight"><pre>C (--&gt;): A0005 FETCH 1 BODY[TEXT]
+S (&lt;--): * 1 FETCH (BODY[TEXT] {1120}
+&lt;server sends 1120 octets of message payload&gt;
+S (&lt;--): )
+S (&lt;--): * 1 FETCH (FLAGS (\Recent \Seen))
+S (&lt;--): A0005 OK FETCH completed
+</pre></div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>IMAP</h3>
+    </hgroup>
+    <article class="">
+      <p>IMAP (Say goodbye):</p>
+<div class="highlight-python"><div class="highlight"><pre>C (--&gt;): A0006 LOGOUT
+S (&lt;--): * BYE example.com IMAP4rev1 server terminating connection
+S (&lt;--): A0006 OK LOGOUT completed
+C (--&gt;): &lt;client hangs up&gt;
+</pre></div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>IMAP Characteristics</h3>
+    </hgroup>
+    <article class="">
+      <ul class="build simple">
+<li>Interaction consists of commands and replies</li>
+<li>Each command or reply is <em>one line</em> terminated by &lt;CRLF&gt;</li>
+<li>Each command has a <em>verb</em> and one or more <em>arguments</em></li>
+<li>Each reply has a formal <em>code</em> and an informal <em>explanation</em></li>
+</ul>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>IMAP Differences</h3>
+    </hgroup>
+    <article class="">
+      <div class="build container">
+<ul class="build simple">
+<li>Commands and replies are prefixed by 'sequence identifier'</li>
+<li>Payloads are prefixed by message size, rather than terminated by reserved
+sequence</li>
+</ul>
+<p>Compared with POP3, what do these differences suggest?</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Using IMAP in Python</h3>
+    </hgroup>
+    <article class="">
+      <p>Let's try this out for ourselves!</p>
+<div class="build container">
+<div class="container">
+Fire up your python interpreters and prepare to type.</div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Using IMAP in Python</h3>
+    </hgroup>
+    <article class="">
+      <p>Begin by importing the <tt class="docutils literal"><span class="pre">imaplib</span></tt> module from the Python Standard Library:</p>
+<div class="build container">
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">imaplib</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">dir</span><span class="p">(</span><span class="n">imaplib</span><span class="p">)</span>
+<span class="go">[&#39;AllowedVersions&#39;, &#39;CRLF&#39;, &#39;Commands&#39;,</span>
+<span class="go"> &#39;Continuation&#39;, &#39;Debug&#39;, &#39;Flags&#39;, &#39;IMAP4&#39;,</span>
+<span class="go"> &#39;IMAP4_PORT&#39;, &#39;IMAP4_SSL&#39;, &#39;IMAP4_SSL_PORT&#39;,</span>
+<span class="go"> ...</span>
+<span class="go"> &#39;socket&#39;, &#39;ssl&#39;, &#39;sys&#39;, &#39;time&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">imaplib</span><span class="o">.</span><span class="n">Debug</span> <span class="o">=</span> <span class="mi">4</span>
+</pre></div>
+</div>
+<p>Setting <tt class="docutils literal"><span class="pre">imap.Debug</span></tt> shows us what is sent and received</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Using IMAP in Python</h3>
+    </hgroup>
+    <article class="">
+      <p>I've prepared a server for us to use.</p>
+<div class="build container">
+<p>We'll need to set up a client to speak to it.</p>
+<p>Our server requires SSL (Secure Socket Layer) for connecting to IMAP
+servers, so let's initialize an IMAP4_SSL client and authenticate:</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">conn</span> <span class="o">=</span> <span class="n">imaplib</span><span class="o">.</span><span class="n">IMAP4_SSL</span><span class="p">(</span><span class="s">&#39;mail.webfaction.com&#39;</span><span class="p">)</span>
+<span class="go">  57:04.83 imaplib version 2.58</span>
+<span class="go">  57:04.83 new IMAP4 connection, tag=FNHG</span>
+<span class="go">  ...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">conn</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+<span class="go">  12:16.50 &gt; IMAD1 LOGIN username password</span>
+<span class="go">  12:18.52 &lt; IMAD1 OK Logged in.</span>
+<span class="go">(&#39;OK&#39;, [&#39;Logged in.&#39;])</span>
+</pre></div>
+</div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Using IMAP in Python</h3>
+    </hgroup>
+    <article class="">
+      <p>We can start by listing the mailboxes we have on the server:</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">conn</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
+<span class="go">  00:41.91 &gt; FNHG3 LIST &quot;&quot; *</span>
+<span class="go">  00:41.99 &lt; * LIST (\HasNoChildren) &quot;.&quot; &quot;INBOX&quot;</span>
+<span class="go">  00:41.99 &lt; FNHG3 OK List completed.</span>
+<span class="go">(&#39;OK&#39;, [&#39;(\\HasNoChildren) &quot;.&quot; &quot;INBOX&quot;&#39;])</span>
+</pre></div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Using IMAP in Python</h3>
+    </hgroup>
+    <article class="">
+      <p>To interact with our email, we must select a mailbox from the list we received
+earlier:</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">conn</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s">&#39;INBOX&#39;</span><span class="p">)</span>
+<span class="go">  00:00.47 &gt; FNHG2 SELECT INBOX</span>
+<span class="go">  00:00.56 &lt; * FLAGS (\Answered \Flagged \Deleted \Seen \Draft)</span>
+<span class="go">  00:00.56 &lt; * OK [PERMANENTFLAGS (\Answered \Flagged \Deleted \Seen \Draft \*)] Flags permitted.</span>
+<span class="go">  00:00.56 &lt; * 2 EXISTS</span>
+<span class="go">  00:00.57 &lt; * 0 RECENT</span>
+<span class="go">  00:00.57 &lt; * OK [UNSEEN 2] First unseen.</span>
+<span class="go">  00:00.57 &lt; * OK [UIDVALIDITY 1357449499] UIDs valid</span>
+<span class="go">  00:00.57 &lt; * OK [UIDNEXT 3] Predicted next UID</span>
+<span class="go">  00:00.57 &lt; FNHG2 OK [READ-WRITE] Select completed.</span>
+<span class="go">(&#39;OK&#39;, [&#39;2&#39;])</span>
+</pre></div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Using IMAP in Python</h3>
+    </hgroup>
+    <article class="">
+      <p>We can search our selected mailbox for messages matching one or more criteria.</p>
+<div class="build container">
+<p>The return value is a string list of the UIDs of messages that match our
+search:</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">conn</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="s">&#39;(FROM &quot;cris&quot;)&#39;</span><span class="p">)</span>
+<span class="go">  18:25.41 &gt; FNHG5 SEARCH (FROM &quot;cris&quot;)</span>
+<span class="go">  18:25.54 &lt; * SEARCH 1</span>
+<span class="go">  18:25.54 &lt; FNHG5 OK Search completed.</span>
+<span class="go">(&#39;OK&#39;, [&#39;1&#39;])</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Using IMAP in Python</h3>
+    </hgroup>
+    <article class="">
+      <p>Once we've found a message we want to look at, we can use the <tt class="docutils literal"><span class="pre">fetch</span></tt>
+command to read it from the server.</p>
+<div class="build container">
+<p>IMAP allows fetching each part of a message independently:</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">conn</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s">&#39;1&#39;</span><span class="p">,</span> <span class="s">&#39;(BODY[HEADER])&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">conn</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s">&#39;1&#39;</span><span class="p">,</span> <span class="s">&#39;(BODY[TEXT])&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">conn</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s">&#39;1&#39;</span><span class="p">,</span> <span class="s">&#39;(FLAGS)&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>What does the message say?</p>
+<p>Python even includes an <em>email</em> library that would allow us to interact
+with this message in an <em>OO</em> style.</p>
+<p><em>Neat, Huh?</em></p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>What Have We Learned?</h3>
+    </hgroup>
+    <article class="">
+      <div class="build container">
+<ul class="build simple">
+<li>Protocols are just a set of rules for how to communicate</li>
+<li>Protocols tell us how to parse and delimit messages</li>
+<li>Protocols tell us what messages are valid</li>
+<li>If we properly format request messages to a server, we can get response
+messages</li>
+<li>Python supports a number of these protocols</li>
+<li>So we don't have to remember how to format the commands ourselves</li>
+</ul>
+<p>But in every case we've seen, we could do the same thing with a socket and
+some strings</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Break Time</h3>
+    </hgroup>
+    <article class="">
+      <p>Let's take a few minutes here to clear our heads.</p>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-2">
+    <hgroup>
+      <h2>HTTP</h2>
+    </hgroup>
+    <article class="">
+      <div class="left container">
+<p>HTTP is no different</p>
+<div class="build container">
+<p>HTTP is also message-centered, with two-way communications:</p>
+<ul class="build simple">
+<li>Requests (Asking for information)</li>
+<li>Responses (Providing answers)</li>
+</ul>
+</div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>What does HTTP look like?</h3>
+    </hgroup>
+    <article class="">
+      <p>HTTP (Ask for information):</p>
+<div class="highlight-http"><div class="highlight"><pre>GET /index.html HTTP/1.1
+Host: www.example.com
+&lt;CRLF&gt;
+</pre></div>
+</div>
+<p><strong>note</strong>: the <tt class="docutils literal"><span class="pre">&lt;CRLF&gt;</span></tt> you see here is a visualization of an empty line. It's
+really just the standard line terminator on an empty line.</p>
+<p>You don't need to type the <tt class="docutils literal"><span class="pre">&lt;CRLF&gt;</span></tt> there.</p>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>What does HTTP look like?</h3>
+    </hgroup>
+    <article class="">
+      <p>HTTP (Provide answers):</p>
+<div class="highlight-http"><div class="highlight"><pre>HTTP/1.1 200 OK
+Date: Mon, 23 May 2005 22:38:34 GMT
+Server: Apache/1.3.3.7 (Unix) (Red-Hat/Linux)
+Last-Modified: Wed, 08 Jan 2003 23:11:55 GMT
+Etag: &quot;3f80f-1b6-3e1cb03b&quot;
+Accept-Ranges:  none
+Content-Length: 438
+Connection: close
+Content-Type: text/html; charset=UTF-8
+&lt;CRLF&gt;
+&lt;!DOCTYPE html&gt;\n&lt;html&gt;\n  &lt;head&gt;\n    &lt;title&gt;This is a .... &lt;/html&gt;
+</pre></div>
+</div>
+<p>You don't need to type the <tt class="docutils literal"><span class="pre">&lt;CRLF&gt;</span></tt> here either.</p>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>HTTP Core Format</h3>
+    </hgroup>
+    <article class="">
+      <p>In HTTP, both <em>request</em> and <em>response</em> share a common basic format:</p>
+<ul class="build simple">
+<li>Line separators are &lt;CRLF&gt; (familiar, no?)</li>
+<li>A required initial line (a command or a response code)</li>
+<li>A (mostly) optional set of headers, one per line</li>
+<li>A blank line</li>
+<li>An optional body</li>
+</ul>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Implementing HTTP</h3>
+    </hgroup>
+    <article class="">
+      <p>Let's investigate the HTTP protocol a bit in real life.</p>
+<div class="build container">
+<p>We'll do so by building a simplified HTTP server, one step at a time.</p>
+<p>There is a copy of the echo server from last time in
+<tt class="docutils literal"><span class="pre">resources/session05</span></tt>. It's called <tt class="docutils literal"><span class="pre">http_server.py</span></tt>.</p>
+<p>In a terminal, move into that directory. We'll be doing our work here for
+the rest of the session</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>TDD IRL (a quick aside)</h3>
+    </hgroup>
+    <article class="">
+      <p>Test Driven Development (TDD) is all the rage these days.</p>
+<div class="build container">
+<p>It means that before you write code, you first write tests demonstrating
+what you want your code to do.</p>
+<p>When all your tests pass, you are finished. You did this for your last
+assignment.</p>
+<p>We'll be doing it again today.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Run the Tests</h3>
+    </hgroup>
+    <article class="">
+      <p>From inside <tt class="docutils literal"><span class="pre">resources/session05</span></tt> start a second python interpreter and run
+<tt class="docutils literal"><span class="pre">$</span> <span class="pre">python</span> <span class="pre">http_server.py</span></tt></p>
+<div class="build container">
+<p>In your first interpreter run the tests. You should see similar output:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python tests.py
+<span class="o">[</span>...<span class="o">]</span>
+Ran 10 tests in 0.003s
+
+FAILED <span class="o">(</span><span class="nv">failures</span><span class="o">=</span>3, <span class="nv">errors</span><span class="o">=</span>7<span class="o">)</span>
+</pre></div>
+</div>
+<p>Let's take a few minutes here to look at these tests and understand them.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Viewing an HTTP Request</h3>
+    </hgroup>
+    <article class="">
+      <p>Our job is to make all those tests pass.</p>
+<div class="build container">
+<p>First, though, let's pretend this server really is a functional HTTP
+server.</p>
+<p>This time, instead of using the echo client to make a connection to the
+server, let's use a web browser!</p>
+<p>Point your favorite browser at <tt class="docutils literal"><span class="pre">http://localhost:10000</span></tt></p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>A Bad Interaction</h3>
+    </hgroup>
+    <article class="">
+      <p>First, look at the printed output from your echo server.</p>
+<div class="build container">
+<p>Second, note that your browser is still waiting to finish loading the page</p>
+<p>Moreover, your server should also be hung, waiting for more from the
+'client'</p>
+<p>This is because the server is waiting for the browser to respond</p>
+<p>And at the same time, the browser is waiting for the server to indicate it
+is done.</p>
+<p>Our server does not yet speak the HTTP protocol, but the browser is
+expecting it.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Echoing A Request</h3>
+    </hgroup>
+    <article class="">
+      <p>Kill your server with <tt class="docutils literal"><span class="pre">ctrl-c</span></tt> (the keyboard interrupt) and you should see
+some printed content:</p>
+<div class="build container">
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:10000</span>
+<span class="na">User-Agent</span><span class="o">:</span> <span class="l">Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:22.0) Gecko/20100101 Firefox/22.0</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</span>
+<span class="na">Accept-Language</span><span class="o">:</span> <span class="l">en-US,en;q=0.5</span>
+<span class="na">Accept-Encoding</span><span class="o">:</span> <span class="l">gzip, deflate</span>
+<span class="na">DNT</span><span class="o">:</span> <span class="l">1</span>
+<span class="na">Cookie</span><span class="o">:</span> <span class="l">__utma=111872281.383966302.1364503233.1364503233.1364503233.1; __utmz=111872281.1364503233.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); csrftoken=uiqj579iGRbReBHmJQNTH8PFfAz2qRJS</span>
+<span class="na">Connection</span><span class="o">:</span> <span class="l">keep-alive</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">max-age=0</span>
+</pre></div>
+</div>
+<p>Your results will vary from mine.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>HTTP Debugging</h3>
+    </hgroup>
+    <article class="">
+      <p>When working on applications, it's nice to be able to see all this going back
+and forth.</p>
+<div class="build container">
+<p>Good browsers support this with a set of developer tools built-in.</p>
+<ul class="build simple">
+<li>firefox -&gt; ctrl-shift-K or cmd-opt-K (os X)</li>
+<li>safari -&gt; enable in preferences:advanced then cmd-opt-i</li>
+<li>chrome -&gt; ctrl-shift-i or cmd-opt-i (os X)</li>
+<li>IE (7.0+) -&gt; F12 or tools menu -&gt; developer tools</li>
+</ul>
+<p>The 'Net(work)' pane of these tools can show you both request and response,
+headers and all. Very useful.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Stop! Demo Time</h3>
+    </hgroup>
+    <article class="">
+      <p class="centered"><strong>Let's take a quick look</strong></p>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Other Debugging Options</h3>
+    </hgroup>
+    <article class="">
+      <p>Sometimes you need or want to debug http requests that are not going through
+your browser.</p>
+<p class="build">Or perhaps you need functionality that is not supported by in-browser tools
+(request munging, header mangling, decryption of https request/responses)</p>
+<div class="incremental container">
+<p>Then it might be time for an HTTP debugging proxy:</p>
+<ul class="build simple">
+<li>windows: <a class="reference external" href="http://www.fiddler2.com/fiddler2/">http://www.fiddler2.com/fiddler2/</a></li>
+<li>win/osx/linux: <a class="reference external" href="http://www.charlesproxy.com/">http://www.charlesproxy.com/</a></li>
+</ul>
+<p>We won't cover any of these tools here today.  But you can check them out
+when you have the time.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Step 1: Basic HTTP Protocol</h3>
+    </hgroup>
+    <article class="">
+      <p>In HTTP 1.0, the only required line in an HTTP request is this:</p>
+<div class="highlight-http"><div class="highlight"><pre>GET /path/to/index.html HTTP/1.0
+&lt;CRLF&gt;
+</pre></div>
+</div>
+<div class="build container">
+<p>As virtual hosting grew more common, that was not enough, so HTTP 1.1 adds
+a single required <em>header</em>, <strong>Host</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre>GET /path/to/index.html HTTP/1.1
+Host: www.mysite1.com:80
+&lt;CRLF&gt;
+</pre></div>
+</div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>HTTP Responses</h3>
+    </hgroup>
+    <article class="">
+      <p>In both HTTP 1.0 and 1.1, a proper response consists of an intial line,
+followed by optional headers, a single blank line, and then optionally a
+response body:</p>
+<div class="build container">
+<div class="highlight-http"><div class="highlight"><pre>HTTP/1.1 200 OK
+Content-Type: text/plain
+&lt;CRLF&gt;
+this is a pretty minimal response
+</pre></div>
+</div>
+<p>Let's update our server to return such a response.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Returning a Canned HTTP Response</h3>
+    </hgroup>
+    <article class="">
+      <p>Begin by implementing a new function in your <tt class="docutils literal"><span class="pre">http_server.py</span></tt> script called
+<cite>response_ok</cite>.</p>
+<div class="build container">
+<p>It can be super-simple for now.  We'll improve it later.</p>
+<div class="container">
+<p>It needs to return our minimal response from above:</p>
+<div class="highlight-http"><div class="highlight"><pre>HTTP/1.1 200 OK
+Content-Type: text/plain
+&lt;CRLF&gt;
+this is a pretty minimal response
+</pre></div>
+</div>
+</div>
+<p><strong>Remember, &lt;CRLF&gt; is a placeholder for an intentionally blank line</strong></p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>My Solution</h3>
+    </hgroup>
+    <article class="">
+      <div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">response_ok</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;returns a basic HTTP response&quot;&quot;&quot;</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">resp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;HTTP/1.1 200 OK&quot;</span><span class="p">)</span>
+    <span class="n">resp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;Content-Type: text/plain&quot;</span><span class="p">)</span>
+    <span class="n">resp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">resp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;this is a pretty minimal response&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s">&quot;</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+</pre></div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Run The Tests</h3>
+    </hgroup>
+    <article class="">
+      <p>We've now implemented a function that is tested by our tests. Let's run them
+again:</p>
+<div class="build container">
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python tests.py
+<span class="o">[</span>...<span class="o">]</span>
+----------------------------------------------------------------------
+Ran 10 tests in 0.002s
+
+FAILED <span class="o">(</span><span class="nv">failures</span><span class="o">=</span>3, <span class="nv">errors</span><span class="o">=</span>3<span class="o">)</span>
+</pre></div>
+</div>
+<p>Great!  We've now got 4 tests that pass.  Good work.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Server Modifications</h3>
+    </hgroup>
+    <article class="">
+      <p>Next, we need to rebuild the server loop from our echo server for it's new
+purpose:</p>
+<div class="build container">
+<p>It should now wait for an incoming request to be <em>finished</em>, <em>then</em> send a
+response back to the client.</p>
+<p>The response it sends can be the result of calling our new <tt class="docutils literal"><span class="pre">response_ok</span></tt>
+function for now.</p>
+<p>We could also bump up the <tt class="docutils literal"><span class="pre">recv</span></tt> buffer size to something more reasonable
+for HTTP traffic, say 1024.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>My Solution</h3>
+    </hgroup>
+    <article class="">
+      <div class="highlight-python"><div class="highlight"><pre><span class="c"># ...</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">print</span> <span class="o">&gt;&gt;</span><span class="n">log_buffer</span><span class="p">,</span> <span class="s">&#39;waiting for a connection&#39;</span>
+        <span class="n">conn</span><span class="p">,</span> <span class="n">addr</span> <span class="o">=</span> <span class="n">sock</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span> <span class="c"># blocking</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">print</span> <span class="o">&gt;&gt;</span><span class="n">log_buffer</span><span class="p">,</span> <span class="s">&#39;connection - {0}{1}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">addr</span><span class="p">)</span>
+            <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1024</span><span class="p">:</span>
+                    <span class="k">break</span>
+
+            <span class="k">print</span> <span class="o">&gt;&gt;</span><span class="n">log_buffer</span><span class="p">,</span> <span class="s">&#39;sending response&#39;</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">response_ok</span><span class="p">()</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="c"># ...</span>
+</pre></div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Run The Tests</h3>
+    </hgroup>
+    <article class="">
+      <p>Once you've got that set, restart your server:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ python http_server.py
+</pre></div>
+</div>
+<div class="build container">
+<p>Then you can re-run your tests:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python tests.py
+<span class="o">[</span>...<span class="o">]</span>
+----------------------------------------------------------------------
+Ran 10 tests in 0.003s
+
+FAILED <span class="o">(</span><span class="nv">failures</span><span class="o">=</span>2, <span class="nv">errors</span><span class="o">=</span>3<span class="o">)</span>
+</pre></div>
+</div>
+<p>Five tests now pass!</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Step 2: Handling HTTP Methods</h3>
+    </hgroup>
+    <article class="">
+      <p>Every HTTP request <strong>must</strong> begin with a single line, broken by whitespace into
+three parts:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/path/to/index.html</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+<div class="build container">
+<p>The three parts are the <em>method</em>, the <em>URI</em>, and the <em>protocol</em></p>
+<p>Let's look at each in turn.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>HTTP Methods</h3>
+    </hgroup>
+    <article class="">
+      <p><strong>GET</strong> <tt class="docutils literal"><span class="pre">/path/to/index.html</span> <span class="pre">HTTP/1.1</span></tt></p>
+<ul class="build simple">
+<li>Every HTTP request must start with a <em>method</em></li>
+<li>There are four main HTTP methods:<ul class="build">
+<li>GET</li>
+<li>POST</li>
+<li>PUT</li>
+<li>DELETE</li>
+</ul>
+</li>
+<li>There are others, notably HEAD, but you won't see them too much</li>
+</ul>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>HTTP Methods</h3>
+    </hgroup>
+    <article class="">
+      <p>These four methods are mapped to the four basic steps (<em>CRUD</em>) of persistent
+storage:</p>
+<ul class="build simple">
+<li>POST = Create</li>
+<li>GET = Read</li>
+<li>PUT = Update</li>
+<li>DELETE = Delete</li>
+</ul>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Methods: Safe &lt;--&gt; Unsafe</h3>
+    </hgroup>
+    <article class="">
+      <p>HTTP methods can be categorized as <strong>safe</strong> or <strong>unsafe</strong>, based on whether
+they might change something on the server:</p>
+<div class="build container">
+<ul class="build simple">
+<li>Safe HTTP Methods<ul>
+<li>GET</li>
+</ul>
+</li>
+<li>Unsafe HTTP Methods<ul>
+<li>POST</li>
+<li>PUT</li>
+<li>DELETE</li>
+</ul>
+</li>
+</ul>
+<p>This is a <em>normative</em> distinction, which is to say <strong>be careful</strong></p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Methods: Idempotent &lt;--&gt; ???</h3>
+    </hgroup>
+    <article class="">
+      <p>HTTP methods can be categorized as <strong>idempotent</strong>.</p>
+<div class="build container">
+<p>This means that a given request will always have the same result:</p>
+<ul class="build simple">
+<li>Idempotent HTTP Methods<ul>
+<li>GET</li>
+<li>PUT</li>
+<li>DELETE</li>
+</ul>
+</li>
+<li>Non-Idempotent HTTP Methods<ul>
+<li>POST</li>
+</ul>
+</li>
+</ul>
+<p>Again, <em>normative</em>. The developer is responsible for ensuring that it is true.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>HTTP Method Handling</h3>
+    </hgroup>
+    <article class="">
+      <p>Let's keep things simple, our server will only respond to <em>GET</em> requests.</p>
+<div class="build container">
+<p>We need to create a function that parses a request and determines if we can
+respond to it: <tt class="docutils literal"><span class="pre">parse_request</span></tt>.</p>
+<p>If the request method is not <em>GET</em>, our method should raise an error</p>
+<p>Remember, although a request is more than one line long, all we care about
+here is the first line</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>My Solution</h3>
+    </hgroup>
+    <article class="">
+      <div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">parse_request</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">first_line</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">method</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">protocol</span> <span class="o">=</span> <span class="n">first_line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="o">!=</span> <span class="s">&quot;GET&quot;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s">&quot;We only accept GET&quot;</span><span class="p">)</span>
+    <span class="k">print</span> <span class="o">&gt;&gt;</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&#39;request is okay&#39;</span>
+</pre></div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Update the Server</h3>
+    </hgroup>
+    <article class="">
+      <p>We'll also need to update the server code. It should</p>
+<ul class="build simple">
+<li>save the request as it comes in</li>
+<li>check the request using our new function</li>
+<li>send an OK response if things go well</li>
+</ul>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>My Solution</h3>
+    </hgroup>
+    <article class="">
+      <div class="highlight-python"><div class="highlight"><pre><span class="c"># ...</span>
+<span class="n">conn</span><span class="p">,</span> <span class="n">addr</span> <span class="o">=</span> <span class="n">sock</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span> <span class="c"># blocking</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">print</span> <span class="o">&gt;&gt;</span><span class="n">log_buffer</span><span class="p">,</span> <span class="s">&#39;connection - {0}{1}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">addr</span><span class="p">)</span>
+    <span class="n">request</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+        <span class="n">request</span> <span class="o">+=</span> <span class="n">data</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1024</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="n">parse_request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="k">print</span> <span class="o">&gt;&gt;</span><span class="n">log_buffer</span><span class="p">,</span> <span class="s">&#39;sending response&#39;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">response_ok</span><span class="p">()</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="c"># ...</span>
+</pre></div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Run The Tests</h3>
+    </hgroup>
+    <article class="">
+      <p>Quit and restart your server now that you've updated the code:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ python http_server.py
+</pre></div>
+</div>
+<div class="build container">
+<p>At this point, we should have seven tests passing:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python tests.py
+Ran 10 tests in 0.002s
+
+FAILED <span class="o">(</span><span class="nv">failures</span><span class="o">=</span>1, <span class="nv">errors</span><span class="o">=</span>2<span class="o">)</span>
+</pre></div>
+</div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>What About a Browser?</h3>
+    </hgroup>
+    <article class="">
+      <p>Quit and restart your server, now that you've updated the code.</p>
+<div class="build container">
+<p>Reload your browser.  It should work fine.</p>
+<p>We can use the <tt class="docutils literal"><span class="pre">simple_client.py</span></tt> script in our resources to test our
+error condition.  In a second terminal window run the script like so:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ python simple_client.py &quot;POST / HTTP/1.0\r\n\r\n&quot;
+</pre></div>
+</div>
+<p>You'll have to quit the client pretty quickly with <tt class="docutils literal"><span class="pre">ctrl-c</span></tt></p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Step 3: Error Responses</h3>
+    </hgroup>
+    <article class="">
+      <p>Okay, so the outcome there was pretty ugly. The client went off the rails, and
+our server has terminated as well.</p>
+<div class="build container">
+<p>The HTTP protocol allows us to handle errors like this more gracefully.</p>
+<p class="centered"><strong>Enter the Response Code</strong></p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>HTTP Response Codes</h3>
+    </hgroup>
+    <article class="">
+      <p><tt class="docutils literal"><span class="pre">HTTP/1.1</span></tt> <strong>200 OK</strong></p>
+<p>All HTTP responses must include a <strong>response code</strong> indicating the outcome of
+the request.</p>
+<div class="build container">
+<ul class="build simple">
+<li>1xx (HTTP 1.1 only) - Informational message</li>
+<li>2xx - Success of some kind</li>
+<li>3xx - Redirection of some kind</li>
+<li>4xx - Client Error of some kind</li>
+<li>5xx - Server Error of some kind</li>
+</ul>
+<p>The text bit makes the code more human-readable</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Common Response Codes</h3>
+    </hgroup>
+    <article class="">
+      <p>There are certain HTTP response codes you are likely to see (and use) most
+often:</p>
+<div class="build container">
+<ul class="build simple">
+<li><tt class="docutils literal"><span class="pre">200</span> <span class="pre">OK</span></tt> - Everything is good</li>
+<li><tt class="docutils literal"><span class="pre">301</span> <span class="pre">Moved</span> <span class="pre">Permanently</span></tt> - You should update your link</li>
+<li><tt class="docutils literal"><span class="pre">304</span> <span class="pre">Not</span> <span class="pre">Modified</span></tt> - You should load this from cache</li>
+<li><tt class="docutils literal"><span class="pre">404</span> <span class="pre">Not</span> <span class="pre">Found</span></tt> - You've asked for something that doesn't exist</li>
+<li><tt class="docutils literal"><span class="pre">500</span> <span class="pre">Internal</span> <span class="pre">Server</span> <span class="pre">Error</span></tt> - Something bad happened</li>
+</ul>
+<p>Do not be afraid to use other, less common codes in building good apps.
+There are a lot of them for a reason. See</p>
+<q>
+<a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html">http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html</a></q>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Handling our Error</h3>
+    </hgroup>
+    <article class="">
+      <p>Luckily, there's an error code that is tailor-made for this situation.</p>
+<div class="build container">
+<p>The client has made a request using a method we do not support</p>
+<p><tt class="docutils literal"><span class="pre">405</span> <span class="pre">Method</span> <span class="pre">Not</span> <span class="pre">Allowed</span></tt></p>
+<p>Let's add a new function that returns this error code. It should be called
+<tt class="docutils literal"><span class="pre">response_method_not_allowed</span></tt></p>
+<p>Remember, it must be a complete HTTP Response with the correct <em>code</em></p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>My Solution</h3>
+    </hgroup>
+    <article class="">
+      <div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">response_method_not_allowed</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;returns a 405 Method Not Allowed response&quot;&quot;&quot;</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">resp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;HTTP/1.1 405 Method Not Allowed&quot;</span><span class="p">)</span>
+    <span class="n">resp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s">&quot;</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+</pre></div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Server Updates</h3>
+    </hgroup>
+    <article class="">
+      <p>Again, we'll need to update the server to handle this error condition
+correctly.  It should</p>
+<ul class="build simple">
+<li>catch the exception raised by the <tt class="docutils literal"><span class="pre">parse_request</span></tt> function</li>
+<li>create our new error response as a result</li>
+<li>if no exception is raised, then create the OK response</li>
+<li>return the generated response to the user</li>
+</ul>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>My Solution</h3>
+    </hgroup>
+    <article class="">
+      <div class="highlight-python"><div class="highlight"><pre><span class="c"># ...</span>
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+    <span class="n">request</span> <span class="o">+=</span> <span class="n">data</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1024</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span>
+        <span class="k">break</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">parse_request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">:</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">response_method_not_allowed</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">response_ok</span><span class="p">()</span>
+
+<span class="k">print</span> <span class="o">&gt;&gt;</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&#39;sending response&#39;</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+<span class="c"># ...</span>
+</pre></div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Run The Tests</h3>
+    </hgroup>
+    <article class="">
+      <p>Start your server (or restart it if by some miracle it's still going).</p>
+<div class="build container">
+<p>Then run the tests again:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ python tests.py
+[...]
+Ran 10 tests in 0.002s
+
+OK
+</pre></div>
+</div>
+<p>Wahoo! All our tests are passing. That means we are done writing code for
+now.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Step 4: Serving Resources</h3>
+    </hgroup>
+    <article class="">
+      <p>We've got a very simple server that accepts a request and sends a response.
+But what happens if we make a different request?</p>
+<div class="build container">
+<div class="container">
+<p>In your web browser, enter the following URL:</p>
+<div class="highlight-python"><div class="highlight"><pre>http://localhost:10000/page
+</pre></div>
+</div>
+</div>
+<div class="container">
+<p>What happened? What happens if you use this URL:</p>
+<div class="highlight-python"><div class="highlight"><pre>http://localhost:10000/section/page?
+</pre></div>
+</div>
+</div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Determining a Resource</h3>
+    </hgroup>
+    <article class="">
+      <p>We expect different urls to result in different responses.</p>
+<div class="build container">
+<p>Each separate <em>path</em> provided should map to a <em>resource</em></p>
+<p>But this isn't happening with our server, for obvious reasons.</p>
+<p>It brings us back to the second element of that first line of an HTTP
+request.</p>
+<p class="centered"><strong>The Return of the URI</strong></p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>HTTP Requests: URI</h3>
+    </hgroup>
+    <article class="">
+      <p><tt class="docutils literal"><span class="pre">GET</span></tt> <strong>/path/to/index.html</strong> <tt class="docutils literal"><span class="pre">HTTP/1.1</span></tt></p>
+<ul class="build simple">
+<li>Every HTTP request must include a <strong>URI</strong> used to determine the <strong>resource</strong> to
+be returned</li>
+<li>URI??
+<a class="reference external" href="http://stackoverflow.com/questions/176264/whats-the-difference-between-a-uri-and-a-url/1984225#1984225">http://stackoverflow.com/questions/176264/whats-the-difference-between-a-uri-and-a-url/1984225#1984225</a></li>
+<li>Resource?  Files (html, img, .js, .css), but also:<ul class="build">
+<li>Dynamic scripts</li>
+<li>Raw data</li>
+<li>API endpoints</li>
+</ul>
+</li>
+</ul>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Parsing a Request</h3>
+    </hgroup>
+    <article class="">
+      <p>Our <tt class="docutils literal"><span class="pre">parse_request</span></tt> method actually already finds the <tt class="docutils literal"><span class="pre">uri</span></tt> in the first
+line of a request</p>
+<div class="build container">
+<p>All we need to do is update the method so that it <em>returns</em> that uri</p>
+<p>Then we can use it.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>My Solution</h3>
+    </hgroup>
+    <article class="">
+      <div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">parse_request</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">first_line</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">method</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">protocol</span> <span class="o">=</span> <span class="n">first_line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="o">!=</span> <span class="s">&quot;GET&quot;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s">&quot;We only accept GET&quot;</span><span class="p">)</span>
+    <span class="k">print</span> <span class="o">&gt;&gt;</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&#39;request is okay&#39;</span>
+    <span class="c"># add the following line:</span>
+    <span class="k">return</span> <span class="n">uri</span>
+</pre></div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Pass It Along</h3>
+    </hgroup>
+    <article class="">
+      <p>Now we can update our server code so that it uses the return value of
+<tt class="docutils literal"><span class="pre">parse_request</span></tt>.</p>
+<div class="build container">
+<p>That's a pretty simple change:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">try</span><span class="p">:</span>
+    <span class="n">uri</span> <span class="o">=</span> <span class="n">parse_request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">:</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">response_method_not_allowed</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">content</span><span class="p">,</span> <span class="nb">type</span> <span class="o">=</span> <span class="n">resolve_uri</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span> <span class="c"># change this line</span>
+<span class="c"># and add this block</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">response_ok</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="nb">type</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">response_not_found</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Homework</h3>
+    </hgroup>
+    <article class="">
+      <p>You may have noticed that we just added a call to functions that don't exist</p>
+<div class="build container">
+<p>This is a common method for building working software, called
+<tt class="docutils literal"><span class="pre">pseudocode</span></tt></p>
+<p>It's a program that shows you what you want to do, but won't actually run.</p>
+<p>For your homework this week you will create these functions, completing the
+HTTP server.</p>
+<p>Your starting point will be what we've made here in class.</p>
+<p>A working copy of which is in <tt class="docutils literal"><span class="pre">resources/session05</span></tt> as
+<tt class="docutils literal"><span class="pre">http_server_at_home.py</span></tt></p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>One Step At A Time</h3>
+    </hgroup>
+    <article class="">
+      <p>Take the following steps one at a time. Run the tests in
+<tt class="docutils literal"><span class="pre">assignments/session02</span></tt> between to ensure that you are getting it right.</p>
+<ul class="build simple">
+<li>Update <tt class="docutils literal"><span class="pre">parse_request</span></tt> to return the URI it parses from the request.</li>
+<li>Write a new function <tt class="docutils literal"><span class="pre">resolve_uri</span></tt> that handles looking up resources on
+disk using the URI.</li>
+<li>Write a new function <tt class="docutils literal"><span class="pre">response_not_found</span></tt> that returns a 404 response if the
+resource does not exist.</li>
+<li>Update <tt class="docutils literal"><span class="pre">response_ok</span></tt> so that it uses the values returned by <tt class="docutils literal"><span class="pre">resolve_uri</span></tt>
+by the URI.</li>
+<li>You'll plug those values into the response you generate in the way required
+by the protocol</li>
+</ul>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>HTTP Headers</h3>
+    </hgroup>
+    <article class="">
+      <p>Along the way, you'll discover that simply returning as the body in
+response_ok is insufficient. Different <em>types</em> of content need to be
+identified to your browser</p>
+<div class="build container">
+<p>We can fix this by passing information about exactly what we are returning
+as part of the response.</p>
+<p>HTTP provides for this type of thing with the generic idea of <em>Headers</em></p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>HTTP Headers</h3>
+    </hgroup>
+    <article class="">
+      <p>Both requests and responses can contain <strong>headers</strong> of the form <tt class="docutils literal"><span class="pre">Name:</span> <span class="pre">Value</span></tt></p>
+<div class="build container">
+<ul class="build simple">
+<li>HTTP 1.0 has 16 valid headers, 1.1 has 46</li>
+<li>Any number of spaces or tabs may separate the <em>name</em> from the <em>value</em></li>
+<li>If a header line starts with spaces or tabs, it is considered part of the
+value for the previous header</li>
+<li>Header <em>names</em> are <strong>not</strong> case-sensitive, but <em>values</em> may be</li>
+</ul>
+<p>read more about HTTP headers: <a class="reference external" href="http://www.cs.tut.fi/~jkorpela/http.html">http://www.cs.tut.fi/~jkorpela/http.html</a></p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Content-Type Header</h3>
+    </hgroup>
+    <article class="">
+      <p>A very common header used in HTTP responses is <tt class="docutils literal"><span class="pre">Content-Type</span></tt>. It tells the
+client what to expect.</p>
+<ul class="build simple">
+<li>uses <strong>mime-type</strong> (Multi-purpose Internet Mail Extensions)</li>
+<li>foo.jpeg - <tt class="docutils literal"><span class="pre">Content-Type:</span> <span class="pre">image/jpeg</span></tt></li>
+<li>foo.png - <tt class="docutils literal"><span class="pre">Content-Type:</span> <span class="pre">image/png</span></tt></li>
+<li>bar.txt - <tt class="docutils literal"><span class="pre">Content-Type:</span> <span class="pre">text/plain</span></tt></li>
+<li>baz.html - <tt class="docutils literal"><span class="pre">Content-Type:</span> <span class="pre">text/html</span></tt></li>
+</ul>
+<p class="build">There are <em>many</em> mime-type identifiers:
+<a class="reference external" href="http://www.webmaster-toolkit.com/mime-types.shtml">http://www.webmaster-toolkit.com/mime-types.shtml</a></p>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Mapping Mime-types</h3>
+    </hgroup>
+    <article class="">
+      <p>By mapping a given file to a mime-type, we can write a header.</p>
+<p class="build">The standard lib module <tt class="docutils literal"><span class="pre">mimetypes</span></tt> does just this.</p>
+<div class="incremental container">
+<p>We can guess the mime-type of a file based on the filename or map a file
+extension to a type:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">mimetypes</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mimetypes</span><span class="o">.</span><span class="n">guess_type</span><span class="p">(</span><span class="s">&#39;file.txt&#39;</span><span class="p">)</span>
+<span class="go">(&#39;text/plain&#39;, None)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mimetypes</span><span class="o">.</span><span class="n">types_map</span><span class="p">[</span><span class="s">&#39;.txt&#39;</span><span class="p">]</span>
+<span class="go">&#39;text/plain&#39;</span>
+</pre></div>
+</div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Resolving a URI</h3>
+    </hgroup>
+    <article class="">
+      <p>Your <tt class="docutils literal"><span class="pre">resolve_uri</span></tt> function will need to accomplish the following tasks:</p>
+<ul class="build simple">
+<li>It should take a URI as the sole argument</li>
+<li>It should map the pathname represented by the URI to a filesystem location.</li>
+<li>It should have a 'home directory', and look only in that location.</li>
+<li>If the URI is a directory, it should return a plain-text listing and the
+mimetype <tt class="docutils literal"><span class="pre">text/plain</span></tt>.</li>
+<li>If the URI is a file, it should return the contents of that file and its
+correct mimetype.</li>
+<li>If the URI does not map to a real location, it should raise an exception
+that the server can catch to return a 404 response.</li>
+</ul>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Use Your Tests</h3>
+    </hgroup>
+    <article class="">
+      <p>One of the benefits of test-driven development is that the tests that are
+failing should tell you what code you need to write.</p>
+<p class="build">As you work your way through the steps outlined above, look at your tests.
+Write code that makes them pass.</p>
+<p class="build">If all the tests in <tt class="docutils literal"><span class="pre">assignments/session02/tests.py</span></tt> are passing, you've
+completed the assignment.</p>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Submitting Your Homework</h3>
+    </hgroup>
+    <article class="">
+      <p>To submit your homework:</p>
+<ul class="simple">
+<li>Do your work in the <tt class="docutils literal"><span class="pre">assignments/session02</span></tt> directory of <strong>your fork</strong> of
+the class respository</li>
+<li>When you have all tests passing, push your work to <strong>your fork</strong> in github.</li>
+<li>Using the github web interface, send me a pull request.</li>
+</ul>
+<p class="build">I will review your work when I receive your pull requests, make comments on it
+there, and then close the pull request.</p>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>A Few Steps Further</h3>
+    </hgroup>
+    <article class="">
+      <p>If you are able to finish the above in less than 4-6 hours, consider taking on
+one or more of the following challenges:</p>
+<ul class="build simple">
+<li>Format directory listings as HTML, so you can link to files.</li>
+<li>Add a GMT <tt class="docutils literal"><span class="pre">Date:</span></tt> header in the proper format (RFC-1123) to responses.
+<em>hint: see email.utils.formatdate in the python standard library</em></li>
+<li>Add a <tt class="docutils literal"><span class="pre">Content-Length:</span></tt> header for <tt class="docutils literal"><span class="pre">OK</span></tt> responses that provides a
+correct value.</li>
+<li>Protect your server against errors by providing, and using, a function that
+returns a <tt class="docutils literal"><span class="pre">500</span> <span class="pre">Internal</span> <span class="pre">Server</span> <span class="pre">Error</span></tt> response.</li>
+<li>Instead of returning the python script in <tt class="docutils literal"><span class="pre">webroot</span></tt> as plain text, execute
+the file and return the results as HTML.</li>
+</ul>
+
+
+
+
+    </article>
+  </slide>
+
+
+    <slide class="thank-you-slide segue nobackground">
+    <aside class="gdbar right"><img src="../_static/logo_UW.png"></aside>
+    <article class="flexbox vleft auto-fadein">
+      <h2>&lt;Thank You!&gt;</h2>
+      <p>&nbsp;</p>
+    </article>
+    <p class="auto-fadein" data-config-contact>
+      <!-- populated from slide_config.json -->
+    </p>
+  </slide>
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
