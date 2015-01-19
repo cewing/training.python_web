@@ -629,7 +629,7 @@ We'll use that form in a view to log in (in ``learning_journal/views.py``):
     .. code-block:: python
 
         # a new imports:
-        from pyramid.security import remember
+        from pyramid.security import forget, remember
         from .forms import LoginForm
         from .models import User
 
@@ -644,6 +644,10 @@ We'll use that form in a view to log in (in ``learning_journal/views.py``):
                 user = User.by_name(login_form.username.data)
                 if user and user.verify_password(login_form.password.data):
                     headers = remember(request, user.name)
+                else:
+                    headers = forget(request)
+            else:
+                headers = forget(request)
             return HTTPFound(location=request.route_url('home'),
                              headers=headers)
 
@@ -862,7 +866,7 @@ package.
 .. rst-class:: build
 .. container::
 
-    That allows us to use the database initialization script we've created.
+    This will ensure that the dependencies for the application are installed.
 
     Add a new file called simply ``run`` in the same folder:
 
@@ -872,21 +876,38 @@ package.
         python setup.py develop
         python runapp.py
 
-    The first line of this file will install our application and verify its
+    The first line of this file will install our application and its
     dependencies.
 
     The second line will execute the server script.
 
-    Now, add these two new files to your repository and commit them.
+.. nextslide:: Build the Database
 
-.. nextslide:: Make it Executable
-
-In order for this file to run, it needs to be *executable*
+We'll need to do the same thing for initializing the database.
 
 .. rst-class:: build
 .. container::
 
-    For OSX and Linux users this is easy:
+    Create another new file called ``build_db`` in the same folder:
+
+    .. code-block:: bash
+    
+        #!/bin/bash
+        python setup.py develop
+        initialize_learning_journal_db production.ini
+
+    Now, add ``run``, ``build_db`` and ``runapp.py`` to your repository and
+    commit the changes.
+
+.. nextslide:: Make it Executable
+
+For Heroku to use them, ``run`` and ``build_db`` must be *executable*
+
+.. rst-class:: build
+.. container::
+
+    For OSX and Linux users this is easy (do the same for ``run`` and
+    ``build_db``):
 
     .. code-block:: bash
     
@@ -894,7 +915,7 @@ In order for this file to run, it needs to be *executable*
 
     Windows users, if you have ``git-bash``, you can do the same
 
-    For the rest of you, try this:
+    For the rest of you, try this (for both ``run`` and ``build_db``):
 
     .. code-block:: posh
     
@@ -906,6 +927,7 @@ In order for this file to run, it needs to be *executable*
         100755 blob 3689ebe2a18a1c8ec858cf531d8c0ec34c8405b4    run
 
     Commit your changes to git to make them permanent.
+
 
 .. nextslide:: Procfile
 
@@ -1200,6 +1222,34 @@ We are now ready to deploy our application.
     .. code-block:: bash
     
         (ljenv)$ git push heroku master
+        ...
+        remote: Building source:
+        remote:
+        remote: -----> Python app detected
+        ...
+        remote: Verifying deploy... done.
+        To https://git.heroku.com/rocky-atoll-9934.git
+           b59b7c3..54f7e4d  master -> master
+
+.. nextslide:: Using ``heroku run``
+
+You can use the ``run`` command to execute arbitrary commands in the Heroku
+environment.
+
+.. rst-class:: build
+.. container::
+
+    You'll need to do this to install our app and initialize the database:
+
+    .. code-block:: bash
+    
+        (ljenv)$ heroku run python setup.py develop
+        ...
+        Finished processing dependencies for learning-journal==0.0
+        (ljenv)$ heroku run initialize_learning_journal_db production
+
+
+
 
 outline
 -------
