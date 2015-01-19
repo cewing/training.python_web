@@ -987,7 +987,7 @@ file to your repository.</p>
 <p>This object represents the connection to the database.</p>
 <p>All database queries are phrased as methods of the session.</p>
 <div class="container">
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">MyModel</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">MyModel</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
 <span class="go">&lt;class &#39;sqlalchemy.orm.query.Query&#39;&gt;</span>
 </pre></div>
@@ -1152,8 +1152,8 @@ it&#8217;s been updated:</p>
 <div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">MyModel</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">MyModel</span><span class="o">.</span><span class="n">value</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">):</span>
 <span class="gp">... </span>  <span class="k">print</span> <span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">value</span>
 <span class="gp">...</span>
-<span class="go">larry 1</span>
-<span class="go">fred 3</span>
+<span class="go">one 1</span>
+<span class="go">larry 3</span>
 <span class="go">tom 13</span>
 </pre></div>
 </div>
@@ -1163,8 +1163,8 @@ it&#8217;s been updated:</p>
 <div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">MyModel</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">MyModel</span><span class="o">.</span><span class="n">value</span><span class="p">):</span>
 <span class="gp">... </span>  <span class="k">print</span> <span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">value</span>
 <span class="gp">...</span>
-<span class="go">larry 1</span>
-<span class="go">fred 3</span>
+<span class="go">one 1</span>
+<span class="go">larry 3</span>
 <span class="go">tom 13</span>
 <span class="go">bob 34</span>
 </pre></div>
@@ -1173,8 +1173,8 @@ it&#8217;s been updated:</p>
 <span class="gp">... </span>  <span class="k">print</span> <span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">value</span>
 <span class="gp">...</span>
 <span class="go">bob 34</span>
-<span class="go">fred 3</span>
-<span class="go">larry 1</span>
+<span class="go">larry 3</span>
+<span class="go">one 1</span>
 <span class="go">tom 13</span>
 </pre></div>
 </div>
@@ -1187,8 +1187,8 @@ it&#8217;s been updated:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">q1</span><span class="p">:</span>
 <span class="gp">... </span>  <span class="k">print</span> <span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">value</span>
 <span class="gp">...</span>
-<span class="go">fred 3</span>
-<span class="go">larry 1</span>
+<span class="go">larry 3</span>
+<span class="go">one 1</span>
 <span class="go">tom 13</span>
 </pre></div>
 </div>

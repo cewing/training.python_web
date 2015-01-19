@@ -37,7 +37,7 @@ Questions About the Homework?
     class EntryEditForm(EntryCreateForm):
         id = HiddenField()
 
-`View this online <https://github.com/cewing/training.python_web/blob/5e02f6f84322145433c515c191679ccf976dcae4/resources/session03/forms.py#L25>`_
+`View the form online <https://github.com/cewing/training.python_web/blob/5e02f6f84322145433c515c191679ccf976dcae4/resources/session03/forms.py#L25>`_
 
 .. nextslide:: A Working Edit View
 
@@ -56,7 +56,7 @@ Questions About the Homework?
             return HTTPFound(location=request.route_url('detail', id=entry.id))
         return {'form': form, 'action': request.matchdict.get('action')}
 
-`View this online <https://github.com/cewing/training.python_web/blob/5e02f6f84322145433c515c191679ccf976dcae4/resources/session03/views.py#L43>`_
+`See this view online <https://github.com/cewing/training.python_web/blob/5e02f6f84322145433c515c191679ccf976dcae4/resources/session03/views.py#L43>`_
 
 .. nextslide:: Linking to the Edit Form
 
@@ -75,7 +75,7 @@ Questions About the Homework?
     {% endblock %}
 
 
-`View this online <https://github.com/cewing/training.python_web/blob/9e1c9db3a379d1d63371cffddaf8e63f862872c8/resources/session03/detail.jinja2#L12>`_
+`View this template online <https://github.com/cewing/training.python_web/blob/9e1c9db3a379d1d63371cffddaf8e63f862872c8/resources/session03/detail.jinja2#L12>`_
 
 .. nextslide:: A Working User Model
 
@@ -91,7 +91,7 @@ Questions About the Homework?
         def by_name(cls, name):
             return DBSession.query(User).filter(User.name == name).first()
 
-`View this online <https://github.com/cewing/training.python_web/blob/5e02f6f84322145433c515c191679ccf976dcae4/resources/session03/models.py#L62>`_
+`View this model online <https://github.com/cewing/training.python_web/blob/5e02f6f84322145433c515c191679ccf976dcae4/resources/session03/models.py#L62>`_
 
 Securing An Application
 =======================
@@ -222,13 +222,14 @@ We've now informed our application that we want to use security.
 .. rst-class:: build
 .. container::
 
-    We've told it that by default we want a principal to have the 'view'
-    permission to see anything.
+    By default we require the 'view' permission to see anything.
 
-    Let's verify that this worked.
+    But we have yet to assign *any permissions to anyone* at all.
 
-    Start your application, and try to view any page (You should get 403
-    Forbidden):
+    Let's verify now that we are unable to see anything in the website.
+
+    Start your application, and try to view any page (You should get a 403
+    Forbidden error response):
 
     .. code-block:: bash
 
@@ -619,39 +620,32 @@ It would be nice to use the form library again to make a login form.
             )
 
 
-.. nextslide:: Login View
+.. nextslide:: Login View in ``learning_journal/views.py``
 
-We'll use that form in a view to log in (in ``learning_journal/views.py``):
+.. code-block:: python
 
-.. rst-class:: build
-.. container::
-
-    .. code-block:: python
-
-        # a new imports:
-        from pyramid.security import forget, remember
-        from .forms import LoginForm
-        from .models import User
-
-        # and a new view
-        @view_config(route_name='auth', match_param='action=in', renderer='string',
-             request_method='POST')
-        def sign_in(request):
-            login_form = None
-            if request.method == 'POST':
-                login_form = LoginForm(request.POST)
-            if login_form and login_form.validate():
-                user = User.by_name(login_form.username.data)
-                if user and user.verify_password(login_form.password.data):
-                    headers = remember(request, user.name)
-                else:
-                    headers = forget(request)
+    # new imports:
+    from pyramid.security import forget, remember
+    from .forms import LoginForm
+    from .models import User
+    # and a new view
+    @view_config(route_name='auth', match_param='action=in', renderer='string',
+         request_method='POST')
+    def sign_in(request):
+        login_form = None
+        if request.method == 'POST':
+            login_form = LoginForm(request.POST)
+        if login_form and login_form.validate():
+            user = User.by_name(login_form.username.data)
+            if user and user.verify_password(login_form.password.data):
+                headers = remember(request, user.name)
             else:
                 headers = forget(request)
-            return HTTPFound(location=request.route_url('home'),
-                             headers=headers)
+        else:
+            headers = forget(request)
+        return HTTPFound(location=request.route_url('home'), headers=headers)
 
-.. nextslide:: Where's the form?
+.. nextslide:: Where's the Renderer?
 
 Notice that this view doesn't render anything. No matter what, you end up
 returning to the ``home`` route.
@@ -1383,7 +1377,7 @@ The chief advantage of Heroku is that we can re-deploy with a single command.
 
     Add and commit your changes to git.
 
-    Then re-deply by pushing to the ``heroku master``:
+    Then re-deploy by pushing to the ``heroku master``:
 
     .. code-block:: bash
 
@@ -1478,10 +1472,10 @@ It would be nice if our journal entries could have HTML formatting.
 
     We could write HTML by hand in the body field, but that'd be a pain.
 
-    Instead, let's allow ourselves to write entries in `Markdown`_, a popular
+    Instead, let's allow ourselves to write entries `in Markdown`_, a popular
     markup syntax used by GitHub and many other websites.
 
-    .. _Markdown: http://daringfireball.net/projects/markdown/syntax
+    .. _in Markdown: http://daringfireball.net/projects/markdown/syntax
 
     Python provides several libraries that implement markdown formatting.
 
@@ -1715,7 +1709,7 @@ with this feature.
             )
             return output
 
-    Now, you'll be able to make hilighted code like so:
+    Now, you'll be able to make highlighted code blocks just like in GitHub:
 
     .. code-block:: text
 

@@ -121,7 +121,7 @@ public server.</p>
     <span class="nb">id</span> <span class="o">=</span> <span class="n">HiddenField</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><a class="reference external" href="https://github.com/cewing/training.python_web/blob/5e02f6f84322145433c515c191679ccf976dcae4/resources/session03/forms.py#L25">View this online</a></p>
+<p><a class="reference external" href="https://github.com/cewing/training.python_web/blob/5e02f6f84322145433c515c191679ccf976dcae4/resources/session03/forms.py#L25">View the form online</a></p>
 
 
 
@@ -146,7 +146,7 @@ public server.</p>
     <span class="k">return</span> <span class="p">{</span><span class="s">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span> <span class="s">&#39;action&#39;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">matchdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;action&#39;</span><span class="p">)}</span>
 </pre></div>
 </div>
-<p><a class="reference external" href="https://github.com/cewing/training.python_web/blob/5e02f6f84322145433c515c191679ccf976dcae4/resources/session03/views.py#L43">View this online</a></p>
+<p><a class="reference external" href="https://github.com/cewing/training.python_web/blob/5e02f6f84322145433c515c191679ccf976dcae4/resources/session03/views.py#L43">See this view online</a></p>
 
 
 
@@ -170,7 +170,7 @@ public server.</p>
 {% endblock %}
 </pre></div>
 </div>
-<p><a class="reference external" href="https://github.com/cewing/training.python_web/blob/9e1c9db3a379d1d63371cffddaf8e63f862872c8/resources/session03/detail.jinja2#L12">View this online</a></p>
+<p><a class="reference external" href="https://github.com/cewing/training.python_web/blob/9e1c9db3a379d1d63371cffddaf8e63f862872c8/resources/session03/detail.jinja2#L12">View this template online</a></p>
 
 
 
@@ -192,7 +192,7 @@ public server.</p>
         <span class="k">return</span> <span class="n">DBSession</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">User</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><a class="reference external" href="https://github.com/cewing/training.python_web/blob/5e02f6f84322145433c515c191679ccf976dcae4/resources/session03/models.py#L62">View this online</a></p>
+<p><a class="reference external" href="https://github.com/cewing/training.python_web/blob/5e02f6f84322145433c515c191679ccf976dcae4/resources/session03/models.py#L62">View this model online</a></p>
 
 
 
@@ -327,11 +327,11 @@ permissions to <em>principals</em></li>
     <article class="">
       <p>We've now informed our application that we want to use security.</p>
 <div class="build container">
-<p>We've told it that by default we want a principal to have the 'view'
-permission to see anything.</p>
-<p>Let's verify that this worked.</p>
-<p>Start your application, and try to view any page (You should get 403
-Forbidden):</p>
+<p>By default we require the 'view' permission to see anything.</p>
+<p>But we have yet to assign <em>any permissions to anyone</em> at all.</p>
+<p>Let's verify now that we are unable to see anything in the website.</p>
+<p>Start your application, and try to view any page (You should get a 403
+Forbidden error response):</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>pserve development.ini
 Starting server in PID 84467.
 serving on http://0.0.0.0:6543
@@ -754,16 +754,13 @@ password against this encrypted version.</p>
     </article>
   </slide>  <slide class="level-3">
     <hgroup>
-      <h3>Login View</h3>
+      <h3>Login View in <tt class="docutils literal"><span class="pre">learning_journal/views.py</span></tt></h3>
     </hgroup>
     <article class="">
-      <p>We'll use that form in a view to log in (in <tt class="docutils literal"><span class="pre">learning_journal/views.py</span></tt>):</p>
-<div class="build container">
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># a new imports:</span>
+      <div class="highlight-python"><div class="highlight"><pre><span class="c"># new imports:</span>
 <span class="kn">from</span> <span class="nn">pyramid.security</span> <span class="kn">import</span> <span class="n">forget</span><span class="p">,</span> <span class="n">remember</span>
 <span class="kn">from</span> <span class="nn">.forms</span> <span class="kn">import</span> <span class="n">LoginForm</span>
 <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">User</span>
-
 <span class="c"># and a new view</span>
 <span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="s">&#39;auth&#39;</span><span class="p">,</span> <span class="n">match_param</span><span class="o">=</span><span class="s">&#39;action=in&#39;</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="s">&#39;string&#39;</span><span class="p">,</span>
      <span class="n">request_method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">)</span>
@@ -779,10 +776,8 @@ password against this encrypted version.</p>
             <span class="n">headers</span> <span class="o">=</span> <span class="n">forget</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">headers</span> <span class="o">=</span> <span class="n">forget</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">HTTPFound</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">route_url</span><span class="p">(</span><span class="s">&#39;home&#39;</span><span class="p">),</span>
-                     <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">HTTPFound</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">route_url</span><span class="p">(</span><span class="s">&#39;home&#39;</span><span class="p">),</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
 </pre></div>
-</div>
 </div>
 
 
@@ -791,7 +786,7 @@ password against this encrypted version.</p>
     </article>
   </slide>  <slide class="level-3">
     <hgroup>
-      <h3>Where's the form?</h3>
+      <h3>Where's the Renderer?</h3>
     </hgroup>
     <article class="">
       <p>Notice that this view doesn't render anything. No matter what, you end up
@@ -1570,7 +1565,7 @@ better.</p>
       <p>The chief advantage of Heroku is that we can re-deploy with a single command.</p>
 <div class="build container">
 <p>Add and commit your changes to git.</p>
-<p>Then re-deply by pushing to the <tt class="docutils literal"><span class="pre">heroku</span> <span class="pre">master</span></tt>:</p>
+<p>Then re-deploy by pushing to the <tt class="docutils literal"><span class="pre">heroku</span> <span class="pre">master</span></tt>:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>git push heroku master
 </pre></div>
 </div>
@@ -1674,7 +1669,7 @@ is <strong>not</strong> an authenticated user.</p>
       <p>It would be nice if our journal entries could have HTML formatting.</p>
 <div class="build container">
 <p>We could write HTML by hand in the body field, but that'd be a pain.</p>
-<p>Instead, let's allow ourselves to write entries in <a href="#id66"><span class="problematic" id="id67">`Markdown`_</span></a>, a popular
+<p>Instead, let's allow ourselves to write entries <a class="reference external" href="http://daringfireball.net/projects/markdown/syntax">in Markdown</a>, a popular
 markup syntax used by GitHub and many other websites.</p>
 <p>Python provides several libraries that implement markdown formatting.</p>
 <p>They will take text that contains markdown formatting and convert it to
@@ -1693,7 +1688,7 @@ HTML.</p>
     <article class="">
       <p>The first step, is to pick a package and add it to our dependencies.</p>
 <div class="build container">
-<p>My recommendation is the <a href="#id68"><span class="problematic" id="id69">`markdown`_</span></a> python library.</p>
+<p>My recommendation is the <a class="reference external" href="https://pythonhosted.org/Markdown/">markdown</a> python library.</p>
 <p>Open <tt class="docutils literal"><span class="pre">setup.py</span></tt> and add the package to the <tt class="docutils literal"><span class="pre">requires</span></tt> list:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">requires</span> <span class="o">=</span> <span class="p">[</span>
     <span class="c"># ...</span>
@@ -1913,7 +1908,7 @@ with this feature.</p>
     <span class="k">return</span> <span class="n">output</span>
 </pre></div>
 </div>
-<p>Now, you'll be able to make hilighted code like so:</p>
+<p>Now, you'll be able to make highlighted code blocks just like in GitHub:</p>
 <div class="highlight-text"><div class="highlight"><pre>```python
 def foo(x, y):
     return x**y

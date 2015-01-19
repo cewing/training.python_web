@@ -1415,7 +1415,7 @@ Any interaction with the database requires a ``session``.
 
         .. code-block:: pycon
 
-            >>> query = session.query(MyModel).all()
+            >>> query = session.query(MyModel)
             >>> type(query)
             <class 'sqlalchemy.orm.query.Query'>
 
@@ -1652,8 +1652,8 @@ Returning to queries, the second category is typified by the ``filter`` method
         >>> for obj in session.query(MyModel).filter(MyModel.value < 20):
         ...   print obj.name, obj.value
         ...
-        larry 1
-        fred 3
+        one 1
+        larry 3
         tom 13
 
 .. nextslide:: ``order_by``
@@ -1668,8 +1668,8 @@ Another typical method in this category is ``order_by``:
         >>> for obj in session.query(MyModel).order_by(MyModel.value):
         ...   print obj.name, obj.value
         ...
-        larry 1
-        fred 3
+        one 1
+        larry 3
         tom 13
         bob 34
 
@@ -1679,8 +1679,8 @@ Another typical method in this category is ``order_by``:
         ...   print obj.name, obj.value
         ...
         bob 34
-        fred 3
-        larry 1
+        larry 3
+        one 1
         tom 13
 
 .. nextslide:: Method Chaining
@@ -1698,8 +1698,8 @@ Since methods in this category return ``Query`` objects, they can be safely
         >>> for obj in q1:
         ...   print obj.name, obj.value
         ...
-        fred 3
-        larry 1
+        larry 3
+        one 1
         tom 13
 
     Note that you can do this inline as well

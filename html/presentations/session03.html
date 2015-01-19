@@ -86,7 +86,7 @@ public server.</p>
     <span class="nb">id</span> <span class="o">=</span> <span class="n">HiddenField</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><a class="reference external" href="https://github.com/cewing/training.python_web/blob/5e02f6f84322145433c515c191679ccf976dcae4/resources/session03/forms.py#L25">View this online</a></p>
+<p><a class="reference external" href="https://github.com/cewing/training.python_web/blob/5e02f6f84322145433c515c191679ccf976dcae4/resources/session03/forms.py#L25">View the form online</a></p>
 <div class="highlight-python"><div class="highlight"><pre><span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="s">&#39;action&#39;</span><span class="p">,</span> <span class="n">match_param</span><span class="o">=</span><span class="s">&#39;action=edit&#39;</span><span class="p">,</span>
              <span class="n">renderer</span><span class="o">=</span><span class="s">&#39;templates/edit.jinja2&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
@@ -101,7 +101,7 @@ public server.</p>
     <span class="k">return</span> <span class="p">{</span><span class="s">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span> <span class="s">&#39;action&#39;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">matchdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;action&#39;</span><span class="p">)}</span>
 </pre></div>
 </div>
-<p><a class="reference external" href="https://github.com/cewing/training.python_web/blob/5e02f6f84322145433c515c191679ccf976dcae4/resources/session03/views.py#L43">View this online</a></p>
+<p><a class="reference external" href="https://github.com/cewing/training.python_web/blob/5e02f6f84322145433c515c191679ccf976dcae4/resources/session03/views.py#L43">See this view online</a></p>
 <div class="highlight-html+jinja"><div class="highlight"><pre>{% extends &quot;layout.jinja2&quot; %}
 {% block body %}
 &lt;article&gt;
@@ -115,7 +115,7 @@ public server.</p>
 {% endblock %}
 </pre></div>
 </div>
-<p><a class="reference external" href="https://github.com/cewing/training.python_web/blob/9e1c9db3a379d1d63371cffddaf8e63f862872c8/resources/session03/detail.jinja2#L12">View this online</a></p>
+<p><a class="reference external" href="https://github.com/cewing/training.python_web/blob/9e1c9db3a379d1d63371cffddaf8e63f862872c8/resources/session03/detail.jinja2#L12">View this template online</a></p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
     <span class="n">__tablename__</span> <span class="o">=</span> <span class="s">&#39;users&#39;</span>
     <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
@@ -127,7 +127,7 @@ public server.</p>
         <span class="k">return</span> <span class="n">DBSession</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">User</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><a class="reference external" href="https://github.com/cewing/training.python_web/blob/5e02f6f84322145433c515c191679ccf976dcae4/resources/session03/models.py#L62">View this online</a></p>
+<p><a class="reference external" href="https://github.com/cewing/training.python_web/blob/5e02f6f84322145433c515c191679ccf976dcae4/resources/session03/models.py#L62">View this model online</a></p>
 </div>
 </div>
 <div class="section" id="securing-an-application">
@@ -208,11 +208,11 @@ permissions to <em>principals</em></li>
 </div>
 <p>We&#8217;ve now informed our application that we want to use security.</p>
 <div class="build container">
-<p>We&#8217;ve told it that by default we want a principal to have the &#8216;view&#8217;
-permission to see anything.</p>
-<p>Let&#8217;s verify that this worked.</p>
-<p>Start your application, and try to view any page (You should get 403
-Forbidden):</p>
+<p>By default we require the &#8216;view&#8217; permission to see anything.</p>
+<p>But we have yet to assign <em>any permissions to anyone</em> at all.</p>
+<p>Let&#8217;s verify now that we are unable to see anything in the website.</p>
+<p>Start your application, and try to view any page (You should get a 403
+Forbidden error response):</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>pserve development.ini
 Starting server in PID 84467.
 serving on http://0.0.0.0:6543
@@ -477,13 +477,10 @@ password against this encrypted version.</p>
 </pre></div>
 </div>
 </div>
-<p>We&#8217;ll use that form in a view to log in (in <tt class="docutils literal"><span class="pre">learning_journal/views.py</span></tt>):</p>
-<div class="build container">
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># a new imports:</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># new imports:</span>
 <span class="kn">from</span> <span class="nn">pyramid.security</span> <span class="kn">import</span> <span class="n">forget</span><span class="p">,</span> <span class="n">remember</span>
 <span class="kn">from</span> <span class="nn">.forms</span> <span class="kn">import</span> <span class="n">LoginForm</span>
 <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">User</span>
-
 <span class="c"># and a new view</span>
 <span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="s">&#39;auth&#39;</span><span class="p">,</span> <span class="n">match_param</span><span class="o">=</span><span class="s">&#39;action=in&#39;</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="s">&#39;string&#39;</span><span class="p">,</span>
      <span class="n">request_method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">)</span>
@@ -499,10 +496,8 @@ password against this encrypted version.</p>
             <span class="n">headers</span> <span class="o">=</span> <span class="n">forget</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">headers</span> <span class="o">=</span> <span class="n">forget</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">HTTPFound</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">route_url</span><span class="p">(</span><span class="s">&#39;home&#39;</span><span class="p">),</span>
-                     <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">HTTPFound</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">route_url</span><span class="p">(</span><span class="s">&#39;home&#39;</span><span class="p">),</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
 </pre></div>
-</div>
 </div>
 <p>Notice that this view doesn&#8217;t render anything. No matter what, you end up
 returning to the <tt class="docutils literal"><span class="pre">home</span></tt> route.</p>
@@ -581,8 +576,8 @@ it with friends and family.</p>
 deploying web applications today, <a class="reference external" href="http://heroku.com">Heroku</a>.</p>
 </div>
 </div>
-<div class="section" id="id4">
-<h3>Heroku<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id1">
+<h3>Heroku<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <div class="figure align-center">
 <a class="reference internal image-reference" href="../_images/heroku-logo.png"><img alt="../_images/heroku-logo.png" src="../_images/heroku-logo.png" style="width: 40%;" /></a>
 </div>
@@ -984,7 +979,7 @@ better.</p>
 <p>The chief advantage of Heroku is that we can re-deploy with a single command.</p>
 <div class="build container">
 <p>Add and commit your changes to git.</p>
-<p>Then re-deply by pushing to the <tt class="docutils literal"><span class="pre">heroku</span> <span class="pre">master</span></tt>:</p>
+<p>Then re-deploy by pushing to the <tt class="docutils literal"><span class="pre">heroku</span> <span class="pre">master</span></tt>:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>git push heroku master
 </pre></div>
 </div>
@@ -1054,7 +1049,7 @@ is <strong>not</strong> an authenticated user.</p>
 <p>It would be nice if our journal entries could have HTML formatting.</p>
 <div class="build container">
 <p>We could write HTML by hand in the body field, but that&#8217;d be a pain.</p>
-<p>Instead, let&#8217;s allow ourselves to write entries in <a href="#id6"><span class="problematic" id="id7">`Markdown`_</span></a>, a popular
+<p>Instead, let&#8217;s allow ourselves to write entries <a class="reference external" href="http://daringfireball.net/projects/markdown/syntax">in Markdown</a>, a popular
 markup syntax used by GitHub and many other websites.</p>
 <p>Python provides several libraries that implement markdown formatting.</p>
 <p>They will take text that contains markdown formatting and convert it to
@@ -1063,7 +1058,7 @@ HTML.</p>
 </div>
 <p>The first step, is to pick a package and add it to our dependencies.</p>
 <div class="build container">
-<p>My recommendation is the <a href="#id8"><span class="problematic" id="id9">`markdown`_</span></a> python library.</p>
+<p>My recommendation is the <a class="reference external" href="https://pythonhosted.org/Markdown/">markdown</a> python library.</p>
 <p>Open <tt class="docutils literal"><span class="pre">setup.py</span></tt> and add the package to the <tt class="docutils literal"><span class="pre">requires</span></tt> list:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">requires</span> <span class="o">=</span> <span class="p">[</span>
     <span class="c"># ...</span>
@@ -1206,7 +1201,7 @@ with this feature.</p>
     <span class="k">return</span> <span class="n">output</span>
 </pre></div>
 </div>
-<p>Now, you&#8217;ll be able to make hilighted code like so:</p>
+<p>Now, you&#8217;ll be able to make highlighted code blocks just like in GitHub:</p>
 <div class="highlight-text"><div class="highlight"><pre>```python
 def foo(x, y):
     return x**y
@@ -1288,7 +1283,7 @@ that lies beneath everything we&#8217;ve just built.</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#deploying-an-application">Deploying An Application</a><ul>
-<li><a class="reference internal" href="#id4">Heroku</a></li>
+<li><a class="reference internal" href="#id1">Heroku</a></li>
 <li><a class="reference internal" href="#preparing-to-run-your-app">Preparing to Run Your App</a></li>
 <li><a class="reference internal" href="#set-up-a-heroku-app">Set Up a Heroku App</a></li>
 <li><a class="reference internal" href="#configuration-for-heroku">Configuration for Heroku</a></li>
