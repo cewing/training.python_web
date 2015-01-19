@@ -854,7 +854,7 @@ find ``setup.py``, create a new file: ``runapp.py``
     Once this exists, you can try running your app with it:
 
     .. code-block:: bash
-    
+
         (ljenv)$ python runapp.py
         serving on http://0.0.0.0:5000
 
@@ -871,7 +871,7 @@ package.
     Add a new file called simply ``run`` in the same folder:
 
     .. code-block:: bash
-    
+
         #!/bin/bash
         python setup.py develop
         python runapp.py
@@ -891,7 +891,7 @@ We'll need to do the same thing for initializing the database.
     Create another new file called ``build_db`` in the same folder:
 
     .. code-block:: bash
-    
+
         #!/bin/bash
         python setup.py develop
         initialize_learning_journal_db production.ini
@@ -910,7 +910,7 @@ For Heroku to use them, ``run`` and ``build_db`` must be *executable*
     ``build_db``):
 
     .. code-block:: bash
-    
+
         (ljenv)$ chmod 755 run
 
     Windows users, if you have ``git-bash``, you can do the same
@@ -918,7 +918,7 @@ For Heroku to use them, ``run`` and ``build_db`` must be *executable*
     For the rest of you, try this (for both ``run`` and ``build_db``):
 
     .. code-block:: posh
-    
+
         C:\views\myproject>git ls-tree HEAD
         ...
         100644 blob 55c0287d4ef21f15b97eb1f107451b88b479bffe    run
@@ -942,7 +942,7 @@ application online
     Add that file now, in the same directory.
 
     .. code-block:: bash
-    
+
         web: ./run
 
     This file tells Heroku that we have one ``web`` process to run, and that it
@@ -977,7 +977,7 @@ The next step is to create a new app with heroku.
     Note that a new *remote* called ``heroku`` has been added:
 
     .. code-block:: bash
-    
+
         $ git remote -v
         heroku  https://git.heroku.com/rocky-atoll-9934.git (fetch)
         heroku  https://git.heroku.com/rocky-atoll-9934.git (push)
@@ -999,7 +999,7 @@ appropriate for production.
     Again, use the Heroku Toolbelt:
 
     .. code-block:: bash
-    
+
         $ heroku addons:add heroku-postgresql:dev
         Adding heroku-postgresql:dev on rocky-atoll-9934... done, v4 (free)
         Attached as HEROKU_POSTGRESQL_MAROON_URL
@@ -1020,7 +1020,7 @@ toolbelt:
 .. container::
 
     .. code-block:: bash
-    
+
         (ljenv)$ heroku pg
         === HEROKU_POSTGRESQL_MAROON_URL (DATABASE_URL)
         Plan:        Dev
@@ -1033,7 +1033,7 @@ toolbelt:
     your app):
 
     .. code-block:: bash
-    
+
         (ljenv)$ heroku config
         === rocky-atoll-9934 Config Vars
         DATABASE_URL:                 postgres://<username>:<password>@<domain>:<port>/<database-name>
@@ -1062,7 +1062,7 @@ database URL.
     In fact, we've already done this with our ``runapp.py`` script:
 
     .. code-block:: python
-    
+
         port = int(os.environ.get("PORT", 5000))
 
 .. nextslide:: Adjusting Our DB Configuration
@@ -1115,7 +1115,7 @@ for our initial user:
 .. container::
 
     .. code-block:: python
-    
+
         # in learning_journal/scripts/initializedb.py
         with transaction.manager:
             manager = Manager
@@ -1126,7 +1126,7 @@ for our initial user:
     And for the secret value for our AuthTktAuthenticationPolicy
 
     .. code-block:: python
-    
+
         # in learning_journal/__init__.py
         def main(global_config, **settings):
             # ...
@@ -1154,7 +1154,7 @@ We will now be looking for three values from the OS environment:
     config:set``:
 
     .. code-block:: bash
-    
+
         (ljenv)$ heroku config:set ADMIN_PASSWORD=<your password>
         ...
         (ljenv)$ heroku config:set AUTH_SECRET=<a long random string>
@@ -1204,7 +1204,7 @@ We've been handling our application's dependencies by adding them to
     Create that file now, in the same folder as ``setup.py`` and add:
 
     .. code-block:: bash
-    
+
         psycopg2==2.5.4
 
     Add that file to your repository and commit the change.
@@ -1220,7 +1220,7 @@ We are now ready to deploy our application.
     All we need to do is push our repository to the ``heroku`` master:
 
     .. code-block:: bash
-    
+
         (ljenv)$ git push heroku master
         ...
         remote: Building source:
@@ -1239,26 +1239,87 @@ environment.
 .. rst-class:: build
 .. container::
 
-    You'll need to do this to install our app and initialize the database:
+    You can use this to initialize the database, using the shell script you
+    created earlier:
+
+    .. code-block:: bash
+
+        (ljenv)$ heroku run ./build_db
+        ...
+
+    This will install our application and then run the database initialization
+    script.
+
+.. nextslide:: Test Your Results
+
+At this point, you should be ready to view your application online.
+
+.. rst-class:: build
+.. container::
+
+    Use the ``open`` command from heroku to open your website in a browser:
 
     .. code-block:: bash
     
-        (ljenv)$ heroku run python setup.py develop
+        (ljenv)$ heroku open
+
+    If you don't see your application, check to see if it is running:
+
+    .. code-block:: bash
+    
+        (ljenv)$ heroku ps
+        === web (1X): `./run`
+        web.1: up 2015/01/18 16:44:37 (~ 31m ago)
+
+    If you get no results, use the ``scale`` command to try turning on a web
+    *dyno*:
+
+    .. code-block:: bash
+    
+        (ljenv)$ heroku scale web=1
+        Scaling dynos... done, now running web at 1:1X.
+
+.. nextslide:: A Word About Scaling
+
+Heroku pricing is dependent on the number of *dynos* you are running.
+
+.. rst-class:: build
+.. container::
+
+    So long as you only run one dyno per application, you will remain in the
+    free tier.
+
+    Scaling above one dyno will begin to incur costs.
+
+    Pay attention to the number of dynos you have running.
+
+.. nextslide:: Troubleshooting
+
+Troubleshooting problems with Heroku deployment can be challenging.
+
+.. rst-class:: build
+.. container::
+
+    Your most powerful tool is the ``logs`` command:
+
+    .. code-block:: bash
+    
+        (ljenv)$ heroku logs
         ...
-        Finished processing dependencies for learning-journal==0.0
-        (ljenv)$ heroku run initialize_learning_journal_db production
+        2015-01-19T01:17:59.443720+00:00 app[web.1]: serving on http://0.0.0.0:53843
+        2015-01-19T01:17:59.505003+00:00 heroku[web.1]: State changed from starting to update
 
+    This command will print the last 50 or so lines of logging from your
+    application.
 
+    You can use the ``-t`` flag to *tail* the logs.
+
+    This will continually update log entries to your terminal as you interact
+    with the application.
 
 
 outline
 -------
-
-git push heroku master
-
-git run initialize_learning_journal_db heroku.ini
-
-heroku logs
 
 
 add logout??
