@@ -1077,7 +1077,7 @@ The Python standard library provides ``os.environ`` to allow access to
 
     We can use it to gain access to configuration provided by Heroku.
 
-    Update ``learning_journal/__init__.py like so:
+    Update ``learning_journal/__init__.py`` like so:
 
     .. code-block:: python
 
@@ -1260,13 +1260,13 @@ At this point, you should be ready to view your application online.
     Use the ``open`` command from heroku to open your website in a browser:
 
     .. code-block:: bash
-    
+
         (ljenv)$ heroku open
 
     If you don't see your application, check to see if it is running:
 
     .. code-block:: bash
-    
+
         (ljenv)$ heroku ps
         === web (1X): `./run`
         web.1: up 2015/01/18 16:44:37 (~ 31m ago)
@@ -1275,7 +1275,7 @@ At this point, you should be ready to view your application online.
     *dyno*:
 
     .. code-block:: bash
-    
+
         (ljenv)$ heroku scale web=1
         Scaling dynos... done, now running web at 1:1X.
 
@@ -1303,7 +1303,7 @@ Troubleshooting problems with Heroku deployment can be challenging.
     Your most powerful tool is the ``logs`` command:
 
     .. code-block:: bash
-    
+
         (ljenv)$ heroku logs
         ...
         2015-01-19T01:17:59.443720+00:00 app[web.1]: serving on http://0.0.0.0:53843
@@ -1317,26 +1317,497 @@ Troubleshooting problems with Heroku deployment can be challenging.
     This will continually update log entries to your terminal as you interact
     with the application.
 
+.. nextslide:: Revel In Your Glory
 
-outline
--------
+Try logging in to your application with the password you set up in Heroku
+configuration.
 
+.. rst-class:: build
+.. container::
 
-add logout??
+    Once you are logged in, try adding an entry or two.
+
+    You are now off to the races!
+
+    .. rst-class:: center
+
+    **Congratulations**
 
 Adding Polish
 =============
 
-Markdown for posts so you can create a formatted entry
+.. rst-class:: left
+.. container::
 
-add markdown package, pygments package
+    So we have now deployed a running application.
 
-pygmentize -f html -S colorful -a .syntax
+    .. rst-class:: build
+    .. container::
 
-create jinja2 filter
+        But there are a number of things we can do to make the application
+        better.
 
-add filter to configuration (.ini file or in __init__.py)
+        Let's start by adding a way to log out.
 
 
+Adding Logout
+-------------
+
+Our ``login`` view is already set up to work for logout.
+
+.. rst-class:: build
+.. container::
+
+    What is the logical path taken if that view is accessed via ``GET``?
+
+    All we need to do is add a view_config that allows that.
+
+    Open ``learning_journal/views.py`` and make these changes:
+
+    .. code-block:: python
+
+        @view_config(route_name='auth', match_param='action=in', renderer='string',
+                 request_method='POST') # <-- THIS IS ALREADY THERE
+        # ADD THE FOLLOWING LINE
+        @view_config(route_name='auth', match_param='action=out', renderer='string')
+        # UPDATE THE VIEW FUNCTION NAME
+        def sign_in_out(request):
+            # ...
+
+.. nextslide:: Re-Deploy
+
+The chief advantage of Heroku is that we can re-deploy with a single command.
+
+.. rst-class:: build
+.. container::
+
+    Add and commit your changes to git.
+
+    Then re-deply by pushing to the ``heroku master``:
+
+    .. code-block:: bash
+
+        (ljenv)$ git push heroku master
+
+    Once that completes, you should be able to reload your application in the
+    browser.
+
+    Visit the following URL path to test log out:
+
+    * /sign/out
+
+Hide UI for Anonymous
+---------------------
+
+Another improvement we can make is to hide UI that is not available for users
+who are not logged in.
+
+.. rst-class:: build
+.. container::
+
+    The first step is to update our ``detail`` view to tell us if someone is
+    logged in:
+
+    .. code-block:: python
+
+        # learning_journal/views.py
+        @view_config(route_name='detail', renderer='templates/detail.jinja2')
+        def view(request):
+            # ...
+            logged_in = authenticated_userid(request)
+            return {'entry': entry, 'logged_in': logged_in}
+
+    The ``authenticated_userid`` function returns the id of the logged in user,
+    if there is one, and ``None`` if there is not.
+
+    We can use that.
+
+.. nextslide:: Hide "Create Entry" UI
+
+First we can hide the UI for creating a new entry:
+
+.. rst-class:: build
+.. container::
+
+    Edit ``templates/list.jinja2``:
+
+    .. code-block:: jinja
+
+        {% extends "layout.jinja2" %}
+        {% block body %}
+        <!-- ... ADD THE IF TAGS BELOW -->
+        {% if not login_form %}
+        <p><a href="{{ request.route_url('action', action='create') }}">New Entry</a></p>
+        {% endif %}
+        {% endblock %}
+
+    This relies on the fact that the login form will only be present if there
+    is **not** an authenticated user.
+
+.. nextslide:: Hide "Edit Entry" UI
+
+Next, we can hide the UI for editing an existing entry:
+
+.. rst-class:: build
+.. container::
+
+    Edit ``templates/detail.jinja2``:
+
+    .. code-block:: jinja
+
+        {% extends "layout.jinja2" %}
+        {% block body %}
+        <!-- ... WRAP THE EDIT LINK -->
+        <p>
+          <a href="{{ request.route_url('home') }}">Go Back</a>
+          {% if logged_in %}
+          ::
+          <a href="{{ request.route_url('action', action='edit', _query=(('id',entry.id),)) }}">
+            Edit Entry</a>
+          {% endif %}
+        </p>
+        {% endblock %}
+
+Format Entries
+--------------
+
+It would be nice if our journal entries could have HTML formatting.
+
+.. rst-class:: build
+.. container::
+
+    We could write HTML by hand in the body field, but that'd be a pain.
+
+    Instead, let's allow ourselves to write entries in `Markdown`_, a popular
+    markup syntax used by GitHub and many other websites.
+
+    .. _Markdown: http://daringfireball.net/projects/markdown/syntax
+
+    Python provides several libraries that implement markdown formatting.
+
+    They will take text that contains markdown formatting and convert it to
+    HTML.
+
+    Let's use one.
+
+.. nextslide:: Adding the Dependency
+
+The first step, is to pick a package and add it to our dependencies.
+
+.. rst-class:: build
+.. container::
+
+    My recommendation is the `markdown`_ python library.
+
+    Open ``setup.py`` and add the package to the ``requires`` list:
+
+    .. code-block:: python
+
+        requires = [
+            # ...
+            'cryptacular',
+            'markdown', # <-- ADD THIS
+            ]
+
+    We'll test this locally first, so go ahead and re-install your app:
+
+    .. code-block:: bash
+
+        (ljenv)$ python setup.py develop
+        ...
+        Finished processing dependencies for learning-journal==0.0
+
+.. _markdown: https://pythonhosted.org/Markdown/
+
+.. nextslide:: Jinja2 Filters
+
+We've seen before how Jinja2 provides a number of filters for values when
+rendering templates.
+
+.. rst-class:: build
+.. container::
+
+    A nice feature of the templating language is that it also allows you to
+    `create your own filters`_.
+
+    Remember the template syntax for a filter:
+
+    .. code-block:: jinja
+
+        {{ value|filter(arg1, ..., argN) }}
+
+    A filter is simply a function that takes the value to the left of the ``|``
+    character as a first argument, and any supplied arguments as the second and
+    beyond:
+
+    .. code-block:: python
+
+        def filter(value, arg1, ..., argN):
+            # do something to value here
+
+.. _create your own filters: http://jinja.pocoo.org/docs/dev/api/#custom-filters
+
+.. nextslide:: Our Markdown Filter
+
+Creating a ``markdown`` filter will allow us to convert plain text stored in
+the database to HTML at template rendering time.
+
+.. rst-class:: build
+.. container::
+
+    Open ``learning_journal/views.py`` and add the following:
+
+    .. code-block:: python
+
+        # add two imports:
+        from jinja2 import Markup
+        import markdown
+        # and a function
+        def render_markdown(content):
+            output = Markup(markdown.markdown(content))
+            return output
+
+    The ``Markup`` class from jinja2 marks a string with HTML tags as "safe".
+
+    This prevents the tags from being *escaped* when they are rendered into a
+    page.
+
+.. nextslide:: Register the Filter
+
+In order for ``Jinja2`` to be aware that our filter exists, we need to register
+it.
+
+.. rst-class:: build
+.. container::
+
+    In Pyramid, we do this in configuration.
+
+    Open ``development.ini`` and edit it as follows:
+
+    .. code-block:: ini
+
+        [app:main]
+        ...
+        jinja2.filters =
+            markdown = learning_journal.views.render_markdown
+
+    This informs the main app that we wish to register a jinja2 filter.
+
+    We will call it ``markdown`` and it will be embodied by the function we
+    just wrote.
+
+.. nextslide:: Use Your Filter
+
+To see the results of our work, we'll need to use the filter in a template
+somewhere.
+
+.. rst-class:: build
+.. container::
+
+    I suggest using it in the ``learning_journal/templates/detail.jinja2``
+    template:
+
+    .. code-block:: jinja
+
+        {% extends "layout.jinja2" %}
+        {% block body %}
+        <article>
+          <!-- EDIT THIS LINE -->
+          <p>{{ entry.body|markdown }}</p>
+          <!-- -->
+        </article>
+        <p>
+        <!-- -->
+        {% endblock %}
+
+.. nextslide:: Test Your Results
+
+Start up your application, and create an entry using valid markdown formatting:
+
+.. code-block:: bash
+
+    (ljenv)$ pserve development.ini
+    Starting server in PID 84331.
+    serving on http://0.0.0.0:6543
+
+.. rst-class:: build
+.. container::
+
+    Once you save your entry, you should be able to see it with actual
+    formatting: headers, bulleted lists, links, and so on.
+
+    That makes quite a difference.
+
+    Go ahead and add the same filter registration to ``production.ini``
+
+    Then commit your changes and redeploy:
+
+    .. code-block:: bash
+
+        (ljenv)$ git push heroku master
 
 
+Syntax Highlighting
+-------------------
+
+The purpose of this journal is to allow you to write entries about the things
+you learn in this class and elsewhere.
+
+.. rst-class:: build
+.. container::
+
+    Markdown formatting allows for "preformatted" blocks of text like code
+    samples.
+
+    But there is nothing in markdown that handles *colorizing* code.
+
+    Luckily, the markdown package allows for extensions, and one of these
+    supports `colorization`_.
+
+    It requires the `pygments`_ library
+
+    Let's set this up next.
+
+.. _colorization: https://pythonhosted.org/Markdown/extensions/code_hilite.html
+.. _pygments: http://pygments.org
+
+.. nextslide:: Install the Dependency
+
+Again, we need to install our new dependency first.
+
+.. rst-class:: build
+.. container::
+
+    Add the following to ``requires`` in ``setup.py``:
+
+    .. code-block:: python
+
+        requires = [
+            # ...
+            'markdown',
+            'pygments', # <-- ADD THIS LINE
+            ]
+
+    Then re-install your app to pick up the software:
+
+    .. code-block:: bash
+
+        (ljenv)$ python setup.py develop
+        ...
+        Finished processing dependencies for learning-journal==0.0
+
+.. nextslide:: Add to Our Filter
+
+The next step is to extend our markdown filter in ``learning_journal/views.py``
+with this feature.
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: python
+
+        def render_markdown(content):
+            output = Markup(
+                markdown.markdown(
+                    content,
+                    extensions=['codehilite(pygments_style=colorful)', 'fenced_code']
+                )
+            )
+            return output
+
+    Now, you'll be able to make hilighted code like so:
+
+    .. code-block:: text
+
+        ```python
+        def foo(x, y):
+            return x**y
+        ```
+
+.. nextslide:: Add CSS
+
+Code highlighting works by putting HTML ``<span>`` tags with special CSS
+classes around bits of your code.
+
+.. rst-class:: build
+.. container::
+
+    We need to generate and add the css to support this.
+
+    You can use the ``pygmentize`` command from pygments to
+    `generate the css`_.
+
+    Make sure you are in the directory with ``setup.py`` when you run this:
+
+    .. code-block:: bash
+    
+        (ljenv)$ pygmentize -f html -S colorful -a .codehilite \
+             >> learning_journal/static/styles.css
+
+    The styles will be printed to standard out.
+
+    The ``>>`` shell operator *appends* the output to the file named.
+
+.. _generate the css: http://pygments.org/docs/cmdline/#generating-styles
+
+.. nextslide::  Try It Out
+
+Go ahead and restart your application and see the difference a little style
+makes:
+
+.. code-block:: bash
+
+    (ljenv)$ pserve development.ini
+    Starting server in PID 84331.
+    serving on http://0.0.0.0:6543
+
+.. rst-class:: build
+.. container::
+
+    Try writing an entry with a little Python code in it.
+
+    Python is not the only language available.
+
+    Any syntax covered by `pygments lexers`_ is available, just use the
+    *shortname* from a lexer to get that type of style highlighting.
+
+.. _pygments lexers: http://pygments.org/docs/lexers/
+
+.. nextslide:: Deploy Your Changes
+
+When you've got this working as you wish, go ahead and deploy it.
+
+.. rst-class:: build
+.. container::
+
+    Add and commit all the changes you've made.
+
+    Then push your results to the ``heroku master``:
+
+    .. code-block:: bash
+    
+        (ljenv)$ git push heroku master
+
+Wrap Up
+-------
+
+And that's probably enough for now.
+
+.. rst-class:: build
+.. container::
+
+    There's no homework for you this week.
+
+    You've worked hard enough.
+
+    Take the week to review what we've done and make sure you have a solid
+    understanding of it.
+
+    If you wish, play with HTML and CSS to make your journal more personalized.
+
+    Next session we'll dive down deep and begin to learn about the technology
+    that lies beneath everything we've just built.
+
+    .. rst-class:: centered
+
+    **See You Then**
