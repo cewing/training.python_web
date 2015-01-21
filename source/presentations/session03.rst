@@ -511,7 +511,7 @@ The job of comparing passwords should belong to the ``User`` object.
     .. code-block:: python
 
         # add this import at the top
-        # from cryptacular.pbkdf2 import PBKDF2PassordManager as Manager
+        # from cryptacular.pbkdf2 import PBKDF2PasswordManager as Manager
         from cryptacular.bcrypt import BCRYPTPasswordManager as Manager
 
         # add this method to the User class:
@@ -535,7 +535,7 @@ We'll also need to have a user for our system.
     .. code-block:: python
 
         # add the import
-        # from cryptacular.pbkdf2 import PBKDF2PassordManager as Manager
+        # from cryptacular.pbkdf2 import PBKDF2PasswordManager as Manager
         from cryptacular.bcrypt import BCRYPTPasswordManager as Manager
         from ..models import User
         # and update the main function like so:
