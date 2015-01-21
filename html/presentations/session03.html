@@ -124,7 +124,7 @@ public server.</p>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">by_name</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">DBSession</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">User</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">DBSession</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">cls</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
 </pre></div>
 </div>
 <p><a class="reference external" href="https://github.com/cewing/training.python_web/blob/5e02f6f84322145433c515c191679ccf976dcae4/resources/session03/models.py#L62">View this model online</a></p>
@@ -395,7 +395,7 @@ this may not work.  Let me know if you get errors.</p>
 <p>Open <tt class="docutils literal"><span class="pre">learning_journal/models.py</span></tt> and add the following to the <tt class="docutils literal"><span class="pre">User</span></tt>
 class:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c"># add this import at the top</span>
-<span class="c"># from cryptacular.pbkdf2 import PBKDF2PassordManager as Manager</span>
+<span class="c"># from cryptacular.pbkdf2 import PBKDF2PasswordManager as Manager</span>
 <span class="kn">from</span> <span class="nn">cryptacular.bcrypt</span> <span class="kn">import</span> <span class="n">BCRYPTPasswordManager</span> <span class="k">as</span> <span class="n">Manager</span>
 
 <span class="c"># add this method to the User class:</span>
@@ -412,7 +412,7 @@ class:</p>
 <p>We can leverage the database initialization script to handle this.</p>
 <p>Open <tt class="docutils literal"><span class="pre">learning_journal/scripts/initialzedb.py</span></tt>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c"># add the import</span>
-<span class="c"># from cryptacular.pbkdf2 import PBKDF2PassordManager as Manager</span>
+<span class="c"># from cryptacular.pbkdf2 import PBKDF2PasswordManager as Manager</span>
 <span class="kn">from</span> <span class="nn">cryptacular.bcrypt</span> <span class="kn">import</span> <span class="n">BCRYPTPasswordManager</span> <span class="k">as</span> <span class="n">Manager</span>
 <span class="kn">from</span> <span class="nn">..models</span> <span class="kn">import</span> <span class="n">User</span>
 <span class="c"># and update the main function like so:</span>
@@ -477,6 +477,7 @@ password against this encrypted version.</p>
 </pre></div>
 </div>
 </div>
+<p>Next, we&#8217;ll create a login view in <tt class="docutils literal"><span class="pre">learning_journal/views.py</span></tt></p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c"># new imports:</span>
 <span class="kn">from</span> <span class="nn">pyramid.security</span> <span class="kn">import</span> <span class="n">forget</span><span class="p">,</span> <span class="n">remember</span>
 <span class="kn">from</span> <span class="nn">.forms</span> <span class="kn">import</span> <span class="n">LoginForm</span>
@@ -526,7 +527,7 @@ logged in, if any.</p>
 </pre></div>
 </div>
 </div>
-<p>Now we have to update our template to display the form, <em>if it is there</em></p>
+<p>Now we have to update the template for the <tt class="docutils literal"><span class="pre">index_page</span></tt> to display the form, <em>if it is there</em></p>
 <div class="build container">
 <div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{%</span> <span class="k">block</span> <span class="nv">body</span> <span class="cp">%}</span><span class="x"></span>
 <span class="cp">{%</span> <span class="k">if</span> <span class="nv">login_form</span> <span class="cp">%}</span><span class="x"></span>
@@ -541,7 +542,7 @@ logged in, if any.</p>
 <span class="x">  </span><span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span><span class="x"></span>
 <span class="x">  &lt;p&gt;&lt;input type=&quot;submit&quot; name=&quot;Log In&quot; value=&quot;Log In&quot;/&gt;&lt;/p&gt;</span>
 <span class="x">&lt;/form&gt;&lt;/aside&gt;</span>
-<span class="cp">{%</span> <span class="k">else</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
 <span class="cp">{%</span> <span class="k">if</span> <span class="nv">entries</span> <span class="cp">%}</span><span class="x"></span>
 <span class="x">...</span>
 </pre></div>
