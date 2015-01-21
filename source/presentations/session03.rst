@@ -89,7 +89,7 @@ Questions About the Homework?
 
         @classmethod
         def by_name(cls, name):
-            return DBSession.query(User).filter(User.name == name).first()
+            return DBSession.query(cls).filter(cls.name == name).first()
 
 `View this model online <https://github.com/cewing/training.python_web/blob/5e02f6f84322145433c515c191679ccf976dcae4/resources/session03/models.py#L62>`_
 

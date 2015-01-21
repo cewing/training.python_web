@@ -66,5 +66,7 @@ class User(Base):
     password = Column(Unicode(255), nullable=False)
 
     @classmethod
-    def by_name(cls, name):
-        return DBSession.query(User).filter(User.name == name).first()
+    def by_name(cls, name, session=None):
+        if session is None:
+            session = DBSession
+        return DBSession.query(cls).filter(cls.name == name).first()

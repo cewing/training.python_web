@@ -72,7 +72,7 @@ class User(Base):
     def by_name(cls, name, session=None):
         if session is None:
             session = DBSession
-        return DBSession.query(User).filter(User.name == name).first()
+        return DBSession.query(cls).filter(cls.name == name).first()
 
     def verify_password(self, password):
         manager = Manager()
