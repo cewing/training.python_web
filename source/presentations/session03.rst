@@ -624,7 +624,7 @@ It would be nice to use the form library again to make a login form.
 
 .. ifnotslides::
 
-    Next, we'll edit the login view in ``learning_journal/views.py``
+    Next, we'll create a login view in ``learning_journal/views.py``
 
 .. code-block:: python
 
