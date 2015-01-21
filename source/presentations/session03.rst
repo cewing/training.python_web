@@ -622,6 +622,10 @@ It would be nice to use the form library again to make a login form.
 
 .. nextslide:: Login View in ``learning_journal/views.py``
 
+.. ifnotslides::
+
+    Next, we'll edit the login view in ``learning_journal/views.py``
+
 .. code-block:: python
 
     # new imports:
@@ -689,7 +693,7 @@ logged in, if any.
 
 .. nextslide:: Update ``list.jinja2``
 
-Now we have to update our template to display the form, *if it is there*
+Now we have to update the template for the ``index_page`` to display the form, *if it is there*
 
 .. rst-class:: build
 .. container::
@@ -709,7 +713,7 @@ Now we have to update our template to display the form, *if it is there*
           {% endfor %}
           <p><input type="submit" name="Log In" value="Log In"/></p>
         </form></aside>
-        {% else %}
+        {% endif %}
         {% if entries %}
         ...
 
