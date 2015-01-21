@@ -1,0 +1,31 @@
+{% extends "layout.jinja2" %}
+{% block body %}
+{% if login_form %}
+<aside><form action="{{ request.route_url('auth', action='in') }}" method="POST">
+  {% for field in login_form %}
+    {% if field.errors %}
+      <ul>{% for error in field.errors %}
+        <li>{{ error }}</li>
+      {% endfor %}</ul>
+    {% endif %}
+      <p>{{ field.label }}: {{ field }}</p>
+  {% endfor %}
+  <p><input type="submit" name="Log In" value="Log In"/></p>
+</form></aside>
+{% endif %}
+{% if entries %}
+<h2>Journal Entries</h2>
+<ul>
+  {% for entry in entries %}
+    <li>
+    <a href="{{ request.route_url('detail', id=entry.id) }}">{{ entry.title }}</a>
+    </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>This journal is empty</p>
+{% endif %}
+{% if not login_form %}
+<p><a href="{{ request.route_url('action', action='create') }}">New Entry</a></p>
+{% endif %}
+{% endblock %}

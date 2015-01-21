@@ -1,0 +1,17 @@
+{% extends "templates/layout.jinja2" %}
+{% block body %}
+<h2>Create a Journal Entry</h2>
+<form action="" method="POST">
+{% for field in form %}
+  {% if field.errors %}
+    <ul>
+    {% for error in field.errors %}
+        <li>{{ error }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+    <p>{{ field.label }}: {{ field }}</p>
+{% endfor %}
+    <p><input type="submit" name="submit" value="Submit" /></p>
+</form>
+{% endblock %}
