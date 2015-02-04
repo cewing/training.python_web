@@ -36,7 +36,7 @@ def server():
     print >>sys.stderr, "making a server on %s:%s" % address
     sock.bind(address)
     sock.listen(1)
-    
+
     try:
         while True:
             print >>sys.stderr, 'waiting for a connection'
@@ -60,18 +60,18 @@ def server():
                     response = response_ok()
                     # content, type = resolve_uri(uri) # change this line
 
-                ## uncomment this try/except block once you have fixed
-                ## response_ok and added response_not_found
-                # try:
-                #     response = response_ok(content, type)
-                # except NameError:
-                #     response = response_not_found()
+                    ## uncomment this try/except block once you have fixed
+                    ## response_ok and added response_not_found
+                    # try:
+                    #     response = response_ok(content, type)
+                    # except NameError:
+                    #     response = response_not_found()
 
                 print >>sys.stderr, 'sending response'
                 conn.sendall(response)
             finally:
                 conn.close()
-            
+
     except KeyboardInterrupt:
         sock.close()
         return
