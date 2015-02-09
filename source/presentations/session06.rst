@@ -1,1612 +1,1376 @@
-**********
-Session 07
-**********
+Python Web Programming
+======================
 
-.. figure:: /_static/granny_mashup.png
-    :align: center
+.. image:: img/gateway.jpg
+    :align: left
     :width: 50%
 
-    Paul Downey http://www.flickr.com/photos/psd/492139935/ - CC-BY
+Session 4: CGI, WSGI and Living Online
 
-Scraping, APIs and Mashups
-==========================
+.. class:: intro-blurb
 
-Wherein we learn how to make order from the chaos of the wild internet.
+Wherein we discover the gateways to dynamic processes on a server.
 
+.. class:: image-credit
 
-A Dilemma
+image: The Wandering Angel http://www.flickr.com/photos/wandering_angel/1467802750/ - CC-BY
+
+But First
 ---------
 
-The internet makes a vast quantity of data available.
+.. class:: big-centered
 
-.. rst-class:: build
-.. container::
-
-    But not always in the form or combination you want.
-
-    It would be nice to be able to combine data from different sources to
-    create *meaning*.
+A look at some of the cool mashups you built over the week.
 
 
-The Big Question
-----------------
+But First
+---------
 
-.. rst-class:: large centered
-
-But How?
+Clean up the git situation.
 
 
-The Big Answer
---------------
+But First
+---------
 
-.. rst-class:: large centered
+Before you leave the classroom today, please complete the following tasks:
 
-Mashups
+1. Create a virtualenv called ``flaskenv``
+2. Activate that virtualenv
+3. ``pip install flask`` to your virtualenv
 
+You will need this for some of your homework this week.
 
-Mashups
--------
+But First
+---------
 
-A mashup is::
+A special note to pay attention to the readings.  You will be expected to have
+read the basics on Jinja2, SQLite3 and Flask **before** class starts.
 
-    a web page, or web application, that uses and combines data, presentation
-    or functionality from two or more sources to create new services.
+Previously
+----------
 
-    -- `wikipedia <http://en.wikipedia.org/wiki/Mashup_(web_application_hybrid)>`_
+.. class:: incremental
 
+* You've learned about passing messages back and forth with sockets
+* You've created a simple HTTP server using sockets
+* You may even have made your server *dynamic* by returning the output of a
+  python script.
 
-Data Sources
-------------
+.. class:: incremental
 
-The key to mashups is the idea of data sources.
+What if you want to pass information to that script?
 
-.. rst-class:: build
-.. container::
+.. class:: incremental
 
-    These come in many flavors:
-
-    .. rst-class:: build
-
-    * Simple websites with data in HTML
-    * Web services providing structured data
-    * Web services providing tranformative service (geocoding)
-    * Web services providing presentation (mapping)
-
-Web Scraping
-============
-
-.. rst-class:: left
-.. container::
-
-    It would be nice if all online data were available in well-structured formats.
-
-    .. rst-class:: build
-    .. container::
-
-        The reality is that much data is available only in HTML.
-
-        Still we can get at it, with some effort.
-
-        By scraping the data from the web pages.
+How can you give the script access to information about the HTTP request
+itself?
 
 
-HTML, Ideally
+Stepping Away
 -------------
 
-.. code-block:: html
+A computer has an *environment*:
 
-    <!DOCTYPE html>
-    <html>
-      <head>
-      </head>
-      <body>
-        <p>A nice clean paragraph</p>
-        <p>And another nice clean paragraph</p>
-      </body>
-    </html>
+.. container:: incremental
 
+    in \*nix, you can see this in a shell:
+    
+    .. class:: small
+    
+    ::
+    
+        $ printenv
+        TERM_PROGRAM=iTerm.app
+        ...
 
-HTML... IRL
------------
+.. container:: incremental
 
-.. code-block:: html
-
-    <html>
-     <form>
-      <table>
-       <td><input name="input1">Row 1 cell 1
-       <tr><td>Row 2 cell 1
-      </form>
-      <td>Row 2 cell 2<br>This</br> sure is a long cell
-     </body>
-    </html>
+    or in Windows at the command prompt:
+    
+    .. class:: small
+    
+    ::
+    
+        C:\> set
+        ALLUSERSPROFILE=C:\ProgramData
+        ...
 
 
-FFFFFFFFFUUUUUUUUUUUUU
-----------------------
-
-.. figure:: /_static/scream.jpg
-    :align: center
-    :width: 32%
-
-    Photo by Matthew via Flickr (http://www.flickr.com/photos/purplemattfish/3918004964/) - CC-BY-NC-ND
-
-
-The Law of The Internet
+Setting The Environment
 -----------------------
 
-.. rst-class:: large centered
+This can be manipulated:
 
-"Be strict in what you send and tolerant in what you receive"
+.. container:: incremental
+
+    In a ``bash`` shell we can do this:
+    
+    .. class:: small
+    
+    ::
+    
+        $ export VARIABLE='some value'
+        $ echo $VARIABLE
+        some value
+
+.. container:: incremental
+
+    or at a Windows command prompt:
+    
+    .. class:: small
+    
+    ::
+    
+        C:\Users\Administrator\> set VARIABLE='some value'
+        C:\Users\Administrator\> echo %VARIABLE%
+        'some value'
 
 
-Taming the Mess
----------------
+Viewing the Results
+-------------------
 
-Luckily, there are tools to help with this.
+These new values are now part of the *environment*
 
-.. rst-class:: build
-.. container::
+.. container:: incremental
 
-    In python there are several candidates, but I like ``BeautifulSoup``.
-
-    BeautifulSoup is a great tool, but it's not in the Standard Library.
-
-    We'll need to install it.
-
-    Create a virtualenv to do so:
-
-    .. code-block:: bash
-
-        $ virtualenv soupenv
+    \*nix:
+    
+    .. class:: small
+    
+    ::
+    
+        $ printenv
+        TERM_PROGRAM=iTerm.app
         ...
-        $ source soupenv/bin/activate
+        VARIABLE=some value
 
-    (remember, for Windows users that should be ``soupenv/Scripts/activate``)
+.. container:: incremental
 
+    Windows:
+    
+    .. class:: small
+    
+    ::
+    
+        C:\> set
+        ALLUSERSPROFILE=C:\ProgramData
+        ...
+        VARIABLE='some value'
 
-Install BeautifulSoup
+Environment in Python
 ---------------------
 
-Once the virtualenv is activated, you can simply use pip or easy_install to
-install the libraries you want:
+We can see this *environment* in Python, too::
 
-.. code-block:: bash
+    $ python
 
-    source
+.. code-block:: python
 
-    (soupenv)$ pip install beautifulsoup4
+    >>> import os
+    >>> print os.environ['VARIABLE']
+    some_value
+    >>> print os.environ.keys()
+    ['VERSIONER_PYTHON_PREFER_32_BIT', 'VARIABLE',
+     'LOGNAME', 'USER', 'PATH', ...]
 
-
-Choose a Parsing Engine
------------------------
-
-BeautifulSoup is built to use the Python HTMLParser.
-
-.. rst-class:: build
-
-* Batteries Included.  It's already there
-* It's not great, especially before Python 2.7.3
-
-.. rst-class:: build
-.. container::
-
-    BeautifulSoup also supports using other parsers.
-
-    There are two good choices: ``lxml`` and ``html5lib``.
-
-    ``lxml`` is better, but much harder to install.  Let's use ``html5lib``.
-
-
-Install a Parsing Engine
+Altering the Environment
 ------------------------
 
-Again, this is pretty simple::
-
-    (soupenv)$ pip install html5lib
-
-.. rst-class:: build
-.. container::
-
-    Once installed, BeautifulSoup will choose it automatically.
-
-    BeautifulSoup will choose the "best" available.
-
-    You can specify the parser if you need to for some reason.
-
-Install Requests
-----------------
-
-Python provides tools for opening urls and communicating with servers. It's
-spread across the ``urllib`` and ``urllib2`` packages.
-
-.. rst-class:: build
-.. container::
-
-    These packages have pretty unintuitive APIs.
-
-    The ``requests`` library is becoming the de-facto standard for this type of
-    work.  Let's install it too.
-
-    .. code-block:: bash
-
-        (soupenv)$ pip install requests
-
-
-Our Class Mashup
-----------------
-
-We're going to explore some tools for making a mashup today
-
-.. rst-class:: build
-.. container::
-
-    We'll be starting by scraping ZIP codes for Seattle
-
-    Then we'll choose one of them and look up restaurant health code data for
-    that ZIP code
-
-    Then, we'll look up the geographic location of those zipcodes using Google
-
-    Open a new file in your editor: ``mashup.py``.
-
-
-Examine the Source
-------------------
-
-Craigslist doesn't have an api, just a website, so we'll need to dig a bit
-
-.. rst-class:: build
-
-By going to the website and playing with the form there, we can derive a
-formula for a search URL
-
-.. rst-class:: build
-
-* Base URL: ``http://seattle.craigslist.org/search/apa``
-* keywords: ``query=keyword+values+here``
-* price: ``minAsk=NNN maxAsk=NNN``
-* bedrooms: ``bedrooms=N`` (N in range 1-8)
-
-.. rst-class:: build
-
-We'll make an HTTP request with these parameters
-
-
-Opening URLs with Requests
---------------------------
-
-In ``requests``, each HTTP method has a module-level function:
-
-.. rst-class:: build
-
-* ``GET`` == ``requests.get(url, **kwargs)``
-* ``POST`` == ``requests.post(url, **kwargs)``
-* ...
-
-.. rst-class:: build
-
-``kwargs`` represent other parts of an HTTP request:
-    
-.. rst-class:: build
-
-* ``params``: a dict of url parameters (?foo=bar&baz=bim)
-* ``headers``: a dict of headers to send with the request
-* ``data``: the body of the request, if any (form data for POST goes here)
-* ...
-
-
-Getting Responses with Requests
--------------------------------
-
-The return value from one of these functions is a ``response`` which provides:
-
-.. rst-class:: build
-
-* ``response.status_code``: see the HTTP Status Code returned
-* ``response.ok``: True if ``response.status_code`` is not an error
-* ``response.raise_for_status()``: call to raise a python error if it is
-* ``response.headers``: The headers sent from the server
-* ``response.text``: Body of the response, decoded to unicode
-* ``response.encoding``: The encoding used to decode
-* ``response.content``: The original encoded response body as bytes
-
-.. rst-class:: build small
-
-``requests documentation``: http://docs.python-requests.org/en/latest/
-
-Fetch Search Results
---------------------
-
-We'll start by writing a function ``fetch_search_results``
-
-.. rst-class:: build
-
-* It will accept one keyword argument for each of the possible query values
-* It will build a dictionary of request query parameters from incoming keywords
-* It will make a request to the craigslist server using this query
-* It will return the body of the response if there is no error
-* It will raise an error if there is a problem with the response
-
-.. rst-class:: build
-
-Try writing this function. Put it in ``mashup.py``
-
-
-My Solution
------------
-
-Here's the one I created:
+You can alter os environment values while in Python:
 
 .. code-block:: python
+    :class: small
 
-    import requests
+    >>> os.environ['VARIABLE'] = 'new_value'
+    >>> print os.environ['VARIABLE']
+    new_value
 
-    def fetch_search_results(
-        query=None, minAsk=None, maxAsk=None, bedrooms=None
-    ):
-        incoming = locals().copy()
-        base = 'http://seattle.craigslist.org/search/apa'
-        search_params = dict(
-            [(key, val) for key, val in incoming.items() 
-                        if val is not None])
-        if not search_params:
-            raise ValueError("No valid keywords")
+.. container:: incremental
 
-        resp = requests.get(base, params=search_params, timeout=3)
-        resp.raise_for_status() #<- no-op if status==200
-        return resp.content, resp.encoding
-
-
-Parse the Results
------------------
-
-Next, we need a function ``parse_source`` to set up HTML for scraping. It will
-need to:
-
-.. rst-class:: build
-
-* Take the response body from the previous method (or some other source)
-* Parse it using BeautifulSoup
-* Return the parsed object for further processing
-
-.. rst-class:: build
-
-Before you start, a word about parsing HTML with BeautifulSoup
-
-
-Parsing HTML with BeautifulSoup
--------------------------------
-
-The BeautifulSoup object can be instantiated with a string or a file-like
-object as the sole argument:
-
-.. code-block:: python
-
-    from bs4 import BeautifulSoup
-    parsed = BeautifulSoup('<h1>Some HTML</h1>')
+    But that doesn't change the original value, *outside* Python:
     
-    fh = open('a_page.html', 'r')
-    parsed = BeautifulSoup(fh)
+    .. class:: small
     
-    page = urllib2.urlopen('http://site.com/page.html')
-    parsed = BeautifulSoup(page)
+    ::
 
+        >>> ^D
 
-.. rst-class:: build
+        $ echo this is the value: $VARIABLE
+        this is the value: some_value
+        <OR>
+        C:\> \Users\Administrator\> echo %VARIABLE%
+        'some value'
 
-You might want to open the documentation as reference
-(http://www.crummy.com/software/BeautifulSoup/bs4/doc)
-
-
-My Solution
------------
-
-Take a shot at writing this new function in ``mashup.py``
-
-.. code-block:: python
-    
-    # add this import at the top
-    from bs4 import BeautifulSoup
-
-    # then add this function lower down
-    def parse_source(html, encoding='utf-8'):
-        parsed = BeautifulSoup(html, from_encoding=encoding)
-        return parsed
-
-
-Put It Together
+Lessons Learned
 ---------------
 
-We'll need to make our script do something when run.
+.. class:: incremental
+
+* Subprocesses inherit their environment from their Parent
+* Parents do not see changes to environment in subprocesses
+* In Python, you can actually set the environment for a subprocess explicitly
+
+.. class:: incremental small
+
+::
+
+    subprocess.Popen(args, bufsize=0, executable=None,
+                     stdin=None, stdout=None, stderr=None,
+                     preexec_fn=None, close_fds=False,
+                     shell=False, cwd=None, env=None, # <-------
+                     universal_newlines=False, startupinfo=None,
+                     creationflags=0)
+
+
+Web Environment
+---------------
+
+.. class:: big-centered
+
+CGI is little more than a set of standard environmental variables
+
+
+RFC 3875
+--------
+
+First discussed in 1993, formalized in 1997, the current version (1.1) has
+been in place since 2004.
+
+From the preamble:
+
+.. class:: center
+
+*This memo provides information for the Internet community. It does not specify
+an Internet standard of any kind.*
+
+.. class:: image-credit
+
+RFC 3875 - CGI Version 1.1: http://tools.ietf.org/html/rfc3875
+
+
+Meta-Variables
+--------------
+
+.. class:: small
+
+::
+
+    4.  The CGI Request . . . . . . . . . . . . . . . . . . . . . . .  10
+        4.1. Request Meta-Variables . . . . . . . . . . . . . . . . .  10
+             4.1.1.  AUTH_TYPE. . . . . . . . . . . . . . . . . . . .  11
+             4.1.2.  CONTENT_LENGTH . . . . . . . . . . . . . . . . .  12
+             4.1.3.  CONTENT_TYPE . . . . . . . . . . . . . . . . . .  12
+             4.1.4.  GATEWAY_INTERFACE. . . . . . . . . . . . . . . .  13
+             4.1.5.  PATH_INFO. . . . . . . . . . . . . . . . . . . .  13
+             4.1.6.  PATH_TRANSLATED. . . . . . . . . . . . . . . . .  14
+             4.1.7.  QUERY_STRING . . . . . . . . . . . . . . . . . .  15
+             4.1.8.  REMOTE_ADDR. . . . . . . . . . . . . . . . . . .  15
+             4.1.9.  REMOTE_HOST. . . . . . . . . . . . . . . . . . .  16
+             4.1.10. REMOTE_IDENT . . . . . . . . . . . . . . . . . .  16
+             4.1.11. REMOTE_USER. . . . . . . . . . . . . . . . . . .  16
+             4.1.12. REQUEST_METHOD . . . . . . . . . . . . . . . . .  17
+             4.1.13. SCRIPT_NAME. . . . . . . . . . . . . . . . . . .  17
+             4.1.14. SERVER_NAME. . . . . . . . . . . . . . . . . . .  17
+             4.1.15. SERVER_PORT. . . . . . . . . . . . . . . . . . .  18
+             4.1.16. SERVER_PROTOCOL. . . . . . . . . . . . . . . . .  18
+             4.1.17. SERVER_SOFTWARE. . . . . . . . . . . . . . . . .  19
+
+
+Running CGI
+-----------
+
+You have a couple of options:
+
+.. class:: incremental
+
+* Python Standard Library CGIHTTPServer
+* Apache
+* IIS (on Windows)
+* Some other HTTP server that implements CGI (lighttpd, ...?)
+
+.. class:: incremental
+
+Let's keep it simple by using the Python module
+
+
+Preparations
+------------
+
+In the class resources, you'll find a directory named ``cgi``. Make a copy of
+that folder in your class working directory.
+
+.. class:: incremental small red
+
+Windows Users, you will have to edit the first line of
+``cgi/cgi-bin/cgi_1.py`` to point to your python executable.
+
+.. class:: incremental
+
+* Open *two* terminal windows in this ``cgi`` directory
+* In the first terminal, run ``python -m CGIHTTPServer``
+* Open a web browser and load ``http://localhost:8000/``
+* Click on *CGI Test 1*
+
+
+Did that work?
+--------------
+
+* If nothing at all happens, check your terminal window
+* Look for this: ``OSError: [Errno 13] Permission denied``
+* If you see something like that, check permissions for ``cgi-bin`` *and*
+  ``cgi_1.py``
+* The file must be executable, the directory needs to be readable *and*
+  executable.
+
+
+.. class:: incremental
+
+Remember that you can use the bash ``chmod`` command to change permissions in
+\*nix
+
+.. class:: incremental
+
+Windows users, use the 'properties' context menu to get to permissions, just
+grant 'full'
+
+Break It
+--------
+
+Problems with permissions can lead to failure. So can scripting errors
+
+.. class:: incremental
+
+* Open ``cgi/cgi-bin/cgi_1.py`` in an editor
+* Before where it says ``cgi.test()``, add a single line:
 
 .. code-block:: python
+    :class: incremental
 
-    if __name__ == '__main__':
-        # do something
+    1 / 0
 
-.. rst-class:: build
+.. class:: incremental
 
-* Fetch a search results page
-* Parse the resulting HTML
-* For now, print out the results so we can see what we get
+Reload your browser, what happens now?
 
-.. container:: incremental small
 
-    Use the ``prettify`` method on a BeautifulSoup object::
+Errors in CGI
+-------------
 
-        print parsed.prettify()
+CGI is famously difficult to debug.  There are reasons for this:
+
+.. class:: incremental
+
+* CGI is designed to provide access to runnable processes to *the internet*
+* The internet is a wretched hive of scum and villainy
+* Revealing error conditions can expose data that could be exploited
+
+Viewing Errors in Python CGI
+----------------------------
+
+Back in your editor, add the following lines, just below ``import cgi``:
+
+.. code-block:: python
+    :class: incremental
+
+    import cgitb
+    cgitb.enable()
+
+.. class:: incremental
+
+Now, reload again.
+
+cgitb Output
+------------
+
+.. image:: img/cgitb_output.png
+    :align: center
+    :width: 100%
+
+
+Repair the Error
+----------------
+
+Let's fix the error from our traceback.  Edit your ``cgi_1.py`` file to match:
+
+.. code-block:: python
+    :class: small
+
+    #!/usr/bin/python
+    import cgi
+    import cgitb
+
+    cgitb.enable()
+
+    cgi.test()
+
+.. class:: incremental
+
+Notice the first line of that script: ``#!/usr/bin/python``. This is called a
+*shebang* (short for hash-bang) and it tells the system what executable
+program to use when running the script.
+
+
+CGI Process Execution
+---------------------
+
+When a web server like ``CGIHTTPServer`` or ``Apache`` runs a CGI script, it
+simply attempts to run the script as if it were a normal system user.  This is
+just like you calling::
+
+    $ ./cgi_bin/cgi_1.py
+
+.. class:: incremental
+
+In fact try that now in your second terminal (use the real path), what do you
+get?
+
+.. class:: incremental small center
+
+Windows folks, you may need ``C:\>python cgi_1.py``
+
+.. class:: incremental
+
+What is missing?
+
+
+CGI Process Execution
+---------------------
+
+There are a couple of important facts that are related to the way CGI
+processes are run:
+
+.. class:: incremental
+
+* The script **must** include a *shebang* so that the system knows how to run
+  it.
+* The script **must** be executable.
+* The *executable* named in the *shebang* will be called as the *nobody* user.
+* This is a security feature to prevent CGI scripts from running as a user
+  with any privileges.
+* This means that the *executable* from the script *shebang* must be one that
+  *anyone* can run.
+
+
+The CGI Environment
+-------------------
+
+CGI is largely a set of agreed-upon environmental variables.
+
+.. class:: incremental
+
+We've seen how environmental variables are found in python in ``os.environ``
+
+.. class:: incremental
+
+We've also seen that at least some of the variables in CGI are **not** in the
+standard set of environment variables.
+
+.. class:: incremental
+
+Where do they come from?
+
+
+CGI Servers
+-----------
+
+Let's find 'em.  In a terminal (on your local machine, please) fire up python:
+
+.. code-block::
+
+    >>> import CGIHTTPServer
+    >>> CGIHTTPServer.__file__
+    '/big/giant/path/to/lib/python2.6/CGIHTTPServer.py'
+
+.. class:: incremental
+
+Copy this path and open the file it points to in your text editor
+
+
+Environmental Set Up
+--------------------
+
+From CGIHTTPServer.py, in the CGIHTTPServer.run_cgi method:
+
+.. code-block:: python
+    :class: tiny
+
+    # Reference: http://hoohoo.ncsa.uiuc.edu/cgi/env.html
+    # XXX Much of the following could be prepared ahead of time!
+    env = {}
+    env['SERVER_SOFTWARE'] = self.version_string()
+    env['SERVER_NAME'] = self.server.server_name
+    env['GATEWAY_INTERFACE'] = 'CGI/1.1'
+    env['SERVER_PROTOCOL'] = self.protocol_version
+    env['SERVER_PORT'] = str(self.server.server_port)
+    env['REQUEST_METHOD'] = self.command
+    ...
+    ua = self.headers.getheader('user-agent')
+    if ua:
+        env['HTTP_USER_AGENT'] = ua
+    ...
+    os.environ.update(env)
+    ...
+
+
+CGI Scripts
+-----------
+
+And that's it, the big secret. The server takes care of setting up the
+environment so it has what is needed.
+
+.. class:: incremental
+
+Now, in reverse. How does the information that a script creates end up in your
+browser?
+
+.. class:: incremental
+
+A CGI Script must print its results to stdout.
+
+.. class:: incremental
+
+Use the same method as above to import and open the source file for the
+``cgi`` module. Note what ``test`` does for an example of this.
+
+
+Recap:
+------
+
+What the Server Does:
+
+.. class:: incremental small
+
+* parses the request
+* sets up the environment, including HTTP and SERVER variables
+* figures out if the URI points to a CGI script and runs it
+* builds an appropriate HTTP Response first line ('HTTP/1.1 200 OK\\r\\n')
+* appends what comes from the script on stdout and sends that back
+
+What the Script Does:
+
+.. class:: incremental small
+
+* names appropriate *executable* in it's *shebang* line
+* uses os.environ to read information from the HTTP request
+* builds *any and all* appropriate **HTTP Headers** (Content-type:,
+  Content-length:, ...)
+* prints headers, empty line and script output (body) to stdout
+
+
+In-Class Exercise
+-----------------
+
+You've seen the output from the ``cgi.test()`` method from the ``cgi`` module.
+Let's make our own version of this.
+
+.. class:: incremental small
+
+* In the directory ``cgi-bin`` you will find the file ``cgi_2.py``.
+* Open that file in your editor.
+* The script contains some html with text naming elements of the CGI
+  environment.
+* You should use the values in os.environ to fill in the blanks.
+* You should be able to view the results of your work by loading
+  ``http://localhost:8000/`` and clicking on *Exercise One*
+
+.. class:: incremental center
+
+**GO**
+
+
+User Provided Data
+------------------
+
+All this is well and good, but where's the *dynamic* stuff?
+
+.. class:: incremental
+
+It'd be nice if a user could pass form data to our script for it to use.
+
+.. container:: incremental
+
+    In HTTP, these types of inputs show up in the URL *query* (the part after
+    the ``?``)::
+
+        http://myhost.com/script.py?a=23&b=37
+
+
+Form Data in CGI
+----------------
+
+In the ``cgi`` module, we get access to this with the ``FieldStorage`` class:
+
+.. code-block:: python
+    :class: incremental small
+
+    import cgi
+    
+    form = cgi.FieldStorage()
+    stringval = form.getvalue('a', None)
+    listval = form.getlist('b')
+
+.. class:: incremental
+
+* The values in the ``FieldStorage`` are *always* strings
+* ``getvalue`` allows you to return a default, in case the field isn't present
+* ``getlist`` always returns a list: empty, one-valued, or as many values as
+  are present
+
+
+In-Class Exercise
+-----------------
+
+Let's create a dynamic adding machine.
+
+.. class:: incremental
+
+* In the ``cgi-bin`` directory you'll find ``cgi_sums.py``.
+* In the ``index.html`` file in the ``cgi`` directory, the third link leads to
+  this file.
+* You will use the structure of that link, and what you learned just now about
+  ``cgi.FieldStorage``.
+* Complete the cgi script in ``cgi_sums.py`` so that the result of adding all
+  operands sent via the url query is returned.
+
+.. class:: incremental
+
+For extra fun, return the results in ``json`` format (mimetype:
+'application/json').
 
 
 My Solution
 -----------
 
-Try to come up with the proper code on your own.  Add it to ``mashup.py``
+.. code-block:: python
+    :class: small incremental
+
+    form = cgi.FieldStorage()
+    operands = form.getlist('operand')
+    total = 0
+    for operand in operands:
+        try:
+            value = int(operand)
+        except ValueError:
+            value = 0
+        total += value
+
+    output = {'result': total}
+    json_output = json.dumps(output)
+
+    print "Content-Type: application/json"
+    print "Content-Length: %s" % len(json_output)
+    print
+    print json_output
+
+
+Stopping Point
+--------------
+
+.. class:: big-centered
+
+Let's take a break here, before continuing
+
+
+CGI Problems
+------------
+
+CGI is great, but there are problems:
+
+.. class:: incremental
+
+* Code is executed *in a new process*
+* **Every** call to a CGI script starts a new process on the server
+* Starting a new process is expensive in terms of server resources
+* *Especially for interpreted languages like Python*
+
+.. class:: incremental
+
+How do we overcome this problem?
+
+
+Alternatives to CGI
+-------------------
+
+The most popular approach is to have a long-running process *inside* the
+server that handles CGI scripts.
+
+.. class:: incremental
+
+FastCGI and SCGI are existing implementations of CGI in this fashion. The
+Apache module **mod_python** offers a similar capability for Python code.
+
+.. class:: incremental
+
+* Each of these options has a specific API
+* None are compatible with each-other
+* Code written for one is **not portable** to another
+
+.. class:: incremental
+
+This makes it much more difficult to *share resources*
+
+
+WSGI
+----
+
+Enter WSGI, the Web Server Gateway Interface.
+
+.. class:: incremental
+
+Where other alternatives are specific implementations of the CGI standard,
+WSGI is itself a new standard, not an implementation.
+
+.. class:: incremental
+
+WSGI is generalized to describe a set of interactions, so that developers can
+write WSGI-capable apps and deploy them on any WSGI server.
+
+.. class:: incremental
+
+Read the WSGI spec: http://www.python.org/dev/peps/pep-0333
+
+
+WSGI: Apps and Servers
+----------------------
+
+.. class:: small
+
+WSGI consists of two parts, a *server* and an *application*.
+
+.. class:: small
+
+A WSGI Server must:
+
+.. class:: incremental small
+
+* set up an environment, much like the one in CGI
+* provide a method ``start_response(status, headers, exc_info=None)``
+* build a response body by calling an *application*, passing
+  ``environment`` and ``start_response`` as args
+* return a response with the status, headers and body
+
+.. class:: small
+
+A WSGI Appliction must:
+
+.. class:: incremental small
+
+* Be a callable (function, method, class)
+* Take an environment and a ``start_response`` callable as arguments
+* Call the ``start_response`` method.
+* Return an iterable of 0 or more strings, which are treated as the body of
+  the response.
+
+
+Simplified WSGI Server
+----------------------
+
+.. code-block:: python
+    :class: small
+
+    from some_application import simple_app
+    
+    def build_env(request):
+        # put together some environment info from the reqeuest
+        return env
+    
+    def handle_request(request, app):
+        environ = build_env(request)
+        iterable = app(environ, start_response)
+        for data in iterable:
+            # send data to client here
+    
+    def start_response(status, headers):
+        # start an HTTP response, sending status and headers
+    
+    # listen for HTTP requests and pass on to handle_request()
+    serve(simple_app)
+
+
+Simple WSGI Application
+-----------------------
+
+Where the simplified server above is **not** functional, this *is* a complete
+app:
 
 .. code-block:: python
 
+    def application(environ, start_response)
+        status = "200 OK"
+        body = "Hello World\n"
+        response_headers = [('Content-type', 'text/plain'),
+                            ('Content-length', len(body))]
+        start_response(status, response_headers)
+        return [body]
+
+
+WSGI Middleware
+---------------
+
+A third part of the puzzle is something called WSGI *middleware*
+
+.. class:: incremental
+
+* Middleware implements both the *server* and *application* interfaces
+* Middleware acts as a server when viewed from an application
+* Middleware acts as an application when viewed from a server
+
+.. image:: img/wsgi_middleware_onion.png
+    :align: center
+    :width: 38%
+    :class: incremental
+
+
+Flowcharts
+----------
+
+WSGI Servers:
+
+.. class:: center incremental
+
+**HTTP <---> WSGI**
+
+.. class:: incremental
+
+WSGI Applications:
+
+.. class:: center incremental
+
+**WSGI <---> app code**
+
+
+The Whole Enchilada
+-------------------
+
+The WSGI *Stack* can thus be expressed like so:
+
+.. class:: incremental big-centered
+
+**HTTP <---> WSGI <---> app code**
+
+
+Using wsgiref
+-------------
+
+The Python standard lib provides a reference implementation of WSGI:
+
+.. image:: img/wsgiref_flow.png
+    :align: center
+    :width: 80%
+    :class: incremental
+
+
+Apache mod_wsgi
+---------------
+
+You can also deploy with Apache as your HTTP server, using **mod_wsgi**:
+
+.. image:: img/mod_wsgi_flow.png
+    :align: center
+    :width: 80%
+    :class: incremental
+
+
+Proxied WSGI Servers
+--------------------
+
+Finally, it is also common to see WSGI apps deployed via a proxied WSGI
+server:
+
+.. image:: img/proxy_wsgi.png
+    :align: center
+    :width: 80%
+    :class: incremental
+
+
+The WSGI Environment
+--------------------
+
+.. class:: small
+
+REQUEST_METHOD
+  The HTTP request method, such as "GET" or "POST". This cannot ever be an
+  empty string, and so is always required.
+SCRIPT_NAME
+  The initial portion of the request URL's "path" that corresponds to the
+  application object, so that the application knows its virtual "location".
+  This may be an empty string, if the application corresponds to the "root" of
+  the server.
+PATH_INFO
+  The remainder of the request URL's "path", designating the virtual
+  "location" of the request's target within the application. This may be an
+  empty string, if the request URL targets the application root and does not
+  have a trailing slash.
+QUERY_STRING
+  The portion of the request URL that follows the "?", if any. May be empty or
+  absent.
+CONTENT_TYPE
+  The contents of any Content-Type fields in the HTTP request. May be empty or
+  absent.
+
+
+The WSGI Environment
+--------------------
+
+.. class:: small
+
+CONTENT_LENGTH
+  The contents of any Content-Length fields in the HTTP request. May be empty
+  or absent.
+SERVER_NAME, SERVER_PORT
+  When combined with SCRIPT_NAME and PATH_INFO, these variables can be used to
+  complete the URL. Note, however, that HTTP_HOST, if present, should be used
+  in preference to SERVER_NAME for reconstructing the request URL. See the URL
+  Reconstruction section below for more detail. SERVER_NAME and SERVER_PORT
+  can never be empty strings, and so are always required.
+SERVER_PROTOCOL
+  The version of the protocol the client used to send the request. Typically
+  this will be something like "HTTP/1.0" or "HTTP/1.1" and may be used by the
+  application to determine how to treat any HTTP request headers. (This
+  variable should probably be called REQUEST_PROTOCOL, since it denotes the
+  protocol used in the request, and is not necessarily the protocol that will
+  be used in the server's response. However, for compatibility with CGI we
+  have to keep the existing name.)
+
+
+The WSGI Environment
+--------------------
+
+.. class:: small
+
+HTTP\_ Variables
+  Variables corresponding to the client-supplied HTTP request headers (i.e.,
+  variables whose names begin with "HTTP\_"). The presence or absence of these
+  variables should correspond with the presence or absence of the appropriate
+  HTTP header in the request.
+
+.. class:: center incremental
+
+**Seem Familiar?**
+
+
+A Bit of Repetition
+-------------------
+
+Let's start simply.  We'll begin by repeating our first CGI exercise in WSGI
+
+.. class:: incremental
+
+* Find the ``wsgi`` directory in the class resources. Copy it to your working
+  directory.
+* Open the file ``wsgi_1.py`` in your text editor.
+* We will fill in the missing values using the wsgi ``environ``, just as we
+  use ``os.environ`` in cgi
+
+.. class:: incremental center
+
+**But First**
+
+
+Orientation
+-----------
+
+.. code-block:: python
+    :class: small
+
     if __name__ == '__main__':
-        html, encoding = fetch_search_results(
-            minAsk=500, maxAsk=1000, bedrooms=2
-        )
-        doc = parse_source(html, encoding)
-        print doc.prettify(encoding=encoding)
+        from wsgiref.simple_server import make_server
+        srv = make_server('localhost', 8080, application)
+        srv.serve_forever()
+
+.. class:: incremental
+
+Note that we pass our ``application`` function to the server factory
+
+.. class:: incremental
+
+We don't have to write a server, ``wsgiref`` does that for us.
+
+.. class:: incremental
+
+In fact, you should *never* have to write a WSGI server.
+
+
+Orientation
+-----------
+
+.. code-block:: python
+    :class: small
+
+    def application(environ, start_response):
+        response_body = body % (
+             environ.get('SERVER_NAME', 'Unset'), # server name
+                ...
+             )
+        status = '200 OK'
+        response_headers = [('Content-Type', 'text/html'),
+                            ('Content-Length', str(len(response_body)))]
+        start_response(status, response_headers)
+        return [response_body]
+
+.. class:: incremental
+
+We do not define ``start_response``, the application does that.
+
+.. class:: incremental
+
+We *are* responsible for determining the HTTP status.
+
+
+Running a WSGI Script
+---------------------
+
+You can run this script with python::
+
+    $ python wsgi_1.py
+
+.. class:: incremental
+
+This will start a wsgi server. What host and port will it use?
+
+.. class:: incremental
+
+Point your browser at ``http://localhost:8080/``. Did it work?
+
+.. class:: incremental
+
+Go ahead and fill in the missing bits. Use the ``environ`` passed into
+``application``
+
+
+Some Tips
+---------
+
+Because WSGI is a long-running process, the file you are editing is *not*
+reloaded after you edit it.
+
+.. class:: incremental
+
+You'll need to quit and re-run the script between edits.
+
+.. class:: incremental
+
+You may also want to consider using ``print environ`` in your application so
+you can see the dictionary.
+
+.. class:: incremental
+
+If you do that, where will the printed environment appear?
+
+
+A More Complex Example
+----------------------
+
+Let's create a multi-page wsgi application. It will serve a small database of
+python books.
+
+.. class:: incremental
+
+The database (with a very simple api) can be found in ``wsgi/bookdb.py``
+
+.. class:: incremental
+
+* We'll need a listing page that shows the titles of all the books
+* Each title will link to a details page for that book
+* The details page for each book will display all the information and have a
+  link back to the list
+
+
+Some Questions to Ponder
+------------------------
+
+.. class:: incremental
+
+When viewing our first wsgi app, do we see the name of the wsgi application
+script anywhere in the URL?
+
+.. class:: incremental
+
+In our wsgi application script, how many applications did we actually have?
+
+.. class:: incremental
+
+How are we going to serve different types of information out of a single
+application?
+
+
+Dispatch
+--------
+
+We have to write an app that will map our incoming request path to some code
+that can handle that request.
+
+.. class:: incremental
+
+This process is called ``dispatch``. There are many possible approaches
+
+.. class:: incremental
+
+Let's begin by designing this piece of it.
+
+.. class:: incremental
+
+Open ``bookapp.py`` from the ``wsgi`` folder.  We'll do our work here.
+
+
+PATH
+----
+
+The wsgi environment gives us access to *PATH_INFO*, which maps to the URI the
+user requested when they loaded the page.
+
+.. class:: incremental
+
+We can design the URLs that our app will use to assist us in routing.
+
+.. class:: incremental
+
+Let's declare that any request for ``/`` will map to the list page
+
+.. container:: incremental
+
+    We can also say that the URL for a book will look like this::
+    
+        http://localhost:8080/book/<identifier>
+
+Writing resolve_path
+--------------------
+
+Let's write a function, called ``resolve_path`` in our application file.
+
+.. class:: incremental
+
+* It should take the *PATH_INFO* value from environ as an argument.
+* It should return the function that will be called.
+* It should also return any arguments needed to call that function.
+* This implies of course that the arguments should be part of the PATH
+
+
+My Solution
+-----------
+
+.. code-block:: python
+    :class: small incremental
+
+    def resolve_path(path):
+        urls = [(r'^$', books),
+                (r'^book/(id[\d]+)$', book)]
+        matchpath = path.lstrip('/')
+        for regexp, func in urls:
+            match = re.match(regexp, matchpath)
+            if match is None:
+                continue
+            args = match.groups([])
+            return func, args
+        # we get here if no url matches
+        raise NameError
+
+
+Application Updates
+-------------------
+
+We need to hook our new router into the application.
+
+.. class:: incremental
+
+* The path should be extracted from ``environ``.
+* The router should be used to get a function and arguments
+* The body to return should come from calling that function with those
+  arguments
+* If an error is raised by calling the function, an appropriate response
+  should be returned
+* If the router raises a NameError, the application should return a 404
+  response
+
+
+My Solution
+-----------
+
+.. code-block:: python
+    :class: small incremental
+
+    def application(environ, start_response):
+        headers = [("Content-type", "text/html")]
+        try:
+            path = environ.get('PATH_INFO', None)
+            if path is None:
+                raise NameError
+            func, args = resolve_path(path)
+            body = func(*args)
+            status = "200 OK"
+        except NameError:
+            status = "404 Not Found"
+            body = "<h1>Not Found</h1>"
+        except Exception:
+            status = "500 Internal Server Error"
+            body = "<h1>Internal Server Error</h1>"
+        finally:
+            headers.append(('Content-length', str(len(body))))
+            start_response(status, headers)
+            return [body]
 
 
 Test Your Work
 --------------
 
-Assuming your virtualenv is still active, you should be able to execute the
-script.
+Once you've got your script settled, run it::
 
-.. rst-class:: build
+    $ python bookapp.py
 
-::
+.. class:: incremental
 
-    (soupenv)$ python mashup.py
-    <!DOCTYPE html>
-    <html class="nojs">
-     <head>
-      <title>
-       seattle apts/housing for rent classifieds  - craigslist
-      </title>
-    ...  
+Then point your browser at ``http://localhost:8080/``
 
-
-Preserve the Results
---------------------
-
-Try it again, this time redirect the output to a local file, so we can use
-it without needing to hit the craiglist servers each time::
-
-    (soupenv)$ python mashup.py > craigslist_results.html
-
-
-Finding The Needle
-------------------
-
-Next we find the bits of this pile of HTML that matter to us.
-
-.. rst-class:: build
-
-Open your html file in a browser and take a look (w/ dev tools).
-
-.. rst-class:: build
-
-We'll want to find:
-
-.. rst-class:: build
-
-* The HTML element that contains a single listing
-* The source of location data, listings without location should be abandoned
-* The description of a listing
-* The link to a full listing page on craigslist
-* Relevant price or size data.
-
-
-Pulling it Out
---------------
-
-We can extract this information now. In BeautifulSoup:
-
-.. rst-class:: build
-
-* All HTML elements (including the parsed document itself) are ``tags``
-* A ``tag`` can be searched using its ``find_all`` method
-* This searches the descendents of the tag on which it is called.
-* It takes arguments which act as *filters* on the search results
-
-.. container:: incremental
-
-    like so: 
-
-    .. class:: small
-
-    ::
-
-        tag.find_all(name, attrs, recursive, text, limit, **kwargs)
-
-
-Searching by CSS Class
-----------------------
-
-The items we are looking for are ``p`` tags which have the CSS class
-``row``:
-
-.. rst-class:: build
-
-``find_all`` supports keyword arguments. If the keyword you use isn't one of
-the listed arguments, it is treated as an ``attribute``
-
-.. rst-class:: build
-
-In Python, ``class`` is a reserved word, so we can't use it as a keyword, but
-you can use ``class_``!
-
-.. rst-class:: build small
-
-::
-
-    parsed.find_all('p', class_='row')
-
-
-Try It Out
-----------
-
-Let's fire up a python interpreter and get our hands dirty here::
-
-    (soupenv)$ python
-
-.. code-block:: python
-
-    >>> html = open('craigslist_results.html', 'r').read()
-    >>> from bs4 import BeautifulSoup
-    >>> parsed = BeautifulSoup(html)
-    >>> listings = parsed.find_all('p', class_='row')
-    >>> len(listings)
-    100
-
-
-.. rst-class:: build
-
-That sounds about right. Let's see if we can get only those with location
-data.
-
-
-Filtering Tricks
-----------------
-
-Attribute filters given a ``True`` value match tags with that attribute
-
-.. rst-class:: build
-
-Location data was in the ``data-latitude`` and ``data-longitude`` attributes.
-
-.. code-block:: python
-
-    >>> location_attrs = {
-    ...     'data-longitude': True,
-    ...     'data-latitude': True}
-    >>> locatable = parsed.find_all(
-    ...     'p', class_='row', attrs=location_attrs)
-    >>> len(locatable)
-    43
-
-.. rst-class:: build
-
-Great.  That worked nicely
-
-
-Parsing a Row
--------------
-
-Now that we have the rows we want, we need to parse them. We want to preserve:
-
-.. rst-class:: build
-
-* Location data (latitude and longitude)
-* Source link (to craiglist detailed listing)
-* Description text
-* Price and size data
-
-.. rst-class:: build
-
-Which parts of a single row contain each of these elements?
-
-
-Extracting Location
--------------------
-
-Location data is in the ``data-`` attributes we used to filter rows.
-
-.. container:: incremental
-
-    We can read the HTML attributes of a 'tag' easily, using ``attrs``:
-
-    .. code-block:: python
-
-        >>> row1 = locatable[0]
-        >>> row1.attrs
-        {u'data-pid': u'3949023084', u'data-latitude': u'35.8625743108992',
-         u'class': [u'row'], u'data-longitude': u'-78.6232739959049'}
-        >>> lat = row1.attrs.get('data-latitude', None)
-        >>> lon = row1.attrs.get('data-longitude', None)
-        >>> print lat, lon
-        46.9989830869194 -122.847250593816
-
-
-Extracting Description and Link
--------------------------------
-
-Where ``find_all`` will find many elements, ``find`` will only find the first
-that matches the filters you provide.
-
-.. container:: incremental
-
-    Our targets are in the first ``a`` tag in the ``pl`` span inside our row:
-
-    .. code-block:: python
-
-        >>> link = row1.find('span', class_='pl').find('a')
-
-.. container:: incremental
-
-    The link path will be in the attrs:
-
-    .. code-block:: python
-
-        >>> path = link.attrs['href']
-
-.. container:: incremental
-
-    Text contained *inside* tags is in the ``string`` property:
-
-    .. code-block:: python
-
-        >>> description = link.string.strip()
-
-
-Extracting Price and Size
--------------------------
-
-Both price and size are held in the ``l2`` span:
-
-.. code-block:: python
-
-    >>> l2 = row1.find('span', class_='l2')
-
-.. container:: incremental
-
-    Price, conveniently, is in it's own container:
+.. class:: incremental
     
-    .. code-block:: python
-    
-        >>> price_span = l2.find('span', class_='price')
-        >>> price = price_span.string.strip()
+* ``http://localhost/book/id3``
+* ``http://localhost/book/id73/``
+* ``http://localhost/sponge/damp``
 
-.. rst-class:: build
+.. class:: incremental
 
-But the size element is not. It is a standalone *text node*.
-
-.. rst-class:: build
-
-Try finding it by reading the ``string`` property of our ``l2`` tag.
+Did that all work as you would have expected?
 
 
-Simple Navigation and Text
---------------------------
+Building the List
+-----------------
 
-We can get to a simple text node by navigating there.
+The function ``books`` should return an html list of book titles where each
+title is a link to the detail page for that book
 
-.. rst-class:: build
+.. class:: incremental
 
-You can navigate up, down and across document nodes.
-
-.. container:: incremental
-
-    We already have the ``price`` span, the size text node is next at the same
-    level:
-
-    .. code-block:: python
-
-        >>> size = price_span.next_sibling.strip(' \n-/')
-        >>> size
-        u'2br - 912ft\xb2'
-
-.. rst-class:: build
-
-You may have noticed that we keep using ``strip``. There are two reasons for
-this.
-
-
-The NavigableString Element
----------------------------
-
-The most obvious reason is that we don't want extra whitespace.
-
-.. rst-class:: build
-
-The second reason is more subtle. The values returned by ``string`` are
-**not** simple unicode strings
-
-.. container:: incremental
-
-    They are actually instances of a class called ``NavigableString``:
-
-    .. code-block:: python
-
-        >>> price_span.next_sibling.__class__
-        <class 'bs4.element.NavigableString'>
-
-.. rst-class:: build
-
-Calling ``strip`` or casting them to ``unicode`` converts them, saving memory
-
-
-Put It All Together
--------------------
-
-Okay, a challenge.  Combine everything we've done into a function that:
-
-.. rst-class:: build
-
-* Extracts all the locatable listings from our html page
-* Iterates over each of them, and builds a dictionary of data
-  
-  * include ``location``, ``href``, ``description``, ``price`` and ``size``
-
-* Returns a list of these dictionaries
-
-.. rst-class:: build
-
-Call it ``extract_listings``
-
-.. rst-class:: build
-
-Put this new function into ``mashup.py`` and call it from ``__main__``,
-printing the result
-
-
-Break Time
-----------
-
-Once you have this working, take a break.
-
-.. rst-class:: build
-
-When we return, we'll try a saner approach to getting data from online
-
-.. container:: incremental
-
-    While you have a moment, sign up for an API key from this service:
-
-    http://www.walkscore.com/professional/api.php
+* You'll need all the ids and titles from the book database.
+* You'll need to build a list in HTML using this information
+* Each list item should have the book title as a link
+* The href for the link should be of the form ``/book/<id>``
 
 
 My Solution
 -----------
 
 .. code-block:: python
+    :class: incremental small
 
-    def extract_listings(doc):
-        location_attrs = {'data-latitude': True,
-                          'data-longitude': True}
-        for row in doc.find_all('p', class_='row',
-                                attrs=location_attrs):
-            location = dict(
-                [(key, row.attrs.get(key)) for key in location_attrs])
-            link = row.find('span', class_='pl').find('a')
-            price_span = row.find('span', class_='price')
-            listing = {
-                'location': location,
-                'href': link.attrs['href'],
-                'description': link.string.strip(),
-                'price': price_span.string.strip(),
-                'size': price_span.next_sibling.strip(' \n-/')
-            }
-            yield listing
+    def books():
+        all_books = DB.titles()
+        body = ['<h1>My Bookshelf</h1>', '<ul>']
+        item_template = '<li><a href="/book/{id}">{title}</a></li>'
+        for book in all_books:
+            body.append(item_template.format(**book))
+        body.append('</ul>')
+        return '\n'.join(body)
 
 
-My Solution
------------
-
-.. code-block:: python
-
-    if __name__ == '__main__':
-        html, encoding = fetch_search_results(
-            minAsk=500, maxAsk=1000, bedrooms=2
-        )
-        doc = parse_source(html, encoding)
-        for listing in extract_listings(doc):
-            print listing
-
-
-Another Approach
-----------------
-
-Scraping web pages is tedious and inherently brittle
-
-.. rst-class:: build
-
-The owner of the website updates their layout, your code breaks
-
-.. rst-class:: build
-
-But there is another way to get information from the web in a more normalized
-fashion
-
-.. rst-class:: build center
-
-**Web Services**
-
-
-Web Services
-------------
-
-"a software system designed to support interoperable machine-to-machine
-interaction over a network" - W3C
-
-.. rst-class:: build
-
-* provides a defined set of calls
-* returns structured data
-
-
-Early Web Services
-------------------
-
-RSS is one of the earliest forms of Web Services
-
-* First known as ``RDF Site Summary``
-* Became ``Really Simple Syndication``
-* More at http://www.rss-specification.com/rss-specifications.htm
-
-.. rst-class:: build
-
-A single web-based *endpoint* provides a dynamically updated listing of
-content
-
-.. rst-class:: build
-
-Implemented in pure HTTP.  Returns XML 
-
-.. rst-class:: build
-
-**Atom** is a competing, but similar standard
-
-
-RSS Document
-------------
-
-.. class:: tiny
-
-::
-
-    <?xml version="1.0" encoding="UTF-8" ?>
-    <rss version="2.0">
-    <channel>
-      <title>RSS Title</title>
-      <description>This is an example of an RSS feed</description>
-      <link>http://www.someexamplerssdomain.com/main.html</link>
-      <lastBuildDate>Mon, 06 Sep 2010 00:01:00 +0000 </lastBuildDate>
-      <pubDate>Mon, 06 Sep 2009 16:45:00 +0000 </pubDate>
-      <ttl>1800</ttl>
-
-      <item>
-        <title>Example entry</title>
-        <description>Here is some text containing an interesting description.</description>
-        <link>http://www.wikipedia.org/</link>
-        <guid>unique string per item</guid>
-        <pubDate>Mon, 06 Sep 2009 16:45:00 +0000 </pubDate>
-      </item>
-      ...
-    </channel>
-    </rss>
-
-
-XML-RPC
--------
-
-RSS provides a pre-defined data set, can we also allow *calling procedures* to
-get more dynamic data?
-
-.. rst-class:: build
-
-We can!  Enter XML-RPC (Remote Procedure Call)
-
-.. rst-class:: build
-
-* Provides a set of defined procedures which can take arguments
-* Calls are made via HTTP GET, by passing an XML document
-* Returns from a call are sent to the client in XML
-
-.. rst-class:: build
-
-There is an interactive example of this at the end of this session. We will
-not go through it here, though.
-
-
-Beyond XML-RPC
+Test Your Work
 --------------
 
-.. rst-class:: build
+Quit and then restart your application script::
 
-* XML-RPC allows introspection
-* XML-RPC forces you to introspect to get information
-* **Wouldn't it be nice to get that automatically?**
-* XML-RPC provides data types
-* XML-RPC provides only *certain* data types
-* **Wouldn't it be nice to have an extensible system for types?**
-* XML-RPC allows calling methods with parameters
-* XML-RPC only allows calling methods, nothing else
-* **wouldn't it be nice to have contextual data as well?**
+    $ python bookapp.py
 
-.. rst-class:: build center
+.. container:: incremental
 
-**Enter SOAP: Simple Object Access Protocol**
+    Then reload the root of your application::
 
+        http://localhost:8080/
 
-SOAP
-----
+.. class:: incremental
 
-SOAP extends XML-RPC in a couple of useful ways:
+You should see a nice list of the books in the database. Do you?
 
-.. rst-class:: build
+.. class:: incremental
 
-* It uses Web Services Description Language (WSDL) to provide meta-data about
-  an entire service in a machine-readable format (Automatic introspection)
-
-* It establishes a method for extending available data types using XML
-  namespaces
-
-* It provides a wrapper around method calls called the **envelope**, which
-  allows the inclusion of a **header** with system meta-data that can be used
-  by the application
+Click on a link to view the detail page. Does it load without error?
 
 
-SOAP in Python
---------------
-
-There is no standard library module that supports SOAP directly.
-
-.. rst-class:: build
-
-* The best-known and best-supported module available is **Suds**
-* The homepage is https://fedorahosted.org/suds/
-* It can be installed using ``easy_install`` or ``pip install``
-
-.. rst-class:: build
-
-Again, there is a good example of using SOAP via the ``suds`` library at the
-end of this session.
-
-.. rst-class:: build
-
-But we're going to move on
-
-
-Afterword
----------
-
-SOAP (and XML-RPC) have some problems:
-
-.. rst-class:: build
-
-* XML is pretty damned inefficient as a data transfer medium
-* Why should I need to know method names?
-* If I can discover method names at all, I have to read a WSDL to do it?
-
-.. rst-class:: build
-
-Suds is the best we have, and it hasn't been updated since Sept. 2010.
-
-If Not XML, Then What?
-----------------------
-
-.. rst-class:: large centered incremental
-
-**JSON**
-
-
-JSON
-----
-
-JavaScript Object Notation:
-
-.. rst-class:: build
-
-* a lightweight data-interchange format
-* easy for humans to read and write
-* easy for machines to parse and generate
-
-.. rst-class:: build
-
-Based on Two Structures:
-
-.. rst-class:: build
-
-* object: ``{ string: value, ...}``
-* array: ``[value, value, ]``
-
-.. class:: center incremental
-
-pythonic, no?
-
-
-JSON Data Types
+Showing Details
 ---------------
 
-JSON provides a few basic data types (see http://json.org/):
+The next step of course is to polish up those detail pages.
 
-.. rst-class:: build
+.. class:: incremental
 
-* string: unicode, anything but ", \\ and control characters
-* number: any number, but json does not use octal or hexadecimal
-* object, array (we've seen these above)
-* true
-* false
-* null
+* You'll need to retrieve a single book from the database
+* You'll need to format the details about that book and return them as HTML
+* You'll need to guard against ids that do not map to books
 
-.. rst-class:: build center
+.. class:: incremental
 
-**No date type? OMGWTF??!!1!1**
-
-
-Dates in JSON
--------------
-
-.. rst-class:: build
-
-Option 1 - Unix Epoch Time (number):
-
-.. code-block:: python
-
-    >>> import time
-    >>> time.time()
-    1358212616.7691269
-
-.. rst-class:: build
-
-Option 2 - ISO 8661 (string):
-
-.. code-block:: python
-
-    >>> import datetime
-    >>> datetime.datetime.now().isoformat()
-    '2013-01-14T17:18:10.727240'
-
-
-JSON in Python
---------------
-
-You can encode python to json, and decode json back to python:
-
-.. code-block:: python
-
-    >>> import json
-    >>> array = [1,2,3]
-    >>> json.dumps(array)
-    >>> '[1, 2, 3]'
-    >>> orig = {'foo': [1,2,3], 'bar': u'my resumé', 'baz': True}
-    >>> encoded = json.dumps(orig)
-    >>> encoded
-    '{"baz": true, "foo": [1, 2, 3], "bar": "my resum\\u00e9"}'
-    >>> decoded = json.loads(encoded)
-    >>> decoded == orig
-    True
-
-.. rst-class:: build
-
-Customizing the encoder or decoder class allows for specialized serializations
-
-
-JSON in Python
---------------
-
-the json module also supports reading and writing to *file-like objects* via 
-``json.dump(fp)`` and ``json.load(fp)`` (note the missing 's')
-
-.. rst-class:: build
-
-Remember duck-typing. Anything with a ``.write`` and a ``.read`` method is
-*file-like*
-
-.. rst-class:: build
-
-This usage can be much more memory-friendly with large files/sources
-
-
-What about WSDL?
-----------------
-
-SOAP was invented in part to provide completely machine-readable
-interoperability.
-
-.. rst-class:: build
-
-Does that really work in real life?
-
-.. rst-class:: build center
-
-Hardly ever
-
-
-What about WSDL?
-----------------
-
-Another reason was to provide extensibility via custom types
-
-.. rst-class:: build
-
-Does that really work in real life?
-
-.. rst-class:: build center
-
-Hardly ever
-
-
-Why Do All The Work?
---------------------
-
-So, if neither of these goals is really achieved by using SOAP, why pay all
-the overhead required to use the protocol?
-
-.. rst-class:: build
-
-Enter REST
-
-
-REST
-----
-
-.. class:: center
-
-Representational State Transfer
-
-.. rst-class:: build
-
-* Originally described by Roy T. Fielding (worth reading)
-* Use HTTP for what it can do
-* Read more in `this book
-  <http://www.crummy.com/writing/RESTful-Web-Services/>`_\*
-
-.. class:: image-credit incremental
-
-\* Seriously. Buy it and read
-(<http://www.crummy.com/writing/RESTful-Web-Services/)
-
-
-A Comparison
-------------
-
-The XML-RCP/SOAP way:
-
-.. rst-class:: build small
-
-* POST /getComment HTTP/1.1
-* POST /getComments HTTP/1.1
-* POST /addComment HTTP/1.1
-* POST /editComment HTTP/1.1
-* POST /deleteComment HTTP/1.1
-
-.. rst-class:: build
-
-The RESTful way:
-
-.. rst-class:: build small
-
-* GET /comment/<id> HTTP/1.1
-* GET /comment HTTP/1.1
-* POST /comment HTTP/1.1
-* PUT /comment/<id> HTTP/1.1
-* DELETE /comment/<id> HTTP/1.1
-
-
-ROA
----
-
-This is **Resource Oriented Architecture**
-
-.. rst-class:: build
-
-The URL represents the *resource* we are working with
-
-.. rst-class:: build
-
-The HTTP Method represents the ``action`` to be taken
-
-.. rst-class:: build
-
-The HTTP Code returned tells us the ``result`` (whether success or failure)
-
-
-HTTP Codes Revisited
---------------------
-
-.. class:: small
-
-POST /comment HTTP/1.1  (creating a new comment):
-
-.. rst-class:: build small
-
-* Success: ``HTTP/1.1 201 Created``
-* Failure (unauthorized): ``HTTP/1.1 401 Unauthorized``
-* Failure (NotImplemented): ``HTTP/1.1 405 Not Allowed``
-* Failure (ValueError): ``HTTP/1.1 406 Not Acceptable``
-
-.. class:: small incremental
-
-PUT /comment/<id> HTTP/1.1 (edit comment):
-
-.. rst-class:: build small
-
-* Success: ``HTTP/1.1 200 OK``
-* Failure: ``HTTP/1.1 409 Conflict``
-
-.. class:: small incremental
-
-DELETE /comment/<id> HTTP/1.1 (delete comment):
-
-.. rst-class:: build small
-
-* Success: ``HTTP/1.1 204 No Content``
-
-
-HTTP Is Stateless
------------------
-
-No individual request may be assumed to know anything about any other request.
-
-.. rst-class:: build
-
-All the required information representing the possible actions to take *should
-be present in every response*.
-
-.. rst-class:: build big-centered
-
-Thus:  HATEOAS
-
-
-HATEOAS
--------
-
-.. rst-class:: large centered
-
-Hypermedia As The Engine Of Application State
-
-
-Applications are State Engines
-------------------------------
-
-A State Engine is a machine that provides *states* for a resource to be in and
-*transitions* to move resources between states.  A Restful api should:
-
-.. rst-class:: build
-
-* provide information about the current state of a resource
-* provide information about available transitions for that resource (URIs)
-* provide all this in *each* HTTP response
-
-
-Playing With REST
------------------
-
-Let's take a moment to play with REST.
-
-.. rst-class:: build
-
-We'll use a common, public API provided by Google.
-
-.. rst-class:: build center
-
-**Geocoding**
-
-
-Geocoding with Google APIs
---------------------------
-
-https://developers.google.com/maps/documentation/geocoding
-
-.. container:: incremental
-
-    Open a python interpreter using our virtualenv: 
-
-    .. class:: small
-
-    ::
-
-        (soupenv)$ python
-
-.. code-block:: python
-
-    >>> import requests
-    >>> import json
-    >>> from pprint import pprint
-    >>> url = 'http://maps.googleapis.com/maps/api/geocode/json'
-    >>> addr = '1325 4th Ave, Seattle, 98101'
-    >>> parameters = {'address': addr, 'sensor': 'false' }
-    >>> resp = requests.get(url, params=parameters)
-    >>> data = json.loads(resp.text)
-    >>> if data['status'] == 'OK':
-    ...     pprint(data)
-    
-
-
-Reverse Geocoding
------------------
-
-You can do the same thing in reverse, supply latitude and longitude and get
-back address information:
-
-.. code-block:: python
-
-    >>> location = data['results'][0]['geometry']['location']
-    >>> latlng="{lat},{lng}".format(**location)
-    >>> parameters = {'latlng': latlng, 'sensor': 'false'}
-    >>> resp = requests.get(url, params=paramters)
-    >>> data = json.loads(resp.text)
-    >>> if data['status'] == 'OK':
-    ...     pprint(data)
-
-.. rst-class:: build
-
-Notice that there are a number of results returned, ordered from most specific
-to least.
-
-
-Mash It Up
-----------
-
-Let's add a new function to ``mashup.py``.  It will:
-
-.. rst-class:: build
-
-* take a single listing from our craiglist work
-* format the location data provided in that listing properly
-* make a reverse geocoding lookup using the google api above
-* add the best available address to the listing 
-* return the updated listing
-
-.. rst-class:: build
-
-Call it ``add_address``
+In this last case, what's the right HTTP response code to send?
 
 
 My Solution
 -----------
 
 .. code-block:: python
-    
-    # add an import
-    import json
+    :class: incremental small
 
-    # and a function
-    def add_address(listing):
-        api_url = 'http://maps.googleapis.com/maps/api/geocode/json'
-        loc = listing['location']
-        latlng_tmpl = "{data-latitude},{data-longitude}"
-        parameters = {
-            'sensor': 'false',
-            'latlng': latlng_tmpl.format(**loc),
-        }
-        resp = requests.get(api_url, params=parameters)
-        data = json.loads(resp.text)
-        if data['status'] == 'OK':
-            best = data['results'][0]
-            listing['address'] = best['formatted_address']
-        else:
-            listing['address'] = 'unavailable'
-        return listing
+    def book(book_id):
+        page = """
+    <h1>{title}</h1>
+    <table>
+        <tr><th>Author</th><td>{author}</td></tr>
+        <tr><th>Publisher</th><td>{publisher}</td></tr>
+        <tr><th>ISBN</th><td>{isbn}</td></tr>
+    </table>
+    <a href="/">Back to the list</a>
+    """
+        book = DB.title_info(book_id)
+        if book is None:
+            raise NameError
+        return page.format(**book)
 
 
-Add Address to Output
+Revel in Your Success
 ---------------------
 
-Go ahead and bolt the new function into our ``__main__`` block:
+Quit and restart your script one more time
 
-.. code-block:: python
+.. class:: incremental
 
-    import pprint
-    if __name__ == '__main__':
-        params = {'minAsk': 500, 'maxAsk': 1000, 'bedrooms': 2}
-        html, encoding = fetch_search_results(**params)
-        doc = parse_source(html, encoding)
-        for listing in extract_listings(doc):
-            listing = add_address(listing)
-            pprint.pprint(listing)
+Then poke around at your application and see the good you've made
 
-.. container:: incremental
+.. class:: incremental
 
-    And give the result a whirl:
+And your application is portable and sharable
 
-    .. class:: small
+.. class:: incremental
 
-    ::
+It should run equally well under any `wsgi server
+<http://www.wsgi.org/en/latest/applications.html>`_
 
-        (soupenv)$ python mashup.py
-        {'address': u'123 Some Street, Chapel Hill, NC ...',
-         'description': u'3 bedroom 2 bathroom unit is move in ready!'
-         ...
-        }
 
+A Few Steps Further
+-------------------
 
-One More Step
--------------
+Next steps for an app like this might be:
 
-I'm a big fan of walking places.
-
-.. rst-class:: build
-
-So I'd like to find an apartment that is located somewhere 'walkable'
-
-.. rst-class:: build
-
-There's an API for that!
-
-.. rst-class:: build
-
-http://www.walkscore.com/professional/api.php
-
-.. rst-class:: build
-
-If you haven't already, sign up for an API key now.
-
-
-Getting a Walk Score
---------------------
-
-The API documentation tells us we have to provide lat, lon and address to get
-a walk score, along with our API key.
-
-.. rst-class:: build
-
-It also tells us we have a choice of XML or JSON output.  Let's use JSON
-
-.. rst-class:: build
-
-Let's poke at it and see what we get back
-
-.. rst-class:: build
-
-Fire up your virtualenv Python interpreter again
-
-
-Making an API Call
-------------------
-
-::
-
-    (soupenv)$ python
-
-.. code-block:: python
-
-    >>> import requests
-    >>> import json
-    >>> from pprint import pprint
-    >>> api_url = 'http://api.walkscore.com/score'
-    >>> lat, lon = 35.9108986, -79.053783
-    >>> addr = '120 E. Cameron Avenue Chapel Hill, NC 27599'
-    >>> params = {'lat': lat, 'lon', lon, 'address': addr}
-    >>> params['wsapikey'] = '<type your api key here>'
-    >>> params['format'] = 'json'
-    >>> resp = requests.get(api_url, params=params)
-    >>> data = json.loads(resp.text)
-    >>> if data['status'] == 1:
-    ...     pprint(data)
-
-
-Mash It Up
-----------
-
-Add a function to ``mashup.py`` that:
-
-.. rst-class:: build
-
-* takes a single listing from our craigslist search
-* uses the location and address to make a walkscore api call
-* adds the description, walkscore and ws_link parameters to the listing
-* returns the updated listing
-
-.. rst-class:: build
-
-Call the function ``add_walkscore``
-
-.. rst-class:: build
-
-Bolt it into our script's ``__main__`` block where it fits best
-
-
-My Solution
------------
-
-.. code-block:: python
-
-    def add_walkscore(listing):
-        api_url = 'http://api.walkscore.com/score'
-        apikey = '<your api key goes here>'
-        loc = listing['location']
-        if listing['address'] == 'unavailable':
-            return listing
-        parameters = {
-            'lat': loc['data-latitude'], 'lon': loc['data-longitude'],
-            'address': listing['address'], 'wsapikey': apikey,
-            'format': 'json'
-        }
-        resp = requests.get(api_url, params=parameters)
-        data = json.loads(resp.text)
-        if data['status'] == 1:
-            listing['ws_description'] = data['description']
-            listing['ws_score'] = data['walkscore']
-            listing['ws_link'] = data['ws_link']
-        return listing
-
-
-My Results
-----------
-
-.. code-block:: python
-
-    if __name__ == '__main__':
-        params = {'minAsk': 500, 'maxAsk': 1000, 'bedrooms': 2}
-        html, encoding = fetch_search_results(**params)
-        doc = parse_source(html, encoding)
-        for listing in extract_listings(doc):
-            listing = add_address(listing)
-            listing = add_walkscore(listing)
-            pprint.pprint(listing)
-
-.. container:: incremental
-
-    Let's try it out::
-
-        (soupenv)$ python mashup.py
-
-
-Wrap Up
--------
-
-We've built a simple mashup combining data from three different sources.
-
-.. rst-class:: build
-
-As a result we can now make a listing of apartments ranked by the walkability
-of their neighborhood.
-
-.. rst-class:: build
-
-What other data sources might we use? Check out
-http://www.programmableweb.com/apis/directory to see some of the possibilities
-
-
-Addenda
--------
-
-Altough we do not have class time to do walkthrough examples of using XML-RPC
-and SOAP, I have provided exercises in each as an addenda to this session. If
-you have the time and the interest, please try them out.
-
-.. class:: center
-
-`Web Service API Addenda <session03-addenda.html>`_
+* Create a shared full page template and incorporate it into your app
+* Improve the error handling by emitting error codes other than 404 and 500
+* Swap out the basic backend here with a different one, maybe a Web Service?
+* Think about ways to make the application less tightly coupled to the pages
+  it serves
 
 
 Homework
 --------
 
-For your homework this week, you'll be creating a mashup of your own.
+For your homework this week, you'll be creating a wsgi application of your
+own.
 
-.. rst-class:: build
+.. class:: incremental
 
-Use the programmable web api directory from above as a source of inspiration.
+As the source of your data, use the mashup you created last week.
 
-.. rst-class:: build
+.. class:: incremental
 
-Your mashup should combine at least two sources of data in some way that
-tickles your fancy.
+Your application should have at least two separate "pages" in it.
 
-.. rst-class:: build
+.. class:: incremental
 
-Your results need not look pretty. Focus on data acquisition and processing.
+The HTML you produce does not need to be pretty, but it should be something
+that shows up in a browser.
 
 
 Submitting Your Homework
@@ -1614,22 +1378,58 @@ Submitting Your Homework
 
 To submit your homework:
 
-* Create a new python script in ``assignments/session03``. It should be
-  something I can run with::
+.. class:: small
+
+* Create a new python script in ``assignments/session04``. It should be
+  something I can run with:
+
+.. class:: small
+
+::
 
     $ python your_script.py
 
-* Provide me with a text file describing what you did. Tell me about the
-  sources you use, how you combine them, what you hoped to achieve.
+.. class:: small
 
-* Include any instruction I might need to successfully run your script.
+* Once your script is running, I should be able to view your application in my
+  browser.
+
+* Include all instructions I need to successfully run and view your script.
+
+* Add tests for your code. I should be able to run the tests like so:
+
+.. class:: small
+
+::
+
+    $ python tests.py
+
+.. class:: small
 
 * Commit your changes to your fork of the repo in github, then open a pull
   request.
 
 
-Extra Credit
-------------
+But Wait, There's More
+----------------------
 
-Bonus points if you write unit tests for the elements of your mashup.  
+In addition, read and step through the quick tutorials on templates and
+database persistence in the assignments directory.
 
+Use your flaskenv Python, it has everything you need installed.
+
+
+Wrap-Up
+-------
+
+For educational purposes, you might wish to take a look at the source code for
+the ``wsgiref`` module. It's the canonical example of a simple wsgi server
+
+    >>> import wsgiref
+    >>> wsgiref.__file__
+    '/full/path/to/your/copy/of/wsgiref.py'
+    ...
+
+.. class:: incremental center
+
+**See you Next Time**
