@@ -134,8 +134,22 @@ clear and concise and have some great code examples.
 
 .. _Internet Protocols and Support: http://pymotw.com/2/internet_protocols.html
 
+Session 6 - CGI and WSGI
+------------------------
 
-Session 6 - APIs and Mashups
+In this class we will explore ways of moving data from HTTP requests into the
+dynamic scripts that process data. We will begin by looking at the original
+specification for passing data, CGI (Common Gateway Interface). We'll look at
+the benefits and drawbacks of the specification, and use it to create some
+simple interactions.
+
+Then we will investigate a more modern take on the same problem, WSGI (Web
+Services Gateway Interface). We'll see the ways in which WSGI is similar to
+CGI, and look at the ways in which it differs. We'll create a simple interaction
+using WSGI and see what benefits and drawbacks it confers.
+
+
+Session 7 - APIs and Mashups
 ----------------------------
 
 The internet is a treasure trove of information. But meaning can be hard to
@@ -162,19 +176,6 @@ References
 * `json <http://docs.python.org/2/library/json.html>`_
 
 
-Session 7 - CGI and WSGI
-------------------------
-
-In this class we will explore ways of moving data from HTTP requests into the
-dynamic scripts that process data. We will begin by looking at the original
-specification for passing data, CGI (Common Gateway Interface). We'll look at
-the benefits and drawbacks of the specification, and use it to create some
-simple interactions.
-
-Then we will investigate a more modern take on the same problem, WSGI (Web
-Services Gateway Interface). We'll see the ways in which WSGI is similar to
-CGI, and look at the ways in which it differs. We'll create a simple interaction
-using WSGI and see what benefits and drawbacks it confers.
 
 Preparation for Session 8
 *************************
@@ -218,16 +219,23 @@ Session 9 - Extending Django
 ----------------------------
 
 During this session, we will continue our exploration of Django, and of pair
-programming. Students will once again pair up and work together to implement
-one or more feature extending the basic Django app we created previously.
+programming. Students will pair up and work together to implement one or more
+feature extending the basic Django app we created previously.
 
 Finally, we'll discuss some of the strengths and weaknesses of Django.  What
 makes it a good choice for some projects but not for others.
 
-`Lecture Slides <presentations/session08.html>`_
+Preparation for Session 10
+**************************
+
+In preparation for session 10, you'll need to sign up for an account with
+Amazon Web Services.
 
 
 Session 10 - Deploying Django
 -----------------------------
 
+During this session, we will deploy our Django application to Amazon Web
+Services. To do so, we'll use a popular Python-based configuration management
+tool, Ansible.
 
