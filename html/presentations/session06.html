@@ -392,8 +392,8 @@ Content-length:, ...)</li>
 <li>prints headers, empty line and script output (body) to stdout</li>
 </ul>
 </div>
-<div class="section" id="in-class-exercise">
-<h3>In-Class Exercise<a class="headerlink" href="#in-class-exercise" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="in-class-exercise-i">
+<h3>In-Class Exercise I<a class="headerlink" href="#in-class-exercise-i" title="Permalink to this headline">¶</a></h3>
 <p>You&#8217;ve seen the output from the <tt class="docutils literal"><span class="pre">cgi.test()</span></tt> method from the <tt class="docutils literal"><span class="pre">cgi</span></tt> module.
 Let&#8217;s make our own version of this.</p>
 <div class="build container">
@@ -437,8 +437,8 @@ the <tt class="docutils literal"><span class="pre">?</span></tt>):</p>
 are present</li>
 </ul>
 </div>
-<div class="section" id="id1">
-<h3>In-Class Exercise<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="in-class-exercise-ii">
+<h3>In-Class Exercise II<a class="headerlink" href="#in-class-exercise-ii" title="Permalink to this headline">¶</a></h3>
 <p>Let&#8217;s create a dynamic adding machine.</p>
 <ul class="build simple">
 <li>In the <tt class="docutils literal"><span class="pre">cgi-bin</span></tt> directory you&#8217;ll find <tt class="docutils literal"><span class="pre">cgi_sums.py</span></tt>.</li>
@@ -507,10 +507,10 @@ code.</p>
 <div class="build container">
 <p>Other alternatives are specific implementations of the CGI standard.</p>
 <p>WSGI is itself a new standard, not an implementation.</p>
+<p>WSGI is generalized to describe a set of interactions.</p>
+<p>Developers can write WSGI-capable apps and deploy them on any WSGI server.</p>
+<p>Read the WSGI spec: <a class="reference external" href="http://www.python.org/dev/peps/pep-0333">http://www.python.org/dev/peps/pep-0333</a></p>
 </div>
-<p class="build">WSGI is generalized to describe a set of interactions.</p>
-<p class="build">Developers can write WSGI-capable apps and deploy them on any WSGI server.</p>
-<p class="build">Read the WSGI spec: <a class="reference external" href="http://www.python.org/dev/peps/pep-0333">http://www.python.org/dev/peps/pep-0333</a></p>
 </div>
 <div class="section" id="apps-and-servers">
 <h3>Apps and Servers<a class="headerlink" href="#apps-and-servers" title="Permalink to this headline">¶</a></h3>
@@ -528,7 +528,7 @@ code.</p>
 </div>
 <div class="container">
 <p>A WSGI Appliction must:</p>
-<ul class="build small simple">
+<ul class="build simple">
 <li>Be a callable (function, method, class)</li>
 <li>Take an environment and a <tt class="docutils literal"><span class="pre">start_response</span></tt> callable as arguments</li>
 <li>Call the <tt class="docutils literal"><span class="pre">start_response</span></tt> method.</li>
@@ -578,92 +578,66 @@ app:</p>
 <a class="reference internal image-reference" href="../_images/wsgi_middleware_onion.png"><img alt="../_images/wsgi_middleware_onion.png" src="../_images/wsgi_middleware_onion.png" style="width: 38%;" /></a>
 </div>
 </div>
-</div>
-<div class="section" id="flowcharts">
-<h3>Flowcharts<a class="headerlink" href="#flowcharts" title="Permalink to this headline">¶</a></h3>
+<div class="build container">
+<div class="container">
 <p>WSGI Servers:</p>
-<dl class="class">
-<dt>
-<tt class="descname">center incremental</tt></dt>
-<dd></dd></dl>
-
-<p><strong>HTTP &lt;&#8212;&gt; WSGI</strong></p>
-<p class="build">WSGI Applications:</p>
-<dl class="class">
-<dt>
-<tt class="descname">center incremental</tt></dt>
-<dd></dd></dl>
-
-<p><strong>WSGI &lt;&#8212;&gt; app code</strong></p>
+<p class="large centered"><strong>HTTP &lt;&#8212;&gt; WSGI</strong></p>
 </div>
-<div class="section" id="the-whole-enchilada">
-<h3>The Whole Enchilada<a class="headerlink" href="#the-whole-enchilada" title="Permalink to this headline">¶</a></h3>
+<div class="container">
+<p>WSGI Applications:</p>
+<p class="large centered"><strong>WSGI &lt;&#8212;&gt; app code</strong></p>
+</div>
+</div>
 <p>The WSGI <em>Stack</em> can thus be expressed like so:</p>
-<p class="build big-centered"><strong>HTTP &lt;&#8212;&gt; WSGI &lt;&#8212;&gt; app code</strong></p>
-</div>
-<div class="section" id="using-wsgiref">
-<h3>Using wsgiref<a class="headerlink" href="#using-wsgiref" title="Permalink to this headline">¶</a></h3>
+<p class="build large centered"><strong>HTTP &lt;&#8212;&gt; WSGI &lt;&#8212;&gt; app code</strong></p>
 <p>The Python standard lib provides a reference implementation of WSGI:</p>
-<a class="reference internal image-reference" href="presentations/img/wsgiref_flow.png"><img alt="presentations/img/wsgiref_flow.png" class="align-center" src="presentations/img/wsgiref_flow.png" style="width: 80%;" /></a>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/wsgiref_flow.png"><img alt="../_images/wsgiref_flow.png" src="../_images/wsgiref_flow.png" style="width: 80%;" /></a>
 </div>
-<div class="section" id="apache-mod-wsgi">
-<h3>Apache mod_wsgi<a class="headerlink" href="#apache-mod-wsgi" title="Permalink to this headline">¶</a></h3>
 <p>You can also deploy with Apache as your HTTP server, using <strong>mod_wsgi</strong>:</p>
-<a class="reference internal image-reference" href="presentations/img/mod_wsgi_flow.png"><img alt="presentations/img/mod_wsgi_flow.png" class="align-center" src="presentations/img/mod_wsgi_flow.png" style="width: 80%;" /></a>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/mod_wsgi_flow.png"><img alt="../_images/mod_wsgi_flow.png" src="../_images/mod_wsgi_flow.png" style="width: 80%;" /></a>
 </div>
-<div class="section" id="proxied-wsgi-servers">
-<h3>Proxied WSGI Servers<a class="headerlink" href="#proxied-wsgi-servers" title="Permalink to this headline">¶</a></h3>
 <p>Finally, it is also common to see WSGI apps deployed via a proxied WSGI
 server:</p>
-<a class="reference internal image-reference" href="presentations/img/proxy_wsgi.png"><img alt="presentations/img/proxy_wsgi.png" class="align-center" src="presentations/img/proxy_wsgi.png" style="width: 80%;" /></a>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/proxy_wsgi.png"><img alt="../_images/proxy_wsgi.png" src="../_images/proxy_wsgi.png" style="width: 80%;" /></a>
+</div>
 </div>
 <div class="section" id="the-wsgi-environment">
 <h3>The WSGI Environment<a class="headerlink" href="#the-wsgi-environment" title="Permalink to this headline">¶</a></h3>
-<dl class="class">
-<dt id="small">
-<em class="property">class </em><tt class="descname">small</tt><a class="headerlink" href="#small" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="docutils">
-<dt>REQUEST_METHOD</dt>
+<dt>REQUEST_METHOD:</dt>
 <dd>The HTTP request method, such as &#8220;GET&#8221; or &#8220;POST&#8221;. This cannot ever be an
 empty string, and so is always required.</dd>
-<dt>SCRIPT_NAME</dt>
+<dt>SCRIPT_NAME:</dt>
 <dd>The initial portion of the request URL&#8217;s &#8220;path&#8221; that corresponds to the
 application object, so that the application knows its virtual &#8220;location&#8221;.
 This may be an empty string, if the application corresponds to the &#8220;root&#8221; of
 the server.</dd>
-<dt>PATH_INFO</dt>
+<dt>PATH_INFO:</dt>
 <dd>The remainder of the request URL&#8217;s &#8220;path&#8221;, designating the virtual
 &#8220;location&#8221; of the request&#8217;s target within the application. This may be an
 empty string, if the request URL targets the application root and does not
 have a trailing slash.</dd>
-<dt>QUERY_STRING</dt>
+<dt>QUERY_STRING:</dt>
 <dd>The portion of the request URL that follows the &#8221;?&#8221;, if any. May be empty or
 absent.</dd>
-<dt>CONTENT_TYPE</dt>
+<dt>CONTENT_TYPE:</dt>
 <dd>The contents of any Content-Type fields in the HTTP request. May be empty or
 absent.</dd>
 </dl>
-</div>
-<div class="section" id="id2">
-<h3>The WSGI Environment<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
-<dl class="class">
-<dt>
-<em class="property">class </em><tt class="descname">small</tt></dt>
-<dd></dd></dl>
-
 <dl class="docutils">
-<dt>CONTENT_LENGTH</dt>
+<dt>CONTENT_LENGTH:</dt>
 <dd>The contents of any Content-Length fields in the HTTP request. May be empty
 or absent.</dd>
-<dt>SERVER_NAME, SERVER_PORT</dt>
+<dt>SERVER_NAME, SERVER_PORT:</dt>
 <dd>When combined with SCRIPT_NAME and PATH_INFO, these variables can be used to
 complete the URL. Note, however, that HTTP_HOST, if present, should be used
 in preference to SERVER_NAME for reconstructing the request URL. See the URL
 Reconstruction section below for more detail. SERVER_NAME and SERVER_PORT
 can never be empty strings, and so are always required.</dd>
-<dt>SERVER_PROTOCOL</dt>
+<dt>SERVER_PROTOCOL:</dt>
 <dd>The version of the protocol the client used to send the request. Typically
 this will be something like &#8220;HTTP/1.0&#8221; or &#8220;HTTP/1.1&#8221; and may be used by the
 application to determine how to treat any HTTP request headers. (This
@@ -672,30 +646,17 @@ protocol used in the request, and is not necessarily the protocol that will
 be used in the server&#8217;s response. However, for compatibility with CGI we
 have to keep the existing name.)</dd>
 </dl>
-</div>
-<div class="section" id="id3">
-<h3>The WSGI Environment<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
-<dl class="class">
-<dt>
-<em class="property">class </em><tt class="descname">small</tt></dt>
-<dd></dd></dl>
-
 <dl class="docutils">
-<dt>HTTP_ Variables</dt>
+<dt>HTTP_ Variables:</dt>
 <dd>Variables corresponding to the client-supplied HTTP request headers (i.e.,
 variables whose names begin with &#8220;HTTP_&#8221;). The presence or absence of these
 variables should correspond with the presence or absence of the appropriate
 HTTP header in the request.</dd>
 </dl>
-<dl class="class">
-<dt>
-<tt class="descname">center incremental</tt></dt>
-<dd></dd></dl>
-
-<p><strong>Seem Familiar?</strong></p>
+<p class="build large centered"><strong>Seem Familiar?</strong></p>
 </div>
-<div class="section" id="a-bit-of-repetition">
-<h3>A Bit of Repetition<a class="headerlink" href="#a-bit-of-repetition" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="in-class-exercise-iii">
+<h3>In-Class Exercise III<a class="headerlink" href="#in-class-exercise-iii" title="Permalink to this headline">¶</a></h3>
 <p>Let&#8217;s start simply.  We&#8217;ll begin by repeating our first CGI exercise in WSGI</p>
 <ul class="build simple">
 <li>Find the <tt class="docutils literal"><span class="pre">wsgi</span></tt> directory in the class resources. Copy it to your working
@@ -704,22 +665,18 @@ directory.</li>
 <li>We will fill in the missing values using the wsgi <tt class="docutils literal"><span class="pre">environ</span></tt>, just as we
 use <tt class="docutils literal"><span class="pre">os.environ</span></tt> in cgi</li>
 </ul>
-<p class="build center"><strong>But First</strong></p>
-</div>
-<div class="section" id="orientation">
-<h3>Orientation<a class="headerlink" href="#orientation" title="Permalink to this headline">¶</a></h3>
+<p class="build centered"><strong>But First</strong></p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">wsgiref.simple_server</span> <span class="kn">import</span> <span class="n">make_server</span>
     <span class="n">srv</span> <span class="o">=</span> <span class="n">make_server</span><span class="p">(</span><span class="s">&#39;localhost&#39;</span><span class="p">,</span> <span class="mi">8080</span><span class="p">,</span> <span class="n">application</span><span class="p">)</span>
     <span class="n">srv</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
 </pre></div>
 </div>
-<p class="build">Note that we pass our <tt class="docutils literal"><span class="pre">application</span></tt> function to the server factory</p>
-<p class="build">We don&#8217;t have to write a server, <tt class="docutils literal"><span class="pre">wsgiref</span></tt> does that for us.</p>
-<p class="build">In fact, you should <em>never</em> have to write a WSGI server.</p>
+<div class="build container">
+<p>Note that we pass our <tt class="docutils literal"><span class="pre">application</span></tt> function to the server factory</p>
+<p>We don&#8217;t have to write a server, <tt class="docutils literal"><span class="pre">wsgiref</span></tt> does that for us.</p>
+<p>In fact, you should <em>never</em> have to write a WSGI server.</p>
 </div>
-<div class="section" id="id4">
-<h3>Orientation<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">):</span>
     <span class="n">response_body</span> <span class="o">=</span> <span class="n">body</span> <span class="o">%</span> <span class="p">(</span>
          <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;SERVER_NAME&#39;</span><span class="p">,</span> <span class="s">&#39;Unset&#39;</span><span class="p">),</span> <span class="c"># server name</span>
@@ -732,72 +689,72 @@ use <tt class="docutils literal"><span class="pre">os.environ</span></tt> in cgi
     <span class="k">return</span> <span class="p">[</span><span class="n">response_body</span><span class="p">]</span>
 </pre></div>
 </div>
-<p class="build">We do not define <tt class="docutils literal"><span class="pre">start_response</span></tt>, the application does that.</p>
-<p class="build">We <em>are</em> responsible for determining the HTTP status.</p>
+<div class="build container">
+<p>We do not define <tt class="docutils literal"><span class="pre">start_response</span></tt>, the application does that.</p>
+<p>We <em>are</em> responsible for determining the HTTP status.</p>
 </div>
-<div class="section" id="running-a-wsgi-script">
-<h3>Running a WSGI Script<a class="headerlink" href="#running-a-wsgi-script" title="Permalink to this headline">¶</a></h3>
 <p>You can run this script with python:</p>
 <div class="highlight-python"><div class="highlight"><pre>$ python wsgi_1.py
 </pre></div>
 </div>
-<p class="build">This will start a wsgi server. What host and port will it use?</p>
-<p class="build">Point your browser at <tt class="docutils literal"><span class="pre">http://localhost:8080/</span></tt>. Did it work?</p>
-<p class="build">Go ahead and fill in the missing bits. Use the <tt class="docutils literal"><span class="pre">environ</span></tt> passed into
+<div class="build container">
+<p>This will start a wsgi server. What host and port will it use?</p>
+<p>Point your browser at <tt class="docutils literal"><span class="pre">http://localhost:8080/</span></tt>. Did it work?</p>
+<p>Go ahead and fill in the missing bits. Use the <tt class="docutils literal"><span class="pre">environ</span></tt> passed into
 <tt class="docutils literal"><span class="pre">application</span></tt></p>
 </div>
-<div class="section" id="some-tips">
-<h3>Some Tips<a class="headerlink" href="#some-tips" title="Permalink to this headline">¶</a></h3>
-<p>Because WSGI is a long-running process, the file you are editing is <em>not</em>
-reloaded after you edit it.</p>
-<p class="build">You&#8217;ll need to quit and re-run the script between edits.</p>
-<p class="build">You may also want to consider using <tt class="docutils literal"><span class="pre">print</span> <span class="pre">environ</span></tt> in your application so
-you can see the dictionary.</p>
-<p class="build">If you do that, where will the printed environment appear?</p>
+<p>WSGI is a long-running process.</p>
+<div class="build container">
+<p>The file you are editing is <em>not</em> reloaded after you edit it.</p>
+<p>You&#8217;ll need to quit and re-run the script between edits.</p>
+<p>Notice the use of <tt class="docutils literal"><span class="pre">pprint.pprint</span></tt>, check your terminal for useful output.</p>
 </div>
-<div class="section" id="a-more-complex-example">
-<h3>A More Complex Example<a class="headerlink" href="#a-more-complex-example" title="Permalink to this headline">¶</a></h3>
-<p>Let&#8217;s create a multi-page wsgi application. It will serve a small database of
-python books.</p>
-<p class="build">The database (with a very simple api) can be found in <tt class="docutils literal"><span class="pre">wsgi/bookdb.py</span></tt></p>
+</div>
+<div class="section" id="a-wsgi-application">
+<h3>A WSGI Application<a class="headerlink" href="#a-wsgi-application" title="Permalink to this headline">¶</a></h3>
+<p>So now we&#8217;ve learned a bit about the WSGI specification and how a WSGI
+application can get data that comes in via an HTTP request.</p>
+<div class="build container">
+<p>Let&#8217;s create a multi-page wsgi application.</p>
+<p>It will serve a small database of python books.</p>
+<p>The database (with a very simple api) can be found in <tt class="docutils literal"><span class="pre">wsgi/bookdb.py</span></tt></p>
 <ul class="build simple">
 <li>We&#8217;ll need a listing page that shows the titles of all the books</li>
 <li>Each title will link to a details page for that book</li>
-<li>The details page for each book will display all the information and have a
-link back to the list</li>
+<li>The details page for each book will display all the information and have
+a link back to the list</li>
 </ul>
 </div>
-<div class="section" id="some-questions-to-ponder">
-<h3>Some Questions to Ponder<a class="headerlink" href="#some-questions-to-ponder" title="Permalink to this headline">¶</a></h3>
-<p class="build">When viewing our first wsgi app, do we see the name of the wsgi application
+<p>When viewing our first wsgi app, do we see the name of the wsgi application
 script anywhere in the URL?</p>
-<p class="build">In our wsgi application script, how many applications did we actually have?</p>
-<p class="build">How are we going to serve different types of information out of a single
+<div class="build container">
+<p>In our wsgi application script, how many applications did we actually have?</p>
+<p>How are we going to serve different types of information out of a single
 application?</p>
 </div>
-<div class="section" id="dispatch">
-<h3>Dispatch<a class="headerlink" href="#dispatch" title="Permalink to this headline">¶</a></h3>
 <p>We have to write an app that will map our incoming request path to some code
 that can handle that request.</p>
-<p class="build">This process is called <tt class="docutils literal"><span class="pre">dispatch</span></tt>. There are many possible approaches</p>
-<p class="build">Let&#8217;s begin by designing this piece of it.</p>
-<p class="build">Open <tt class="docutils literal"><span class="pre">bookapp.py</span></tt> from the <tt class="docutils literal"><span class="pre">wsgi</span></tt> folder.  We&#8217;ll do our work here.</p>
+<div class="build container">
+<p>This process is called <tt class="docutils literal"><span class="pre">dispatch</span></tt>. There are many possible approaches.</p>
+<p>You&#8217;ve seen one approach in the Learning Journal you built with Pyramid.</p>
+<p>Let&#8217;s begin by designing this piece of our app.</p>
+<p>Open <tt class="docutils literal"><span class="pre">bookapp.py</span></tt> from the <tt class="docutils literal"><span class="pre">wsgi</span></tt> folder.  We&#8217;ll do our work here.</p>
 </div>
-<div class="section" id="path">
-<h3>PATH<a class="headerlink" href="#path" title="Permalink to this headline">¶</a></h3>
-<p>The wsgi environment gives us access to <em>PATH_INFO</em>, which maps to the URI the
-user requested when they loaded the page.</p>
-<p class="build">We can design the URLs that our app will use to assist us in routing.</p>
-<p class="build">Let&#8217;s declare that any request for <tt class="docutils literal"><span class="pre">/</span></tt> will map to the list page</p>
-<div class="incremental container">
+<p>The wsgi environment gives us access to <em>PATH_INFO</em>.</p>
+<div class="build container">
+<p>This value is the URI from the client&#8217;s HTTP request.</p>
+<p>We can design the URLs that our app will use to assist us in routing.</p>
+<p>Let&#8217;s declare that any request for <tt class="docutils literal"><span class="pre">/</span></tt> will map to the list page.</p>
+<div class="container">
 <p>We can also say that the URL for a book will look like this:</p>
 <div class="highlight-python"><div class="highlight"><pre>http://localhost:8080/book/&lt;identifier&gt;
 </pre></div>
 </div>
 </div>
 </div>
+</div>
 <div class="section" id="writing-resolve-path">
-<h3>Writing resolve_path<a class="headerlink" href="#writing-resolve-path" title="Permalink to this headline">¶</a></h3>
+<h3>Writing <tt class="docutils literal"><span class="pre">resolve_path</span></tt><a class="headerlink" href="#writing-resolve-path" title="Permalink to this headline">¶</a></h3>
 <p>Let&#8217;s write a function, called <tt class="docutils literal"><span class="pre">resolve_path</span></tt> in our application file.</p>
 <ul class="build simple">
 <li>It should take the <em>PATH_INFO</em> value from environ as an argument.</li>
@@ -805,10 +762,7 @@ user requested when they loaded the page.</p>
 <li>It should also return any arguments needed to call that function.</li>
 <li>This implies of course that the arguments should be part of the PATH</li>
 </ul>
-</div>
-<div class="section" id="my-solution">
-<h3>My Solution<a class="headerlink" href="#my-solution" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">resolve_path</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+<div class="build highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">resolve_path</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
     <span class="n">urls</span> <span class="o">=</span> <span class="p">[(</span><span class="s">r&#39;^$&#39;</span><span class="p">,</span> <span class="n">books</span><span class="p">),</span>
             <span class="p">(</span><span class="s">r&#39;^book/(id[\d]+)$&#39;</span><span class="p">,</span> <span class="n">book</span><span class="p">)]</span>
     <span class="n">matchpath</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span>
@@ -822,13 +776,10 @@ user requested when they loaded the page.</p>
     <span class="k">raise</span> <span class="ne">NameError</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="application-updates">
-<h3>Application Updates<a class="headerlink" href="#application-updates" title="Permalink to this headline">¶</a></h3>
-<p>We need to hook our new router into the application.</p>
+<p>We need to hook our new dispatch function into the application.</p>
 <ul class="build simple">
 <li>The path should be extracted from <tt class="docutils literal"><span class="pre">environ</span></tt>.</li>
-<li>The router should be used to get a function and arguments</li>
+<li>The dispatch function should be used to get a function and arguments</li>
 <li>The body to return should come from calling that function with those
 arguments</li>
 <li>If an error is raised by calling the function, an appropriate response
@@ -836,10 +787,7 @@ should be returned</li>
 <li>If the router raises a NameError, the application should return a 404
 response</li>
 </ul>
-</div>
-<div class="section" id="id5">
-<h3>My Solution<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">):</span>
+<div class="build highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">):</span>
     <span class="n">headers</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&quot;Content-type&quot;</span><span class="p">,</span> <span class="s">&quot;text/html&quot;</span><span class="p">)]</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">path</span> <span class="o">=</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;PATH_INFO&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
@@ -867,16 +815,18 @@ response</li>
 <div class="highlight-python"><div class="highlight"><pre>$ python bookapp.py
 </pre></div>
 </div>
-<p class="build">Then point your browser at <tt class="docutils literal"><span class="pre">http://localhost:8080/</span></tt></p>
+<div class="build container">
+<p>Then point your browser at <tt class="docutils literal"><span class="pre">http://localhost:8080/</span></tt></p>
 <ul class="build simple">
 <li><tt class="docutils literal"><span class="pre">http://localhost/book/id3</span></tt></li>
 <li><tt class="docutils literal"><span class="pre">http://localhost/book/id73/</span></tt></li>
 <li><tt class="docutils literal"><span class="pre">http://localhost/sponge/damp</span></tt></li>
 </ul>
-<p class="build">Did that all work as you would have expected?</p>
+<p>Did that all work as you would have expected?</p>
 </div>
-<div class="section" id="building-the-list">
-<h3>Building the List<a class="headerlink" href="#building-the-list" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="building-the-book-list">
+<h3>Building the Book List<a class="headerlink" href="#building-the-book-list" title="Permalink to this headline">¶</a></h3>
 <p>The function <tt class="docutils literal"><span class="pre">books</span></tt> should return an html list of book titles where each
 title is a link to the detail page for that book</p>
 <ul class="build simple">
@@ -885,10 +835,7 @@ title is a link to the detail page for that book</p>
 <li>Each list item should have the book title as a link</li>
 <li>The href for the link should be of the form <tt class="docutils literal"><span class="pre">/book/&lt;id&gt;</span></tt></li>
 </ul>
-</div>
-<div class="section" id="id6">
-<h3>My Solution<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">books</span><span class="p">():</span>
+<div class="build highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">books</span><span class="p">():</span>
     <span class="n">all_books</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="n">titles</span><span class="p">()</span>
     <span class="n">body</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;&lt;h1&gt;My Bookshelf&lt;/h1&gt;&#39;</span><span class="p">,</span> <span class="s">&#39;&lt;ul&gt;&#39;</span><span class="p">]</span>
     <span class="n">item_template</span> <span class="o">=</span> <span class="s">&#39;&lt;li&gt;&lt;a href=&quot;/book/{id}&quot;&gt;{title}&lt;/a&gt;&lt;/li&gt;&#39;</span>
@@ -899,34 +846,35 @@ title is a link to the detail page for that book</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="id7">
-<h3>Test Your Work<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id1">
+<h3>Test Your Work<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>Quit and then restart your application script:</p>
 <div class="highlight-python"><div class="highlight"><pre>$ python bookapp.py
 </pre></div>
 </div>
-<div class="incremental container">
+<div class="build container">
+<div class="container">
 <p>Then reload the root of your application:</p>
 <div class="highlight-python"><div class="highlight"><pre>http://localhost:8080/
 </pre></div>
 </div>
 </div>
-<p class="build">You should see a nice list of the books in the database. Do you?</p>
-<p class="build">Click on a link to view the detail page. Does it load without error?</p>
+<p>You should see a nice list of the books in the database. Do you?</p>
+<p>Click on a link to view the detail page. Does it load without error?</p>
+</div>
 </div>
 <div class="section" id="showing-details">
 <h3>Showing Details<a class="headerlink" href="#showing-details" title="Permalink to this headline">¶</a></h3>
 <p>The next step of course is to polish up those detail pages.</p>
+<div class="build container">
 <ul class="build simple">
 <li>You&#8217;ll need to retrieve a single book from the database</li>
 <li>You&#8217;ll need to format the details about that book and return them as HTML</li>
 <li>You&#8217;ll need to guard against ids that do not map to books</li>
 </ul>
-<p class="build">In this last case, what&#8217;s the right HTTP response code to send?</p>
+<p>In this last case, what&#8217;s the right HTTP response code to send?</p>
 </div>
-<div class="section" id="id8">
-<h3>My Solution<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">book</span><span class="p">(</span><span class="n">book_id</span><span class="p">):</span>
+<div class="build highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">book</span><span class="p">(</span><span class="n">book_id</span><span class="p">):</span>
     <span class="n">page</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
 <span class="s">&lt;h1&gt;{title}&lt;/h1&gt;</span>
 <span class="s">&lt;table&gt;</span>
@@ -942,16 +890,12 @@ title is a link to the detail page for that book</p>
     <span class="k">return</span> <span class="n">page</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">book</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="revel-in-your-success">
-<h3>Revel in Your Success<a class="headerlink" href="#revel-in-your-success" title="Permalink to this headline">¶</a></h3>
 <p>Quit and restart your script one more time</p>
-<p class="build">Then poke around at your application and see the good you&#8217;ve made</p>
-<p class="build">And your application is portable and sharable</p>
-<p class="build">It should run equally well under any <a class="reference external" href="http://www.wsgi.org/en/latest/applications.html">wsgi server</a></p>
+<div class="build container">
+<p>Then poke around at your application and see the good you&#8217;ve made</p>
+<p>And your application is portable and sharable</p>
+<p>It should run equally well under any <a class="reference external" href="http://wsgi.readthedocs.org/en/latest/servers.html">wsgi server</a></p>
 </div>
-<div class="section" id="a-few-steps-further">
-<h3>A Few Steps Further<a class="headerlink" href="#a-few-steps-further" title="Permalink to this headline">¶</a></h3>
 <p>Next steps for an app like this might be:</p>
 <ul class="simple">
 <li>Create a shared full page template and incorporate it into your app</li>
@@ -961,69 +905,50 @@ title is a link to the detail page for that book</p>
 it serves</li>
 </ul>
 </div>
+</div>
 <div class="section" id="homework">
-<h3>Homework<a class="headerlink" href="#homework" title="Permalink to this headline">¶</a></h3>
+<h2>Homework<a class="headerlink" href="#homework" title="Permalink to this headline">¶</a></h2>
+<div class="left container">
 <p>For your homework this week, you&#8217;ll be creating a wsgi application of your
 own.</p>
-<p class="build">As the source of your data, use the mashup you created last week.</p>
-<p class="build">Your application should have at least two separate &#8220;pages&#8221; in it.</p>
-<p class="build">The HTML you produce does not need to be pretty, but it should be something
-that shows up in a browser.</p>
+<div class="build container">
+<p>You&#8217;ll create an online calculator that can perform several operations</p>
+<p>You&#8217;ll need to support:</p>
+<ul class="build simple">
+<li>Addition</li>
+<li>Subtraction</li>
+<li>Multiplication</li>
+<li>Division</li>
+</ul>
+<div class="container">
+<p>Your users should be able to send appropriate requests and get back
+proper responses:</p>
+<div class="highlight-python"><div class="highlight"><pre>http://localhost:8080/multiply/3/5  =&gt; 15
+http://localhost:8080/add/23/42     =&gt; 65
+http://localhost:8080/divide/6/0    =&gt; HTTP &quot;400 Bad Request&quot;
+</pre></div>
 </div>
-<div class="section" id="submitting-your-homework">
-<h3>Submitting Your Homework<a class="headerlink" href="#submitting-your-homework" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+</div>
+<div class="left container">
 <p>To submit your homework:</p>
-<dl class="class">
-<dt>
-<em class="property">class </em><tt class="descname">small</tt></dt>
-<dd></dd></dl>
-
-<ul class="simple">
-<li>Create a new python script in <tt class="docutils literal"><span class="pre">assignments/session04</span></tt>. It should be
-something I can run with:</li>
+<ul class="build simple">
+<li>Create a new github repository.  Call it <tt class="docutils literal"><span class="pre">wsgi-calc</span></tt>.</li>
+<li>Add a python script to it called <tt class="docutils literal"><span class="pre">calculator.py</span></tt>.</li>
+<li>Your script should be runnable using <tt class="docutils literal"><span class="pre">$</span> <span class="pre">python</span> <span class="pre">calculator.py</span></tt></li>
+<li>When the script is running, I should be able to view your application in
+my browser.</li>
+<li>I should be able to see a home page that explains how to perform
+calculations.</li>
 </ul>
-<dl class="class">
-<dt>
-<em class="property">class </em><tt class="descname">small</tt></dt>
-<dd></dd></dl>
-
-<div class="highlight-python"><div class="highlight"><pre>$ python your_script.py
-</pre></div>
+<div class="build container">
+<p>Your repository should include a README.md file.</p>
+<p>Include all instructions I need to successfully run and view your
+script.</p>
+<p>When you are done, send Maria and I an email with a link to your
+repository.</p>
 </div>
-<dl class="class">
-<dt>
-<em class="property">class </em><tt class="descname">small</tt></dt>
-<dd></dd></dl>
-
-<ul class="simple">
-<li>Once your script is running, I should be able to view your application in my
-browser.</li>
-<li>Include all instructions I need to successfully run and view your script.</li>
-<li>Add tests for your code. I should be able to run the tests like so:</li>
-</ul>
-<dl class="class">
-<dt>
-<em class="property">class </em><tt class="descname">small</tt></dt>
-<dd></dd></dl>
-
-<div class="highlight-python"><div class="highlight"><pre>$ python tests.py
-</pre></div>
-</div>
-<dl class="class">
-<dt>
-<em class="property">class </em><tt class="descname">small</tt></dt>
-<dd></dd></dl>
-
-<ul class="simple">
-<li>Commit your changes to your fork of the repo in github, then open a pull
-request.</li>
-</ul>
-</div>
-<div class="section" id="but-wait-there-s-more">
-<h3>But Wait, There&#8217;s More<a class="headerlink" href="#but-wait-there-s-more" title="Permalink to this headline">¶</a></h3>
-<p>In addition, read and step through the quick tutorials on templates and
-database persistence in the assignments directory.</p>
-<p>Use your flaskenv Python, it has everything you need installed.</p>
 </div>
 <div class="section" id="wrap-up">
 <h3>Wrap-Up<a class="headerlink" href="#wrap-up" title="Permalink to this headline">¶</a></h3>
@@ -1035,7 +960,7 @@ the <tt class="docutils literal"><span class="pre">wsgiref</span></tt> module. I
 <span class="gp">...</span>
 </pre></div>
 </div>
-<p class="build center"><strong>See you Next Time</strong></p>
+<p class="build centered"><strong>See you Next Time</strong></p>
 </div>
 </div>
 </div>
@@ -1059,47 +984,26 @@ the <tt class="docutils literal"><span class="pre">wsgiref</span></tt> module. I
 <li><a class="reference internal" href="#what-is-cgi">What is CGI</a></li>
 <li><a class="reference internal" href="#running-cgi">Running CGI</a></li>
 <li><a class="reference internal" href="#cgi-process-execution">CGI Process Execution</a></li>
-<li><a class="reference internal" href="#in-class-exercise">In-Class Exercise</a></li>
+<li><a class="reference internal" href="#in-class-exercise-i">In-Class Exercise I</a></li>
 <li><a class="reference internal" href="#getting-data-from-users">Getting Data from Users</a></li>
-<li><a class="reference internal" href="#id1">In-Class Exercise</a></li>
+<li><a class="reference internal" href="#in-class-exercise-ii">In-Class Exercise II</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#wsgi">WSGI</a><ul>
 <li><a class="reference internal" href="#cgi-problems">CGI Problems</a></li>
 <li><a class="reference internal" href="#a-solution">A Solution</a></li>
 <li><a class="reference internal" href="#apps-and-servers">Apps and Servers</a></li>
-<li><a class="reference internal" href="#flowcharts">Flowcharts</a></li>
-<li><a class="reference internal" href="#the-whole-enchilada">The Whole Enchilada</a></li>
-<li><a class="reference internal" href="#using-wsgiref">Using wsgiref</a></li>
-<li><a class="reference internal" href="#apache-mod-wsgi">Apache mod_wsgi</a></li>
-<li><a class="reference internal" href="#proxied-wsgi-servers">Proxied WSGI Servers</a></li>
 <li><a class="reference internal" href="#the-wsgi-environment">The WSGI Environment</a></li>
-<li><a class="reference internal" href="#id2">The WSGI Environment</a></li>
-<li><a class="reference internal" href="#id3">The WSGI Environment</a></li>
-<li><a class="reference internal" href="#a-bit-of-repetition">A Bit of Repetition</a></li>
-<li><a class="reference internal" href="#orientation">Orientation</a></li>
-<li><a class="reference internal" href="#id4">Orientation</a></li>
-<li><a class="reference internal" href="#running-a-wsgi-script">Running a WSGI Script</a></li>
-<li><a class="reference internal" href="#some-tips">Some Tips</a></li>
-<li><a class="reference internal" href="#a-more-complex-example">A More Complex Example</a></li>
-<li><a class="reference internal" href="#some-questions-to-ponder">Some Questions to Ponder</a></li>
-<li><a class="reference internal" href="#dispatch">Dispatch</a></li>
-<li><a class="reference internal" href="#path">PATH</a></li>
-<li><a class="reference internal" href="#writing-resolve-path">Writing resolve_path</a></li>
-<li><a class="reference internal" href="#my-solution">My Solution</a></li>
-<li><a class="reference internal" href="#application-updates">Application Updates</a></li>
-<li><a class="reference internal" href="#id5">My Solution</a></li>
+<li><a class="reference internal" href="#in-class-exercise-iii">In-Class Exercise III</a></li>
+<li><a class="reference internal" href="#a-wsgi-application">A WSGI Application</a></li>
+<li><a class="reference internal" href="#writing-resolve-path">Writing <tt class="docutils literal"><span class="pre">resolve_path</span></tt></a></li>
 <li><a class="reference internal" href="#test-your-work">Test Your Work</a></li>
-<li><a class="reference internal" href="#building-the-list">Building the List</a></li>
-<li><a class="reference internal" href="#id6">My Solution</a></li>
-<li><a class="reference internal" href="#id7">Test Your Work</a></li>
+<li><a class="reference internal" href="#building-the-book-list">Building the Book List</a></li>
+<li><a class="reference internal" href="#id1">Test Your Work</a></li>
 <li><a class="reference internal" href="#showing-details">Showing Details</a></li>
-<li><a class="reference internal" href="#id8">My Solution</a></li>
-<li><a class="reference internal" href="#revel-in-your-success">Revel in Your Success</a></li>
-<li><a class="reference internal" href="#a-few-steps-further">A Few Steps Further</a></li>
-<li><a class="reference internal" href="#homework">Homework</a></li>
-<li><a class="reference internal" href="#submitting-your-homework">Submitting Your Homework</a></li>
-<li><a class="reference internal" href="#but-wait-there-s-more">But Wait, There&#8217;s More</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#homework">Homework</a><ul>
 <li><a class="reference internal" href="#wrap-up">Wrap-Up</a></li>
 </ul>
 </li>
