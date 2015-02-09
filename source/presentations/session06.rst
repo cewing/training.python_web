@@ -1,170 +1,127 @@
-Python Web Programming
-======================
+**********
+Session 06
+**********
 
-.. image:: img/gateway.jpg
-    :align: left
+.. figure:: /_static/gateway.jpg
+    :align: center
     :width: 50%
 
-Session 4: CGI, WSGI and Living Online
+    The Wandering Angel http://www.flickr.com/photos/wandering_angel/1467802750/ - CC-BY
 
-.. class:: intro-blurb
+CGI, WSGI and Living Online
+===========================
 
 Wherein we discover the gateways to dynamic processes on a server.
 
-.. class:: image-credit
-
-image: The Wandering Angel http://www.flickr.com/photos/wandering_angel/1467802750/ - CC-BY
 
 But First
 ---------
 
-.. class:: big-centered
+.. rst-class:: large centered
 
-A look at some of the cool mashups you built over the week.
+Homework Review and Questions
 
-
-But First
----------
-
-Clean up the git situation.
-
-
-But First
----------
-
-Before you leave the classroom today, please complete the following tasks:
-
-1. Create a virtualenv called ``flaskenv``
-2. Activate that virtualenv
-3. ``pip install flask`` to your virtualenv
-
-You will need this for some of your homework this week.
-
-But First
----------
-
-A special note to pay attention to the readings.  You will be expected to have
-read the basics on Jinja2, SQLite3 and Flask **before** class starts.
 
 Previously
 ----------
 
-.. class:: incremental
+.. rst-class:: build
 
 * You've learned about passing messages back and forth with sockets
 * You've created a simple HTTP server using sockets
 * You may even have made your server *dynamic* by returning the output of a
   python script.
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-What if you want to pass information to that script?
+    What if you want to pass information to that script?
 
-.. class:: incremental
-
-How can you give the script access to information about the HTTP request
-itself?
+    How can you give the script access to information about the HTTP request
+    itself?
 
 
-Stepping Away
--------------
+Stepping Away: The Environment
+------------------------------
 
 A computer has an *environment*:
 
-.. container:: incremental
+.. rst-class:: build
+.. container::
 
     in \*nix, you can see this in a shell:
-    
-    .. class:: small
-    
-    ::
-    
+
+    .. code-block:: bash
+
         $ printenv
         TERM_PROGRAM=iTerm.app
         ...
 
-.. container:: incremental
-
     or in Windows at the command prompt:
-    
-    .. class:: small
-    
-    ::
-    
+
+    .. code-block:: posh
+
         C:\> set
         ALLUSERSPROFILE=C:\ProgramData
         ...
 
 
-Setting The Environment
------------------------
+.. nextslide:: Setting The Environment
 
 This can be manipulated:
 
-.. container:: incremental
+.. rst-class:: build
+.. container::
 
     In a ``bash`` shell we can do this:
-    
-    .. class:: small
-    
-    ::
-    
+
+    .. code-block:: bash
+
         $ export VARIABLE='some value'
         $ echo $VARIABLE
         some value
 
-.. container:: incremental
-
     or at a Windows command prompt:
-    
-    .. class:: small
-    
-    ::
-    
+
+    .. code-block:: posh
+
         C:\Users\Administrator\> set VARIABLE='some value'
         C:\Users\Administrator\> echo %VARIABLE%
         'some value'
 
 
-Viewing the Results
--------------------
+.. nextslide:: Viewing the Results
 
 These new values are now part of the *environment*
 
-.. container:: incremental
+.. rst-class:: build
+.. container::
 
     \*nix:
-    
-    .. class:: small
-    
-    ::
-    
+
+    .. code-block:: bash
+
         $ printenv
         TERM_PROGRAM=iTerm.app
         ...
         VARIABLE=some value
 
-.. container:: incremental
-
     Windows:
-    
-    .. class:: small
-    
-    ::
-    
+
+    .. code-block:: posh
+
         C:\> set
         ALLUSERSPROFILE=C:\ProgramData
         ...
         VARIABLE='some value'
 
-Environment in Python
----------------------
+.. nextslide:: Environment in Python
 
 We can see this *environment* in Python, too::
 
     $ python
 
-.. code-block:: python
+.. code-block:: pycon
 
     >>> import os
     >>> print os.environ['VARIABLE']
@@ -173,26 +130,24 @@ We can see this *environment* in Python, too::
     ['VERSIONER_PYTHON_PREFER_32_BIT', 'VARIABLE',
      'LOGNAME', 'USER', 'PATH', ...]
 
-Altering the Environment
-------------------------
+
+.. nextslide:: Altering the Environment
 
 You can alter os environment values while in Python:
 
-.. code-block:: python
-    :class: small
+.. code-block:: pycon
 
     >>> os.environ['VARIABLE'] = 'new_value'
     >>> print os.environ['VARIABLE']
     new_value
 
-.. container:: incremental
+.. rst-class:: build
+.. container::
 
     But that doesn't change the original value, *outside* Python:
-    
-    .. class:: small
-    
-    ::
 
+    .. code-block:: bash
+    
         >>> ^D
 
         $ echo this is the value: $VARIABLE
@@ -201,57 +156,50 @@ You can alter os environment values while in Python:
         C:\> \Users\Administrator\> echo %VARIABLE%
         'some value'
 
-Lessons Learned
----------------
+.. nextslide:: Lessons Learned
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-* Subprocesses inherit their environment from their Parent
-* Parents do not see changes to environment in subprocesses
-* In Python, you can actually set the environment for a subprocess explicitly
+    .. rst-class:: build
 
-.. class:: incremental small
+    * Subprocesses inherit their environment from their Parent
+    * Parents do not see changes to environment in subprocesses
+    * In Python, you can actually set the environment for a subprocess explicitly
 
-::
+    .. code-block:: python
 
-    subprocess.Popen(args, bufsize=0, executable=None,
-                     stdin=None, stdout=None, stderr=None,
-                     preexec_fn=None, close_fds=False,
-                     shell=False, cwd=None, env=None, # <-------
-                     universal_newlines=False, startupinfo=None,
-                     creationflags=0)
+        subprocess.Popen(args, bufsize=0, executable=None,
+                         stdin=None, stdout=None, stderr=None,
+                         preexec_fn=None, close_fds=False,
+                         shell=False, cwd=None, env=None, # <-------
+                         universal_newlines=False, startupinfo=None,
+                         creationflags=0)
 
 
-Web Environment
----------------
+CGI - The Web Environment
+=========================
 
-.. class:: big-centered
+.. rst-class:: large centered
 
 CGI is little more than a set of standard environmental variables
 
 
-RFC 3875
---------
+What is CGI
+-----------
 
 First discussed in 1993, formalized in 1997, the current version (1.1) has
 been in place since 2004.
 
 From the preamble:
 
-.. class:: center
+    This memo provides information for the Internet community. It does not
+    specify an Internet standard of any kind.
 
-*This memo provides information for the Internet community. It does not specify
-an Internet standard of any kind.*
-
-.. class:: image-credit
-
-RFC 3875 - CGI Version 1.1: http://tools.ietf.org/html/rfc3875
+    -- RFC 3875 - CGI Version 1.1: http://tools.ietf.org/html/rfc3875
 
 
-Meta-Variables
---------------
-
-.. class:: small
+.. nextslide:: Meta-Variables
 
 ::
 
@@ -276,21 +224,21 @@ Meta-Variables
              4.1.17. SERVER_SOFTWARE. . . . . . . . . . . . . . . . .  19
 
 
-Running CGI
------------
+.. nextslide:: Running CGI
 
 You have a couple of options:
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-* Python Standard Library CGIHTTPServer
-* Apache
-* IIS (on Windows)
-* Some other HTTP server that implements CGI (lighttpd, ...?)
+    .. rst-class:: build
 
-.. class:: incremental
+    * Python Standard Library CGIHTTPServer
+    * Apache
+    * IIS (on Windows)
+    * Some other HTTP server that implements CGI (lighttpd, ...?)
 
-Let's keep it simple by using the Python module
+    Let's keep it simple by using the Python module
 
 
 Preparations
@@ -299,12 +247,12 @@ Preparations
 In the class resources, you'll find a directory named ``cgi``. Make a copy of
 that folder in your class working directory.
 
-.. class:: incremental small red
+.. rst-class:: build small red
 
 Windows Users, you will have to edit the first line of
 ``cgi/cgi-bin/cgi_1.py`` to point to your python executable.
 
-.. class:: incremental
+.. rst-class:: build
 
 * Open *two* terminal windows in this ``cgi`` directory
 * In the first terminal, run ``python -m CGIHTTPServer``
@@ -323,12 +271,12 @@ Did that work?
   executable.
 
 
-.. class:: incremental
+.. rst-class:: build
 
 Remember that you can use the bash ``chmod`` command to change permissions in
 \*nix
 
-.. class:: incremental
+.. rst-class:: build
 
 Windows users, use the 'properties' context menu to get to permissions, just
 grant 'full'
@@ -338,17 +286,16 @@ Break It
 
 Problems with permissions can lead to failure. So can scripting errors
 
-.. class:: incremental
+.. rst-class:: build
 
 * Open ``cgi/cgi-bin/cgi_1.py`` in an editor
 * Before where it says ``cgi.test()``, add a single line:
 
 .. code-block:: python
-    :class: incremental
 
     1 / 0
 
-.. class:: incremental
+.. rst-class:: build
 
 Reload your browser, what happens now?
 
@@ -358,7 +305,7 @@ Errors in CGI
 
 CGI is famously difficult to debug.  There are reasons for this:
 
-.. class:: incremental
+.. rst-class:: build
 
 * CGI is designed to provide access to runnable processes to *the internet*
 * The internet is a wretched hive of scum and villainy
@@ -370,12 +317,11 @@ Viewing Errors in Python CGI
 Back in your editor, add the following lines, just below ``import cgi``:
 
 .. code-block:: python
-    :class: incremental
 
     import cgitb
     cgitb.enable()
 
-.. class:: incremental
+.. rst-class:: build
 
 Now, reload again.
 
@@ -393,7 +339,6 @@ Repair the Error
 Let's fix the error from our traceback.  Edit your ``cgi_1.py`` file to match:
 
 .. code-block:: python
-    :class: small
 
     #!/usr/bin/python
     import cgi
@@ -403,7 +348,7 @@ Let's fix the error from our traceback.  Edit your ``cgi_1.py`` file to match:
 
     cgi.test()
 
-.. class:: incremental
+.. rst-class:: build
 
 Notice the first line of that script: ``#!/usr/bin/python``. This is called a
 *shebang* (short for hash-bang) and it tells the system what executable
@@ -419,16 +364,16 @@ just like you calling::
 
     $ ./cgi_bin/cgi_1.py
 
-.. class:: incremental
+.. rst-class:: build
 
 In fact try that now in your second terminal (use the real path), what do you
 get?
 
-.. class:: incremental small center
+.. rst-class:: build small center
 
 Windows folks, you may need ``C:\>python cgi_1.py``
 
-.. class:: incremental
+.. rst-class:: build
 
 What is missing?
 
@@ -439,7 +384,7 @@ CGI Process Execution
 There are a couple of important facts that are related to the way CGI
 processes are run:
 
-.. class:: incremental
+.. rst-class:: build
 
 * The script **must** include a *shebang* so that the system knows how to run
   it.
@@ -456,16 +401,16 @@ The CGI Environment
 
 CGI is largely a set of agreed-upon environmental variables.
 
-.. class:: incremental
+.. rst-class:: build
 
 We've seen how environmental variables are found in python in ``os.environ``
 
-.. class:: incremental
+.. rst-class:: build
 
 We've also seen that at least some of the variables in CGI are **not** in the
 standard set of environment variables.
 
-.. class:: incremental
+.. rst-class:: build
 
 Where do they come from?
 
@@ -475,13 +420,13 @@ CGI Servers
 
 Let's find 'em.  In a terminal (on your local machine, please) fire up python:
 
-.. code-block::
+.. code-block:: pycon
 
     >>> import CGIHTTPServer
     >>> CGIHTTPServer.__file__
     '/big/giant/path/to/lib/python2.6/CGIHTTPServer.py'
 
-.. class:: incremental
+.. rst-class:: build
 
 Copy this path and open the file it points to in your text editor
 
@@ -492,7 +437,6 @@ Environmental Set Up
 From CGIHTTPServer.py, in the CGIHTTPServer.run_cgi method:
 
 .. code-block:: python
-    :class: tiny
 
     # Reference: http://hoohoo.ncsa.uiuc.edu/cgi/env.html
     # XXX Much of the following could be prepared ahead of time!
@@ -518,16 +462,16 @@ CGI Scripts
 And that's it, the big secret. The server takes care of setting up the
 environment so it has what is needed.
 
-.. class:: incremental
+.. rst-class:: build
 
 Now, in reverse. How does the information that a script creates end up in your
 browser?
 
-.. class:: incremental
+.. rst-class:: build
 
 A CGI Script must print its results to stdout.
 
-.. class:: incremental
+.. rst-class:: build
 
 Use the same method as above to import and open the source file for the
 ``cgi`` module. Note what ``test`` does for an example of this.
@@ -538,7 +482,7 @@ Recap:
 
 What the Server Does:
 
-.. class:: incremental small
+.. rst-class:: build small
 
 * parses the request
 * sets up the environment, including HTTP and SERVER variables
@@ -548,7 +492,7 @@ What the Server Does:
 
 What the Script Does:
 
-.. class:: incremental small
+.. rst-class:: build small
 
 * names appropriate *executable* in it's *shebang* line
 * uses os.environ to read information from the HTTP request
@@ -563,7 +507,7 @@ In-Class Exercise
 You've seen the output from the ``cgi.test()`` method from the ``cgi`` module.
 Let's make our own version of this.
 
-.. class:: incremental small
+.. rst-class:: build small
 
 * In the directory ``cgi-bin`` you will find the file ``cgi_2.py``.
 * Open that file in your editor.
@@ -573,7 +517,7 @@ Let's make our own version of this.
 * You should be able to view the results of your work by loading
   ``http://localhost:8000/`` and clicking on *Exercise One*
 
-.. class:: incremental center
+.. rst-class:: build center
 
 **GO**
 
@@ -583,7 +527,7 @@ User Provided Data
 
 All this is well and good, but where's the *dynamic* stuff?
 
-.. class:: incremental
+.. rst-class:: build
 
 It'd be nice if a user could pass form data to our script for it to use.
 
@@ -601,15 +545,14 @@ Form Data in CGI
 In the ``cgi`` module, we get access to this with the ``FieldStorage`` class:
 
 .. code-block:: python
-    :class: incremental small
 
     import cgi
-    
+
     form = cgi.FieldStorage()
     stringval = form.getvalue('a', None)
     listval = form.getlist('b')
 
-.. class:: incremental
+.. rst-class:: build
 
 * The values in the ``FieldStorage`` are *always* strings
 * ``getvalue`` allows you to return a default, in case the field isn't present
@@ -622,7 +565,7 @@ In-Class Exercise
 
 Let's create a dynamic adding machine.
 
-.. class:: incremental
+.. rst-class:: build
 
 * In the ``cgi-bin`` directory you'll find ``cgi_sums.py``.
 * In the ``index.html`` file in the ``cgi`` directory, the third link leads to
@@ -632,7 +575,7 @@ Let's create a dynamic adding machine.
 * Complete the cgi script in ``cgi_sums.py`` so that the result of adding all
   operands sent via the url query is returned.
 
-.. class:: incremental
+.. rst-class:: build
 
 For extra fun, return the results in ``json`` format (mimetype:
 'application/json').
@@ -642,7 +585,6 @@ My Solution
 -----------
 
 .. code-block:: python
-    :class: small incremental
 
     form = cgi.FieldStorage()
     operands = form.getlist('operand')
@@ -676,14 +618,14 @@ CGI Problems
 
 CGI is great, but there are problems:
 
-.. class:: incremental
+.. rst-class:: build
 
 * Code is executed *in a new process*
 * **Every** call to a CGI script starts a new process on the server
 * Starting a new process is expensive in terms of server resources
 * *Especially for interpreted languages like Python*
 
-.. class:: incremental
+.. rst-class:: build
 
 How do we overcome this problem?
 
@@ -694,18 +636,18 @@ Alternatives to CGI
 The most popular approach is to have a long-running process *inside* the
 server that handles CGI scripts.
 
-.. class:: incremental
+.. rst-class:: build
 
 FastCGI and SCGI are existing implementations of CGI in this fashion. The
 Apache module **mod_python** offers a similar capability for Python code.
 
-.. class:: incremental
+.. rst-class:: build
 
 * Each of these options has a specific API
 * None are compatible with each-other
 * Code written for one is **not portable** to another
 
-.. class:: incremental
+.. rst-class:: build
 
 This makes it much more difficult to *share resources*
 
@@ -715,17 +657,17 @@ WSGI
 
 Enter WSGI, the Web Server Gateway Interface.
 
-.. class:: incremental
+.. rst-class:: build
 
 Where other alternatives are specific implementations of the CGI standard,
 WSGI is itself a new standard, not an implementation.
 
-.. class:: incremental
+.. rst-class:: build
 
 WSGI is generalized to describe a set of interactions, so that developers can
 write WSGI-capable apps and deploy them on any WSGI server.
 
-.. class:: incremental
+.. rst-class:: build
 
 Read the WSGI spec: http://www.python.org/dev/peps/pep-0333
 
@@ -741,7 +683,7 @@ WSGI consists of two parts, a *server* and an *application*.
 
 A WSGI Server must:
 
-.. class:: incremental small
+.. rst-class:: build small
 
 * set up an environment, much like the one in CGI
 * provide a method ``start_response(status, headers, exc_info=None)``
@@ -753,7 +695,7 @@ A WSGI Server must:
 
 A WSGI Appliction must:
 
-.. class:: incremental small
+.. rst-class:: build small
 
 * Be a callable (function, method, class)
 * Take an environment and a ``start_response`` callable as arguments
@@ -766,23 +708,22 @@ Simplified WSGI Server
 ----------------------
 
 .. code-block:: python
-    :class: small
 
     from some_application import simple_app
-    
+
     def build_env(request):
         # put together some environment info from the reqeuest
         return env
-    
+
     def handle_request(request, app):
         environ = build_env(request)
         iterable = app(environ, start_response)
         for data in iterable:
             # send data to client here
-    
+
     def start_response(status, headers):
         # start an HTTP response, sending status and headers
-    
+
     # listen for HTTP requests and pass on to handle_request()
     serve(simple_app)
 
@@ -809,7 +750,7 @@ WSGI Middleware
 
 A third part of the puzzle is something called WSGI *middleware*
 
-.. class:: incremental
+.. rst-class:: build
 
 * Middleware implements both the *server* and *application* interfaces
 * Middleware acts as a server when viewed from an application
@@ -818,7 +759,6 @@ A third part of the puzzle is something called WSGI *middleware*
 .. image:: img/wsgi_middleware_onion.png
     :align: center
     :width: 38%
-    :class: incremental
 
 
 Flowcharts
@@ -830,7 +770,7 @@ WSGI Servers:
 
 **HTTP <---> WSGI**
 
-.. class:: incremental
+.. rst-class:: build
 
 WSGI Applications:
 
@@ -844,7 +784,7 @@ The Whole Enchilada
 
 The WSGI *Stack* can thus be expressed like so:
 
-.. class:: incremental big-centered
+.. rst-class:: build big-centered
 
 **HTTP <---> WSGI <---> app code**
 
@@ -857,7 +797,6 @@ The Python standard lib provides a reference implementation of WSGI:
 .. image:: img/wsgiref_flow.png
     :align: center
     :width: 80%
-    :class: incremental
 
 
 Apache mod_wsgi
@@ -868,7 +807,6 @@ You can also deploy with Apache as your HTTP server, using **mod_wsgi**:
 .. image:: img/mod_wsgi_flow.png
     :align: center
     :width: 80%
-    :class: incremental
 
 
 Proxied WSGI Servers
@@ -880,7 +818,6 @@ server:
 .. image:: img/proxy_wsgi.png
     :align: center
     :width: 80%
-    :class: incremental
 
 
 The WSGI Environment
@@ -954,7 +891,7 @@ A Bit of Repetition
 
 Let's start simply.  We'll begin by repeating our first CGI exercise in WSGI
 
-.. class:: incremental
+.. rst-class:: build
 
 * Find the ``wsgi`` directory in the class resources. Copy it to your working
   directory.
@@ -962,7 +899,7 @@ Let's start simply.  We'll begin by repeating our first CGI exercise in WSGI
 * We will fill in the missing values using the wsgi ``environ``, just as we
   use ``os.environ`` in cgi
 
-.. class:: incremental center
+.. rst-class:: build center
 
 **But First**
 
@@ -971,22 +908,21 @@ Orientation
 -----------
 
 .. code-block:: python
-    :class: small
 
     if __name__ == '__main__':
         from wsgiref.simple_server import make_server
         srv = make_server('localhost', 8080, application)
         srv.serve_forever()
 
-.. class:: incremental
+.. rst-class:: build
 
 Note that we pass our ``application`` function to the server factory
 
-.. class:: incremental
+.. rst-class:: build
 
 We don't have to write a server, ``wsgiref`` does that for us.
 
-.. class:: incremental
+.. rst-class:: build
 
 In fact, you should *never* have to write a WSGI server.
 
@@ -995,7 +931,6 @@ Orientation
 -----------
 
 .. code-block:: python
-    :class: small
 
     def application(environ, start_response):
         response_body = body % (
@@ -1008,11 +943,11 @@ Orientation
         start_response(status, response_headers)
         return [response_body]
 
-.. class:: incremental
+.. rst-class:: build
 
 We do not define ``start_response``, the application does that.
 
-.. class:: incremental
+.. rst-class:: build
 
 We *are* responsible for determining the HTTP status.
 
@@ -1024,15 +959,15 @@ You can run this script with python::
 
     $ python wsgi_1.py
 
-.. class:: incremental
+.. rst-class:: build
 
 This will start a wsgi server. What host and port will it use?
 
-.. class:: incremental
+.. rst-class:: build
 
 Point your browser at ``http://localhost:8080/``. Did it work?
 
-.. class:: incremental
+.. rst-class:: build
 
 Go ahead and fill in the missing bits. Use the ``environ`` passed into
 ``application``
@@ -1044,16 +979,16 @@ Some Tips
 Because WSGI is a long-running process, the file you are editing is *not*
 reloaded after you edit it.
 
-.. class:: incremental
+.. rst-class:: build
 
 You'll need to quit and re-run the script between edits.
 
-.. class:: incremental
+.. rst-class:: build
 
 You may also want to consider using ``print environ`` in your application so
 you can see the dictionary.
 
-.. class:: incremental
+.. rst-class:: build
 
 If you do that, where will the printed environment appear?
 
@@ -1064,11 +999,11 @@ A More Complex Example
 Let's create a multi-page wsgi application. It will serve a small database of
 python books.
 
-.. class:: incremental
+.. rst-class:: build
 
 The database (with a very simple api) can be found in ``wsgi/bookdb.py``
 
-.. class:: incremental
+.. rst-class:: build
 
 * We'll need a listing page that shows the titles of all the books
 * Each title will link to a details page for that book
@@ -1079,16 +1014,16 @@ The database (with a very simple api) can be found in ``wsgi/bookdb.py``
 Some Questions to Ponder
 ------------------------
 
-.. class:: incremental
+.. rst-class:: build
 
 When viewing our first wsgi app, do we see the name of the wsgi application
 script anywhere in the URL?
 
-.. class:: incremental
+.. rst-class:: build
 
 In our wsgi application script, how many applications did we actually have?
 
-.. class:: incremental
+.. rst-class:: build
 
 How are we going to serve different types of information out of a single
 application?
@@ -1100,15 +1035,15 @@ Dispatch
 We have to write an app that will map our incoming request path to some code
 that can handle that request.
 
-.. class:: incremental
+.. rst-class:: build
 
 This process is called ``dispatch``. There are many possible approaches
 
-.. class:: incremental
+.. rst-class:: build
 
 Let's begin by designing this piece of it.
 
-.. class:: incremental
+.. rst-class:: build
 
 Open ``bookapp.py`` from the ``wsgi`` folder.  We'll do our work here.
 
@@ -1119,18 +1054,18 @@ PATH
 The wsgi environment gives us access to *PATH_INFO*, which maps to the URI the
 user requested when they loaded the page.
 
-.. class:: incremental
+.. rst-class:: build
 
 We can design the URLs that our app will use to assist us in routing.
 
-.. class:: incremental
+.. rst-class:: build
 
 Let's declare that any request for ``/`` will map to the list page
 
 .. container:: incremental
 
     We can also say that the URL for a book will look like this::
-    
+
         http://localhost:8080/book/<identifier>
 
 Writing resolve_path
@@ -1138,7 +1073,7 @@ Writing resolve_path
 
 Let's write a function, called ``resolve_path`` in our application file.
 
-.. class:: incremental
+.. rst-class:: build
 
 * It should take the *PATH_INFO* value from environ as an argument.
 * It should return the function that will be called.
@@ -1150,7 +1085,6 @@ My Solution
 -----------
 
 .. code-block:: python
-    :class: small incremental
 
     def resolve_path(path):
         urls = [(r'^$', books),
@@ -1171,7 +1105,7 @@ Application Updates
 
 We need to hook our new router into the application.
 
-.. class:: incremental
+.. rst-class:: build
 
 * The path should be extracted from ``environ``.
 * The router should be used to get a function and arguments
@@ -1187,7 +1121,6 @@ My Solution
 -----------
 
 .. code-block:: python
-    :class: small incremental
 
     def application(environ, start_response):
         headers = [("Content-type", "text/html")]
@@ -1217,17 +1150,17 @@ Once you've got your script settled, run it::
 
     $ python bookapp.py
 
-.. class:: incremental
+.. rst-class:: build
 
 Then point your browser at ``http://localhost:8080/``
 
-.. class:: incremental
-    
+.. rst-class:: build
+
 * ``http://localhost/book/id3``
 * ``http://localhost/book/id73/``
 * ``http://localhost/sponge/damp``
 
-.. class:: incremental
+.. rst-class:: build
 
 Did that all work as you would have expected?
 
@@ -1238,7 +1171,7 @@ Building the List
 The function ``books`` should return an html list of book titles where each
 title is a link to the detail page for that book
 
-.. class:: incremental
+.. rst-class:: build
 
 * You'll need all the ids and titles from the book database.
 * You'll need to build a list in HTML using this information
@@ -1250,7 +1183,6 @@ My Solution
 -----------
 
 .. code-block:: python
-    :class: incremental small
 
     def books():
         all_books = DB.titles()
@@ -1275,11 +1207,11 @@ Quit and then restart your application script::
 
         http://localhost:8080/
 
-.. class:: incremental
+.. rst-class:: build
 
 You should see a nice list of the books in the database. Do you?
 
-.. class:: incremental
+.. rst-class:: build
 
 Click on a link to view the detail page. Does it load without error?
 
@@ -1289,13 +1221,13 @@ Showing Details
 
 The next step of course is to polish up those detail pages.
 
-.. class:: incremental
+.. rst-class:: build
 
 * You'll need to retrieve a single book from the database
 * You'll need to format the details about that book and return them as HTML
 * You'll need to guard against ids that do not map to books
 
-.. class:: incremental
+.. rst-class:: build
 
 In this last case, what's the right HTTP response code to send?
 
@@ -1304,7 +1236,6 @@ My Solution
 -----------
 
 .. code-block:: python
-    :class: incremental small
 
     def book(book_id):
         page = """
@@ -1327,15 +1258,15 @@ Revel in Your Success
 
 Quit and restart your script one more time
 
-.. class:: incremental
+.. rst-class:: build
 
 Then poke around at your application and see the good you've made
 
-.. class:: incremental
+.. rst-class:: build
 
 And your application is portable and sharable
 
-.. class:: incremental
+.. rst-class:: build
 
 It should run equally well under any `wsgi server
 <http://www.wsgi.org/en/latest/applications.html>`_
@@ -1359,15 +1290,15 @@ Homework
 For your homework this week, you'll be creating a wsgi application of your
 own.
 
-.. class:: incremental
+.. rst-class:: build
 
 As the source of your data, use the mashup you created last week.
 
-.. class:: incremental
+.. rst-class:: build
 
 Your application should have at least two separate "pages" in it.
 
-.. class:: incremental
+.. rst-class:: build
 
 The HTML you produce does not need to be pretty, but it should be something
 that shows up in a browser.
@@ -1430,6 +1361,6 @@ the ``wsgiref`` module. It's the canonical example of a simple wsgi server
     '/full/path/to/your/copy/of/wsgiref.py'
     ...
 
-.. class:: incremental center
+.. rst-class:: build center
 
 **See you Next Time**
