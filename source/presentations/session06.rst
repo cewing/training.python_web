@@ -147,7 +147,7 @@ You can alter os environment values while in Python:
     But that doesn't change the original value, *outside* Python:
 
     .. code-block:: bash
-    
+
         >>> ^D
 
         $ echo this is the value: $VARIABLE
@@ -224,7 +224,8 @@ From the preamble:
              4.1.17. SERVER_SOFTWARE. . . . . . . . . . . . . . . . .  19
 
 
-.. nextslide:: Running CGI
+Running CGI
+-----------
 
 You have a couple of options:
 
@@ -241,67 +242,68 @@ You have a couple of options:
     Let's keep it simple by using the Python module
 
 
-Preparations
-------------
+.. nextslide:: Preparations
 
-In the class resources, you'll find a directory named ``cgi``. Make a copy of
-that folder in your class working directory.
-
-.. rst-class:: build small red
-
-Windows Users, you will have to edit the first line of
-``cgi/cgi-bin/cgi_1.py`` to point to your python executable.
+In the class resources for this session, you'll find a directory named ``cgi``.
 
 .. rst-class:: build
+.. container::
 
-* Open *two* terminal windows in this ``cgi`` directory
-* In the first terminal, run ``python -m CGIHTTPServer``
-* Open a web browser and load ``http://localhost:8000/``
-* Click on *CGI Test 1*
+    Make a copy of that folder in your class working directory.
+
+    Windows Users, you may have to edit the first line of
+    ``cgi/cgi-bin/cgi_1.py`` to point to your python executable.
+
+    .. rst-class:: build
+
+    * Open *two* terminal windows in this ``cgi`` directory
+    * In the first terminal, run ``python -m CGIHTTPServer``
+    * Open a web browser and load ``http://localhost:8000/``
+    * Click on *CGI Test 1*
 
 
-Did that work?
---------------
+.. nextslide:: Did that work?
+
+.. rst-class:: build
 
 * If nothing at all happens, check your terminal window
 * Look for this: ``OSError: [Errno 13] Permission denied``
 * If you see something like that, check permissions for ``cgi-bin`` *and*
   ``cgi_1.py``
-* The file must be executable, the directory needs to be readable *and*
-  executable.
+* The file must be executable, the ``cgi-bin`` directory needs to be readable
+  *and* executable.
 
 
 .. rst-class:: build
+.. container::
 
-Remember that you can use the bash ``chmod`` command to change permissions in
-\*nix
+    Remember that you can use the bash ``chmod`` command to change permissions
+    in \*nix: ``chmod a+x cgi-bin/cgi_1.py``
 
-.. rst-class:: build
+    Windows users, use the 'properties' context menu to get to permissions,
+    just grant 'full'
 
-Windows users, use the 'properties' context menu to get to permissions, just
-grant 'full'
 
-Break It
---------
+.. nextslide:: Break It
 
 Problems with permissions can lead to failure. So can scripting errors
 
 .. rst-class:: build
+.. container::
 
-* Open ``cgi/cgi-bin/cgi_1.py`` in an editor
-* Before where it says ``cgi.test()``, add a single line:
+    .. rst-class:: build
 
-.. code-block:: python
+    * Open ``cgi/cgi-bin/cgi_1.py`` in an editor
+    * Before where it says ``cgi.test()``, add a single line:
 
-    1 / 0
+    .. code-block:: python
 
-.. rst-class:: build
+        1 / 0
 
-Reload your browser, what happens now?
+    Reload your browser, what happens now?
 
 
-Errors in CGI
--------------
+.. nextslide:: Errors in CGI
 
 CGI is famously difficult to debug.  There are reasons for this:
 
@@ -311,36 +313,35 @@ CGI is famously difficult to debug.  There are reasons for this:
 * The internet is a wretched hive of scum and villainy
 * Revealing error conditions can expose data that could be exploited
 
-Viewing Errors in Python CGI
-----------------------------
+
+.. nextslide:: Viewing Errors in Python CGI
 
 Back in your editor, add the following lines, just below ``import cgi``:
 
-.. code-block:: python
-
-    import cgitb
-    cgitb.enable()
-
 .. rst-class:: build
+.. container::
 
-Now, reload again.
+    .. code-block:: python
 
-cgitb Output
-------------
+        import cgitb
+        cgitb.enable()
 
-.. image:: img/cgitb_output.png
+    Now, reload again.
+
+.. nextslide:: cgitb Output
+
+.. figure:: /_static/cgitb_output.png
     :align: center
     :width: 100%
 
 
-Repair the Error
-----------------
+.. nextslide:: Repair the Error
 
 Let's fix the error from our traceback.  Edit your ``cgi_1.py`` file to match:
 
 .. code-block:: python
 
-    #!/usr/bin/python
+    #!/usr/bin/env python
     import cgi
     import cgitb
 
@@ -349,40 +350,39 @@ Let's fix the error from our traceback.  Edit your ``cgi_1.py`` file to match:
     cgi.test()
 
 .. rst-class:: build
+.. container::
 
-Notice the first line of that script: ``#!/usr/bin/python``. This is called a
-*shebang* (short for hash-bang) and it tells the system what executable
-program to use when running the script.
+    Notice the first line of that script: ``#!/usr/bin/python``.
 
+    This is called a *shebang* (short for hash-bang)
 
-CGI Process Execution
----------------------
-
-When a web server like ``CGIHTTPServer`` or ``Apache`` runs a CGI script, it
-simply attempts to run the script as if it were a normal system user.  This is
-just like you calling::
-
-    $ ./cgi_bin/cgi_1.py
-
-.. rst-class:: build
-
-In fact try that now in your second terminal (use the real path), what do you
-get?
-
-.. rst-class:: build small center
-
-Windows folks, you may need ``C:\>python cgi_1.py``
-
-.. rst-class:: build
-
-What is missing?
+    It tells the system what executable program to use when running the script.
 
 
 CGI Process Execution
 ---------------------
 
-There are a couple of important facts that are related to the way CGI
-processes are run:
+Servers like ``CGIHTTPServer`` run CGI scripts as a system user called
+``nobody``.
+
+.. rst-class:: build
+.. container::
+
+    This is just like you calling::
+
+        $ ./cgi_bin/cgi_1.py
+
+    In fact try that now in your second terminal (use the real path), what do
+    you get?
+
+    Windows folks, you may need ``C:\>python cgi-bin/cgi_1.py``
+
+    Notice what is missing?
+
+
+.. nextslide::
+
+There are a couple of important facts about CGI that derive from this:
 
 .. rst-class:: build
 
@@ -396,43 +396,39 @@ processes are run:
   *anyone* can run.
 
 
-The CGI Environment
--------------------
+.. nextslide:: The CGI Environment
 
 CGI is largely a set of agreed-upon environmental variables.
 
 .. rst-class:: build
+.. container::
 
-We've seen how environmental variables are found in python in ``os.environ``
+    We've seen how environmental variables are found in python in
+    ``os.environ``
 
-.. rst-class:: build
+    We've also seen that at least some of the variables in CGI are **not** part
+    of the system environment.
 
-We've also seen that at least some of the variables in CGI are **not** in the
-standard set of environment variables.
-
-.. rst-class:: build
-
-Where do they come from?
+    Where do they come from?
 
 
-CGI Servers
------------
+.. nextslide:: CGI Servers
 
-Let's find 'em.  In a terminal (on your local machine, please) fire up python:
-
-.. code-block:: pycon
-
-    >>> import CGIHTTPServer
-    >>> CGIHTTPServer.__file__
-    '/big/giant/path/to/lib/python2.6/CGIHTTPServer.py'
+Let's find 'em.  In a terminal fire up python:
 
 .. rst-class:: build
+.. container::
 
-Copy this path and open the file it points to in your text editor
+    .. code-block:: pycon
+
+        >>> import CGIHTTPServer
+        >>> CGIHTTPServer.__file__
+        '/big/giant/path/to/lib/python2.6/CGIHTTPServer.py'
+
+    Copy this path and open the file it points to in your text editor
 
 
-Environmental Set Up
---------------------
+.. nextslide:: Environmental Set Up
 
 From CGIHTTPServer.py, in the CGIHTTPServer.run_cgi method:
 
@@ -456,33 +452,28 @@ From CGIHTTPServer.py, in the CGIHTTPServer.run_cgi method:
     ...
 
 
-CGI Scripts
------------
+.. nextslide:: CGI Scripts
 
 And that's it, the big secret. The server takes care of setting up the
 environment so it has what is needed.
 
 .. rst-class:: build
+.. container::
 
-Now, in reverse. How does the information that a script creates end up in your
-browser?
+    Now, in reverse. How does the information that a script creates end up in
+    your browser?
 
-.. rst-class:: build
+    A CGI Script must print its results to stdout.
 
-A CGI Script must print its results to stdout.
-
-.. rst-class:: build
-
-Use the same method as above to import and open the source file for the
-``cgi`` module. Note what ``test`` does for an example of this.
+    Use the same method as above to import and open the source file for the
+    ``cgi`` module. Note what ``test`` does for an example of this.
 
 
-Recap:
-------
+.. nextslide:: Recap
 
 What the Server Does:
 
-.. rst-class:: build small
+.. rst-class:: build
 
 * parses the request
 * sets up the environment, including HTTP and SERVER variables
@@ -492,7 +483,7 @@ What the Server Does:
 
 What the Script Does:
 
-.. rst-class:: build small
+.. rst-class:: build
 
 * names appropriate *executable* in it's *shebang* line
 * uses os.environ to read information from the HTTP request
@@ -501,46 +492,49 @@ What the Script Does:
 * prints headers, empty line and script output (body) to stdout
 
 
-In-Class Exercise
------------------
+In-Class Exercise I
+-------------------
 
 You've seen the output from the ``cgi.test()`` method from the ``cgi`` module.
 Let's make our own version of this.
 
-.. rst-class:: build small
+.. rst-class:: build
+.. container::
 
-* In the directory ``cgi-bin`` you will find the file ``cgi_2.py``.
-* Open that file in your editor.
-* The script contains some html with text naming elements of the CGI
-  environment.
-* You should use the values in os.environ to fill in the blanks.
-* You should be able to view the results of your work by loading
-  ``http://localhost:8000/`` and clicking on *Exercise One*
+    .. rst-class:: build
 
-.. rst-class:: build center
+    * In the directory ``cgi-bin`` you will find the file ``cgi_2.py``.
+    * Open that file in your editor.
+    * The script contains some html with text naming elements of the CGI
+      environment.
+    * You should use the values in os.environ to fill in the blanks.
+    * You should be able to view the results of your work by loading
+      ``http://localhost:8000/`` and clicking on *Exercise One*
 
-**GO**
+    **GO**
 
 
-User Provided Data
-------------------
+Getting Data from Users
+-----------------------
 
 All this is well and good, but where's the *dynamic* stuff?
 
 .. rst-class:: build
+.. container::
 
-It'd be nice if a user could pass form data to our script for it to use.
-
-.. container:: incremental
+    It'd be nice if a user could pass form data to our script for it to use.
 
     In HTTP, these types of inputs show up in the URL *query* (the part after
     the ``?``)::
 
         http://myhost.com/script.py?a=23&b=37
 
+    You've seen this before, right?  In your Pyramid learning journal?
 
-Form Data in CGI
-----------------
+    It's how we got the ``id`` of an entry to the edit form.
+
+
+.. nextslide:: Form Data in CGI
 
 In the ``cgi`` module, we get access to this with the ``FieldStorage`` class:
 
@@ -560,8 +554,8 @@ In the ``cgi`` module, we get access to this with the ``FieldStorage`` class:
   are present
 
 
-In-Class Exercise
------------------
+In-Class Exercise II
+--------------------
 
 Let's create a dynamic adding machine.
 
@@ -574,15 +568,13 @@ Let's create a dynamic adding machine.
   ``cgi.FieldStorage``.
 * Complete the cgi script in ``cgi_sums.py`` so that the result of adding all
   operands sent via the url query is returned.
+* Return the results as plain text, with the appropriate ``Content-Type``
+  header.
+
+
+.. nextslide:: My Solution
 
 .. rst-class:: build
-
-For extra fun, return the results in ``json`` format (mimetype:
-'application/json').
-
-
-My Solution
------------
 
 .. code-block:: python
 
@@ -596,21 +588,23 @@ My Solution
             value = 0
         total += value
 
-    output = {'result': total}
-    json_output = json.dumps(output)
+    output = str(total)
 
-    print "Content-Type: application/json"
-    print "Content-Length: %s" % len(json_output)
+    print "Content-Type: text/plain"
+    print "Content-Length: %s" % len(output)
     print
-    print json_output
+    print output
 
 
-Stopping Point
---------------
+.. nextslide:: Break Time
 
-.. class:: big-centered
+.. rst-class:: centered
 
 Let's take a break here, before continuing
+
+
+WSGI
+====
 
 
 CGI Problems
@@ -619,93 +613,94 @@ CGI Problems
 CGI is great, but there are problems:
 
 .. rst-class:: build
+.. container::
 
-* Code is executed *in a new process*
-* **Every** call to a CGI script starts a new process on the server
-* Starting a new process is expensive in terms of server resources
-* *Especially for interpreted languages like Python*
+    .. rst-class:: build
 
-.. rst-class:: build
+    * Code is executed *in a new process*
+    * **Every** call to a CGI script starts a new process on the server
+    * Starting a new process is expensive in terms of server resources
+    * *Especially for interpreted languages like Python*
 
-How do we overcome this problem?
+    How do we overcome this problem?
 
-
-Alternatives to CGI
--------------------
+.. nextslide:: Alternatives to CGI
 
 The most popular approach is to have a long-running process *inside* the
 server that handles CGI scripts.
 
 .. rst-class:: build
+.. container::
 
-FastCGI and SCGI are existing implementations of CGI in this fashion. The
-Apache module **mod_python** offers a similar capability for Python code.
+    FastCGI and SCGI are existing implementations of CGI in this fashion.
 
-.. rst-class:: build
+    The PHP scripting language works in much the same way.
 
-* Each of these options has a specific API
-* None are compatible with each-other
-* Code written for one is **not portable** to another
+    The Apache module **mod_python** offers a similar capability for Python
+    code.
 
-.. rst-class:: build
+    .. rst-class:: build
 
-This makes it much more difficult to *share resources*
+    * Each of these options has a specific API
+    * None are compatible with each-other
+    * Code written for one is **not portable** to another
+
+    This makes it much more difficult to *share resources*
 
 
-WSGI
-----
+A Solution
+----------
 
 Enter WSGI, the Web Server Gateway Interface.
 
 .. rst-class:: build
+.. container::
 
-Where other alternatives are specific implementations of the CGI standard,
-WSGI is itself a new standard, not an implementation.
+    Other alternatives are specific implementations of the CGI standard.
 
-.. rst-class:: build
+    WSGI is itself a new standard, not an implementation.
 
-WSGI is generalized to describe a set of interactions, so that developers can
-write WSGI-capable apps and deploy them on any WSGI server.
+    WSGI is generalized to describe a set of interactions.
 
-.. rst-class:: build
+    Developers can write WSGI-capable apps and deploy them on any WSGI server.
 
-Read the WSGI spec: http://www.python.org/dev/peps/pep-0333
+    Read the WSGI spec: http://www.python.org/dev/peps/pep-0333
 
 
-WSGI: Apps and Servers
-----------------------
-
-.. class:: small
+Apps and Servers
+----------------
 
 WSGI consists of two parts, a *server* and an *application*.
 
-.. class:: small
+.. rst-class:: build
+.. container::
 
-A WSGI Server must:
+    .. container::
 
-.. rst-class:: build small
+        A WSGI Server must:
 
-* set up an environment, much like the one in CGI
-* provide a method ``start_response(status, headers, exc_info=None)``
-* build a response body by calling an *application*, passing
-  ``environment`` and ``start_response`` as args
-* return a response with the status, headers and body
+        .. rst-class:: build
 
-.. class:: small
+        * set up an environment, much like the one in CGI
+        * provide a method ``start_response(status, headers, exc_info=None)``
+        * build a response body by calling an *application*, passing
+          ``environment`` and ``start_response`` as args
+        * return a response with the status, headers and body
 
-A WSGI Appliction must:
+    .. container::
 
-.. rst-class:: build small
+        A WSGI Appliction must:
 
-* Be a callable (function, method, class)
-* Take an environment and a ``start_response`` callable as arguments
-* Call the ``start_response`` method.
-* Return an iterable of 0 or more strings, which are treated as the body of
-  the response.
+        .. rst-class:: build
+
+        * Be a callable (function, method, class)
+        * Take an environment and a ``start_response`` callable as arguments
+        * Call the ``start_response`` method.
+        * Return an *iterable* of 0 or more strings, which are treated as the
+          body of the response.
 
 
-Simplified WSGI Server
-----------------------
+.. nextslide:: Simplified WSGI Server
 
 .. code-block:: python
 
@@ -728,8 +723,7 @@ Simplified WSGI Server
     serve(simple_app)
 
 
-Simple WSGI Application
------------------------
+.. nextslide:: Simple WSGI Application
 
 Where the simplified server above is **not** functional, this *is* a complete
 app:
@@ -745,77 +739,79 @@ app:
         return [body]
 
 
-WSGI Middleware
----------------
+.. nextslide:: WSGI Middleware
 
 A third part of the puzzle is something called WSGI *middleware*
 
 .. rst-class:: build
+.. container::
 
-* Middleware implements both the *server* and *application* interfaces
-* Middleware acts as a server when viewed from an application
-* Middleware acts as an application when viewed from a server
+    .. rst-class:: build
 
-.. image:: img/wsgi_middleware_onion.png
-    :align: center
-    :width: 38%
+    * Middleware implements both the *server* and *application* interfaces
+    * Middleware acts as a server when viewed from an application
+    * Middleware acts as an application when viewed from a server
+
+    .. figure:: /_static/wsgi_middleware_onion.png
+        :align: center
+        :width: 38%
 
 
-Flowcharts
-----------
-
-WSGI Servers:
-
-.. class:: center incremental
-
-**HTTP <---> WSGI**
+.. nextslide:: WSGI Data Flow
 
 .. rst-class:: build
+.. container::
 
-WSGI Applications:
+    .. container::
 
-.. class:: center incremental
+        WSGI Servers:
 
-**WSGI <---> app code**
+        .. rst-class:: large centered
+
+        **HTTP <---> WSGI**
+
+    .. container::
+
+        WSGI Applications:
+
+        .. rst-class:: large centered
+
+        **WSGI <---> app code**
 
 
-The Whole Enchilada
--------------------
+.. nextslide:: The WSGI Stack
 
 The WSGI *Stack* can thus be expressed like so:
 
-.. rst-class:: build big-centered
+.. rst-class:: build large centered
 
 **HTTP <---> WSGI <---> app code**
 
 
-Using wsgiref
--------------
+.. nextslide:: Using wsgiref
 
 The Python standard lib provides a reference implementation of WSGI:
 
-.. image:: img/wsgiref_flow.png
+.. figure:: /_static/wsgiref_flow.png
     :align: center
     :width: 80%
 
 
-Apache mod_wsgi
----------------
+.. nextslide:: Apache mod_wsgi
 
 You can also deploy with Apache as your HTTP server, using **mod_wsgi**:
 
-.. image:: img/mod_wsgi_flow.png
+.. figure:: /_static/mod_wsgi_flow.png
     :align: center
     :width: 80%
 
 
-Proxied WSGI Servers
---------------------
+.. nextslide:: Proxied WSGI Servers
 
 Finally, it is also common to see WSGI apps deployed via a proxied WSGI
 server:
 
-.. image:: img/proxy_wsgi.png
+.. figure:: /_static/proxy_wsgi.png
     :align: center
     :width: 80%
 
@@ -823,44 +819,39 @@ server:
 The WSGI Environment
 --------------------
 
-.. class:: small
-
-REQUEST_METHOD
+REQUEST_METHOD:
   The HTTP request method, such as "GET" or "POST". This cannot ever be an
   empty string, and so is always required.
-SCRIPT_NAME
+SCRIPT_NAME:
   The initial portion of the request URL's "path" that corresponds to the
   application object, so that the application knows its virtual "location".
   This may be an empty string, if the application corresponds to the "root" of
   the server.
-PATH_INFO
+PATH_INFO:
   The remainder of the request URL's "path", designating the virtual
   "location" of the request's target within the application. This may be an
   empty string, if the request URL targets the application root and does not
   have a trailing slash.
-QUERY_STRING
+QUERY_STRING:
   The portion of the request URL that follows the "?", if any. May be empty or
   absent.
-CONTENT_TYPE
+CONTENT_TYPE:
   The contents of any Content-Type fields in the HTTP request. May be empty or
   absent.
 
 
-The WSGI Environment
---------------------
+.. nextslide:: The WSGI Environment
 
-.. class:: small
-
-CONTENT_LENGTH
+CONTENT_LENGTH:
   The contents of any Content-Length fields in the HTTP request. May be empty
   or absent.
-SERVER_NAME, SERVER_PORT
+SERVER_NAME, SERVER_PORT:
   When combined with SCRIPT_NAME and PATH_INFO, these variables can be used to
   complete the URL. Note, however, that HTTP_HOST, if present, should be used
   in preference to SERVER_NAME for reconstructing the request URL. See the URL
   Reconstruction section below for more detail. SERVER_NAME and SERVER_PORT
   can never be empty strings, and so are always required.
-SERVER_PROTOCOL
+SERVER_PROTOCOL:
   The version of the protocol the client used to send the request. Typically
   this will be something like "HTTP/1.0" or "HTTP/1.1" and may be used by the
   application to determine how to treat any HTTP request headers. (This
@@ -870,24 +861,21 @@ SERVER_PROTOCOL
   have to keep the existing name.)
 
 
-The WSGI Environment
---------------------
+.. nextslide:: The WSGI Environment
 
-.. class:: small
-
-HTTP\_ Variables
+HTTP\_ Variables:
   Variables corresponding to the client-supplied HTTP request headers (i.e.,
   variables whose names begin with "HTTP\_"). The presence or absence of these
   variables should correspond with the presence or absence of the appropriate
   HTTP header in the request.
 
-.. class:: center incremental
+.. rst-class:: build large centered
 
 **Seem Familiar?**
 
 
-A Bit of Repetition
--------------------
+In-Class Exercise III
+---------------------
 
 Let's start simply.  We'll begin by repeating our first CGI exercise in WSGI
 
@@ -899,13 +887,12 @@ Let's start simply.  We'll begin by repeating our first CGI exercise in WSGI
 * We will fill in the missing values using the wsgi ``environ``, just as we
   use ``os.environ`` in cgi
 
-.. rst-class:: build center
+.. rst-class:: build centered
 
 **But First**
 
 
-Orientation
------------
+.. nextslide:: Orientation
 
 .. code-block:: python
 
@@ -915,20 +902,16 @@ Orientation
         srv.serve_forever()
 
 .. rst-class:: build
+.. container::
 
-Note that we pass our ``application`` function to the server factory
+    Note that we pass our ``application`` function to the server factory
 
-.. rst-class:: build
+    We don't have to write a server, ``wsgiref`` does that for us.
 
-We don't have to write a server, ``wsgiref`` does that for us.
-
-.. rst-class:: build
-
-In fact, you should *never* have to write a WSGI server.
+    In fact, you should *never* have to write a WSGI server.
 
 
-Orientation
------------
+.. nextslide:: Orientation
 
 .. code-block:: python
 
@@ -944,132 +927,118 @@ Orientation
         return [response_body]
 
 .. rst-class:: build
+.. container::
 
-We do not define ``start_response``, the application does that.
+    We do not define ``start_response``, the application does that.
 
-.. rst-class:: build
+    We *are* responsible for determining the HTTP status.
 
-We *are* responsible for determining the HTTP status.
-
-
-Running a WSGI Script
----------------------
+.. nextslide:: Running a WSGI Script
 
 You can run this script with python::
 
     $ python wsgi_1.py
 
 .. rst-class:: build
+.. container::
 
-This will start a wsgi server. What host and port will it use?
+    This will start a wsgi server. What host and port will it use?
 
-.. rst-class:: build
+    Point your browser at ``http://localhost:8080/``. Did it work?
 
-Point your browser at ``http://localhost:8080/``. Did it work?
-
-.. rst-class:: build
-
-Go ahead and fill in the missing bits. Use the ``environ`` passed into
-``application``
+    Go ahead and fill in the missing bits. Use the ``environ`` passed into
+    ``application``
 
 
-Some Tips
----------
+.. nextslide:: Some Tips
 
-Because WSGI is a long-running process, the file you are editing is *not*
-reloaded after you edit it.
+WSGI is a long-running process.
 
 .. rst-class:: build
+.. container::
 
-You'll need to quit and re-run the script between edits.
+    The file you are editing is *not* reloaded after you edit it.
 
-.. rst-class:: build
+    You'll need to quit and re-run the script between edits.
 
-You may also want to consider using ``print environ`` in your application so
-you can see the dictionary.
-
-.. rst-class:: build
-
-If you do that, where will the printed environment appear?
+    Notice the use of ``pprint.pprint``, check your terminal for useful output.
 
 
-A More Complex Example
-----------------------
+A WSGI Application
+------------------
 
-Let's create a multi-page wsgi application. It will serve a small database of
-python books.
+So now we've learned a bit about the WSGI specification and how a WSGI
+application can get data that comes in via an HTTP request.
 
 .. rst-class:: build
+.. container::
 
-The database (with a very simple api) can be found in ``wsgi/bookdb.py``
+    Let's create a multi-page wsgi application.
 
-.. rst-class:: build
+    It will serve a small database of python books.
 
-* We'll need a listing page that shows the titles of all the books
-* Each title will link to a details page for that book
-* The details page for each book will display all the information and have a
-  link back to the list
+    The database (with a very simple api) can be found in ``wsgi/bookdb.py``
+
+    .. rst-class:: build
+
+    * We'll need a listing page that shows the titles of all the books
+    * Each title will link to a details page for that book
+    * The details page for each book will display all the information and have
+      a link back to the list
 
 
-Some Questions to Ponder
-------------------------
-
-.. rst-class:: build
+.. nextslide:: Some Questions to Ponder
 
 When viewing our first wsgi app, do we see the name of the wsgi application
 script anywhere in the URL?
 
 .. rst-class:: build
+.. container::
 
-In our wsgi application script, how many applications did we actually have?
+    In our wsgi application script, how many applications did we actually have?
 
-.. rst-class:: build
-
-How are we going to serve different types of information out of a single
-application?
+    How are we going to serve different types of information out of a single
+    application?
 
 
-Dispatch
---------
+.. nextslide:: Dispatch
 
 We have to write an app that will map our incoming request path to some code
 that can handle that request.
 
 .. rst-class:: build
+.. container::
 
-This process is called ``dispatch``. There are many possible approaches
+    This process is called ``dispatch``. There are many possible approaches.
 
-.. rst-class:: build
+    You've seen one approach in the Learning Journal you built with Pyramid.
 
-Let's begin by designing this piece of it.
+    Let's begin by designing this piece of our app.
 
-.. rst-class:: build
-
-Open ``bookapp.py`` from the ``wsgi`` folder.  We'll do our work here.
+    Open ``bookapp.py`` from the ``wsgi`` folder.  We'll do our work here.
 
 
-PATH
-----
+.. nextslide:: PATH
 
-The wsgi environment gives us access to *PATH_INFO*, which maps to the URI the
-user requested when they loaded the page.
+The wsgi environment gives us access to *PATH_INFO*.
 
 .. rst-class:: build
+.. container::
 
-We can design the URLs that our app will use to assist us in routing.
+    This value is the URI from the client's HTTP request.
 
-.. rst-class:: build
+    We can design the URLs that our app will use to assist us in routing.
 
-Let's declare that any request for ``/`` will map to the list page
+    Let's declare that any request for ``/`` will map to the list page.
 
-.. container:: incremental
+    .. container::
 
-    We can also say that the URL for a book will look like this::
+        We can also say that the URL for a book will look like this::
 
-        http://localhost:8080/book/<identifier>
+            http://localhost:8080/book/<identifier>
 
-Writing resolve_path
---------------------
+Writing ``resolve_path``
+------------------------
 
 Let's write a function, called ``resolve_path`` in our application file.
 
@@ -1081,8 +1050,9 @@ Let's write a function, called ``resolve_path`` in our application file.
 * This implies of course that the arguments should be part of the PATH
 
 
-My Solution
------------
+.. nextslide:: My Solution
+
+.. rst-class:: build
 
 .. code-block:: python
 
@@ -1100,15 +1070,14 @@ My Solution
         raise NameError
 
 
-Application Updates
--------------------
+.. nextslide:: Application Updates
 
-We need to hook our new router into the application.
+We need to hook our new dispatch function into the application.
 
 .. rst-class:: build
 
 * The path should be extracted from ``environ``.
-* The router should be used to get a function and arguments
+* The dispatch function should be used to get a function and arguments
 * The body to return should come from calling that function with those
   arguments
 * If an error is raised by calling the function, an appropriate response
@@ -1117,8 +1086,9 @@ We need to hook our new router into the application.
   response
 
 
-My Solution
------------
+.. nextslide:: My Solution
+
+.. rst-class:: build
 
 .. code-block:: python
 
@@ -1151,22 +1121,21 @@ Once you've got your script settled, run it::
     $ python bookapp.py
 
 .. rst-class:: build
+.. container::
 
-Then point your browser at ``http://localhost:8080/``
+    Then point your browser at ``http://localhost:8080/``
 
-.. rst-class:: build
+    .. rst-class:: build
 
-* ``http://localhost/book/id3``
-* ``http://localhost/book/id73/``
-* ``http://localhost/sponge/damp``
+    * ``http://localhost/book/id3``
+    * ``http://localhost/book/id73/``
+    * ``http://localhost/sponge/damp``
 
-.. rst-class:: build
-
-Did that all work as you would have expected?
+    Did that all work as you would have expected?
 
 
-Building the List
------------------
+Building the Book List
+----------------------
 
 The function ``books`` should return an html list of book titles where each
 title is a link to the detail page for that book
@@ -1179,8 +1148,9 @@ title is a link to the detail page for that book
 * The href for the link should be of the form ``/book/<id>``
 
 
-My Solution
------------
+.. nextslide:: My Solution
+
+.. rst-class:: build
 
 .. code-block:: python
 
@@ -1201,19 +1171,18 @@ Quit and then restart your application script::
 
     $ python bookapp.py
 
-.. container:: incremental
-
-    Then reload the root of your application::
-
-        http://localhost:8080/
-
 .. rst-class:: build
+.. container::
 
-You should see a nice list of the books in the database. Do you?
+    .. container::
 
-.. rst-class:: build
+        Then reload the root of your application::
 
-Click on a link to view the detail page. Does it load without error?
+            http://localhost:8080/
+
+    You should see a nice list of the books in the database. Do you?
+
+    Click on a link to view the detail page. Does it load without error?
 
 
 Showing Details
@@ -1222,18 +1191,20 @@ Showing Details
 The next step of course is to polish up those detail pages.
 
 .. rst-class:: build
+.. container::
 
-* You'll need to retrieve a single book from the database
-* You'll need to format the details about that book and return them as HTML
-* You'll need to guard against ids that do not map to books
+    .. rst-class:: build
+
+    * You'll need to retrieve a single book from the database
+    * You'll need to format the details about that book and return them as HTML
+    * You'll need to guard against ids that do not map to books
+
+    In this last case, what's the right HTTP response code to send?
+
+
+.. nextslide:: My Solution
 
 .. rst-class:: build
-
-In this last case, what's the right HTTP response code to send?
-
-
-My Solution
------------
 
 .. code-block:: python
 
@@ -1253,27 +1224,21 @@ My Solution
         return page.format(**book)
 
 
-Revel in Your Success
----------------------
+.. nextslide:: Revel in Your Success
 
 Quit and restart your script one more time
 
 .. rst-class:: build
+.. container::
 
-Then poke around at your application and see the good you've made
+    Then poke around at your application and see the good you've made
 
-.. rst-class:: build
+    And your application is portable and sharable
 
-And your application is portable and sharable
-
-.. rst-class:: build
-
-It should run equally well under any `wsgi server
-<http://www.wsgi.org/en/latest/applications.html>`_
+    It should run equally well under any `wsgi server <http://wsgi.readthedocs.org/en/latest/servers.html>`_
 
 
-A Few Steps Further
--------------------
+.. nextslide:: A Few Steps Further
 
 Next steps for an app like this might be:
 
@@ -1285,70 +1250,65 @@ Next steps for an app like this might be:
 
 
 Homework
---------
+========
 
-For your homework this week, you'll be creating a wsgi application of your
-own.
+.. rst-class:: left
+.. container::
 
-.. rst-class:: build
+    For your homework this week, you'll be creating a wsgi application of your
+    own.
 
-As the source of your data, use the mashup you created last week.
+    .. rst-class:: build
+    .. container::
 
-.. rst-class:: build
+        You'll create an online calculator that can perform several operations
 
-Your application should have at least two separate "pages" in it.
+        You'll need to support:
 
-.. rst-class:: build
+        .. rst-class:: build
 
-The HTML you produce does not need to be pretty, but it should be something
-that shows up in a browser.
+        * Addition
+        * Subtraction
+        * Multiplication
+        * Division
 
+        .. container::
 
-Submitting Your Homework
-------------------------
+            Your users should be able to send appropriate requests and get back
+            proper responses::
 
-To submit your homework:
-
-.. class:: small
-
-* Create a new python script in ``assignments/session04``. It should be
-  something I can run with:
-
-.. class:: small
-
-::
-
-    $ python your_script.py
-
-.. class:: small
-
-* Once your script is running, I should be able to view your application in my
-  browser.
-
-* Include all instructions I need to successfully run and view your script.
-
-* Add tests for your code. I should be able to run the tests like so:
-
-.. class:: small
-
-::
-
-    $ python tests.py
-
-.. class:: small
-
-* Commit your changes to your fork of the repo in github, then open a pull
-  request.
+                http://localhost:8080/multiply/3/5  => 15
+                http://localhost:8080/add/23/42     => 65
+                http://localhost:8080/divide/6/0    => HTTP "400 Bad Request"
 
 
-But Wait, There's More
-----------------------
+.. nextslide:: Submitting Your Homework
 
-In addition, read and step through the quick tutorials on templates and
-database persistence in the assignments directory.
+.. rst-class:: left
+.. container::
 
-Use your flaskenv Python, it has everything you need installed.
+    To submit your homework:
 
+    .. rst-class:: build
+
+    * Create a new github repository.  Call it ``wsgi-calc``.
+    * Add a python script to it called ``calculator.py``.
+    * Your script should be runnable using ``$ python calculator.py``
+    * When the script is running, I should be able to view your application in
+      my browser.
+    * I should be able to see a home page that explains how to perform
+      calculations.
+
+    .. rst-class:: build
+    .. container::
+
+        Your repository should include a README.md file.
+
+        Include all instructions I need to successfully run and view your
+        script.
+
+        When you are done, send Maria and I an email with a link to your
+        repository.
 
 Wrap-Up
 -------
@@ -1361,6 +1321,6 @@ the ``wsgiref`` module. It's the canonical example of a simple wsgi server
     '/full/path/to/your/copy/of/wsgiref.py'
     ...
 
-.. rst-class:: build center
+.. rst-class:: build centered
 
 **See you Next Time**
