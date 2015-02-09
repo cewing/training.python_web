@@ -20,3 +20,4 @@ course.
    session03
    session04
    session05
+   session06
