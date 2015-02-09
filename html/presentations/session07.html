@@ -1,0 +1,1364 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Session 07 &mdash; Internet Programming with Python</title>
+    
+    <link rel="stylesheet" href="../_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Internet Programming with Python" href="../index.html" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head>
+  <body>
+<div class="header">
+  <div class="logo">
+    <a href="../index.html">
+      <img class="logo" src="../_static/logo_UW.png" alt="Logo"/>
+    </a>
+  </div>
+</div>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="../index.html">UWPCE Python 200</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="session-07">
+<h1>Session 07<a class="headerlink" href="#session-07" title="Permalink to this headline">¶</a></h1>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/granny_mashup.png"><img alt="../_images/granny_mashup.png" src="../_images/granny_mashup.png" style="width: 50%;" /></a>
+<p class="caption">Paul Downey <a class="reference external" href="http://www.flickr.com/photos/psd/492139935/">http://www.flickr.com/photos/psd/492139935/</a> - CC-BY</p>
+</div>
+<div class="section" id="scraping-apis-and-mashups">
+<h2>Scraping, APIs and Mashups<a class="headerlink" href="#scraping-apis-and-mashups" title="Permalink to this headline">¶</a></h2>
+<p>Wherein we learn how to make order from the chaos of the wild internet.</p>
+<div class="section" id="a-dilemma">
+<h3>A Dilemma<a class="headerlink" href="#a-dilemma" title="Permalink to this headline">¶</a></h3>
+<p>The internet makes a vast quantity of data available.</p>
+<div class="build container">
+<p>But not always in the form or combination you want.</p>
+<p>It would be nice to be able to combine data from different sources to
+create <em>meaning</em>.</p>
+</div>
+</div>
+<div class="section" id="the-big-question">
+<h3>The Big Question<a class="headerlink" href="#the-big-question" title="Permalink to this headline">¶</a></h3>
+<p class="large centered">But How?</p>
+</div>
+<div class="section" id="the-big-answer">
+<h3>The Big Answer<a class="headerlink" href="#the-big-answer" title="Permalink to this headline">¶</a></h3>
+<p class="large centered">Mashups</p>
+</div>
+<div class="section" id="mashups">
+<h3>Mashups<a class="headerlink" href="#mashups" title="Permalink to this headline">¶</a></h3>
+<p>A mashup is:</p>
+<div class="highlight-python"><div class="highlight"><pre>a web page, or web application, that uses and combines data, presentation
+or functionality from two or more sources to create new services.
+
+-- `wikipedia &lt;http://en.wikipedia.org/wiki/Mashup_(web_application_hybrid)&gt;`_
+</pre></div>
+</div>
+</div>
+<div class="section" id="data-sources">
+<h3>Data Sources<a class="headerlink" href="#data-sources" title="Permalink to this headline">¶</a></h3>
+<p>The key to mashups is the idea of data sources.</p>
+<div class="build container">
+<p>These come in many flavors:</p>
+<ul class="build simple">
+<li>Simple websites with data in HTML</li>
+<li>Web services providing structured data</li>
+<li>Web services providing tranformative service (geocoding)</li>
+<li>Web services providing presentation (mapping)</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="web-scraping">
+<h2>Web Scraping<a class="headerlink" href="#web-scraping" title="Permalink to this headline">¶</a></h2>
+<div class="left container">
+<p>It would be nice if all online data were available in well-structured formats.</p>
+<div class="build container">
+<p>The reality is that much data is available only in HTML.</p>
+<p>Still we can get at it, with some effort.</p>
+<p>By scraping the data from the web pages.</p>
+</div>
+</div>
+<div class="section" id="html-ideally">
+<h3>HTML, Ideally<a class="headerlink" href="#html-ideally" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-html"><div class="highlight"><pre><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;p&gt;</span>A nice clean paragraph<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p&gt;</span>And another nice clean paragraph<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="html-irl">
+<h3>HTML... IRL<a class="headerlink" href="#html-irl" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;html&gt;</span>
+ <span class="nt">&lt;form&gt;</span>
+  <span class="nt">&lt;table&gt;</span>
+   <span class="nt">&lt;td&gt;&lt;input</span> <span class="na">name=</span><span class="s">&quot;input1&quot;</span><span class="nt">&gt;</span>Row 1 cell 1
+   <span class="nt">&lt;tr&gt;&lt;td&gt;</span>Row 2 cell 1
+  <span class="nt">&lt;/form&gt;</span>
+  <span class="nt">&lt;td&gt;</span>Row 2 cell 2<span class="nt">&lt;br&gt;</span>This<span class="nt">&lt;/br&gt;</span> sure is a long cell
+ <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="fffffffffuuuuuuuuuuuuu">
+<h3>FFFFFFFFFUUUUUUUUUUUUU<a class="headerlink" href="#fffffffffuuuuuuuuuuuuu" title="Permalink to this headline">¶</a></h3>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/scream.jpg"><img alt="../_images/scream.jpg" src="../_images/scream.jpg" style="width: 32%;" /></a>
+<p class="caption">Photo by Matthew via Flickr (<a class="reference external" href="http://www.flickr.com/photos/purplemattfish/3918004964/">http://www.flickr.com/photos/purplemattfish/3918004964/</a>) - CC-BY-NC-ND</p>
+</div>
+</div>
+<div class="section" id="the-law-of-the-internet">
+<h3>The Law of The Internet<a class="headerlink" href="#the-law-of-the-internet" title="Permalink to this headline">¶</a></h3>
+<p class="large centered">&#8220;Be strict in what you send and tolerant in what you receive&#8221;</p>
+</div>
+<div class="section" id="taming-the-mess">
+<h3>Taming the Mess<a class="headerlink" href="#taming-the-mess" title="Permalink to this headline">¶</a></h3>
+<p>Luckily, there are tools to help with this.</p>
+<div class="build container">
+<p>In python there are several candidates, but I like <tt class="docutils literal"><span class="pre">BeautifulSoup</span></tt>.</p>
+<p>BeautifulSoup is a great tool, but it&#8217;s not in the Standard Library.</p>
+<p>We&#8217;ll need to install it.</p>
+<p>Create a virtualenv to do so:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>virtualenv soupenv
+...
+<span class="nv">$ </span><span class="nb">source </span>soupenv/bin/activate
+</pre></div>
+</div>
+<p>(remember, for Windows users that should be <tt class="docutils literal"><span class="pre">soupenv/Scripts/activate</span></tt>)</p>
+</div>
+</div>
+<div class="section" id="install-beautifulsoup">
+<h3>Install BeautifulSoup<a class="headerlink" href="#install-beautifulsoup" title="Permalink to this headline">¶</a></h3>
+<p>Once the virtualenv is activated, you can simply use pip or easy_install to
+install the libraries you want:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nb">source</span>
+
+<span class="o">(</span>soupenv<span class="o">)</span><span class="nv">$ </span>pip install beautifulsoup4
+</pre></div>
+</div>
+</div>
+<div class="section" id="choose-a-parsing-engine">
+<h3>Choose a Parsing Engine<a class="headerlink" href="#choose-a-parsing-engine" title="Permalink to this headline">¶</a></h3>
+<p>BeautifulSoup is built to use the Python HTMLParser.</p>
+<ul class="build simple">
+<li>Batteries Included.  It&#8217;s already there</li>
+<li>It&#8217;s not great, especially before Python 2.7.3</li>
+</ul>
+<div class="build container">
+<p>BeautifulSoup also supports using other parsers.</p>
+<p>There are two good choices: <tt class="docutils literal"><span class="pre">lxml</span></tt> and <tt class="docutils literal"><span class="pre">html5lib</span></tt>.</p>
+<p><tt class="docutils literal"><span class="pre">lxml</span></tt> is better, but much harder to install.  Let&#8217;s use <tt class="docutils literal"><span class="pre">html5lib</span></tt>.</p>
+</div>
+</div>
+<div class="section" id="install-a-parsing-engine">
+<h3>Install a Parsing Engine<a class="headerlink" href="#install-a-parsing-engine" title="Permalink to this headline">¶</a></h3>
+<p>Again, this is pretty simple:</p>
+<div class="highlight-python"><div class="highlight"><pre>(soupenv)$ pip install html5lib
+</pre></div>
+</div>
+<div class="build container">
+<p>Once installed, BeautifulSoup will choose it automatically.</p>
+<p>BeautifulSoup will choose the &#8220;best&#8221; available.</p>
+<p>You can specify the parser if you need to for some reason.</p>
+</div>
+</div>
+<div class="section" id="install-requests">
+<h3>Install Requests<a class="headerlink" href="#install-requests" title="Permalink to this headline">¶</a></h3>
+<p>Python provides tools for opening urls and communicating with servers. It&#8217;s
+spread across the <tt class="docutils literal"><span class="pre">urllib</span></tt> and <tt class="docutils literal"><span class="pre">urllib2</span></tt> packages.</p>
+<div class="build container">
+<p>These packages have pretty unintuitive APIs.</p>
+<p>The <tt class="docutils literal"><span class="pre">requests</span></tt> library is becoming the de-facto standard for this type of
+work.  Let&#8217;s install it too.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>soupenv<span class="o">)</span><span class="nv">$ </span>pip install requests
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="our-class-mashup">
+<h3>Our Class Mashup<a class="headerlink" href="#our-class-mashup" title="Permalink to this headline">¶</a></h3>
+<p>We&#8217;re going to explore some tools for making a mashup today</p>
+<div class="build container">
+<p>We&#8217;ll be starting by scraping ZIP codes for Seattle</p>
+<p>Then we&#8217;ll choose one of them and look up restaurant health code data for
+that ZIP code</p>
+<p>Then, we&#8217;ll look up the geographic location of those zipcodes using Google</p>
+<p>Open a new file in your editor: <tt class="docutils literal"><span class="pre">mashup.py</span></tt>.</p>
+</div>
+</div>
+<div class="section" id="examine-the-source">
+<h3>Examine the Source<a class="headerlink" href="#examine-the-source" title="Permalink to this headline">¶</a></h3>
+<p>Craigslist doesn&#8217;t have an api, just a website, so we&#8217;ll need to dig a bit</p>
+<p class="build">By going to the website and playing with the form there, we can derive a
+formula for a search URL</p>
+<ul class="build simple">
+<li>Base URL: <tt class="docutils literal"><span class="pre">http://seattle.craigslist.org/search/apa</span></tt></li>
+<li>keywords: <tt class="docutils literal"><span class="pre">query=keyword+values+here</span></tt></li>
+<li>price: <tt class="docutils literal"><span class="pre">minAsk=NNN</span> <span class="pre">maxAsk=NNN</span></tt></li>
+<li>bedrooms: <tt class="docutils literal"><span class="pre">bedrooms=N</span></tt> (N in range 1-8)</li>
+</ul>
+<p class="build">We&#8217;ll make an HTTP request with these parameters</p>
+</div>
+<div class="section" id="opening-urls-with-requests">
+<h3>Opening URLs with Requests<a class="headerlink" href="#opening-urls-with-requests" title="Permalink to this headline">¶</a></h3>
+<p>In <tt class="docutils literal"><span class="pre">requests</span></tt>, each HTTP method has a module-level function:</p>
+<ul class="build simple">
+<li><tt class="docutils literal"><span class="pre">GET</span></tt> == <tt class="docutils literal"><span class="pre">requests.get(url,</span> <span class="pre">**kwargs)</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">POST</span></tt> == <tt class="docutils literal"><span class="pre">requests.post(url,</span> <span class="pre">**kwargs)</span></tt></li>
+<li>...</li>
+</ul>
+<p class="build"><tt class="docutils literal"><span class="pre">kwargs</span></tt> represent other parts of an HTTP request:</p>
+<ul class="build simple">
+<li><tt class="docutils literal"><span class="pre">params</span></tt>: a dict of url parameters (?foo=bar&amp;baz=bim)</li>
+<li><tt class="docutils literal"><span class="pre">headers</span></tt>: a dict of headers to send with the request</li>
+<li><tt class="docutils literal"><span class="pre">data</span></tt>: the body of the request, if any (form data for POST goes here)</li>
+<li>...</li>
+</ul>
+</div>
+<div class="section" id="getting-responses-with-requests">
+<h3>Getting Responses with Requests<a class="headerlink" href="#getting-responses-with-requests" title="Permalink to this headline">¶</a></h3>
+<p>The return value from one of these functions is a <tt class="docutils literal"><span class="pre">response</span></tt> which provides:</p>
+<ul class="build simple">
+<li><tt class="docutils literal"><span class="pre">response.status_code</span></tt>: see the HTTP Status Code returned</li>
+<li><tt class="docutils literal"><span class="pre">response.ok</span></tt>: True if <tt class="docutils literal"><span class="pre">response.status_code</span></tt> is not an error</li>
+<li><tt class="docutils literal"><span class="pre">response.raise_for_status()</span></tt>: call to raise a python error if it is</li>
+<li><tt class="docutils literal"><span class="pre">response.headers</span></tt>: The headers sent from the server</li>
+<li><tt class="docutils literal"><span class="pre">response.text</span></tt>: Body of the response, decoded to unicode</li>
+<li><tt class="docutils literal"><span class="pre">response.encoding</span></tt>: The encoding used to decode</li>
+<li><tt class="docutils literal"><span class="pre">response.content</span></tt>: The original encoded response body as bytes</li>
+</ul>
+<p class="build small"><tt class="docutils literal"><span class="pre">requests</span> <span class="pre">documentation</span></tt>: <a class="reference external" href="http://docs.python-requests.org/en/latest/">http://docs.python-requests.org/en/latest/</a></p>
+</div>
+<div class="section" id="fetch-search-results">
+<h3>Fetch Search Results<a class="headerlink" href="#fetch-search-results" title="Permalink to this headline">¶</a></h3>
+<p>We&#8217;ll start by writing a function <tt class="docutils literal"><span class="pre">fetch_search_results</span></tt></p>
+<ul class="build simple">
+<li>It will accept one keyword argument for each of the possible query values</li>
+<li>It will build a dictionary of request query parameters from incoming keywords</li>
+<li>It will make a request to the craigslist server using this query</li>
+<li>It will return the body of the response if there is no error</li>
+<li>It will raise an error if there is a problem with the response</li>
+</ul>
+<p class="build">Try writing this function. Put it in <tt class="docutils literal"><span class="pre">mashup.py</span></tt></p>
+</div>
+<div class="section" id="my-solution">
+<h3>My Solution<a class="headerlink" href="#my-solution" title="Permalink to this headline">¶</a></h3>
+<p>Here&#8217;s the one I created:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="k">def</span> <span class="nf">fetch_search_results</span><span class="p">(</span>
+    <span class="n">query</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">minAsk</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">maxAsk</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">bedrooms</span><span class="o">=</span><span class="bp">None</span>
+<span class="p">):</span>
+    <span class="n">incoming</span> <span class="o">=</span> <span class="nb">locals</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="s">&#39;http://seattle.craigslist.org/search/apa&#39;</span>
+    <span class="n">search_params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="p">[(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">incoming</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">])</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">search_params</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;No valid keywords&quot;</span><span class="p">)</span>
+
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">search_params</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">resp</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span> <span class="c">#&lt;- no-op if status==200</span>
+    <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="n">resp</span><span class="o">.</span><span class="n">encoding</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="parse-the-results">
+<h3>Parse the Results<a class="headerlink" href="#parse-the-results" title="Permalink to this headline">¶</a></h3>
+<p>Next, we need a function <tt class="docutils literal"><span class="pre">parse_source</span></tt> to set up HTML for scraping. It will
+need to:</p>
+<ul class="build simple">
+<li>Take the response body from the previous method (or some other source)</li>
+<li>Parse it using BeautifulSoup</li>
+<li>Return the parsed object for further processing</li>
+</ul>
+<p class="build">Before you start, a word about parsing HTML with BeautifulSoup</p>
+</div>
+<div class="section" id="parsing-html-with-beautifulsoup">
+<h3>Parsing HTML with BeautifulSoup<a class="headerlink" href="#parsing-html-with-beautifulsoup" title="Permalink to this headline">¶</a></h3>
+<p>The BeautifulSoup object can be instantiated with a string or a file-like
+object as the sole argument:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+<span class="n">parsed</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="s">&#39;&lt;h1&gt;Some HTML&lt;/h1&gt;&#39;</span><span class="p">)</span>
+
+<span class="n">fh</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;a_page.html&#39;</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">parsed</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
+
+<span class="n">page</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="s">&#39;http://site.com/page.html&#39;</span><span class="p">)</span>
+<span class="n">parsed</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="build">You might want to open the documentation as reference
+(<a class="reference external" href="http://www.crummy.com/software/BeautifulSoup/bs4/doc">http://www.crummy.com/software/BeautifulSoup/bs4/doc</a>)</p>
+</div>
+<div class="section" id="id1">
+<h3>My Solution<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Take a shot at writing this new function in <tt class="docutils literal"><span class="pre">mashup.py</span></tt></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># add this import at the top</span>
+<span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+<span class="c"># then add this function lower down</span>
+<span class="k">def</span> <span class="nf">parse_source</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">&#39;utf-8&#39;</span><span class="p">):</span>
+    <span class="n">parsed</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="n">from_encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">parsed</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="put-it-together">
+<h3>Put It Together<a class="headerlink" href="#put-it-together" title="Permalink to this headline">¶</a></h3>
+<p>We&#8217;ll need to make our script do something when run.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="c"># do something</span>
+</pre></div>
+</div>
+<ul class="build simple">
+<li>Fetch a search results page</li>
+<li>Parse the resulting HTML</li>
+<li>For now, print out the results so we can see what we get</li>
+</ul>
+<div class="incremental small container">
+<p>Use the <tt class="docutils literal"><span class="pre">prettify</span></tt> method on a BeautifulSoup object:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">print</span> <span class="n">parsed</span><span class="o">.</span><span class="n">prettify</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id2">
+<h3>My Solution<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Try to come up with the proper code on your own.  Add it to <tt class="docutils literal"><span class="pre">mashup.py</span></tt></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">html</span><span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="n">fetch_search_results</span><span class="p">(</span>
+        <span class="n">minAsk</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">maxAsk</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">bedrooms</span><span class="o">=</span><span class="mi">2</span>
+    <span class="p">)</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">parse_source</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="n">encoding</span><span class="p">)</span>
+    <span class="k">print</span> <span class="n">doc</span><span class="o">.</span><span class="n">prettify</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="test-your-work">
+<h3>Test Your Work<a class="headerlink" href="#test-your-work" title="Permalink to this headline">¶</a></h3>
+<p>Assuming your virtualenv is still active, you should be able to execute the
+script.</p>
+<div class="build highlight-python"><div class="highlight"><pre>(soupenv)$ python mashup.py
+&lt;!DOCTYPE html&gt;
+&lt;html class=&quot;nojs&quot;&gt;
+ &lt;head&gt;
+  &lt;title&gt;
+   seattle apts/housing for rent classifieds  - craigslist
+  &lt;/title&gt;
+...
+</pre></div>
+</div>
+</div>
+<div class="section" id="preserve-the-results">
+<h3>Preserve the Results<a class="headerlink" href="#preserve-the-results" title="Permalink to this headline">¶</a></h3>
+<p>Try it again, this time redirect the output to a local file, so we can use
+it without needing to hit the craiglist servers each time:</p>
+<div class="highlight-python"><div class="highlight"><pre>(soupenv)$ python mashup.py &gt; craigslist_results.html
+</pre></div>
+</div>
+</div>
+<div class="section" id="finding-the-needle">
+<h3>Finding The Needle<a class="headerlink" href="#finding-the-needle" title="Permalink to this headline">¶</a></h3>
+<p>Next we find the bits of this pile of HTML that matter to us.</p>
+<p class="build">Open your html file in a browser and take a look (w/ dev tools).</p>
+<p class="build">We&#8217;ll want to find:</p>
+<ul class="build simple">
+<li>The HTML element that contains a single listing</li>
+<li>The source of location data, listings without location should be abandoned</li>
+<li>The description of a listing</li>
+<li>The link to a full listing page on craigslist</li>
+<li>Relevant price or size data.</li>
+</ul>
+</div>
+<div class="section" id="pulling-it-out">
+<h3>Pulling it Out<a class="headerlink" href="#pulling-it-out" title="Permalink to this headline">¶</a></h3>
+<p>We can extract this information now. In BeautifulSoup:</p>
+<ul class="build simple">
+<li>All HTML elements (including the parsed document itself) are <tt class="docutils literal"><span class="pre">tags</span></tt></li>
+<li>A <tt class="docutils literal"><span class="pre">tag</span></tt> can be searched using its <tt class="docutils literal"><span class="pre">find_all</span></tt> method</li>
+<li>This searches the descendents of the tag on which it is called.</li>
+<li>It takes arguments which act as <em>filters</em> on the search results</li>
+</ul>
+<div class="incremental container">
+<p>like so:</p>
+<dl class="class">
+<dt id="small">
+<em class="property">class </em><tt class="descname">small</tt><a class="headerlink" href="#small" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python"><div class="highlight"><pre><span class="n">tag</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">attrs</span><span class="p">,</span> <span class="n">recursive</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">limit</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="searching-by-css-class">
+<h3>Searching by CSS Class<a class="headerlink" href="#searching-by-css-class" title="Permalink to this headline">¶</a></h3>
+<p>The items we are looking for are <tt class="docutils literal"><span class="pre">p</span></tt> tags which have the CSS class
+<tt class="docutils literal"><span class="pre">row</span></tt>:</p>
+<p class="build"><tt class="docutils literal"><span class="pre">find_all</span></tt> supports keyword arguments. If the keyword you use isn&#8217;t one of
+the listed arguments, it is treated as an <tt class="docutils literal"><span class="pre">attribute</span></tt></p>
+<p class="build">In Python, <tt class="docutils literal"><span class="pre">class</span></tt> is a reserved word, so we can&#8217;t use it as a keyword, but
+you can use <tt class="docutils literal"><span class="pre">class_</span></tt>!</p>
+<div class="build small highlight-python"><div class="highlight"><pre><span class="n">parsed</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">&#39;p&#39;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s">&#39;row&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="try-it-out">
+<h3>Try It Out<a class="headerlink" href="#try-it-out" title="Permalink to this headline">¶</a></h3>
+<p>Let&#8217;s fire up a python interpreter and get our hands dirty here:</p>
+<div class="highlight-python"><div class="highlight"><pre>(soupenv)$ python
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">html</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;craigslist_results.html&#39;</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parsed</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">listings</span> <span class="o">=</span> <span class="n">parsed</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">&#39;p&#39;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s">&#39;row&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">listings</span><span class="p">)</span>
+<span class="go">100</span>
+</pre></div>
+</div>
+<p class="build">That sounds about right. Let&#8217;s see if we can get only those with location
+data.</p>
+</div>
+<div class="section" id="filtering-tricks">
+<h3>Filtering Tricks<a class="headerlink" href="#filtering-tricks" title="Permalink to this headline">¶</a></h3>
+<p>Attribute filters given a <tt class="docutils literal"><span class="pre">True</span></tt> value match tags with that attribute</p>
+<p class="build">Location data was in the <tt class="docutils literal"><span class="pre">data-latitude</span></tt> and <tt class="docutils literal"><span class="pre">data-longitude</span></tt> attributes.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">location_attrs</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s">&#39;data-longitude&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s">&#39;data-latitude&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">locatable</span> <span class="o">=</span> <span class="n">parsed</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s">&#39;p&#39;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s">&#39;row&#39;</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="n">location_attrs</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">locatable</span><span class="p">)</span>
+<span class="go">43</span>
+</pre></div>
+</div>
+<p class="build">Great.  That worked nicely</p>
+</div>
+<div class="section" id="parsing-a-row">
+<h3>Parsing a Row<a class="headerlink" href="#parsing-a-row" title="Permalink to this headline">¶</a></h3>
+<p>Now that we have the rows we want, we need to parse them. We want to preserve:</p>
+<ul class="build simple">
+<li>Location data (latitude and longitude)</li>
+<li>Source link (to craiglist detailed listing)</li>
+<li>Description text</li>
+<li>Price and size data</li>
+</ul>
+<p class="build">Which parts of a single row contain each of these elements?</p>
+</div>
+<div class="section" id="extracting-location">
+<h3>Extracting Location<a class="headerlink" href="#extracting-location" title="Permalink to this headline">¶</a></h3>
+<p>Location data is in the <tt class="docutils literal"><span class="pre">data-</span></tt> attributes we used to filter rows.</p>
+<div class="incremental container">
+<p>We can read the HTML attributes of a &#8216;tag&#8217; easily, using <tt class="docutils literal"><span class="pre">attrs</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">row1</span> <span class="o">=</span> <span class="n">locatable</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">row1</span><span class="o">.</span><span class="n">attrs</span>
+<span class="go">{u&#39;data-pid&#39;: u&#39;3949023084&#39;, u&#39;data-latitude&#39;: u&#39;35.8625743108992&#39;,</span>
+<span class="go"> u&#39;class&#39;: [u&#39;row&#39;], u&#39;data-longitude&#39;: u&#39;-78.6232739959049&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lat</span> <span class="o">=</span> <span class="n">row1</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;data-latitude&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lon</span> <span class="o">=</span> <span class="n">row1</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;data-longitude&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span>
+<span class="go">46.9989830869194 -122.847250593816</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="extracting-description-and-link">
+<h3>Extracting Description and Link<a class="headerlink" href="#extracting-description-and-link" title="Permalink to this headline">¶</a></h3>
+<p>Where <tt class="docutils literal"><span class="pre">find_all</span></tt> will find many elements, <tt class="docutils literal"><span class="pre">find</span></tt> will only find the first
+that matches the filters you provide.</p>
+<div class="incremental container">
+<p>Our targets are in the first <tt class="docutils literal"><span class="pre">a</span></tt> tag in the <tt class="docutils literal"><span class="pre">pl</span></tt> span inside our row:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">link</span> <span class="o">=</span> <span class="n">row1</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;span&#39;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s">&#39;pl&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="incremental container">
+<p>The link path will be in the attrs:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">path</span> <span class="o">=</span> <span class="n">link</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">&#39;href&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="incremental container">
+<p>Text contained <em>inside</em> tags is in the <tt class="docutils literal"><span class="pre">string</span></tt> property:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">description</span> <span class="o">=</span> <span class="n">link</span><span class="o">.</span><span class="n">string</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="extracting-price-and-size">
+<h3>Extracting Price and Size<a class="headerlink" href="#extracting-price-and-size" title="Permalink to this headline">¶</a></h3>
+<p>Both price and size are held in the <tt class="docutils literal"><span class="pre">l2</span></tt> span:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">l2</span> <span class="o">=</span> <span class="n">row1</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;span&#39;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s">&#39;l2&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="incremental container">
+<p>Price, conveniently, is in it&#8217;s own container:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">price_span</span> <span class="o">=</span> <span class="n">l2</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;span&#39;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s">&#39;price&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">price</span> <span class="o">=</span> <span class="n">price_span</span><span class="o">.</span><span class="n">string</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p class="build">But the size element is not. It is a standalone <em>text node</em>.</p>
+<p class="build">Try finding it by reading the <tt class="docutils literal"><span class="pre">string</span></tt> property of our <tt class="docutils literal"><span class="pre">l2</span></tt> tag.</p>
+</div>
+<div class="section" id="simple-navigation-and-text">
+<h3>Simple Navigation and Text<a class="headerlink" href="#simple-navigation-and-text" title="Permalink to this headline">¶</a></h3>
+<p>We can get to a simple text node by navigating there.</p>
+<p class="build">You can navigate up, down and across document nodes.</p>
+<div class="incremental container">
+<p>We already have the <tt class="docutils literal"><span class="pre">price</span></tt> span, the size text node is next at the same
+level:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">size</span> <span class="o">=</span> <span class="n">price_span</span><span class="o">.</span><span class="n">next_sibling</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s">&#39; </span><span class="se">\n</span><span class="s">-/&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">size</span>
+<span class="go">u&#39;2br - 912ft\xb2&#39;</span>
+</pre></div>
+</div>
+</div>
+<p class="build">You may have noticed that we keep using <tt class="docutils literal"><span class="pre">strip</span></tt>. There are two reasons for
+this.</p>
+</div>
+<div class="section" id="the-navigablestring-element">
+<h3>The NavigableString Element<a class="headerlink" href="#the-navigablestring-element" title="Permalink to this headline">¶</a></h3>
+<p>The most obvious reason is that we don&#8217;t want extra whitespace.</p>
+<p class="build">The second reason is more subtle. The values returned by <tt class="docutils literal"><span class="pre">string</span></tt> are
+<strong>not</strong> simple unicode strings</p>
+<div class="incremental container">
+<p>They are actually instances of a class called <tt class="docutils literal"><span class="pre">NavigableString</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">price_span</span><span class="o">.</span><span class="n">next_sibling</span><span class="o">.</span><span class="n">__class__</span>
+<span class="go">&lt;class &#39;bs4.element.NavigableString&#39;&gt;</span>
+</pre></div>
+</div>
+</div>
+<p class="build">Calling <tt class="docutils literal"><span class="pre">strip</span></tt> or casting them to <tt class="docutils literal"><span class="pre">unicode</span></tt> converts them, saving memory</p>
+</div>
+<div class="section" id="put-it-all-together">
+<h3>Put It All Together<a class="headerlink" href="#put-it-all-together" title="Permalink to this headline">¶</a></h3>
+<p>Okay, a challenge.  Combine everything we&#8217;ve done into a function that:</p>
+<ul class="build simple">
+<li>Extracts all the locatable listings from our html page</li>
+<li>Iterates over each of them, and builds a dictionary of data<ul>
+<li>include <tt class="docutils literal"><span class="pre">location</span></tt>, <tt class="docutils literal"><span class="pre">href</span></tt>, <tt class="docutils literal"><span class="pre">description</span></tt>, <tt class="docutils literal"><span class="pre">price</span></tt> and <tt class="docutils literal"><span class="pre">size</span></tt></li>
+</ul>
+</li>
+<li>Returns a list of these dictionaries</li>
+</ul>
+<p class="build">Call it <tt class="docutils literal"><span class="pre">extract_listings</span></tt></p>
+<p class="build">Put this new function into <tt class="docutils literal"><span class="pre">mashup.py</span></tt> and call it from <tt class="docutils literal"><span class="pre">__main__</span></tt>,
+printing the result</p>
+</div>
+<div class="section" id="break-time">
+<h3>Break Time<a class="headerlink" href="#break-time" title="Permalink to this headline">¶</a></h3>
+<p>Once you have this working, take a break.</p>
+<p class="build">When we return, we&#8217;ll try a saner approach to getting data from online</p>
+<div class="incremental container">
+<p>While you have a moment, sign up for an API key from this service:</p>
+<p><a class="reference external" href="http://www.walkscore.com/professional/api.php">http://www.walkscore.com/professional/api.php</a></p>
+</div>
+</div>
+<div class="section" id="id3">
+<h3>My Solution<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">extract_listings</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
+    <span class="n">location_attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;data-latitude&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+                      <span class="s">&#39;data-longitude&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">doc</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">&#39;p&#39;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s">&#39;row&#39;</span><span class="p">,</span>
+                            <span class="n">attrs</span><span class="o">=</span><span class="n">location_attrs</span><span class="p">):</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="p">[(</span><span class="n">key</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">))</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">location_attrs</span><span class="p">])</span>
+        <span class="n">link</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;span&#39;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s">&#39;pl&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">)</span>
+        <span class="n">price_span</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;span&#39;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s">&#39;price&#39;</span><span class="p">)</span>
+        <span class="n">listing</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;location&#39;</span><span class="p">:</span> <span class="n">location</span><span class="p">,</span>
+            <span class="s">&#39;href&#39;</span><span class="p">:</span> <span class="n">link</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">&#39;href&#39;</span><span class="p">],</span>
+            <span class="s">&#39;description&#39;</span><span class="p">:</span> <span class="n">link</span><span class="o">.</span><span class="n">string</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
+            <span class="s">&#39;price&#39;</span><span class="p">:</span> <span class="n">price_span</span><span class="o">.</span><span class="n">string</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
+            <span class="s">&#39;size&#39;</span><span class="p">:</span> <span class="n">price_span</span><span class="o">.</span><span class="n">next_sibling</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s">&#39; </span><span class="se">\n</span><span class="s">-/&#39;</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="k">yield</span> <span class="n">listing</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h3>My Solution<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">html</span><span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="n">fetch_search_results</span><span class="p">(</span>
+        <span class="n">minAsk</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">maxAsk</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">bedrooms</span><span class="o">=</span><span class="mi">2</span>
+    <span class="p">)</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">parse_source</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="n">encoding</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">listing</span> <span class="ow">in</span> <span class="n">extract_listings</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
+        <span class="k">print</span> <span class="n">listing</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="another-approach">
+<h3>Another Approach<a class="headerlink" href="#another-approach" title="Permalink to this headline">¶</a></h3>
+<p>Scraping web pages is tedious and inherently brittle</p>
+<p class="build">The owner of the website updates their layout, your code breaks</p>
+<p class="build">But there is another way to get information from the web in a more normalized
+fashion</p>
+<p class="build center"><strong>Web Services</strong></p>
+</div>
+<div class="section" id="web-services">
+<h3>Web Services<a class="headerlink" href="#web-services" title="Permalink to this headline">¶</a></h3>
+<p>&#8220;a software system designed to support interoperable machine-to-machine
+interaction over a network&#8221; - W3C</p>
+<ul class="build simple">
+<li>provides a defined set of calls</li>
+<li>returns structured data</li>
+</ul>
+</div>
+<div class="section" id="early-web-services">
+<h3>Early Web Services<a class="headerlink" href="#early-web-services" title="Permalink to this headline">¶</a></h3>
+<p>RSS is one of the earliest forms of Web Services</p>
+<ul class="simple">
+<li>First known as <tt class="docutils literal"><span class="pre">RDF</span> <span class="pre">Site</span> <span class="pre">Summary</span></tt></li>
+<li>Became <tt class="docutils literal"><span class="pre">Really</span> <span class="pre">Simple</span> <span class="pre">Syndication</span></tt></li>
+<li>More at <a class="reference external" href="http://www.rss-specification.com/rss-specifications.htm">http://www.rss-specification.com/rss-specifications.htm</a></li>
+</ul>
+<p class="build">A single web-based <em>endpoint</em> provides a dynamically updated listing of
+content</p>
+<p class="build">Implemented in pure HTTP.  Returns XML</p>
+<p class="build"><strong>Atom</strong> is a competing, but similar standard</p>
+</div>
+<div class="section" id="rss-document">
+<h3>RSS Document<a class="headerlink" href="#rss-document" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="tiny">
+<em class="property">class </em><tt class="descname">tiny</tt><a class="headerlink" href="#tiny" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python"><div class="highlight"><pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;rss version=&quot;2.0&quot;&gt;
+&lt;channel&gt;
+  &lt;title&gt;RSS Title&lt;/title&gt;
+  &lt;description&gt;This is an example of an RSS feed&lt;/description&gt;
+  &lt;link&gt;http://www.someexamplerssdomain.com/main.html&lt;/link&gt;
+  &lt;lastBuildDate&gt;Mon, 06 Sep 2010 00:01:00 +0000 &lt;/lastBuildDate&gt;
+  &lt;pubDate&gt;Mon, 06 Sep 2009 16:45:00 +0000 &lt;/pubDate&gt;
+  &lt;ttl&gt;1800&lt;/ttl&gt;
+
+  &lt;item&gt;
+    &lt;title&gt;Example entry&lt;/title&gt;
+    &lt;description&gt;Here is some text containing an interesting description.&lt;/description&gt;
+    &lt;link&gt;http://www.wikipedia.org/&lt;/link&gt;
+    &lt;guid&gt;unique string per item&lt;/guid&gt;
+    &lt;pubDate&gt;Mon, 06 Sep 2009 16:45:00 +0000 &lt;/pubDate&gt;
+  &lt;/item&gt;
+  ...
+&lt;/channel&gt;
+&lt;/rss&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="xml-rpc">
+<h3>XML-RPC<a class="headerlink" href="#xml-rpc" title="Permalink to this headline">¶</a></h3>
+<p>RSS provides a pre-defined data set, can we also allow <em>calling procedures</em> to
+get more dynamic data?</p>
+<p class="build">We can!  Enter XML-RPC (Remote Procedure Call)</p>
+<ul class="build simple">
+<li>Provides a set of defined procedures which can take arguments</li>
+<li>Calls are made via HTTP GET, by passing an XML document</li>
+<li>Returns from a call are sent to the client in XML</li>
+</ul>
+<p class="build">There is an interactive example of this at the end of this session. We will
+not go through it here, though.</p>
+</div>
+<div class="section" id="beyond-xml-rpc">
+<h3>Beyond XML-RPC<a class="headerlink" href="#beyond-xml-rpc" title="Permalink to this headline">¶</a></h3>
+<ul class="build simple">
+<li>XML-RPC allows introspection</li>
+<li>XML-RPC forces you to introspect to get information</li>
+<li><strong>Wouldn&#8217;t it be nice to get that automatically?</strong></li>
+<li>XML-RPC provides data types</li>
+<li>XML-RPC provides only <em>certain</em> data types</li>
+<li><strong>Wouldn&#8217;t it be nice to have an extensible system for types?</strong></li>
+<li>XML-RPC allows calling methods with parameters</li>
+<li>XML-RPC only allows calling methods, nothing else</li>
+<li><strong>wouldn&#8217;t it be nice to have contextual data as well?</strong></li>
+</ul>
+<p class="build center"><strong>Enter SOAP: Simple Object Access Protocol</strong></p>
+</div>
+<div class="section" id="soap">
+<h3>SOAP<a class="headerlink" href="#soap" title="Permalink to this headline">¶</a></h3>
+<p>SOAP extends XML-RPC in a couple of useful ways:</p>
+<ul class="build simple">
+<li>It uses Web Services Description Language (WSDL) to provide meta-data about
+an entire service in a machine-readable format (Automatic introspection)</li>
+<li>It establishes a method for extending available data types using XML
+namespaces</li>
+<li>It provides a wrapper around method calls called the <strong>envelope</strong>, which
+allows the inclusion of a <strong>header</strong> with system meta-data that can be used
+by the application</li>
+</ul>
+</div>
+<div class="section" id="soap-in-python">
+<h3>SOAP in Python<a class="headerlink" href="#soap-in-python" title="Permalink to this headline">¶</a></h3>
+<p>There is no standard library module that supports SOAP directly.</p>
+<ul class="build simple">
+<li>The best-known and best-supported module available is <strong>Suds</strong></li>
+<li>The homepage is <a class="reference external" href="https://fedorahosted.org/suds/">https://fedorahosted.org/suds/</a></li>
+<li>It can be installed using <tt class="docutils literal"><span class="pre">easy_install</span></tt> or <tt class="docutils literal"><span class="pre">pip</span> <span class="pre">install</span></tt></li>
+</ul>
+<p class="build">Again, there is a good example of using SOAP via the <tt class="docutils literal"><span class="pre">suds</span></tt> library at the
+end of this session.</p>
+<p class="build">But we&#8217;re going to move on</p>
+</div>
+<div class="section" id="afterword">
+<h3>Afterword<a class="headerlink" href="#afterword" title="Permalink to this headline">¶</a></h3>
+<p>SOAP (and XML-RPC) have some problems:</p>
+<ul class="build simple">
+<li>XML is pretty damned inefficient as a data transfer medium</li>
+<li>Why should I need to know method names?</li>
+<li>If I can discover method names at all, I have to read a WSDL to do it?</li>
+</ul>
+<p class="build">Suds is the best we have, and it hasn&#8217;t been updated since Sept. 2010.</p>
+</div>
+<div class="section" id="if-not-xml-then-what">
+<h3>If Not XML, Then What?<a class="headerlink" href="#if-not-xml-then-what" title="Permalink to this headline">¶</a></h3>
+<p class="large centered incremental"><strong>JSON</strong></p>
+</div>
+<div class="section" id="json">
+<h3>JSON<a class="headerlink" href="#json" title="Permalink to this headline">¶</a></h3>
+<p>JavaScript Object Notation:</p>
+<ul class="build simple">
+<li>a lightweight data-interchange format</li>
+<li>easy for humans to read and write</li>
+<li>easy for machines to parse and generate</li>
+</ul>
+<p class="build">Based on Two Structures:</p>
+<ul class="build simple">
+<li>object: <tt class="docutils literal"><span class="pre">{</span> <span class="pre">string:</span> <span class="pre">value,</span> <span class="pre">...}</span></tt></li>
+<li>array: <tt class="docutils literal"><span class="pre">[value,</span> <span class="pre">value,</span> <span class="pre">]</span></tt></li>
+</ul>
+<dl class="class">
+<dt>
+<tt class="descname">center incremental</tt></dt>
+<dd></dd></dl>
+
+<p>pythonic, no?</p>
+</div>
+<div class="section" id="json-data-types">
+<h3>JSON Data Types<a class="headerlink" href="#json-data-types" title="Permalink to this headline">¶</a></h3>
+<p>JSON provides a few basic data types (see <a class="reference external" href="http://json.org/">http://json.org/</a>):</p>
+<ul class="build simple">
+<li>string: unicode, anything but &#8221;, \ and control characters</li>
+<li>number: any number, but json does not use octal or hexadecimal</li>
+<li>object, array (we&#8217;ve seen these above)</li>
+<li>true</li>
+<li>false</li>
+<li>null</li>
+</ul>
+<p class="build center"><strong>No date type? OMGWTF??!!1!1</strong></p>
+</div>
+<div class="section" id="dates-in-json">
+<h3>Dates in JSON<a class="headerlink" href="#dates-in-json" title="Permalink to this headline">¶</a></h3>
+<p class="build">Option 1 - Unix Epoch Time (number):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">time</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="go">1358212616.7691269</span>
+</pre></div>
+</div>
+<p class="build">Option 2 - ISO 8661 (string):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+<span class="go">&#39;2013-01-14T17:18:10.727240&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="json-in-python">
+<h3>JSON in Python<a class="headerlink" href="#json-in-python" title="Permalink to this headline">¶</a></h3>
+<p>You can encode python to json, and decode json back to python:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">json</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s">&#39;[1, 2, 3]&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">orig</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;foo&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="s">&#39;bar&#39;</span><span class="p">:</span> <span class="s">u&#39;my resumé&#39;</span><span class="p">,</span> <span class="s">&#39;baz&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">encoded</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">orig</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">encoded</span>
+<span class="go">&#39;{&quot;baz&quot;: true, &quot;foo&quot;: [1, 2, 3], &quot;bar&quot;: &quot;my resum\\u00e9&quot;}&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decoded</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">encoded</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decoded</span> <span class="o">==</span> <span class="n">orig</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p class="build">Customizing the encoder or decoder class allows for specialized serializations</p>
+</div>
+<div class="section" id="id5">
+<h3>JSON in Python<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<p>the json module also supports reading and writing to <em>file-like objects</em> via
+<tt class="docutils literal"><span class="pre">json.dump(fp)</span></tt> and <tt class="docutils literal"><span class="pre">json.load(fp)</span></tt> (note the missing &#8216;s&#8217;)</p>
+<p class="build">Remember duck-typing. Anything with a <tt class="docutils literal"><span class="pre">.write</span></tt> and a <tt class="docutils literal"><span class="pre">.read</span></tt> method is
+<em>file-like</em></p>
+<p class="build">This usage can be much more memory-friendly with large files/sources</p>
+</div>
+<div class="section" id="what-about-wsdl">
+<h3>What about WSDL?<a class="headerlink" href="#what-about-wsdl" title="Permalink to this headline">¶</a></h3>
+<p>SOAP was invented in part to provide completely machine-readable
+interoperability.</p>
+<p class="build">Does that really work in real life?</p>
+<p class="build center">Hardly ever</p>
+</div>
+<div class="section" id="id6">
+<h3>What about WSDL?<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<p>Another reason was to provide extensibility via custom types</p>
+<p class="build">Does that really work in real life?</p>
+<p class="build center">Hardly ever</p>
+</div>
+<div class="section" id="why-do-all-the-work">
+<h3>Why Do All The Work?<a class="headerlink" href="#why-do-all-the-work" title="Permalink to this headline">¶</a></h3>
+<p>So, if neither of these goals is really achieved by using SOAP, why pay all
+the overhead required to use the protocol?</p>
+<p class="build">Enter REST</p>
+</div>
+<div class="section" id="rest">
+<h3>REST<a class="headerlink" href="#rest" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="center">
+<em class="property">class </em><tt class="descname">center</tt><a class="headerlink" href="#center" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Representational State Transfer</p>
+<ul class="build simple">
+<li>Originally described by Roy T. Fielding (worth reading)</li>
+<li>Use HTTP for what it can do</li>
+<li>Read more in <a class="reference external" href="http://www.crummy.com/writing/RESTful-Web-Services/">this book</a>*</li>
+</ul>
+<dl class="class">
+<dt>
+<tt class="descname">image-credit incremental</tt></dt>
+<dd></dd></dl>
+
+<p>* Seriously. Buy it and read
+(&lt;<a class="reference external" href="http://www.crummy.com/writing/RESTful-Web-Services/">http://www.crummy.com/writing/RESTful-Web-Services/</a>)</p>
+</div>
+<div class="section" id="a-comparison">
+<h3>A Comparison<a class="headerlink" href="#a-comparison" title="Permalink to this headline">¶</a></h3>
+<p>The XML-RCP/SOAP way:</p>
+<ul class="build small simple">
+<li>POST /getComment HTTP/1.1</li>
+<li>POST /getComments HTTP/1.1</li>
+<li>POST /addComment HTTP/1.1</li>
+<li>POST /editComment HTTP/1.1</li>
+<li>POST /deleteComment HTTP/1.1</li>
+</ul>
+<p class="build">The RESTful way:</p>
+<ul class="build small simple">
+<li>GET /comment/&lt;id&gt; HTTP/1.1</li>
+<li>GET /comment HTTP/1.1</li>
+<li>POST /comment HTTP/1.1</li>
+<li>PUT /comment/&lt;id&gt; HTTP/1.1</li>
+<li>DELETE /comment/&lt;id&gt; HTTP/1.1</li>
+</ul>
+</div>
+<div class="section" id="roa">
+<h3>ROA<a class="headerlink" href="#roa" title="Permalink to this headline">¶</a></h3>
+<p>This is <strong>Resource Oriented Architecture</strong></p>
+<p class="build">The URL represents the <em>resource</em> we are working with</p>
+<p class="build">The HTTP Method represents the <tt class="docutils literal"><span class="pre">action</span></tt> to be taken</p>
+<p class="build">The HTTP Code returned tells us the <tt class="docutils literal"><span class="pre">result</span></tt> (whether success or failure)</p>
+</div>
+<div class="section" id="http-codes-revisited">
+<h3>HTTP Codes Revisited<a class="headerlink" href="#http-codes-revisited" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">small</tt></dt>
+<dd></dd></dl>
+
+<p>POST /comment HTTP/1.1  (creating a new comment):</p>
+<ul class="build small simple">
+<li>Success: <tt class="docutils literal"><span class="pre">HTTP/1.1</span> <span class="pre">201</span> <span class="pre">Created</span></tt></li>
+<li>Failure (unauthorized): <tt class="docutils literal"><span class="pre">HTTP/1.1</span> <span class="pre">401</span> <span class="pre">Unauthorized</span></tt></li>
+<li>Failure (NotImplemented): <tt class="docutils literal"><span class="pre">HTTP/1.1</span> <span class="pre">405</span> <span class="pre">Not</span> <span class="pre">Allowed</span></tt></li>
+<li>Failure (ValueError): <tt class="docutils literal"><span class="pre">HTTP/1.1</span> <span class="pre">406</span> <span class="pre">Not</span> <span class="pre">Acceptable</span></tt></li>
+</ul>
+<dl class="class">
+<dt>
+<tt class="descname">small incremental</tt></dt>
+<dd></dd></dl>
+
+<p>PUT /comment/&lt;id&gt; HTTP/1.1 (edit comment):</p>
+<ul class="build small simple">
+<li>Success: <tt class="docutils literal"><span class="pre">HTTP/1.1</span> <span class="pre">200</span> <span class="pre">OK</span></tt></li>
+<li>Failure: <tt class="docutils literal"><span class="pre">HTTP/1.1</span> <span class="pre">409</span> <span class="pre">Conflict</span></tt></li>
+</ul>
+<dl class="class">
+<dt>
+<tt class="descname">small incremental</tt></dt>
+<dd></dd></dl>
+
+<p>DELETE /comment/&lt;id&gt; HTTP/1.1 (delete comment):</p>
+<ul class="build small simple">
+<li>Success: <tt class="docutils literal"><span class="pre">HTTP/1.1</span> <span class="pre">204</span> <span class="pre">No</span> <span class="pre">Content</span></tt></li>
+</ul>
+</div>
+<div class="section" id="http-is-stateless">
+<h3>HTTP Is Stateless<a class="headerlink" href="#http-is-stateless" title="Permalink to this headline">¶</a></h3>
+<p>No individual request may be assumed to know anything about any other request.</p>
+<p class="build">All the required information representing the possible actions to take <em>should
+be present in every response</em>.</p>
+<p class="build big-centered">Thus:  HATEOAS</p>
+</div>
+<div class="section" id="hateoas">
+<h3>HATEOAS<a class="headerlink" href="#hateoas" title="Permalink to this headline">¶</a></h3>
+<p class="large centered">Hypermedia As The Engine Of Application State</p>
+</div>
+<div class="section" id="applications-are-state-engines">
+<h3>Applications are State Engines<a class="headerlink" href="#applications-are-state-engines" title="Permalink to this headline">¶</a></h3>
+<p>A State Engine is a machine that provides <em>states</em> for a resource to be in and
+<em>transitions</em> to move resources between states.  A Restful api should:</p>
+<ul class="build simple">
+<li>provide information about the current state of a resource</li>
+<li>provide information about available transitions for that resource (URIs)</li>
+<li>provide all this in <em>each</em> HTTP response</li>
+</ul>
+</div>
+<div class="section" id="playing-with-rest">
+<h3>Playing With REST<a class="headerlink" href="#playing-with-rest" title="Permalink to this headline">¶</a></h3>
+<p>Let&#8217;s take a moment to play with REST.</p>
+<p class="build">We&#8217;ll use a common, public API provided by Google.</p>
+<p class="build center"><strong>Geocoding</strong></p>
+</div>
+<div class="section" id="geocoding-with-google-apis">
+<h3>Geocoding with Google APIs<a class="headerlink" href="#geocoding-with-google-apis" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://developers.google.com/maps/documentation/geocoding">https://developers.google.com/maps/documentation/geocoding</a></p>
+<div class="incremental container">
+<p>Open a python interpreter using our virtualenv:</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">small</tt></dt>
+<dd></dd></dl>
+
+<div class="highlight-python"><div class="highlight"><pre>(soupenv)$ python
+</pre></div>
+</div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">json</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">url</span> <span class="o">=</span> <span class="s">&#39;http://maps.googleapis.com/maps/api/geocode/json&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">addr</span> <span class="o">=</span> <span class="s">&#39;1325 4th Ave, Seattle, 98101&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;address&#39;</span><span class="p">:</span> <span class="n">addr</span><span class="p">,</span> <span class="s">&#39;sensor&#39;</span><span class="p">:</span> <span class="s">&#39;false&#39;</span> <span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">parameters</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;status&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;OK&#39;</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">pprint</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="reverse-geocoding">
+<h3>Reverse Geocoding<a class="headerlink" href="#reverse-geocoding" title="Permalink to this headline">¶</a></h3>
+<p>You can do the same thing in reverse, supply latitude and longitude and get
+back address information:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">location</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;results&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;geometry&#39;</span><span class="p">][</span><span class="s">&#39;location&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">latlng</span><span class="o">=</span><span class="s">&quot;{lat},{lng}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">location</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;latlng&#39;</span><span class="p">:</span> <span class="n">latlng</span><span class="p">,</span> <span class="s">&#39;sensor&#39;</span><span class="p">:</span> <span class="s">&#39;false&#39;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">paramters</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;status&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;OK&#39;</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">pprint</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="build">Notice that there are a number of results returned, ordered from most specific
+to least.</p>
+</div>
+<div class="section" id="mash-it-up">
+<h3>Mash It Up<a class="headerlink" href="#mash-it-up" title="Permalink to this headline">¶</a></h3>
+<p>Let&#8217;s add a new function to <tt class="docutils literal"><span class="pre">mashup.py</span></tt>.  It will:</p>
+<ul class="build simple">
+<li>take a single listing from our craiglist work</li>
+<li>format the location data provided in that listing properly</li>
+<li>make a reverse geocoding lookup using the google api above</li>
+<li>add the best available address to the listing</li>
+<li>return the updated listing</li>
+</ul>
+<p class="build">Call it <tt class="docutils literal"><span class="pre">add_address</span></tt></p>
+</div>
+<div class="section" id="id7">
+<h3>My Solution<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># add an import</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="c"># and a function</span>
+<span class="k">def</span> <span class="nf">add_address</span><span class="p">(</span><span class="n">listing</span><span class="p">):</span>
+    <span class="n">api_url</span> <span class="o">=</span> <span class="s">&#39;http://maps.googleapis.com/maps/api/geocode/json&#39;</span>
+    <span class="n">loc</span> <span class="o">=</span> <span class="n">listing</span><span class="p">[</span><span class="s">&#39;location&#39;</span><span class="p">]</span>
+    <span class="n">latlng_tmpl</span> <span class="o">=</span> <span class="s">&quot;{data-latitude},{data-longitude}&quot;</span>
+    <span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">&#39;sensor&#39;</span><span class="p">:</span> <span class="s">&#39;false&#39;</span><span class="p">,</span>
+        <span class="s">&#39;latlng&#39;</span><span class="p">:</span> <span class="n">latlng_tmpl</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">loc</span><span class="p">),</span>
+    <span class="p">}</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">api_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">parameters</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;status&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;OK&#39;</span><span class="p">:</span>
+        <span class="n">best</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;results&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">listing</span><span class="p">[</span><span class="s">&#39;address&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">best</span><span class="p">[</span><span class="s">&#39;formatted_address&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">listing</span><span class="p">[</span><span class="s">&#39;address&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;unavailable&#39;</span>
+    <span class="k">return</span> <span class="n">listing</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="add-address-to-output">
+<h3>Add Address to Output<a class="headerlink" href="#add-address-to-output" title="Permalink to this headline">¶</a></h3>
+<p>Go ahead and bolt the new function into our <tt class="docutils literal"><span class="pre">__main__</span></tt> block:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pprint</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;minAsk&#39;</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span> <span class="s">&#39;maxAsk&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span> <span class="s">&#39;bedrooms&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+    <span class="n">html</span><span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="n">fetch_search_results</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">parse_source</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="n">encoding</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">listing</span> <span class="ow">in</span> <span class="n">extract_listings</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
+        <span class="n">listing</span> <span class="o">=</span> <span class="n">add_address</span><span class="p">(</span><span class="n">listing</span><span class="p">)</span>
+        <span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">listing</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="incremental container">
+<p>And give the result a whirl:</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">small</tt></dt>
+<dd></dd></dl>
+
+<div class="highlight-python"><div class="highlight"><pre>(soupenv)$ python mashup.py
+{&#39;address&#39;: u&#39;123 Some Street, Chapel Hill, NC ...&#39;,
+ &#39;description&#39;: u&#39;3 bedroom 2 bathroom unit is move in ready!&#39;
+ ...
+}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="one-more-step">
+<h3>One More Step<a class="headerlink" href="#one-more-step" title="Permalink to this headline">¶</a></h3>
+<p>I&#8217;m a big fan of walking places.</p>
+<p class="build">So I&#8217;d like to find an apartment that is located somewhere &#8216;walkable&#8217;</p>
+<p class="build">There&#8217;s an API for that!</p>
+<p class="build"><a class="reference external" href="http://www.walkscore.com/professional/api.php">http://www.walkscore.com/professional/api.php</a></p>
+<p class="build">If you haven&#8217;t already, sign up for an API key now.</p>
+</div>
+<div class="section" id="getting-a-walk-score">
+<h3>Getting a Walk Score<a class="headerlink" href="#getting-a-walk-score" title="Permalink to this headline">¶</a></h3>
+<p>The API documentation tells us we have to provide lat, lon and address to get
+a walk score, along with our API key.</p>
+<p class="build">It also tells us we have a choice of XML or JSON output.  Let&#8217;s use JSON</p>
+<p class="build">Let&#8217;s poke at it and see what we get back</p>
+<p class="build">Fire up your virtualenv Python interpreter again</p>
+</div>
+<div class="section" id="making-an-api-call">
+<h3>Making an API Call<a class="headerlink" href="#making-an-api-call" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre>(soupenv)$ python
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">json</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">api_url</span> <span class="o">=</span> <span class="s">&#39;http://api.walkscore.com/score&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span> <span class="o">=</span> <span class="mf">35.9108986</span><span class="p">,</span> <span class="o">-</span><span class="mf">79.053783</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">addr</span> <span class="o">=</span> <span class="s">&#39;120 E. Cameron Avenue Chapel Hill, NC 27599&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;lat&#39;</span><span class="p">:</span> <span class="n">lat</span><span class="p">,</span> <span class="s">&#39;lon&#39;</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="s">&#39;address&#39;</span><span class="p">:</span> <span class="n">addr</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">params</span><span class="p">[</span><span class="s">&#39;wsapikey&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;&lt;type your api key here&gt;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">params</span><span class="p">[</span><span class="s">&#39;format&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;json&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">api_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;status&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">pprint</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id8">
+<h3>Mash It Up<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<p>Add a function to <tt class="docutils literal"><span class="pre">mashup.py</span></tt> that:</p>
+<ul class="build simple">
+<li>takes a single listing from our craigslist search</li>
+<li>uses the location and address to make a walkscore api call</li>
+<li>adds the description, walkscore and ws_link parameters to the listing</li>
+<li>returns the updated listing</li>
+</ul>
+<p class="build">Call the function <tt class="docutils literal"><span class="pre">add_walkscore</span></tt></p>
+<p class="build">Bolt it into our script&#8217;s <tt class="docutils literal"><span class="pre">__main__</span></tt> block where it fits best</p>
+</div>
+<div class="section" id="id9">
+<h3>My Solution<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">add_walkscore</span><span class="p">(</span><span class="n">listing</span><span class="p">):</span>
+    <span class="n">api_url</span> <span class="o">=</span> <span class="s">&#39;http://api.walkscore.com/score&#39;</span>
+    <span class="n">apikey</span> <span class="o">=</span> <span class="s">&#39;&lt;your api key goes here&gt;&#39;</span>
+    <span class="n">loc</span> <span class="o">=</span> <span class="n">listing</span><span class="p">[</span><span class="s">&#39;location&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">listing</span><span class="p">[</span><span class="s">&#39;address&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;unavailable&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">listing</span>
+    <span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">&#39;lat&#39;</span><span class="p">:</span> <span class="n">loc</span><span class="p">[</span><span class="s">&#39;data-latitude&#39;</span><span class="p">],</span> <span class="s">&#39;lon&#39;</span><span class="p">:</span> <span class="n">loc</span><span class="p">[</span><span class="s">&#39;data-longitude&#39;</span><span class="p">],</span>
+        <span class="s">&#39;address&#39;</span><span class="p">:</span> <span class="n">listing</span><span class="p">[</span><span class="s">&#39;address&#39;</span><span class="p">],</span> <span class="s">&#39;wsapikey&#39;</span><span class="p">:</span> <span class="n">apikey</span><span class="p">,</span>
+        <span class="s">&#39;format&#39;</span><span class="p">:</span> <span class="s">&#39;json&#39;</span>
+    <span class="p">}</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">api_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">parameters</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;status&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">listing</span><span class="p">[</span><span class="s">&#39;ws_description&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;description&#39;</span><span class="p">]</span>
+        <span class="n">listing</span><span class="p">[</span><span class="s">&#39;ws_score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;walkscore&#39;</span><span class="p">]</span>
+        <span class="n">listing</span><span class="p">[</span><span class="s">&#39;ws_link&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;ws_link&#39;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">listing</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="my-results">
+<h3>My Results<a class="headerlink" href="#my-results" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;minAsk&#39;</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span> <span class="s">&#39;maxAsk&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span> <span class="s">&#39;bedrooms&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+    <span class="n">html</span><span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="n">fetch_search_results</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">parse_source</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="n">encoding</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">listing</span> <span class="ow">in</span> <span class="n">extract_listings</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
+        <span class="n">listing</span> <span class="o">=</span> <span class="n">add_address</span><span class="p">(</span><span class="n">listing</span><span class="p">)</span>
+        <span class="n">listing</span> <span class="o">=</span> <span class="n">add_walkscore</span><span class="p">(</span><span class="n">listing</span><span class="p">)</span>
+        <span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">listing</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="incremental container">
+<p>Let&#8217;s try it out:</p>
+<div class="highlight-python"><div class="highlight"><pre>(soupenv)$ python mashup.py
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="wrap-up">
+<h3>Wrap Up<a class="headerlink" href="#wrap-up" title="Permalink to this headline">¶</a></h3>
+<p>We&#8217;ve built a simple mashup combining data from three different sources.</p>
+<p class="build">As a result we can now make a listing of apartments ranked by the walkability
+of their neighborhood.</p>
+<p class="build">What other data sources might we use? Check out
+<a class="reference external" href="http://www.programmableweb.com/apis/directory">http://www.programmableweb.com/apis/directory</a> to see some of the possibilities</p>
+</div>
+<div class="section" id="addenda">
+<h3>Addenda<a class="headerlink" href="#addenda" title="Permalink to this headline">¶</a></h3>
+<p>Altough we do not have class time to do walkthrough examples of using XML-RPC
+and SOAP, I have provided exercises in each as an addenda to this session. If
+you have the time and the interest, please try them out.</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descname">center</tt></dt>
+<dd></dd></dl>
+
+<p><a class="reference external" href="session03-addenda.html">Web Service API Addenda</a></p>
+</div>
+<div class="section" id="homework">
+<h3>Homework<a class="headerlink" href="#homework" title="Permalink to this headline">¶</a></h3>
+<p>For your homework this week, you&#8217;ll be creating a mashup of your own.</p>
+<p class="build">Use the programmable web api directory from above as a source of inspiration.</p>
+<p class="build">Your mashup should combine at least two sources of data in some way that
+tickles your fancy.</p>
+<p class="build">Your results need not look pretty. Focus on data acquisition and processing.</p>
+</div>
+<div class="section" id="submitting-your-homework">
+<h3>Submitting Your Homework<a class="headerlink" href="#submitting-your-homework" title="Permalink to this headline">¶</a></h3>
+<p>To submit your homework:</p>
+<ul>
+<li><p class="first">Create a new python script in <tt class="docutils literal"><span class="pre">assignments/session03</span></tt>. It should be
+something I can run with:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ python your_script.py
+</pre></div>
+</div>
+</li>
+<li><p class="first">Provide me with a text file describing what you did. Tell me about the
+sources you use, how you combine them, what you hoped to achieve.</p>
+</li>
+<li><p class="first">Include any instruction I might need to successfully run your script.</p>
+</li>
+<li><p class="first">Commit your changes to your fork of the repo in github, then open a pull
+request.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="extra-credit">
+<h3>Extra Credit<a class="headerlink" href="#extra-credit" title="Permalink to this headline">¶</a></h3>
+<p>Bonus points if you write unit tests for the elements of your mashup.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Session 07</a><ul>
+<li><a class="reference internal" href="#scraping-apis-and-mashups">Scraping, APIs and Mashups</a><ul>
+<li><a class="reference internal" href="#a-dilemma">A Dilemma</a></li>
+<li><a class="reference internal" href="#the-big-question">The Big Question</a></li>
+<li><a class="reference internal" href="#the-big-answer">The Big Answer</a></li>
+<li><a class="reference internal" href="#mashups">Mashups</a></li>
+<li><a class="reference internal" href="#data-sources">Data Sources</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#web-scraping">Web Scraping</a><ul>
+<li><a class="reference internal" href="#html-ideally">HTML, Ideally</a></li>
+<li><a class="reference internal" href="#html-irl">HTML... IRL</a></li>
+<li><a class="reference internal" href="#fffffffffuuuuuuuuuuuuu">FFFFFFFFFUUUUUUUUUUUUU</a></li>
+<li><a class="reference internal" href="#the-law-of-the-internet">The Law of The Internet</a></li>
+<li><a class="reference internal" href="#taming-the-mess">Taming the Mess</a></li>
+<li><a class="reference internal" href="#install-beautifulsoup">Install BeautifulSoup</a></li>
+<li><a class="reference internal" href="#choose-a-parsing-engine">Choose a Parsing Engine</a></li>
+<li><a class="reference internal" href="#install-a-parsing-engine">Install a Parsing Engine</a></li>
+<li><a class="reference internal" href="#install-requests">Install Requests</a></li>
+<li><a class="reference internal" href="#our-class-mashup">Our Class Mashup</a></li>
+<li><a class="reference internal" href="#examine-the-source">Examine the Source</a></li>
+<li><a class="reference internal" href="#opening-urls-with-requests">Opening URLs with Requests</a></li>
+<li><a class="reference internal" href="#getting-responses-with-requests">Getting Responses with Requests</a></li>
+<li><a class="reference internal" href="#fetch-search-results">Fetch Search Results</a></li>
+<li><a class="reference internal" href="#my-solution">My Solution</a></li>
+<li><a class="reference internal" href="#parse-the-results">Parse the Results</a></li>
+<li><a class="reference internal" href="#parsing-html-with-beautifulsoup">Parsing HTML with BeautifulSoup</a></li>
+<li><a class="reference internal" href="#id1">My Solution</a></li>
+<li><a class="reference internal" href="#put-it-together">Put It Together</a></li>
+<li><a class="reference internal" href="#id2">My Solution</a></li>
+<li><a class="reference internal" href="#test-your-work">Test Your Work</a></li>
+<li><a class="reference internal" href="#preserve-the-results">Preserve the Results</a></li>
+<li><a class="reference internal" href="#finding-the-needle">Finding The Needle</a></li>
+<li><a class="reference internal" href="#pulling-it-out">Pulling it Out</a></li>
+<li><a class="reference internal" href="#searching-by-css-class">Searching by CSS Class</a></li>
+<li><a class="reference internal" href="#try-it-out">Try It Out</a></li>
+<li><a class="reference internal" href="#filtering-tricks">Filtering Tricks</a></li>
+<li><a class="reference internal" href="#parsing-a-row">Parsing a Row</a></li>
+<li><a class="reference internal" href="#extracting-location">Extracting Location</a></li>
+<li><a class="reference internal" href="#extracting-description-and-link">Extracting Description and Link</a></li>
+<li><a class="reference internal" href="#extracting-price-and-size">Extracting Price and Size</a></li>
+<li><a class="reference internal" href="#simple-navigation-and-text">Simple Navigation and Text</a></li>
+<li><a class="reference internal" href="#the-navigablestring-element">The NavigableString Element</a></li>
+<li><a class="reference internal" href="#put-it-all-together">Put It All Together</a></li>
+<li><a class="reference internal" href="#break-time">Break Time</a></li>
+<li><a class="reference internal" href="#id3">My Solution</a></li>
+<li><a class="reference internal" href="#id4">My Solution</a></li>
+<li><a class="reference internal" href="#another-approach">Another Approach</a></li>
+<li><a class="reference internal" href="#web-services">Web Services</a></li>
+<li><a class="reference internal" href="#early-web-services">Early Web Services</a></li>
+<li><a class="reference internal" href="#rss-document">RSS Document</a></li>
+<li><a class="reference internal" href="#xml-rpc">XML-RPC</a></li>
+<li><a class="reference internal" href="#beyond-xml-rpc">Beyond XML-RPC</a></li>
+<li><a class="reference internal" href="#soap">SOAP</a></li>
+<li><a class="reference internal" href="#soap-in-python">SOAP in Python</a></li>
+<li><a class="reference internal" href="#afterword">Afterword</a></li>
+<li><a class="reference internal" href="#if-not-xml-then-what">If Not XML, Then What?</a></li>
+<li><a class="reference internal" href="#json">JSON</a></li>
+<li><a class="reference internal" href="#json-data-types">JSON Data Types</a></li>
+<li><a class="reference internal" href="#dates-in-json">Dates in JSON</a></li>
+<li><a class="reference internal" href="#json-in-python">JSON in Python</a></li>
+<li><a class="reference internal" href="#id5">JSON in Python</a></li>
+<li><a class="reference internal" href="#what-about-wsdl">What about WSDL?</a></li>
+<li><a class="reference internal" href="#id6">What about WSDL?</a></li>
+<li><a class="reference internal" href="#why-do-all-the-work">Why Do All The Work?</a></li>
+<li><a class="reference internal" href="#rest">REST</a></li>
+<li><a class="reference internal" href="#a-comparison">A Comparison</a></li>
+<li><a class="reference internal" href="#roa">ROA</a></li>
+<li><a class="reference internal" href="#http-codes-revisited">HTTP Codes Revisited</a></li>
+<li><a class="reference internal" href="#http-is-stateless">HTTP Is Stateless</a></li>
+<li><a class="reference internal" href="#hateoas">HATEOAS</a></li>
+<li><a class="reference internal" href="#applications-are-state-engines">Applications are State Engines</a></li>
+<li><a class="reference internal" href="#playing-with-rest">Playing With REST</a></li>
+<li><a class="reference internal" href="#geocoding-with-google-apis">Geocoding with Google APIs</a></li>
+<li><a class="reference internal" href="#reverse-geocoding">Reverse Geocoding</a></li>
+<li><a class="reference internal" href="#mash-it-up">Mash It Up</a></li>
+<li><a class="reference internal" href="#id7">My Solution</a></li>
+<li><a class="reference internal" href="#add-address-to-output">Add Address to Output</a></li>
+<li><a class="reference internal" href="#one-more-step">One More Step</a></li>
+<li><a class="reference internal" href="#getting-a-walk-score">Getting a Walk Score</a></li>
+<li><a class="reference internal" href="#making-an-api-call">Making an API Call</a></li>
+<li><a class="reference internal" href="#id8">Mash It Up</a></li>
+<li><a class="reference internal" href="#id9">My Solution</a></li>
+<li><a class="reference internal" href="#my-results">My Results</a></li>
+<li><a class="reference internal" href="#wrap-up">Wrap Up</a></li>
+<li><a class="reference internal" href="#addenda">Addenda</a></li>
+<li><a class="reference internal" href="#homework">Homework</a></li>
+<li><a class="reference internal" href="#submitting-your-homework">Submitting Your Homework</a></li>
+<li><a class="reference internal" href="#extra-credit">Extra Credit</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/presentations/session07.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+  <h3>Slides</h3>
+  <ul class="this-page-menu">
+    <li><a href="../.././slides/presentations/session07.html"
+           rel="nofollow">View as slides</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="../index.html">UWPCE Python 200</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012-2015, Cris Ewing.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
