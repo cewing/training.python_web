@@ -1,19 +1,17 @@
-Python Web Programming
-======================
+**********
+Session 07
+**********
 
-.. image:: img/granny_mashup.png
-    :align: left
+.. figure:: /_static/granny_mashup.png
+    :align: center
     :width: 50%
 
-Session 3: Scraping, APIs and Mashups
+    Paul Downey http://www.flickr.com/photos/psd/492139935/ - CC-BY
 
-.. class:: intro-blurb
+Scraping, APIs and Mashups
+==========================
 
 Wherein we learn how to make order from the chaos of the wild internet.
-
-.. class:: image-credit
-
-image: Paul Downey http://www.flickr.com/photos/psd/492139935/ - CC-BY
 
 
 A Dilemma
@@ -21,20 +19,19 @@ A Dilemma
 
 The internet makes a vast quantity of data available.
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-But not always in the form or combination you want.
+    But not always in the form or combination you want.
 
-.. class:: incremental
-
-It would be nice to be able to combine data from different sources to create
-*meaning*.
+    It would be nice to be able to combine data from different sources to
+    create *meaning*.
 
 
 The Big Question
 ----------------
 
-.. class:: big-centered
+.. rst-class:: large centered
 
 But How?
 
@@ -42,7 +39,7 @@ But How?
 The Big Answer
 --------------
 
-.. class:: big-centered
+.. rst-class:: large centered
 
 Mashups
 
@@ -50,15 +47,12 @@ Mashups
 Mashups
 -------
 
-A mashup is:
+A mashup is::
 
     a web page, or web application, that uses and combines data, presentation
     or functionality from two or more sources to create new services.
 
-.. class:: image-credit
-
-definition courtsey of `wikipedia
-<http://en.wikipedia.org/wiki/Mashup_(web_application_hybrid)>`_
+    -- `wikipedia <http://en.wikipedia.org/wiki/Mashup_(web_application_hybrid)>`_
 
 
 Data Sources
@@ -66,40 +60,40 @@ Data Sources
 
 The key to mashups is the idea of data sources.
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-These come in many flavors:
+    These come in many flavors:
 
-.. class:: incremental
+    .. rst-class:: build
 
-* Simple websites with data in HTML
-* Web services providing structured data
-* Web services providing tranformative service (geocoding)
-* Web services providing presentation (mapping)
+    * Simple websites with data in HTML
+    * Web services providing structured data
+    * Web services providing tranformative service (geocoding)
+    * Web services providing presentation (mapping)
 
+Web Scraping
+============
 
-HTML Sources
-------------
+.. rst-class:: left
+.. container::
 
-It would be nice if all online data were available in well-structured formats.
+    It would be nice if all online data were available in well-structured formats.
 
-.. class:: incremental
+    .. rst-class:: build
+    .. container::
 
-The reality is that much data is available only in HTML.
+        The reality is that much data is available only in HTML.
 
-.. class:: incremental
+        Still we can get at it, with some effort.
 
-Still we can get at it, with some effort.
-
-.. class:: incremental
-
-By scraping the data from the web pages.
+        By scraping the data from the web pages.
 
 
 HTML, Ideally
 -------------
 
-::
+.. code-block:: html
 
     <!DOCTYPE html>
     <html>
@@ -115,7 +109,7 @@ HTML, Ideally
 HTML... IRL
 -----------
 
-::
+.. code-block:: html
 
     <html>
      <form>
@@ -131,19 +125,17 @@ HTML... IRL
 FFFFFFFFFUUUUUUUUUUUUU
 ----------------------
 
-.. image:: img/scream.jpg
+.. figure:: /_static/scream.jpg
     :align: center
     :width: 32%
 
-.. class:: image-credit
-
-Photo by Matthew via Flickr (http://www.flickr.com/photos/purplemattfish/3918004964/) - CC-BY-NC-ND
+    Photo by Matthew via Flickr (http://www.flickr.com/photos/purplemattfish/3918004964/) - CC-BY-NC-ND
 
 
 The Law of The Internet
 -----------------------
 
-.. class:: big-centered
+.. rst-class:: large centered
 
 "Be strict in what you send and tolerant in what you receive"
 
@@ -151,121 +143,37 @@ The Law of The Internet
 Taming the Mess
 ---------------
 
-Luckily, there's a tool to help with this:  ``BeautifulSoup``.
+Luckily, there are tools to help with this.
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-BeautifulSoup is a great tool, but it's not in the Standard Library. We'll
-need to install it.
+    In python there are several candidates, but I like ``BeautifulSoup``.
 
-.. class:: incremental
+    BeautifulSoup is a great tool, but it's not in the Standard Library.
 
-* As a real-world developer you need to do this a lot
-* As a web developer you need to install *different* versions of the *same*
-  library
-* For every non-standard library installed into a System Python, the gods kill
-  a kitten
-* Use Virtualenv...
-* **Always**
+    We'll need to install it.
 
+    Create a virtualenv to do so:
 
-Getting Virtualenv
-------------------
+    .. code-block:: bash
 
-Three options for installing virtualenv (this is the exception to the above
-rule):
+        $ virtualenv soupenv
+        ...
+        $ source soupenv/bin/activate
 
-.. class:: incremental small
-
-* ``pip install virtualenv``
-* ``easy_install virtualenv``
-
-.. class:: incremental
-
-You must have ``pip`` or ``easy_install`` installed.  Try this:
-
-.. class:: incremental small
-
-::
-
-    $ curl -O \
-    https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.11.tar.gz
-    $ tar -xzvf virtualenv-1.11.tar.gz
-
-.. class:: incremental
-
-* remember where it goes.  You'll need it
-* there is a copy in the class resources (``resources/common``)
-
-
-Creating a Virtualenv
----------------------
-
-Creating a new virtualenv is very very simple:
-
-.. class:: small
-
-::
-
-    $ python virtualenv.py [options] <ENV>
-    <or>
-    $ virtualenv [options] <ENV>
-
-.. container:: incremental small
-
-    <ENV> is just the name of the environment you want to create. It's
-    arbitrary. Let's make one for our BeautifulSoup install::
-
-        $ python virtualenv.py soupenv
-        Using real prefix '/Users/cewing/newpythons/parts/opt'
-        New python executable in soupenv26/bin/python2.6
-        Also creating executable in soupenv26/bin/python
-        Installing setuptools, pip...done.
-
-
-What Happened?
---------------
-
-When you ran that file, a couple of things took place:
-
-.. class:: incremental
-
-* A new directory with your requested name was created
-* A new Python executable was created in <ENV>/bin (<ENV>/Scripts on Windows)
-* The new Python was cloned from the Python used to run the file
-* The new Python was isolated from any libraries installed in the old Python
-* Setuptools was installed so you have ``easy_install`` for this new python
-* Pip was installed so you have ``pip`` for this new python
-
-.. class:: incremental
-
-Cool, eh?  Learn more at http://www.virtualenv.org
-
-
-Using Virtualenv
-----------------
-
-To install new libraries into a virtualenv, first activate the env::
-
-    $ source soupenv/bin/activate
-    (soupenv)$ which python
-    /path/to/soupenv/bin/python
-
-Or, on Windows::
-
-    > \path\to\soupenv\Scripts\activate
-
-.. class:: image-credit
-
-If you use Powershell, read the note here:
-http://www.virtualenv.org/en/latest/virtualenv.html#activate-script
+    (remember, for Windows users that should be ``soupenv/Scripts/activate``)
 
 
 Install BeautifulSoup
 ---------------------
 
 Once the virtualenv is activated, you can simply use pip or easy_install to
-install the libraries you want::
+install the libraries you want:
+
+.. code-block:: bash
+
+    source
 
     (soupenv)$ pip install beautifulsoup4
 
@@ -275,22 +183,19 @@ Choose a Parsing Engine
 
 BeautifulSoup is built to use the Python HTMLParser.
 
-.. class:: incremental
+.. rst-class:: build
 
 * Batteries Included.  It's already there
 * It's not great, especially before Python 2.7.3
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-BeautifulSoup also supports using other parsers.
+    BeautifulSoup also supports using other parsers.
 
-.. class:: incremental
+    There are two good choices: ``lxml`` and ``html5lib``.
 
-There are two good choices: ``lxml`` and ``html5lib``.
-
-.. class:: incremental
-
-``lxml`` is better, but much harder to install.  Let's use ``html5lib``.
+    ``lxml`` is better, but much harder to install.  Let's use ``html5lib``.
 
 
 Install a Parsing Engine
@@ -300,18 +205,14 @@ Again, this is pretty simple::
 
     (soupenv)$ pip install html5lib
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-Once installed, BeautifulSoup will choose it automatically.
+    Once installed, BeautifulSoup will choose it automatically.
 
-.. class:: incremental
+    BeautifulSoup will choose the "best" available.
 
-BeautifulSoup will choose the "best" available.
-
-.. class:: incremental
-
-You can specify the parser if you need to for some reason.
-
+    You can specify the parser if you need to for some reason.
 
 Install Requests
 ----------------
@@ -319,44 +220,35 @@ Install Requests
 Python provides tools for opening urls and communicating with servers. It's
 spread across the ``urllib`` and ``urllib2`` packages.
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-These packages have pretty unintuitive APIs.
+    These packages have pretty unintuitive APIs.
 
-.. class:: incremental
+    The ``requests`` library is becoming the de-facto standard for this type of
+    work.  Let's install it too.
 
-The ``requests`` library is becoming the de-facto standard for this type of
-work.  Let's install it too.
+    .. code-block:: bash
 
-.. class:: incremental
-
-::
-
-    (soupenv)$ pip install requests
+        (soupenv)$ pip install requests
 
 
 Our Class Mashup
 ----------------
 
-We're going to build a mashup together today.
+We're going to explore some tools for making a mashup today
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-It will give us an annotated list of apartment rentals, so the next time we
-have to move, we can find the exact right place.
+    We'll be starting by scraping ZIP codes for Seattle
 
-.. class:: incremental
+    Then we'll choose one of them and look up restaurant health code data for
+    that ZIP code
 
-We'll start by getting a raw list of apartment rentals from today's canonical
-source:
+    Then, we'll look up the geographic location of those zipcodes using Google
 
-.. class:: incremental
-
-Craigslist
-
-.. class:: incremental
-
-Open a new file in your editor: ``mashup.py``.
+    Open a new file in your editor: ``mashup.py``.
 
 
 Examine the Source
@@ -364,19 +256,19 @@ Examine the Source
 
 Craigslist doesn't have an api, just a website, so we'll need to dig a bit
 
-.. class:: incremental
+.. rst-class:: build
 
 By going to the website and playing with the form there, we can derive a
 formula for a search URL
 
-.. class:: incremental
+.. rst-class:: build
 
 * Base URL: ``http://seattle.craigslist.org/search/apa``
 * keywords: ``query=keyword+values+here``
 * price: ``minAsk=NNN maxAsk=NNN``
 * bedrooms: ``bedrooms=N`` (N in range 1-8)
 
-.. class:: incremental
+.. rst-class:: build
 
 We'll make an HTTP request with these parameters
 
@@ -386,17 +278,17 @@ Opening URLs with Requests
 
 In ``requests``, each HTTP method has a module-level function:
 
-.. class:: incremental
+.. rst-class:: build
 
 * ``GET`` == ``requests.get(url, **kwargs)``
 * ``POST`` == ``requests.post(url, **kwargs)``
 * ...
 
-.. class:: incremental
+.. rst-class:: build
 
 ``kwargs`` represent other parts of an HTTP request:
     
-.. class:: incremental
+.. rst-class:: build
 
 * ``params``: a dict of url parameters (?foo=bar&baz=bim)
 * ``headers``: a dict of headers to send with the request
@@ -409,7 +301,7 @@ Getting Responses with Requests
 
 The return value from one of these functions is a ``response`` which provides:
 
-.. class:: incremental
+.. rst-class:: build
 
 * ``response.status_code``: see the HTTP Status Code returned
 * ``response.ok``: True if ``response.status_code`` is not an error
@@ -419,7 +311,7 @@ The return value from one of these functions is a ``response`` which provides:
 * ``response.encoding``: The encoding used to decode
 * ``response.content``: The original encoded response body as bytes
 
-.. class:: incremental small
+.. rst-class:: build small
 
 ``requests documentation``: http://docs.python-requests.org/en/latest/
 
@@ -428,7 +320,7 @@ Fetch Search Results
 
 We'll start by writing a function ``fetch_search_results``
 
-.. class:: incremental
+.. rst-class:: build
 
 * It will accept one keyword argument for each of the possible query values
 * It will build a dictionary of request query parameters from incoming keywords
@@ -436,7 +328,7 @@ We'll start by writing a function ``fetch_search_results``
 * It will return the body of the response if there is no error
 * It will raise an error if there is a problem with the response
 
-.. class:: incremental
+.. rst-class:: build
 
 Try writing this function. Put it in ``mashup.py``
 
@@ -447,7 +339,6 @@ My Solution
 Here's the one I created:
 
 .. code-block:: python
-    :class: small incremental
 
     import requests
 
@@ -473,13 +364,13 @@ Parse the Results
 Next, we need a function ``parse_source`` to set up HTML for scraping. It will
 need to:
 
-.. class:: incremental
+.. rst-class:: build
 
 * Take the response body from the previous method (or some other source)
 * Parse it using BeautifulSoup
 * Return the parsed object for further processing
 
-.. class:: incremental
+.. rst-class:: build
 
 Before you start, a word about parsing HTML with BeautifulSoup
 
@@ -491,7 +382,6 @@ The BeautifulSoup object can be instantiated with a string or a file-like
 object as the sole argument:
 
 .. code-block:: python
-    :class: small
 
     from bs4 import BeautifulSoup
     parsed = BeautifulSoup('<h1>Some HTML</h1>')
@@ -503,7 +393,7 @@ object as the sole argument:
     parsed = BeautifulSoup(page)
 
 
-.. class:: incremental
+.. rst-class:: build
 
 You might want to open the documentation as reference
 (http://www.crummy.com/software/BeautifulSoup/bs4/doc)
@@ -515,7 +405,6 @@ My Solution
 Take a shot at writing this new function in ``mashup.py``
 
 .. code-block:: python
-    :class: incremental small
     
     # add this import at the top
     from bs4 import BeautifulSoup
@@ -532,12 +421,11 @@ Put It Together
 We'll need to make our script do something when run.
 
 .. code-block:: python
-    :class: incremental small
 
     if __name__ == '__main__':
         # do something
 
-.. class:: incremental
+.. rst-class:: build
 
 * Fetch a search results page
 * Parse the resulting HTML
@@ -556,7 +444,6 @@ My Solution
 Try to come up with the proper code on your own.  Add it to ``mashup.py``
 
 .. code-block:: python
-    :class: incremental small
 
     if __name__ == '__main__':
         html, encoding = fetch_search_results(
@@ -572,7 +459,7 @@ Test Your Work
 Assuming your virtualenv is still active, you should be able to execute the
 script.
 
-.. class:: incremental
+.. rst-class:: build
 
 ::
 
@@ -600,15 +487,15 @@ Finding The Needle
 
 Next we find the bits of this pile of HTML that matter to us.
 
-.. class:: incremental
+.. rst-class:: build
 
 Open your html file in a browser and take a look (w/ dev tools).
 
-.. class:: incremental
+.. rst-class:: build
 
 We'll want to find:
 
-.. class:: incremental
+.. rst-class:: build
 
 * The HTML element that contains a single listing
 * The source of location data, listings without location should be abandoned
@@ -622,7 +509,7 @@ Pulling it Out
 
 We can extract this information now. In BeautifulSoup:
 
-.. class:: incremental
+.. rst-class:: build
 
 * All HTML elements (including the parsed document itself) are ``tags``
 * A ``tag`` can be searched using its ``find_all`` method
@@ -646,17 +533,17 @@ Searching by CSS Class
 The items we are looking for are ``p`` tags which have the CSS class
 ``row``:
 
-.. class:: incremental
+.. rst-class:: build
 
 ``find_all`` supports keyword arguments. If the keyword you use isn't one of
 the listed arguments, it is treated as an ``attribute``
 
-.. class:: incremental
+.. rst-class:: build
 
 In Python, ``class`` is a reserved word, so we can't use it as a keyword, but
 you can use ``class_``!
 
-.. class:: incremental small
+.. rst-class:: build small
 
 ::
 
@@ -671,7 +558,6 @@ Let's fire up a python interpreter and get our hands dirty here::
     (soupenv)$ python
 
 .. code-block:: python
-    :class: small incremental
 
     >>> html = open('craigslist_results.html', 'r').read()
     >>> from bs4 import BeautifulSoup
@@ -681,7 +567,7 @@ Let's fire up a python interpreter and get our hands dirty here::
     100
 
 
-.. class:: incremental
+.. rst-class:: build
 
 That sounds about right. Let's see if we can get only those with location
 data.
@@ -692,12 +578,11 @@ Filtering Tricks
 
 Attribute filters given a ``True`` value match tags with that attribute
 
-.. class:: incremental
+.. rst-class:: build
 
 Location data was in the ``data-latitude`` and ``data-longitude`` attributes.
 
 .. code-block:: python
-    :class: small incremental
 
     >>> location_attrs = {
     ...     'data-longitude': True,
@@ -707,7 +592,7 @@ Location data was in the ``data-latitude`` and ``data-longitude`` attributes.
     >>> len(locatable)
     43
 
-.. class:: incremental
+.. rst-class:: build
 
 Great.  That worked nicely
 
@@ -717,14 +602,14 @@ Parsing a Row
 
 Now that we have the rows we want, we need to parse them. We want to preserve:
 
-.. class:: incremental
+.. rst-class:: build
 
 * Location data (latitude and longitude)
 * Source link (to craiglist detailed listing)
 * Description text
 * Price and size data
 
-.. class:: incremental
+.. rst-class:: build
 
 Which parts of a single row contain each of these elements?
 
@@ -739,7 +624,6 @@ Location data is in the ``data-`` attributes we used to filter rows.
     We can read the HTML attributes of a 'tag' easily, using ``attrs``:
 
     .. code-block:: python
-        :class: small
 
         >>> row1 = locatable[0]
         >>> row1.attrs
@@ -762,7 +646,6 @@ that matches the filters you provide.
     Our targets are in the first ``a`` tag in the ``pl`` span inside our row:
 
     .. code-block:: python
-        :class: small
 
         >>> link = row1.find('span', class_='pl').find('a')
 
@@ -771,7 +654,6 @@ that matches the filters you provide.
     The link path will be in the attrs:
 
     .. code-block:: python
-        :class: small
 
         >>> path = link.attrs['href']
 
@@ -780,7 +662,6 @@ that matches the filters you provide.
     Text contained *inside* tags is in the ``string`` property:
 
     .. code-block:: python
-        :class: small
 
         >>> description = link.string.strip()
 
@@ -791,7 +672,6 @@ Extracting Price and Size
 Both price and size are held in the ``l2`` span:
 
 .. code-block:: python
-    :class: small
 
     >>> l2 = row1.find('span', class_='l2')
 
@@ -800,16 +680,15 @@ Both price and size are held in the ``l2`` span:
     Price, conveniently, is in it's own container:
     
     .. code-block:: python
-        :class: small
     
         >>> price_span = l2.find('span', class_='price')
         >>> price = price_span.string.strip()
 
-.. class:: incremental
+.. rst-class:: build
 
 But the size element is not. It is a standalone *text node*.
 
-.. class:: incremental
+.. rst-class:: build
 
 Try finding it by reading the ``string`` property of our ``l2`` tag.
 
@@ -819,7 +698,7 @@ Simple Navigation and Text
 
 We can get to a simple text node by navigating there.
 
-.. class:: incremental
+.. rst-class:: build
 
 You can navigate up, down and across document nodes.
 
@@ -829,13 +708,12 @@ You can navigate up, down and across document nodes.
     level:
 
     .. code-block:: python
-        :class: small
 
         >>> size = price_span.next_sibling.strip(' \n-/')
         >>> size
         u'2br - 912ft\xb2'
 
-.. class:: incremental
+.. rst-class:: build
 
 You may have noticed that we keep using ``strip``. There are two reasons for
 this.
@@ -846,7 +724,7 @@ The NavigableString Element
 
 The most obvious reason is that we don't want extra whitespace.
 
-.. class:: incremental
+.. rst-class:: build
 
 The second reason is more subtle. The values returned by ``string`` are
 **not** simple unicode strings
@@ -856,12 +734,11 @@ The second reason is more subtle. The values returned by ``string`` are
     They are actually instances of a class called ``NavigableString``:
 
     .. code-block:: python
-        :class: small
 
         >>> price_span.next_sibling.__class__
         <class 'bs4.element.NavigableString'>
 
-.. class:: incremental
+.. rst-class:: build
 
 Calling ``strip`` or casting them to ``unicode`` converts them, saving memory
 
@@ -871,7 +748,7 @@ Put It All Together
 
 Okay, a challenge.  Combine everything we've done into a function that:
 
-.. class:: incremental
+.. rst-class:: build
 
 * Extracts all the locatable listings from our html page
 * Iterates over each of them, and builds a dictionary of data
@@ -880,11 +757,11 @@ Okay, a challenge.  Combine everything we've done into a function that:
 
 * Returns a list of these dictionaries
 
-.. class:: incremental
+.. rst-class:: build
 
 Call it ``extract_listings``
 
-.. class:: incremental
+.. rst-class:: build
 
 Put this new function into ``mashup.py`` and call it from ``__main__``,
 printing the result
@@ -895,7 +772,7 @@ Break Time
 
 Once you have this working, take a break.
 
-.. class:: incremental
+.. rst-class:: build
 
 When we return, we'll try a saner approach to getting data from online
 
@@ -910,7 +787,6 @@ My Solution
 -----------
 
 .. code-block:: python
-    :class: small incremental
 
     def extract_listings(doc):
         location_attrs = {'data-latitude': True,
@@ -935,7 +811,6 @@ My Solution
 -----------
 
 .. code-block:: python
-    :class: small
 
     if __name__ == '__main__':
         html, encoding = fetch_search_results(
@@ -951,16 +826,16 @@ Another Approach
 
 Scraping web pages is tedious and inherently brittle
 
-.. class:: incremental
+.. rst-class:: build
 
 The owner of the website updates their layout, your code breaks
 
-.. class:: incremental
+.. rst-class:: build
 
 But there is another way to get information from the web in a more normalized
 fashion
 
-.. class:: incremental center
+.. rst-class:: build center
 
 **Web Services**
 
@@ -971,7 +846,7 @@ Web Services
 "a software system designed to support interoperable machine-to-machine
 interaction over a network" - W3C
 
-.. class:: incremental
+.. rst-class:: build
 
 * provides a defined set of calls
 * returns structured data
@@ -986,16 +861,16 @@ RSS is one of the earliest forms of Web Services
 * Became ``Really Simple Syndication``
 * More at http://www.rss-specification.com/rss-specifications.htm
 
-.. class:: incremental
+.. rst-class:: build
 
 A single web-based *endpoint* provides a dynamically updated listing of
 content
 
-.. class:: incremental
+.. rst-class:: build
 
 Implemented in pure HTTP.  Returns XML 
 
-.. class:: incremental
+.. rst-class:: build
 
 **Atom** is a competing, but similar standard
 
@@ -1035,17 +910,17 @@ XML-RPC
 RSS provides a pre-defined data set, can we also allow *calling procedures* to
 get more dynamic data?
 
-.. class:: incremental
+.. rst-class:: build
 
 We can!  Enter XML-RPC (Remote Procedure Call)
 
-.. class:: incremental
+.. rst-class:: build
 
 * Provides a set of defined procedures which can take arguments
 * Calls are made via HTTP GET, by passing an XML document
 * Returns from a call are sent to the client in XML
 
-.. class:: incremental
+.. rst-class:: build
 
 There is an interactive example of this at the end of this session. We will
 not go through it here, though.
@@ -1054,7 +929,7 @@ not go through it here, though.
 Beyond XML-RPC
 --------------
 
-.. class:: incremental
+.. rst-class:: build
 
 * XML-RPC allows introspection
 * XML-RPC forces you to introspect to get information
@@ -1066,7 +941,7 @@ Beyond XML-RPC
 * XML-RPC only allows calling methods, nothing else
 * **wouldn't it be nice to have contextual data as well?**
 
-.. class:: incremental center
+.. rst-class:: build center
 
 **Enter SOAP: Simple Object Access Protocol**
 
@@ -1076,7 +951,7 @@ SOAP
 
 SOAP extends XML-RPC in a couple of useful ways:
 
-.. class:: incremental
+.. rst-class:: build
 
 * It uses Web Services Description Language (WSDL) to provide meta-data about
   an entire service in a machine-readable format (Automatic introspection)
@@ -1094,18 +969,18 @@ SOAP in Python
 
 There is no standard library module that supports SOAP directly.
 
-.. class:: incremental
+.. rst-class:: build
 
 * The best-known and best-supported module available is **Suds**
 * The homepage is https://fedorahosted.org/suds/
 * It can be installed using ``easy_install`` or ``pip install``
 
-.. class:: incremental
+.. rst-class:: build
 
 Again, there is a good example of using SOAP via the ``suds`` library at the
 end of this session.
 
-.. class:: incremental
+.. rst-class:: build
 
 But we're going to move on
 
@@ -1115,20 +990,20 @@ Afterword
 
 SOAP (and XML-RPC) have some problems:
 
-.. class:: incremental
+.. rst-class:: build
 
 * XML is pretty damned inefficient as a data transfer medium
 * Why should I need to know method names?
 * If I can discover method names at all, I have to read a WSDL to do it?
 
-.. class:: incremental
+.. rst-class:: build
 
 Suds is the best we have, and it hasn't been updated since Sept. 2010.
 
 If Not XML, Then What?
 ----------------------
 
-.. class:: big-centered incremental
+.. rst-class:: large centered incremental
 
 **JSON**
 
@@ -1138,17 +1013,17 @@ JSON
 
 JavaScript Object Notation:
 
-.. class:: incremental
+.. rst-class:: build
 
 * a lightweight data-interchange format
 * easy for humans to read and write
 * easy for machines to parse and generate
 
-.. class:: incremental
+.. rst-class:: build
 
 Based on Two Structures:
 
-.. class:: incremental
+.. rst-class:: build
 
 * object: ``{ string: value, ...}``
 * array: ``[value, value, ]``
@@ -1163,7 +1038,7 @@ JSON Data Types
 
 JSON provides a few basic data types (see http://json.org/):
 
-.. class:: incremental
+.. rst-class:: build
 
 * string: unicode, anything but ", \\ and control characters
 * number: any number, but json does not use octal or hexadecimal
@@ -1172,7 +1047,7 @@ JSON provides a few basic data types (see http://json.org/):
 * false
 * null
 
-.. class:: incremental center
+.. rst-class:: build center
 
 **No date type? OMGWTF??!!1!1**
 
@@ -1180,23 +1055,21 @@ JSON provides a few basic data types (see http://json.org/):
 Dates in JSON
 -------------
 
-.. class:: incremental
+.. rst-class:: build
 
 Option 1 - Unix Epoch Time (number):
 
 .. code-block:: python
-    :class: small incremental
 
     >>> import time
     >>> time.time()
     1358212616.7691269
 
-.. class:: incremental
+.. rst-class:: build
 
 Option 2 - ISO 8661 (string):
 
 .. code-block:: python
-    :class: small incremental
 
     >>> import datetime
     >>> datetime.datetime.now().isoformat()
@@ -1209,7 +1082,6 @@ JSON in Python
 You can encode python to json, and decode json back to python:
 
 .. code-block:: python
-    :class: small
 
     >>> import json
     >>> array = [1,2,3]
@@ -1223,7 +1095,7 @@ You can encode python to json, and decode json back to python:
     >>> decoded == orig
     True
 
-.. class:: incremental
+.. rst-class:: build
 
 Customizing the encoder or decoder class allows for specialized serializations
 
@@ -1234,12 +1106,12 @@ JSON in Python
 the json module also supports reading and writing to *file-like objects* via 
 ``json.dump(fp)`` and ``json.load(fp)`` (note the missing 's')
 
-.. class:: incremental
+.. rst-class:: build
 
 Remember duck-typing. Anything with a ``.write`` and a ``.read`` method is
 *file-like*
 
-.. class:: incremental
+.. rst-class:: build
 
 This usage can be much more memory-friendly with large files/sources
 
@@ -1250,11 +1122,11 @@ What about WSDL?
 SOAP was invented in part to provide completely machine-readable
 interoperability.
 
-.. class:: incremental
+.. rst-class:: build
 
 Does that really work in real life?
 
-.. class:: incremental center
+.. rst-class:: build center
 
 Hardly ever
 
@@ -1264,11 +1136,11 @@ What about WSDL?
 
 Another reason was to provide extensibility via custom types
 
-.. class:: incremental
+.. rst-class:: build
 
 Does that really work in real life?
 
-.. class:: incremental center
+.. rst-class:: build center
 
 Hardly ever
 
@@ -1279,7 +1151,7 @@ Why Do All The Work?
 So, if neither of these goals is really achieved by using SOAP, why pay all
 the overhead required to use the protocol?
 
-.. class:: incremental
+.. rst-class:: build
 
 Enter REST
 
@@ -1291,7 +1163,7 @@ REST
 
 Representational State Transfer
 
-.. class:: incremental
+.. rst-class:: build
 
 * Originally described by Roy T. Fielding (worth reading)
 * Use HTTP for what it can do
@@ -1309,7 +1181,7 @@ A Comparison
 
 The XML-RCP/SOAP way:
 
-.. class:: incremental small
+.. rst-class:: build small
 
 * POST /getComment HTTP/1.1
 * POST /getComments HTTP/1.1
@@ -1317,11 +1189,11 @@ The XML-RCP/SOAP way:
 * POST /editComment HTTP/1.1
 * POST /deleteComment HTTP/1.1
 
-.. class:: incremental
+.. rst-class:: build
 
 The RESTful way:
 
-.. class:: incremental small
+.. rst-class:: build small
 
 * GET /comment/<id> HTTP/1.1
 * GET /comment HTTP/1.1
@@ -1335,15 +1207,15 @@ ROA
 
 This is **Resource Oriented Architecture**
 
-.. class:: incremental
+.. rst-class:: build
 
 The URL represents the *resource* we are working with
 
-.. class:: incremental
+.. rst-class:: build
 
 The HTTP Method represents the ``action`` to be taken
 
-.. class:: incremental
+.. rst-class:: build
 
 The HTTP Code returned tells us the ``result`` (whether success or failure)
 
@@ -1355,7 +1227,7 @@ HTTP Codes Revisited
 
 POST /comment HTTP/1.1  (creating a new comment):
 
-.. class:: incremental small
+.. rst-class:: build small
 
 * Success: ``HTTP/1.1 201 Created``
 * Failure (unauthorized): ``HTTP/1.1 401 Unauthorized``
@@ -1366,7 +1238,7 @@ POST /comment HTTP/1.1  (creating a new comment):
 
 PUT /comment/<id> HTTP/1.1 (edit comment):
 
-.. class:: incremental small
+.. rst-class:: build small
 
 * Success: ``HTTP/1.1 200 OK``
 * Failure: ``HTTP/1.1 409 Conflict``
@@ -1375,7 +1247,7 @@ PUT /comment/<id> HTTP/1.1 (edit comment):
 
 DELETE /comment/<id> HTTP/1.1 (delete comment):
 
-.. class:: incremental small
+.. rst-class:: build small
 
 * Success: ``HTTP/1.1 204 No Content``
 
@@ -1385,12 +1257,12 @@ HTTP Is Stateless
 
 No individual request may be assumed to know anything about any other request.
 
-.. class:: incremental
+.. rst-class:: build
 
 All the required information representing the possible actions to take *should
 be present in every response*.
 
-.. class:: incremental big-centered
+.. rst-class:: build big-centered
 
 Thus:  HATEOAS
 
@@ -1398,7 +1270,7 @@ Thus:  HATEOAS
 HATEOAS
 -------
 
-.. class:: big-centered
+.. rst-class:: large centered
 
 Hypermedia As The Engine Of Application State
 
@@ -1409,7 +1281,7 @@ Applications are State Engines
 A State Engine is a machine that provides *states* for a resource to be in and
 *transitions* to move resources between states.  A Restful api should:
 
-.. class:: incremental
+.. rst-class:: build
 
 * provide information about the current state of a resource
 * provide information about available transitions for that resource (URIs)
@@ -1421,11 +1293,11 @@ Playing With REST
 
 Let's take a moment to play with REST.
 
-.. class:: incremental
+.. rst-class:: build
 
 We'll use a common, public API provided by Google.
 
-.. class:: incremental center
+.. rst-class:: build center
 
 **Geocoding**
 
@@ -1446,7 +1318,6 @@ https://developers.google.com/maps/documentation/geocoding
         (soupenv)$ python
 
 .. code-block:: python
-    :class: small incremental
 
     >>> import requests
     >>> import json
@@ -1468,7 +1339,6 @@ You can do the same thing in reverse, supply latitude and longitude and get
 back address information:
 
 .. code-block:: python
-    :class: small
 
     >>> location = data['results'][0]['geometry']['location']
     >>> latlng="{lat},{lng}".format(**location)
@@ -1478,7 +1348,7 @@ back address information:
     >>> if data['status'] == 'OK':
     ...     pprint(data)
 
-.. class:: incremental
+.. rst-class:: build
 
 Notice that there are a number of results returned, ordered from most specific
 to least.
@@ -1489,7 +1359,7 @@ Mash It Up
 
 Let's add a new function to ``mashup.py``.  It will:
 
-.. class:: incremental
+.. rst-class:: build
 
 * take a single listing from our craiglist work
 * format the location data provided in that listing properly
@@ -1497,7 +1367,7 @@ Let's add a new function to ``mashup.py``.  It will:
 * add the best available address to the listing 
 * return the updated listing
 
-.. class:: incremental
+.. rst-class:: build
 
 Call it ``add_address``
 
@@ -1506,7 +1376,6 @@ My Solution
 -----------
 
 .. code-block:: python
-    :class: small incremental
     
     # add an import
     import json
@@ -1536,7 +1405,6 @@ Add Address to Output
 Go ahead and bolt the new function into our ``__main__`` block:
 
 .. code-block:: python
-    :class: small incremental
 
     import pprint
     if __name__ == '__main__':
@@ -1567,19 +1435,19 @@ One More Step
 
 I'm a big fan of walking places.
 
-.. class:: incremental
+.. rst-class:: build
 
 So I'd like to find an apartment that is located somewhere 'walkable'
 
-.. class:: incremental
+.. rst-class:: build
 
 There's an API for that!
 
-.. class:: incremental
+.. rst-class:: build
 
 http://www.walkscore.com/professional/api.php
 
-.. class:: incremental
+.. rst-class:: build
 
 If you haven't already, sign up for an API key now.
 
@@ -1590,15 +1458,15 @@ Getting a Walk Score
 The API documentation tells us we have to provide lat, lon and address to get
 a walk score, along with our API key.
 
-.. class:: incremental
+.. rst-class:: build
 
 It also tells us we have a choice of XML or JSON output.  Let's use JSON
 
-.. class:: incremental
+.. rst-class:: build
 
 Let's poke at it and see what we get back
 
-.. class:: incremental
+.. rst-class:: build
 
 Fire up your virtualenv Python interpreter again
 
@@ -1611,7 +1479,6 @@ Making an API Call
     (soupenv)$ python
 
 .. code-block:: python
-    :class: small
 
     >>> import requests
     >>> import json
@@ -1633,18 +1500,18 @@ Mash It Up
 
 Add a function to ``mashup.py`` that:
 
-.. class:: incremental
+.. rst-class:: build
 
 * takes a single listing from our craigslist search
 * uses the location and address to make a walkscore api call
 * adds the description, walkscore and ws_link parameters to the listing
 * returns the updated listing
 
-.. class:: incremental
+.. rst-class:: build
 
 Call the function ``add_walkscore``
 
-.. class:: incremental
+.. rst-class:: build
 
 Bolt it into our script's ``__main__`` block where it fits best
 
@@ -1653,7 +1520,6 @@ My Solution
 -----------
 
 .. code-block:: python
-    :class: small incremental
 
     def add_walkscore(listing):
         api_url = 'http://api.walkscore.com/score'
@@ -1679,7 +1545,6 @@ My Results
 ----------
 
 .. code-block:: python
-    :class: small
 
     if __name__ == '__main__':
         params = {'minAsk': 500, 'maxAsk': 1000, 'bedrooms': 2}
@@ -1702,12 +1567,12 @@ Wrap Up
 
 We've built a simple mashup combining data from three different sources.
 
-.. class:: incremental
+.. rst-class:: build
 
 As a result we can now make a listing of apartments ranked by the walkability
 of their neighborhood.
 
-.. class:: incremental
+.. rst-class:: build
 
 What other data sources might we use? Check out
 http://www.programmableweb.com/apis/directory to see some of the possibilities
@@ -1730,16 +1595,16 @@ Homework
 
 For your homework this week, you'll be creating a mashup of your own.
 
-.. class:: incremental
+.. rst-class:: build
 
 Use the programmable web api directory from above as a source of inspiration.
 
-.. class:: incremental
+.. rst-class:: build
 
 Your mashup should combine at least two sources of data in some way that
 tickles your fancy.
 
-.. class:: incremental
+.. rst-class:: build
 
 Your results need not look pretty. Focus on data acquisition and processing.
 
