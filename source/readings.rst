@@ -167,7 +167,40 @@ remain unchanged) over time, skim these specifications for HTTP and SMTP:
 * `RFC 5321 - SMTP (latest) <http://tools.ietf.org/html/rfc5321>`_
 
 
-Session 6 - APIs and Mashups
+Session 6 - CGI and WSGI
+------------------------
+
+* `CGI tutorial`_ - Read the following sections: Hello World, Debugging, Form.
+  Other sections optional. Follow along using CGIHTTPServer.
+* `WSGI tutorial`_ - Follow along using wsgiref.
+* `CGI module`_ - utilities for CGI scripts, mostly form and query string
+  parsing
+* `Parse URLS into components
+  <http://docs.python.org/release/2.6.5/library/urlparse.html>`_
+* `CGIHTTPServer`_ - python -m CGIHTTPServer
+* `WSGI Utilities and Reference implementation
+  <http://docs.python.org/release/2.6.5/library/wsgiref.html>`_
+* `WSGI 1.0 specification <http://www.python.org/dev/peps/pep-0333/>`_
+* `WSGI 1.0.1 (Python 3 support) <http://python.org/dev/peps/pep-3333/>`_
+* `test WSGI server, like cgi.test()
+  <http://hg.moinmo.in/moin/1.8/raw-file/tip/wiki/server/test.wsgi>`_
+
+.. _CGI tutorial: http://webpython.codepoint.net/cgi_tutorial
+.. _WSGI tutorial: http://webpython.codepoint.net/wsgi_tutorial
+.. _CGI module: http://docs.python.org/release/2.6.5/library/cgi.html
+.. _CGIHTTPServer: http://docs.python.org/release/2.6.5/library/cgihttpserver.html
+
+For alternative introductions to WSGI, try these two sources. They are a bit
+more minimal and may be easier to comprehend off the bat.
+
+* `Getting Started with WSGI`_ - by Armin Ronacher (really solid and quick!)
+* `very minimal introduction to WSGI
+  <http://be.groovie.org/2005/10/07/wsgi_and_wsgi_middleware_is_easy.html>`_
+
+.. _Getting Started with WSGI: http://lucumr.pocoo.org/2007/5/21/getting-started-with-wsgi/
+
+
+Session 7 - APIs and Mashups
 ----------------------------
 
 * `Introduction to HTML (from the Mozilla Developer Network)
@@ -210,39 +243,6 @@ both from the side of production and consumption:
 .. _rpclib: https://github.com/arskom/rpclib
 .. _Suds: https://fedorahosted.org/suds/
 .. _restkit: https://github.com/benoitc/restkit/
-
-
-Session 7 - CGI and WSGI
-------------------------
-
-* `CGI tutorial`_ - Read the following sections: Hello World, Debugging, Form.
-  Other sections optional. Follow along using CGIHTTPServer.
-* `WSGI tutorial`_ - Follow along using wsgiref.
-* `CGI module`_ - utilities for CGI scripts, mostly form and query string
-  parsing
-* `Parse URLS into components
-  <http://docs.python.org/release/2.6.5/library/urlparse.html>`_
-* `CGIHTTPServer`_ - python -m CGIHTTPServer
-* `WSGI Utilities and Reference implementation
-  <http://docs.python.org/release/2.6.5/library/wsgiref.html>`_
-* `WSGI 1.0 specification <http://www.python.org/dev/peps/pep-0333/>`_
-* `WSGI 1.0.1 (Python 3 support) <http://python.org/dev/peps/pep-3333/>`_
-* `test WSGI server, like cgi.test()
-  <http://hg.moinmo.in/moin/1.8/raw-file/tip/wiki/server/test.wsgi>`_
-
-.. _CGI tutorial: http://webpython.codepoint.net/cgi_tutorial
-.. _WSGI tutorial: http://webpython.codepoint.net/wsgi_tutorial
-.. _CGI module: http://docs.python.org/release/2.6.5/library/cgi.html
-.. _CGIHTTPServer: http://docs.python.org/release/2.6.5/library/cgihttpserver.html
-
-For alternative introductions to WSGI, try these two sources. They are a bit
-more minimal and may be easier to comprehend off the bat.
-
-* `Getting Started with WSGI`_ - by Armin Ronacher (really solid and quick!)
-* `very minimal introduction to WSGI
-  <http://be.groovie.org/2005/10/07/wsgi_and_wsgi_middleware_is_easy.html>`_
-
-.. _Getting Started with WSGI: http://lucumr.pocoo.org/2007/5/21/getting-started-with-wsgi/
 
 
 Sessions 8, 9, & 10 - Django
