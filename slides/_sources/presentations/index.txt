@@ -21,3 +21,4 @@ course.
    session04
    session05
    session06
+   session07
