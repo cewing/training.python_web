@@ -52,7 +52,7 @@ A mashup is::
     a web page, or web application, that uses and combines data, presentation
     or functionality from two or more sources to create new services.
 
-    -- `wikipedia <http://en.wikipedia.org/wiki/Mashup_(web_application_hybrid)>`_
+    -- wikipedia (http://en.wikipedia.org/wiki/Mashup_(web_application_hybrid))
 
 
 Data Sources
@@ -90,8 +90,12 @@ Web Scraping
         By scraping the data from the web pages.
 
 
-HTML, Ideally
--------------
+HTML
+----
+
+.. ifnotslides::
+
+    Ideally, it looks like this:
 
 .. code-block:: html
 
@@ -106,8 +110,11 @@ HTML, Ideally
     </html>
 
 
-HTML... IRL
------------
+.. nextslide:: HTML... IRL
+
+.. ifnotslides::
+
+    But in real life, it's more often like this:
 
 .. code-block:: html
 
@@ -122,8 +129,7 @@ HTML... IRL
     </html>
 
 
-FFFFFFFFFUUUUUUUUUUUUU
-----------------------
+.. nextslide:: FFFFFFFFFUUUUUUUUUUUUU!!!!
 
 .. figure:: /_static/scream.jpg
     :align: center
@@ -132,8 +138,7 @@ FFFFFFFFFUUUUUUUUUUUUU
     Photo by Matthew via Flickr (http://www.flickr.com/photos/purplemattfish/3918004964/) - CC-BY-NC-ND
 
 
-The Law of The Internet
------------------------
+.. nextslide:: The Law of The Internet
 
 .. rst-class:: large centered
 
@@ -165,21 +170,17 @@ Luckily, there are tools to help with this.
     (remember, for Windows users that should be ``soupenv/Scripts/activate``)
 
 
-Install BeautifulSoup
----------------------
+.. nextslide:: Install BeautifulSoup
 
 Once the virtualenv is activated, you can simply use pip or easy_install to
 install the libraries you want:
 
 .. code-block:: bash
 
-    source
-
     (soupenv)$ pip install beautifulsoup4
 
 
-Choose a Parsing Engine
------------------------
+.. nextslide:: Choose a Parsing Engine
 
 BeautifulSoup is built to use the Python HTMLParser.
 
@@ -198,8 +199,7 @@ BeautifulSoup is built to use the Python HTMLParser.
     ``lxml`` is better, but much harder to install.  Let's use ``html5lib``.
 
 
-Install a Parsing Engine
-------------------------
+.. nextslide:: Install a Parsing Engine
 
 Again, this is pretty simple::
 
@@ -214,8 +214,8 @@ Again, this is pretty simple::
 
     You can specify the parser if you need to for some reason.
 
-Install Requests
-----------------
+
+.. nextslide:: Install Requests
 
 Python provides tools for opening urls and communicating with servers. It's
 spread across the ``urllib`` and ``urllib2`` packages.
@@ -241,96 +241,144 @@ We're going to explore some tools for making a mashup today
 .. rst-class:: build
 .. container::
 
-    We'll be starting by scraping ZIP codes for Seattle
-
-    Then we'll choose one of them and look up restaurant health code data for
-    that ZIP code
+    We'll be starting by scraping restaurant health code data for
+    a given ZIP code
 
     Then, we'll look up the geographic location of those zipcodes using Google
 
-    Open a new file in your editor: ``mashup.py``.
+    Finally, we'll display the results of our work on a map
+
+    Start by opening a new file in your editor: ``mashup.py``.
 
 
-Examine the Source
-------------------
+.. nextslide:: Getting Some HTML
 
-Craigslist doesn't have an api, just a website, so we'll need to dig a bit
-
-.. rst-class:: build
-
-By going to the website and playing with the form there, we can derive a
-formula for a search URL
+The source for the data we'll be displaying is a search tool provided by King
+County.
 
 .. rst-class:: build
+.. container::
 
-* Base URL: ``http://seattle.craigslist.org/search/apa``
-* keywords: ``query=keyword+values+here``
-* price: ``minAsk=NNN maxAsk=NNN``
-* bedrooms: ``bedrooms=N`` (N in range 1-8)
+    It's supposed to have a web service, but the service is broken.
 
-.. rst-class:: build
+    Luckily, the HTML search works just fine.
 
-We'll make an HTTP request with these parameters
+    Open `the search form`_ in your browser.
 
+    Fill in a ZIP code (perhaps 98101).
 
-Opening URLs with Requests
---------------------------
+    Add a start and end date (perhaps about 1 or 2 years apart).
 
-In ``requests``, each HTTP method has a module-level function:
+    Submit the form, and take a look at what you get.
 
-.. rst-class:: build
-
-* ``GET`` == ``requests.get(url, **kwargs)``
-* ``POST`` == ``requests.post(url, **kwargs)``
-* ...
-
-.. rst-class:: build
-
-``kwargs`` represent other parts of an HTTP request:
-    
-.. rst-class:: build
-
-* ``params``: a dict of url parameters (?foo=bar&baz=bim)
-* ``headers``: a dict of headers to send with the request
-* ``data``: the body of the request, if any (form data for POST goes here)
-* ...
+.. _the search form: http://info.kingcounty.gov/health/ehs/foodsafety/inspections/search.aspx
 
 
-Getting Responses with Requests
--------------------------------
+.. nextslide:: Repeat, But Automate
 
-The return value from one of these functions is a ``response`` which provides:
+Next we want to automate the process.
 
 .. rst-class:: build
+.. container::
 
-* ``response.status_code``: see the HTTP Status Code returned
-* ``response.ok``: True if ``response.status_code`` is not an error
-* ``response.raise_for_status()``: call to raise a python error if it is
-* ``response.headers``: The headers sent from the server
-* ``response.text``: Body of the response, decoded to unicode
-* ``response.encoding``: The encoding used to decode
-* ``response.content``: The original encoded response body as bytes
+    Copy the domain and path of the url into your new ``mashup.py`` file like
+    so:
 
-.. rst-class:: build small
+    .. code-block:: python
 
-``requests documentation``: http://docs.python-requests.org/en/latest/
+        INSPECTION_DOMAIN = "http://info.kingcounty.gov"
+        INSPECTION_PATH = "/health/ehs/foodsafety/inspections/Results.aspx"
 
-Fetch Search Results
---------------------
+.. nextslide:: Repeat, But Automate
 
-We'll start by writing a function ``fetch_search_results``
+Next, copy the query parameters from the URL and convert them to a dictionary:
+
+.. code-block:: python
+
+    INSPECTION_PARAMS = {
+        'Output': 'W',
+        'Business_Name': '',
+        'Business_Address': '',
+        'Longitude': '',
+        'Latitude': '',
+        'City': '',
+        'Zip_Code': '',
+        'Inspection_Type': 'All',
+        'Inspection_Start': '',
+        'Inspection_End': '',
+        'Inspection_Closed_Business': 'A',
+        'Violation_Points': '',
+        'Violation_Red_Points': '',
+        'Violation_Descr': '',
+        'Fuzzy_Search': 'N',
+        'Sort': 'H'
+    }
+
+
+Fetching Search Results
+-----------------------
+
+Next we'll use the ``requests`` library to write a function to fetch these
+results on demand.
 
 .. rst-class:: build
+.. container::
 
-* It will accept one keyword argument for each of the possible query values
-* It will build a dictionary of request query parameters from incoming keywords
-* It will make a request to the craigslist server using this query
-* It will return the body of the response if there is no error
-* It will raise an error if there is a problem with the response
+    In ``requests``, each HTTP method has a module-level function:
+
+    .. rst-class:: build
+
+    * ``GET`` == ``requests.get(url, **kwargs)``
+    * ``POST`` == ``requests.post(url, **kwargs)``
+    * ...
+
+    ``kwargs`` represent other parts of an HTTP request:
+
+    .. rst-class:: build
+
+    * ``params``: a dict of url parameters (?foo=bar&baz=bim)
+    * ``headers``: a dict of headers to send with the request
+    * ``data``: the body of the request, if any (form data for POST goes here)
+    * ...
+
+
+.. nextslide:: Handling Requests Responses
+
+The return value from one of these functions is a ``response`` object which
+provides:
 
 .. rst-class:: build
+.. container::
 
-Try writing this function. Put it in ``mashup.py``
+    .. rst-class:: build
+
+    * ``response.status_code``: see the HTTP Status Code returned
+    * ``response.ok``: True if ``response.status_code`` is not an error
+    * ``response.raise_for_status()``: call to raise a python error if it is
+    * ``response.headers``: The headers sent from the server
+    * ``response.text``: Body of the response, decoded to unicode
+    * ``response.encoding``: The encoding used to decode
+    * ``response.content``: The original encoded response body as bytes
+
+    ``requests documentation``: http://docs.python-requests.org/en/latest/
+
+.. nextslide:: Fetch Search Results
+
+We'll start by writing a function ``get_inspection_page``
+
+.. rst-class:: build
+.. container::
+
+    .. rst-class:: build
+
+    * It will accept keyword arguments for each of the possible query values
+    * It will build a dictionary of request query parameters from incoming
+      keywords
+    * It will make a request to the inspection service search page using this
+      query
+    * It will return the encoded content and the encoding used as a tuple
+
+    Try writing this function. Put it in ``mashup.py``
 
 
 My Solution
@@ -338,65 +386,51 @@ My Solution
 
 Here's the one I created:
 
+.. rst-class:: build
 .. code-block:: python
 
     import requests
 
-    def fetch_search_results(
-        query=None, minAsk=None, maxAsk=None, bedrooms=None
-    ):
-        incoming = locals().copy()
-        base = 'http://seattle.craigslist.org/search/apa'
-        search_params = dict(
-            [(key, val) for key, val in incoming.items() 
-                        if val is not None])
-        if not search_params:
-            raise ValueError("No valid keywords")
-
-        resp = requests.get(base, params=search_params, timeout=3)
-        resp.raise_for_status() #<- no-op if status==200
+    def get_inspection_page(**kwargs):
+        url = INSPECTION_DOMAIN + INSPECTION_PATH
+        params = INSPECTION_PARAMS.copy()
+        for key, val in kwargs.items():
+            if key in INSPECTION_PARAMS:
+                params[key] = val
+        resp = requests.get(url, params=params)
+        resp.raise_for_status()
         return resp.content, resp.encoding
 
 
 Parse the Results
 -----------------
 
-Next, we need a function ``parse_source`` to set up HTML for scraping. It will
-need to:
+Next, we'll need to parse the results we get when we call that function
 
-.. rst-class:: build
-
-* Take the response body from the previous method (or some other source)
-* Parse it using BeautifulSoup
-* Return the parsed object for further processing
-
-.. rst-class:: build
-
-Before you start, a word about parsing HTML with BeautifulSoup
+But before we start, a word about parsing HTML with BeautifulSoup
 
 
-Parsing HTML with BeautifulSoup
--------------------------------
+.. nextslide:: Parsing HTML with BeautifulSoup
 
 The BeautifulSoup object can be instantiated with a string or a file-like
 object as the sole argument:
 
-.. code-block:: python
-
-    from bs4 import BeautifulSoup
-    parsed = BeautifulSoup('<h1>Some HTML</h1>')
-    
-    fh = open('a_page.html', 'r')
-    parsed = BeautifulSoup(fh)
-    
-    page = urllib2.urlopen('http://site.com/page.html')
-    parsed = BeautifulSoup(page)
-
-
 .. rst-class:: build
+.. container::
 
-You might want to open the documentation as reference
-(http://www.crummy.com/software/BeautifulSoup/bs4/doc)
+    .. code-block:: python
+
+        from bs4 import BeautifulSoup
+        parsed = BeautifulSoup('<h1>Some HTML</h1>')
+
+        fh = open('a_page.html', 'r')
+        parsed = BeautifulSoup(fh)
+
+        page = urllib2.urlopen('http://site.com/page.html')
+        parsed = BeautifulSoup(page)
+
+    You might want to open the documentation as reference
+    (http://www.crummy.com/software/BeautifulSoup/bs4/doc)
 
 
 My Solution
@@ -405,7 +439,7 @@ My Solution
 Take a shot at writing this new function in ``mashup.py``
 
 .. code-block:: python
-    
+
     # add this import at the top
     from bs4 import BeautifulSoup
 
@@ -426,16 +460,19 @@ We'll need to make our script do something when run.
         # do something
 
 .. rst-class:: build
+.. container::
 
-* Fetch a search results page
-* Parse the resulting HTML
-* For now, print out the results so we can see what we get
+    .. rst-class:: build
 
-.. container:: incremental small
+    * Fetch a search results page
+    * Parse the resulting HTML
+    * For now, print out the results so we can see what we get
 
-    Use the ``prettify`` method on a BeautifulSoup object::
+    .. container::
 
-        print parsed.prettify()
+        Use the ``prettify`` method on a BeautifulSoup object::
+
+            print parsed.prettify()
 
 
 My Solution
@@ -443,401 +480,639 @@ My Solution
 
 Try to come up with the proper code on your own.  Add it to ``mashup.py``
 
+.. rst-class:: build
 .. code-block:: python
 
     if __name__ == '__main__':
-        html, encoding = fetch_search_results(
-            minAsk=500, maxAsk=1000, bedrooms=2
-        )
-        doc = parse_source(html, encoding)
-        print doc.prettify(encoding=encoding)
+        use_params = {
+            'Inspection_Start': '2/1/2013',
+            'Inspection_End': '2/1/2015',
+            'Zip_Code': '98101'
+        }
+        html, encoding = get_inspection_page(**use_params)
+        parsed = parse_source(html, encoding)
+        print parsed.prettify(encoding=encoding)
 
 
-Test Your Work
---------------
+.. nextslide:: Test The Results
 
 Assuming your virtualenv is still active, you should be able to execute the
 script.
 
 .. rst-class:: build
+.. container::
 
-::
+    .. code-block:: bash
+    
+        (soupenv)$ python mashup.py
+        ...
+           <script src="http://www.kingcounty.gov/kcscripts/kcPageAnalytics.js" type="text/javascript">
+           </script>
+           <script type="text/javascript">
+             //<![CDATA[
+             var usasearch_config = { siteHandle:"kingcounty" };
+             var script = document.createElement("script");
+             script.type = "text/javascript";
+             script.src = "http://search.usa.gov/javascripts/remote.loader.js";
+             document.getElementsByTagName("head")[0].appendChild(script);
+             //]]>
+           </script>
+          </form>
+         </body>
+        </html>
 
-    (soupenv)$ python mashup.py
-    <!DOCTYPE html>
-    <html class="nojs">
-     <head>
-      <title>
-       seattle apts/housing for rent classifieds  - craigslist
-      </title>
-    ...  
+    This script is available as ``resources/session07/mashup_1.py``
 
 
-Preserve the Results
---------------------
+
+.. nextslide:: Preserve the Results
 
 Try it again, this time redirect the output to a local file, so we can use
-it without needing to hit the craiglist servers each time::
+it without needing to hit the King County servers each time::
 
-    (soupenv)$ python mashup.py > craigslist_results.html
+    (soupenv)$ python mashup.py > inspection_page.html
+
+.. rst-class:: build
+.. container::
+
+    Then add a quick function to our script that will use these saved results:
+
+    .. code-block:: python
+
+        def load_inspection_page(name):
+            with open(name, 'r') as fh:
+                content = fh.read()
+                return content, 'utf-8'
+
+    Finally, bolt that in to your script to use it:
+
+    .. code-block:: python
+
+        # COMMENT OUT THIS LINE AND REPLACE IT
+        # html, encoding = get_inspection_page(**use_params)
+        html, encoding = load_inspection_page('inspection_page.html')
 
 
-Finding The Needle
-------------------
+Extracting Data
+---------------
 
 Next we find the bits of this pile of HTML that matter to us.
 
 .. rst-class:: build
+.. container::
 
-Open your html file in a browser and take a look (w/ dev tools).
+    Open the page you just wrote to disk in your web browser and open the
+    developer tools to inspect the page source.
 
-.. rst-class:: build
+    You'll want to start by finding the element in the page that contains all
+    our search results.
 
-We'll want to find:
+    Look at the source and identify the single element we are looking for.
 
-.. rst-class:: build
+.. nextslide:: Tags and Searching
 
-* The HTML element that contains a single listing
-* The source of location data, listings without location should be abandoned
-* The description of a listing
-* The link to a full listing page on craigslist
-* Relevant price or size data.
-
-
-Pulling it Out
---------------
-
-We can extract this information now. In BeautifulSoup:
+Having found it visually, we can now search for it automatically. In
+BeautifulSoup:
 
 .. rst-class:: build
+.. container::
 
-* All HTML elements (including the parsed document itself) are ``tags``
-* A ``tag`` can be searched using its ``find_all`` method
-* This searches the descendents of the tag on which it is called.
-* It takes arguments which act as *filters* on the search results
+    .. rst-class:: build
 
-.. container:: incremental
+    * All HTML elements (including the parsed document itself) are ``tags``
+    * A ``tag`` can be searched using its ``find`` or ``find_all`` methods
+    * This searches the descendents of the tag on which it is called.
+    * It takes arguments which act as *filters* on the search results
 
-    like so: 
+    .. container::
 
-    .. class:: small
+        like so::
 
-    ::
+            tag.find(name, attrs, recursive, text, **kwargs)
+            tag.find_all(name, attrs, recursive, text, limit, **kwargs)
 
-        tag.find_all(name, attrs, recursive, text, limit, **kwargs)
 
+.. nextslide:: Searching by Attribute
 
-Searching by CSS Class
-----------------------
-
-The items we are looking for are ``p`` tags which have the CSS class
-``row``:
+The ``find`` method allows us to pass *kwargs*.
 
 .. rst-class:: build
+.. container::
 
-``find_all`` supports keyword arguments. If the keyword you use isn't one of
-the listed arguments, it is treated as an ``attribute``
+    Keywords that are not among the named parameters will be considered an HTML
+    attribute.
 
-.. rst-class:: build
-
-In Python, ``class`` is a reserved word, so we can't use it as a keyword, but
-you can use ``class_``!
-
-.. rst-class:: build small
-
-::
-
-    parsed.find_all('p', class_='row')
-
-
-Try It Out
-----------
-
-Let's fire up a python interpreter and get our hands dirty here::
-
-    (soupenv)$ python
-
-.. code-block:: python
-
-    >>> html = open('craigslist_results.html', 'r').read()
-    >>> from bs4 import BeautifulSoup
-    >>> parsed = BeautifulSoup(html)
-    >>> listings = parsed.find_all('p', class_='row')
-    >>> len(listings)
-    100
-
-
-.. rst-class:: build
-
-That sounds about right. Let's see if we can get only those with location
-data.
-
-
-Filtering Tricks
-----------------
-
-Attribute filters given a ``True`` value match tags with that attribute
-
-.. rst-class:: build
-
-Location data was in the ``data-latitude`` and ``data-longitude`` attributes.
-
-.. code-block:: python
-
-    >>> location_attrs = {
-    ...     'data-longitude': True,
-    ...     'data-latitude': True}
-    >>> locatable = parsed.find_all(
-    ...     'p', class_='row', attrs=location_attrs)
-    >>> len(locatable)
-    43
-
-.. rst-class:: build
-
-Great.  That worked nicely
-
-
-Parsing a Row
--------------
-
-Now that we have the rows we want, we need to parse them. We want to preserve:
-
-.. rst-class:: build
-
-* Location data (latitude and longitude)
-* Source link (to craiglist detailed listing)
-* Description text
-* Price and size data
-
-.. rst-class:: build
-
-Which parts of a single row contain each of these elements?
-
-
-Extracting Location
--------------------
-
-Location data is in the ``data-`` attributes we used to filter rows.
-
-.. container:: incremental
-
-    We can read the HTML attributes of a 'tag' easily, using ``attrs``:
+    We can use this to find the column that holds our search results:
 
     .. code-block:: python
 
-        >>> row1 = locatable[0]
-        >>> row1.attrs
-        {u'data-pid': u'3949023084', u'data-latitude': u'35.8625743108992',
-         u'class': [u'row'], u'data-longitude': u'-78.6232739959049'}
-        >>> lat = row1.attrs.get('data-latitude', None)
-        >>> lon = row1.attrs.get('data-longitude', None)
-        >>> print lat, lon
-        46.9989830869194 -122.847250593816
+        content_col = parsed.find('td', id="contentcol")
 
-
-Extracting Description and Link
--------------------------------
-
-Where ``find_all`` will find many elements, ``find`` will only find the first
-that matches the filters you provide.
-
-.. container:: incremental
-
-    Our targets are in the first ``a`` tag in the ``pl`` span inside our row:
+    Add that line to our mashup script and try it out:
 
     .. code-block:: python
 
-        >>> link = row1.find('span', class_='pl').find('a')
+        #...
+        parsed = parse_source(html, encoding)
+        content_col = parsed.find("td", id="contentcol")
+        print content_col.prettify(encoding=encoding)
 
-.. container:: incremental
+    .. code-block:: bash
 
-    The link path will be in the attrs:
+        (soupenv)$ python mashup.py
+        <td id="contentcol">
+            ...
+        </td>
+
+
+.. nextslide:: Filtering By Regular Expression
+
+The next job is to find the inspection data we can see when we click on the
+restaurant names in our page.
+
+.. rst-class:: build
+.. container::
+
+    Do you notice a pattern in how that data is structured?
+
+    For each restaurant in our results, there are *two* ``<div>`` tags.
+
+    The first contains the content you see at first, the second the content
+    that displays when we click.
+
+    What can you see that identifies these items?
+
+    ``<div id="PR0084952"...>`` and ``<div id="PR0084952~"...>``
+
+    Each pair shares an ID, and the stuff we want is in the second one
+
+    Each number is different for each restaurant
+
+    We can use a regular expression to help us here.
+
+.. nextslide:: Getting the Information Divs
+
+Let's write a function in ``mashup.py`` that will find all the divs in our
+column with the right kind of id:
+
+.. rst-class:: build
+.. container::
+
+    .. rst-class:: build
+
+    * It should match ``<div>`` tags only
+    * It should match ids that start with ``PR``
+    * It should match ids that contain some number of *digits* after that
+    * It should match ids that end with a *tilde* (``~``) character
 
     .. code-block:: python
 
-        >>> path = link.attrs['href']
+        # add an import up top
+        import re
 
-.. container:: incremental
+        # and add this function
+        def restaurant_data_generator(html):
+            id_finder = re.compile(r'PR[\d]+~')
+            return html.find_all('div', id=id_finder)
 
-    Text contained *inside* tags is in the ``string`` property:
+
+.. nextslide:: Verify It Works
+
+Let's add that step to the *main* block at the bottom of ``mashup.py`` (only
+print the first of the many divs that match):
+
+.. rst-class:: build
+.. container::
 
     .. code-block:: python
 
-        >>> description = link.string.strip()
+        html, encoding = load_inspection_page('inspection_page.html')
+        parsed = parse_source(html, encoding)
+        content_col = parsed.find("td", id="contentcol")
+        data_list = restaurant_data_generator(content_col)
+        print data_list[0].prettify()
 
 
-Extracting Price and Size
--------------------------
+    Finally, test it out:
 
-Both price and size are held in the ``l2`` span:
+    .. code-block:: bash
 
-.. code-block:: python
+        (soupenv)$ python mashup.py
+        <div id="PR0001203~" name="PR0001203~" onclick="toggleShow(this.id);"...>
+         <table style="width: 635px;">
+         ...
+         </table>
+        </div>
 
-    >>> l2 = row1.find('span', class_='l2')
+    This code is available as ``/resources/session07/mashup_2.py``
 
-.. container:: incremental
 
-    Price, conveniently, is in it's own container:
+Parsing Restaurant Data
+-----------------------
+
+Now that we have the records we want, we need to parse them. We want to preserve:
+
+.. rst-class:: build
+.. container::
+
+    We'll start by parsing out the information about the restaurant themselves:
+
+    .. rst-class:: build
+
+    * Name
+    * Address
+    * Location
+    * ...
+
+    How is this information contained in our records?
+
+
+.. nextslide:: Complex Filtering
+
+Each record consists of a table with a series of *rows* (``<tr>``).
+
+.. rst-class:: build
+.. container::
+
+    The rows we want at this time all have two *cells* inside them.
+
+    The first contains the *label* of the data, the second contains the *value*
+
+    We'll need a function in ``mashup.py`` that:
+
+    .. rst-class:: build
+
+    * takes an HTML element as an argument
+    * verifies that it is a ``<tr>`` element
+    * verifies that it has two immediate children that are ``<td>`` elements
+
+    My solution:
+
+    .. code-block:: python
+
+        def has_two_tds(elem):
+            is_tr = elem.name == 'tr'
+            td_children = elem.find_all('td', recursive=False)
+            has_two = len(td_children) == 2
+            return is_tr and has_two
+
+.. nextslide:: Test It Out
+
+Let's try this out in an interpreter:
+
+.. code-block:: pycon
+
+    >>> from mashup import load_inspection_page, parse_source
+    >>> from mashup import restaurant_data_generator, has_two_tds
+    >>> html, encoding = load_inspection_page('inspection_page.html')
+    >>> parsed = parse_source(html, encoding)
+    >>> content_col = parsed.find("td", id="contentcol")
+    >>> records = restaurant_data_generator(content_col)
+    >>> rec = records[4]
+
+.. nextslide:: Test It Out
+
+We'd like to find all table rows in that div that contain *two* cells
+
+.. rst-class:: build
+.. container::
+
+    The table rows are all contained in a ``<tbody>`` tag.
+
+    We only want the ones at the top of that tag (ones nested more deeply
+    contain other data)
+
+    .. code-block:: pycon
+
+        >>> data_rows = rec.find('tbody').find_all(has_two_tds, recursive=False)
+        >>> len(data_rows)
+        7
+        >>> data_rows[0]
+        <tr>
+         <td class="promptTextBox" style="width: 125px; font-weight: bold">
+          - Business Name
+         </td>
+         <td class="promptTextBox" style="width: 520px; font-weight: bold">
+          WORLD FRESH MARKET
+         </td>
+        </tr>
+
+.. nextslide:: Extracting Labels and Values
+
+Now we have a list of the rows that contain our data.
+
+.. rst-class:: build
+.. container::
+
+    Next we have to collect the data they contain
+
+    The *label/value* structure of this data should suggest the right container
+    to store the information.
+
+    Let's start by trying to get at the first label
+
+    .. code-block:: pycon
     
+        >>> row1 = data_rows[0]
+        >>> cells = row1.find_all('td')
+        >>> cell1 = cells[0]
+        >>> cell1.text
+        u'\n            - Business Name\n           '
+
+    That works well enough, but all that extra stuff is nasty
+
+    We need a method to clean up the text we get from these cells
+
+    It should strip extra whitespace, and characters like ``-`` and ``:`` we
+    don't want.
+
+.. nextslide:: My Solution
+
+Try writing such a function for yourself now in ``mashup.py``
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: python
+
+        def clean_data(td):
+            return unicode(td.text).strip(" \n:-")
+
+    Add it to your interpreter and test it out:
+
+    .. code-block:: pycon
+    
+        >>> def clean_data(td):
+        ...     return unicode(td.text).strip(" \n:-")
+        ...
+        >>> clean_data(cell1)
+        u'Business Name'
+        >>>
+
+    Ahhh, much better
+
+.. nextslide:: The Complete Function
+
+So we can get a list of the rows that contain label/value pairs.
+
+.. rst-class:: build
+.. container::
+
+    And we can extract clean values from the cells in these rows
+
+    Now we need a function in ``mashup.py`` that will iterate through the rows
+    we find and build a dictionary of the pairs.
+
+    We have to be cautious because some rows don't have a label.
+
+    The values in these rows should go with the label from the previous row.
+
+.. nextslide:: My Solution
+
+Here's the version I came up with:
+
+.. code-block:: python
+
+    def extract_restaurant_metadata(elem):
+        restaurant_data_rows = elem.find('tbody').find_all(
+            has_two_tds, recursive=False
+        )
+        rdata = {}
+        current_label = ''
+        for data_row in restaurant_data_rows:
+            key_cell, val_cell = data_row.find_all('td', recursive=False)
+            new_label = clean_data(key_cell)
+            current_label = new_label if new_label else current_label
+            rdata.setdefault(current_label, []).append(clean_data(val_cell))
+        return rdata
+
+
+.. nextslide:: Testing It Out
+
+Add it to our script:
+
+.. rst-class:: build
+.. container::
+
     .. code-block:: python
     
-        >>> price_span = l2.find('span', class_='price')
-        >>> price = price_span.string.strip()
+        # ...
+        data_list = restaurant_data_generator(content_col)
+        for data_div in data_list:
+            metadata = extract_restaurant_metadata(data_div)
+            print metadata
 
-.. rst-class:: build
+    And then try it out:
 
-But the size element is not. It is a standalone *text node*.
+    .. code-block:: bash
+    
+        (soupenv)$ python mashup.py
+        ...
+        {u'Business Category': [u'Seating 0-12 - Risk Category III'],
+         u'Longitude': [u'122.3401786000'], u'Phone': [u'(206) 501-9554'],
+         u'Business Name': [u"ZACCAGNI'S"], u'Address': [u'97B PIKE ST', u'SEATTLE, WA 98101'],
+         u'Latitude': [u'47.6086651300']}
 
-.. rst-class:: build
-
-Try finding it by reading the ``string`` property of our ``l2`` tag.
+    This script is available as ``resources/session07/mashup_3.py``
 
 
-Simple Navigation and Text
+Extracting Inspection Data
 --------------------------
 
-We can get to a simple text node by navigating there.
+The final step is to extract the inspection data for each restaurant.
 
 .. rst-class:: build
+.. container::
 
-You can navigate up, down and across document nodes.
+    We want to capture only the score from each inspection, details we can
+    leave behind.
 
-.. container:: incremental
+    We'd like to calculate the average score for all known inspections.
 
-    We already have the ``price`` span, the size text node is next at the same
-    level:
+    We'd also like to know how many inspections there were in total.
+
+    Finally, we'd like to preserve the highest score of all inspections for a
+    restaurant.
+
+    We'll add this information to our metadata about the restaurant.
+
+
+.. nextslide:: Finding the Data
+
+Let's start by getting our bearings. Return to viewing the
+``inspection_page.html`` you saved in a browser.
+
+.. rst-class:: build
+.. container::
+
+    Find a restaurant that has had an inspection or two.
+
+    What can you say about the HTML that contains the scores for these
+    inspections?
+
+    I notice four characteristics that let us isolate the information we want:
+
+    .. rst-class:: build
+
+    * Inspection data is containd in ``<tr>`` elements
+    * Rows with inspection data in them have four ``<td>`` children
+    * The text in the first cell contains the word "inspection"
+    * But the text does not *start* with the word "inspection"
+    
+    Let's try to write a filter function like the one above that will catch
+    these rows for us.
+
+.. nextslide:: The filter
+
+Add this new function ``is_inspection_data_row`` to ``mashup.py``
+
+.. rst-class:: build
+.. code-block:: python
+
+    def is_inspection_data_row(elem):
+        is_tr = elem.name == 'tr'
+        if not is_tr:
+            return False
+        td_children = elem.find_all('td', recursive=False)
+        has_four = len(td_children) == 4
+        this_text = clean_data(td_children[0]).lower()
+        contains_word = 'inspection' in this_text
+        does_not_start = not this_text.startswith('inspection')
+        return is_tr and has_four and contains_word and does_not_start
+
+.. nextslide:: Test It Out
+
+We can test this function by adding it into our script:
+
+.. code-block:: python
+
+    for data_div in data_list:
+        metadata = extract_restaurant_metadata(data_div)
+        # UPDATE THIS BELOW HERE
+        inspection_rows = data_div.find_all(is_inspection_data_row)
+        print metadata
+        print len(inspection_rows)
+        print '*'*10
+
+.. rst-class:: build
+.. container::
+
+    And try running the script in your terminal:
+
+    .. code-block:: bash
+    
+        (soupenv)$ python mashup.py
+        {u'Business Category': [u'Seating 0-12 - Risk Category III'],
+         u'Longitude': [u'122.3401786000'], u'Phone': [u'(206) 501-9554'],
+         u'Business Name': [u"ZACCAGNI'S"], u'Address': [u'97B PIKE ST', u'SEATTLE, WA 98101'],
+         u'Latitude': [u'47.6086651300']}
+        0
+        **********
+
+.. nextslide:: Building Inspection Data
+
+Now we can isolate a list of the rows that contain inspection data.
+
+.. rst-class:: build
+.. container::
+
+    Next we need to calculate the average score, total number and highest score
+    for each restaurant.
+
+    Let's add a function to ``mashup.py`` that will:
+
+    .. rst-class:: build
+
+    * Take a div containing a restaurant record
+    * Extract the rows containing inspection data
+    * Keep track of the highest score recorded
+    * Sum the total of all inspections
+    * Count the number of inspections made
+    * Calculate the average score for inspections
+    * Return the three calculated values in a dictionary
+
+.. nextslide:: My Solution
+
+Try writing this routine yourself.
+
+.. code-block:: python
+
+    def get_score_data(elem):
+        inspection_rows = elem.find_all(is_inspection_data_row)
+        samples = len(inspection_rows)
+        total = high_score = average = 0
+        for row in inspection_rows:
+            strval = clean_data(row.find_all('td')[2])
+            try:
+                intval = int(strval)
+            except (ValueError, TypeError):
+                samples -= 1
+            else:
+                total += intval
+                high_score = intval if intval > high_score else high_score
+        if samples:
+            average = total/float(samples)
+        return {u'Average Score': average, u'High Score': high_score,
+                u'Total Inspections': samples}
+
+.. nextslide:: Test It Out
+
+We can now incorporate this new routine into our ``mashup`` script.
+
+.. rst-class:: build
+.. container::
+
+    We'll want to add the data it produces to the metadata we've already
+    extracted.
 
     .. code-block:: python
 
-        >>> size = price_span.next_sibling.strip(' \n-/')
-        >>> size
-        u'2br - 912ft\xb2'
+        for data_div in data_list:
+            metadata = extract_restaurant_metadata(data_div)
+            inspection_data = get_score_data(data_div)
+            metadata.update(inspection_data)
+            print metadata
 
-.. rst-class:: build
+    And test it out at the command line:
 
-You may have noticed that we keep using ``strip``. There are two reasons for
-this.
+    .. code-block:: bash
 
-
-The NavigableString Element
----------------------------
-
-The most obvious reason is that we don't want extra whitespace.
-
-.. rst-class:: build
-
-The second reason is more subtle. The values returned by ``string`` are
-**not** simple unicode strings
-
-.. container:: incremental
-
-    They are actually instances of a class called ``NavigableString``:
-
-    .. code-block:: python
-
-        >>> price_span.next_sibling.__class__
-        <class 'bs4.element.NavigableString'>
-
-.. rst-class:: build
-
-Calling ``strip`` or casting them to ``unicode`` converts them, saving memory
-
-
-Put It All Together
--------------------
-
-Okay, a challenge.  Combine everything we've done into a function that:
-
-.. rst-class:: build
-
-* Extracts all the locatable listings from our html page
-* Iterates over each of them, and builds a dictionary of data
-  
-  * include ``location``, ``href``, ``description``, ``price`` and ``size``
-
-* Returns a list of these dictionaries
-
-.. rst-class:: build
-
-Call it ``extract_listings``
-
-.. rst-class:: build
-
-Put this new function into ``mashup.py`` and call it from ``__main__``,
-printing the result
-
+        (soupenv)$ python mashup.py
+        ...
+        {u'Business Category': [u'Seating 0-12 - Risk Category III'],
+         u'Longitude': [u'122.3401786000'], u'High Score': 0,
+         u'Phone': [u'(206) 501-9554'], u'Business Name': [u"ZACCAGNI'S"],
+         u'Total Inspections': 0, u'Address': [u'97B PIKE ST', u'SEATTLE, WA 98101'],
+         u'Latitude': [u'47.6086651300'], u'Average Score': 0}
 
 Break Time
 ----------
 
 Once you have this working, take a break.
 
-.. rst-class:: build
-
 When we return, we'll try a saner approach to getting data from online
 
-.. container:: incremental
-
-    While you have a moment, sign up for an API key from this service:
-
-    http://www.walkscore.com/professional/api.php
-
-
-My Solution
------------
-
-.. code-block:: python
-
-    def extract_listings(doc):
-        location_attrs = {'data-latitude': True,
-                          'data-longitude': True}
-        for row in doc.find_all('p', class_='row',
-                                attrs=location_attrs):
-            location = dict(
-                [(key, row.attrs.get(key)) for key in location_attrs])
-            link = row.find('span', class_='pl').find('a')
-            price_span = row.find('span', class_='price')
-            listing = {
-                'location': location,
-                'href': link.attrs['href'],
-                'description': link.string.strip(),
-                'price': price_span.string.strip(),
-                'size': price_span.next_sibling.strip(' \n-/')
-            }
-            yield listing
-
-
-My Solution
------------
-
-.. code-block:: python
-
-    if __name__ == '__main__':
-        html, encoding = fetch_search_results(
-            minAsk=500, maxAsk=1000, bedrooms=2
-        )
-        doc = parse_source(html, encoding)
-        for listing in extract_listings(doc):
-            print listing
 
 
 Another Approach
-----------------
+================
 
-Scraping web pages is tedious and inherently brittle
+.. rst-class:: left
+.. container::
 
-.. rst-class:: build
+    Scraping web pages is tedious and inherently brittle
 
-The owner of the website updates their layout, your code breaks
+    .. rst-class:: build
+    .. container::
 
-.. rst-class:: build
+        The owner of the website updates their layout, your code breaks
 
-But there is another way to get information from the web in a more normalized
-fashion
+        But there is another way to get information from the web in a more normalized
+        fashion
 
-.. rst-class:: build center
+        .. rst-class:: centered
 
-**Web Services**
+        **Web Services**
 
 
 Web Services
@@ -852,35 +1127,33 @@ interaction over a network" - W3C
 * returns structured data
 
 
-Early Web Services
-------------------
+.. nextslide:: Early Web Services
 
 RSS is one of the earliest forms of Web Services
 
-* First known as ``RDF Site Summary``
-* Became ``Really Simple Syndication``
-* More at http://www.rss-specification.com/rss-specifications.htm
-
 .. rst-class:: build
+.. container::
 
-A single web-based *endpoint* provides a dynamically updated listing of
-content
+    .. rst-class:: build
 
-.. rst-class:: build
+    * First known as ``RDF Site Summary``
+    * Became ``Really Simple Syndication``
+    * More at http://www.rss-specification.com/rss-specifications.htm
 
-Implemented in pure HTTP.  Returns XML 
+    A single web-based *endpoint* provides a dynamically updated listing of
+    content
 
-.. rst-class:: build
+    Implemented in pure HTTP.  Returns XML
 
-**Atom** is a competing, but similar standard
+    **Atom** is a competing, but similar standard
 
+    There's a solid Python library for consuming RSS: `feedparser`_.
 
-RSS Document
-------------
+.. _feedparser: https://pythonhosted.org/feedparser/
 
-.. class:: tiny
+.. nextslide:: RSS Document
 
-::
+.. code-block:: xml
 
     <?xml version="1.0" encoding="UTF-8" ?>
     <rss version="2.0">
@@ -903,51 +1176,51 @@ RSS Document
     </channel>
     </rss>
 
-
-XML-RPC
--------
+.. nextslide:: XML-RPC
 
 RSS provides a pre-defined data set, can we also allow *calling procedures* to
 get more dynamic data?
 
 .. rst-class:: build
+.. container::
 
-We can!  Enter XML-RPC (Remote Procedure Call)
+    We can!  Enter XML-RPC (Remote Procedure Call)
+
+    .. rst-class:: build
+
+    * Provides a set of defined procedures which can take arguments
+    * Calls are made via HTTP GET, by passing an XML document
+    * Returns from a call are sent to the client in XML
+
+    In python, you can access XML-RPC services using `xmlrpclib`_ from the
+    standard library
+
+    We will not cover XML-RPC here, though.
+
+.. _xmlrpclib: https://docs.python.org/2/library/xmlrpclib.html
+
+.. nextslide:: Beyond XML-RPC
 
 .. rst-class:: build
+.. container::
 
-* Provides a set of defined procedures which can take arguments
-* Calls are made via HTTP GET, by passing an XML document
-* Returns from a call are sent to the client in XML
+    .. rst-class:: build
 
-.. rst-class:: build
+    * XML-RPC allows introspection
+    * XML-RPC forces you to introspect to get information
+    * **Wouldn't it be nice to get that automatically?**
+    * XML-RPC provides data types
+    * XML-RPC provides only *certain* data types
+    * **Wouldn't it be nice to have an extensible system for types?**
+    * XML-RPC allows calling methods with parameters
+    * XML-RPC only allows calling methods, nothing else
+    * **wouldn't it be nice to have contextual data as well?**
 
-There is an interactive example of this at the end of this session. We will
-not go through it here, though.
+    .. rst-class:: centered
 
+    **Enter SOAP: Simple Object Access Protocol**
 
-Beyond XML-RPC
---------------
-
-.. rst-class:: build
-
-* XML-RPC allows introspection
-* XML-RPC forces you to introspect to get information
-* **Wouldn't it be nice to get that automatically?**
-* XML-RPC provides data types
-* XML-RPC provides only *certain* data types
-* **Wouldn't it be nice to have an extensible system for types?**
-* XML-RPC allows calling methods with parameters
-* XML-RPC only allows calling methods, nothing else
-* **wouldn't it be nice to have contextual data as well?**
-
-.. rst-class:: build center
-
-**Enter SOAP: Simple Object Access Protocol**
-
-
-SOAP
-----
+.. nextslide:: SOAP
 
 SOAP extends XML-RPC in a couple of useful ways:
 
@@ -964,46 +1237,41 @@ SOAP extends XML-RPC in a couple of useful ways:
   by the application
 
 
-SOAP in Python
---------------
+.. nextslide:: SOAP in Python
 
 There is no standard library module that supports SOAP directly.
 
 .. rst-class:: build
+.. container::
 
-* The best-known and best-supported module available is **Suds**
-* The homepage is https://fedorahosted.org/suds/
-* It can be installed using ``easy_install`` or ``pip install``
+    .. rst-class:: build
 
-.. rst-class:: build
+    * The best-known and best-supported module available is **Suds**
+    * The homepage is https://fedorahosted.org/suds/
+    * It can be installed using ``easy_install`` or ``pip install``
 
-Again, there is a good example of using SOAP via the ``suds`` library at the
-end of this session.
+    But we're going to move on
 
-.. rst-class:: build
-
-But we're going to move on
-
-
-Afterword
----------
+.. nextslide:: Afterword
 
 SOAP (and XML-RPC) have some problems:
 
 .. rst-class:: build
+.. container::
 
-* XML is pretty damned inefficient as a data transfer medium
-* Why should I need to know method names?
-* If I can discover method names at all, I have to read a WSDL to do it?
+    .. rst-class:: build
 
-.. rst-class:: build
+    * XML is pretty damned inefficient as a data transfer medium
+    * Why should I need to know method names?
+    * If I can discover method names at all, I have to read a WSDL to do it?
 
-Suds is the best we have, and it hasn't been updated since Sept. 2010.
+    Suds is the best we have, and it hasn't been updated since Sept. 2010.
 
-If Not XML, Then What?
-----------------------
+    There appear to be maintenance forks of Suds, but they are sketchy.
 
-.. rst-class:: large centered incremental
+.. nextslide:: If Not XML, Then What?
+
+.. rst-class:: build large centered
 
 **JSON**
 
@@ -1014,66 +1282,70 @@ JSON
 JavaScript Object Notation:
 
 .. rst-class:: build
+.. container::
 
-* a lightweight data-interchange format
-* easy for humans to read and write
-* easy for machines to parse and generate
+    .. rst-class:: build
 
-.. rst-class:: build
+    * a lightweight data-interchange format
+    * easy for humans to read and write
+    * easy for machines to parse and generate
 
-Based on Two Structures:
+    Based on Two Structures:
 
-.. rst-class:: build
+    * object: ``{ string: value, ...}``
+    * array: ``[value, value, ]``
 
-* object: ``{ string: value, ...}``
-* array: ``[value, value, ]``
+    .. rst-class:: centered
 
-.. class:: center incremental
-
-pythonic, no?
+    pythonic, no?
 
 
-JSON Data Types
----------------
+.. nextslide:: JSON Data Types
 
 JSON provides a few basic data types (see http://json.org/):
 
 .. rst-class:: build
+.. container::
 
-* string: unicode, anything but ", \\ and control characters
-* number: any number, but json does not use octal or hexadecimal
-* object, array (we've seen these above)
-* true
-* false
-* null
+    .. rst-class:: build
 
-.. rst-class:: build center
+    * string: unicode, anything but ", \\ and control characters
+    * number: any number, but json does not use octal or hexadecimal
+    * object, array (we've seen these above)
+    * true
+    * false
+    * null
 
-**No date type? OMGWTF??!!1!1**
+    .. rst-class:: centered
 
+    **No date type? OMGWTF??!!1!1**
 
-Dates in JSON
--------------
+.. nextslide:: Dates in JSON
 
-.. rst-class:: build
-
-Option 1 - Unix Epoch Time (number):
-
-.. code-block:: python
-
-    >>> import time
-    >>> time.time()
-    1358212616.7691269
+You have two options:
 
 .. rst-class:: build
+.. container::
 
-Option 2 - ISO 8661 (string):
+    .. container::
 
-.. code-block:: python
+        Option 1 - Unix Epoch Time (number):
 
-    >>> import datetime
-    >>> datetime.datetime.now().isoformat()
-    '2013-01-14T17:18:10.727240'
+        .. code-block:: python
+
+            >>> import time
+            >>> time.time()
+            1358212616.7691269
+
+    .. container::
+
+        Option 2 - ISO 8661 (string):
+
+        .. code-block:: python
+
+            >>> import datetime
+            >>> datetime.datetime.now().isoformat()
+            '2013-01-14T17:18:10.727240'
 
 
 JSON in Python
@@ -1081,107 +1353,99 @@ JSON in Python
 
 You can encode python to json, and decode json back to python:
 
-.. code-block:: python
-
-    >>> import json
-    >>> array = [1,2,3]
-    >>> json.dumps(array)
-    >>> '[1, 2, 3]'
-    >>> orig = {'foo': [1,2,3], 'bar': u'my resumé', 'baz': True}
-    >>> encoded = json.dumps(orig)
-    >>> encoded
-    '{"baz": true, "foo": [1, 2, 3], "bar": "my resum\\u00e9"}'
-    >>> decoded = json.loads(encoded)
-    >>> decoded == orig
-    True
-
 .. rst-class:: build
+.. container::
 
-Customizing the encoder or decoder class allows for specialized serializations
+    .. code-block:: python
+
+        >>> import json
+        >>> array = [1,2,3]
+        >>> json.dumps(array)
+        >>> '[1, 2, 3]'
+        >>> orig = {'foo': [1,2,3], 'bar': u'my resumé', 'baz': True}
+        >>> encoded = json.dumps(orig)
+        >>> encoded
+        '{"baz": true, "foo": [1, 2, 3], "bar": "my resum\\u00e9"}'
+        >>> decoded = json.loads(encoded)
+        >>> decoded == orig
+        True
+
+    Customizing the encoder or decoder class allows for specialized serializations
 
 
-JSON in Python
---------------
+.. nextslide::
 
-the json module also supports reading and writing to *file-like objects* via 
+the json module also supports reading and writing to *file-like objects* via
 ``json.dump(fp)`` and ``json.load(fp)`` (note the missing 's')
 
 .. rst-class:: build
+.. container::
 
-Remember duck-typing. Anything with a ``.write`` and a ``.read`` method is
-*file-like*
+    Remember duck-typing. Anything with a ``.write`` and a ``.read`` method is
+    *file-like*
 
-.. rst-class:: build
+    This usage can be much more memory-friendly with large files/sources
 
-This usage can be much more memory-friendly with large files/sources
-
-
-What about WSDL?
-----------------
+.. nextslide:: What about WSDL?
 
 SOAP was invented in part to provide completely machine-readable
 interoperability.
 
 .. rst-class:: build
+.. container::
 
-Does that really work in real life?
+    *Does that really work in real life?*
 
-.. rst-class:: build center
+    .. rst-class:: centered
 
-Hardly ever
+    Hardly ever
 
+    Another reason was to provide extensibility via custom types
 
-What about WSDL?
-----------------
+    *Does that really work in real life?*
 
-Another reason was to provide extensibility via custom types
+    .. rst-class:: centered
 
-.. rst-class:: build
+    Hardly ever
 
-Does that really work in real life?
-
-.. rst-class:: build center
-
-Hardly ever
-
-
-Why Do All The Work?
---------------------
+.. nextslide:: Why Do All The Work?
 
 So, if neither of these goals is really achieved by using SOAP, why pay all
 the overhead required to use the protocol?
 
 .. rst-class:: build
+.. container::
 
-Enter REST
+    Is there another way we could consider approaching the problem?
+
+    .. rst-class:: centered
+
+    **Enter REST**
 
 
 REST
 ----
 
-.. class:: center
+.. rst-class:: centered
 
-Representational State Transfer
+**Representational State Transfer**
 
 .. rst-class:: build
+.. container::
 
-* Originally described by Roy T. Fielding (worth reading)
-* Use HTTP for what it can do
-* Read more in `this book
-  <http://www.crummy.com/writing/RESTful-Web-Services/>`_\*
+    .. rst-class:: build
 
-.. class:: image-credit incremental
+    * Originally described by Roy T. Fielding (worth reading)
+    * Use HTTP for what it can do
+    * Read more in `RESTful Web Services <http://www.crummy.com/writing/RESTful-Web-Services/>`_\*
 
-\* Seriously. Buy it and read
-(<http://www.crummy.com/writing/RESTful-Web-Services/)
+    \* Seriously. Buy it and read it
 
-
-A Comparison
-------------
+.. nextslide:: A Comparison
 
 The XML-RCP/SOAP way:
 
-.. rst-class:: build small
+.. rst-class:: build
 
 * POST /getComment HTTP/1.1
 * POST /getComments HTTP/1.1
@@ -1190,102 +1454,58 @@ The XML-RCP/SOAP way:
 * POST /deleteComment HTTP/1.1
 
 .. rst-class:: build
+.. container::
 
-The RESTful way:
+    The RESTful way:
 
-.. rst-class:: build small
+    .. rst-class:: build
 
-* GET /comment/<id> HTTP/1.1
-* GET /comment HTTP/1.1
-* POST /comment HTTP/1.1
-* PUT /comment/<id> HTTP/1.1
-* DELETE /comment/<id> HTTP/1.1
+    * GET /comment/<id> HTTP/1.1
+    * GET /comment HTTP/1.1
+    * POST /comment HTTP/1.1
+    * PUT /comment/<id> HTTP/1.1
+    * DELETE /comment/<id> HTTP/1.1
 
 
-ROA
----
+.. nextslide:: ROA
 
-This is **Resource Oriented Architecture**
-
-.. rst-class:: build
-
-The URL represents the *resource* we are working with
+REST is a **Resource Oriented Architecture**
 
 .. rst-class:: build
+.. container::
 
-The HTTP Method represents the ``action`` to be taken
+    The URL represents the *resource* we are working with
 
-.. rst-class:: build
+    The HTTP Method indicates the ``action`` to be taken
 
-The HTTP Code returned tells us the ``result`` (whether success or failure)
+    The HTTP Code returned tells us the ``result`` (whether success or failure)
 
-
-HTTP Codes Revisited
---------------------
-
-.. class:: small
-
-POST /comment HTTP/1.1  (creating a new comment):
-
-.. rst-class:: build small
-
-* Success: ``HTTP/1.1 201 Created``
-* Failure (unauthorized): ``HTTP/1.1 401 Unauthorized``
-* Failure (NotImplemented): ``HTTP/1.1 405 Not Allowed``
-* Failure (ValueError): ``HTTP/1.1 406 Not Acceptable``
-
-.. class:: small incremental
-
-PUT /comment/<id> HTTP/1.1 (edit comment):
-
-.. rst-class:: build small
-
-* Success: ``HTTP/1.1 200 OK``
-* Failure: ``HTTP/1.1 409 Conflict``
-
-.. class:: small incremental
-
-DELETE /comment/<id> HTTP/1.1 (delete comment):
-
-.. rst-class:: build small
-
-* Success: ``HTTP/1.1 204 No Content``
-
-
-HTTP Is Stateless
------------------
-
-No individual request may be assumed to know anything about any other request.
+.. nextslide:: HTTP Codes Revisited
 
 .. rst-class:: build
+.. container::
 
-All the required information representing the possible actions to take *should
-be present in every response*.
+    POST /comment HTTP/1.1  (creating a new comment):
 
-.. rst-class:: build big-centered
+    .. rst-class:: build
 
-Thus:  HATEOAS
+    * Success: ``HTTP/1.1 201 Created``
+    * Failure (unauthorized): ``HTTP/1.1 401 Unauthorized``
+    * Failure (NotImplemented): ``HTTP/1.1 405 Not Allowed``
+    * Failure (ValueError): ``HTTP/1.1 406 Not Acceptable``
 
+    PUT /comment/<id> HTTP/1.1 (edit comment):
 
-HATEOAS
--------
+    .. rst-class:: build
 
-.. rst-class:: large centered
+    * Success: ``HTTP/1.1 200 OK``
+    * Failure: ``HTTP/1.1 409 Conflict``
 
-Hypermedia As The Engine Of Application State
+    DELETE /comment/<id> HTTP/1.1 (delete comment):
 
+    .. rst-class:: build
 
-Applications are State Engines
-------------------------------
-
-A State Engine is a machine that provides *states* for a resource to be in and
-*transitions* to move resources between states.  A Restful api should:
-
-.. rst-class:: build
-
-* provide information about the current state of a resource
-* provide information about available transitions for that resource (URIs)
-* provide all this in *each* HTTP response
+    * Success: ``HTTP/1.1 204 No Content``
 
 
 Playing With REST
@@ -1294,342 +1514,446 @@ Playing With REST
 Let's take a moment to play with REST.
 
 .. rst-class:: build
+.. container::
 
-We'll use a common, public API provided by Google.
+    We'll use a common, public API provided by Google.
 
-.. rst-class:: build center
+    .. rst-class:: centered
 
-**Geocoding**
+    **Geocoding**
 
-
-Geocoding with Google APIs
---------------------------
+.. nextslide:: Geocoding with Google APIs
 
 https://developers.google.com/maps/documentation/geocoding
 
-.. container:: incremental
+.. rst-class:: build
+.. container::
 
-    Open a python interpreter using our virtualenv: 
-
-    .. class:: small
-
-    ::
+    Open a python interpreter using our virtualenv::
 
         (soupenv)$ python
 
-.. code-block:: python
+    .. code-block:: pycon
 
-    >>> import requests
-    >>> import json
-    >>> from pprint import pprint
-    >>> url = 'http://maps.googleapis.com/maps/api/geocode/json'
-    >>> addr = '1325 4th Ave, Seattle, 98101'
-    >>> parameters = {'address': addr, 'sensor': 'false' }
-    >>> resp = requests.get(url, params=parameters)
-    >>> data = json.loads(resp.text)
-    >>> if data['status'] == 'OK':
-    ...     pprint(data)
-    
+        >>> import requests
+        >>> import json
+        >>> from pprint import pprint
+        >>> url = 'http://maps.googleapis.com/maps/api/geocode/json'
+        >>> addr = '1325 4th Ave, Seattle, 98101'
+        >>> parameters = {'address': addr, 'sensor': 'false' }
+        >>> resp = requests.get(url, params=parameters)
+        >>> data = json.loads(resp.text)
+        >>> if data['status'] == 'OK':
+        ...     pprint(data)
 
 
-Reverse Geocoding
------------------
+.. nextslide:: Reverse Geocoding
 
 You can do the same thing in reverse, supply latitude and longitude and get
 back address information:
 
-.. code-block:: python
-
-    >>> location = data['results'][0]['geometry']['location']
-    >>> latlng="{lat},{lng}".format(**location)
-    >>> parameters = {'latlng': latlng, 'sensor': 'false'}
-    >>> resp = requests.get(url, params=paramters)
-    >>> data = json.loads(resp.text)
-    >>> if data['status'] == 'OK':
-    ...     pprint(data)
-
 .. rst-class:: build
+.. container::
 
-Notice that there are a number of results returned, ordered from most specific
-to least.
+    .. code-block:: pycon
 
+        >>> location = data['results'][0]['geometry']['location']
+        >>> latlng="{lat},{lng}".format(**location)
+        >>> parameters = {'latlng': latlng, 'sensor': 'false'}
+        >>> resp = requests.get(url, params=paramters)
+        >>> data = json.loads(resp.text)
+        >>> if data['status'] == 'OK':
+        ...     pprint(data)
 
-Mash It Up
-----------
-
-Let's add a new function to ``mashup.py``.  It will:
-
-.. rst-class:: build
-
-* take a single listing from our craiglist work
-* format the location data provided in that listing properly
-* make a reverse geocoding lookup using the google api above
-* add the best available address to the listing 
-* return the updated listing
-
-.. rst-class:: build
-
-Call it ``add_address``
+    Notice that there are a number of results returned, ordered from most specific
+    to least.
 
 
-My Solution
------------
-
-.. code-block:: python
-    
-    # add an import
-    import json
-
-    # and a function
-    def add_address(listing):
-        api_url = 'http://maps.googleapis.com/maps/api/geocode/json'
-        loc = listing['location']
-        latlng_tmpl = "{data-latitude},{data-longitude}"
-        parameters = {
-            'sensor': 'false',
-            'latlng': latlng_tmpl.format(**loc),
-        }
-        resp = requests.get(api_url, params=parameters)
-        data = json.loads(resp.text)
-        if data['status'] == 'OK':
-            best = data['results'][0]
-            listing['address'] = best['formatted_address']
-        else:
-            listing['address'] = 'unavailable'
-        return listing
-
-
-Add Address to Output
----------------------
-
-Go ahead and bolt the new function into our ``__main__`` block:
-
-.. code-block:: python
-
-    import pprint
-    if __name__ == '__main__':
-        params = {'minAsk': 500, 'maxAsk': 1000, 'bedrooms': 2}
-        html, encoding = fetch_search_results(**params)
-        doc = parse_source(html, encoding)
-        for listing in extract_listings(doc):
-            listing = add_address(listing)
-            pprint.pprint(listing)
-
-.. container:: incremental
-
-    And give the result a whirl:
-
-    .. class:: small
-
-    ::
-
-        (soupenv)$ python mashup.py
-        {'address': u'123 Some Street, Chapel Hill, NC ...',
-         'description': u'3 bedroom 2 bathroom unit is move in ready!'
-         ...
-        }
-
-
-One More Step
+Mashing It Up
 -------------
 
-I'm a big fan of walking places.
+Google's geocoding data is quite nice.
 
 .. rst-class:: build
+.. container::
 
-So I'd like to find an apartment that is located somewhere 'walkable'
+    But it's not in a format we can use directly to create a map
 
-.. rst-class:: build
+    For that we need `geojson`
 
-There's an API for that!
+    Moreover, formatting the data for all those requests is going to get
+    tedious.
 
-.. rst-class:: build
+    Luckily, people create *wrappers* for popular REST apis like google's
+    geocoding service.
 
-http://www.walkscore.com/professional/api.php
+    Once such wrapper is `geocoder`_, which provides not only google's service,
+    but many others under a single umbrella.
 
-.. rst-class:: build
+.. _geocoder: http://geocoder.readthedocs.org/en/latest/
+.. _geojson: http://geojson.org
 
-If you haven't already, sign up for an API key now.
+.. nextslide:: Install ``geocoder``
 
+Install geocoder into your ``soupenv`` so that it's available to use:
 
-Getting a Walk Score
---------------------
+.. code-block:: bash
 
-The API documentation tells us we have to provide lat, lon and address to get
-a walk score, along with our API key.
-
-.. rst-class:: build
-
-It also tells us we have a choice of XML or JSON output.  Let's use JSON
-
-.. rst-class:: build
-
-Let's poke at it and see what we get back
+    (soupenv)$ pip install geocoder
 
 .. rst-class:: build
+.. container::
 
-Fire up your virtualenv Python interpreter again
+    Our final step for tonight will be to geocode the results we have scraped
+    from the inspection site.
 
+    We'll then convert that to ``geojson``, insert our own properties and map
+    the results.
 
-Making an API Call
-------------------
+    Let's begin by converting our script so that what we have so far is
+    contained in a generator function
 
-::
+    We'll eventually sort our results and generate the top 10 or so for
+    geocoding.
 
-    (soupenv)$ python
+    Open up ``mashup.py`` and copy everthing in the ``main`` block.
 
+.. nextslide:: Make a Generator Function
+
+Add a new function ``result_generator`` to the ``mashup.py`` script. Paste the
+code you copied from the ``main`` block and then update it a bit:
+
+.. rst-class:: build
 .. code-block:: python
 
-    >>> import requests
-    >>> import json
-    >>> from pprint import pprint
-    >>> api_url = 'http://api.walkscore.com/score'
-    >>> lat, lon = 35.9108986, -79.053783
-    >>> addr = '120 E. Cameron Avenue Chapel Hill, NC 27599'
-    >>> params = {'lat': lat, 'lon', lon, 'address': addr}
-    >>> params['wsapikey'] = '<type your api key here>'
-    >>> params['format'] = 'json'
-    >>> resp = requests.get(api_url, params=params)
-    >>> data = json.loads(resp.text)
-    >>> if data['status'] == 1:
-    ...     pprint(data)
-
-
-Mash It Up
-----------
-
-Add a function to ``mashup.py`` that:
-
-.. rst-class:: build
-
-* takes a single listing from our craigslist search
-* uses the location and address to make a walkscore api call
-* adds the description, walkscore and ws_link parameters to the listing
-* returns the updated listing
-
-.. rst-class:: build
-
-Call the function ``add_walkscore``
-
-.. rst-class:: build
-
-Bolt it into our script's ``__main__`` block where it fits best
-
-
-My Solution
------------
-
-.. code-block:: python
-
-    def add_walkscore(listing):
-        api_url = 'http://api.walkscore.com/score'
-        apikey = '<your api key goes here>'
-        loc = listing['location']
-        if listing['address'] == 'unavailable':
-            return listing
-        parameters = {
-            'lat': loc['data-latitude'], 'lon': loc['data-longitude'],
-            'address': listing['address'], 'wsapikey': apikey,
-            'format': 'json'
+    def result_generator(count):
+        use_params = {
+            'Inspection_Start': '2/1/2013',
+            'Inspection_End': '2/1/2015',
+            'Zip_Code': '98101'
         }
-        resp = requests.get(api_url, params=parameters)
-        data = json.loads(resp.text)
-        if data['status'] == 1:
-            listing['ws_description'] = data['description']
-            listing['ws_score'] = data['walkscore']
-            listing['ws_link'] = data['ws_link']
-        return listing
+        # html, encoding = get_inspection_page(**use_params)
+        html, encoding = load_inspection_page('inspection_page.html')
+        parsed = parse_source(html, encoding)
+        content_col = parsed.find("td", id="contentcol")
+        data_list = restaurant_data_generator(content_col)
+        for data_div in data_list[:count]:
+            metadata = extract_restaurant_metadata(data_div)
+            inspection_data = get_score_data(data_div)
+            metadata.update(inspection_data)
+            yield metadata
 
 
-My Results
-----------
+.. nextslide:: Test It Out
 
+Update the ``main`` block of your ``mashup.py`` script to use the new function:
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: python
+
+        if __name__ == '__main__':
+            for result in result_generator(10):
+                print result
+
+    Then run your script and verify that the only thing that has changed is the
+    number of results that print.
+
+    .. code-block:: bash
+    
+        (soupenv)$ python mashup.py
+        # you should see 10 dictionaries print here.
+
+Add Geocoding
+-------------
+
+The API for geocoding with ``geocoder`` is the same for all providers.
+
+.. rst-class:: build
+.. container::
+
+    You give an address, it returns geocoded data.
+
+    You provide latitude and longitude, it provides address data
+
+    .. code-block:: python
+    
+        >>> response = geocoder.google(<address>)
+        >>> response.json
+        # json result data
+        >>> response.geojson
+        # geojson result data
+
+.. nextslide:: Adding The Function
+
+Let's add a new function ``get_geojson`` to ``mashup.py``
+
+.. rst-class:: build
+.. container::
+
+    It will 
+
+    .. rst-class:: build
+
+    * Take a result from our search as it's input
+    * Get geocoding data from google using the address of the restaurant
+    * Return the geojson representation of that data
+
+    Try to write this function on your own
+
+    .. code-block:: python
+    
+        def get_geojson(result):
+            address = " ".join(result.get('Address', ''))
+            if not address:
+                return None
+            geocoded = geocoder.google(address)
+            return geocoded.geojson
+
+.. nextslide:: Testing It Out
+
+Next, update our ``main`` block to get the geojson for each result and print
+it:
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: python
+
+        if __name__ == '__main__':
+            for result in result_generator(10):
+                geojson = get_geojson(result)
+                print geojson
+
+    Then test your results by running your script:
+
+    .. code-block:: bash
+    
+        (soupenv)$ python mashup.py
+        {'geometry': {'type': 'Point', 'coordinates': [-122.3393005, 47.6134378]},
+         'type': 'Feature', 'properties': {'neighborhood': 'Belltown',
+         'encoding': 'utf-8', 'county': 'King County', 'city_long': 'Seattle',
+         'lng': -122.3393005, 'quality': u'street_address', 'city': 'Seattle',
+         'confidence': 9, 'state': 'WA', 'location': u'1933 5TH AVE SEATTLE, WA 98101',
+         'provider': 'google', 'housenumber': '1933', 'accuracy': 'ROOFTOP',
+         'status': 'OK', 'state_long': 'Washington',
+         'address': '1933 5th Avenue, Seattle, WA 98101, USA', 'lat': 47.6134378,
+         'postal': '98101', 'ok': True, 'road_long': '5th Avenue', 'country': 'US',
+         'country_long': 'United States', 'street': '5th Ave'},
+         'bbox': [-122.3406494802915, 47.6120888197085, -122.3379515197085, 47.6147867802915]}
+
+.. nextslide:: Update Geojson Properties
+
+The ``properties`` of our geojson records are filled with data we don't really
+care about.
+
+.. rst-class:: build
+.. container::
+
+    Let's replace that information with some of the metadata from our
+    inspection results.
+
+    We'll update our ``get_geojson`` function so that it:
+
+    .. rst-class:: build
+
+    * Builds a dictionary containing only the values we want from our
+      inspection record.
+    * Converts list values to strings (geojson requires this)
+    * Replaces the 'properties' of our geojson with this new data
+    * Returns the modified geojson record
+
+.. nextslide:: Write the Function
+
+See if you can make the updates on your own.
+
+.. rst-class:: build
 .. code-block:: python
 
-    if __name__ == '__main__':
-        params = {'minAsk': 500, 'maxAsk': 1000, 'bedrooms': 2}
-        html, encoding = fetch_search_results(**params)
-        doc = parse_source(html, encoding)
-        for listing in extract_listings(doc):
-            listing = add_address(listing)
-            listing = add_walkscore(listing)
-            pprint.pprint(listing)
+    def get_geojson(result):
+        # ...
+        geocoded = geocoder.google(address)
+        geojson = geocoded.geojson
+        inspection_data = {}
+        use_keys = (
+            'Business Name', 'Average Score', 'Total Inspections', 'High Score'
+        )
+        for key, val in result.items():
+            if key not in use_keys:
+                continue
+            if isinstance(val, list):
+                val = " ".join(val)
+            inspection_data[key] = val
+        geojson['properties'] = inspection_data
+        return geojson
 
-.. container:: incremental
+.. nextslide:: Making Mappable Data
 
-    Let's try it out::
+We are now generating a series of ``geojson`` *Feature* objects.
+
+.. rst-class:: build
+.. container::
+
+    To map these objects, we'll need to create a file which contains a
+    ``geojson`` *FeatureCollection*.
+
+    The structure of such a collection looks like this:
+
+    .. code-block:: json
+    
+        {'type': 'FeatureCollection', 'features': [...]}
+
+    Let's update our ``main`` function to append each feature to such a
+    structure.
+
+    Then we can dump the structure as ``json`` to a file.
+
+.. nextslide:: Update the Script
+
+In ``mashup.py`` update the ``main`` block like so:
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: python
+
+        # add an import at the top:
+        import json
+
+        if __name__ == '__main__':
+            total_result = {'type': 'FeatureCollection', 'features': []}
+            for result in result_generator(10):
+                geojson = get_geojson(result)
+                total_result['features'].append(geojson)
+            with open('my_map.json', 'w') as fh:
+                json.dump(total_result, fh)
+
+    When you run the script nothing will print, but the new file will appear.
+
+    .. code-block:: bash
 
         (soupenv)$ python mashup.py
 
+    This script is available as ``resources/session07/mashup_5.py``
+
+Display the Results
+-------------------
+
+Once the new file is written you are ready to display your results.
+
+.. rst-class:: build
+.. container::
+
+    Open your web browser and go to http://geojson.io
+
+    Then drag and drop the new file you wrote onto the map you see there.
+
+    .. figure:: /_static/geojson-io.png
+        :align: center
+        :width: 75%
 
 Wrap Up
 -------
 
-We've built a simple mashup combining data from three different sources.
+We've built a simple mashup combining data from different sources.
 
 .. rst-class:: build
+.. container::
 
-As a result we can now make a listing of apartments ranked by the walkability
-of their neighborhood.
+    We scraped health inspection data from the King County government site.
 
-.. rst-class:: build
+    We geocoded that data.
 
-What other data sources might we use? Check out
-http://www.programmableweb.com/apis/directory to see some of the possibilities
+    And we've displayed the results on a map.
+
+    What other sources of data might we choose to combine?
+
+    Check out `programmable web <http://www.programmableweb.com/apis/directory>`_
+    to see some of the possibilities
 
 
-Addenda
--------
-
-Altough we do not have class time to do walkthrough examples of using XML-RPC
-and SOAP, I have provided exercises in each as an addenda to this session. If
-you have the time and the interest, please try them out.
-
-.. class:: center
-
-`Web Service API Addenda <session03-addenda.html>`_
 
 
 Homework
+========
+
+.. rst-class:: left
+.. container::
+
+    For your homework this week, you'll be polishing this mashup.
+
+    .. rst-class:: build
+    .. container::
+
+        Begin by sorting the results of our search by the average score.
+
+        Then, update your script to allow the user to choose how to sort, by
+        average, high score or most inspections::
+
+            (soupenv)$ python mashup.py highscore
+
+        Next, allow the user to choose how many results to map::
+
+            (soupenv)$ python mashup.py highscore 25
+
+        Or allow them to reverse the results, showing the lowest scores first::
+
+            (soupenv)$ python mashup.py highscore 25 reverse
+
+        If you're feeling particularly adventurous, see if you can use the
+        `argparse`_ module from the standard library to handle command line
+        arguments
+
+.. _argparse: https://docs.python.org/2/library/argparse.html#module-argparse
+
+More Fun
 --------
 
-For your homework this week, you'll be creating a mashup of your own.
+Next, try adding a bit of information to your map by setting the
+``marker-color`` property. This will display a marker with the provided
+css-style color (``#FF0000``)
 
 .. rst-class:: build
+.. container::
 
-Use the programmable web api directory from above as a source of inspiration.
+    See if you can make the color change according to the values used for the
+    sorting of the list.  Either vary the intensity of the color, or the hue.
 
-.. rst-class:: build
+    Finally, if you are feeling particularly frisky, you can update your script
+    to automatically open a browser window with your map loaded on
+    *geojson.io*.
 
-Your mashup should combine at least two sources of data in some way that
-tickles your fancy.
+    To do this, you'll want to read about the `webbrowser`_ module from the
+    standard library.
 
-.. rst-class:: build
+    In addition, you'll want to read up on using the URL parameters API for
+    *geojson.io*.  Click on the **help** tab in the sidebar to view the
+    information.
 
-Your results need not look pretty. Focus on data acquisition and processing.
+    You will also need to learn about how to properly quote special characters
+    for a URL, using the `urllib`_ ``quote`` function.
 
+.. _urllib: https://docs.python.org/2/library/urllib.html#urllib.quote
+.. _webbrowser: https://docs.python.org/2/library/webbrowser.html
 
-Submitting Your Homework
-------------------------
+Submitting Your Work
+--------------------
 
-To submit your homework:
+Create a github repository to contain your mashup work. Start by populating it
+with the script as we finished it today (mashup_5.py).
 
-* Create a new python script in ``assignments/session03``. It should be
-  something I can run with::
+As you implement the above features, commit early and commit often.
 
-    $ python your_script.py
+When you're ready for us to look it over, email a link to your repository to
+Maria and I.
 
-* Provide me with a text file describing what you did. Tell me about the
-  sources you use, how you combine them, what you hoped to achieve.
+Final Thoughts
+--------------
 
-* Include any instruction I might need to successfully run your script.
+In preparation for our work next week, I'd like you to get started a bit ahead
+of time.
 
-* Commit your changes to your fork of the repo in github, then open a pull
-  request.
+Please read and follow along with this `basic intro to Django`_.
 
-
-Extra Credit
-------------
-
-Bonus points if you write unit tests for the elements of your mashup.  
-
+.. _basic intro to Django: django-intro
