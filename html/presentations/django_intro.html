@@ -1,0 +1,978 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>An Introduction To Django &mdash; Internet Programming with Python</title>
+    
+    <link rel="stylesheet" href="../_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Internet Programming with Python" href="../index.html" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head>
+  <body>
+<div class="header">
+  <div class="logo">
+    <a href="../index.html">
+      <img class="logo" src="../_static/logo_UW.png" alt="Logo"/>
+    </a>
+  </div>
+</div>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="../index.html">UWPCE Python 200</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="an-introduction-to-django">
+<h1>An Introduction To Django<a class="headerlink" href="#an-introduction-to-django" title="Permalink to this headline">¶</a></h1>
+<span class="admonition-internet-programming-with-python"></span><p>In this tutorial, you&#8217;ll walk through creating a very simple microblog
+application using Django.</p>
+<div class="section" id="practice-safe-development">
+<h2>Practice Safe Development<a class="headerlink" href="#practice-safe-development" title="Permalink to this headline">¶</a></h2>
+<p>We&#8217;ll install Django and any other packages we use with it in a virtualenv.</p>
+<p>This will ensure that it is isolated from everything else we do in class
+(and vice versa)</p>
+<p>Remember the basic format for creating a virtualenv:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ python virtualenv.py [options] &lt;ENV&gt;
+&lt;or&gt;
+$ virtualenv [options] &lt;ENV&gt;
+</pre></div>
+</div>
+<div class="section" id="set-up-a-virtualenv">
+<h3>Set Up a VirtualEnv<a class="headerlink" href="#set-up-a-virtualenv" title="Permalink to this headline">¶</a></h3>
+<p>Start by creating your virtualenv:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ python virtualenv.py djangoenv
+&lt;or&gt;
+$ virtualenv djangoenv
+...
+</pre></div>
+</div>
+<p>Then, activate it:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ source djangoenv/bin/activate
+&lt;or&gt;
+C:\&gt; djangoenv\Scripts\activate
+</pre></div>
+</div>
+</div>
+<div class="section" id="install-django">
+<h3>Install Django<a class="headerlink" href="#install-django" title="Permalink to this headline">¶</a></h3>
+<p>Finally, install Django 1.7.4 using <tt class="docutils literal"><span class="pre">pip</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre>(djangoenv)$ pip install Django==1.7.4
+Downloading/unpacking Django==1.7.4
+  Downloading Django-1.7.4-py2.py3-none-any.whl (7.4MB): 7.4MB downloaded
+Installing collected packages: django
+Successfully installed django
+Cleaning up...
+(djangoenv)$
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="our-project">
+<h2>Our Project<a class="headerlink" href="#our-project" title="Permalink to this headline">¶</a></h2>
+<p>Everything in Django stems from the <em>project</em>. To get started learning, we&#8217;ll
+create one. We&#8217;ll use a script installed by Django, <tt class="docutils literal"><span class="pre">django-admin.py</span></tt>:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>djangoenv<span class="o">)</span><span class="nv">$ </span>django-admin.py startproject mysite
+</pre></div>
+</div>
+<p>This will create a folder called &#8216;mysite&#8217;. The folder contains the following
+structure:</p>
+<div class="highlight-python"><div class="highlight"><pre>mysite
+├── manage.py
+└── mysite
+    ├── __init__.py
+    ├── settings.py
+    ├── urls.py
+    └── wsgi.py
+</pre></div>
+</div>
+<p>If what you see doesn&#8217;t match that, you&#8217;re using an older version of Django.
+Make sure you&#8217;ve installed 1.7.4</p>
+<div class="section" id="what-got-created">
+<h3>What Got Created<a class="headerlink" href="#what-got-created" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><strong>outer *mysite* folder</strong>: this is just a container and can be renamed or
+moved at will</li>
+<li><strong>inner *mysite* folder</strong>: this is your project directory. It should not be
+renamed.</li>
+<li><strong>__init__.py</strong>: magic file that makes <em>mysite</em> a python package.</li>
+<li><strong>settings.py</strong>: file which holds configuration for your project, more soon.</li>
+<li><strong>urls.py</strong>: file which holds top-level URL configuration for your project,
+more soon.</li>
+<li><strong>wsgi.py</strong>: binds a wsgi application created from your project to the
+symbol <tt class="docutils literal"><span class="pre">application</span></tt></li>
+<li><strong>manage.py</strong>: a management control script.</li>
+</ul>
+<p><em>django-admin.py</em> provides a hook for administrative tasks and abilities:</p>
+<ul class="simple">
+<li>creating a new project or app</li>
+<li>running the development server</li>
+<li>executing tests</li>
+<li>entering a python interpreter</li>
+<li>entering a database shell session with your database</li>
+<li>much much more (run <tt class="docutils literal"><span class="pre">django-admin.py</span></tt> without an argument)</li>
+</ul>
+<p><em>manage.py</em> wraps this functionality, adding the full environment of your
+project.</p>
+</div>
+<div class="section" id="how-manage-py-works">
+<h3>How <em>manage.py</em> Works<a class="headerlink" href="#how-manage-py-works" title="Permalink to this headline">¶</a></h3>
+<p>Look in the <tt class="docutils literal"><span class="pre">manage.py</span></tt> script Django created for you. You&#8217;ll see this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s">&quot;DJANGO_SETTINGS_MODULE&quot;</span><span class="p">,</span> <span class="s">&quot;mysite.settings&quot;</span><span class="p">)</span>
+
+    <span class="kn">from</span> <span class="nn">django.core.management</span> <span class="kn">import</span> <span class="n">execute_from_command_line</span>
+
+    <span class="n">execute_from_command_line</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The environmental var <tt class="docutils literal"><span class="pre">DJANGO_SETTINGS_MODULE</span></tt> is how the <tt class="docutils literal"><span class="pre">manage.py</span></tt>
+script is made aware of your project&#8217;s environment. This is why you shouldn&#8217;t
+rename the project package.</p>
+</div>
+<div class="section" id="development-server">
+<h3>Development Server<a class="headerlink" href="#development-server" title="Permalink to this headline">¶</a></h3>
+<p>At this point, you should be ready to use the development server:</p>
+<div class="highlight-python"><div class="highlight"><pre>(djangoenv)$ cd mysite
+(djangoenv)$ python manage.py runserver
+...
+</pre></div>
+</div>
+<p>You&#8217;ll see a scary warning about unapplied migrations.  Ignore it for a moment.
+Instead, load <tt class="docutils literal"><span class="pre">http://localhost:8000</span></tt> in your browser. You should see this:</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/django-start.png"><img alt="../_images/django-start.png" src="../_images/django-start.png" style="width: 98%;" /></a>
+</div>
+<p class="build center"><strong>Do you?</strong></p>
+</div>
+<div class="section" id="connecting-a-database">
+<h3>Connecting A Database<a class="headerlink" href="#connecting-a-database" title="Permalink to this headline">¶</a></h3>
+<p>Django supplies its own ORM (Object-Relational Mapper). This ORM sits on top of
+the DB-API implementation you choose. You must provide connection information
+through Django configuration.</p>
+<p>All Django configuration takes place in <tt class="docutils literal"><span class="pre">settings.py</span></tt> in your project
+folder.</p>
+<p>Edit your <tt class="docutils literal"><span class="pre">settings.py</span></tt> to match:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">DATABASES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;ENGINE&#39;</span><span class="p">:</span> <span class="s">&#39;django.db.backends.sqlite3&#39;</span><span class="p">,</span>
+        <span class="s">&#39;NAME&#39;</span><span class="p">:</span> <span class="s">&#39;mysite.db&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>There are other database settings, but they are not used with sqlite3, we&#8217;ll
+ignore them for now.</p>
+<p>Django&#8217;s ORM provides a layer of <em>abstraction</em> between you and SQL. You write
+Python classes called <em>models</em> describing the objects that make up your system.
+The ORM handles converting data from these objects into SQL statements (and
+back). We&#8217;ll learn much more about this in a bit.</p>
+<p>The final step in preparing to work is to set up the database. You do this by
+running <em>migrations</em>.  These migrations create the tables needed to support the
+models that are required by Django out of the box.</p>
+<p>Run the following command:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>djangoenv<span class="o">)</span><span class="nv">$ </span>python manage.py migrate
+Operations to perform:
+  Apply all migrations: admin, contenttypes, auth, sessions
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying auth.0001_initial... OK
+  Applying admin.0001_initial... OK
+  Applying sessions.0001_initial... OK
+</pre></div>
+</div>
+<p>Great!  Now we can set up an initial user who&#8217;ll be able to do anything, a
+<em>superuser</em>.  Again, we&#8217;ll use <tt class="docutils literal"><span class="pre">manage.py</span></tt>:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>djangoenv<span class="o">)</span><span class="nv">$ </span>python manage.py createsuperuser
+Username <span class="o">(</span>leave blank to use <span class="s1">&#39;cewing&#39;</span><span class="o">)</span>:
+Email address: cris@crisewing.com
+Password:
+Password <span class="o">(</span>again<span class="o">)</span>:
+Superuser created successfully.
+</pre></div>
+</div>
+<p>Notice that as you type your password, it will not appear on the screen.  Don&#8217;t
+worry, it&#8217;s actually being recorded.  You just can&#8217;t see it (and neither can
+than snoopy git looking over your shoulder).</p>
+</div>
+</div>
+<div class="section" id="projects-and-apps">
+<h2>Projects and Apps<a class="headerlink" href="#projects-and-apps" title="Permalink to this headline">¶</a></h2>
+<p>We&#8217;ve created a Django <em>project</em>. In Django a project represents a whole
+website:</p>
+<ul class="simple">
+<li>global configuration settings</li>
+<li>inclusion points for additional functionality</li>
+<li>master list of URL endpoints</li>
+</ul>
+<p>A Django <em>app</em> encapsulates a unit of functionality:</p>
+<ul class="simple">
+<li>A blog section</li>
+<li>A discussion forum</li>
+<li>A content tagging system</li>
+</ul>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">One <em>project</em> can (and likely will) consist of many <em>apps</em></p>
+</div>
+<p>Django already includes some <em>apps</em> for you.</p>
+<div class="incremental container">
+<p>They&#8217;re in <tt class="docutils literal"><span class="pre">settings.py</span></tt> in the <tt class="docutils literal"><span class="pre">INSTALLED_APPS</span></tt> setting:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s">&#39;django.contrib.admin&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.auth&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.contenttypes&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.sessions&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.messages&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.staticfiles&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="our-class-app">
+<h3>Our Class App<a class="headerlink" href="#our-class-app" title="Permalink to this headline">¶</a></h3>
+<p>We are going to build an <em>app</em> to add to our <em>project</em>. To start with our app
+will be a simple blog. As stated above, an <em>app</em> represents a unit within a
+system, the <em>project</em>. We have a project, we need to create an <em>app</em></p>
+<p>This is accomplished using <tt class="docutils literal"><span class="pre">manage.py</span></tt>. In your terminal, make sure you are
+in the <em>outer</em> mysite directory, where the file <tt class="docutils literal"><span class="pre">manage.py</span></tt> is located.
+Then:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>djangoenv<span class="o">)</span><span class="nv">$ </span>python manage.py startapp myblog
+</pre></div>
+</div>
+<p>This should leave you with the following structure:</p>
+<dl class="class">
+<dt id="small">
+<em class="property">class </em><tt class="descname">small</tt><a class="headerlink" href="#small" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python"><div class="highlight"><pre>mysite
+├── db.sqlite3
+├── manage.py
+├── myblog
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── migrations
+│   │   └── __init__.py
+│   ├── models.py
+│   ├── tests.py
+│   └── views.py
+└── mysite
+    ├── __init__.py
+    ├── settings.py
+    ├── urls.py
+    └── wsgi.py
+</pre></div>
+</div>
+<p>Like our Pyramid site, Django divides up functionality by module. You&#8217;ll create
+ORM model classes in the <tt class="docutils literal"><span class="pre">models.py</span></tt> file, view code in the <tt class="docutils literal"><span class="pre">views.py</span></tt>
+file, and so on.</p>
+<p>We&#8217;ll start by defining the main Python class for our blog system, a <tt class="docutils literal"><span class="pre">Post</span></tt>.</p>
+</div>
+<div class="section" id="django-models">
+<h3>Django Models<a class="headerlink" href="#django-models" title="Permalink to this headline">¶</a></h3>
+<p>Any Python class in Django that is meant to be persisted <em>must</em> inherit from
+the Django <tt class="docutils literal"><span class="pre">Model</span></tt> class. This base class hooks in to the ORM functionality
+converting Python code to SQL. You can override methods from the base <tt class="docutils literal"><span class="pre">Model</span></tt>
+class to alter how this works or write new methods to add functionality.</p>
+<p>Learn more about <a class="reference external" href="https://docs.djangoproject.com/en/1.7/topics/db/models/">models</a></p>
+</div>
+<div class="section" id="our-post-model">
+<h3>Our Post Model<a class="headerlink" href="#our-post-model" title="Permalink to this headline">¶</a></h3>
+<p>Open the <tt class="docutils literal"><span class="pre">models.py</span></tt> file created in our <tt class="docutils literal"><span class="pre">myblog</span></tt> package. Add the
+following:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span> <span class="c">#&lt;-- This is already in the file</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
+
+<span class="k">class</span> <span class="nc">Post</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">author</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>
+    <span class="n">created_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">modified_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">published_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This code defines a subclass of the Django <tt class="docutils literal"><span class="pre">Model</span></tt> class and added a bunch of
+attributes.</p>
+<ul class="simple">
+<li>These attributes are all instances of <tt class="docutils literal"><span class="pre">Field</span></tt> classes defined in Django</li>
+<li>Field attributes on a model map to columns in a database table</li>
+<li>The arguments you provide to each Field customize how it works<ul>
+<li>This means <em>both</em> how it operates in Django <em>and</em> how it is defined in SQL</li>
+</ul>
+</li>
+<li>There are arguments shared by all Field types</li>
+<li>There are also arguments specific to individual types</li>
+</ul>
+<p>You can read much more about
+<a class="reference external" href="https://docs.djangoproject.com/en/1.7/ref/models/fields/">Model Fields and options</a></p>
+<p>There are some features of our fields worth mentioning in specific. Notice we
+have no field that is designated as the <em>primary key</em></p>
+<ul class="simple">
+<li>You <em>can</em> make a field the primary key by adding <tt class="docutils literal"><span class="pre">primary_key=True</span></tt> in the
+arguments</li>
+<li>If you do not, Django will <strong>automatically</strong> create one. This field is always
+called <tt class="docutils literal"><span class="pre">id</span></tt></li>
+<li>No matter what the primary key field is called, its <em>value</em> is always
+available on a model instance as the <tt class="docutils literal"><span class="pre">pk</span></tt> attribute: <tt class="docutils literal"><span class="pre">instance.pk</span></tt></li>
+</ul>
+</div>
+<div class="section" id="field-details">
+<h3>Field Details<a class="headerlink" href="#field-details" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">title</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>The required <tt class="docutils literal"><span class="pre">max_length</span></tt> argument is specific to <tt class="docutils literal"><span class="pre">CharField</span></tt> fields.</li>
+<li>It affects <em>both</em> the Python and SQL behavior of a field.</li>
+<li>In python, it is used to <em>validate</em> supplied values during <em>model validation</em></li>
+<li>In SQL it is used in the column definition: <tt class="docutils literal"><span class="pre">VARCHAR(128)</span></tt></li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">author</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>Django also models SQL <em>relationships</em> as specific field types.</li>
+<li>The required positional argument is the class of the related Model.</li>
+<li>By default, the reverse relation is implemented as the attribute
+<tt class="docutils literal"><span class="pre">&lt;fieldname&gt;_set</span></tt>.</li>
+<li>You can override this by providing the <tt class="docutils literal"><span class="pre">related_name</span></tt> argument.</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">created_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">modified_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">auto_now_add</span></tt> is available on all date and time fields. It sets the value
+of the field to <em>now</em> when an instance is first saved.</li>
+<li><tt class="docutils literal"><span class="pre">auto_now</span></tt> is similar, but sets the value anew each time an instance is
+saved.</li>
+<li>Setting either of these will cause the <tt class="docutils literal"><span class="pre">editable</span></tt> attribute of a field to
+be set to <tt class="docutils literal"><span class="pre">False</span></tt>.</li>
+<li>This does not mean you can&#8217;t update these values, only that they will not
+show in forms by default.</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">text</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="c"># ...</span>
+<span class="n">published_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>The argument <tt class="docutils literal"><span class="pre">blank</span></tt> is shared across all field types. The default is
+<tt class="docutils literal"><span class="pre">False</span></tt></li>
+<li>This argument affects only the Python behavior of a field, determining if the
+field is <em>required</em></li>
+<li>The related <tt class="docutils literal"><span class="pre">null</span></tt> argument affects the SQL definition of a field: is the
+column NULL or NOT NULL</li>
+</ul>
+</div>
+<div class="section" id="installing-apps">
+<h3>Installing Apps<a class="headerlink" href="#installing-apps" title="Permalink to this headline">¶</a></h3>
+<p>In order to use our new model, we need Django to know about our <em>app</em>. This is
+accomplished by configuration in the <tt class="docutils literal"><span class="pre">settings.py</span></tt> file. Open that file now,
+in your editor, and find the INSTALLED_APPS setting.</p>
+<p>You extend Django functionality by <em>installing apps</em>. This is pretty simple:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s">&#39;django.contrib.admin&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.auth&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.contenttypes&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.sessions&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.messages&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.staticfiles&#39;</span><span class="p">,</span>
+    <span class="s">&#39;myblog&#39;</span><span class="p">,</span> <span class="c"># &lt;- YOU ADD THIS PART</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Once Django is made aware of the existence of this new app, it can  make a new
+<em>migration</em> that will set up the tables for this new class automatically.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>djangoenv<span class="o">)</span><span class="nv">$ </span>python manage.py makemigrations myblog
+Migrations <span class="k">for</span> <span class="s1">&#39;myblog&#39;</span>:
+  0001_initial.py:
+    - Create model Post
+</pre></div>
+</div>
+<p>And now you can run that migration to make the changes to your database:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>djangoenv<span class="o">)</span><span class="nv">$ </span>python manage.py migrate
+Operations to perform:
+  Apply all migrations: admin, myblog, contenttypes, auth, sessions
+Running migrations:
+  Applying myblog.0001_initial... OK
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="the-django-shell">
+<h2>The Django Shell<a class="headerlink" href="#the-django-shell" title="Permalink to this headline">¶</a></h2>
+<p>Django provides a management command <tt class="docutils literal"><span class="pre">shell</span></tt>:</p>
+<ul class="simple">
+<li>Shares the same <tt class="docutils literal"><span class="pre">sys.path</span></tt> as your project, so all installed python
+packages are present.</li>
+<li>Imports the <tt class="docutils literal"><span class="pre">settings.py</span></tt> file from your project, and so shares all
+installed apps and other settings.</li>
+<li>Handles connections to your database, so you can interact with live data
+directly.</li>
+</ul>
+<p>Let&#8217;s explore the Model Instance API directly using this shell:</p>
+<div class="highlight-python"><div class="highlight"><pre>(djangoenv)$ python manage.py shell
+</pre></div>
+</div>
+<p>Instances of our model can be created by simple instantiation:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">myblog.models</span> <span class="kn">import</span> <span class="n">Post</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p1</span> <span class="o">=</span> <span class="n">Post</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">&quot;My first post&quot;</span><span class="p">,</span>
+<span class="gp">... </span>          <span class="n">text</span><span class="o">=</span><span class="s">&quot;This is the first post I&#39;ve written&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p1</span>
+<span class="go">&lt;Post: Post object&gt;</span>
+</pre></div>
+</div>
+<p>We can also validate that our new object is okay before we try to save it:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">p1</span><span class="o">.</span><span class="n">full_clean</span><span class="p">()</span>
+<span class="gt">Traceback (most recent call last):</span>
+  <span class="c">...</span>
+<span class="gr">ValidationError</span>: <span class="n">{&#39;author&#39;: [u&#39;This field cannot be null.&#39;]}</span>
+</pre></div>
+</div>
+<div class="section" id="django-model-managers">
+<h3>Django Model Managers<a class="headerlink" href="#django-model-managers" title="Permalink to this headline">¶</a></h3>
+<p>We have to hook our <tt class="docutils literal"><span class="pre">Post</span></tt> to an author, which must be a <tt class="docutils literal"><span class="pre">User</span></tt>. To do
+this, we need to have an instance of the <tt class="docutils literal"><span class="pre">User</span></tt> class. We can use the
+<tt class="docutils literal"><span class="pre">User</span></tt> <em>model manager</em> to run table-level operations like <tt class="docutils literal"><span class="pre">SELECT</span></tt>.</p>
+<p>All Django models have a <em>manager</em>. By default it is accessed through the
+<tt class="docutils literal"><span class="pre">objects</span></tt> class attribute.</p>
+<p>Let&#8217;s use the <em>manager</em> to get an instance of the <tt class="docutils literal"><span class="pre">User</span></tt> class:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">all_users</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">all_users</span>
+<span class="go">[&lt;User: cewing&gt;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u1</span> <span class="o">=</span> <span class="n">all_users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p1</span><span class="o">.</span><span class="n">author</span> <span class="o">=</span> <span class="n">u1</span>
+</pre></div>
+</div>
+<p>And now our instance should validate properly:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">p1</span><span class="o">.</span><span class="n">full_clean</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="saving-new-objects">
+<h3>Saving New Objects<a class="headerlink" href="#saving-new-objects" title="Permalink to this headline">¶</a></h3>
+<p>Our model has three date fields, two of which are supposed to be
+auto-populated:</p>
+<dl class="class">
+<dt id="python">
+<em class="property">class </em><tt class="descname">python</tt><a class="headerlink" href="#python" title="Permalink to this definition">¶</a></dt>
+<dd><div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">p1</span><span class="o">.</span><span class="n">created_date</span><span class="p">)</span>
+<span class="go">None</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">p1</span><span class="o">.</span><span class="n">modified_date</span><span class="p">)</span>
+<span class="go">None</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<p>Although we&#8217;ve instantiated a Post object, it doesn&#8217;t have these values yet.
+That&#8217;s because a model is not <em>created</em> until it&#8217;s saved into the database.
+When we save our post, these fields will get values assigned:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">p1</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p1</span><span class="o">.</span><span class="n">created_date</span>
+<span class="go">datetime.datetime(2015, 2, 15, 9, 3, 13, 719381, tzinfo=&lt;UTC&gt;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p1</span><span class="o">.</span><span class="n">modified_date</span>
+<span class="go">datetime.datetime(2015, 2, 15, 9, 3, 13, 719932, tzinfo=&lt;UTC&gt;)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="updating-an-instance">
+<h3>Updating An Instance<a class="headerlink" href="#updating-an-instance" title="Permalink to this headline">¶</a></h3>
+<p>Models operate much like &#8216;normal&#8217; python objects. To change the value of a
+field, simply set the instance attribute to a new value. Call <tt class="docutils literal"><span class="pre">save()</span></tt> to
+persist the change:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">p1</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">p1</span><span class="o">.</span><span class="n">title</span> <span class="o">+</span> <span class="s">&quot; (updated)&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p1</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p1</span><span class="o">.</span><span class="n">title</span>
+<span class="go">&#39;My first post (updated)&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-a-few-posts">
+<h3>Create a Few Posts<a class="headerlink" href="#create-a-few-posts" title="Permalink to this headline">¶</a></h3>
+<p>Let&#8217;s create a few more posts so we can explore the Django model manager query
+API:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">p2</span> <span class="o">=</span> <span class="n">Post</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">&quot;Another post&quot;</span><span class="p">,</span>
+<span class="gp">... </span>          <span class="n">text</span><span class="o">=</span><span class="s">&quot;The second one created&quot;</span><span class="p">,</span>
+<span class="gp">... </span>          <span class="n">author</span><span class="o">=</span><span class="n">u1</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p3</span> <span class="o">=</span> <span class="n">Post</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">&quot;The third one&quot;</span><span class="p">,</span>
+<span class="gp">... </span>          <span class="n">text</span><span class="o">=</span><span class="s">&quot;With the word &#39;heffalump&#39;&quot;</span><span class="p">,</span>
+<span class="gp">... </span>          <span class="n">author</span><span class="o">=</span><span class="n">u1</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p4</span> <span class="o">=</span> <span class="n">Post</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">&quot;Posters are great decoration&quot;</span><span class="p">,</span>
+<span class="gp">... </span>          <span class="n">text</span><span class="o">=</span><span class="s">&quot;When you are a poor college student&quot;</span><span class="p">,</span>
+<span class="gp">... </span>          <span class="n">author</span><span class="o">=</span><span class="n">u1</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<span class="go">4</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="the-django-query-api">
+<h3>The Django Query API<a class="headerlink" href="#the-django-query-api" title="Permalink to this headline">¶</a></h3>
+<p>The <em>manager</em> on each model class supports a full-featured query API. API
+methods take keyword arguments, where the keywords are special constructions
+combining field names with field <em>lookups</em>.  The double-underscore character
+separates the name of a field from the <em>lookup</em> value.</p>
+<ul class="build small simple">
+<li>title__exact=&#8221;The exact title&#8221;</li>
+<li>text__contains=&#8221;decoration&#8221;</li>
+<li>id__in=range(1,4)</li>
+<li>published_date__lte=datetime.datetime.now()</li>
+</ul>
+<p>Each keyword argument adds to the query that will be used to find matching
+objects.</p>
+</div>
+<div class="section" id="querysets">
+<h3>QuerySets<a class="headerlink" href="#querysets" title="Permalink to this headline">¶</a></h3>
+<p>A <tt class="docutils literal"><span class="pre">QuerySet</span></tt> is a special type of object that maintains a relationship to the
+database. Query API methods can be divided into two basic groups: methods that
+return <tt class="docutils literal"><span class="pre">QuerySets</span></tt> and those that do not.</p>
+<p>The former may be chained without hitting the database:</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span> <span class="c">#&lt;-- no query yet</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">title__icontains</span><span class="o">=</span><span class="s">&quot;post&quot;</span><span class="p">)</span> <span class="c">#&lt;-- not yet</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">text__contains</span><span class="o">=</span><span class="s">&quot;created&quot;</span><span class="p">)</span> <span class="c">#&lt;-- nope</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[(</span><span class="n">p</span><span class="o">.</span><span class="n">title</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">text</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">c</span><span class="p">]</span> <span class="c">#&lt;-- This will issue the query</span>
+</pre></div>
+</div>
+<p>Conversely, the latter will issue an SQL query when executed.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="c"># immediately executes an SQL query</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="querysets-and-sql">
+<h3>QuerySets and SQL<a class="headerlink" href="#querysets-and-sql" title="Permalink to this headline">¶</a></h3>
+<p>If you are curious, you can see the SQL that a given QuerySet will use:</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">query</span><span class="p">)</span>
+<span class="go">SELECT &quot;myblog_post&quot;.&quot;id&quot;, &quot;myblog_post&quot;.&quot;title&quot;,</span>
+<span class="go">    &quot;myblog_post&quot;.&quot;text&quot;, &quot;myblog_post&quot;.&quot;author_id&quot;,</span>
+<span class="go">    &quot;myblog_post&quot;.&quot;created_date&quot;, &quot;myblog_post&quot;.&quot;modified_date&quot;,</span>
+<span class="go">    &quot;myblog_post&quot;.&quot;published_date&quot;</span>
+<span class="go">FROM &quot;myblog_post&quot;</span>
+<span class="go">WHERE (&quot;myblog_post&quot;.&quot;title&quot; LIKE %post% ESCAPE &#39;\&#39;</span>
+<span class="go">       AND NOT (&quot;myblog_post&quot;.&quot;text&quot; LIKE %created% ESCAPE &#39;\&#39; )</span>
+<span class="go">)</span>
+</pre></div>
+</div>
+<p>The SQL will vary depending on which DBAPI backend you use (yay ORM!!!)</p>
+</div>
+<div class="section" id="exploring-the-queryset-api">
+<h3>Exploring the QuerySet API<a class="headerlink" href="#exploring-the-queryset-api" title="Permalink to this headline">¶</a></h3>
+<p>See <a class="reference external" href="https://docs.djangoproject.com/en/1.7/ref/models/querysets">https://docs.djangoproject.com/en/1.7/ref/models/querysets</a></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">pk</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&#39;created_date&#39;</span><span class="p">)]</span>
+<span class="go">[1, 2, 3, 4]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">pk</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&#39;-created_date&#39;</span><span class="p">)]</span>
+<span class="go">[4, 3, 2, 1]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">pk</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">title__contains</span><span class="o">=</span><span class="s">&#39;post&#39;</span><span class="p">)]</span>
+<span class="go">[1, 2, 4]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">pk</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">title__contains</span><span class="o">=</span><span class="s">&#39;post&#39;</span><span class="p">)]</span>
+<span class="go">[3]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qs</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">title__contains</span><span class="o">=</span><span class="s">&#39;post&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qs</span> <span class="o">=</span> <span class="n">qs</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">id__exact</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">pk</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">qs</span><span class="p">]</span>
+<span class="go">[]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qs</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">title__contains</span><span class="o">=</span><span class="s">&#39;post&#39;</span><span class="p">,</span> <span class="n">id__exact</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">pk</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">qs</span><span class="p">]</span>
+<span class="go">[1, 2, 3, 4]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="updating-via-querysets">
+<h3>Updating via QuerySets<a class="headerlink" href="#updating-via-querysets" title="Permalink to this headline">¶</a></h3>
+<p>You can update all selected objects at the same time.</p>
+<p class="build">Changes are persisted without needing to call <tt class="docutils literal"><span class="pre">save</span></tt>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">qs</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">published_date</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">qs</span><span class="p">]</span>
+<span class="go">[None, None, None, None]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">django.utils.timezone</span> <span class="kn">import</span> <span class="n">UTC</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">utc</span> <span class="o">=</span> <span class="n">UTC</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">utc</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">published_date</span><span class="o">=</span><span class="n">now</span><span class="p">)</span>
+<span class="go">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">published_date</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">qs</span><span class="p">]</span>
+<span class="go">[datetime.datetime(2015, 2, 15, 9, 11, 32, 214189, tzinfo=&lt;UTC&gt;),</span>
+<span class="go"> ...]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="testing-our-model">
+<h2>Testing Our Model<a class="headerlink" href="#testing-our-model" title="Permalink to this headline">¶</a></h2>
+<p>As with any project, we want to test our work. Django provides a testing
+framework to allow this. Django supports both <em>unit tests</em> and <em>doctests</em>. I
+strongly suggest using <em>unit tests</em>. You add tests for your <em>app</em> to the file
+<tt class="docutils literal"><span class="pre">tests.py</span></tt>, which should be at the same package level as <tt class="docutils literal"><span class="pre">models.py</span></tt>.</p>
+<p>Locate and open this file in your editor.</p>
+<div class="section" id="django-testcase-classes">
+<h3>Django TestCase Classes<a class="headerlink" href="#django-testcase-classes" title="Permalink to this headline">¶</a></h3>
+<p><strong>SimpleTestCase</strong> is for basic unit testing with no ORM requirements</p>
+<p><strong>TransactionTestCase</strong> is useful if you need to test transactional
+actions (commit and rollback) in the ORM</p>
+<p><strong>TestCase</strong> is used when you require ORM access and a test client</p>
+<p><strong>LiveServerTestCase</strong> launches the django server during test runs for
+front-end acceptance tests.</p>
+<p>Sometimes testing requires base data to be present. We need a User for ours.
+Django provides <em>fixtures</em> to handle this need. Create a directory called
+<tt class="docutils literal"><span class="pre">fixtures</span></tt> inside your <tt class="docutils literal"><span class="pre">myblog</span></tt> app directory. This new folder should be
+adjacent to the <tt class="docutils literal"><span class="pre">tests.py</span></tt> file.</p>
+<p class="build">Copy the file <tt class="docutils literal"><span class="pre">myblog_test_fixture.json</span></tt> from the <tt class="docutils literal"><span class="pre">resources/session08</span></tt>
+into this directory, it contains users for our tests.</p>
+<p>Now that we have a fixture, we need to instruct our tests to use it.</p>
+<p>Edit <tt class="docutils literal"><span class="pre">tests.py</span></tt> to look like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.test</span> <span class="kn">import</span> <span class="n">TestCase</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
+
+<span class="k">class</span> <span class="nc">PostTestCase</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="n">fixtures</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;myblog_test_fixture.json&#39;</span><span class="p">,</span> <span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="our-first-enhancement">
+<h3>Our First Enhancement<a class="headerlink" href="#our-first-enhancement" title="Permalink to this headline">¶</a></h3>
+<p>Look at the way our Post represents itself in the Django shell:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()]</span>
+<span class="go">[&lt;Post: Post object&gt;, &lt;Post: Post object&gt;,</span>
+<span class="go"> &lt;Post: Post object&gt;, &lt;Post: Post object&gt;]</span>
+</pre></div>
+</div>
+<p>Wouldn&#8217;t it be nice if the posts showed their titles instead? In Django, the
+<tt class="docutils literal"><span class="pre">__unicode__</span></tt> method is used to determine how a Model instance represents
+itself. Then, calling <tt class="docutils literal"><span class="pre">unicode(instance)</span></tt> gives the desired result.</p>
+<p>Let&#8217;s write a test that demonstrates our desired outcome:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># add this import at the top</span>
+<span class="kn">from</span> <span class="nn">myblog.models</span> <span class="kn">import</span> <span class="n">Post</span>
+
+<span class="c"># and this test method to the PostTestCase</span>
+<span class="k">def</span> <span class="nf">test_unicode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">expected</span> <span class="o">=</span> <span class="s">&quot;This is a title&quot;</span>
+    <span class="n">p1</span> <span class="o">=</span> <span class="n">Post</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">expected</span><span class="p">)</span>
+    <span class="n">actual</span> <span class="o">=</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">p1</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">actual</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To run tests, use the <tt class="docutils literal"><span class="pre">test</span></tt> management command. Without arguments, it will
+run all TestCases it finds in all installed <em>apps</em>. You can pass the name of a
+single app to focus on those tests.</p>
+<p>Quit your Django shell and in your terminal run the test we wrote:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>djangoenv<span class="o">)</span><span class="nv">$ </span>python manage.py <span class="nb">test </span>myblog
+</pre></div>
+</div>
+<p>We have yet to implement this enhancement, so our test should fail:</p>
+<div class="highlight-python"><div class="highlight"><pre>Creating test database for alias &#39;default&#39;...
+F
+======================================================================
+FAIL: test_unicode (myblog.tests.PostTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File &quot;/Users/cewing/projects/training/uw_pce/training.python_web/scripts/session07/mysite/myblog/tests.py&quot;, line 15, in test_unicode
+    self.assertEqual(expected, actual)
+AssertionError: &#39;This is a title&#39; != u&#39;Post object&#39;
+
+----------------------------------------------------------------------
+Ran 1 test in 0.007s
+
+FAILED (failures=1)
+Destroying test database for alias &#39;default&#39;...
+</pre></div>
+</div>
+<p>Let&#8217;s add an appropriate <tt class="docutils literal"><span class="pre">__unicode__</span></tt> method to our Post class.</p>
+<ul class="simple">
+<li>It will take <tt class="docutils literal"><span class="pre">self</span></tt> as its only argument</li>
+<li>And it should return its own title as the result</li>
+<li>Go ahead and take a stab at this in <tt class="docutils literal"><span class="pre">models.py</span></tt></li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Post</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="c">#...</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span>
+</pre></div>
+</div>
+<p>Re-run the tests to see if that worked:</p>
+<div class="highlight-python"><div class="highlight"><pre>(djangoenv)$ python manage.py test myblog
+Creating test database for alias &#39;default&#39;...
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.007s
+
+OK
+Destroying test database for alias &#39;default&#39;...
+</pre></div>
+</div>
+<p class="centered"><strong>YIPEEEE!</strong></p>
+</div>
+<div class="section" id="what-to-test">
+<h3>What to Test<a class="headerlink" href="#what-to-test" title="Permalink to this headline">¶</a></h3>
+<p>In any framework, the question arises of what to test. Much of your app&#8217;s
+functionality is provided by framework tools. Does that need testing? I
+<em>usually</em> don&#8217;t write tests covering features provided directly by the
+framework. I <em>do</em> write tests for functionality I add, and for places where I
+make changes to how the default functionality works. This is largely a matter
+of style and taste (and of budget).</p>
+<p>We&#8217;ve only begun to test our blog app. We&#8217;ll be adding many more tests later.
+In between, you might want to take a look at the <a class="reference external" href="https://docs.djangoproject.com/en/1.7/topics/testing/">Django testing documentation</a>:</p>
+</div>
+</div>
+<div class="section" id="the-django-admin">
+<h2>The Django Admin<a class="headerlink" href="#the-django-admin" title="Permalink to this headline">¶</a></h2>
+<p>There are some who believe that Django has been Python&#8217;s <em>killer app</em>. And
+without doubt the Django Admin is a <em>killer feature</em> for Django. To demonstrate
+this, we are going to set up the admin for our blog</p>
+<p>The Django Admin is, itself, an <em>app</em>, installed by default (as of 1.6). Open
+the <tt class="docutils literal"><span class="pre">settings.py</span></tt> file from our <tt class="docutils literal"><span class="pre">mysite</span></tt> project package and verify that
+you see it in the list:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s">&#39;django.contrib.admin&#39;</span><span class="p">,</span> <span class="c"># &lt;- already present</span>
+    <span class="c"># ...</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>What we need now is to allow the admin to be seen through a web browser. To do
+that, we&#8217;ll have to add some URLs to our project.</p>
+<div class="section" id="django-url-resolution">
+<h3>Django URL Resolution<a class="headerlink" href="#django-url-resolution" title="Permalink to this headline">¶</a></h3>
+<p>Like Pyramid, Django has a system for dispatching requests to code: the <em>urlconf</em>.</p>
+<ul class="simple">
+<li>A urlconf is an iterable of calls to the <tt class="docutils literal"><span class="pre">django.conf.urls.url</span></tt> function</li>
+<li>This function takes:<ul>
+<li>a regexp <em>rule</em>, representing the URL</li>
+<li>a <tt class="docutils literal"><span class="pre">callable</span></tt> to be invoked (or a name identifying one)</li>
+<li>an optional <em>name</em> kwarg, used to <em>reverse</em> the URL</li>
+<li>other optional arguments we will skip for now</li>
+</ul>
+</li>
+<li>The function returns a <em>resolver</em> that matches the request path to the
+callable</li>
+</ul>
+<p>I said above that a urlconf is an iterable. That iterable is generally built by
+calling the <tt class="docutils literal"><span class="pre">django.conf.urls.patterns</span></tt> function. It&#8217;s best to build it that
+way, but in reality, any iterable will do.</p>
+<p>However, the name you give this iterable is <strong>not flexible</strong>. Django will load
+the urlconf named <tt class="docutils literal"><span class="pre">urlpatterns</span></tt> that it finds in the file named in
+<tt class="docutils literal"><span class="pre">settings.ROOT_URLCONF</span></tt>.</p>
+<p>Many Django add-on <em>apps</em>, like the Django Admin, come with their own urlconf.
+It is standard to include these urlconfs by rooting them at some path in your
+site.</p>
+<p>You can do this by using the <tt class="docutils literal"><span class="pre">django.conf.urls.include</span></tt> function as the
+callable in a <tt class="docutils literal"><span class="pre">url</span></tt> call:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">url</span><span class="p">(</span><span class="s">r&#39;^forum/&#39;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="s">&#39;random.forum.app.urls&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="including-the-admin">
+<h3>Including the Admin<a class="headerlink" href="#including-the-admin" title="Permalink to this headline">¶</a></h3>
+<p>We can use this to add <em>all</em> the URLs provided by the Django admin in one
+stroke.</p>
+<blockquote>
+<div><p>verify the following lines in <tt class="docutils literal"><span class="pre">urls.py</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">admin</span> <span class="c"># &lt;- should be present already</span>
+
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="n">patterns</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span>
+    <span class="o">...</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^admin/&#39;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">urls</span><span class="p">)),</span> <span class="c">#&lt;- this should be too</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>We can now view the admin.  We&#8217;ll use the Django development server.</p>
+<p class="build">In your terminal, use the <tt class="docutils literal"><span class="pre">runserver</span></tt> management command to start the
+development server:</p>
+<div class="build highlight-python"><div class="highlight"><pre>(djangoenv)$ python manage.py runserver
+Validating models...
+
+0 errors found
+Django version 1.4.3, using settings &#39;mysite.settings&#39;
+Development server is running at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+</pre></div>
+</div>
+</div>
+<div class="section" id="viewing-the-admin">
+<h3>Viewing the Admin<a class="headerlink" href="#viewing-the-admin" title="Permalink to this headline">¶</a></h3>
+<p>Load <tt class="docutils literal"><span class="pre">http://localhost:8000/admin/</span></tt>.  You should see this:</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/django-admin-login.png"><img alt="../_images/django-admin-login.png" src="../_images/django-admin-login.png" style="width: 50%;" /></a>
+</div>
+<p class="build">Login with the name and password you created before.</p>
+</div>
+<div class="section" id="the-admin-index">
+<h3>The Admin Index<a class="headerlink" href="#the-admin-index" title="Permalink to this headline">¶</a></h3>
+<p>The index will provide a list of all the installed <em>apps</em> and each model
+registered.  You should see this:</p>
+<a class="reference internal image-reference" href="../_images/admin_index.png"><img alt="../_images/admin_index.png" class="align-center" src="../_images/admin_index.png" style="width: 90%;" /></a>
+<p class="build">Click on <tt class="docutils literal"><span class="pre">Users</span></tt>. Find yourself? Edit yourself, but <strong>don&#8217;t</strong> uncheck
+<tt class="docutils literal"><span class="pre">superuser</span></tt>.</p>
+</div>
+<div class="section" id="add-posts-to-the-admin">
+<h3>Add Posts to the Admin<a class="headerlink" href="#add-posts-to-the-admin" title="Permalink to this headline">¶</a></h3>
+<p>Okay, let&#8217;s add our app model to the admin. Find the <tt class="docutils literal"><span class="pre">admin.py</span></tt> file in the
+<tt class="docutils literal"><span class="pre">myblog</span></tt> package. Open it, add the following and save the file:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">admin</span> <span class="c"># &lt;- this is already there.</span>
+<span class="kn">from</span> <span class="nn">myblog.models</span> <span class="kn">import</span> <span class="n">Post</span>
+
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Post</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Reload the admin index page in your browser. You should now see a listing for
+the Myblog app, and an entry for Posts.</p>
+<p>Visit the admin page for Posts. You should see the posts we created earlier in
+the Django shell. Look at the listing of Posts. Because of our <tt class="docutils literal"><span class="pre">__unicode__</span></tt>
+method we see a nice title.</p>
+<p>Are there other fields you&#8217;d like to see listed? Click on a Post, note what is
+and is not shown.</p>
+</div>
+<div class="section" id="next-steps">
+<h3>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">¶</a></h3>
+<p>We&#8217;ve learned a great deal about Django&#8217;s ORM and Models. We&#8217;ve also spent some
+time getting to know the Query API provided by model managers and QuerySets.</p>
+<p>We&#8217;ve also hooked up the Django Admin and noted some shortcomings.</p>
+<p>In class we&#8217;ll learn how to put a front end on this, add new models, and
+customize the admin experience.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">An Introduction To Django</a><ul>
+<li><a class="reference internal" href="#practice-safe-development">Practice Safe Development</a><ul>
+<li><a class="reference internal" href="#set-up-a-virtualenv">Set Up a VirtualEnv</a></li>
+<li><a class="reference internal" href="#install-django">Install Django</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#our-project">Our Project</a><ul>
+<li><a class="reference internal" href="#what-got-created">What Got Created</a></li>
+<li><a class="reference internal" href="#how-manage-py-works">How <em>manage.py</em> Works</a></li>
+<li><a class="reference internal" href="#development-server">Development Server</a></li>
+<li><a class="reference internal" href="#connecting-a-database">Connecting A Database</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#projects-and-apps">Projects and Apps</a><ul>
+<li><a class="reference internal" href="#our-class-app">Our Class App</a></li>
+<li><a class="reference internal" href="#django-models">Django Models</a></li>
+<li><a class="reference internal" href="#our-post-model">Our Post Model</a></li>
+<li><a class="reference internal" href="#field-details">Field Details</a></li>
+<li><a class="reference internal" href="#installing-apps">Installing Apps</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#the-django-shell">The Django Shell</a><ul>
+<li><a class="reference internal" href="#django-model-managers">Django Model Managers</a></li>
+<li><a class="reference internal" href="#saving-new-objects">Saving New Objects</a></li>
+<li><a class="reference internal" href="#updating-an-instance">Updating An Instance</a></li>
+<li><a class="reference internal" href="#create-a-few-posts">Create a Few Posts</a></li>
+<li><a class="reference internal" href="#the-django-query-api">The Django Query API</a></li>
+<li><a class="reference internal" href="#querysets">QuerySets</a></li>
+<li><a class="reference internal" href="#querysets-and-sql">QuerySets and SQL</a></li>
+<li><a class="reference internal" href="#exploring-the-queryset-api">Exploring the QuerySet API</a></li>
+<li><a class="reference internal" href="#updating-via-querysets">Updating via QuerySets</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#testing-our-model">Testing Our Model</a><ul>
+<li><a class="reference internal" href="#django-testcase-classes">Django TestCase Classes</a></li>
+<li><a class="reference internal" href="#our-first-enhancement">Our First Enhancement</a></li>
+<li><a class="reference internal" href="#what-to-test">What to Test</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#the-django-admin">The Django Admin</a><ul>
+<li><a class="reference internal" href="#django-url-resolution">Django URL Resolution</a></li>
+<li><a class="reference internal" href="#including-the-admin">Including the Admin</a></li>
+<li><a class="reference internal" href="#viewing-the-admin">Viewing the Admin</a></li>
+<li><a class="reference internal" href="#the-admin-index">The Admin Index</a></li>
+<li><a class="reference internal" href="#add-posts-to-the-admin">Add Posts to the Admin</a></li>
+<li><a class="reference internal" href="#next-steps">Next Steps</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/presentations/django_intro.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+  <h3>Slides</h3>
+  <ul class="this-page-menu">
+    <li><a href="../.././slides/presentations/django_intro.html"
+           rel="nofollow">View as slides</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="../index.html">UWPCE Python 200</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012-2015, Cris Ewing.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
