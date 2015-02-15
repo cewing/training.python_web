@@ -169,12 +169,14 @@ build a script that can produce derived meaning out of data we find online.
 References
 **********
 
+* `BeautifulSoup <http://www.crummy.com/software/BeautifulSoup/bs4/doc/>`_
+* `requests <http://requests.readthedocs.org/en/latest/>`_
+* `json <http://docs.python.org/2/library/json.html>`_
+* `geocoder <http://geocoder.readthedocs.org/en/latest/>`_
 * `httplib <http://docs.python.org/2/library/httplib.html>`_
 * `htmlparser <http://docs.python.org/2/library/htmlparser.html>`_
 * `xmlrpclib <http://docs.python.org/2/library/xmlrpclib.html>`_
 * `DocXMLRPCServer <http://docs.python.org/2/library/docxmlrpcserver.html>`_
-* `json <http://docs.python.org/2/library/json.html>`_
-
 
 
 Preparation for Session 8
@@ -182,7 +184,7 @@ Preparation for Session 8
 
 Please walk through this tutorial before session 8 begins.
 
-* `An Introduction to Django <presentations/django_intro-plain.html>`_
+* `An Introduction to Django <presentations/django_intro.html>`_
 
 
 Session 8 - Basic Django
@@ -200,7 +202,7 @@ blog app in Django. We'll learn how to use the tools Django provides to explore
 and interact with your models while designing them. We'll also get a brief
 introduction to the Django admin, Django's *killer feature*.
 
-.. _get started building: presentations/django_intro-plain.html
+.. _get started building: presentations/django_intro.html
 
 
 Along the way, we'll build a nicely functional blog application.  We'll learn

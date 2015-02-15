@@ -1956,4 +1956,4 @@ of time.
 
 Please read and follow along with this `basic intro to Django`_.
 
-.. _basic intro to Django: django-intro
+.. _basic intro to Django: django_intro.html
