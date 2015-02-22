@@ -208,14 +208,14 @@ fall into.
     * a longer description
     * a relationship to the Post model
 
-.. code-block:: python
+    .. code-block:: python
 
-    # in models.py
-    class Category(models.Model):
-        name = models.CharField(max_length=128)
-        description = models.TextField(blank=True)
-        posts = models.ManyToManyField(Post, blank=True, null=True,
-                                       related_name='categories')
+        # in models.py
+        class Category(models.Model):
+            name = models.CharField(max_length=128)
+            description = models.TextField(blank=True)
+            posts = models.ManyToManyField(Post, blank=True, null=True,
+                                           related_name='categories')
 
 
 .. nextslide:: Strange Relationships
