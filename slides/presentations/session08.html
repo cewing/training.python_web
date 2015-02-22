@@ -294,7 +294,6 @@ fall into.</p>
 <li>a longer description</li>
 <li>a relationship to the Post model</li>
 </ul>
-</div>
 <div class="highlight-python"><div class="highlight"><pre><span class="c"># in models.py</span>
 <span class="k">class</span> <span class="nc">Category</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
@@ -302,6 +301,7 @@ fall into.</p>
     <span class="n">posts</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
                                    <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;categories&#39;</span><span class="p">)</span>
 </pre></div>
+</div>
 </div>
 
 
