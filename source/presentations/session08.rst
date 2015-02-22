@@ -1,148 +1,142 @@
-Python Web Programming
-======================
+**********
+Session 08
+**********
 
-.. image:: img/django-pony.png
-    :align: left
-    :width: 50%
+.. figure:: /_static/django-pony.png
+    :align: center
+    :width: 60%
 
-Session 7: A Django Application
+    image: http://djangopony.com/
 
-.. class:: intro-blurb right
+Building a Django Application
+=============================
+
+.. rst-class:: large
 
 Wherein we build a simple blogging app.
 
-.. class:: image-credit
 
-image: http://djangopony.com/
-
-
-Full Stack Framework
---------------------
+A Full Stack Framework
+----------------------
 
 Django comes with:
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-* Persistence via the *Django ORM*
-* CRUD content editing via the automatic *Django Admin*
-* URL Mapping via *urlpatterns*
-* Templating via the *Django Template Language*
-* Caching with levels of configurability
-* Internationalization via i18n hooks
-* Form rendering and handling
-* User authentication and authorization 
+    .. rst-class:: build
 
-.. class:: incremental
+    * Persistence via the *Django ORM*
+    * CRUD content editing via the automatic *Django Admin*
+    * URL Mapping via *urlpatterns*
+    * Templating via the *Django Template Language*
+    * Caching with levels of configurability
+    * Internationalization via i18n hooks
+    * Form rendering and handling
+    * User authentication and authorization
 
-Pretty much everything you need to make a solid website quickly
+    Pretty much everything you need to make a solid website quickly
 
-
-What Sets it Apart?
--------------------
+.. nextslide:: What Sets it Apart?
 
 Lots of frameworks offer some of these features, if not all.
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-What is Django's *killer feature*
+    What is Django's *killer feature*
 
-.. class:: incremental center
+    .. rst-class:: centered
 
-**The Django Admin**
+    **The Django Admin**
 
-
-The Django Admin
-----------------
+.. nextslide:: The Django Admin
 
 Works in concert with the Django ORM to provide automatic CRUD functionality
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-You write the models, it provides the UI
+    You write the models, it provides the UI
 
-.. class:: incremental center
+    You've seen this in action. Pretty neat, eh?
 
-You've seen this in action. Pretty neat, eh?
-
-
-The Pareto Principle
---------------------
+.. nextslide:: The Pareto Principle
 
 The Django Admin is a great example of the Pareto Priciple, a.k.a. the 80/20
 rule:
 
-.. class:: incremental center
+.. rst-class:: build
+.. container::
 
-**80% of the problems can be solved by 20% of the effort**
+    .. rst-class:: centered
 
-.. class:: incremental
+    **80% of the problems can be solved by 20% of the effort**
 
-The converse also holds true:
+    The converse also holds true:
 
-.. class:: incremental center
+    .. rst-class:: centered
 
-**Fixing the last 20% of the problems will take the remaining 80% of the
-effort.**
+    **Fixing the last 20% of the problems will take the remaining 80% of the
+    effort.**
 
+.. nextslide:: Other Django Advantages
 
-Other Django Advantages
------------------------
+.. ifnotslides::
+
+    **Other Django Advantages**
 
 Clearly the most popular full-stack Python web framework at this time
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-Popularity translates into:
+    Popularity translates into:
 
-.. class:: incremental
+    .. rst-class:: build
 
-* Active, present community
-* Plethora of good examples to be found online
-* Rich ecosystem of *apps* (encapsulated add-on functionality)
+    * Active, present community
+    * Plethora of good examples to be found online
+    * Rich ecosystem of *apps* (encapsulated add-on functionality)
 
-.. class:: incremental center
+    .. rst-class:: centered
 
-**Jobs**
+    **Jobs**
 
-
-Active Development
-------------------
+.. nextslide:: Active Development
 
 Django releases in the last 12+ months (a short list):
 
-.. class:: incremental
+.. rst-class:: build
 
+* 1.7.4 (January 2015)
+* 1.6.9 (January 2015)
+* 1.7.1 (October 2014)
+* 1.6.7 (September 2014)
+* 1.7 (September 2014)
+* 1.6.5 (May 2014)
 * 1.6.2 (February 2014)
-* 1.6.1 (December 2013)
 * 1.6 (November 2013)
-* 1.4.10 (Novermber 2013)
-* 1.5.5 (October 2013)
-* 1.5 (February 2013)
-* 1.4 (March 2012)
 
-
-Great Documentation
--------------------
+.. nextslide:: Great Documentation
 
 Thorough, readable, and discoverable.
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-Led the way to better documentation for all Python
+    Led the way to better documentation for all Python
 
-.. class:: incremental
+    `Read The Docs <https://readthedocs.org/>`_ - built in connection with
+    Django, sponsored by the Django Software Foundation.
 
-`Read The Docs <https://readthedocs.org/>`_ - built in connection with
-Django, sponsored by the Django Software Foundation.
+    Write documentation as part of your python package.
 
-.. class:: incremental
+    Render new versions of that documentation for every commit.
 
-Write documentation as part of your python package, and render new versions of
-that documentation for every commit
+    .. rst-class:: centered
 
-.. class:: incremental center
-
-**this is awesome**
+    **this is awesome**
 
 
 Where We Stand
@@ -151,18 +145,15 @@ Where We Stand
 For your homework this week, you created a ``Post`` model to serve as the heart
 of our blogging app.
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-You also took some time to get familiar with the basic workings of the Django
-ORM.
+    You also took some time to get familiar with the basic workings of the
+    Django ORM.
 
-.. class:: incremental
+    You made a minor modification to our model class and wrote a test for it.
 
-You made a minor modification to our model class and wrote a test for it.
-
-.. class:: incremental
-
-And you installed the Django Admin site and added your app to it.
+    And you installed the Django Admin site and added your app to it.
 
 
 Going Further
@@ -170,202 +161,54 @@ Going Further
 
 One of the most common features in a blog is the ability to categorize posts.
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-Let's add this feature to our blog!
+    Let's add this feature to our blog!
 
-..  class:: incremental
+    To do so, we'll be adding a new model, and making some changes to existing
+    code.
 
-To do so, we'll be adding a new model, and making some changes to existing code.
+    .. rst-class:: build
 
-.. class:: incremental
+    This means that we'll need to *change our database schema*.
 
-This means that we'll need to *change our database schema*.
 
+.. nextslide:: Changing a Database
 
-Changing a Database
--------------------
+You've seen how to add new tables to a database using the ``migrate`` command.
 
-You've seen how to add new tables to a database using the ``syncdb`` command.
+.. rst-class:: build
+.. container::
 
-.. class:: incremental
+    And you've created your first migration in setting up the ``Post`` model.
 
-The ``syncdb`` management command only creates tables that *do not yet exist*.
-It **does not update tables**.
+    This is an example of altering the *database schema* using Python code.
 
-.. class:: incremental
+    Starting in Django 1.7, this ability is available built-in to Django.
 
-The ``sqlclear <appname>`` command will print the ``DROP TABLE`` statements to
-remove the tables for your app.
+    Before verson 1.7 it was available in an add-on called `South`_.
 
-.. class:: incremental
+.. _South: http://south.readthedocs.org/en/latest
 
-Or ``sql <appname>`` will show the ``CREATE TABLE`` statements, and you can work
-out the differences and update manually.
 
-ACK!!!
-------
-
-That doesn't sound very nice, does it?
-
-.. class:: incremental
-
-Luckily, there is an app available for Django that helps with this: ``South``
-
-.. class:: incremental
-
-South allows you to incrementally update your database in a simplified way.
-
-.. class:: incremental
-
-South supports forward, backward and data migrations.
-
-.. class:: incremental
-
-
-Adding South
-------------
-
-South is so useful, that in Django 1.7 it will become part of the core
-distribution of Django.
-
-.. class:: incremental
-
-But now it is not.  We need to add it, and set up our project to use it.
-
-.. class:: incremental
-
-Activate your django virtualenv and install South:
-
-.. code-block:: bash
-
-    $ source djagnoenv/bin/activate
-    (djangoenv)$ pip install south
-    ...
-    Successfully installed south
-    Cleaning up...
-
-
-Installing South
-----------------
-
-Like other Django apps, South provides models of its own.  We need to enable them.
-
-.. container:: incremental
-
-    First, add ``south`` to your list of installed apps in ``settings.py``:
-
-    .. code-block:: python
-    
-        INSTALLED_APPS = (
-            ...
-            'south', #< -add this line
-            'myblog',
-        )
-
-
-Setting Up South
-----------------
-
-Then, run ``syncdb`` to pick up the tables it provides:
-
-.. code-block:: bash
-
-    (djangoenv)$ python manage.py syncdb
-    Syncing...
-    Creating tables ...
-    Creating table south_migrationhistory
-    ...
-
-    Synced:
-     ...
-     > south
-     > myblog
-
-    Not synced (use migrations):
-     -
-    (use ./manage.py migrate to migrate these)
-
-
-Hang On, What Just Happened?
-----------------------------
-
-You might have noticed that the output from ``syncdb`` looks a bit different
-this time.
-
-.. class:: incremental
-
-This is because Django apps that use South do not use the normal ``syncdb``
-command to initialize their SQL.
-
-.. class:: incremental
-
-Instead they use a new command that South provides: ``migrate``.
-
-.. class:: incremental
-
-This command ensures that only incremental changes are made, rather than
-creating all of the SQL for an app every time.
-
-
-Adding South to an App
-----------------------
-
-If you notice, our ``myblog`` app is still in the ``sync`` list. We need to add
-South to it.
-
-.. class:: incremental
-
-Adding South to an existing Django project is quite simple. The trick is to do
-it **before** you make any new changes to your models.
-
-.. container:: incremental
-
-    Simply use the ``convert_to_south`` management command, providing the name of
-    your app as an argument:
-
-    .. code-block:: bash
-
-        (djangoenv)$ python manage.py convert_to_south myblog
-        ...
-
-
-What You Get
-------------
-
-After running this command, South will automatically create a first migration
-for you that sets up tables looking exactly like what your app has now::
-
-    myblog/
-    ├── __init__.py
-    ...
-    ├── migrations
-    │   ├── 0001_initial.py
-    │   ├── 0001_initial.pyc
-    │   ├── __init__.py
-    │   └── __init__.pyc
-    ├── models.py
-    ...
-
-.. class:: incremental
-
-South also automatically applies this first migration using the ``--fake``
-argument, since the database is already in the proposed state.
-
-
-Adding a Model
---------------
+.. nextslide:: Adding a Model
 
 We want to add a new model to represent the categories our blog posts might
 fall into.
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-This model will need to have a name for the category, a longer description and
-will need to be related to the Post model.
+    This model will need to have:
+
+    .. rst-class:: build
+
+    * a name for the category
+    * a longer description
+    * a relationship to the Post model
 
 .. code-block:: python
-    :class: small
 
     # in models.py
     class Category(models.Model):
@@ -375,84 +218,76 @@ will need to be related to the Post model.
                                        related_name='categories')
 
 
-Strange Relationships
----------------------
+.. nextslide:: Strange Relationships
 
 In our ``Post`` model, we used a ``ForeignKeyField`` field to match an author
 to her posts.
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-This models the situatin in which a single author can have many posts, while
-each post has only one author.
+    This models the situation in which a single author can have many posts,
+    while each post has only one author.
 
-.. class:: incremental
+    We call this a *Many to One* relationship.
 
-But any given ``Post`` might belong in more than one ``Category``.
+    But any given ``Post`` might belong in more than one ``Category``.
 
-.. class:: incremental
+    And it would be a waste to allow only one ``Post`` for each ``Category``.
 
-And it would be a waste to allow only one ``Post`` for each ``Category``.
+    Enter the ``ManyToManyField``
 
-.. class:: incremental
+.. nextslide:: Add a Migration
 
-Enter the ManyToManyField
+To get these changes set up, we now add a new migration.
 
+.. rst-class:: build
+.. container::
 
-Add a Migration
----------------
+    We use the ``makemigrations`` management command to do so:
 
-To get these changes set up, we now have to add a migration.
+    .. code-block:: bash
 
-.. class:: incremental
+        (djangoenv)$ python manage.py makemigrations
+        Migrations for 'myblog':
+          0002_category.py:
+            - Create model Category
 
-We use the ``schemamigration`` management command to do so:
+.. nextslide:: Apply A Migration
 
-.. code-block:: bash
+Once the migration has been created, we can apply it with the ``migrate``
+management command.
 
-    (djangoenv)$ python manage.py schemamigration myblog --auto
-     + Added model myblog.Category
-     + Added M2M table for posts on myblog.Category
-    Created 0002_auto__add_category.py. You can now apply this
-    migration with: ./manage.py migrate myblog
+.. rst-class:: build
+.. container::
 
+    .. code-block:: bash
 
-Apply A Migration
------------------
+        (djangoenv)$ python manage.py migrate
+        Operations to perform:
+          Apply all migrations: admin, myblog, contenttypes, auth, sessions
+        Running migrations:
+          Applying myblog.0002_category... OK
 
-And south, along with making the migration, helpfully tells us what to do next:
-
-.. code-block:: bash
-
-    (djangoenv)$ python manage.py migrate myblog
-    Running migrations for myblog:
-     - Migrating forwards to 0002_auto__add_category.
-     > myblog:0002_auto__add_category
-     - Loading initial data for myblog.
-    Installed 0 object(s) from 0 fixture(s)
-
-.. class:: incremental
-
-You can even look at the migration file you just applied,
-``myblog/migrations/0002.py`` to see what happened.
+    You can even look at the migration file you just applied,
+    ``myblog/migrations/0002_category.py`` to see what happened.
 
 
-Make Categories Look Nice
--------------------------
+.. nextslide:: Make Categories Look Nice
 
 Let's make ``Category`` object look nice the same way we did with ``Post``.
 Start with a test:
 
-.. container:: incremental
+.. rst-class:: build
+.. container::
 
     add this to ``tests.py``:
 
     .. code-block:: python
-        :class: incremental
-    
+
         # another import
         from myblog.models import Category
-        
+
         # and the test case and test
         class CategoryTestCase(TestCase):
 
@@ -462,27 +297,41 @@ Start with a test:
                 actual = unicode(c1)
                 self.assertEqual(expected, actual)
 
-Make it Pass
-------------
+.. nextslide:: Make it Pass
 
-Do you remember how you made that change for a ``Post``?
+When you run your tests, you now have two, and one is failing because the
+``Category`` object doesn't look right.
 
-.. code-block:: python
-    :class: incremental
+.. rst-class:: build
+.. container::
 
-    class Category(models.Model):
-        #... 
-        
-        def __unicode__(self):
-            return self.name
+    .. code-block:: bash
+
+        (djangoenv)$ python manage.py test myblog
+        Creating test database for alias 'default'...
+        ...
+
+        Ran 2 tests in 0.011s
+
+        FAILED (failures=1)
+
+    Do you remember how you made that change for a ``Post``?
+
+    .. code-block:: python
+
+        class Category(models.Model):
+            #...
+
+            def __unicode__(self):
+                return self.name
 
 
-Admin for Categories
---------------------
+.. nextslide:: Admin for Categories
 
 Adding our new model to the Django admin is equally simple.
 
-.. container:: incremental
+.. rst-class:: build
+.. container::
 
     Simply add the following line to ``myblog/admin.py``
 
@@ -495,8 +344,7 @@ Adding our new model to the Django admin is equally simple.
         admin.site.register(Category)
 
 
-Test It Out
------------
+.. nextslide:: Test It Out
 
 Fire up the Django development server and see what you have in the admin:
 
@@ -508,36 +356,47 @@ Fire up the Django development server and see what you have in the admin:
     Starting development server at http://127.0.0.1:8000/
     Quit the server with CONTROL-C.
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-Point your browser at ``http://localhost:8000/admin/``, log in and play.
+    Point your browser at ``http://localhost:8000/admin/``, log in and play.
 
-.. class:: incremental
+    Add a few categories, put some posts in them. Visit your posts, add new
+    ones and then categorize them.
 
-Add a few categories, put some posts in them. Visit your posts, add new ones
-and then categorize them.
+
+BREAK TIME
+----------
+
+We've completed a data model for our application.
+
+And thanks to Django's easy-to-use admin, we have a reasonable CRUD application
+where we can manage blog posts and the categories we put them in.
+
+When we return, we'll put a public face on our new creation.
+
+If you've fallen behind, the app as it stands now is in our class resources as
+``mysite_stage_1``
 
 
 A Public Face
--------------
+=============
+
+.. rst-class:: left
 
 Point your browser at http://localhost:8000/
 
-.. class:: incremental
+.. rst-class:: build left
+.. container::
 
-What do you see? 
+    What do you see?
 
-.. class:: incremental
+    Why?
 
-Why?
+    We need to add some public pages for our blog.
 
-.. class:: incremental
+    In Django, the code that builds a page that you can see is called a *view*.
 
-We need to add some public pages for our blog.
-
-.. class:: incremental
-
-In Django, the code that builds a page that you can see is called a *view*.
 
 Django Views
 ------------
@@ -545,80 +404,70 @@ Django Views
 A *view* can be defined as a *callable* that takes a request and returns a
 response.
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-This should sound pretty familiar to you.
+    This should sound pretty familiar to you.
 
-.. class:: incremental
+    Classically, Django views were functions.
 
-Classically, Django views were functions.
-
-.. class:: incremental
-
-Version 1.3 added support for Class-based Views (a class with a ``__call__``
-method is a callable)
+    Version 1.3 added support for Class-based Views (a class with a
+    ``__call__`` method is a callable)
 
 
-A Basic View
-------------
+.. nextslide:: A Basic View
 
 Let's add a really simple view to our app.
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-It will be a stub for our public UI.  Add this to ``views.py`` in ``myblog``
+    It will be a stub for our public UI.  Add this to ``views.py`` in
+    ``myblog``
 
-.. code-block:: python
-    :class: small incremental
+    .. code-block:: python
 
-    from django.http import HttpResponse, HttpResponseRedirect, Http404
+        from django.http import HttpResponse, HttpResponseRedirect, Http404
 
-    def stub_view(request, *args, **kwargs):
-        body = "Stub View\n\n"
-        if args:
-            body += "Args:\n"
-            body += "\n".join(["\t%s" % a for a in args])
-        if kwargs:
-            body += "Kwargs:\n"
-            body += "\n".join(["\t%s: %s" % i for i in kwargs.items()])
-        return HttpResponse(body, content_type="text/plain")
+        def stub_view(request, *args, **kwargs):
+            body = "Stub View\n\n"
+            if args:
+                body += "Args:\n"
+                body += "\n".join(["\t%s" % a for a in args])
+            if kwargs:
+                body += "Kwargs:\n"
+                body += "\n".join(["\t%s: %s" % i for i in kwargs.items()])
+            return HttpResponse(body, content_type="text/plain")
 
-
-Hooking It Up
--------------
+.. nextslide:: Hooking It Up
 
 In your homework tutorial, you learned about Django **urlconfs**
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-We used our project urlconf to hook the Django admin into our project.
+    We used our project urlconf to hook the Django admin into our project.
 
-.. class:: incremental
+    We want to do the same thing for our new app.
 
-We want to do the same thing for our new app.
+    In general, an *app* that serves any sort of views should contain its own
+    urlconf.
 
-.. class:: incremental
-
-In general, an *app* that serves any sort of views should contain its own 
-urlconf.
-
-.. class:: incremental
-
-The project urlconf should mainly *include* these where possible.
+    The project urlconf should mainly *include* these where possible.
 
 
-Adding A Urlconf
-----------------
+.. nextslide:: Adding A Urlconf
 
 Create a new file ``urls.py`` inside the ``myblog`` app package.
 
-.. container:: incremental
+.. rst-class:: build
+.. container::
 
     Open it in your editor and add the following code:
 
     .. code-block:: python
-        :class: small
-    
+
+
         from django.conf.urls import patterns, url
 
         urlpatterns = patterns('myblog.views',
@@ -628,54 +477,49 @@ Create a new file ``urls.py`` inside the ``myblog`` app package.
         )
 
 
-A Word On Prefixes
-------------------
+.. nextslide:: A Word On Prefixes
 
 The ``patterns`` function takes a first argument called the *prefix*
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-When it is not empty, it is added to any view names in ``url()`` calls in the
-same ``patterns``.
+    When it is not empty, it is added to any view names in ``url()`` calls in
+    the same ``patterns``.
 
-.. class:: incremental
+    In a root urlconf like the one in ``mysite``, this isn't too useful.
 
-In a root urlconf like the one in ``mysite``, this isn't too useful
+    But in ``myblog.urls`` it lets us refer to views by simple function name.
 
-.. class:: incremental
+    No need to import every view.
 
-But in ``myblog.urls`` it lets us refer to views by simple function name
+    Nor do we need to reference each by the app and module name where it
+    appears.
 
-.. class:: incremental
-
-No need to import every view.
+    This is a convenience.
 
 
-Include Blog Urls
------------------
+.. nextslide:: Include Blog Urls
 
 In order for our new urls to load, we'll need to include them in our project
 urlconf
 
-.. container:: incremental
+.. rst-class:: build
+.. container::
 
     Open ``urls.py`` from the ``mysite`` project package and add this:
 
     .. code-block:: python
-        :class: small
-    
+
+
         urlpatterns = patterns('',
             url(r'^', include('myblog.urls')), #<- add this
             #... other included urls
         )
 
-.. class:: incremental
+    Try reloading http://localhost:8000/
 
-Try reloading http://localhost:8000/
-
-.. class:: incremental
-
-You should see some output now.
+    You should see some output now.
 
 
 Project URL Space
@@ -683,90 +527,83 @@ Project URL Space
 
 A project is defined by the urls a user can visit.
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-What should our users be able to see when they visit our blog?
+    What should our users be able to see when they visit our blog?
 
-.. class:: incremental
+    .. rst-class:: build
 
-* A list view that shows blog posts, most recent first.
-* An individual post view, showing a single post (a permalink).
+    * A list view that shows blog posts, most recent first.
+    * An individual post view, showing a single post (a permalink).
 
-.. class:: incremental
+    Let's add urls for each of these.
 
-Let's add urls for each of these, use the stub view for now.
+    For now, we'll use the stub view we've created so we can concentrate on the
+    url routing.
 
-
-Our URLs
---------
+.. nextslide:: Our URLs
 
 We've already got a good url for the list page: ``blog_index`` at '/'
 
-.. container:: incremental
+.. rst-class:: build
+.. container::
 
     For the view of a single post, we'll need to capture the id of the post.
     Add this to ``urlpatterns`` in ``myblog/urls.py``:
-    
-    .. code-block:: python 
-        :class: small incremental
-    
-        url(r'^posts/(\d+)/$', 
-            'stub_view', 
+
+    .. code-block:: python
+
+        url(r'^posts/(\d+)/$',
+            'stub_view',
             name="blog_detail"),
 
-.. class:: incremental
+    ``(\d+)`` captures one or more digits as the post_id.
 
-``(\d+)`` captures one or more digits as the post_id.
+    Load http://localhost:8000/posts/1234/ and see what you get.
 
-.. class:: incremental
-
-Load http://localhost:8000/posts/1234/ and see what you get.
-
-
-A Word on Capture in URLs
--------------------------
+.. nextslide:: A Word on Capture in URLs
 
 When you load the above url, you should see ``1234`` listed as an *arg*
 
-.. container:: incremental
+.. rst-class:: build
+.. container::
 
     Try changing the route like so:
 
     .. code-block:: python
-        :class: small
-    
+
         r'^posts/(?P<post_id>\d+)/$'
 
-.. class:: incremental
+    Reload the same url.
 
-Reload the same url. Notice the change.
+    Notice the change.
+
+    What's going on there?
+
+.. nextslide:: Regular Expression URLS
+
+Like Pyramid, Django uses Python regular expressions to build routes.
+
+.. rst-class:: build
+.. container::
+
+    Unlike Pyramid, Django *requires* regular expressions to capture segments
+    in a route.
+
+    When we built our WSGI book app, we used this same appraoch.
+
+    There we learned about regular expression *capture groups*. We just changed
+    an unnamed *capture group* to a named one.
+
+    How you declare a capture group in your url pattern regexp influences how
+    it will be passed to the view callable.
 
 
-Regular Expression URLS
------------------------
-
-Django, unlike Flask, uses Python regular expressions to build routes.
-
-.. class:: incremental
-
-When we built our WSGI book app, we did too.
-
-.. class:: incremental
-
-There we learned about regular expression *capture groups*. We just changed an
-unnamed group to a named one.
-
-.. class:: incremental
-
-How you declare a capture group in your url pattern regexp influences how it
-will be passed to the view callable.
-
-
-Full Urlconf
-------------
+.. nextslide:: Full Urlconf
 
 .. code-block:: python
-    :class: small
+
 
     from django.conf.urls import patterns, url
 
@@ -780,31 +617,27 @@ Full Urlconf
     )
 
 
-Testing Views
--------------
+.. nextslide:: Testing Views
 
 Before we begin writing real views, we need to add some tests for the views we
 are about to create.
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-We'll need tests for a list view and a detail view
-
-.. container:: incremental
+    We'll need tests for a list view and a detail view
 
     add the following *imports* at the top of ``myblog/tests.py``:
 
     .. code-block:: python
-    
+
         import datetime
         from django.utils.timezone import utc
 
 
-Add a Test Case
----------------
+.. nextslide:: Add a Test Case
 
 .. code-block:: python
-    :class: small
 
     class FrontEndTestCase(TestCase):
         """test views provided in the front-end"""
@@ -814,7 +647,7 @@ Add a Test Case
             self.now = datetime.datetime.utcnow().replace(tzinfo=utc)
             self.timedelta = datetime.timedelta(15)
             author = User.objects.get(pk=1)
-            for count in range(1,11):
+            for count in range(1, 11):
                 post = Post(title="Post %d Title" % count,
                             text="foo",
                             author=author)
@@ -830,47 +663,42 @@ Our List View
 
 We'd like our list view to show our posts.
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-But in this blog, we have the ability to publish posts.
+    But in this blog, we have the ability to publish posts.
 
-.. class:: incremental
+    Unpublished posts should not be seen in the front-end views.
 
-Unpublished posts should not be seen in the front-end views.
+    We set up our tests to have 5 published, and 5 unpublished posts
 
-.. class:: incremental
+    Let's add a test to demonstrate that the right ones show up.
 
-We set up our tests to have 5 published, and 5 unpublished posts
-
-.. class:: incremental
-
-Let's add a test to demonstrate that the right ones show up.
-
-
-Testing the List View
----------------------
+.. nextslide:: Testing the List View
 
 .. code-block:: python
 
         Class FrontEndTestCase(TestCase): # already here
-        # ...
-        def test_list_only_published(self):
-            resp = self.client.get('/')
-            self.assertTrue("Recent Posts" in resp.content)
-            for count in range(1,11):
-                title = "Post %d Title" % count
-                if count < 6:
-                    self.assertContains(resp, title, count=1)
-                else:
-                    self.assertNotContains(resp, title)
+            # ...
+            def test_list_only_published(self):
+                resp = self.client.get('/')
+                self.assertTrue("Recent Posts" in resp.content)
+                for count in range(1, 11):
+                    title = "Post %d Title" % count
+                    if count < 6:
+                        self.assertContains(resp, title, count=1)
+                    else:
+                        self.assertNotContains(resp, title)
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-Note that we also test to ensure that the unpublished posts are *not* visible.
+    We test first to ensure that each published post is visible in our view.
+
+    Note that we also test to ensure that the unpublished posts are *not* visible.
 
 
-Run Your Tests
---------------
+.. nextslide:: Run Your Tests
 
 .. code-block:: bash
 
@@ -886,18 +714,16 @@ Run Your Tests
     Destroying test database for alias 'default'...
 
 
-Now Fix That Test!
-------------------
+.. nextslide:: Now Fix That Test!
 
 Add the view for listing blog posts to ``views.py``.
-    
+
 .. code-block:: python
-    :class: small
 
     # add these imports
     from django.template import RequestContext, loader
     from myblog.models import Post
-    
+
     # and this view
     def list_view(request):
         published = Post.objects.exclude(published_date__exact=None)
@@ -910,82 +736,69 @@ Add the view for listing blog posts to ``views.py``.
         return HttpResponse(body, content_type="text/html")
 
 
-Getting Posts
--------------
+.. nextslide:: Getting Posts
 
 .. code-block:: python
-    :class: small
 
     published = Post.objects.exclude(published_date__exact=None)
     posts = published.order_by('-published_date')
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-We begin by using the QuerySet API to fetch all the posts that have
-``published_date`` set
+    We begin by using the QuerySet API to fetch all the posts that have
+    ``published_date`` set
 
-.. class:: incremental
+    Using the chaining nature of the API we order these posts by
+    ``published_date``
 
-Using the chaining nature of the API we order these posts by
-``published_date``
-
-.. class:: incremental
-
-Remember, at this point, no query has actually been issued to the database.
+    Remember, at this point, no query has actually been issued to the database.
 
 
-Getting a Template
-------------------
+.. nextslide:: Getting a Template
 
 .. code-block:: python
-    :class: small
 
     template = loader.get_template('list.html')
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-Django uses configuration to determine how to find templates.
+    Django uses configuration to determine how to find templates.
 
-.. class:: incremental
+    By default, Django looks in installed *apps* for a ``templates`` directory
 
-By default, Django looks in installed *apps* for a ``templates`` directory
+    It also provides a place to list specific directories.
 
-.. class:: incremental
-
-It also provides a place to list specific directories.
-
-.. class:: incremental
-
-Let's set that up in ``settings.py``
+    Let's set that up in ``settings.py``
 
 
-Project Templates
------------------
+.. nextslide:: Project Templates
 
-In ``settings.py`` add ``TEMPLATE_DIRS`` and add the absolute path to your 
-``mysite`` project package:
+Notice that ``settings.py`` already contains a ``BASE_DIR`` value which points
+to the root of our project (where both the project and app packages are
+located).
 
-.. code-block:: python
-    :class: small
-    
-    TEMPLATE_DIRS = ('/absolute/path/to/mysite/mysite/templates', )
+.. rst-class:: build
+.. container::
 
-.. class:: incremental
+    In that same file add a tuple bound to ``TEMPLATE_DIRS`` and add a path to
+    it:
 
-Then add a ``templates`` directory to your ``mysite`` project package
+    .. code-block:: python
 
-.. class:: incremental
+        TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'mysite/templates'), )
 
-Finally, in that directory add a new file ``base.html`` and populate it with
-the following:
+    Then add a ``templates`` directory to your ``mysite`` project package
+
+    Finally, in that directory add a new file ``base.html`` and populate it
+    with the following:
 
 
-base.html
----------
+.. nextslide:: ``base.html``
 
 .. code-block:: jinja
-    :class: small
-    
+
     <!DOCTYPE html>
     <html>
       <head>
@@ -1008,52 +821,39 @@ Templates in Django
 
 Before we move on, a quick word about Django templates.
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-We've seen Jinja2 which was "inspired by Django's templating system".
+    We've seen Jinja2 which was "inspired by Django's templating system".
 
-.. class:: incremental
+    Basically, you already know how to write Django templates.
 
-Basically, you already know how to write Django templates.
+    Django templates **do not** allow any python expressions.
 
-.. class:: incremental
-
-Django templates **do not** allow any python expressions.
-
-.. class:: incremental center small
-
-https://docs.djangoproject.com/en/1.5/ref/templates/builtins/
+    https://docs.djangoproject.com/en/1.7/ref/templates/builtins/
 
 
-Blog Templates
---------------
+.. nextslide:: Blog Templates
 
 Our view tries to load ``list.html``.
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-This template is probably specific to the blog functionality of our site
+    This template is probably specific to the blog functionality of our site
 
-.. class:: incremental
+    It is common to keep shared templates in your project directory and
+    specialized ones in app directories.
 
-It is common to keep shared templates in your project directory and
-specialized ones in app directories.
+    Add a ``templates`` directory to your ``myblog`` app, too.
 
-.. class:: incremental 
-
-Add a ``templates`` directory to your ``myblog`` app, too.
-
-.. class:: incremental
-
-In it, create a new file ``list.html`` and add this:
+    In it, create a new file ``list.html`` and add this:
 
 
-list.html
----------
+.. nextslide:: ``list.html``
 
 .. code-block:: jinja
-    :class: tiny
-    
+
     {% extends "base.html" %}
 
     {% block content %}
@@ -1079,107 +879,95 @@ list.html
     {% endblock %}
 
 
-Template Context
-----------------
+.. nextslide:: Template Context
 
 .. code-block:: python
-    :class: small
 
     context = RequestContext(request, {
         'posts': posts,
     })
     body = template.render(context)
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-Like Jinja2, django templates are rendered by passing in a *context*
+    Like Jinja2, django templates are rendered by passing in a *context*
 
-.. class:: incremental
+    Django's RequestContext provides common bits, similar to the global context
+    in Flask
 
-Django's RequestContext provides common bits, similar to the global context in
-Flask
-
-.. class:: incremental
-
-We add our posts to that context so they can be used by the template.
+    We add our posts to that context so they can be used by the template.
 
 
-Return a Response
------------------
+.. nextslide:: Return a Response
 
 .. code-block:: python
-    :class: small
 
     return HttpResponse(body, content_type="text/html")
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-Finally, we build an HttpResponse and return it.
+    Finally, we build an HttpResponse and return it.
 
-.. class:: incremental
+    This is, fundamentally, no different from the ``stub_view`` just above.
 
-This is, fundamentally, no different from the ``stub_view`` just above.
-
-
-Fix URLs
---------
+.. nextslide:: Fix URLs
 
 We need to fix the url for our blog index page
 
-.. container:: incremental
+.. rst-class:: build
+.. container::
 
     Update ``urls.py`` in ``myblog``:
 
     .. code-block:: python
-        :class: small
-    
+
         url(r'^$',
             'list_view',
             name="blog_index"),
 
-.. class:: incremental small
+    Then run your tests again:
 
-::
+    .. code-block:: bash
 
-    (djangoenv)$ python manage.py test myblog
-    ...
-    Ran 3 tests in 0.033s
+        (djangoenv)$ python manage.py test myblog
+        ...
+        Ran 3 tests in 0.033s
 
-    OK
+        OK
 
 
-Common Patterns
----------------
+.. nextslide:: Common Patterns
 
 This is a common pattern in Django views:
 
-.. class:: incremental
+.. rst-class:: build
 
 * get a template from the loader
 * build a context, usually using a RequestContext
 * render the template
 * return an HttpResponse
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-So common in fact that Django provides two shortcuts for us to use:
+    So common in fact that Django provides two shortcuts for us to use:
 
-.. class:: incremental
+    .. rst-class:: build
 
-* ``render(request, template[, ctx][, ctx_instance])``
-* ``render_to_response(template[, ctx][, ctx_instance])``
+    * ``render(request, template[, ctx][, ctx_instance])``
+    * ``render_to_response(template[, ctx][, ctx_instance])``
 
 
-Shorten Our View
-----------------
+.. nextslide:: Shorten Our View
 
 Let's replace most of our view with the ``render`` shortcut
 
 .. code-block:: python
-    :class: small
 
     from django.shortcuts import render # <- already there
-    
+
     # rewrite our view
     def list_view(request):
         published = Post.objects.exclude(published_date__exact=None)
@@ -1187,9 +975,23 @@ Let's replace most of our view with the ``render`` shortcut
         context = {'posts': posts}
         return render(request, 'list.html', context)
 
-.. class:: incremental
+.. rst-class:: build
 
 Remember though, all we did manually before is still happening
+
+
+BREAK TIME
+----------
+
+We've got the front page for our application working great.
+
+Next, we'll need to provide a view of a detail page for a single post.
+
+Then we'll provide a way to log in and to navigate between the public part of
+our application and the admin behind it.
+
+If you've fallen behind, the app as it stands now is in our class resources as
+``mysite_stage_2``
 
 
 Our Detail View
@@ -1197,34 +999,27 @@ Our Detail View
 
 Next, let's add a view function for the detail view of a post
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-It will need to get the ``id`` of the post to show as an argument
+    It will need to get the ``id`` of the post to show as an argument
 
-.. class:: incremental
+    Like the list view, it should only show published posts
 
-Like the list view, it should only show published posts
+    But unlike the list view, it will need to return *something* if an
+    unpublished post is requested.
 
-.. class:: incremental
-
-But unlike the list view, it will need to return *something* if an unpublished
-post is requested.
-
-.. class:: incremental
-
-Let's start with the tests in ``views.py``
+    Let's start with the tests in ``views.py``
 
 
-Testing the Details
--------------------
+.. nextslide:: Testing the Details
 
 Add the following test to our ``FrontEndTestCase`` in ``myblog/tests.py``:
 
 .. code-block:: python
-    :class: small incremental
 
         def test_details_only_published(self):
-            for count in range(1,11):
+            for count in range(1, 11):
                 title = "Post %d Title" % count
                 post = Post.objects.get(title=title)
                 resp = self.client.get('/posts/%d/' % post.pk)
@@ -1235,8 +1030,7 @@ Add the following test to our ``FrontEndTestCase`` in ``myblog/tests.py``:
                     self.assertEqual(resp.status_code, 404)
 
 
-Run Your Tests
---------------
+.. nextslide:: Run Your Tests
 
 .. code-block:: bash
 
@@ -1252,13 +1046,11 @@ Run Your Tests
     Destroying test database for alias 'default'...
 
 
-Let's Fix That Test
--------------------
+.. nextslide:: Let's Fix That Test
 
 Now, add a new view to ``myblog/views.py``:
 
 .. code-block:: python
-    :class: incremental small
 
     def detail_view(request, post_id):
         published = Post.objects.exclude(published_date__exact=None)
@@ -1270,33 +1062,29 @@ Now, add a new view to ``myblog/views.py``:
         return render(request, 'detail.html', context)
 
 
-Missing Content
----------------
+.. nextslide:: Missing Content
 
 One of the features of the Django ORM is that all models raise a DoesNotExist
 exception if ``get`` returns nothing.
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-This exception is actually an attribute of the Model you look for. There's also
-an ``ObjectDoesNotExist`` for when you don't know which model you have.
+    This exception is actually an attribute of the Model you look for.
 
-.. class:: incremental
+    There's also an ``ObjectDoesNotExist`` for when you don't know which model
+    you have.
 
-We can use that fact to raise a Not Found exception.
+    We can use that fact to raise a Not Found exception.
 
-.. class:: incremental
-
-Django will handle the rest for us.
+    Django will handle the rest for us.
 
 
-Add the Template
-----------------
+.. nextslide:: Add the Template
 
 We also need to add ``detail.html`` to ``myblog/templates``:
 
 .. code-block:: jinja
-    :class: tiny
 
     {% extends "base.html" %}
 
@@ -1317,49 +1105,43 @@ We also need to add ``detail.html`` to ``myblog/templates``:
     {% endblock %}
 
 
-Hook it Up
-----------
+.. nextslide:: Hook it Up
 
 In order to view a single post, we'll need a link from the list view
 
-.. container:: incremental
+.. rst-class:: build
+.. container::
 
-    We can use the ``url`` template tag (like flask ``url_for``):
+    We can use the ``url`` template tag (like Pyramid's ``request.route_url``):
 
     .. code-block:: jinja
-        :class: small
-    
+
         {% url '<view_name>' arg1 arg2 %}
 
-.. class:: incremental
+    In our ``list.html`` template, let's link the post titles:
 
-In our ``list.html`` template, let's link the post titles:
+    .. code-block:: jinja
 
-.. code-block:: jinja
-    :class: small incremental
-
-    {% for post in posts %}
-    <div class="post">
-      <h2>
-        <a href="{% url 'blog_detail' post.pk %}">{{ post }}</a>
-      </h2>
-      ...
+        {% for post in posts %}
+        <div class="post">
+          <h2>
+            <a href="{% url 'blog_detail' post.pk %}">{{ post }}</a>
+          </h2>
+          ...
 
 
-Fix URLs
---------
+.. nextslide:: Fix URLs
 
 Again, we need to insert our new view into the existing ``myblog/urls.py`` in
 ``myblog``:
 
 .. code-block:: python
-    :class: small
-    
+
     url(r'^posts/(?P<post_id>\d+)/$',
         'detail_view',
         name="blog_detail"),
 
-.. class:: incremental small
+.. rst-class:: build small
 
 ::
 
@@ -1370,40 +1152,32 @@ Again, we need to insert our new view into the existing ``myblog/urls.py`` in
     OK
 
 
-A Moment To Play
-----------------
+.. nextslide:: A Moment To Play
 
 We've got some good stuff to look at now.  Fire up the server
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-Reload your blog index page and click around a bit.
+    Reload your blog index page and click around a bit.
 
-.. class:: incremental
+    You can now move back and forth between list and detail view.
 
-You can now move back and forth between list and detail view.
-
-.. class:: incremental
-
-Try loading the detail view for a post that doesn't exist
+    Try loading the detail view for a post that doesn't exist
 
 
-Congratulations
----------------
+.. nextslide:: Congratulations
 
 You've got a functional Blog
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-It's not very pretty, though.
+    It's not very pretty, though.
 
-.. class:: incremental
+    We can fix that by adding some css
 
-We can fix that by adding some css
-
-.. class:: incremental
-
-This gives us a chance to learn about Django's handling of *static files*
+    This gives us a chance to learn about Django's handling of *static files*
 
 
 Static Files
@@ -1411,72 +1185,72 @@ Static Files
 
 Like templates, Django expects to find static files in particular locations
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-It will look for them in a directory named ``static`` in any installed apps.
+    It will look for them in a directory named ``static`` in any installed
+    apps.
 
-.. class:: incremental
+    They will be served from the url path in the STATIC_URL setting.
 
-They will be served from the url path in the STATIC_URL setting.
+    By default, this is ``/static/``
 
-.. class:: incremental
+    To allow Django to automatically build the correct urls for your static
+    files, you use a special *template tag*::
 
-By default, this is ``/static/``
+        {% static <filename> %}
 
 
-Add CSS
--------
+.. nextslide:: Add CSS
 
 I've prepared a css file for us to use. You can find it in the class resources
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-Create a new directory ``static`` in the ``myblog`` app.
+    Create a new directory ``static`` in the ``myblog`` app.
 
-.. class:: incremental
+    Copy the ``django_blog.css`` file into that new directory.
 
-Copy the ``django_blog.css`` file into that new directory.
+    .. container::
 
-.. container:: incremental
+        Next, load the static files template tag into ``base.html`` (this must
+        be on the first line of the template):
 
-    Then add this link to the <head> of ``base.html``:
+        .. code-block:: jinja
 
-    .. code-block:: html
-        :class: small
-    
-        <title>My Django Blog</title>
-        <link type="text/css" rel="stylesheet" href="/static/django_blog.css">
+            {% load staticfiles %}
+
+        Finally, add a link to the stylesheet using the special template tag:
+
+        .. code-block:: html
+
+            <title>My Django Blog</title> <!-- This is already present -->
+            <link type="text/css" rel="stylesheet" href="{% static 'django_blog.css' %}">
 
 
-View Your Results
------------------
+.. nextslide:: View Your Results
 
 Reload http://localhost:8000/ and view the results of your work
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-We now have a reasonable view of the posts of our blog on the front end
+    We now have a reasonable view of the posts of our blog on the front end
 
-.. class:: incremental
+    And we have a way to create and categorize posts using the admin
 
-And we have a way to create and categorize posts using the admin
+    However, we lack a way to move between the two.
 
-.. class:: incremental
-
-However, we lack a way to move between the two.
-
-.. class:: incremental
-
-Let's add that ability next.
+    Let's add that ability next.
 
 
-Adding A Control Bar
---------------------
+Global Navigation
+-----------------
 
 We'll start by adding a control bar to our ``base.html`` template:
 
 .. code-block:: jinja
-    :class: small
 
     <!DOCTYPE html>
       ...
@@ -1494,60 +1268,53 @@ We'll start by adding a control bar to our ``base.html`` template:
           ...
 
 
-Request Context Revisited
--------------------------
+.. nextslide:: Request Context Revisited
 
 When we set up our views, we used the ``render`` shortcut, which provides a
 ``RequestContext``
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-This gives us access to ``user`` in our templates
+    This gives us access to ``user`` in our templates
 
-.. class:: incremental
+    It provides access to methods about the state and rights of that user
 
-It provides access to methods about the state and rights of that user
-
-.. class:: incremental
-
-We can use these to conditionally display links or UI elements. Like only
-showing the admin link to staff members.
+    We can use these to conditionally display links or UI elements. Like only
+    showing the admin link to staff members.
 
 
-Login/Logout
-------------
+.. nextslide:: Login/Logout
 
 Django also provides a reasonable set of views for login/logout.
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-The first step to using them is to hook them into a urlconf.
+    The first step to using them is to hook them into a urlconf.
 
-.. container:: incremental
+    .. container::
 
-    Add the following to ``mysite/urls.py``:
-    
-    .. code-block:: python
-        :class: small
-    
-        url(r'^', include('myblog.urls')), #<- already there
-        url(r'^login/$',
-            'django.contrib.auth.views.login',
-            {'template_name': 'login.html'},
-            name="login"),
-        url(r'^logout/$',
-            'django.contrib.auth.views.logout',
-            {'next_page': '/'},
-            name="logout"),
+        Add the following to ``mysite/urls.py``:
+
+        .. code-block:: python
+
+            url(r'^', include('myblog.urls')), #<- already there
+            url(r'^login/$',
+                'django.contrib.auth.views.login',
+                {'template_name': 'login.html'},
+                name="login"),
+            url(r'^logout/$',
+                'django.contrib.auth.views.logout',
+                {'next_page': '/'},
+                name="logout"),
 
 
-Login Template
---------------
+.. nextslide:: Login Template
 
 We need to create a new ``login.html`` template in ``mysite/templates``:
 
 .. code-block:: jinja
-    :class: small
 
     {% extends "base.html" %}
 
@@ -1560,90 +1327,81 @@ We need to create a new ``login.html`` template in ``mysite/templates``:
     {% endblock %}
 
 
-Submitting Forms
-----------------
+.. nextslide:: Submitting Forms
 
 In a web application, submitting forms is potentially hazardous
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-Data is being sent to our application from some remote place
+    Data is being sent to our application from some remote place
 
-.. class:: incremental
+    If that data is going to alter the state of our application, we **must**
+    use POST
 
-If that data is going to alter the state of our application, we **must** use 
-POST
-
-.. class:: incremental
-
-Even so, we are vulnerable to Cross-Site Request Forgery, a common attack
-vector.
+    Even so, we are vulnerable to Cross-Site Request Forgery, a common attack
+    vector.
 
 
-Danger: CSRF
-------------
+.. nextslide:: Danger: CSRF
 
 Django provides a convenient system to fight this.
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-In fact, for POST requests, it *requires* that you use it.
+    In fact, for POST requests, it *requires* that you use it.
 
-.. class:: incremental
+    The Django middleware that does this is enabled by default.
 
-The Django middleware that does this is enabled by default. 
-
-.. class:: incremental
-
-All you need to do is include the ``{% csrf_token %}`` tag in your form.
+    All you need to do is include the ``{% csrf_token %}`` tag in your form.
 
 
-Hooking It Up
--------------
+.. nextslide:: Hooking It Up
 
 In ``base.html`` make the following updates:
 
-.. code-block:: jinja
-    :class: small
+.. rst-class:: build
+.. container::
 
-    <!-- admin link -->
-    <a href="{% url 'admin:index' %}">admin</a>
-    <!-- logout link -->
-    <a href="{% url 'logout' %}">logout</a>
-    <!-- login link -->
-    <a href="{% url 'login' %}">login</a>
+    .. code-block:: jinja
 
-.. container:: incremental
+        <!-- admin link -->
+        <a href="{% url 'admin:index' %}">admin</a>
+        <!-- logout link -->
+        <a href="{% url 'logout' %}">logout</a>
+        <!-- login link -->
+        <a href="{% url 'login' %}">login</a>
 
-    Finally, in ``settings.py`` add the following:
+    .. container::
 
-    .. code-block:: python
-        :class: small
-    
-        LOGIN_URL = '/login/'
-        LOGIN_REDIRECT_URL = '/'
+        Finally, in ``settings.py`` add the following:
+
+        .. code-block:: python
 
 
-Forms In Django
----------------
+            LOGIN_URL = '/login/'
+            LOGIN_REDIRECT_URL = '/'
+
+
+.. nextslide:: Forms In Django
 
 In adding a login view, we've gotten a sneak peak at how forms work in Django.
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-However, learning more about them is beyond what we can achieve in this
-session.
+    However, learning more about them is beyond what we can achieve in this
+    session.
 
-.. class:: incremental
+    The form system in Django is quite nice, however. I urge you to
+    `read more about it`_
 
-The form system in Django is quite nice, however. I urge you to `read more about it`_ 
+    In particular, you might want to pay attention to the documentation on
+    `Model Forms`_
+
 
 .. _read more about it: https://docs.djangoproject.com/en/1.6/topics/forms/
-
-.. class:: incremental
-
-In particular, you might want to pay attention to the documentation on `Model Forms`
-
 .. _Model Forms: https://docs.djangoproject.com/en/1.6/topics/forms/modelforms/
 
 
@@ -1652,55 +1410,58 @@ Ta-Daaaaaa!
 
 So, that's it.  We've created a workable, simple blog app in Django.
 
-.. class:: incremental
+.. rst-class:: build
+.. container::
 
-There's much more we could do with this app. And for homework, you'll do some
-of it.
+    If you fell behind at some point, the app as it now stands is in our class
+    resources as ``mysite_stage_3``.
 
-.. class:: incremental
+    There's much more we could do with this app. And for homework, you'll do
+    some of it.
 
-Then next session, we'll work as we did in session 6.
-
-..  class:: incremental
-
-We'll divide up into pairs, and implement a simple feature to extend our blog.
+    Then next session, we'll work together as pairs to implement a simple
+    feature to extend the blog
 
 
 Homework
---------
+========
+
+.. rst-class:: left
 
 For your homework this week, we'll fix one glaring problem with our blog admin.
 
-.. class:: incremental
+.. rst-class:: build left
+.. container::
 
-As you created new categories and posts, and related them to each-other, how
-did you feel about that work?
+    As you created new categories and posts, and related them to each-other,
+    how did you feel about that work?
 
-.. class:: incremental
+    Although from a data perspective, the category model is the right place for
+    the ManytoMany relationship to posts, this leads to awkward usage in the
+    admin.
 
-Although from a data perspective, the category model is the right place for the
-ManytoMany relationship to posts, this leads to awkward usage in the admin.
-
-.. class:: incremental
-
-It would be much easier if we could designate a category for a post *from the
-Post admin*.
+    It would be much easier if we could designate a category for a post *from
+    the Post admin*.
 
 
 Your Assignment
 ---------------
 
-You'll be reversing that relationship so that you can only add categories to posts
+You'll be reversing that relationship so that you can only add categories to
+posts
 
-Take the following steps:
+.. rst-class:: build
+.. container::
 
-1. Read the documentation about the `Django admin.`_
-2. You'll need to create a customized `ModelAdmin`_ class for the ``Post`` and
-   ``Category`` models.
-3. And you'll need to create an `InlineModelAdmin`_ to represent Categories on
-   the Post admin view.
-4. Finally, you'll need to `suppress the display`_  of the 'posts' field on
-   your ``Category`` admin view.
+    Take the following steps:
+
+    1. Read the documentation about the `Django admin.`_
+    2. You'll need to create a customized `ModelAdmin`_ class for the ``Post``
+       and ``Category`` models.
+    3. And you'll need to create an `InlineModelAdmin`_ to represent Categories
+       on the Post admin view.
+    4. Finally, you'll need to `suppress the display`_  of the 'posts' field on
+       your ``Category`` admin view.
 
 
 .. _Django admin.: https://docs.djangoproject.com/en/1.6/ref/contrib/admin/
@@ -1709,20 +1470,24 @@ Take the following steps:
 .. _suppress the display: https://docs.djangoproject.com/en/1.6/ref/contrib/admin/#modeladmin-options
 
 
-Pushing Further
----------------
+.. nextslide:: Pushing Further
 
 All told, those changes should not require more than about 15 total lines of
 code.
 
-The trick of course is reading and finding out which fifteen lines to write.
+.. rst-class:: build
+.. container::
 
-If you complete that task in less than 3-4 hours of work, consider looking into
-other ways of customizing the admin.
+    The trick of course is reading and finding out which fifteen lines to
+    write.
+
+    If you complete that task in less than 3-4 hours of work, consider looking
+    into other ways of customizing the admin.
 
 
-Tasks you might consider
-------------------------
+.. nextslide:: Tasks you might consider
+
+.. rst-class:: build
 
 * Change the admin index to say 'Categories' instead of 'Categorys'.
 * Add columns for the date fields to the list display of Posts.
@@ -1730,7 +1495,6 @@ Tasks you might consider
   the admin.
 * Add a column to the list display of Posts that shows the author.  For more
   fun, make this a link that takes you to the admin page for that user.
-
 * For the biggest challenge, look into `admin actions`_ and add an action to
   the Post admin that allows you to bulk publish posts from the Post list
   display
