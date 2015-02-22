@@ -1,0 +1,202 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Session 09 &mdash; Internet Programming with Python</title>
+    
+    <link rel="stylesheet" href="../_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Internet Programming with Python" href="../index.html" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head>
+  <body>
+<div class="header">
+  <div class="logo">
+    <a href="../index.html">
+      <img class="logo" src="../_static/logo_UW.png" alt="Logo"/>
+    </a>
+  </div>
+</div>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="../index.html">UWPCE Python 200</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="session-09">
+<h1>Session 09<a class="headerlink" href="#session-09" title="Permalink to this headline">¶</a></h1>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/django-pony.png"><img alt="../_images/django-pony.png" src="../_images/django-pony.png" style="width: 60%;" /></a>
+<p class="caption">image: <a class="reference external" href="http://djangopony.com/">http://djangopony.com/</a></p>
+</div>
+<div class="section" id="extending-django">
+<h2>Extending Django<a class="headerlink" href="#extending-django" title="Permalink to this headline">¶</a></h2>
+<p class="large">Wherein we extend our Django blog app.</p>
+<div class="section" id="last-week">
+<h3>Last Week<a class="headerlink" href="#last-week" title="Permalink to this headline">¶</a></h3>
+<p>Last week, we created a nice, simple Django microblog application.</p>
+<div class="build container">
+<p>Over the week, as your homework, you made some modifications to improve how
+it works.</p>
+<p>There&#8217;s still quite a bit more we can do to improve this application.</p>
+<p>And today, that&#8217;s what we are going to do.</p>
+</div>
+</div>
+<div class="section" id="preparation">
+<h3>Preparation<a class="headerlink" href="#preparation" title="Permalink to this headline">¶</a></h3>
+<p>In order for this to work properly, we&#8217;ll need to have a few things in place.</p>
+<div class="build container">
+<p>First, we&#8217;ll start from a canonical copy of the microblog.  Make a fork of
+the following repository to your github account:</p>
+<div class="highlight-python"><div class="highlight"><pre>https://github.com/cewing/django-microblog
+</pre></div>
+</div>
+<p>Then, clone that repository to your local machine:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>git clone https://github.com/&lt;your_name&gt;/django-microblog.git
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="connect-to-your-partner">
+<h3>Connect to Your Partner<a class="headerlink" href="#connect-to-your-partner" title="Permalink to this headline">¶</a></h3>
+<p>Finally, you&#8217;ll want to connect to your partner&#8217;s repository, so that you can
+each work on your own laptop and still share the changes you make.</p>
+<div class="build container">
+<p>First, add your partner&#8217;s repository as <tt class="docutils literal"><span class="pre">upstream</span></tt> to yours:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>git remote add upstream https://github.com/&lt;partner&gt;/django-microblog.git
+</pre></div>
+</div>
+<p>Then, fetch their copy so that you can easily merge their changes later:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>git fetch --all
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="while-you-work">
+<h3>While You Work<a class="headerlink" href="#while-you-work" title="Permalink to this headline">¶</a></h3>
+<p>Now, when you switch roles during your work, here&#8217;s the workflow you can use:</p>
+<div class="build container">
+<div class="container">
+<ol class="arabic simple">
+<li>The current driver commits all changes and pushes to their repository:</li>
+</ol>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>git commit -a -m <span class="s2">&quot;Time to switch roles&quot;</span>
+<span class="nv">$ </span>git push origin master
+</pre></div>
+</div>
+</div>
+<div class="container">
+<ol class="arabic simple" start="2">
+<li>The new driver fetches and merges changes made upstream:</li>
+</ol>
+</div>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>git fetch --all
+<span class="nv">$ </span>git branch -a
+* master
+  remotes/origin/master
+  remotes/upstream/master
+<span class="nv">$ </span>git merge upstream/master
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li>The new driver continues working from where their partner left off.</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Session 09</a><ul>
+<li><a class="reference internal" href="#extending-django">Extending Django</a><ul>
+<li><a class="reference internal" href="#last-week">Last Week</a></li>
+<li><a class="reference internal" href="#preparation">Preparation</a></li>
+<li><a class="reference internal" href="#connect-to-your-partner">Connect to Your Partner</a></li>
+<li><a class="reference internal" href="#while-you-work">While You Work</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/presentations/session09.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+  <h3>Slides</h3>
+  <ul class="this-page-menu">
+    <li><a href="../.././slides/presentations/session09.html"
+           rel="nofollow">View as slides</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="../index.html">UWPCE Python 200</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012-2015, Cris Ewing.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
