@@ -1,0 +1,218 @@
+<!--
+Google IO 2012/2013 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahé <lukem@google.com>
+
+URL: https://code.google.com/p/io-2012-slides
+--><!DOCTYPE html>
+
+
+<html>
+<head>
+  <title>Session 09 &mdash; Internet Programming with Python</title>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  
+  <link rel="stylesheet" media="all"
+        href="../_static/theme/css/default.css">
+  <link rel="stylesheet" media="all"
+        href="../_static/theme/css/hieroglyph.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)"
+        href="../_static/theme/css/phone.css">
+
+    
+    <link rel="stylesheet" href="../_static/custom.css"
+          type="text/css" />
+    
+
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+
+    <script data-main="../_static/js/slides"
+            src="../_static/js/require-1.0.8.min.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    
+    <link rel="top" title="Internet Programming with Python" href="../index.html" /> 
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen">
+
+  <slide class="title-slide segue nobackground">
+  <aside class="gdbar"><img src="../_static/logo_UW.png"></aside>
+  <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+  <hgroup class="auto-fadein">
+    <h1 data-config-title><!-- populated from slide_config.json --></h1>
+    <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+    <p data-config-presenter><!-- populated from slide_config.json --></p>
+  </hgroup>
+</slide>
+
+  
+    <slide class="level-1">
+    <hgroup>
+      <h1>Session 09</h1>
+    </hgroup>
+    <article class="">
+      <div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/django-pony.png"><img alt="../_images/django-pony.png" src="../_images/django-pony.png" style="width: 60%;" /></a>
+<p class="caption">image: <a class="reference external" href="http://djangopony.com/">http://djangopony.com/</a></p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-2">
+    <hgroup>
+      <h2>Extending Django</h2>
+    </hgroup>
+    <article class="">
+      <p class="large">Wherein we extend our Django blog app.</p>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Last Week</h3>
+    </hgroup>
+    <article class="">
+      <p>Last week, we created a nice, simple Django microblog application.</p>
+<div class="build container">
+<p>Over the week, as your homework, you made some modifications to improve how
+it works.</p>
+<p>There's still quite a bit more we can do to improve this application.</p>
+<p>And today, that's what we are going to do.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Preparation</h3>
+    </hgroup>
+    <article class="">
+      <p>In order for this to work properly, we'll need to have a few things in place.</p>
+<div class="build container">
+<p>First, we'll start from a canonical copy of the microblog.  Make a fork of
+the following repository to your github account:</p>
+<div class="highlight-python"><div class="highlight"><pre>https://github.com/cewing/django-microblog
+</pre></div>
+</div>
+<p>Then, clone that repository to your local machine:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>git clone https://github.com/&lt;your_name&gt;/django-microblog.git
+</pre></div>
+</div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Connect to Your Partner</h3>
+    </hgroup>
+    <article class="">
+      <p>Finally, you'll want to connect to your partner's repository, so that you can
+each work on your own laptop and still share the changes you make.</p>
+<div class="build container">
+<p>First, add your partner's repository as <tt class="docutils literal"><span class="pre">upstream</span></tt> to yours:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>git remote add upstream https://github.com/&lt;partner&gt;/django-microblog.git
+</pre></div>
+</div>
+<p>Then, fetch their copy so that you can easily merge their changes later:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>git fetch --all
+</pre></div>
+</div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>While You Work</h3>
+    </hgroup>
+    <article class="">
+      <p>Now, when you switch roles during your work, here's the workflow you can use:</p>
+<div class="build container">
+<div class="container">
+<ol class="arabic simple">
+<li>The current driver commits all changes and pushes to their repository:</li>
+</ol>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>git commit -a -m <span class="s2">&quot;Time to switch roles&quot;</span>
+<span class="nv">$ </span>git push origin master
+</pre></div>
+</div>
+</div>
+<div class="container">
+<ol class="arabic simple" start="2">
+<li>The new driver fetches and merges changes made upstream:</li>
+</ol>
+</div>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>git fetch --all
+<span class="nv">$ </span>git branch -a
+* master
+  remotes/origin/master
+  remotes/upstream/master
+<span class="nv">$ </span>git merge upstream/master
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li>The new driver continues working from where their partner left off.</li>
+</ol>
+</div>
+
+
+
+
+    </article>
+  </slide>
+
+
+    <slide class="thank-you-slide segue nobackground">
+    <aside class="gdbar right"><img src="../_static/logo_UW.png"></aside>
+    <article class="flexbox vleft auto-fadein">
+      <h2>&lt;Thank You!&gt;</h2>
+      <p>&nbsp;</p>
+    </article>
+    <p class="auto-fadein" data-config-contact>
+      <!-- populated from slide_config.json -->
+    </p>
+  </slide>
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>

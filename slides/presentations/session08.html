@@ -1,0 +1,1758 @@
+<!--
+Google IO 2012/2013 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahé <lukem@google.com>
+
+URL: https://code.google.com/p/io-2012-slides
+--><!DOCTYPE html>
+
+
+<html>
+<head>
+  <title>Session 08 &mdash; Internet Programming with Python</title>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  
+  <link rel="stylesheet" media="all"
+        href="../_static/theme/css/default.css">
+  <link rel="stylesheet" media="all"
+        href="../_static/theme/css/hieroglyph.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)"
+        href="../_static/theme/css/phone.css">
+
+    
+    <link rel="stylesheet" href="../_static/custom.css"
+          type="text/css" />
+    
+
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+
+    <script data-main="../_static/js/slides"
+            src="../_static/js/require-1.0.8.min.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    
+    <link rel="top" title="Internet Programming with Python" href="../index.html" />
+    <link rel="up" title="Course Presentations" href="index.html" />
+    <link rel="next" title="Session 09" href="session09.html" />
+    <link rel="prev" title="Session 07" href="session07.html" /> 
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen">
+
+  <slide class="title-slide segue nobackground">
+  <aside class="gdbar"><img src="../_static/logo_UW.png"></aside>
+  <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+  <hgroup class="auto-fadein">
+    <h1 data-config-title><!-- populated from slide_config.json --></h1>
+    <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+    <p data-config-presenter><!-- populated from slide_config.json --></p>
+  </hgroup>
+</slide>
+
+  
+    <slide class="level-1">
+    <hgroup>
+      <h1>Session 08</h1>
+    </hgroup>
+    <article class="">
+      <div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/django-pony.png"><img alt="../_images/django-pony.png" src="../_images/django-pony.png" style="width: 60%;" /></a>
+<p class="caption">image: <a class="reference external" href="http://djangopony.com/">http://djangopony.com/</a></p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-2">
+    <hgroup>
+      <h2>Building a Django Application</h2>
+    </hgroup>
+    <article class="">
+      <p class="large">Wherein we build a simple blogging app.</p>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>A Full Stack Framework</h3>
+    </hgroup>
+    <article class="">
+      <p>Django comes with:</p>
+<div class="build container">
+<ul class="build simple">
+<li>Persistence via the <em>Django ORM</em></li>
+<li>CRUD content editing via the automatic <em>Django Admin</em></li>
+<li>URL Mapping via <em>urlpatterns</em></li>
+<li>Templating via the <em>Django Template Language</em></li>
+<li>Caching with levels of configurability</li>
+<li>Internationalization via i18n hooks</li>
+<li>Form rendering and handling</li>
+<li>User authentication and authorization</li>
+</ul>
+<p>Pretty much everything you need to make a solid website quickly</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>What Sets it Apart?</h3>
+    </hgroup>
+    <article class="">
+      <p>Lots of frameworks offer some of these features, if not all.</p>
+<div class="build container">
+<p>What is Django's <em>killer feature</em></p>
+<p class="centered"><strong>The Django Admin</strong></p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>The Django Admin</h3>
+    </hgroup>
+    <article class="">
+      <p>Works in concert with the Django ORM to provide automatic CRUD functionality</p>
+<div class="build container">
+<p>You write the models, it provides the UI</p>
+<p>You've seen this in action. Pretty neat, eh?</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>The Pareto Principle</h3>
+    </hgroup>
+    <article class="">
+      <p>The Django Admin is a great example of the Pareto Priciple, a.k.a. the 80/20
+rule:</p>
+<div class="build container">
+<p class="centered"><strong>80% of the problems can be solved by 20% of the effort</strong></p>
+<p>The converse also holds true:</p>
+<p class="centered"><strong>Fixing the last 20% of the problems will take the remaining 80% of the
+effort.</strong></p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Other Django Advantages</h3>
+    </hgroup>
+    <article class="">
+      <p>Clearly the most popular full-stack Python web framework at this time</p>
+<div class="build container">
+<p>Popularity translates into:</p>
+<ul class="build simple">
+<li>Active, present community</li>
+<li>Plethora of good examples to be found online</li>
+<li>Rich ecosystem of <em>apps</em> (encapsulated add-on functionality)</li>
+</ul>
+<p class="centered"><strong>Jobs</strong></p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Active Development</h3>
+    </hgroup>
+    <article class="">
+      <p>Django releases in the last 12+ months (a short list):</p>
+<ul class="build simple">
+<li>1.7.4 (January 2015)</li>
+<li>1.6.9 (January 2015)</li>
+<li>1.7.1 (October 2014)</li>
+<li>1.6.7 (September 2014)</li>
+<li>1.7 (September 2014)</li>
+<li>1.6.5 (May 2014)</li>
+<li>1.6.2 (February 2014)</li>
+<li>1.6 (November 2013)</li>
+</ul>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Great Documentation</h3>
+    </hgroup>
+    <article class="">
+      <p>Thorough, readable, and discoverable.</p>
+<div class="build container">
+<p>Led the way to better documentation for all Python</p>
+<p><a class="reference external" href="https://readthedocs.org/">Read The Docs</a> - built in connection with
+Django, sponsored by the Django Software Foundation.</p>
+<p>Write documentation as part of your python package.</p>
+<p>Render new versions of that documentation for every commit.</p>
+<p class="centered"><strong>this is awesome</strong></p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Where We Stand</h3>
+    </hgroup>
+    <article class="">
+      <p>For your homework this week, you created a <tt class="docutils literal"><span class="pre">Post</span></tt> model to serve as the heart
+of our blogging app.</p>
+<div class="build container">
+<p>You also took some time to get familiar with the basic workings of the
+Django ORM.</p>
+<p>You made a minor modification to our model class and wrote a test for it.</p>
+<p>And you installed the Django Admin site and added your app to it.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Going Further</h3>
+    </hgroup>
+    <article class="">
+      <p>One of the most common features in a blog is the ability to categorize posts.</p>
+<div class="build container">
+<p>Let's add this feature to our blog!</p>
+<p>To do so, we'll be adding a new model, and making some changes to existing
+code.</p>
+<p class="build">This means that we'll need to <em>change our database schema</em>.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Changing a Database</h3>
+    </hgroup>
+    <article class="">
+      <p>You've seen how to add new tables to a database using the <tt class="docutils literal"><span class="pre">migrate</span></tt> command.</p>
+<div class="build container">
+<p>And you've created your first migration in setting up the <tt class="docutils literal"><span class="pre">Post</span></tt> model.</p>
+<p>This is an example of altering the <em>database schema</em> using Python code.</p>
+<p>Starting in Django 1.7, this ability is available built-in to Django.</p>
+<p>Before verson 1.7 it was available in an add-on called <a class="reference external" href="http://south.readthedocs.org/en/latest">South</a>.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Adding a Model</h3>
+    </hgroup>
+    <article class="">
+      <p>We want to add a new model to represent the categories our blog posts might
+fall into.</p>
+<div class="build container">
+<p>This model will need to have:</p>
+<ul class="build simple">
+<li>a name for the category</li>
+<li>a longer description</li>
+<li>a relationship to the Post model</li>
+</ul>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># in models.py</span>
+<span class="k">class</span> <span class="nc">Category</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">posts</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                                   <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;categories&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Strange Relationships</h3>
+    </hgroup>
+    <article class="">
+      <p>In our <tt class="docutils literal"><span class="pre">Post</span></tt> model, we used a <tt class="docutils literal"><span class="pre">ForeignKeyField</span></tt> field to match an author
+to her posts.</p>
+<div class="build container">
+<p>This models the situation in which a single author can have many posts,
+while each post has only one author.</p>
+<p>We call this a <em>Many to One</em> relationship.</p>
+<p>But any given <tt class="docutils literal"><span class="pre">Post</span></tt> might belong in more than one <tt class="docutils literal"><span class="pre">Category</span></tt>.</p>
+<p>And it would be a waste to allow only one <tt class="docutils literal"><span class="pre">Post</span></tt> for each <tt class="docutils literal"><span class="pre">Category</span></tt>.</p>
+<p>Enter the <tt class="docutils literal"><span class="pre">ManyToManyField</span></tt></p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Add a Migration</h3>
+    </hgroup>
+    <article class="">
+      <p>To get these changes set up, we now add a new migration.</p>
+<div class="build container">
+<p>We use the <tt class="docutils literal"><span class="pre">makemigrations</span></tt> management command to do so:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>djangoenv<span class="o">)</span><span class="nv">$ </span>python manage.py makemigrations
+Migrations <span class="k">for</span> <span class="s1">&#39;myblog&#39;</span>:
+  0002_category.py:
+    - Create model Category
+</pre></div>
+</div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Apply A Migration</h3>
+    </hgroup>
+    <article class="">
+      <p>Once the migration has been created, we can apply it with the <tt class="docutils literal"><span class="pre">migrate</span></tt>
+management command.</p>
+<div class="build container">
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>djangoenv<span class="o">)</span><span class="nv">$ </span>python manage.py migrate
+Operations to perform:
+  Apply all migrations: admin, myblog, contenttypes, auth, sessions
+Running migrations:
+  Applying myblog.0002_category... OK
+</pre></div>
+</div>
+<p>You can even look at the migration file you just applied,
+<tt class="docutils literal"><span class="pre">myblog/migrations/0002_category.py</span></tt> to see what happened.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Make Categories Look Nice</h3>
+    </hgroup>
+    <article class="">
+      <p>Let's make <tt class="docutils literal"><span class="pre">Category</span></tt> object look nice the same way we did with <tt class="docutils literal"><span class="pre">Post</span></tt>.
+Start with a test:</p>
+<div class="build container">
+<p>add this to <tt class="docutils literal"><span class="pre">tests.py</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># another import</span>
+<span class="kn">from</span> <span class="nn">myblog.models</span> <span class="kn">import</span> <span class="n">Category</span>
+
+<span class="c"># and the test case and test</span>
+<span class="k">class</span> <span class="nc">CategoryTestCase</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">test_unicode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">expected</span> <span class="o">=</span> <span class="s">&quot;A Category&quot;</span>
+        <span class="n">c1</span> <span class="o">=</span> <span class="n">Category</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">expected</span><span class="p">)</span>
+        <span class="n">actual</span> <span class="o">=</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">c1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">actual</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Make it Pass</h3>
+    </hgroup>
+    <article class="">
+      <p>When you run your tests, you now have two, and one is failing because the
+<tt class="docutils literal"><span class="pre">Category</span></tt> object doesn't look right.</p>
+<div class="build container">
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>djangoenv<span class="o">)</span><span class="nv">$ </span>python manage.py <span class="nb">test </span>myblog
+Creating <span class="nb">test </span>database <span class="k">for </span><span class="nb">alias</span> <span class="s1">&#39;default&#39;</span>...
+...
+
+Ran 2 tests in 0.011s
+
+FAILED <span class="o">(</span><span class="nv">failures</span><span class="o">=</span>1<span class="o">)</span>
+</pre></div>
+</div>
+<p>Do you remember how you made that change for a <tt class="docutils literal"><span class="pre">Post</span></tt>?</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Category</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="c">#...</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+</pre></div>
+</div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Admin for Categories</h3>
+    </hgroup>
+    <article class="">
+      <p>Adding our new model to the Django admin is equally simple.</p>
+<div class="build container">
+<p>Simply add the following line to <tt class="docutils literal"><span class="pre">myblog/admin.py</span></tt></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># a new import</span>
+<span class="kn">from</span> <span class="nn">myblog.models</span> <span class="kn">import</span> <span class="n">Category</span>
+
+<span class="c"># and a new admin registration</span>
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Category</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Test It Out</h3>
+    </hgroup>
+    <article class="">
+      <p>Fire up the Django development server and see what you have in the admin:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>djangoenv<span class="o">)</span><span class="nv">$ </span>python manage.py runserver
+Validating models...
+...
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+</pre></div>
+</div>
+<div class="build container">
+<p>Point your browser at <tt class="docutils literal"><span class="pre">http://localhost:8000/admin/</span></tt>, log in and play.</p>
+<p>Add a few categories, put some posts in them. Visit your posts, add new
+ones and then categorize them.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>BREAK TIME</h3>
+    </hgroup>
+    <article class="">
+      <p>We've completed a data model for our application.</p>
+<p>And thanks to Django's easy-to-use admin, we have a reasonable CRUD application
+where we can manage blog posts and the categories we put them in.</p>
+<p>When we return, we'll put a public face on our new creation.</p>
+<p>If you've fallen behind, the app as it stands now is in our class resources as
+<tt class="docutils literal"><span class="pre">mysite_stage_1</span></tt></p>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-2">
+    <hgroup>
+      <h2>A Public Face</h2>
+    </hgroup>
+    <article class="">
+      <p class="left">Point your browser at <a class="reference external" href="http://localhost:8000/">http://localhost:8000/</a></p>
+<div class="build left container">
+<p>What do you see?</p>
+<p>Why?</p>
+<p>We need to add some public pages for our blog.</p>
+<p>In Django, the code that builds a page that you can see is called a <em>view</em>.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Django Views</h3>
+    </hgroup>
+    <article class="">
+      <p>A <em>view</em> can be defined as a <em>callable</em> that takes a request and returns a
+response.</p>
+<div class="build container">
+<p>This should sound pretty familiar to you.</p>
+<p>Classically, Django views were functions.</p>
+<p>Version 1.3 added support for Class-based Views (a class with a
+<tt class="docutils literal"><span class="pre">__call__</span></tt> method is a callable)</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>A Basic View</h3>
+    </hgroup>
+    <article class="">
+      <p>Let's add a really simple view to our app.</p>
+<div class="build container">
+<p>It will be a stub for our public UI.  Add this to <tt class="docutils literal"><span class="pre">views.py</span></tt> in
+<tt class="docutils literal"><span class="pre">myblog</span></tt></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span><span class="p">,</span> <span class="n">HttpResponseRedirect</span><span class="p">,</span> <span class="n">Http404</span>
+
+<span class="k">def</span> <span class="nf">stub_view</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="s">&quot;Stub View</span><span class="se">\n\n</span><span class="s">&quot;</span>
+    <span class="k">if</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">body</span> <span class="o">+=</span> <span class="s">&quot;Args:</span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="n">body</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s">&quot;</span><span class="se">\t</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">a</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">args</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="n">body</span> <span class="o">+=</span> <span class="s">&quot;Kwargs:</span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="n">body</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s">&quot;</span><span class="se">\t</span><span class="si">%s</span><span class="s">: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
+    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="s">&quot;text/plain&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Hooking It Up</h3>
+    </hgroup>
+    <article class="">
+      <p>In your homework tutorial, you learned about Django <strong>urlconfs</strong></p>
+<div class="build container">
+<p>We used our project urlconf to hook the Django admin into our project.</p>
+<p>We want to do the same thing for our new app.</p>
+<p>In general, an <em>app</em> that serves any sort of views should contain its own
+urlconf.</p>
+<p>The project urlconf should mainly <em>include</em> these where possible.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Adding A Urlconf</h3>
+    </hgroup>
+    <article class="">
+      <p>Create a new file <tt class="docutils literal"><span class="pre">urls.py</span></tt> inside the <tt class="docutils literal"><span class="pre">myblog</span></tt> app package.</p>
+<div class="build container">
+<p>Open it in your editor and add the following code:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.conf.urls</span> <span class="kn">import</span> <span class="n">patterns</span><span class="p">,</span> <span class="n">url</span>
+
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="n">patterns</span><span class="p">(</span><span class="s">&#39;myblog.views&#39;</span><span class="p">,</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^$&#39;</span><span class="p">,</span>
+        <span class="s">&#39;stub_view&#39;</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s">&quot;blog_index&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>A Word On Prefixes</h3>
+    </hgroup>
+    <article class="">
+      <p>The <tt class="docutils literal"><span class="pre">patterns</span></tt> function takes a first argument called the <em>prefix</em></p>
+<div class="build container">
+<p>When it is not empty, it is added to any view names in <tt class="docutils literal"><span class="pre">url()</span></tt> calls in
+the same <tt class="docutils literal"><span class="pre">patterns</span></tt>.</p>
+<p>In a root urlconf like the one in <tt class="docutils literal"><span class="pre">mysite</span></tt>, this isn't too useful.</p>
+<p>But in <tt class="docutils literal"><span class="pre">myblog.urls</span></tt> it lets us refer to views by simple function name.</p>
+<p>No need to import every view.</p>
+<p>Nor do we need to reference each by the app and module name where it
+appears.</p>
+<p>This is a convenience.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Include Blog Urls</h3>
+    </hgroup>
+    <article class="">
+      <p>In order for our new urls to load, we'll need to include them in our project
+urlconf</p>
+<div class="build container">
+<p>Open <tt class="docutils literal"><span class="pre">urls.py</span></tt> from the <tt class="docutils literal"><span class="pre">mysite</span></tt> project package and add this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">urlpatterns</span> <span class="o">=</span> <span class="n">patterns</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^&#39;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="s">&#39;myblog.urls&#39;</span><span class="p">)),</span> <span class="c">#&lt;- add this</span>
+    <span class="c">#... other included urls</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Try reloading <a class="reference external" href="http://localhost:8000/">http://localhost:8000/</a></p>
+<p>You should see some output now.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Project URL Space</h3>
+    </hgroup>
+    <article class="">
+      <p>A project is defined by the urls a user can visit.</p>
+<div class="build container">
+<p>What should our users be able to see when they visit our blog?</p>
+<ul class="build simple">
+<li>A list view that shows blog posts, most recent first.</li>
+<li>An individual post view, showing a single post (a permalink).</li>
+</ul>
+<p>Let's add urls for each of these.</p>
+<p>For now, we'll use the stub view we've created so we can concentrate on the
+url routing.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Our URLs</h3>
+    </hgroup>
+    <article class="">
+      <p>We've already got a good url for the list page: <tt class="docutils literal"><span class="pre">blog_index</span></tt> at '/'</p>
+<div class="build container">
+<p>For the view of a single post, we'll need to capture the id of the post.
+Add this to <tt class="docutils literal"><span class="pre">urlpatterns</span></tt> in <tt class="docutils literal"><span class="pre">myblog/urls.py</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">url</span><span class="p">(</span><span class="s">r&#39;^posts/(\d+)/$&#39;</span><span class="p">,</span>
+    <span class="s">&#39;stub_view&#39;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s">&quot;blog_detail&quot;</span><span class="p">),</span>
+</pre></div>
+</div>
+<p><tt class="docutils literal"><span class="pre">(\d+)</span></tt> captures one or more digits as the post_id.</p>
+<p>Load <a class="reference external" href="http://localhost:8000/posts/1234/">http://localhost:8000/posts/1234/</a> and see what you get.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>A Word on Capture in URLs</h3>
+    </hgroup>
+    <article class="">
+      <p>When you load the above url, you should see <tt class="docutils literal"><span class="pre">1234</span></tt> listed as an <em>arg</em></p>
+<div class="build container">
+<p>Try changing the route like so:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="s">r&#39;^posts/(?P&lt;post_id&gt;\d+)/$&#39;</span>
+</pre></div>
+</div>
+<p>Reload the same url.</p>
+<p>Notice the change.</p>
+<p>What's going on there?</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Regular Expression URLS</h3>
+    </hgroup>
+    <article class="">
+      <p>Like Pyramid, Django uses Python regular expressions to build routes.</p>
+<div class="build container">
+<p>Unlike Pyramid, Django <em>requires</em> regular expressions to capture segments
+in a route.</p>
+<p>When we built our WSGI book app, we used this same appraoch.</p>
+<p>There we learned about regular expression <em>capture groups</em>. We just changed
+an unnamed <em>capture group</em> to a named one.</p>
+<p>How you declare a capture group in your url pattern regexp influences how
+it will be passed to the view callable.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Full Urlconf</h3>
+    </hgroup>
+    <article class="">
+      <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.conf.urls</span> <span class="kn">import</span> <span class="n">patterns</span><span class="p">,</span> <span class="n">url</span>
+
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="n">patterns</span><span class="p">(</span><span class="s">&#39;myblog.views&#39;</span><span class="p">,</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^$&#39;</span><span class="p">,</span>
+        <span class="s">&#39;stub_view&#39;</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s">&quot;blog_index&quot;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^posts/(?P&lt;post_id&gt;\d+)/$&#39;</span><span class="p">,</span>
+        <span class="s">&#39;stub_view&#39;</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s">&quot;blog_detail&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Testing Views</h3>
+    </hgroup>
+    <article class="">
+      <p>Before we begin writing real views, we need to add some tests for the views we
+are about to create.</p>
+<div class="build container">
+<p>We'll need tests for a list view and a detail view</p>
+<p>add the following <em>imports</em> at the top of <tt class="docutils literal"><span class="pre">myblog/tests.py</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">django.utils.timezone</span> <span class="kn">import</span> <span class="n">utc</span>
+</pre></div>
+</div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Add a Test Case</h3>
+    </hgroup>
+    <article class="">
+      <div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">FrontEndTestCase</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;test views provided in the front-end&quot;&quot;&quot;</span>
+    <span class="n">fixtures</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;myblog_test_fixture.json&#39;</span><span class="p">,</span> <span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">utc</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timedelta</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span>
+        <span class="n">author</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">count</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">):</span>
+            <span class="n">post</span> <span class="o">=</span> <span class="n">Post</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">&quot;Post </span><span class="si">%d</span><span class="s"> Title&quot;</span> <span class="o">%</span> <span class="n">count</span><span class="p">,</span>
+                        <span class="n">text</span><span class="o">=</span><span class="s">&quot;foo&quot;</span><span class="p">,</span>
+                        <span class="n">author</span><span class="o">=</span><span class="n">author</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">:</span>
+                <span class="c"># publish the first five posts</span>
+                <span class="n">pubdate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">timedelta</span> <span class="o">*</span> <span class="n">count</span>
+                <span class="n">post</span><span class="o">.</span><span class="n">published_date</span> <span class="o">=</span> <span class="n">pubdate</span>
+            <span class="n">post</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Our List View</h3>
+    </hgroup>
+    <article class="">
+      <p>We'd like our list view to show our posts.</p>
+<div class="build container">
+<p>But in this blog, we have the ability to publish posts.</p>
+<p>Unpublished posts should not be seen in the front-end views.</p>
+<p>We set up our tests to have 5 published, and 5 unpublished posts</p>
+<p>Let's add a test to demonstrate that the right ones show up.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Testing the List View</h3>
+    </hgroup>
+    <article class="">
+      <div class="highlight-python"><div class="highlight"><pre><span class="n">Class</span> <span class="n">FrontEndTestCase</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span> <span class="c"># already here</span>
+    <span class="c"># ...</span>
+    <span class="k">def</span> <span class="nf">test_list_only_published</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="s">&quot;Recent Posts&quot;</span> <span class="ow">in</span> <span class="n">resp</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">count</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">):</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="s">&quot;Post </span><span class="si">%d</span><span class="s"> Title&quot;</span> <span class="o">%</span> <span class="n">count</span>
+            <span class="k">if</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">assertContains</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">assertNotContains</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="build container">
+<p>We test first to ensure that each published post is visible in our view.</p>
+<p>Note that we also test to ensure that the unpublished posts are <em>not</em> visible.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Run Your Tests</h3>
+    </hgroup>
+    <article class="">
+      <div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>djangoenv<span class="o">)</span><span class="nv">$ </span>python manage.py <span class="nb">test </span>myblog
+Creating <span class="nb">test </span>database <span class="k">for </span><span class="nb">alias</span> <span class="s1">&#39;default&#39;</span>...
+.F.
+<span class="o">======================================================================</span>
+FAIL: test_list_only_published <span class="o">(</span>myblog.tests.FrontEndTestCase<span class="o">)</span>
+...
+Ran 3 tests in 0.024s
+
+FAILED <span class="o">(</span><span class="nv">failures</span><span class="o">=</span>1<span class="o">)</span>
+Destroying <span class="nb">test </span>database <span class="k">for </span><span class="nb">alias</span> <span class="s1">&#39;default&#39;</span>...
+</pre></div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Now Fix That Test!</h3>
+    </hgroup>
+    <article class="">
+      <p>Add the view for listing blog posts to <tt class="docutils literal"><span class="pre">views.py</span></tt>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># add these imports</span>
+<span class="kn">from</span> <span class="nn">django.template</span> <span class="kn">import</span> <span class="n">RequestContext</span><span class="p">,</span> <span class="n">loader</span>
+<span class="kn">from</span> <span class="nn">myblog.models</span> <span class="kn">import</span> <span class="n">Post</span>
+
+<span class="c"># and this view</span>
+<span class="k">def</span> <span class="nf">list_view</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">published</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">published_date__exact</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+    <span class="n">posts</span> <span class="o">=</span> <span class="n">published</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&#39;-published_date&#39;</span><span class="p">)</span>
+    <span class="n">template</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">get_template</span><span class="p">(</span><span class="s">&#39;list.html&#39;</span><span class="p">)</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;posts&#39;</span><span class="p">:</span> <span class="n">posts</span><span class="p">,</span>
+    <span class="p">})</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="s">&quot;text/html&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Getting Posts</h3>
+    </hgroup>
+    <article class="">
+      <div class="highlight-python"><div class="highlight"><pre><span class="n">published</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">published_date__exact</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<span class="n">posts</span> <span class="o">=</span> <span class="n">published</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&#39;-published_date&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="build container">
+<p>We begin by using the QuerySet API to fetch all the posts that have
+<tt class="docutils literal"><span class="pre">published_date</span></tt> set</p>
+<p>Using the chaining nature of the API we order these posts by
+<tt class="docutils literal"><span class="pre">published_date</span></tt></p>
+<p>Remember, at this point, no query has actually been issued to the database.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Getting a Template</h3>
+    </hgroup>
+    <article class="">
+      <div class="highlight-python"><div class="highlight"><pre><span class="n">template</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">get_template</span><span class="p">(</span><span class="s">&#39;list.html&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="build container">
+<p>Django uses configuration to determine how to find templates.</p>
+<p>By default, Django looks in installed <em>apps</em> for a <tt class="docutils literal"><span class="pre">templates</span></tt> directory</p>
+<p>It also provides a place to list specific directories.</p>
+<p>Let's set that up in <tt class="docutils literal"><span class="pre">settings.py</span></tt></p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Project Templates</h3>
+    </hgroup>
+    <article class="">
+      <p>Notice that <tt class="docutils literal"><span class="pre">settings.py</span></tt> already contains a <tt class="docutils literal"><span class="pre">BASE_DIR</span></tt> value which points
+to the root of our project (where both the project and app packages are
+located).</p>
+<div class="build container">
+<p>In that same file add a tuple bound to <tt class="docutils literal"><span class="pre">TEMPLATE_DIRS</span></tt> and add a path to
+it:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">TEMPLATE_DIRS</span> <span class="o">=</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">BASE_DIR</span><span class="p">,</span> <span class="s">&#39;mysite/templates&#39;</span><span class="p">),</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>Then add a <tt class="docutils literal"><span class="pre">templates</span></tt> directory to your <tt class="docutils literal"><span class="pre">mysite</span></tt> project package</p>
+<p>Finally, in that directory add a new file <tt class="docutils literal"><span class="pre">base.html</span></tt> and populate it
+with the following:</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3><tt class="docutils literal"><span class="pre">base.html</span></tt></h3>
+    </hgroup>
+    <article class="">
+      <div class="highlight-jinja"><div class="highlight"><pre><span class="x">&lt;!DOCTYPE html&gt;</span>
+<span class="x">&lt;html&gt;</span>
+<span class="x">  &lt;head&gt;</span>
+<span class="x">    &lt;title&gt;My Django Blog&lt;/title&gt;</span>
+<span class="x">  &lt;/head&gt;</span>
+<span class="x">  &lt;body&gt;</span>
+<span class="x">    &lt;div id=&quot;container&quot;&gt;</span>
+<span class="x">      &lt;div id=&quot;content&quot;&gt;</span>
+<span class="x">      </span><span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">       [content will go here]</span>
+<span class="x">      </span><span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">      &lt;/div&gt;</span>
+<span class="x">    &lt;/div&gt;</span>
+<span class="x">  &lt;/body&gt;</span>
+<span class="x">&lt;/html&gt;</span>
+</pre></div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Templates in Django</h3>
+    </hgroup>
+    <article class="">
+      <p>Before we move on, a quick word about Django templates.</p>
+<div class="build container">
+<p>We've seen Jinja2 which was &quot;inspired by Django's templating system&quot;.</p>
+<p>Basically, you already know how to write Django templates.</p>
+<p>Django templates <strong>do not</strong> allow any python expressions.</p>
+<p><a class="reference external" href="https://docs.djangoproject.com/en/1.7/ref/templates/builtins/">https://docs.djangoproject.com/en/1.7/ref/templates/builtins/</a></p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Blog Templates</h3>
+    </hgroup>
+    <article class="">
+      <p>Our view tries to load <tt class="docutils literal"><span class="pre">list.html</span></tt>.</p>
+<div class="build container">
+<p>This template is probably specific to the blog functionality of our site</p>
+<p>It is common to keep shared templates in your project directory and
+specialized ones in app directories.</p>
+<p>Add a <tt class="docutils literal"><span class="pre">templates</span></tt> directory to your <tt class="docutils literal"><span class="pre">myblog</span></tt> app, too.</p>
+<p>In it, create a new file <tt class="docutils literal"><span class="pre">list.html</span></tt> and add this:</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3><tt class="docutils literal"><span class="pre">list.html</span></tt></h3>
+    </hgroup>
+    <article class="">
+      <div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{%</span> <span class="k">extends</span> <span class="s2">&quot;base.html&quot;</span> <span class="cp">%}</span><span class="x"></span>
+
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">  &lt;h1&gt;Recent Posts&lt;/h1&gt;</span>
+
+<span class="x">  </span><span class="cp">{%</span> <span class="k">comment</span> <span class="cp">%}</span><span class="c"> here is where the query happens </span><span class="cp">{%</span> <span class="k">endcomment</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">  </span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">post</span> <span class="k">in</span> <span class="nv">posts</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">  &lt;div class=&quot;post&quot;&gt;</span>
+<span class="x">    &lt;h2&gt;</span><span class="cp">{{</span> <span class="nv">post</span> <span class="cp">}}</span><span class="x">&lt;/h2&gt;</span>
+<span class="x">    &lt;p class=&quot;byline&quot;&gt;</span>
+<span class="x">      Posted by </span><span class="cp">{{</span> <span class="nv">post.author_name</span> <span class="cp">}}</span><span class="x"> &amp;mdash; </span><span class="cp">{{</span> <span class="nv">post.published_date</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">    &lt;/p&gt;</span>
+<span class="x">    &lt;div class=&quot;post-body&quot;&gt;</span>
+<span class="x">      </span><span class="cp">{{</span> <span class="nv">post.text</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">    &lt;/div&gt;</span>
+<span class="x">    &lt;ul class=&quot;categories&quot;&gt;</span>
+<span class="x">      </span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">category</span> <span class="k">in</span> <span class="nv">post.categories.all</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">        &lt;li&gt;</span><span class="cp">{{</span> <span class="nv">category</span> <span class="cp">}}</span><span class="x">&lt;/li&gt;</span>
+<span class="x">      </span><span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    &lt;/ul&gt;</span>
+<span class="x">  &lt;/div&gt;</span>
+<span class="x">  </span><span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Template Context</h3>
+    </hgroup>
+    <article class="">
+      <div class="highlight-python"><div class="highlight"><pre><span class="n">context</span> <span class="o">=</span> <span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span>
+    <span class="s">&#39;posts&#39;</span><span class="p">:</span> <span class="n">posts</span><span class="p">,</span>
+<span class="p">})</span>
+<span class="n">body</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="build container">
+<p>Like Jinja2, django templates are rendered by passing in a <em>context</em></p>
+<p>Django's RequestContext provides common bits, similar to the global context
+in Flask</p>
+<p>We add our posts to that context so they can be used by the template.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Return a Response</h3>
+    </hgroup>
+    <article class="">
+      <div class="highlight-python"><div class="highlight"><pre><span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="s">&quot;text/html&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="build container">
+<p>Finally, we build an HttpResponse and return it.</p>
+<p>This is, fundamentally, no different from the <tt class="docutils literal"><span class="pre">stub_view</span></tt> just above.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Fix URLs</h3>
+    </hgroup>
+    <article class="">
+      <p>We need to fix the url for our blog index page</p>
+<div class="build container">
+<p>Update <tt class="docutils literal"><span class="pre">urls.py</span></tt> in <tt class="docutils literal"><span class="pre">myblog</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">url</span><span class="p">(</span><span class="s">r&#39;^$&#39;</span><span class="p">,</span>
+    <span class="s">&#39;list_view&#39;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s">&quot;blog_index&quot;</span><span class="p">),</span>
+</pre></div>
+</div>
+<p>Then run your tests again:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>djangoenv<span class="o">)</span><span class="nv">$ </span>python manage.py <span class="nb">test </span>myblog
+...
+Ran 3 tests in 0.033s
+
+OK
+</pre></div>
+</div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Common Patterns</h3>
+    </hgroup>
+    <article class="">
+      <p>This is a common pattern in Django views:</p>
+<ul class="build simple">
+<li>get a template from the loader</li>
+<li>build a context, usually using a RequestContext</li>
+<li>render the template</li>
+<li>return an HttpResponse</li>
+</ul>
+<div class="build container">
+<p>So common in fact that Django provides two shortcuts for us to use:</p>
+<ul class="build simple">
+<li><tt class="docutils literal"><span class="pre">render(request,</span> <span class="pre">template[,</span> <span class="pre">ctx][,</span> <span class="pre">ctx_instance])</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">render_to_response(template[,</span> <span class="pre">ctx][,</span> <span class="pre">ctx_instance])</span></tt></li>
+</ul>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Shorten Our View</h3>
+    </hgroup>
+    <article class="">
+      <p>Let's replace most of our view with the <tt class="docutils literal"><span class="pre">render</span></tt> shortcut</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span> <span class="c"># &lt;- already there</span>
+
+<span class="c"># rewrite our view</span>
+<span class="k">def</span> <span class="nf">list_view</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">published</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">published_date__exact</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+    <span class="n">posts</span> <span class="o">=</span> <span class="n">published</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&#39;-published_date&#39;</span><span class="p">)</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;posts&#39;</span><span class="p">:</span> <span class="n">posts</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;list.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="build">Remember though, all we did manually before is still happening</p>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>BREAK TIME</h3>
+    </hgroup>
+    <article class="">
+      <p>We've got the front page for our application working great.</p>
+<p>Next, we'll need to provide a view of a detail page for a single post.</p>
+<p>Then we'll provide a way to log in and to navigate between the public part of
+our application and the admin behind it.</p>
+<p>If you've fallen behind, the app as it stands now is in our class resources as
+<tt class="docutils literal"><span class="pre">mysite_stage_2</span></tt></p>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Our Detail View</h3>
+    </hgroup>
+    <article class="">
+      <p>Next, let's add a view function for the detail view of a post</p>
+<div class="build container">
+<p>It will need to get the <tt class="docutils literal"><span class="pre">id</span></tt> of the post to show as an argument</p>
+<p>Like the list view, it should only show published posts</p>
+<p>But unlike the list view, it will need to return <em>something</em> if an
+unpublished post is requested.</p>
+<p>Let's start with the tests in <tt class="docutils literal"><span class="pre">views.py</span></tt></p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Testing the Details</h3>
+    </hgroup>
+    <article class="">
+      <p>Add the following test to our <tt class="docutils literal"><span class="pre">FrontEndTestCase</span></tt> in <tt class="docutils literal"><span class="pre">myblog/tests.py</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">test_details_only_published</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">count</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">):</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="s">&quot;Post </span><span class="si">%d</span><span class="s"> Title&quot;</span> <span class="o">%</span> <span class="n">count</span>
+        <span class="n">post</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;/posts/</span><span class="si">%d</span><span class="s">/&#39;</span> <span class="o">%</span> <span class="n">post</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertContains</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="mi">404</span><span class="p">)</span>
+</pre></div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Run Your Tests</h3>
+    </hgroup>
+    <article class="">
+      <div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>djangoenv<span class="o">)</span><span class="nv">$ </span>python manage.py <span class="nb">test </span>myblog
+Creating <span class="nb">test </span>database <span class="k">for </span><span class="nb">alias</span> <span class="s1">&#39;default&#39;</span>...
+.F..
+<span class="o">======================================================================</span>
+FAIL: test_details_only_published <span class="o">(</span>myblog.tests.FrontEndTestCase<span class="o">)</span>
+...
+Ran 4 tests in 0.043s
+
+FAILED <span class="o">(</span><span class="nv">failures</span><span class="o">=</span>1<span class="o">)</span>
+Destroying <span class="nb">test </span>database <span class="k">for </span><span class="nb">alias</span> <span class="s1">&#39;default&#39;</span>...
+</pre></div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Let's Fix That Test</h3>
+    </hgroup>
+    <article class="">
+      <p>Now, add a new view to <tt class="docutils literal"><span class="pre">myblog/views.py</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">detail_view</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">post_id</span><span class="p">):</span>
+    <span class="n">published</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">published_date__exact</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">post</span> <span class="o">=</span> <span class="n">published</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">post_id</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">Post</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">Http404</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;post&#39;</span><span class="p">:</span> <span class="n">post</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;detail.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+</pre></div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Missing Content</h3>
+    </hgroup>
+    <article class="">
+      <p>One of the features of the Django ORM is that all models raise a DoesNotExist
+exception if <tt class="docutils literal"><span class="pre">get</span></tt> returns nothing.</p>
+<div class="build container">
+<p>This exception is actually an attribute of the Model you look for.</p>
+<p>There's also an <tt class="docutils literal"><span class="pre">ObjectDoesNotExist</span></tt> for when you don't know which model
+you have.</p>
+<p>We can use that fact to raise a Not Found exception.</p>
+<p>Django will handle the rest for us.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Add the Template</h3>
+    </hgroup>
+    <article class="">
+      <p>We also need to add <tt class="docutils literal"><span class="pre">detail.html</span></tt> to <tt class="docutils literal"><span class="pre">myblog/templates</span></tt>:</p>
+<div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{%</span> <span class="k">extends</span> <span class="s2">&quot;base.html&quot;</span> <span class="cp">%}</span><span class="x"></span>
+
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">&lt;a class=&quot;backlink&quot; href=&quot;/&quot;&gt;Home&lt;/a&gt;</span>
+<span class="x">&lt;h1&gt;</span><span class="cp">{{</span> <span class="nv">post</span> <span class="cp">}}</span><span class="x">&lt;/h1&gt;</span>
+<span class="x">&lt;p class=&quot;byline&quot;&gt;</span>
+<span class="x">  Posted by </span><span class="cp">{{</span> <span class="nv">post.author_name</span> <span class="cp">}}</span><span class="x"> &amp;mdash; </span><span class="cp">{{</span> <span class="nv">post.published_date</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">&lt;/p&gt;</span>
+<span class="x">&lt;div class=&quot;post-body&quot;&gt;</span>
+<span class="x">  </span><span class="cp">{{</span> <span class="nv">post.text</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">&lt;/div&gt;</span>
+<span class="x">&lt;ul class=&quot;categories&quot;&gt;</span>
+<span class="x">  </span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">category</span> <span class="k">in</span> <span class="nv">post.categories.all</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    &lt;li&gt;</span><span class="cp">{{</span> <span class="nv">category</span> <span class="cp">}}</span><span class="x">&lt;/li&gt;</span>
+<span class="x">  </span><span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">&lt;/ul&gt;</span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Hook it Up</h3>
+    </hgroup>
+    <article class="">
+      <p>In order to view a single post, we'll need a link from the list view</p>
+<div class="build container">
+<p>We can use the <tt class="docutils literal"><span class="pre">url</span></tt> template tag (like Pyramid's <tt class="docutils literal"><span class="pre">request.route_url</span></tt>):</p>
+<div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{%</span> <span class="k">url</span> <span class="s1">&#39;&lt;view_name&gt;&#39;</span> <span class="nv">arg1</span> <span class="nv">arg2</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>In our <tt class="docutils literal"><span class="pre">list.html</span></tt> template, let's link the post titles:</p>
+<div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{%</span> <span class="k">for</span> <span class="nv">post</span> <span class="k">in</span> <span class="nv">posts</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">&lt;div class=&quot;post&quot;&gt;</span>
+<span class="x">  &lt;h2&gt;</span>
+<span class="x">    &lt;a href=&quot;</span><span class="cp">{%</span> <span class="k">url</span> <span class="s1">&#39;blog_detail&#39;</span> <span class="nv">post.pk</span> <span class="cp">%}</span><span class="x">&quot;&gt;</span><span class="cp">{{</span> <span class="nv">post</span> <span class="cp">}}</span><span class="x">&lt;/a&gt;</span>
+<span class="x">  &lt;/h2&gt;</span>
+<span class="x">  ...</span>
+</pre></div>
+</div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Fix URLs</h3>
+    </hgroup>
+    <article class="">
+      <p>Again, we need to insert our new view into the existing <tt class="docutils literal"><span class="pre">myblog/urls.py</span></tt> in
+<tt class="docutils literal"><span class="pre">myblog</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">url</span><span class="p">(</span><span class="s">r&#39;^posts/(?P&lt;post_id&gt;\d+)/$&#39;</span><span class="p">,</span>
+    <span class="s">&#39;detail_view&#39;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s">&quot;blog_detail&quot;</span><span class="p">),</span>
+</pre></div>
+</div>
+<div class="build small highlight-python"><div class="highlight"><pre>(djangoenv)$ python manage.py test myblog
+...
+Ran 4 tests in 0.077s
+
+OK
+</pre></div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>A Moment To Play</h3>
+    </hgroup>
+    <article class="">
+      <p>We've got some good stuff to look at now.  Fire up the server</p>
+<div class="build container">
+<p>Reload your blog index page and click around a bit.</p>
+<p>You can now move back and forth between list and detail view.</p>
+<p>Try loading the detail view for a post that doesn't exist</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Congratulations</h3>
+    </hgroup>
+    <article class="">
+      <p>You've got a functional Blog</p>
+<div class="build container">
+<p>It's not very pretty, though.</p>
+<p>We can fix that by adding some css</p>
+<p>This gives us a chance to learn about Django's handling of <em>static files</em></p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Static Files</h3>
+    </hgroup>
+    <article class="">
+      <p>Like templates, Django expects to find static files in particular locations</p>
+<div class="build container">
+<p>It will look for them in a directory named <tt class="docutils literal"><span class="pre">static</span></tt> in any installed
+apps.</p>
+<p>They will be served from the url path in the STATIC_URL setting.</p>
+<p>By default, this is <tt class="docutils literal"><span class="pre">/static/</span></tt></p>
+<p>To allow Django to automatically build the correct urls for your static
+files, you use a special <em>template tag</em>:</p>
+<div class="highlight-python"><div class="highlight"><pre>{% static &lt;filename&gt; %}
+</pre></div>
+</div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Add CSS</h3>
+    </hgroup>
+    <article class="">
+      <p>I've prepared a css file for us to use. You can find it in the class resources</p>
+<div class="build container">
+<p>Create a new directory <tt class="docutils literal"><span class="pre">static</span></tt> in the <tt class="docutils literal"><span class="pre">myblog</span></tt> app.</p>
+<p>Copy the <tt class="docutils literal"><span class="pre">django_blog.css</span></tt> file into that new directory.</p>
+<div class="container">
+<p>Next, load the static files template tag into <tt class="docutils literal"><span class="pre">base.html</span></tt> (this must
+be on the first line of the template):</p>
+<div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{%</span> <span class="k">load</span> <span class="nv">staticfiles</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>Finally, add a link to the stylesheet using the special template tag:</p>
+<div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;title&gt;</span>My Django Blog<span class="nt">&lt;/title&gt;</span> <span class="c">&lt;!-- This is already present --&gt;</span>
+<span class="nt">&lt;link</span> <span class="na">type=</span><span class="s">&quot;text/css&quot;</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;{% static &#39;django_blog.css&#39; %}&quot;</span><span class="nt">&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>View Your Results</h3>
+    </hgroup>
+    <article class="">
+      <p>Reload <a class="reference external" href="http://localhost:8000/">http://localhost:8000/</a> and view the results of your work</p>
+<div class="build container">
+<p>We now have a reasonable view of the posts of our blog on the front end</p>
+<p>And we have a way to create and categorize posts using the admin</p>
+<p>However, we lack a way to move between the two.</p>
+<p>Let's add that ability next.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Global Navigation</h3>
+    </hgroup>
+    <article class="">
+      <p>We'll start by adding a control bar to our <tt class="docutils literal"><span class="pre">base.html</span></tt> template:</p>
+<div class="highlight-jinja"><div class="highlight"><pre><span class="x">&lt;!DOCTYPE html&gt;</span>
+<span class="x">  ...</span>
+<span class="x">    &lt;div id=&quot;header&quot;&gt;</span>
+<span class="x">      &lt;ul id=&quot;control-bar&quot;&gt;</span>
+<span class="x">      </span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">user.is_authenticated</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">        </span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">user.is_staff</span> <span class="cp">%}</span><span class="x">&lt;li&gt;admin&lt;/li&gt;</span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">        &lt;li&gt;logout&lt;/li&gt;</span>
+<span class="x">      </span><span class="cp">{%</span> <span class="k">else</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">        &lt;li&gt;login&lt;/li&gt;</span>
+<span class="x">      </span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">      &lt;/ul&gt;</span>
+<span class="x">    &lt;/div&gt;</span>
+<span class="x">    &lt;div id=&quot;container&quot;&gt;</span>
+<span class="x">      ...</span>
+</pre></div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Request Context Revisited</h3>
+    </hgroup>
+    <article class="">
+      <p>When we set up our views, we used the <tt class="docutils literal"><span class="pre">render</span></tt> shortcut, which provides a
+<tt class="docutils literal"><span class="pre">RequestContext</span></tt></p>
+<div class="build container">
+<p>This gives us access to <tt class="docutils literal"><span class="pre">user</span></tt> in our templates</p>
+<p>It provides access to methods about the state and rights of that user</p>
+<p>We can use these to conditionally display links or UI elements. Like only
+showing the admin link to staff members.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Login/Logout</h3>
+    </hgroup>
+    <article class="">
+      <p>Django also provides a reasonable set of views for login/logout.</p>
+<div class="build container">
+<p>The first step to using them is to hook them into a urlconf.</p>
+<div class="container">
+<p>Add the following to <tt class="docutils literal"><span class="pre">mysite/urls.py</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">url</span><span class="p">(</span><span class="s">r&#39;^&#39;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="s">&#39;myblog.urls&#39;</span><span class="p">)),</span> <span class="c">#&lt;- already there</span>
+<span class="n">url</span><span class="p">(</span><span class="s">r&#39;^login/$&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.auth.views.login&#39;</span><span class="p">,</span>
+    <span class="p">{</span><span class="s">&#39;template_name&#39;</span><span class="p">:</span> <span class="s">&#39;login.html&#39;</span><span class="p">},</span>
+    <span class="n">name</span><span class="o">=</span><span class="s">&quot;login&quot;</span><span class="p">),</span>
+<span class="n">url</span><span class="p">(</span><span class="s">r&#39;^logout/$&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.auth.views.logout&#39;</span><span class="p">,</span>
+    <span class="p">{</span><span class="s">&#39;next_page&#39;</span><span class="p">:</span> <span class="s">&#39;/&#39;</span><span class="p">},</span>
+    <span class="n">name</span><span class="o">=</span><span class="s">&quot;logout&quot;</span><span class="p">),</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Login Template</h3>
+    </hgroup>
+    <article class="">
+      <p>We need to create a new <tt class="docutils literal"><span class="pre">login.html</span></tt> template in <tt class="docutils literal"><span class="pre">mysite/templates</span></tt>:</p>
+<div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{%</span> <span class="k">extends</span> <span class="s2">&quot;base.html&quot;</span> <span class="cp">%}</span><span class="x"></span>
+
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">&lt;h1&gt;My Blog Login&lt;/h1&gt;</span>
+<span class="x">&lt;form action=&quot;&quot; method=&quot;POST&quot;&gt;</span><span class="cp">{%</span> <span class="k">csrf_token</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">  </span><span class="cp">{{</span> <span class="nv">form.as_p</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">  &lt;p&gt;&lt;input type=&quot;submit&quot; value=&quot;Log In&quot;&gt;&lt;/p&gt;</span>
+<span class="x">&lt;/form&gt;</span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Submitting Forms</h3>
+    </hgroup>
+    <article class="">
+      <p>In a web application, submitting forms is potentially hazardous</p>
+<div class="build container">
+<p>Data is being sent to our application from some remote place</p>
+<p>If that data is going to alter the state of our application, we <strong>must</strong>
+use POST</p>
+<p>Even so, we are vulnerable to Cross-Site Request Forgery, a common attack
+vector.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Danger: CSRF</h3>
+    </hgroup>
+    <article class="">
+      <p>Django provides a convenient system to fight this.</p>
+<div class="build container">
+<p>In fact, for POST requests, it <em>requires</em> that you use it.</p>
+<p>The Django middleware that does this is enabled by default.</p>
+<p>All you need to do is include the <tt class="docutils literal"><span class="pre">{%</span> <span class="pre">csrf_token</span> <span class="pre">%}</span></tt> tag in your form.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Hooking It Up</h3>
+    </hgroup>
+    <article class="">
+      <p>In <tt class="docutils literal"><span class="pre">base.html</span></tt> make the following updates:</p>
+<div class="build container">
+<div class="highlight-jinja"><div class="highlight"><pre><span class="x">&lt;!-- admin link --&gt;</span>
+<span class="x">&lt;a href=&quot;</span><span class="cp">{%</span> <span class="k">url</span> <span class="s1">&#39;admin:index&#39;</span> <span class="cp">%}</span><span class="x">&quot;&gt;admin&lt;/a&gt;</span>
+<span class="x">&lt;!-- logout link --&gt;</span>
+<span class="x">&lt;a href=&quot;</span><span class="cp">{%</span> <span class="k">url</span> <span class="s1">&#39;logout&#39;</span> <span class="cp">%}</span><span class="x">&quot;&gt;logout&lt;/a&gt;</span>
+<span class="x">&lt;!-- login link --&gt;</span>
+<span class="x">&lt;a href=&quot;</span><span class="cp">{%</span> <span class="k">url</span> <span class="s1">&#39;login&#39;</span> <span class="cp">%}</span><span class="x">&quot;&gt;login&lt;/a&gt;</span>
+</pre></div>
+</div>
+<div class="container">
+<p>Finally, in <tt class="docutils literal"><span class="pre">settings.py</span></tt> add the following:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">LOGIN_URL</span> <span class="o">=</span> <span class="s">&#39;/login/&#39;</span>
+<span class="n">LOGIN_REDIRECT_URL</span> <span class="o">=</span> <span class="s">&#39;/&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Forms In Django</h3>
+    </hgroup>
+    <article class="">
+      <p>In adding a login view, we've gotten a sneak peak at how forms work in Django.</p>
+<div class="build container">
+<p>However, learning more about them is beyond what we can achieve in this
+session.</p>
+<p>The form system in Django is quite nice, however. I urge you to
+<a class="reference external" href="https://docs.djangoproject.com/en/1.6/topics/forms/">read more about it</a></p>
+<p>In particular, you might want to pay attention to the documentation on
+<a class="reference external" href="https://docs.djangoproject.com/en/1.6/topics/forms/modelforms/">Model Forms</a></p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Ta-Daaaaaa!</h3>
+    </hgroup>
+    <article class="">
+      <p>So, that's it.  We've created a workable, simple blog app in Django.</p>
+<div class="build container">
+<p>If you fell behind at some point, the app as it now stands is in our class
+resources as <tt class="docutils literal"><span class="pre">mysite_stage_3</span></tt>.</p>
+<p>There's much more we could do with this app. And for homework, you'll do
+some of it.</p>
+<p>Then next session, we'll work together as pairs to implement a simple
+feature to extend the blog</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-2">
+    <hgroup>
+      <h2>Homework</h2>
+    </hgroup>
+    <article class="">
+      <p class="left">For your homework this week, we'll fix one glaring problem with our blog admin.</p>
+<div class="build left container">
+<p>As you created new categories and posts, and related them to each-other,
+how did you feel about that work?</p>
+<p>Although from a data perspective, the category model is the right place for
+the ManytoMany relationship to posts, this leads to awkward usage in the
+admin.</p>
+<p>It would be much easier if we could designate a category for a post <em>from
+the Post admin</em>.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Your Assignment</h3>
+    </hgroup>
+    <article class="">
+      <p>You'll be reversing that relationship so that you can only add categories to
+posts</p>
+<div class="build container">
+<p>Take the following steps:</p>
+<ol class="arabic simple">
+<li>Read the documentation about the <a class="reference external" href="https://docs.djangoproject.com/en/1.6/ref/contrib/admin/">Django admin.</a></li>
+<li>You'll need to create a customized <a class="reference external" href="https://docs.djangoproject.com/en/1.6/ref/contrib/admin/#modeladmin-objects">ModelAdmin</a> class for the <tt class="docutils literal"><span class="pre">Post</span></tt>
+and <tt class="docutils literal"><span class="pre">Category</span></tt> models.</li>
+<li>And you'll need to create an <a class="reference external" href="https://docs.djangoproject.com/en/1.6/ref/contrib/admin/#inlinemodeladmin-objects">InlineModelAdmin</a> to represent Categories
+on the Post admin view.</li>
+<li>Finally, you'll need to <a class="reference external" href="https://docs.djangoproject.com/en/1.6/ref/contrib/admin/#modeladmin-options">suppress the display</a>  of the 'posts' field on
+your <tt class="docutils literal"><span class="pre">Category</span></tt> admin view.</li>
+</ol>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Pushing Further</h3>
+    </hgroup>
+    <article class="">
+      <p>All told, those changes should not require more than about 15 total lines of
+code.</p>
+<div class="build container">
+<p>The trick of course is reading and finding out which fifteen lines to
+write.</p>
+<p>If you complete that task in less than 3-4 hours of work, consider looking
+into other ways of customizing the admin.</p>
+</div>
+
+
+
+
+    </article>
+  </slide>  <slide class="level-3">
+    <hgroup>
+      <h3>Tasks you might consider</h3>
+    </hgroup>
+    <article class="">
+      <ul class="build simple">
+<li>Change the admin index to say 'Categories' instead of 'Categorys'.</li>
+<li>Add columns for the date fields to the list display of Posts.</li>
+<li>Display the created and modified dates for your posts when viewing them in
+the admin.</li>
+<li>Add a column to the list display of Posts that shows the author.  For more
+fun, make this a link that takes you to the admin page for that user.</li>
+<li>For the biggest challenge, look into <a class="reference external" href="https://docs.djangoproject.com/en/1.6/ref/contrib/admin/actions/">admin actions</a> and add an action to
+the Post admin that allows you to bulk publish posts from the Post list
+display</li>
+</ul>
+
+
+
+
+    </article>
+  </slide>
+
+
+    <slide class="thank-you-slide segue nobackground">
+    <aside class="gdbar right"><img src="../_static/logo_UW.png"></aside>
+    <article class="flexbox vleft auto-fadein">
+      <h2>&lt;Thank You!&gt;</h2>
+      <p>&nbsp;</p>
+    </article>
+    <p class="auto-fadein" data-config-contact>
+      <!-- populated from slide_config.json -->
+    </p>
+  </slide>
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>

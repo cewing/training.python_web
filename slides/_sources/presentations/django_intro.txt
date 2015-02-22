@@ -69,6 +69,12 @@ create one. We'll use a script installed by Django, ``django-admin.py``:
 
     (djangoenv)$ django-admin.py startproject mysite
 
+If you're on windows, that command is slightly different:
+
+.. code-block:: bash
+
+    django-admin.exe startproject mysite
+
 This will create a folder called 'mysite'. The folder contains the following
 structure::
 
@@ -169,8 +175,8 @@ folder.
 Edit your ``settings.py`` to match:
 
 .. code-block:: python
-    
-    
+
+
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -217,7 +223,7 @@ Great!  Now we can set up an initial user who'll be able to do anything, a
 
 Notice that as you type your password, it will not appear on the screen.  Don't
 worry, it's actually being recorded.  You just can't see it (and neither can
-than snoopy git looking over your shoulder).
+that snoopy git looking over your shoulder).
 
 Projects and Apps
 =================
@@ -244,8 +250,8 @@ Django already includes some *apps* for you.
     They're in ``settings.py`` in the ``INSTALLED_APPS`` setting:
 
     .. code-block:: python
-        
-    
+
+
         INSTALLED_APPS = (
             'django.contrib.admin',
             'django.contrib.auth',
@@ -322,7 +328,7 @@ following:
 
     from django.db import models #<-- This is already in the file
     from django.contrib.auth.models import User
-    
+
     class Post(models.Model):
         title = models.CharField(max_length=128)
         text = models.TextField(blank=True)
@@ -417,7 +423,7 @@ in your editor, and find the INSTALLED_APPS setting.
 You extend Django functionality by *installing apps*. This is pretty simple:
 
 .. code-block:: python
-    
+
 
     INSTALLED_APPS = (
         'django.contrib.admin',
@@ -515,7 +521,7 @@ And now our instance should validate properly:
 .. code-block:: python
 
     >>> p1.full_clean()
-    >>> 
+    >>>
 
 
 Saving New Objects
@@ -525,7 +531,7 @@ Our model has three date fields, two of which are supposed to be
 auto-populated:
 
 .. class:: python
-    
+
     >>> print(p1.created_date)
     None
     >>> print(p1.modified_date)
@@ -630,11 +636,11 @@ If you are curious, you can see the SQL that a given QuerySet will use:
 .. code-block:: pycon
 
     >>> print(c.query)
-    SELECT "myblog_post"."id", "myblog_post"."title", 
-        "myblog_post"."text", "myblog_post"."author_id", 
-        "myblog_post"."created_date", "myblog_post"."modified_date", 
-        "myblog_post"."published_date" 
-    FROM "myblog_post" 
+    SELECT "myblog_post"."id", "myblog_post"."title",
+        "myblog_post"."text", "myblog_post"."author_id",
+        "myblog_post"."created_date", "myblog_post"."modified_date",
+        "myblog_post"."published_date"
+    FROM "myblog_post"
     WHERE ("myblog_post"."title" LIKE %post% ESCAPE '\'
            AND NOT ("myblog_post"."text" LIKE %created% ESCAPE '\' )
     )
@@ -731,7 +737,7 @@ Now that we have a fixture, we need to instruct our tests to use it.
 Edit ``tests.py`` to look like this:
 
 .. code-block:: python
-    
+
 
     from django.test import TestCase
     from django.contrib.auth.models import User
@@ -775,7 +781,7 @@ Let's write a test that demonstrates our desired outcome:
 
 To run tests, use the ``test`` management command. Without arguments, it will
 run all TestCases it finds in all installed *apps*. You can pass the name of a
-single app to focus on those tests. 
+single app to focus on those tests.
 
 Quit your Django shell and in your terminal run the test we wrote:
 
@@ -812,7 +818,7 @@ Let's add an appropriate ``__unicode__`` method to our Post class.
 .. code-block:: python
 
     class Post(models.Model):
-        #... 
+        #...
 
         def __unicode__(self):
             return self.title
@@ -916,7 +922,7 @@ stroke.
     verify the following lines in ``urls.py``:
 
     .. code-block:: python
-        
+
 
         from django.contrib import admin # <- should be present already
 
