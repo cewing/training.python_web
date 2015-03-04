@@ -105,3 +105,78 @@ Now, when you switch roles during your work, here's the workflow you can use:
         $ git merge upstream/master
 
     3. The new driver continues working from where their partner left off.
+    4.
+
+Homework
+========
+
+Next week, we will deploy your Django application to a server.
+
+.. rst-class:: build
+.. container::
+
+    To help illustrate the full set of tools at our disposal, we'll go a bit
+    overboard for this.
+
+    We'll be setting up an HTTP server, proxying to a WSGI server serving your
+    Django app.
+
+    We'll do this all "In the cloud" using Amazon's `AWS`_ service.
+
+    Before class starts, you'll need to accomplish a few non-programming tasks
+
+.. _AWS: http://aws.amazon.com/free
+
+Sign Up For AWS
+---------------
+
+Begin by going to the `AWS homepage`_ and clicking on the large, yellow button
+that reads "Sign In to the Console".
+
+.. rst-class:: build
+.. container::
+
+    On the sign-in page that appears, click the radio button for 'I am a new
+    user', fill in your email address, and then click through to begin the
+    sign-up process.
+
+    You will be required to provide credit card information.
+
+    If you are still eligible for the AWS free tier, you will not incur any
+    charges for work you do in this class.
+
+.. _AWS homepage: http://aws.amazon.com
+
+
+Set Up an IAM User
+------------------
+
+Once you've signed up for an account take the following actions:
+
+* `Create an IAM user`_ and place them in a group with Power User access. (Search for PowerUser when selecting a policy for your group).
+
+  * Set up Security Credentials for that IAM user.
+  * Save these Security Credentials in a safe place so you can use them for class.
+
+.. _Create an IAM user: http://docs.aws.amazon.com/IAM/latest/UserGuide/IAMBestPractices.html
+
+Prepare for Login
+-----------------
+
+* `Create a Keypair`_
+
+  * Choose the 'US West (Oregon)' region since it's geographically closest to you.</li>
+  * When you download your private key, save it to ~/.ssh/pk-aws.pem
+  * Make sure that the private key is secure and useable by doing the following command
+
+    * ``$ chmod 400 ~/.ssh/pk-aws.pem``
+
+* `Create a custom security group`_
+
+  * The security group should be named 'ssh-access'
+  * Add one custom TCP rule
+    * allow port 22
+    * allow addresses 0.0.0.0/0
+
+.. _Create a Keypair: http://docs.aws.amazon.com/gettingstarted/latest/wah/getting-started-create-key-pair.html
+.. _Create a custom security group: http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html
