@@ -120,13 +120,15 @@ it works.</p>
     <article class="">
       <p>In order for this to work properly, we'll need to have a few things in place.</p>
 <div class="build container">
+<p><strong>For the time being, all these actions should only be taken by one
+partner</strong>.</p>
 <p>First, we'll start from a canonical copy of the microblog.  Make a fork of
 the following repository to your github account:</p>
-<div class="highlight-python"><div class="highlight"><pre>https://github.com/cewing/django-microblog
+<div class="highlight-python"><div class="highlight"><pre>https://github.com/cewing/djangoblog_uwpce.git
 </pre></div>
 </div>
 <p>Then, clone that repository to your local machine:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>git clone https://github.com/&lt;your_name&gt;/django-microblog.git
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>git clone https://github.com/&lt;your_name&gt;/djangoblog_uwpce.git
 </pre></div>
 </div>
 </div>
@@ -140,17 +142,15 @@ the following repository to your github account:</p>
       <h3>Connect to Your Partner</h3>
     </hgroup>
     <article class="">
-      <p>Finally, you'll want to connect to your partner's repository, so that you can
-each work on your own laptop and still share the changes you make.</p>
+      <p>Finally, you'll need to add your partner as a collaborator for your new
+repository.</p>
 <div class="build container">
-<p>First, add your partner's repository as <tt class="docutils literal"><span class="pre">upstream</span></tt> to yours:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>git remote add upstream https://github.com/&lt;partner&gt;/django-microblog.git
-</pre></div>
-</div>
-<p>Then, fetch their copy so that you can easily merge their changes later:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>git fetch --all
-</pre></div>
-</div>
+<p>Go to the <em>settings</em> for your repository.</p>
+<p>Click the <em>collaborators</em> tab on the left side of the window (you'll need
+to enter your github password).</p>
+<p>Look up your partner by email address or github username.</p>
+<p>Add them.</p>
+<p>Then your partner can clone the repository to their desktop too.</p>
 </div>
 
 
@@ -175,19 +175,16 @@ each work on your own laptop and still share the changes you make.</p>
 </div>
 <div class="container">
 <ol class="arabic simple" start="2">
-<li>The new driver fetches and merges changes made upstream:</li>
+<li>The new driver gets the changes:</li>
 </ol>
-</div>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>git fetch --all
-<span class="nv">$ </span>git branch -a
-* master
-  remotes/origin/master
-  remotes/upstream/master
-<span class="nv">$ </span>git merge upstream/master
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>git pull origin master
 </pre></div>
 </div>
-<p>3. The new driver continues working from where their partner left off.
-4.</p>
+</div>
+<ol class="arabic simple" start="3">
+<li>The new driver continues working from where their partner left off.</li>
+<li>PROFIT.....</li>
+</ol>
 </div>
 
 
