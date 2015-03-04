@@ -140,10 +140,66 @@ each work on your own laptop and still share the changes you make.</p>
 <span class="nv">$ </span>git merge upstream/master
 </pre></div>
 </div>
-<ol class="arabic simple" start="3">
-<li>The new driver continues working from where their partner left off.</li>
-</ol>
+<p>3. The new driver continues working from where their partner left off.
+4.</p>
 </div>
+</div>
+</div>
+<div class="section" id="homework">
+<h2>Homework<a class="headerlink" href="#homework" title="Permalink to this headline">¶</a></h2>
+<p>Next week, we will deploy your Django application to a server.</p>
+<div class="build container">
+<p>To help illustrate the full set of tools at our disposal, we&#8217;ll go a bit
+overboard for this.</p>
+<p>We&#8217;ll be setting up an HTTP server, proxying to a WSGI server serving your
+Django app.</p>
+<p>We&#8217;ll do this all &#8220;In the cloud&#8221; using Amazon&#8217;s <a class="reference external" href="http://aws.amazon.com/free">AWS</a> service.</p>
+<p>Before class starts, you&#8217;ll need to accomplish a few non-programming tasks</p>
+</div>
+<div class="section" id="sign-up-for-aws">
+<h3>Sign Up For AWS<a class="headerlink" href="#sign-up-for-aws" title="Permalink to this headline">¶</a></h3>
+<p>Begin by going to the <a class="reference external" href="http://aws.amazon.com">AWS homepage</a> and clicking on the large, yellow button
+that reads &#8220;Sign In to the Console&#8221;.</p>
+<div class="build container">
+<p>On the sign-in page that appears, click the radio button for &#8216;I am a new
+user&#8217;, fill in your email address, and then click through to begin the
+sign-up process.</p>
+<p>You will be required to provide credit card information.</p>
+<p>If you are still eligible for the AWS free tier, you will not incur any
+charges for work you do in this class.</p>
+</div>
+</div>
+<div class="section" id="set-up-an-iam-user">
+<h3>Set Up an IAM User<a class="headerlink" href="#set-up-an-iam-user" title="Permalink to this headline">¶</a></h3>
+<p>Once you&#8217;ve signed up for an account take the following actions:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.aws.amazon.com/IAM/latest/UserGuide/IAMBestPractices.html">Create an IAM user</a> and place them in a group with Power User access. (Search for PowerUser when selecting a policy for your group).<ul>
+<li>Set up Security Credentials for that IAM user.</li>
+<li>Save these Security Credentials in a safe place so you can use them for class.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="prepare-for-login">
+<h3>Prepare for Login<a class="headerlink" href="#prepare-for-login" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.aws.amazon.com/gettingstarted/latest/wah/getting-started-create-key-pair.html">Create a Keypair</a><ul>
+<li>Choose the &#8216;US West (Oregon)&#8217; region since it&#8217;s geographically closest to you.&lt;/li&gt;</li>
+<li>When you download your private key, save it to ~/.ssh/pk-aws.pem</li>
+<li>Make sure that the private key is secure and useable by doing the following command<ul>
+<li><tt class="docutils literal"><span class="pre">$</span> <span class="pre">chmod</span> <span class="pre">400</span> <span class="pre">~/.ssh/pk-aws.pem</span></tt></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference external" href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html">Create a custom security group</a><ul>
+<li>The security group should be named &#8216;ssh-access&#8217;</li>
+<li>Add one custom TCP rule
+* allow port 22
+* allow addresses 0.0.0.0/0</li>
+</ul>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -162,6 +218,12 @@ each work on your own laptop and still share the changes you make.</p>
 <li><a class="reference internal" href="#preparation">Preparation</a></li>
 <li><a class="reference internal" href="#connect-to-your-partner">Connect to Your Partner</a></li>
 <li><a class="reference internal" href="#while-you-work">While You Work</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#homework">Homework</a><ul>
+<li><a class="reference internal" href="#sign-up-for-aws">Sign Up For AWS</a></li>
+<li><a class="reference internal" href="#set-up-an-iam-user">Set Up an IAM User</a></li>
+<li><a class="reference internal" href="#prepare-for-login">Prepare for Login</a></li>
 </ul>
 </li>
 </ul>
