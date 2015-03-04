@@ -40,39 +40,40 @@ In order for this to work properly, we'll need to have a few things in place.
 .. rst-class:: build
 .. container::
 
+    **For the time being, all these actions should only be taken by one
+    partner**.
+
     First, we'll start from a canonical copy of the microblog.  Make a fork of
     the following repository to your github account::
 
-        https://github.com/cewing/django-microblog
+        https://github.com/cewing/djangoblog_uwpce.git
 
     Then, clone that repository to your local machine:
 
     .. code-block:: bash
 
-        $ git clone https://github.com/<your_name>/django-microblog.git
+        $ git clone https://github.com/<your_name>/djangoblog_uwpce.git
 
 
 Connect to Your Partner
 -----------------------
 
-Finally, you'll want to connect to your partner's repository, so that you can
-each work on your own laptop and still share the changes you make.
+Finally, you'll need to add your partner as a collaborator for your new
+repository.
 
 .. rst-class:: build
 .. container::
 
-    First, add your partner's repository as ``upstream`` to yours:
+    Go to the *settings* for your repository.
 
-    .. code-block:: bash
+    Click the *collaborators* tab on the left side of the window (you'll need
+    to enter your github password).
 
-        $ git remote add upstream https://github.com/<partner>/django-microblog.git
+    Look up your partner by email address or github username.
 
-    Then, fetch their copy so that you can easily merge their changes later:
+    Add them.
 
-    .. code-block:: bash
-
-        $ git fetch --all
-
+    Then your partner can clone the repository to their desktop too.
 
 While You Work
 --------------
@@ -93,19 +94,14 @@ Now, when you switch roles during your work, here's the workflow you can use:
 
     .. container::
 
-        2. The new driver fetches and merges changes made upstream:
+        2. The new driver gets the changes:
 
-    .. code-block:: bash
+        .. code-block:: bash
 
-        $ git fetch --all
-        $ git branch -a
-        * master
-          remotes/origin/master
-          remotes/upstream/master
-        $ git merge upstream/master
+            $ git pull origin master
 
     3. The new driver continues working from where their partner left off.
-    4.
+    4. PROFIT.....
 
 Homework
 ========
