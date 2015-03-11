@@ -619,6 +619,8 @@ Using linux upstart is nice and easy.
 
 Put the following in ``/etc/init/djangoblog.conf``
 
+.. code-block:: upstart
+
     description "djangoblog"
 
     start on (filesystem)
