@@ -1,0 +1,552 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Session 09 &mdash; Internet Programming with Python</title>
+    
+    <link rel="stylesheet" href="../_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Internet Programming with Python" href="../index.html" />
+    <link rel="up" title="Course Presentations" href="index.html" />
+    <link rel="next" title="Supplementary Course Readings" href="../readings.html" />
+    <link rel="prev" title="Session 09" href="session09.html" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head>
+  <body>
+<div class="header">
+  <div class="logo">
+    <a href="../index.html">
+      <img class="logo" src="../_static/logo_UW.png" alt="Logo"/>
+    </a>
+  </div>
+</div>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../readings.html" title="Supplementary Course Readings"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="session09.html" title="Session 09"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">UWPCE Python 200</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Course Presentations</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="session-09">
+<h1>Session 09<a class="headerlink" href="#session-09" title="Permalink to this headline">¶</a></h1>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/django-pony.png"><img alt="../_images/django-pony.png" src="../_images/django-pony.png" style="width: 60%;" /></a>
+<p class="caption">image: <a class="reference external" href="http://djangopony.com/">http://djangopony.com/</a></p>
+</div>
+<div class="section" id="deploying-django">
+<h2>Deploying Django<a class="headerlink" href="#deploying-django" title="Permalink to this headline">¶</a></h2>
+<div class="left container">
+<p>Over the last two sessions you&#8217;ve built and extended a simple Django
+application.</p>
+<div class="build container">
+<p>Now it is time to deploy that application to a server so the world can
+see it.</p>
+<p>Previously, we used Heroku to deploy a simple Pyramid application.</p>
+<p>We could do the same with Django, but we won&#8217;t.</p>
+<p>Instead, we&#8217;ll deploy to <strong>A</strong>mazon <strong>W</strong>eb <strong>S</strong>ervices (AWS)</p>
+</div>
+</div>
+<div class="section" id="choosing-a-deployment-strategy">
+<h3>Choosing a Deployment Strategy<a class="headerlink" href="#choosing-a-deployment-strategy" title="Permalink to this headline">¶</a></h3>
+<p>There are many many different ways to deploy a web application.</p>
+<div class="build container">
+<p>And there are many many services offering platforms for deployment.</p>
+<p>How do you choose the right one for you?</p>
+<p>In general there are a few rules of thumb to consider:</p>
+<ul class="build simple">
+<li>The more convenient the service, the less configurable it is.</li>
+<li>The less you pay for a service, the more work you have to do yourself.</li>
+<li>With great power comes great responsibility.</li>
+</ul>
+</div>
+<p>In choosing a service and a strategy, you&#8217;ll want to ask yourself a few
+questions:</p>
+<div class="build container">
+<ul class="build simple">
+<li>What are the basic software components of my project?</li>
+<li>How much control or customization of each component do I require?</li>
+<li>What service supports all of my required components?</li>
+<li>What service allows my required customizations?</li>
+<li>If no single service does everything I need, which could be wired
+together?</li>
+</ul>
+<p>The answers to these questions will help to determine the correct choice
+for you.</p>
+</div>
+<p>We are going to ignore all these questions, and simply ask one question.</p>
+<div class="build container">
+<p>Which service will allow us to set up each layer in a full web application
+stack so that we can learn how the stack works from front to back?</p>
+<p>The simplest answer to that question is <strong>AWS</strong>.</p>
+<p>Therefore, that&#8217;s the service we will use today.</p>
+</div>
+</div>
+<div class="section" id="preparing-for-aws-deployment">
+<h3>Preparing for AWS Deployment<a class="headerlink" href="#preparing-for-aws-deployment" title="Permalink to this headline">¶</a></h3>
+<p>You&#8217;ve started out this week by signing up for AWS.</p>
+<div class="build container">
+<p>You&#8217;ve created a security group and a key pair to help with accessing any
+servers we create.</p>
+<p>You&#8217;ve also set up an IAM user and configured security credentials for that
+user.</p>
+<p>If we were to be automating our work today, we&#8217;d use those credentials to
+allow the <a class="reference external" href="https://boto.readthedocs.org/">boto</a> library to connect to AWS as that IAM user.</p>
+<p>Then you could <a class="reference external" href="http://codefellows.github.io/python-dev-accelerator/lectures/day11/boto.html">create or destroy resources</a> using that library.</p>
+<p>Issues surrounding using that library on Windows prevent us from trying
+that path tonight.</p>
+</div>
+<p>Instead we&#8217;ll be making a manual deployment using AWS.</p>
+<div class="build container">
+<p>This is always the first step to automation anyway, so this is an important
+first step.</p>
+<p>We&#8217;ll begin by converting some aspects of our application to better provide
+for security</p>
+<p>In preparation for that we will need to add a new package to our django
+virtual environment.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>djangoenv<span class="o">)</span><span class="nv">$ </span>pip install dj-database-url
+</pre></div>
+</div>
+</div>
+<p>This new package is an attempt to help Django get in line with a principle
+called <a class="reference external" href="http://12factor.net/">12-factor</a>.</p>
+<div class="build container">
+<p>The basic idea is that any data that your app uses for configuration that
+is <em>external</em> to the app itself, should be separated from the app.</p>
+<p>The link about contains much more effective explanations, read it.</p>
+<p>We&#8217;ve already done this to some degree with our Pyramid application, by
+putting some configuration values into <em>environment variables</em></p>
+<p><tt class="docutils literal"><span class="pre">dj-database-url</span></tt> allows us to do that with the configuration for our
+database.</p>
+</div>
+<p>Open <tt class="docutils literal"><span class="pre">settings.py</span></tt> and replace the current DATABASES dictionary with this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">DATABASES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="n">dj_database_url</span><span class="o">.</span><span class="n">config</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s">&#39;sqlite:///&#39;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">BASE_DIR</span><span class="p">,</span> <span class="s">&#39;db.sqlite3&#39;</span><span class="p">)</span>
+    <span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="build container">
+<p>The default behavior of <tt class="docutils literal"><span class="pre">dj-database-url</span></tt> is to look for a
+<tt class="docutils literal"><span class="pre">DATABASE_URL</span></tt> variable in the environment.</p>
+<p>If it doesn&#8217;t find that, it uses the value you provide for <em>default</em>.</p>
+<p>It converts a <a class="reference external" href="https://github.com/kennethreitz/dj-database-url#url-schema">url-style</a> database connection string to the dictionary
+Django expects.</p>
+<p>Here, we&#8217;ve set the default to be the same as what we had previously.</p>
+</div>
+<p>Another principle of the 12-factor philosophy is to keep the differences
+between production and development to a minimum.</p>
+<div class="build container">
+<p>Again, in our Pyramid app we handled this with a <tt class="docutils literal"><span class="pre">requirements.txt</span></tt> file.</p>
+<p>Here we will do the same.</p>
+<p>At your command line, with the virtualenv active, run the following
+command:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>djangoenv<span class="o">)</span><span class="nv">$ </span>pip freeze &gt; requirements.txt
+</pre></div>
+</div>
+<p>Then, add that file to your repository and commit the changes.</p>
+<p>At this point, we&#8217;re about ready to begin working directly with AWS</p>
+</div>
+</div>
+<div class="section" id="setting-up-an-ec2-instance">
+<h3>Setting up An EC2 Instance<a class="headerlink" href="#setting-up-an-ec2-instance" title="Permalink to this headline">¶</a></h3>
+<p>Our first step is to create an EC2 (Elastic Compute Cloud) instance for our
+application.</p>
+<div class="build container">
+<p>Begin by opening the AWS homepage (<a class="reference external" href="http://aws.amazon.com">http://aws.amazon.com</a>)</p>
+<p>Then click on the big yellow &#8220;Sign in to the Console&#8221; button</p>
+<p>Fill in your email, check &#8220;I am a returning user...&#8221; and supply your
+password.</p>
+<p>When the page loads, you are viewing the AWS Console.</p>
+<p>If you don&#8217;t see a big list of services in that first page, click on
+&#8216;Services&#8217; in the black header.</p>
+<p>From the list of services, click on <tt class="docutils literal"><span class="pre">EC2</span></tt>.</p>
+</div>
+<p>The page that loads is the management console for EC2 resources.  You used it
+to create your security group and key pair.</p>
+<div class="build container">
+<p>Click the large blue &#8220;Launch Instance&#8221; button to start a new instance.</p>
+<p>You should see a list of types of operating system listed.</p>
+<p>If you don&#8217;t click on <em>quick start</em> at the left.</p>
+<p>In the list, find &#8220;Ubuntu Server 14.04 LTS&#8221;.</p>
+<p>Click on &#8216;Select&#8217; to begin building an instance using that operating
+system.</p>
+</div>
+<p>The next page of the launch wizard allows you to choose how much CPU power and
+RAM your machine will have.</p>
+<div class="build container">
+<p>There are only two types of instance that are in the free tier, and one is
+now deprecated.</p>
+<p>Select the <em>t2.micro</em> instance by clicking the checkbox to the left of that
+row (it may already be selected for you).</p>
+<p>Below the table of instance types, find and click on &#8220;Next: configure
+instance details&#8221;</p>
+</div>
+<p>Click through the next two steps until you reach &#8220;Configure Security Group&#8221;</p>
+<div class="build container">
+<p>Here, click the &#8220;select an existing security group&#8221; button, and pick your
+ssh-access group.</p>
+<p>This group acts as a control for a <em>firewall</em> which restricts network
+access to your new instance.</p>
+<p>You&#8217;ve configured that firewall to allow any machine to talk to your
+instance, but only on port 22 (SSH).</p>
+<p>Finish by clicking &#8220;Review and Launch&#8221;</p>
+<p>Then click on &#8220;Launch&#8221; to start the instance.</p>
+</div>
+<p>When you click &#8220;Launch&#8221; you are required to choose a key pair to control ssh
+access to your new machine.</p>
+<div class="build container">
+<p>Without this key pair, you have no way to access the server, and you must
+destroy it and create a new one.</p>
+<p>Select your <tt class="docutils literal"><span class="pre">pk-aws</span></tt> pair from the list of existing key pairs.</p>
+<p>Then, check the box that indicates you have the private key and click
+&#8220;Launch Instance&#8221;.</p>
+<p>It will take a few minutes for the new machine to initialize and be ready.</p>
+</div>
+</div>
+<div class="section" id="accessing-your-instance">
+<h3>Accessing Your Instance<a class="headerlink" href="#accessing-your-instance" title="Permalink to this headline">¶</a></h3>
+<p>Once the machine indicates it is &#8220;running&#8221; you are ready to access that
+machine.</p>
+<div class="build container">
+<p>ssh into that machine:</p>
+<div class="highlight-bash"><div class="highlight"><pre>ssh -i ~/.ssh/pk-aws.pem ubuntu@&lt;your-public-dns-name.com&gt;
+</pre></div>
+</div>
+<p>You will need to indicate that you trust this connection.</p>
+<p>You are now logged in to the server as the default user.</p>
+<p>AWS sets this user up with the ability to run commands using <em>sudo</em></p>
+<p>You&#8217;ll begin by updating the OS package manager so you are ensured of
+having the latest versions of any software you install:</p>
+<div class="highlight-bash"><div class="highlight"><pre>sudo apt-get update
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="deployment-layer-1-web-server">
+<h3>Deployment Layer 1: Web Server<a class="headerlink" href="#deployment-layer-1-web-server" title="Permalink to this headline">¶</a></h3>
+<p>In our deployment stack, the frontmost facing layer is the Web Server.</p>
+<div class="build container">
+<p>This software is responsible for receiving requests from clients&#8217; browsers.</p>
+<p>It will also handle serving static resources in order to relieve Django of
+that burden.</p>
+<p>If you are using <tt class="docutils literal"><span class="pre">https</span></tt>, it&#8217;s also a good place to handle terminating an
+SSL connection.</p>
+<p>Begin by using the Ubuntu package manager to install <tt class="docutils literal"><span class="pre">nginx</span></tt>:</p>
+<div class="highlight-bash"><div class="highlight"><pre>sudo apt-get install nginx
+</pre></div>
+</div>
+</div>
+<p>Like many other packages installed by <tt class="docutils literal"><span class="pre">apt-get</span></tt>, nginx is set up as a
+<em>service</em></p>
+<p>You can check the status of the service:</p>
+<div class="highlight-bash"><div class="highlight"><pre>sudo service nginx status
+</pre></div>
+</div>
+<p>You can start and stop the server:</p>
+<div class="highlight-bash"><div class="highlight"><pre>sudo service nginx stop
+sudo service nginx start
+</pre></div>
+</div>
+<p>Default configuration for nginx lives in <tt class="docutils literal"><span class="pre">/etc/nginx</span></tt>.  Let&#8217;s look at three
+files there in particular:</p>
+<ul class="simple">
+<li>/etc/nginx/nginx.conf (controls behavior of the whole server)</li>
+<li>/etc/nginx/sites-available/default (controls a single &#8216;site&#8217;)</li>
+<li>/etc/nginx/sites-enabled/default (activates a single &#8216;site&#8217;)</li>
+</ul>
+<p>Check your results by loading your public DNS name in a browser</p>
+<div class="build container">
+<p>you should see this, do you?</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/nginx_hello.png"><img alt="../_images/nginx_hello.png" src="../_images/nginx_hello.png" style="width: 40%;" /></a>
+</div>
+<p>Add port 80 to your security group.  Then reload.</p>
+</div>
+</div>
+<div class="section" id="deployment-layer-3-database">
+<h3>Deployment Layer 3: Database<a class="headerlink" href="#deployment-layer-3-database" title="Permalink to this headline">¶</a></h3>
+<p>In order to deploy our database, we&#8217;ll need to install some more software</p>
+<div class="build container">
+<p>Use <tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">istall</span></tt> to add each of the following packages:</p>
+<ul class="simple">
+<li>build-essential</li>
+<li>python-dev</li>
+<li>python-pip</li>
+<li>python-psycopg2</li>
+<li>postgresql-client</li>
+<li>git</li>
+</ul>
+</div>
+<p>You <em>can</em> set up postgres directly on the machine you just built, but that&#8217;s no fun.</p>
+<div class="build container">
+<p>Let&#8217;s use RDS, the AWS service for providing databases.</p>
+<p>From &#8216;services&#8217; in the header, select RDS.</p>
+<p>In the page that appears, click on &#8216;Launch a DB Instance&#8217;</p>
+<p>From the selection of database types, choose PostgreSQL.</p>
+<p>Click <strong>no</strong> to indicate that you don&#8217;t need a multi-AZ database.</p>
+</div>
+<p>On the database details page, You have a bit of work to do.</p>
+<div class="build container">
+<p>First, select <tt class="docutils literal"><span class="pre">db.t2.micro</span></tt> as the instance type.</p>
+<p>Then, for multi-AZ deployment, select <strong>no</strong> (again)</p>
+<p>Finally, provide values for the last four inputs</p>
+<p>The database identifier must be unique to your account and region, use
+&#8220;uwpce&#8221;.</p>
+<p>For the master username, use &#8220;awsuser&#8221;</p>
+<p>Provide a password and repeat it to prove you can</p>
+</div>
+<p>For Advanced Settings, make sure your DB is in the same availability zone as
+your EC2 instance.</p>
+<div class="build container">
+<p>Also ensure that you select the same security group you used for your EC2
+instance from the list of VPC security groups.</p>
+<p>Enter a database name, use &#8220;djangodb&#8221;</p>
+<p>Finally, click &#8220;Launch DB Instance&#8221;</p>
+<p>While the database launches, let&#8217;s return to setting up our application on
+EC2</p>
+</div>
+</div>
+<div class="section" id="deployment-layer-2-application">
+<h3>Deployment Layer 2: Application<a class="headerlink" href="#deployment-layer-2-application" title="Permalink to this headline">¶</a></h3>
+<p>Back on the EC2 instance, in your ssh terminal, clone your django application:</p>
+<div class="highlight-bash"><div class="highlight"><pre>git clone &lt;your-app-repo-url&gt;
+</pre></div>
+</div>
+<div class="build container">
+<p>pip install the requirements for your app:</p>
+<blockquote>
+<div>cd djangoblog_uwpce
+pip install -r requirements.txt</div></blockquote>
+<p>Finally, export a system environment variable called DATABASE_URL with the
+following format:</p>
+<div class="highlight-python"><div class="highlight"><pre>postgres://username:password@host:port/dbname
+</pre></div>
+</div>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nb">export </span><span class="nv">DATABASE_URL</span><span class="o">=</span>&lt;that string&gt;
+</pre></div>
+</div>
+<p>You can now test access with dbshell:</p>
+<div class="highlight-bash"><div class="highlight"><pre>python manage.py dbshell
+</pre></div>
+</div>
+<p>Work through any issues in getting that to work</p>
+</div>
+<p>Once working, we can point nginx at the instance:</p>
+<div class="build container">
+<div class="highlight-bash"><div class="highlight"><pre>sudo mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
+sudo vi /etc/nginx/sites-available/default
+</pre></div>
+</div>
+<p>Add the following content:</p>
+<div class="highlight-nginx"><div class="highlight"><pre><span class="k">server</span> <span class="p">{</span>
+    <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
+    <span class="kn">server_name</span> <span class="s">&lt;your-ec2-public-dns-name&gt;</span><span class="p">;</span>
+    <span class="kn">access_log</span> <span class="s">/var/log/nginx/django.log</span><span class="p">;</span>
+
+    <span class="kn">location</span> <span class="s">/</span> <span class="p">{</span>
+        <span class="kn">proxy_pass</span> <span class="s">http://127.0.0.1:8000</span><span class="p">;</span>
+        <span class="kn">proxy_set_header</span> <span class="s">Host</span> <span class="nv">$host</span><span class="p">;</span>
+        <span class="kn">proxy_set_header</span> <span class="s">X-Real-IP</span> <span class="nv">$remote_addr</span><span class="p">;</span>
+        <span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-For</span> <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>Save that file and restart nginx:</p>
+<div class="highlight-bash"><div class="highlight"><pre>sudo service nginx restart
+</pre></div>
+</div>
+<p>Then reload your aws instance in a web browser, you should see a BAD GATEWAY
+error</p>
+<p>now start django and then reload:</p>
+<div class="highlight-bash"><div class="highlight"><pre>python manage.py runserver
+</pre></div>
+</div>
+<p>This works, but as soon as you exit your ssh terminal, django will quit.  We
+want a long-running process we can leave behind.</p>
+</div>
+<div class="section" id="deployment-layer-4-permanence">
+<h3>Deployment Layer 4: Permanence<a class="headerlink" href="#deployment-layer-4-permanence" title="Permalink to this headline">¶</a></h3>
+<p>Install gunicorn on the server</p>
+<div class="highlight-bash"><div class="highlight"><pre>pip install gunicorn
+</pre></div>
+</div>
+<p>Back on your own machine, create <tt class="docutils literal"><span class="pre">mysite/production.py</span></tt> and add the following
+content:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">settings</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">DEBUG</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">TEMPLATE_DEBUG</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">ALLOWED_HOSTS</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;&lt;your instance public dns&gt;&#39;</span><span class="p">,</span> <span class="s">&#39;localhost&#39;</span><span class="p">]</span>
+<span class="n">STATIC_ROOT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">BASE_DIR</span><span class="p">,</span> <span class="s">&#39;static&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Add the file to your repository and commit your changes.</p>
+<p>Then pull the changes back on your EC2 instance</p>
+<p>Update nginx config (/etc/nginx/sites-available/default) to serve static files:</p>
+<div class="highlight-nginx"><div class="highlight"><pre><span class="k">server</span> <span class="p">{</span>
+    <span class="c1"># ...</span>
+
+    <span class="kn">location</span> <span class="s">/static/</span> <span class="p">{</span>
+        <span class="kn">root</span> <span class="s">/home/ubuntu/djangoblog_uwpce</span><span class="p">;</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Then set an environment variable to point at production settings:</p>
+<div class="highlight-python"><div class="highlight"><pre>export DJANGO_SETTINGS_MODULE=mysite.production
+</pre></div>
+</div>
+<p>Now, run the site using gunicorn:</p>
+<div class="highlight-python"><div class="highlight"><pre>gunicorn -b 127.0.0.1:8000 -w 4 -D mysite.wsgi
+</pre></div>
+</div>
+<p>Wahooo!</p>
+<p>But still not great, because nothing is monitoring this process.</p>
+<p>There&#8217;s no way to keep track of how it is doing.</p>
+<p>We can use a process manager to run the gunicorn command, and track the results.</p>
+<p>Kill the processes that spawned:</p>
+<div class="highlight-python"><div class="highlight"><pre>killall gunicorn
+</pre></div>
+</div>
+<p>Using linux upstart is nice and easy.</p>
+<p>Put the following in <tt class="docutils literal"><span class="pre">/etc/init/djangoblog.conf</span></tt></p>
+<div class="highlight-upstart"><div class="highlight"><pre>description &quot;djangoblog&quot;
+
+start on (filesystem)
+stop on runlevel [016]
+
+respawn
+setuid nobody
+setgid nogroup
+chdir /home/ubuntu/djangoblog_uwpce
+env DJANGO_SETTINGS_MODULE=mysite.production
+env DATABASE_URL=postgres://awsuser:secret123@uwpcedb.c5zwspzpwwsq.us-west-2.rds.amazonaws.com:5432/djangoblog
+exec gunicorn -b 127.0.0.1:8000 -w 4 mysite.wsgi
+</pre></div>
+</div>
+<p>And that&#8217;s it!</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Session 09</a><ul>
+<li><a class="reference internal" href="#deploying-django">Deploying Django</a><ul>
+<li><a class="reference internal" href="#choosing-a-deployment-strategy">Choosing a Deployment Strategy</a></li>
+<li><a class="reference internal" href="#preparing-for-aws-deployment">Preparing for AWS Deployment</a></li>
+<li><a class="reference internal" href="#setting-up-an-ec2-instance">Setting up An EC2 Instance</a></li>
+<li><a class="reference internal" href="#accessing-your-instance">Accessing Your Instance</a></li>
+<li><a class="reference internal" href="#deployment-layer-1-web-server">Deployment Layer 1: Web Server</a></li>
+<li><a class="reference internal" href="#deployment-layer-3-database">Deployment Layer 3: Database</a></li>
+<li><a class="reference internal" href="#deployment-layer-2-application">Deployment Layer 2: Application</a></li>
+<li><a class="reference internal" href="#deployment-layer-4-permanence">Deployment Layer 4: Permanence</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="session09.html"
+                        title="previous chapter">Session 09</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../readings.html"
+                        title="next chapter">Supplementary Course Readings</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/presentations/session10.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+  <h3>Slides</h3>
+  <ul class="this-page-menu">
+    <li><a href="../.././slides/presentations/session10.html"
+           rel="nofollow">View as slides</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../readings.html" title="Supplementary Course Readings"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="session09.html" title="Session 09"
+             >previous</a> |</li>
+        <li><a href="../index.html">UWPCE Python 200</a> &raquo;</li>
+          <li><a href="index.html" >Course Presentations</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012-2015, Cris Ewing.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
