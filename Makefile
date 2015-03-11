@@ -2,8 +2,9 @@
 #
 
 # You can set these variables from the command line.
+BINDIR        = /Users/cewing/.virtualenvs/slidemaker/bin
 SPHINXOPTS    =
-SPHINXBUILD   = ./bin/sphinx-build
+SPHINXBUILD   = $(BINDIR)/sphinx-build
 PAPER         =
 BUILDDIR      = build
 

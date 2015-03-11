@@ -1,0 +1,14 @@
+Jinja2==2.7.2
+MarkupSafe==0.23
+PdbSublimeTextSupport==0.2
+Pygments==1.6
+Sphinx==1.2.2
+docutils==0.11
+gnureadline==6.3.3
+ipython==2.1.0
+libsass==0.4.2
+py==1.4.20
+pytest==2.5.2
+six==1.6.1
+sphinx-rtd-theme==0.1.6
+-e git+https://github.com/nyergler/hieroglyph.git#egg=hieroglyph
