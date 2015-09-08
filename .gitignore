@@ -32,6 +32,7 @@ bin
 build
 include
 lib
+share
 cast-offs
 develop-eggs
 development
@@ -45,3 +46,4 @@ html
 slides
 new_mash
 .buildinfo
+pip-selfcheck.json
