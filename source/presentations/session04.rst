@@ -266,7 +266,7 @@ It is called **socket**.
     Let's spend a few minutes getting to know this module.
 
     We're going to do this next part together, so open up a terminal and start
-    a python interpreter
+    an iPython interpreter
 
 
 .. nextslide::
@@ -276,18 +276,19 @@ The Python sockets library allows us to find out what port a *service* uses:
 .. rst-class:: build
 .. container::
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> import socket
-        >>> socket.getservbyname('ssh')
-        22
+        In [1]: import socket
+
+        In [2]: socket.getservbyname('ssh')
+        Out[2]: 22
 
     You can also do a *reverse lookup*, finding what service uses a given *port*:
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> socket.getservbyport(80)
-        'http'
+        In [3]: socket.getservbyport(80)
+        Out[3]: 'http'
 
 
 .. nextslide::
@@ -296,26 +297,29 @@ The sockets library also provides tools for finding out information about
 *hosts*. For example, you can find out about the hostname and IP address of
 the machine you are currently using:
 
-.. code-block:: pycon
+.. code-block:: ipython
 
-    >>> socket.gethostname()
-    'heffalump.local'
-    >>> socket.gethostbyname(socket.gethostname())
-    '10.211.55.2'
+    In [4]: socket.gethostname()
+    Out[4]: 'Banks'
+
+    In [5]: socket.gethostbyname(socket.gethostname())
+    Out[5]: '127.0.0.1'
 
 .. nextslide::
 
 You can also find out about machines that are located elsewhere, assuming you
 know their hostname. For example:
 
-.. code-block:: pycon
+.. code-block:: ipython
 
-    >>> socket.gethostbyname('google.com')
-    '173.194.33.4'
-    >>> socket.gethostbyname('uw.edu')
-    '128.95.155.135'
-    >>> socket.gethostbyname('crisewing.com')
-    '108.59.11.99'
+    In [6]: socket.gethostbyname('google.com')
+    Out[6]: '173.194.33.100'
+
+    In [7]: socket.gethostbyname('uw.edu')
+    Out[7]: '128.95.155.134'
+
+    In [8]: socket.gethostbyname('crisewing.com')
+    Out[8]: '108.168.213.86'
 
 
 .. nextslide::
@@ -323,19 +327,18 @@ know their hostname. For example:
 The ``gethostbyname_ex`` method of the ``socket`` library provides more
 information about the machines we are exploring:
 
-.. code-block:: pycon
+.. code-block:: ipython
 
-    >>> socket.gethostbyname_ex('google.com')
-    ('google.com', [], ['173.194.33.9', '173.194.33.14',
-                        ...
-                        '173.194.33.6', '173.194.33.7',
-                        '173.194.33.8'])
-    >>> socket.gethostbyname_ex('crisewing.com')
-    ('crisewing.com', [], ['108.59.11.99'])
-    >>> socket.gethostbyname_ex('www.rad.washington.edu')
-    ('elladan.rad.washington.edu', # <- canonical hostname
-     ['www.rad.washington.edu'], # <- any machine aliases
-     ['128.95.247.84']) # <- all active IP addresses
+    In [9]: socket.gethostbyname_ex('crisewing.com')
+    Out[9]: ('crisewing.com', [], ['108.168.213.86'])
+
+    In [10]: socket.gethostbyname_ex('google.com')
+    Out[10]:
+    ('google.com',
+     [],
+     ['173.194.33.100', '173.194.33.103',
+      ...
+      '173.194.33.97', '173.194.33.104'])
 
 .. nextslide::
 
@@ -343,11 +346,13 @@ To create a socket, you use the **socket** method of the ``socket`` library.
 It takes up to three optional positional arguments (here we use none to get
 the default behavior):
 
-.. code-block:: pycon
+.. code-block:: ipython
 
-    >>> foo = socket.socket()
-    >>> foo
-    <socket._socketobject object at 0x10046cec0>
+    In [11]: foo = socket.socket()
+
+    In [12]: foo
+    Out[12]: <socket.socket fd=10, family=AddressFamily.AF_INET,
+              type=SocketKind.SOCK_STREAM, proto=0, laddr=('0.0.0.0', 0)>
 
 .. nextslide::
 
@@ -357,14 +362,16 @@ include the *family*, *type* and *protocol* of the socket:
 .. rst-class:: build
 .. container::
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> foo.family
-        2
-        >>> foo.type
-        1
-        >>> foo.proto
-        0
+        In [13]: foo.family
+        Out[13]: <AddressFamily.AF_INET: 2>
+
+        In [14]: foo.type
+        Out[14]: <SocketKind.SOCK_STREAM: 1>
+
+        In [15]: foo.proto
+        Out[15]: 0
 
     You might notice that the values for these properties are integers.  In
     fact, these integers are **constants** defined in the socket library.
@@ -380,17 +387,16 @@ single argument, the shared prefix for a defined set of constants:
 
     (you can also find this in ``resources/session04/socket_tools.py``)
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> def get_constants(prefix):
-        ...     """mapping of socket module constants to their names."""
-        ...     return dict(
-        ...         (getattr(socket, n), n)
-        ...         for n in dir(socket)
-        ...         if n.startswith(prefix)
-        ...     )
-        ...
-        >>>
+        In [37]: def get_constants(prefix):
+           ....:     """mapping of socket module constants to their names"""
+           ....:     return {getattr(socket, n): n
+           ....:             for n in dir(socket)
+           ....:             if n.startswith(prefix)
+           ....:     }
+           ....:
+
 
 Socket Families
 ---------------
@@ -418,13 +424,18 @@ Families defined in the ``socket`` library are prefixed by ``AF_``:
 .. rst-class:: build
 .. container::
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> families = get_constants('AF_')
-        >>> families
-        {0: 'AF_UNSPEC', 1: 'AF_UNIX', 2: 'AF_INET',
-         11: 'AF_SNA', 12: 'AF_DECnet', 16: 'AF_APPLETALK',
-         17: 'AF_ROUTE', 23: 'AF_IPX', 30: 'AF_INET6'}
+        In [39]: families = get_constants('AF_')
+
+        In [40]: families
+        Out[40]:
+        {<AddressFamily.AF_UNSPEC: 0>: 'AF_UNSPEC',
+         <AddressFamily.AF_UNIX: 1>: 'AF_UNIX',
+         <AddressFamily.AF_INET: 2>: 'AF_INET',
+         ...
+         <AddressFamily.AF_INET6: 30>: 'AF_INET6',
+         <AddressFamily.AF_SYSTEM: 32>: 'AF_SYSTEM'}
 
     *Your results may vary*
 
@@ -473,12 +484,17 @@ The socket *type* determines the semantics of socket communications.
 
     Look up socket type constants with the ``SOCK_`` prefix:
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> types = get_constants('SOCK_')
-        >>> types
-        {1: 'SOCK_STREAM', 2: 'SOCK_DGRAM',
-         ...}
+        In [42]: types = get_constants('SOCK_')
+
+        In [43]: types
+        Out[43]:
+        {<SocketKind.SOCK_STREAM: 1>: 'SOCK_STREAM',
+         <SocketKind.SOCK_DGRAM: 2>: 'SOCK_DGRAM',
+         <SocketKind.SOCK_RAW: 3>: 'SOCK_RAW',
+         <SocketKind.SOCK_RDM: 4>: 'SOCK_RDM',
+         <SocketKind.SOCK_SEQPACKET: 5>: 'SOCK_SEQPACKET'}
 
     The most common are ``1`` (Stream communication (TCP)) and ``2`` (Datagram
     communication (UDP)).
@@ -498,13 +514,18 @@ prefixed by ``IPPROTO_``:
 .. rst-class:: build
 .. container::
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> protocols = get_constants('IPPROTO_')
-        >>> protocols
-        {0: 'IPPROTO_IP', 1: 'IPPROTO_ICMP',
-         ...,
-         255: 'IPPROTO_RAW'}
+        In [45]: protocols = get_constants('IPPROTO_')
+
+        In [46]: protocols
+        Out[46]:
+        {0: 'IPPROTO_IP',
+         ...
+         6: 'IPPROTO_TCP',
+         ...
+         17: 'IPPROTO_UDP',
+         ...}
 
     The choice of which protocol to use for a socket is determined by the
     *internet layer* protocol you intend to use. ``TCP``? ``UDP``? ``ICMP``?
