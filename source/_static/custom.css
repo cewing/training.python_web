@@ -74,6 +74,11 @@ aside.gdbar {
     top: 4px;
   }
 
+/* line 888, ../scss/default.scss */
+.title-slide hgroup {
+  top: 0px;
+}
+
 em {
   font-style: italic; }
 
@@ -171,4 +176,3 @@ article table.docutils tr td {
   text-align: left;
   float: left;
 }
-
