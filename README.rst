@@ -60,6 +60,7 @@ Install the requirements for the documentation using pip:
 
     $ bin/pip install -r requirements.pip
     ...
+
     Successfully installed Babel-2.0 Jinja2-2.8 MarkupSafe-0.23 Pygments-2.0.2 Sphinx-1.3.1 alabaster-0.7.6 appnope-0.1.0 decorator-4.0.2 docutils-0.12 gnureadline-6.3.3 hieroglyph-0.7.1 ipython-4.0.0 ipython-genutils-0.1.0 path.py-8.1 pexpect-3.3 pickleshare-0.5 py-1.4.30 pytest-2.7.2 pytz-2015.4 simplegeneric-0.8.1 six-1.9.0 snowballstemmer-1.2.0 sphinx-rtd-theme-0.1.8 traitlets-4.0.0
 
 Once that has successfully completed, you should be able to build both the html
@@ -77,12 +78,8 @@ documentation and the slides using the included Makefile.
 
     Build finished. The HTML slides are in build/slides.
 
-
-.. warning:: The Makefile assumes an active virtualenv. You must either
-             activate your virtualenv *or* use the `-e` flag to explicitly
-             point `make` to the sphinx-build command.
-
-Without an active
+.. note:: If you prefer to build your virtualenvs in other ways, you will need
+          to adjust the `BINDIR` variable in `Makefile` to fit your reality.
 
 
 
