@@ -549,14 +549,16 @@ arguments you may pass to the socket constructor.
     Using them allows you to create sockets with specific communications
     profiles:
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> bar = socket.socket(socket.AF_INET,
-        ...                     socket.SOCK_DGRAM,
-        ...                     socket.IPPROTO_UDP)
-        ...
-        >>> bar
-        <socket._socketobject object at 0x1005b8b40>
+        In [3]: socket.socket(socket.AF_INET,
+           ...:               socket.SOCK_DGRAM,
+           ...:               socket.IPPROTO_UDP)
+        Out[3]: <socket.socket fd=7,
+                    family=AddressFamily.AF_INET,
+                    type=SocketKind.SOCK_DGRAM,
+                    proto=17,
+                    laddr=('0.0.0.0', 0)>
 
 
 Break Time
@@ -625,21 +627,20 @@ connections on a given host.
 
 Again, let's create a utility method in-place so we can see this in action:
 
-.. code-block:: pycon
+.. code-block:: ipython
 
-    >>> def get_address_info(host, port):
-    ...     for response in socket.getaddrinfo(host, port):
-    ...         fam, typ, pro, nam, add = response
-    ...         print 'family: ', families[fam]
-    ...         print 'type: ', types[typ]
-    ...         print 'protocol: ', protocols[pro]
-    ...         print 'canonical name: ', nam
-    ...         print 'socket address: ', add
-    ...         print
-    ...
-    >>>
+    In [10]: def get_address_info(host, port):
+       ....:     for response in socket.getaddrinfo(host, port):
+       ....:         fam, typ, pro, nam, add = response
+       ....:         print('family: {}'.format(families[fam]))
+       ....:         print('type: {}'.format(types[typ]))
+       ....:         print('protocol: {}'.format(protocols[pro]))
+       ....:         print('canonical name: {}'.format(nam))
+       ....:         print('socket address: {}'.format(add))
+       ....:         print('')
+       ....:
 
-(you can also find this in ``resources/session01/session1.py``)
+(you can also find this in ``resources/session04/socket_tools.py``)
 
 
 .. nextslide:: On Your Own Machine
@@ -649,35 +650,40 @@ Now, ask your own machine what possible connections are available for 'http':
 .. rst-class:: build
 .. container::
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> get_address_info(socket.gethostname(), 'http')
-        family:  AF_INET
-        type:  SOCK_DGRAM
-        protocol:  IPPROTO_UDP
+        In [11]: get_address_info(socket.gethostname(), 'http')
+        family: AF_INET
+        type: SOCK_DGRAM
+        protocol: IPPROTO_UDP
         canonical name:
-        socket address:  ('10.211.55.2', 80)
+        socket address: ('127.0.0.1', 80)
 
-        family:  AF_INET
-        ...
-        >>>
+        family: AF_INET
+        type: SOCK_STREAM
+        protocol: IPPROTO_TCP
+        canonical name:
+        socket address: ('127.0.0.1', 80)
 
     What answers do you get?
 
 
 .. nextslide:: On the Internet
 
-.. code-block:: pycon
+.. code-block:: ipython
 
-    >>> get_address_info('crisewing.com', 'http')
-    family:  AF_INET
-    type:  SOCK_DGRAM
-    ...
+    In [12]: get_address_info('crisewing.com', 'http')
+    family: AF_INET
+    type: SOCK_DGRAM
+    protocol: IPPROTO_UDP
+    canonical name:
+    socket address: ('108.168.213.86', 80)
 
-    family:  AF_INET
-    type:  SOCK_STREAM
-    ...
-    >>>
+    family: AF_INET
+    type: SOCK_STREAM
+    protocol: IPPROTO_TCP
+    canonical name:
+    socket address: ('108.168.213.86', 80)
 
 .. rst-class:: build
 .. container::
@@ -705,15 +711,21 @@ We've already made a socket ``foo`` using the generic constructor without any
 arguments.  We can make a better one now by using real address information from
 a real server online [**do not type this yet**]:
 
-.. code-block:: pycon
+.. code-block:: ipython
 
-    >>> streams = [info
-    ...     for info in socket.getaddrinfo('crisewing.com', 'http')
-    ...     if info[1] == socket.SOCK_STREAM]
-    >>> streams
-    [(2, 1, 6, '', ('108.59.11.99', 80))]
-    >>> info = streams[0]
-    >>> cewing_socket = socket.socket(*info[:3])
+    In [13]: streams = [info
+       ....:     for info in socket.getaddrinfo('crisewing.com', 'http')
+       ....:     if info[1] == socket.SOCK_STREAM]
+       ....:
+    In [14]: streams
+    Out[14]:
+    [(<AddressFamily.AF_INET: 2>,
+      <SocketKind.SOCK_STREAM: 1>,
+      6,
+      '',
+      ('108.168.213.86', 80))]
+    In [15]: info = streams[0]
+    In [16]: cewing_socket = socket.socket(*info[:3])
 
 
 Connecting a Socket
@@ -722,10 +734,9 @@ Connecting a Socket
 Once the socket is constructed with the appropriate *family*, *type* and
 *protocol*, we can connect it to the address of our remote server:
 
-.. code-block:: pycon
+.. code-block:: ipython
 
-    >>> cewing_socket.connect(info[-1])
-    >>>
+    In [18]: cewing_socket.connect(info[-1])
 
 .. rst-class:: build
 
@@ -742,25 +753,46 @@ Sending a Message
 Send a message to the server on the other end of our connection (we'll
 learn in session 2 about the message we are sending):
 
-.. code-block:: pycon
+.. code-block:: ipython
 
-    >>> msg = "GET / HTTP/1.1\r\n"
-    >>> msg += "Host: crisewing.com\r\n\r\n"
-    >>> cewing_socket.sendall(msg)
-    >>>
+    In [19]: msg = "GET / HTTP/1.1\r\n"
+    In [20]: msg += "Host: crisewing.com\r\n\r\n"
+    In [21]: msg = msg.encode('utf8')
+    In [22]: msg
+    Out[22]: b'GET / HTTP/1.1\r\nHost: crisewing.com\r\n\r\n'
+    In [23]: cewing_socket.sendall(msg)
 
 .. rst-class:: build small
 
 * the transmission continues until all data is sent or an error occurs
-
 * success returns ``None``
-
 * failure to send raises an error
+* the type of error can tell you why the transmission failed
+* but you **cannot** know how much, if any, of your data was sent
 
-* you can use the type of error to figure out why the transmission failed
 
-* if an error occurs you **cannot** know how much, if any, of your data was
-  sent
+Messages Are Bytes
+------------------
+
+One detail from the previous code should stand out:
+
+.. code-block:: ipython
+
+    In [21]: msg = msg.encode('utf8')
+    In [22]: msg
+    Out[22]: b'GET / HTTP/1.1\r\nHost: crisewing.com\r\n\r\n'
+
+You can **only** send bytes through a socket, **never** unicode
+
+.. code-block:: ipython
+
+    In [35]: cewing_socket.sendall(msg.decode('utf8'))
+    ---------------------------------------------------------------------------
+    TypeError                                 Traceback (most recent call last)
+    <ipython-input-35-8178ec7f234d> in <module>()
+    ----> 1 cewing_socket.sendall(msg.decode('utf8'))
+
+    TypeError: 'str' does not support the buffer interface
 
 
 Receiving a Reply
@@ -769,12 +801,11 @@ Receiving a Reply
 Whatever reply we get is received by the socket we created. We can read it
 back out (again, **do not type this yet**):
 
-.. code-block:: pycon
+.. code-block:: ipython
 
-    >>> response = cewing_socket.recv(4096)
-    >>> response
-    'HTTP/1.1 200 OK\r\nDate: Thu, 03 Jan 2013 05:56:53
-    ...
+    In [24]: response = cewing_socket.recv(4096)
+    In [25]: response[:60]
+    Out[25]: b'HTTP/1.1 200 OK\r\nServer: nginx\r\nDate: Sun, 20 Sep 2015 03:38'
 
 .. rst-class:: build
 
@@ -791,7 +822,7 @@ Cleaning Up
 
 When you are finished with a connection, you should always close it::
 
-  >>> cewing_socket.close()
+    cewing_socket.close()
 
 
 Putting it all together
@@ -799,37 +830,37 @@ Putting it all together
 
 First, connect and send a message:
 
-.. code-block:: pycon
+.. code-block:: ipython
 
-    >>> streams = [info
-    ...     for info in socket.getaddrinfo('crisewing.com', 'http')
-    ...     if info[1] == socket.SOCK_STREAM]
-    >>> info = streams[0]
-    >>> cewing_socket = socket.socket(*info[:3])
-    >>> cewing_socket.connect(info[-1])
-    >>> msg = "GET / HTTP/1.1\r\n"
-    >>> msg += "Host: crisewing.com\r\n\r\n"
-    >>> cewing_socket.sendall(msg)
+    In [55]: info = socket.getaddrinfo('crisewing.com', 'http')
+    In [56]: streams = [i for i in info if i[1] == socket.SOCK_STREAM]
+    In [57]: sock_info = streams[0]
+    In [58]: msg = "GET / HTTP/1.1\r\n"
+    In [59]: msg += "Host: crisewing.com\r\n\r\n"
+    In [60]: msg = msg.encode('utf8')
+    In [61]: cewing_socket = socket.socket(*sock_info[:3])
+    In [62]: cewing_socket.connect(sock_info[-1])
+    In [63]: cewing_socket.sendall(msg)
 
 
 .. nextslide::
 
 Then, receive a reply, iterating until it is complete:
 
-.. code-block:: pycon
+.. code-block:: ipython
 
-    >>> buffsize = 4096
-    >>> response = ''
-    >>> done = False
-    >>> while not done:
-    ...     msg_part = cewing_socket.recv(buffsize)
-    ...     if len(msg_part) < buffsize:
-    ...         done = True
-    ...         cewing_socket.close()
-    ...     response += msg_part
-    ...
-    >>> len(response)
-    19427
+    In [65]: buffsize = 4096
+    In [66]: response = b''
+    In [67]: done = False
+    In [68]: while not done:
+       ....:     msg_part = cewing_socket.recv(buffsize)
+       ....:     if len(msg_part) < buffsize:
+       ....:         done = True
+       ....:         cewing_socket.close()
+       ....:     response += msg_part
+       ....:
+    In [69]: len(response)
+    Out[69]: 19464
 
 
 Server Side
@@ -855,15 +886,16 @@ Construct a Socket
     Again, we begin by constructing a socket. Since we are actually the server
     this time, we get to choose family, type and protocol:
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> server_socket = socket.socket(
-        ...     socket.AF_INET,
-        ...     socket.SOCK_STREAM,
-        ...     socket.IPPROTO_TCP)
-        ...
-        >>> server_socket
-        <socket._socketobject object at 0x100563c90>
+        In [70]: server_socket = socket.socket(
+           ....:     socket.AF_INET,
+           ....:     socket.SOCK_STREAM,
+           ....:     socket.IPPROTO_TCP)
+
+        In [71]: server_socket
+        Out[71]: <socket.socket fd=12, family=AddressFamily.AF_INET,
+                    type=SocketKind.SOCK_STREAM, proto=6, laddr=('0.0.0.0', 0)>
 
 
 Bind the Socket
@@ -875,10 +907,10 @@ and Port to which clients must connect:
 .. rst-class:: build
 .. container::
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> address = ('127.0.0.1', 50000)
-        >>> server_socket.bind(address)
+        In [72]: address = ('127.0.0.1', 50000)
+        In [73]: server_socket.bind(address)
 
     **Terminology Note**: In a server/client relationship, the server *binds*
     to an address and port. The client *connects*
@@ -889,52 +921,54 @@ Listen for Connections
 Once our socket is bound to an address, we can listen for attempted
 connections:
 
-.. code-block:: pycon
+.. code-block:: ipython
 
-    >>> server_socket.listen(1)
+    In [74]: server_socket.listen(1)
 
 .. rst-class:: build
 
 * The argument to ``listen`` is the *backlog*
-
 * The *backlog* is the **maximum** number of connection requests that the
   socket will queue
-
 * Once the limit is reached, the socket refuses new connections.
 
 
-Accept Incoming Messages
-------------------------
+Accept A Connection
+-------------------
 
 When a socket is listening, it can receive incoming connection requests:
 
-.. code-block:: pycon
+.. code-block:: ipython
 
-    >>> connection, client_address = server_socket.accept()
-    ... # this blocks until a client connects
-    >>> connection.recv(16)
+    In [75]: connection, client_address = server_socket.accept()
 
 .. rst-class:: build
 
+* The call to ``socket.accept()`` is a *blocking* call.  It will not return
+  values until a client *connects*
 * The ``connection`` returned by a call to ``accept`` is a **new socket**.
   This new socket is used to communicate with the client
-
 * The ``client_address`` is a two-tuple of IP Address and Port for the client
   socket
-
 * When a connection request is 'accepted', it is removed from the backlog
   queue.
 
 
-Send a Reply
-------------
+Communicate
+-----------
 
-The same socket that received a message from the client may be used to return
-a reply:
+The ``connection`` socket can now be used to receive messages from the client
+which made the connection:
 
-.. code-block:: pycon
+.. code-block:: ipython
 
-    >>> connection.sendall("message received")
+    In [76]: connection.recv(buffsize)
+
+It may also be used to return a reply:
+
+.. code-block:: ipython
+
+    In [77]: connection.sendall("message received")
 
 
 Clean Up
@@ -946,9 +980,12 @@ Once a transaction between the client and server is complete, the
 .. rst-class:: build
 .. container::
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> connection.close()
+        In [78]: connection.close()
+
+    At this point, the ``server_socket``can again accept a new client
+    connection.
 
     Note that the ``server_socket`` is *never* closed as long as the server
     continues to run.
@@ -960,8 +997,6 @@ Getting the Flow
 .. rst-class:: left
 .. container::
 
-
-
     The flow of this interaction can be a bit confusing.  Let's see it in
     action step-by-step.
 
@@ -970,7 +1005,7 @@ Getting the Flow
 
         .. container::
 
-            Open a second python interpreter and place it next to your first so
+            Open a second iPython interpreter and place it next to your first so
             you can see both of them at the same time.
 
 
@@ -983,15 +1018,16 @@ connections:
 .. rst-class:: build
 .. container::
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> server_socket = socket.socket(
-        ...     socket.AF_INET,
-        ...     socket.SOCK_STREAM,
-        ...     socket.IPPROTO_IP)
-        >>> server_socket.bind(('127.0.0.1', 50000))
-        >>> server_socket.listen(1)
-        >>> conn, addr = server_socket.accept()
+        In [81]: server_socket = socket.socket(
+           ....:     socket.AF_INET,
+           ....:     socket.SOCK_STREAM,
+           ....:     socket.IPPROTO_IP)
+        In [82]: server_socket.bind(('127.0.0.1', 50000))
+        In [83]: server_socket.listen(1)
+        In [84]: conn, addr = server_socket.accept()
+
 
     At this point, you should **not** get back a prompt. The server socket is
     waiting for a connection to be made.
@@ -1006,19 +1042,19 @@ message:
 .. rst-class:: build
 .. container::
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> import socket
-        >>> client_socket = socket.socket(
-        ...     socket.AF_INET,
-        ...     socket.SOCK_STREAM,
-        ...     socket.IPPROTO_IP)
+        In [1]: import socket
+        In [2]: client_socket = socket.socket(
+           ...:     socket.AF_INET,
+           ...:     socket.SOCK_STREAM,
+           ...:     socket.IPPROTO_IP)
 
     Before connecting, keep your eye on the server interpreter:
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> client_socket.connect(('127.0.0.1', 50000))
+        In [3]: client_socket.connect(('127.0.0.1', 50000))
 
 
 Send a Message Client->Server
@@ -1033,9 +1069,9 @@ new connection socket.
 
     When you're ready, type the following in the *client* interpreter:
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> client_socket.sendall("Hey, can you hear me?")
+        In [4]: client_socket.sendall('Hey, can you hear me?'.encode('utf8'))
 
 
 Receive and Respond
@@ -1047,17 +1083,17 @@ client:
 .. rst-class:: build
 .. container::
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> conn.recv(32)
-        'Hey, can you hear me?'
+        In [87]: msg = conn.recv(4096)
+        In [88]: msg
+        Out[88]: b'Hey, can you hear me?'
 
     Send a message back, and then close up your connection:
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> conn.sendall("Yes, I hear you.")
-        >>> conn.close()
+        In [89]: conn.sendall('Yes, I can hear you.'.encode('utf8'))
 
 
 Finish Up
@@ -1069,18 +1105,20 @@ then be sure to close your client socket too:
 .. rst-class:: build
 .. container::
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> client_socket.recv(32)
-        'Yes, I hear you.'
-        >>> client_socket.close()
+        In [5]: from_server = client_socket.recv(4096)
+        In [6]: from_server
+        Out[6]: b'Yes, I can hear you.'
+        In [7]: client_socket.close()
 
     And now that we're done, we can close up the server too (back in the server
     interpreter):
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> server_socket.close()
+        In [90]: conn.close()
+        In [91]: server_socket.close()
 
 
 .. nextslide:: Congratulations!
@@ -1175,7 +1213,7 @@ To submit your homework:
     * Put the ``echo_server.py``, ``echo_client.py`` and ``tests.py`` files in
       this repository.
 
-    * Send Maria and I an email with a link to your repository when you are
+    * Send us an email with a link to your repository when you are
       done.
 
     We will clone your repository and run the tests as described above.
@@ -1186,7 +1224,7 @@ To submit your homework:
 Going Further
 -------------
 
-In ``assignments/session01/tasks.txt`` you'll find a few extra problems to try.
+In ``assignments/session04/tasks.txt`` you'll find a few extra problems to try.
 
 .. rst-class:: build
 .. container::

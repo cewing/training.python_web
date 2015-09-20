@@ -7,13 +7,13 @@ def client(msg, log_buffer=sys.stderr):
     # TODO: Replace the following line with your code which will instantiate
     #       a TCP socket with IPv4 Addressing, call the socket you make 'sock'
     sock = None
-    print >>log_buffer, 'connecting to {0} port {1}'.format(*server_address)
+    print('connecting to {0} port {1}'.format(*server_address), file=log_buffer)
     # TODO: connect your socket to the server here.
 
     # this try/finally block exists purely to allow us to close the socket
     # when we are finished with it
     try:
-        print >>log_buffer, 'sending "{0}"'.format(msg)
+        print('sending "{0}"'.format(msg), file=log_buffer)
         # TODO: send your message to the server here.
 
         # TODO: the server should be sending you back your message as a series
@@ -25,17 +25,17 @@ def client(msg, log_buffer=sys.stderr):
         #       Make sure that you log each chunk you receive.  Use the print
         #       statement below to do it. (The tests expect this log format)
         chunk = ''
-        print >>log_buffer, 'received "{0}"'.format(chunk)
+        print('received "{0}"'.format(chunk.decode('utf8')), file=log_buffer)
     finally:
         # TODO: after you break out of the loop receiving echoed chunks from
         #       the server you will want to close your client socket.
-        print >>log_buffer, 'closing socket'
+        print('closing socket', file=log_buffer)
 
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
-        usg = '\nusage: python echo_client.py "this is my message"\n'
-        print >>sys.stderr, usg
+        usage = '\nusage: python echo_client.py "this is my message"\n'
+        print(usage, file=sys.stderr)
         sys.exit(1)
 
     msg = sys.argv[1]

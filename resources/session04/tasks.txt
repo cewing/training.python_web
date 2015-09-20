@@ -28,12 +28,16 @@ To run the tests:
 Optional Tasks:
 ---------------
 
+Simple:
+
 * Write a python function that lists the services provided by a given range of
   ports.
 
   * accept the lower and upper bounds as arguments
   * provide sensible defaults
   * Ensure that it only accepts valid port numbers (0-65535)
+
+Challenging:
 
 * The echo server as outlined will only process a connection from one client
   at a time. If a second client were to attempt a connection, it would have to

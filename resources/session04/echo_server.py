@@ -12,7 +12,7 @@ def server(log_buffer=sys.stderr):
     #       see the end of http://docs.python.org/2/library/socket.html
 
     # log that we are building a server
-    print >>log_buffer, "making a server on {0}:{1}".format(*address)
+    print("making a server on {0}:{1}".format(*address), file=log_buffer)
 
     # TODO: bind your new sock 'sock' to the address above and begin to listen
     #       for incoming connections
@@ -21,7 +21,7 @@ def server(log_buffer=sys.stderr):
         # the outer loop controls the creation of new connection sockets. The
         # server will handle each incoming connection one at a time.
         while True:
-            print >>log_buffer, 'waiting for a connection'
+            print('waiting for a connection', file=log_buffer)
 
             # TODO: make a new socket when a client connects, call it 'conn',
             #       at the same time you should be able to get the address of
@@ -30,7 +30,7 @@ def server(log_buffer=sys.stderr):
             #       syntax errors
             addr = ('bar', 'baz')
             try:
-                print >>log_buffer, 'connection - {0}:{1}'.format(*addr)
+                print('connection - {0}:{1}'.format(*addr), file=log_buffer)
 
                 # the inner loop will receive messages sent by the client in
                 # buffers.  When a complete message has been received, the
@@ -41,8 +41,8 @@ def server(log_buffer=sys.stderr):
                     #       following line with your code.  It's only here as
                     #       a placeholder to prevent an error in string
                     #       formatting
-                    data = ''
-                    print >>log_buffer, 'received "{0}"'.format(data)
+                    data = b''
+                    print('received "{0}"'.format(data.decode('utf8')))
                     # TODO: you will need to check here to see if any data was
                     #       received.  If so, send the data you got back to
                     #       the client.  If not, exit the inner loop and wait
