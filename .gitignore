@@ -47,3 +47,4 @@ slides
 new_mash
 .buildinfo
 pip-selfcheck.json
+.ipynb_checkpoints
