@@ -48,9 +48,9 @@ Change directories into the repository, then create a virtualenv using Python
 .. code-block:: bash
 
     $ cd training.python_web
-    $ virtualenv --python /path/to/bin/python3.4 .
-    Running virtualenv with interpreter /path/to/bin/python3.4
-    New python executable in training.python_web/bin/python3.4
+    $ virtualenv --python /path/to/bin/python3.5 .
+    Running virtualenv with interpreter /path/to/bin/python3.5
+    New python executable in training.python_web/bin/python3.5
     Also creating executable in training.python_web/bin/python
     Installing setuptools, pip...done.
 
