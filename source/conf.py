@@ -256,8 +256,12 @@ extensions += [
     'hieroglyph',
 ]
 
+# TODO: open bug report with hieroglyph plus pr that fixes the documentation
+# for this.  Current docs suggest that html_theme_path is the setting needed,
+# but it is not.
+slide_theme_path = ['_themes']
 slide_title = "Internet Programming with Python"
-slide_theme = 'slides2'
+slide_theme = 'uwpce_slides2'
 slide_levels = 3
 slide_link_html_to_slides = True
 slide_relative_path = './slides'

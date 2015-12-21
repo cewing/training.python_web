@@ -74,6 +74,10 @@ aside.gdbar {
     top: 4px;
   }
 
+.title-slide:first-child hgroup {
+  top: 35%;
+}
+
 /* line 888, ../scss/default.scss */
 .title-slide hgroup {
   top: 0px;
