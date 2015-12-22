@@ -1586,3 +1586,15 @@ Heroku Toolbelt, which you will need to have ready in class.
 
 .. _getting started with Python: https://devcenter.heroku.com/articles/getting-started-with-python#introduction
 
+Submitting Your Work
+--------------------
+
+As usual, submit your work by committing and pushing it to your project github
+repository
+
+Commit early and commit often.  
+
+Write yourself good commit messages explaining what you have done and why.
+
+When you are ready to have your work reviewed, email the link to your
+repository to us, we'll take a look and make comments.
