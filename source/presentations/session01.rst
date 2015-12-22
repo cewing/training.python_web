@@ -1830,6 +1830,9 @@ Our model will be called an ``Entry``. Here's what you need to know:
 * The ``entry`` class should support a classmethod ``by_id`` that returns a
   single entry, given an ``id``.
 
+Remember that in order to have your new model table created, you will have to
+re-run the ``initialize_learning_journal_db`` script after creating your model.
+
 .. nextslide:: Words of Advice
 
 Use the documentation linked in this presentation to assist you.  SQLAlchemy
@@ -1840,7 +1843,8 @@ As you define this new model for our application, make frequent commits to your
 github repository. Remember to write meaningful commit messages.
 
 Don't be afraid to start up a Python interpreter and play with your model. Try
-things out. Learn how this all works by making mistakes.
+things out. Learn how this all works by making mistakes. Remember the
+``pshell`` command and how we set up a session once the shell is running.
 
 Errors at the SQL level can sometimes leave your session unusable. To restore
 it, use the ``session.rollback()`` method.  You'll lose uncommitted changes,
