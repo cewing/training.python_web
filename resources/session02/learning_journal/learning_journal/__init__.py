@@ -7,6 +7,13 @@ from .models import (
     )
 
 
+def create_session(settings):
+    from sqlalchemy.orm import sessionmaker
+    engine = engine_from_config(settings, 'sqlalchemy.')
+    Session = sessionmaker(bind=engine)
+    return Session()
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
