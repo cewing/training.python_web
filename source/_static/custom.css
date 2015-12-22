@@ -135,6 +135,11 @@ article .toctree-wrapper li a {
   border-bottom: none; }
 article table.docutils tr td {
   vertical-align: top; }
+slide article div.slide-no {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+}
 
 .level-1 h1 {
   font-size: 65px;
