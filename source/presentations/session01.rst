@@ -1782,6 +1782,31 @@ Since methods in this category return ``Query`` objects, they can be safely
     Also note that when using chained queries like this, no query is actually
     sent to the database until you require a result.
 
+
+Cleaning Up After Ourselves
+---------------------------
+
+When you are experimenting with a new system, you often create data that is
+messy or incomplete.
+
+.. rst-class:: build
+.. container::
+
+    It's good to remember that none of the information we've persisted to our
+    database is vital to us.
+
+    For homework this week we'll be making new models, and the data we have in
+    our current database will only get in the way.
+
+    Until you have real production data it is always safe simply to delete the
+    database and start over:
+
+    .. code-block:: bash
+    
+        $ rm learning_journal.sqlite
+
+    You can always re-create it by executing ``initialize_learning_journal_db``
+
 Homework
 ========
 
