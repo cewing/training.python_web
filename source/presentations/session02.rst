@@ -79,33 +79,33 @@ I have added a new folder to our `class repository`_, ``resources``.
 
 .. nextslide:: Demo Interaction
 
-Another resource I've added is the ``ljshell.py`` script.
+I've also made a few small changes to make the ``pshell`` command a bit more
+helpful.
 
 .. rst-class:: build
 .. container::
 
-    That script will allow you to interact with a db session just like I showed
-    in class last week:
+    In ``learning_journal/__init__.py`` I added the following function:
 
     .. code-block:: python
 
-        # the script
-        from pyramid.paster import get_appsettings, setup_logging
-        from sqlalchemy import engine_from_config
-        from sqlalchemy.orm import sessionmaker
+        def create_session(settings):
+            from sqlalchemy.orm import sessionmaker
+            engine = engine_from_config(settings, 'sqlalchemy.')
+            Session = sessionmaker(bind=engine)
+            return Session()
 
-        config_uri = 'development.ini'
-        setup_logging(config_uri)
-        settings = get_appsettings(config_uri)
-        engine = engine_from_config(settings, 'sqlalchemy.')
-        Session = sessionmaker(bind=engine)
+    Then, in ``development.ini`` I added the following configuration:
 
-    Just copy the file into your learning_journal Pyramid project folder (where
-    ``setup.py`` is)
+    .. code-block:: ini
 
-.. nextslide:: Using the ``ljshell.py`` script
+        [pshell]
+        create_session = learning_journal.create_session
+        entry = learning_journal.models.Entry
 
-Here's a demo interaction using the script to set up a session maker
+.. nextslide:: Using the new ``pshell``
+
+Here's a demo interaction using ``pshell`` with these new features:
 
 .. rst-class:: build
 .. container::
@@ -117,20 +117,17 @@ Here's a demo interaction using the script to set up a session maker
 
         $ cd projects/learning-journal/learning_journal
         $ source ../ljenv/bin/activate
-        (ljenv)$ python
-        >>>
-
-    Then, you can import the ``Session`` symbol from ``ljshell`` and you're off
-    to the races:
-
-    .. code-block:: pycon
-
-        >>> from ljshell import Session
-        >>> from learning_journal.models import MyModel
-        >>> session = Session()
-        >>> session.query(MyModel).all()
-        [<learning_journal.models.MyModel object at 0x105849b90>]
+        (ljenv)$ pshell development.ini
+        Python 3.5.0 (default, Sep 16 2015, 10:42:55)
         ...
+        Environment:
+          app          The WSGI application.
+          ...
+        Custom Variables:
+          create_session learning_journal.create_session
+          entry        learning_journal.models.Entry
+        
+        In [1]: session = create_session(registry.settings)
 
     [demo]
 
@@ -353,7 +350,7 @@ marker*, a valid Python symbol surrounded by curly braces:
         /home/{foo}/
 
     If you want to match a particular pattern, like digits only, add a
-    *regexp*::
+    *regular expression*::
 
         /journal/{id:\d+}
 
@@ -362,7 +359,9 @@ marker*, a valid Python symbol surrounded by curly braces:
         # pattern          # actual url   # matchdict
         /journal/{id:\d+}  /journal/27    {'id': '27'}
 
-    The ``matchdict`` is made available as an attribute of the *request*
+    The ``matchdict`` is made available as an attribute of the *request object*
+
+    (more on that soon)
 
 
 .. nextslide:: Connecting Routes to Views
@@ -725,26 +724,27 @@ We'll start with the absolute basics.
 .. rst-class:: build
 .. container::
 
-    Fire up a Python interpreter, using your `ljenv` virtualenv:
+    Fire up an iPython interpreter, using your `ljenv` virtualenv:
 
     .. code-block:: bash
 
-        (ljenv)$ python
-        >>>
+        (ljenv)$ ipython
+        ...
+        In [1]:
 
     Then import the ``Template`` class from the ``jinja2`` package:
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> from jinja2 import Template
+        In [1]: from jinja2 import Template
 
 .. nextslide:: Templates are Strings
 
 A template is constructed with a simple string:
 
-.. code-block:: python
+.. code-block:: ipython
 
-    >>> t1 = Template("Hello {{ name }}, how are you?")
+    In [2]: t1 = Template("Hello {{ name }}, how are you")
 
 .. rst-class:: build
 .. container::
@@ -754,20 +754,19 @@ A template is constructed with a simple string:
 
     Notice that our string has some odd stuff in it: ``{{ name }}``.
 
-    This is called a placeholder and when the template is *rendered* it is
+    This is called a *placeholder* and when the template is *rendered* it is
     replaced.
 
 .. nextslide:: Rendering a Template
 
 Call the ``render`` method, providing *context*:
 
-.. code-block:: python
+.. code-block:: ipython
 
-    >>> t1.render(name="Freddy")
-    u'Hello Freddy, how are you?'
-    >>> t1.render({'name': "Roberto"})
-    u'Hello Roberto, how are you?'
-    >>>
+    In [3]: t1.render(name="Freddy")
+    Out[3]: 'Hello Freddy, how are you'
+    In [4]: t1.render(name="Gloria")
+    Out[4]: 'Hello Gloria, how are you'
 
 .. rst-class:: build
 .. container::
@@ -787,13 +786,13 @@ Call the ``render`` method, providing *context*:
 Dictionaries passed in as part of the *context* can be addressed with *either*
 subscript or dotted notation:
 
-.. code-block:: python
+.. code-block:: ipython
 
-    >>> person = {'first_name': 'Frank',
-    ...           'last_name': 'Herbert'}
-    >>> t2 = Template("{{ person.last_name }}, {{ person['first_name'] }}")
-    >>> t2.render(person=person)
-    u'Herbert, Frank'
+    In [5]: person = {'first_name': 'Frank',
+       ...:           'last_name': 'Herbert'}
+    In [6]: t2 = Template("{{ person.last_name }}, {{ person['first_name'] }}")
+    In [7]: t2.render(person=person)
+    Out[7]: 'Herbert, Frank'
 
 .. rst-class:: build
 
@@ -810,19 +809,19 @@ The exact same is true of objects passed in as part of *context*:
 .. rst-class:: build
 .. container::
 
-    .. code-block:: python
+    .. code-block:: ipython
 
-        >>> t3 = Template("{{ obj.x }} + {{ obj['y'] }} = Fun!")
-        >>> class Game(object):
-        ...   x = 'babies'
-        ...   y = 'bubbles'
-        ...
-        >>> bathtime = Game()
-        >>> t3.render(obj=bathtime)
-        u'babies + bubbles = Fun!'
+        In [8]: t3 = Template("{{ obj.x }} + {{ obj['y'] }} = Fun!")
+        In [9]: class Game(object):
+           ...:     x = 'babies'
+           ...:     y = 'bubbles'
+           ...:
+        In [10]: bathtime = Game()
+        In [11]: t3.render(obj=bathtime)
+        Out[11]: 'babies + bubbles = Fun!'
 
-    This means your templates can be a bit agnostic as to the nature of the
-    things in *context*
+    This means your templates can be agnostic as to the nature of the
+    things found in *context*
 
 .. nextslide:: Filtering values in Templates
 
@@ -831,22 +830,22 @@ operator:
 
 .. _filters: http://jinja.pocoo.org/docs/dev/templates/#filters
 
-.. code-block:: python
+.. code-block:: ipython
 
-    t4 = Template("shouted: {{ phrase|upper }}")
-    >>> t4.render(phrase="this is very important")
-    u'shouted: THIS IS VERY IMPORTANT'
+    In [12]: t4 = Template("shouted: {{ phrase|upper }}")
+    In [13]: t4.render(phrase="this is very important")
+    Out[13]: 'shouted: THIS IS VERY IMPORTANT'
 
 .. rst-class:: build
 .. container::
 
     You can also chain filters together:
 
-    .. code-block:: python
+    .. code-block:: ipython
 
-        t5 = Template("confusing: {{ phrase|upper|reverse }}")
-        >>> t5.render(phrase="howdy doody")
-        u'confusing: YDOOD YDWOH'
+        In [14]: t5 = Template("confusing: {{ phrase|upper|reverse }}")
+        In [15]: t5.render(phrase="howdy doody")
+        Out[15]: 'confusing: YDOOD YDWOH'
 
 .. nextslide:: Control Flow
 
@@ -857,20 +856,20 @@ Logical `control structures`_ are also available:
 .. rst-class:: build
 .. container::
 
-    .. code-block:: python
+    .. code-block:: ipython
 
-        tmpl = """
-        ... {% for item in list %}{{ item }}, {% endfor %}
-        ... """
-        >>> t6 = Template(tmpl)
-        >>> t6.render(list=[1,2,3,4,5,6])
-        u'\n1, 2, 3, 4, 5, 6, '
+        In [16]: tmpl = """
+           ....: {% for item in list %}{{ item}}, {% endfor %}
+           ....: """
+        In [17]: t6 = Template(tmpl)
+        In [18]: t6.render(list=['a', 'b', 'c', 'd', 'e'])
+        Out[18]: '\na, b, c, d, e, '
 
     Any control structure introduced in a template **must** be paired with an
-    explicit closing tag ({% for %}...{% endfor %})
+    explicit closing tag (``{% for %}...{% endfor %}``)
 
     Remember, although template tags like ``{% for %}`` or ``{% if %}`` look a
-    lot like Python, they are not.
+    lot like Python, *they are not*.
 
     The syntax is specific and must be followed correctly.
 
@@ -879,21 +878,21 @@ Logical `control structures`_ are also available:
 There are a number of specialized *tests* available for use with the
 ``if...elif...else`` control structure:
 
-.. code-block:: python
+.. code-block:: ipython
 
-    >>> tmpl = """
-    ... {% if phrase is upper %}
-    ...   {{ phrase|lower }}
-    ... {% elif phrase is lower %}
-    ...   {{ phrase|upper }}
-    ... {% else %}{{ phrase }}{% endif %}"""
-    >>> t7 = Template(tmpl)
-    >>> t7.render(phrase="FOO")
-    u'\n\n  foo\n'
-    >>> t7.render(phrase="bar")
-    u'\n\n  BAR\n'
-    >>> t7.render(phrase="This should print as-is")
-    u'\nThis should print as-is'
+    In [19]: tmpl = """
+       ....: {% if phrase is upper %}
+       ....:   {{ phrase|lower }}
+       ....: {% elif phrase is lower %}
+       ....:   {{ phrase|upper }}
+       ....: {% else %}{{ phrase }}{% endif %}"""
+    In [20]: t7 = Template(tmpl)
+    In [21]: t7.render(phrase="FOO")
+    Out[21]: '\n\n  foo\n'
+    In [22]: t7.render(phrase='bar')
+    Out[22]: '\n\n  BAR\n'
+    In [23]: t7.render(phrase='This should print as-is')
+    Out[23]: '\nThis should print as-is'
 
 
 .. nextslide:: Basic Expressions
@@ -902,20 +901,20 @@ Basic `Python-like expressions`_ are also supported:
 
 .. _Python-like expressions: http://jinja.pocoo.org/docs/dev/templates/#expressions
 
-.. code-block:: python
+.. code-block:: ipython
 
-    tmpl = """
-    ... {% set sum = 0 %}
-    ... {% for val in values %}
-    ... {{ val }}: {{ sum + val }}
-    ...   {% set sum = sum + val %}
-    ... {% endfor %}
-    ... """
-    >>> t8 = Template(tmpl)
-    >>> t8.render(values=range(1,11))
-    u'\n\n\n1: 1\n  \n\n2: 3\n  \n\n3: 6\n  \n\n4: 10\n
-      \n\n5: 15\n  \n\n6: 21\n  \n\n7: 28\n  \n\n8: 36\n
-      \n\n9: 45\n  \n\n10: 55\n  \n'
+    In [24]: tmpl = """
+       ....: {% set sum = 0 %}
+       ....: {% for val in values %}
+       ....: {{ val }}: {{ sum + val }}
+       ....:   {% set sum = sum + val %}
+       ....: {% endfor %}
+       ....: """
+    In [25]: t8 = Template(tmpl)
+    In [26]: t8.render(values=range(1, 11))
+    Out[26]: '\n\n\n1: 1\n  \n\n2: 3\n  \n\n3: 6\n  \n\n4: 10\n
+              \n\n5: 15\n  \n\n6: 21\n  \n\n7: 28\n  \n\n8: 36\n
+              \n\n9: 45\n  \n\n10: 55\n  \n\n'
 
 
 Our Templates
@@ -946,7 +945,7 @@ show it.
 
     Then wire it up to the detail view in ``views.py``:
 
-    .. code-block:: python
+    .. code-block:: ipython
     
         # views.py
         @view_config(route_name='detail', renderer='templates/detail.jinja2')
@@ -1005,15 +1004,28 @@ It's worth taking a look at a few specifics of this template.
 .. container::
 
     .. code-block:: jinja
-    
-        <a href="{{ request.route_url('detail', id=entry.id) }}">{{ entry.title }}</a>
+
+        {% for entry in entries %}
+         ...
+        {% endfor %}
 
     Jinja2 templates are rendered with a *context*.
 
-    The return values of the Pyramid *view* for a template get included in that
-    context.
+    A Pyramid *view* returns a dictionary, which is passed to the renderer as
+    part of of that *context*
 
-    So does *request*, which is placed there by the framework.
+    This means we can access values we return from our *view* in the *renderer*
+    using the names we assigned to them.
+
+.. nextslide::
+
+It's worth taking a look at a few specifics of this template.
+
+    .. code-block:: jinja
+    
+        <a href="{{ request.route_url('detail', id=entry.id) }}">{{ entry.title }}</a>
+
+    The *request* object is also placed in the context by Pyramid.
 
     Request has a method ``route_url`` that will create a URL for a named
     route.
