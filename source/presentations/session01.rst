@@ -94,20 +94,23 @@ Please check frequently. I will update with great regularity
 Introductions
 
 
-Working with Virtualenv
-=======================
+Working with Virtual Environments
+=================================
 
 .. rst-class:: large
 
-| For every
-| add-on package installed
-| in a system Python,
-| the gods kill a kitten
-|
-| - me
+| For every package 
+| installed in the
+| system Python, the 
+| gods kill a kitten
 
-Why Virtualenv?
----------------
+.. rst-class:: build
+.. container::
+
+    | - me
+
+Why Virtual Environments?
+-------------------------
 
 .. rst-class:: build
 
@@ -117,85 +120,53 @@ Why Virtualenv?
   different projects
 * Conflicts arising from having the wrong version of a dependency installed can
   cause long-term nightmares
-* Use `virtualenv`_ ...
+* Use `pyvenv`_ ...
 * **Always**
 
-.. _virtualenv: http://www.virtualenv.org/
+.. _pyvenv: https://docs.python.org/3/library/venv.html
 
-Installing Virtualenv
----------------------
+The ``venv`` module
+-------------------
 
-The best way is to install directly in your system Python (one exception to the
-rule).
+Since version 3.3, Python has come with a built-in ``venv`` module.  This
+module provides a command you can use to create virtual environments:
+``pyvenv``
 
 .. rst-class:: build
 .. container::
 
-    To do so you will have to have `pip`_ installed.
-
-    Try the following command:
+    The basic usage for this command is as follows:
 
     .. code-block:: bash
+    
+        $ pyvenv /path/to/new/environment
 
-        $ which pip
-        /usr/local/bin/pip
+    On Windows you'll need something a bit different:
 
-    If the ``which`` command returns no value for you, then ``pip`` is not
-    installed in your system. To fix this, follow `the instructions here`_.
+    .. code-block:: posh
+    
+        c:\Temp>c:\Python35\python -m venv myenv
 
-.. _pip: https://pip.pypa.io/en/latest/index.html
-.. _the instructions here: https://pip.pypa.io/en/latest/installing.html
+    Unless you have the Python executable in your path, in which case this:
+
+    .. code-block:: posh
+    
+        c:\Temp>python -m venv myenv
+
 
 .. nextslide::
 
-Once you have ``pip`` installed in your system, you can use it to install
-`virtualenv`_.
+In any of these command forms, the name of the new virtual environment
+(``myenv``) is arbitrary.
 
 .. rst-class:: build
 .. container::
 
-    Because you are installing it into your system python, you will most likely
-    need ``superuser`` privileges to do so:
+    I suggest that you name virtual environments to match the project for which
+    the environment is to be used.
 
-    .. code-block:: bash
-
-        $ sudo pip install virtualenv
-        Downloading/unpacking virtualenv
-          Downloading virtualenv-1.11.2-py2.py3-none-any.whl (2.8MB): 2.8MB downloaded
-        Installing collected packages: virtualenv
-        Successfully installed virtualenv
-        Cleaning up...
-
-.. nextslide::
-
-Great.  Once that's done, you should find that you have a ``virtualenv``
-command available to you from your shell:
-
-.. code-block:: bash
-
-    $ virtualenv --help
-    Usage: virtualenv [OPTIONS] DEST_DIR
-
-    Options:
-      --version             show program's version number and exit
-      -h, --help            ...
-
-Using Virtuelenv
-----------------
-
-Creating a new virtualenv is very very simple:
-
-.. rst-class:: build
-.. container::
-
-    .. code-block:: bash
-
-        $ virtualenv [options] <ENV>
-
-
-    ``<ENV>`` is just the name of the environment you want to create.
-
-    It's arbitrary, so name them to be easily remembered.
+    I also suggest that you keep your virtual environments *in the same
+    directory* as the project code you are writing.
 
 .. nextslide::
 
@@ -203,9 +174,9 @@ Let's make one for demonstration purposes:
 
 .. code-block:: bash
 
-    $ virtualenv demoenv
-    New python executable in demoenv/bin/python
-    Installing setuptools, pip...done.
+    $ pyvenv demoenv
+    $ ls demoenv
+    bin     include     lib     pyvenv.cfg
 
 
 .. nextslide:: What Happened?
@@ -225,7 +196,7 @@ When you ran that command, a couple of things took place:
 Activation
 ----------
 
-Every virtualenv you create contains an executable Python command.
+Every virtual environment you create contains an executable Python command.
 
 .. rst-class:: build
 .. container::
@@ -233,17 +204,26 @@ Every virtualenv you create contains an executable Python command.
     If you do a quick check to see which Python executable is found by your
     terminal, you'll see that it is not the one:
 
-    .. code-block:: bash
+    .. container::
+    
+        .. code-block:: bash
 
-        $ which python
-        /usr/bin/python
+            $ which python
+            /usr/bin/python
+
+        in powershell:
+
+        .. code-block:: posh
+        
+            $ gcm python
+            ...
 
     You can execute the new Python by explicitly pointing to it:
 
     .. code-block:: bash
 
         $ ./demoenv/bin/python -V
-        Python 2.7.5
+        Python 3.5.0
 
 .. nextslide::
 
@@ -252,16 +232,33 @@ But that's tedious and hard to remember.
 .. rst-class:: build
 .. container::
 
-    Instead, ``activate`` your virtualenv using the ``source`` shell command:
+    Instead, ``activate`` your virtual environment using a shell command:
+
+    +----------+------------+----------------------------------------+
+    | Platform | Shell      | Activation Command                     |
+    +==========+============+========================================+
+    | Posix    | bash/zsh   | ``$ source <venv>/bin/activate``       |
+    +          +------------+----------------------------------------+
+    |          | fish       | ``$ . <venv>/bin/activate.fish``       |
+    +          +------------+----------------------------------------+
+    |          | csh/tcsh   | ``$ source <venv>/bin/activate.csh``   |
+    +----------+------------+----------------------------------------+
+    | Windows  | cmd.exe    | ``C:> <venv>/Scripts/activate.bat``    |
+    +          +------------+----------------------------------------+
+    |          | powershell | ``PS C:> <venv>/Scripts/Activate.ps1`` |
+    +----------+------------+----------------------------------------+
+
+.. nextslide::
+
+Notice that when a virtualenv is *active* you can see it in your command
+prompt:
+
+.. rst-class:: build
+.. container::
 
     .. code-block:: bash
 
-        $ source demoenv/bin/activate
-        (demoenv)$ which python
-        /Users/cewing/demoenv/bin/python
-
-    Notice that when a virtualenv is *active* you can see it in your command
-    prompt.
+        (demoenv)$
 
     So long as the virtualenv is *active* the ``python`` executable that will
     be used will be the new one in your ``demoenv``.
@@ -318,12 +315,12 @@ available to us:
 .. code-block:: pycon
 
     (demoenv)$ python
-    Python 2.7.5 (default, Aug 25 2013, 00:04:04)
-    [GCC 4.2.1 Compatible Apple LLVM 5.0 (clang-500.0.68)] on darwin
+    Python 3.5.0 (default, Sep 16 2015, 10:42:55)
+    [GCC 4.2.1 Compatible Apple LLVM 6.1.0 (clang-602.0.49)] on darwin
     Type "help", "copyright", "credits" or "license" for more information.
     >>> import docutils
     >>> docutils.__path__
-    ['/Users/cewing/demoenv/lib/python2.7/site-packages/docutils']
+    ['/Users/cewing/projects/uwpce/training.python_web/testenvs/sess01/demoenv/lib/python3.5/site-packages/docutils']
     >>> ^d
     (demoenv)$
 
@@ -349,8 +346,8 @@ executable scripts when it is installed.
     These scripts are set up to execute using the Python with which they were
     built.
 
-    Running these scripts will use the Python executable in your virtualenv,
-    *even if that virtualenv is not active*!
+    Running these scripts *from this location* will use the Python executable
+    in your virtualenv, *even if that virtualenv is not active*!
 
 Deactivation
 ------------
@@ -361,13 +358,13 @@ it.
 .. rst-class:: build
 .. container::
 
-    Eventually you'll need to stop working with this ``virtualenv`` and switch
+    Eventually you'll need to stop working with this ``venv`` and switch
     to another
 
-    It's a good idea to keep a separate ``virtualenv`` for every project you
+    It's a good idea to keep a separate ``venv`` for every project you
     work on.
 
-    When a ``virtualenv`` is active, all you have to do is use the
+    When a ``venv`` is active, all you have to do is use the
     ``deactivate`` command:
 
     .. code-block:: bash
@@ -382,9 +379,8 @@ it.
 Cleaning Up
 -----------
 
-The final advantage that ``virtualenv`` offers you as a developer is
-the ability to easily remove a batch of installed Python software from your
-system.
+The final advantage that ``venv`` offers you as a developer is the ability to
+easily remove a batch of installed Python software from your system.
 
 .. rst-class:: build
 .. container::
@@ -399,8 +395,8 @@ system.
 
     And you have to go clean it out manually.
 
-    With ``virtualenv`` you simply remove the directory ``virtualenv`` created
-    when you started out.
+    With ``venv`` you simply remove the directory ``venv`` created when you
+    started out.
 
 .. nextslide::
 
@@ -411,7 +407,7 @@ Let's do that with our ``demoenv``:
 
     .. code-block:: bash
 
-        $ rm -rf demoenv
+        $ rm -r demoenv
 
     And that's it.
 
@@ -455,8 +451,8 @@ Separation of Concerns
     *Smalltalk* was also the first language which utilized the
     `Model View Controller`_ design pattern.
 
-    This pattern (like all `design patterns`_) seeks to provide a way of
-    thinking that helps to make software design easier.
+    This pattern (like all `design patterns`_) seeks to provide a *way of
+    thinking* that helps to make software design easier.
 
     In this case, the goal is to help clarify the high-level *separation of
     concerns* in a system.
@@ -504,7 +500,7 @@ the web.
     These *views* are created by *controller* software hosted on a server.
 
     This *controller* software accepts input from users via *HTTP requests*,
-    channeling it into a *data model* usually stored in some database.
+    channeling it into a *data model*, often stored in some database.
 
     The *controller* returns information about the state of the *data model* to
     the user via *HTTP responses*
@@ -618,7 +614,8 @@ The first step is to prepare for the project.
 
 .. nextslide:: Creating an Environment
 
-We continue our preparations by creating a virtualenv we will use for it.
+We continue our preparations by creating the virtual environment we will use
+for our project.
 
 .. rst-class:: build
 .. container::
@@ -626,13 +623,15 @@ We continue our preparations by creating a virtualenv we will use for it.
     Again, this will help us to keep our work here isolated from anything else
     we do.
 
-    Remember how to make a new virtualenv?
+    Remember how to make a new venv?
 
     .. code-block:: bash
 
-        $ virtualenv ljenv
-        New python executable in ljenv/bin/python
-        Installing setuptools, pip...done.
+        $ pyvenv ljenv
+
+    .. code-block:: posh
+
+        c:\Temp>python -m venv myenv
 
     And then, how to activate it?
 
@@ -640,6 +639,10 @@ We continue our preparations by creating a virtualenv we will use for it.
 
         $ source ljenv/bin/activate
         (ljenv)$
+
+    .. code-block:: posh
+
+        C:> ljenv/Scripts/activate.bat
 
 .. nextslide:: Installing Pyramid
 
@@ -695,8 +698,6 @@ started.
 
 .. code-block:: bash
 
-    (ljenv)$ tree learning_journal/
-    learning_journal/
     ...
     ├── development.ini
     ├── learning_journal
@@ -788,6 +789,10 @@ Python creates ``.pyc`` files when it executes your code.
         .DS_Store
 
     Finally, add this new file to your repository, too.
+
+    .. code-block:: bash
+    
+        (ljenv)$ git add .gitignore
 
 .. nextslide:: Make It Permanent
 
@@ -1369,8 +1374,8 @@ So what was the outcome of running that script?
 
     We've now created an sqlite database.
 
-    You'll need to add ``*.sqlite`` to ``.gitignore`` so you don't add that
-    file to your repository.
+    You'll need to add ``*.sqlite`` to ``.gitignore`` so you don't
+    inadvertently add that file to your repository.
 
     Once you've done so, commit the change to your repository
 
@@ -1382,23 +1387,94 @@ It's pretty easy to play with your models from in an interpreter.
 .. rst-class:: build
 .. container::
 
-    Let's try that out and see what we have.  Start up an interpreter:
+    But before we do so, let's make a nicer interpreter available for our
+    project
 
-    .. code-block:: pycon
+    You've been using iPython in class, we can use it here too.
 
-        >>> config = 'development.ini'
-        >>> from pyramid.paster import get_appsettings
-        >>> settings = get_appsettings(config)
-        >>> from sqlalchemy import engine_from_config
-        >>> engine = engine_from_config(settings, 'sqlalchemy.')
-        >>> from sqlalchemy.orm import sessionmaker
-        >>> Session = sessionmaker(bind=engine)
-        >>> session = Session()
-        >>> from learning_journal.models import MyModel
-        >>> session.query(MyModel).all()
-        [<learning_journal.models.MyModel object at 0x10b075ed0>]
+    Just install it with ``pip``:
 
-    We are basically stealing the important bits from ``initializedb.py``
+    .. code-block:: bash
+    
+        (ljenv)$ pip install ipython
+
+    Once that finishes, you'll be able to use iPython as your interpreter for
+    this project.
+
+    And ``Pyramid`` provides a way to connect your interpreter to the
+    application code you are writing:
+
+    The ``pshell`` command
+
+.. nextslide:: The ``pshell`` command
+
+Let's fire up ``pshell`` and explore for a moment to see what we have at our
+disposal:
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: bash
+    
+        (ljenv)$ pshell development.ini
+        Python 3.5.0 (default, Sep 16 2015, 10:42:55)
+        Type "copyright", "credits" or "license" for more information.
+
+        IPython 4.0.1 -- An enhanced Interactive Python.
+        ?         -> Introduction and overview of IPython's features.
+        %quickref -> Quick reference.
+        help      -> Python's own help system.
+        object?   -> Details about 'object', use 'object??' for extra details.
+
+        Environment:
+          app          The WSGI application.
+          registry     Active Pyramid registry.
+          request      Active request object.
+          root         Root of the default resource tree.
+          root_factory Default root factory used to create `root`.
+
+.. nextslide::
+
+The ``environment`` created by ``pshell`` provides us with a few useful tools. 
+
+.. code-block:: bash
+
+    app          The WSGI application.
+    registry     Active Pyramid registry.
+    request      Active request object.
+    root         Root of the default resource tree.
+    root_factory Default root factory used to create `root`.
+
+.. rst-class:: build
+
+* The ``app`` is our new learning journal application
+* The ``registry`` provides us with access to settings and other useful
+  information
+* The ``request`` is an artificial HTTP request we can use if we need to
+  pretend we are listening to clients
+* ...
+  
+.. nextslide:: 
+
+Let's use this environment to build a database session and interact with our
+data:
+
+.. code-block:: ipython
+
+    In [1]: from sqlalchemy import engine_from_config
+    In [2]: engine = engine_from_config(registry.settings, 'sqlalchemy.')
+    In [3]: from sqlalchemy.orm import sessionmaker
+    In [4]: Session = sessionmaker(bind=engine)
+    In [5]: session = Session()
+    In [6]: from learning_journal.models import MyModel
+    In [7]: session.query(MyModel).all()
+    ...
+    2015-12-21 18:06:05,179 INFO  [sqlalchemy.engine.base.Engine][MainThread] SELECT models.id AS models_id, models.name AS models_name, models.value AS models_value
+    FROM models
+    2015-12-21 18:06:05,179 INFO  [sqlalchemy.engine.base.Engine][MainThread] ()
+    Out[7]: [<learning_journal.models.MyModel at 0x105f30208>]
+
+We've stolen a lot of this from the ``initializedb.py`` script
 
 .. nextslide:: Basic Interactions
 
@@ -1413,11 +1489,11 @@ Any interaction with the database requires a ``session``.
 
     .. container::
 
-        .. code-block:: pycon
+        .. code-block:: ipython
 
-            >>> query = session.query(MyModel)
-            >>> type(query)
-            <class 'sqlalchemy.orm.query.Query'>
+            In [8]: query = session.query(MyModel)
+            In [9]: type(query)
+            Out[9]: sqlalchemy.orm.query.Query
 
         The ``query`` method of the session object returns a ``Query`` object
 
@@ -1426,33 +1502,42 @@ Any interaction with the database requires a ``session``.
 
 .. nextslide:: Queries are Iterators
 
-You can iterate over a query object.  The result depends on the args you
-passed.
+You can iterate over a query object. The result depends on the args you passed.
 
 .. rst-class:: build
 .. container::
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> q1 = session.query(MyModel)
-        >>> for row in q1:
-        ...   print row
-        ...   type(row)
-        ...
-        <learning_journal.models.MyModel object at 0x1103d9f10>
+        In [10]: q1 = session.query(MyModel)
+        In [11]: for row in q1:
+           ....:     print(row)
+           ....:     print(type(row))
+           ....:
+        <learning_journal.models.MyModel object at 0x105f30208>
         <class 'learning_journal.models.MyModel'>
 
-    .. code-block:: pycon
+.. nextslide:: Queries are Iterators
 
-        >>> q2 = session.query(MyModel.name, MyModel.id, MyModel.value)
-        >>> for name, id, val in q2:
-        ...   print name, type(name)
-        ...   print id, type(id)
-        ...   print val, type(val)
-        ...
-        one <type 'unicode'>
-        1 <type 'int'>
-        1 <type 'int'>
+You can iterate over a query object. The result depends on the args you passed.
+
+    .. code-block:: ipython
+
+        In [12]: q2 = session.query(MyModel.name, MyModel.id, MyModel.value)
+        In [13]: for name, id, val in q2:
+           ....:     print(name)
+           ....:     print(type(name))
+           ....:     print(id)
+           ....:     print(type(id))
+           ....:     print(val)
+           ....:     print(type(val))
+           ....:
+        one
+        <class 'str'>
+        1
+        <class 'int'>
+        1
+        <class 'int'>
 
 .. nextslide:: Queries have SQL
 
@@ -1461,12 +1546,13 @@ You can view the SQL that your query will use:
 .. rst-class:: build
 .. container::
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> str(q1)
-        'SELECT models.id AS models_id, models.name AS models_name, models.value AS models_value \nFROM models'
-        >>> str(q2)
-        'SELECT models.name AS models_name, models.id AS models_id, models.value AS models_value \nFROM models'
+        In [14]: str(q1)
+        Out[14]: 'SELECT models.id AS models_id, models.name AS models_name, models.value AS models_value \nFROM models'
+
+        In [15]: str(q2)
+        Out[15]: 'SELECT models.name AS models_name, models.id AS models_id, models.value AS models_value \nFROM models'
 
     You can use this to check that the query the ORM is constructing looks like
     you expect.
@@ -1497,12 +1583,13 @@ instance only.
 
     It takes a primary key as an argument:
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> session.query(MyModel).get(1)
-        <learning_journal.models.MyModel object at 0x1103d9f10>
-        >>> session.query(MyModel).get(10)
-        >>>
+        In [16]: session.query(MyModel).get(1)
+        Out[16]: <learning_journal.models.MyModel at 0x105f30208>
+        In [17]: session.query(MyModel).get(10)
+        In [18]: 
+
 
     If no item with that primary key is present, then the method returns
     ``None``
@@ -1516,20 +1603,21 @@ Another example is one we've already seen.
 
     ``query.all()`` returns a list of all rows returned by the database:
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> q1.all()
-        [<learning_journal.models.MyModel object at 0x1103d9f10>]
-        >>> type(q1.all())
-        <type 'list'>
+        In [18]: q1.all()
+        Out[18]: [<learning_journal.models.MyModel at 0x105f30208>]
+
+        In [19]: type(q1.all())
+        Out[19]: list
 
     ``query.count()`` returns the number of rows that would have been returned
     by the query:
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> q1.count()
-        1
+        In [20]: q1.count()
+        Out[20]: 1
 
 .. nextslide:: Creating New Objects
 
@@ -1543,11 +1631,11 @@ Before getting into the other category, let's learn how to create new objects.
         We can create new instances of our *model* just like normal Python
         objects:
 
-        .. code-block:: pycon
+        .. code-block:: ipython
 
-            >>> new_model = MyModel(name='fred', value=3)
-            >>> new_model
-            <learning_journal.models.MyModel object at 0x1103e38d0>
+            In [21]: new_model = MyModel(name='fred', value=3)
+            In [22]: new_model
+            Out[22]: <learning_journal.models.MyModel at 0x105f4af28>
 
     .. container::
 
@@ -1556,8 +1644,8 @@ Before getting into the other category, let's learn how to create new objects.
 
         .. code-block:: pycon
 
-            >>> session.new
-            IdentitySet([])
+            In [23]: session.new
+            Out[23]: IdentitySet([])
 
 .. nextslide:: Adding Objects to the Session
 
@@ -1567,25 +1655,25 @@ session:
 .. rst-class:: build
 .. container::
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> session.add(new_model)
-        >>> session.new
-        IdentitySet([<learning_journal.models.MyModel object at 0x1103e38d0>])
+        In [24]: session.add(new_model)
+        In [25]: session.new
+        Out[25]: IdentitySet([<learning_journal.models.MyModel object at 0x105f4af28>])
 
     We can even bulk-add new objects:
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> new = []
-        >>> for name, val in [('bob', 34), ('tom', 13)]:
-        ...   new.append(MyModel(name=name, value=val))
-        ...
-        >>> session.add_all(new)
-        >>> session.new
-        IdentitySet([<learning_journal.models.MyModel object at 0x1103e3f50>,
-                     <learning_journal.models.MyModel object at 0x1103e38d0>,
-                     <learning_journal.models.MyModel object at 0x1103e3fd0>])
+        In [26]: new = []
+        In [27]: for name, val in [('bob', 34), ('tom', 13)]:
+           ....:     new.append(MyModel(name=name, value=val))
+           ....:
+        In [28]: session.add_all(new)
+        In [29]: session.new
+        Out[29]: IdentitySet([<learning_journal.models.MyModel object at 0x105f4af28>,
+                              <learning_journal.models.MyModel object at 0x105f4a4a8>,
+                              <learning_journal.models.MyModel object at 0x105f30550>])
 
 .. nextslide:: Committing Changes
 
@@ -1597,19 +1685,22 @@ Up until now, the changes you've made are not permanent.
     In order for these new objects to be saved to the database, the session
     must be ``committed``:
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> other_session = Session()
-        >>> other_session.query(MyModel).count()
-        1
-        >>> session.commit()
-        >>> other_session.query(MyModel).count()
+        In [30]: other_session = Session()
+        In [31]: other_session.query(MyModel).count()
+        Out[31]: 1
+        In [32]: session.commit()
+        In [33]: other_session.query(MyModel).count()
+        Out[33]: 4
 
     When you are using a ``scoped_session`` in Pyramid, this action is
     automatically handled for you.
 
     The session that is bound to a particular HTTP request is committed when a
     response is sent back.
+
+    (don't worry if this seems confusing, more to come next week)
 
 .. nextslide:: Altering Objects
 
@@ -1622,39 +1713,38 @@ a query.
     Simply change the values of a persisted attribute, the session will know
     it's been updated:
 
-    .. code-block:: pycon
+    .. code-block:: ipython
     
-        >>> new_model
-        <learning_journal.models.MyModel object at 0x1103e38d0>
-        >>> new_model.name
-        u'fred'
-        >>> new_model.name = 'larry'
-        >>> session.dirty
-        IdentitySet([<learning_journal.models.MyModel object at 0x1103e38d0>])
+        In [34]: new_model
+        Out[34]: <learning_journal.models.MyModel at 0x105f4af28>
+        In [35]: new_model.name
+        Out[35]: 'fred'
+        In [36]: new_model.name = 'larry'
+        In [37]: session.dirty
+        Out[37]: IdentitySet([<learning_journal.models.MyModel object at 0x105f4af28>])
 
     Commit the session to persist the changes:
 
-    .. code-block:: pycon
+    .. code-block:: ipython
     
-        >>> session.commit()
+        In [38]: session.commit()
+        In [39]: [model.name for model in other_session.query(MyModel)]
+        Out[39]: ['one', 'larry', 'bob', 'tom']
 
 .. nextslide:: Methods Returning Queries
 
-Returning to queries, the second category is typified by the ``filter`` method
+Returning to query methods, a good example of the second type is the ``filter``
+method.
 
 .. rst-class:: build
 .. container::
 
     This method allows you to reduce the number of results, based on criteria:
 
-    .. code-block:: pycon
+    .. code-block:: ipython
     
-        >>> for obj in session.query(MyModel).filter(MyModel.value < 20):
-        ...   print obj.name, obj.value
-        ...
-        one 1
-        larry 3
-        tom 13
+        In [40]: [(o.name, o.value) for o in session.query(MyModel).filter(MyModel.value < 20)]
+        Out[40]: [('one', 1), ('larry', 3), ('tom', 13)]
 
 .. nextslide:: ``order_by``
 
@@ -1663,25 +1753,13 @@ Another typical method in this category is ``order_by``:
 .. rst-class:: build
 .. container::
 
-    .. code-block:: pycon
+    .. code-block:: ipython
     
-        >>> for obj in session.query(MyModel).order_by(MyModel.value):
-        ...   print obj.name, obj.value
-        ...
-        one 1
-        larry 3
-        tom 13
-        bob 34
+        In [41]: [o.value for o in session.query(MyModel).order_by(MyModel.value)]
+        Out[41]: [1, 3, 13, 34]
 
-    .. code-block:: pycon
-
-        >>> for obj in session.query(MyModel).order_by(MyModel.name):
-        ...   print obj.name, obj.value
-        ...
-        bob 34
-        larry 3
-        one 1
-        tom 13
+        In [42]: [o.name for o in session.query(MyModel).order_by(MyModel.name)]
+        Out[42]: ['bob', 'larry', 'one', 'tom']
 
 .. nextslide:: Method Chaining
 
@@ -1691,16 +1769,12 @@ Since methods in this category return ``Query`` objects, they can be safely
 .. rst-class:: build
 .. container::
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> q1 = session.query(MyModel).filter(MyModel.value < 20)
-        >>> q1 = q1.order_by(MyModel.name)
-        >>> for obj in q1:
-        ...   print obj.name, obj.value
-        ...
-        larry 3
-        one 1
-        tom 13
+        In [43]: q1 = session.query(MyModel).filter(MyModel.value < 20)
+        In [44]: q1 = q1.order_by(MyModel.name)
+        In [45]: [(o.name, o.value) for o in q1]
+        Out[45]: [('larry', 3), ('one', 1), ('tom', 13)]
 
     Note that you can do this inline as well
     (``s.query(Model).filter().order_by()``)
@@ -1746,6 +1820,9 @@ Our model will be called an ``Entry``. Here's what you need to know:
   was created.
 * It should have an ``edited`` field which stores the date and time the object
   was last edited.
+
+.. nextslide::
+
 * Both the ``created`` and ``edited`` field should default to ``now`` if not
   provided when a new instance is constructed.
 * The ``entry`` class should support a classmethod ``all`` that returns all the
