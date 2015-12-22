@@ -48,3 +48,4 @@ new_mash
 .buildinfo
 pip-selfcheck.json
 .ipynb_checkpoints
+testenvs
