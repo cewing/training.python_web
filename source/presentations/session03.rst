@@ -242,7 +242,7 @@ We've now informed our application that we want to use security.
     * http://localhost:6543/
     * http://localhost:6543/journal/1
     * http://localhost:6543/journal/create
-    * http://localhost:6543/journal/edit
+    * http://localhost:6543/journal/edit?id=1
 
 Implementing Authz
 ------------------
@@ -376,7 +376,7 @@ default ``view``.
     * http://localhost:6543/
     * http://localhost:6543/journal/1
     * http://localhost:6543/journal/create
-    * http://localhost:6543/journal/edit
+    * http://localhost:6543/journal/edit?id=1
 
     You should get a ``403 Forbidden`` for the action pages only.
 
