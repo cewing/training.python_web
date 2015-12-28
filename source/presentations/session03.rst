@@ -456,25 +456,29 @@ Python provides a number of libraries for implementing strong encryption.
 
     You should always use a well-known library for encryption.
 
-    We'll use a good one called `Cryptacular`_.
+    We'll use a good one called `Passlib`_.
 
-    This library provides a number of different algorithms and a *Manager* that
+    This library provides a number of different algorithms and a *context* that
     implements a simple interface for each.
 
     .. code-block:: python
 
-        from cryptacular.bcrypt import BCRYPTPasswordManager
-        manager = BCRYPTPasswordManager()
-        hashed = manager.encode('password')
-        if manager.check(hashed, 'password'):
+        from passlib.context import CryptContext
+        password_context = CryptContext(schemes=['pbkdf2_sha512'])
+        hashed = password_context.encrypt('password')
+        if password_context.verify('password', hashed):
             print "It matched"
 
-.. _Cryptacular: https://pypi.python.org/pypi/cryptacular/
+.. _Passlib: https://pythonhosted.org/passlib/
 
-.. nextslide:: Install Cryptactular
+.. nextslide:: Install Passlib
 
 To install a new package as a dependency, we add the package to our list in
-``setup.py``:
+``setup.py``.
+
+``Passlib`` provides a large number of different hashing schemes.  Some (like
+``bcrypt``) require underlying ``C`` extensions to be compiled. If you do not
+have a ``C`` compiler, these extensions will be disabled.
 
 .. rst-class:: build
 .. container::
@@ -484,7 +488,7 @@ To install a new package as a dependency, we add the package to our list in
         requires = [
           ...
           'wtforms',
-          'cryptacular',
+          'passlib',
         ]
 
     Then, we re-install our package to pick up the new dependency:
@@ -496,30 +500,52 @@ To install a new package as a dependency, we add the package to our list in
     *note* if you have a c compiler installed but not the Python dev headers,
     this may not work.  Let me know if you get errors.
 
-.. nextslide:: Comparing Passwords
+.. nextslide:: Using Passlib
 
-The job of comparing passwords should belong to the ``User`` object.
+As noted above, the passlib library uses a ``context`` object to manage
+passwords.
 
 .. rst-class:: build
 .. container::
 
-    Let's add an instance method that handles it for us.
+    This object supports a lot of functionality, but the only API we care about
+    for this project is encrypting and verifying passwords.
 
-    Open ``learning_journal/models.py`` and add the following to the ``User``
+    We'll create a single, global context to be used by our project.
+
+    Since the ``User`` class is the component in our system that should have
+    the responsibility for password interactions, we'll create our context in
+    the same place it is defined.
+
+    In ``learning_journal/models.py`` add the following code:
+
+    .. code-block:: python
+    
+        # add an import at the top
+        from passlib.context import CryptContext
+
+        # then lower down, make a context at module scope:
+        password_context = CryptContext(schemes=['pbkdf2_sha512'])
+
+
+.. nextslide:: Comparing Passwords
+
+Now that we have a context object available, let's write an instance method for
+our ``User`` class that uses it to verify a plaintext password:
+
+.. rst-class:: build
+.. container::
+
+    Again, in ``learning_journal/models.py`` add the following to the ``User``
     class:
 
     .. code-block:: python
-
-        # add this import at the top
-        # from cryptacular.pbkdf2 import PBKDF2PasswordManager as Manager
-        from cryptacular.bcrypt import BCRYPTPasswordManager as Manager
 
         # add this method to the User class:
         class User(Base):
             # ...
             def verify_password(self, password):
-                manager = Manager()
-                return manager.check(self.password, password)
+                return password_context.verify(password, self.password)
 
 .. nextslide:: Create a User
 
@@ -528,24 +554,21 @@ We'll also need to have a user for our system.
 .. rst-class:: build
 .. container::
 
-    We can leverage the database initialization script to handle this.
+    We can use the database initialization script to create one for us.
 
     Open ``learning_journal/scripts/initialzedb.py``:
 
     .. code-block:: python
 
-        # add the import
-        # from cryptacular.pbkdf2 import PBKDF2PasswordManager as Manager
-        from cryptacular.bcrypt import BCRYPTPasswordManager as Manager
-        from ..models import User
+        from learning_journal.models import password_context
+        from learning_journal.models import User
         # and update the main function like so:
         def main(argv=sys.argv):
             # ...
             with transaction.manager:
                 # replace the code to create a MyModel instance
-                manager = Manager()
-                password = manager.encode(u'admin')
-                admin = User(name=u'admin', password=password)
+                encrypted = password_context.encrypt('admin')
+                admin = User(name='admin', password=encrypted)
                 DBSession.add(admin)
 
 .. nextslide:: Rebuild the Database:
@@ -573,7 +596,7 @@ re-build it.
         2015-01-17 16:43:55,237 INFO  [sqlalchemy.engine.base.Engine][MainThread]
           INSERT INTO users (name, password) VALUES (?, ?)
         2015-01-17 16:43:55,237 INFO  [sqlalchemy.engine.base.Engine][MainThread]
-          (u'admin', '$2a$10$4Z6RVNhTE21mPLJW5VeiVe0EG57gN/HOb7V7GUwIr4n1vE.wTTTzy')
+          ('admin', '$2a$10$4Z6RVNhTE21mPLJW5VeiVe0EG57gN/HOb7V7GUwIr4n1vE.wTTTzy')
 
 Providing Login UI
 ------------------
@@ -735,6 +758,8 @@ We should be ready at this point.
     Load the home page and see your login form:
 
     * http://localhost:6543/
+      
+    Fill it in and submit the form, verify that you can add a new entry.
 
 .. nextslide:: Break Time
 
