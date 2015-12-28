@@ -40,6 +40,7 @@ def main(argv=sys.argv):
     DBSession.configure(bind=engine)
     Base.metadata.create_all(engine)
     with transaction.manager:
-        encrypted = password_context.encrypt('admin')
+        password = os.environ.get('ADMIN_PASSWORD', 'admin')
+        encrypted = password_context.encrypt(password)
         admin = User(name=u'admin', password=encrypted)
         DBSession.add(admin)
