@@ -1,4 +1,5 @@
 import datetime
+from passlib.context import CryptContext
 from sqlalchemy import (
     Column,
     DateTime,
@@ -8,9 +9,6 @@ from sqlalchemy import (
     Unicode,
     UnicodeText,
     )
-
-# from cryptacular.pbkdf2 import PBKDF2PassordManager as Manager
-from cryptacular.bcrypt import BCRYPTPasswordManager as Manager
 
 import sqlalchemy as sa
 from sqlalchemy.ext.declarative import declarative_base
@@ -24,6 +22,9 @@ from zope.sqlalchemy import ZopeTransactionExtension
 
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 Base = declarative_base()
+
+
+password_context = CryptContext(schemes=['pbkdf2_sha512'])
 
 
 class MyModel(Base):
@@ -75,5 +76,4 @@ class User(Base):
         return DBSession.query(cls).filter(cls.name == name).first()
 
     def verify_password(self, password):
-        manager = Manager()
-        return manager.check(self.password, password)
+        return password_context.verify(password, self.password)

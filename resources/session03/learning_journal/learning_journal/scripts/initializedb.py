@@ -2,9 +2,6 @@ import os
 import sys
 import transaction
 
-# from cryptacular.pbkdf2 import PBKDF2PassordManager as Manager
-from cryptacular.bcrypt import BCRYPTPasswordManager as Manager
-
 from sqlalchemy import engine_from_config
 
 from pyramid.paster import (
@@ -18,7 +15,8 @@ from ..models import (
     DBSession,
     MyModel,
     Base,
-    User
+    User,
+    password_context
     )
 
 
@@ -42,8 +40,6 @@ def main(argv=sys.argv):
     DBSession.configure(bind=engine)
     Base.metadata.create_all(engine)
     with transaction.manager:
-        manager = Manager()
-        password = os.environ.get('ADMIN_PASSWORD', u'admin')
-        password = manager.encode(password)
-        admin = User(name=u'admin', password=password)
+        encrypted = password_context.encrypt('admin')
+        admin = User(name=u'admin', password=encrypted)
         DBSession.add(admin)
