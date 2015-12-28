@@ -1203,8 +1203,8 @@ templates.
 .. rst-class:: build
 .. container::
 
-    The *request* object in Pyramid provides a ``static_url`` method that
-    builds appropriate URLs
+    The *request* object in Pyramid provides a ``static_path`` method that
+    will render an appropriate asset path for us.
 
     Add the following to our ``layout.jinja2`` template:
 
@@ -1212,10 +1212,10 @@ templates.
     
         <head>
           <!-- ... -->
-          <link href="{{ request.static_url('learning_journal:static/styles.css') }}" rel="stylesheet">
+          <link href="{{ request.static_path('learning_journal:static/styles.css') }}" rel="stylesheet">
         </head>
 
-    The one required argument to ``request.static_url`` is a *path* to an
+    The one required argument to ``request.static_path`` is a *path* to an
     asset.
 
     Note that because any package *might* define a static view, we have to
