@@ -26,6 +26,7 @@ class EntryCreateForm(Form):
 class EntryEditForm(EntryCreateForm):
     id = HiddenField()
 
+
 class LoginForm(Form):
     username = TextField('Username', [validators.Length(min=1, max=255)])
     password = PasswordField('Password', [validators.Length(min=1, max=255)])
