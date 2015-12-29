@@ -4,9 +4,9 @@ Session 04
 
 .. figure:: /_static/python.png
     :align: center
-    :width: 33%
+    :width: 50%
 
-    Networking and Sockets
+    **Networking and Sockets**
 
 
 Computer Communications
@@ -984,7 +984,7 @@ Once a transaction between the client and server is complete, the
 
         In [78]: connection.close()
 
-    At this point, the ``server_socket``can again accept a new client
+    At this point, the ``server_socket`` can again accept a new client
     connection.
 
     Note that the ``server_socket`` is *never* closed as long as the server
@@ -1094,7 +1094,7 @@ client:
     .. code-block:: ipython
 
         In [89]: conn.sendall('Yes, I can hear you.'.encode('utf8'))
-
+        In [90]: conn.close()
 
 Finish Up
 ---------
@@ -1112,12 +1112,11 @@ then be sure to close your client socket too:
         Out[6]: b'Yes, I can hear you.'
         In [7]: client_socket.close()
 
-    And now that we're done, we can close up the server too (back in the server
-    interpreter):
+    And now that we're done, we can close up the server socket too (back in the
+    server interpreter):
 
     .. code-block:: ipython
 
-        In [90]: conn.close()
         In [91]: server_socket.close()
 
 
