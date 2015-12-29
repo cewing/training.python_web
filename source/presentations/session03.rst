@@ -976,6 +976,30 @@ application online
 
     Add this new file to your repository and commit it.
 
+
+.. nextslide:: Select a Python Version
+
+By default, Heroku uses the latest update of Python version 2.7 for any Python
+app.
+
+.. rst-class:: build
+.. container::
+
+    You can override this and specify any runtime version of Python 
+    `available in Heroku`_.
+    
+    Just add a file called ``runtime.txt`` to your repository, with one line
+    only:
+
+    .. code-block:: txt
+    
+        python-3.5.0
+
+    Create that file, add it to your repository, and commit the changes.
+
+.. _available in Heroku: https://devcenter.heroku.com/articles/python-runtimes#supported-python-runtimes
+
+
 Set Up a Heroku App
 -------------------
 
@@ -1023,12 +1047,13 @@ appropriate for production.
 
     .. code-block:: bash
 
-        $ heroku addons:add heroku-postgresql:dev
-        Adding heroku-postgresql:dev on rocky-atoll-9934... done, v4 (free)
-        Attached as HEROKU_POSTGRESQL_MAROON_URL
+        $ heroku addons:create heroku-postgresql:hobby-dev
+        Creating postgresql-amorphous-6784... done, (free)
+        Adding postgresql-amorphous-6784 to rocky-atoll-9934... done
+        Setting DATABASE_URL and restarting rocky-atoll-9934... done, v3
         Database has been created and is available
          ! This database is empty. If upgrading, you can transfer
-         ! data from another database with pgbackups:restore.
+         ! data from another database with pg:copy
         Use `heroku addons:docs heroku-postgresql` to view documentation.
 
 .. _PostgreSQL: http://www.postgresql.org
@@ -1045,8 +1070,8 @@ toolbelt:
     .. code-block:: bash
 
         (ljenv)$ heroku pg
-        === HEROKU_POSTGRESQL_MAROON_URL (DATABASE_URL)
-        Plan:        Dev
+        === DATABASE_URL
+        Plan:        Hobby-dev
         ...
         Data Size:   6.4 MB
         Tables:      0
@@ -1060,7 +1085,6 @@ toolbelt:
         (ljenv)$ heroku config
         === rocky-atoll-9934 Config Vars
         DATABASE_URL:                 postgres://<username>:<password>@<domain>:<port>/<database-name>
-        HEROKU_POSTGRESQL_MAROON_URL: postgres://<username>:<password>@<domain>:<port>/<database-name>
 
 Configuration for Heroku
 ------------------------
@@ -1141,10 +1165,10 @@ for our initial user:
 
         # in learning_journal/scripts/initializedb.py
         with transaction.manager:
-            manager = Manager
-            password = os.environ.get('ADMIN_PASSWORD', u'admin')
-            password = manager.encode(password)
-            admin = User(name=u'admin', password=password)
+            password = os.environ.get('ADMIN_PASSWORD', 'admin')
+            encrypted = password_context.encrypt(password)
+            admin = User(name=u'admin', password=encrypted)
+            DBSession.add(admin)
 
     And for the secret value for our AuthTktAuthenticationPolicy
 
@@ -1194,7 +1218,6 @@ You can see the values that you have set at any time using ``heroku config``:
     ADMIN_PASSWORD:               <your password>
     AUTH_SECRET:                  <your auth secret value>
     DATABASE_URL:                 <your db URL>
-    HEROKU_POSTGRESQL_MAROON_URL: <your db URL>
 
 .. rst-class:: build
 .. container::
@@ -1206,7 +1229,7 @@ You can see the values that you have set at any time using ``heroku config``:
     This mechanism allows you to place important configuration values outside
     the code for your application.
 
-.. nextslide:: Requirements for Heroku
+.. nextslide:: Installing Dependencies
 
 We've been handling our application's dependencies by adding them to
 ``setup.py``.
@@ -1214,23 +1237,48 @@ We've been handling our application's dependencies by adding them to
 .. rst-class:: build
 .. container::
 
-    But there is a new dependency we've added that is only needed for Heroku.
+    It's a good idea to install all of these before attempting to run our app.
+
+    The ``pip`` package manager allows us to dump a list of the packages we've
+    installed in a virtual environment using the ``freeze`` command:
+
+    .. code-block:: bash
+    
+        (ljenv)$ pip freeze
+        ...
+        zope.interface==4.1.3
+        zope.sqlalchemy==0.7.6
+
+    We can tell heroku to install these dependencies by creating a file called
+    ``requirements.txt`` at the root of our project repository:
+
+    .. code-block:: bash
+    
+        (ljenv)$ pip freeze > requirements.txt
+
+    Add this file to your repository and commit the changes.
+
+
+.. nextslide:: Heroku-specific Dependencies
+
+But there is also a new dependency we've added that is only needed for Heroku.
+
+.. rst-class:: build
+.. container::
 
     Because we are using a PostgreSQL database, we need to install the
     ``psycopg2`` package, which handles communicating with the database.
 
     We don't want to install this locally, though, where we use sqlite.
 
-    Heroku supports using a file called ``requirements.txt`` to set
-    dependencies.
-
-    Create that file now, in the same folder as ``setup.py`` and add:
+    Go ahead and add one more line to ``requirements.txt`` with the latest
+    version of the ``pyscopg2`` package:
 
     .. code-block:: bash
 
-        psycopg2==2.5.4
+        psycopg2==2.6.1
 
-    Add that file to your repository and commit the change.
+    Commit the change to your repository.
 
 Deployment
 ----------
@@ -1314,7 +1362,7 @@ Heroku pricing is dependent on the number of *dynos* you are running.
 
     Scaling above one dyno will begin to incur costs.
 
-    Pay attention to the number of dynos you have running.
+    **Pay attention to the number of dynos you have running**.
 
 .. nextslide:: Troubleshooting
 
