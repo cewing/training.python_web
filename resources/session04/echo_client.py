@@ -10,6 +10,10 @@ def client(msg, log_buffer=sys.stderr):
     print('connecting to {0} port {1}'.format(*server_address), file=log_buffer)
     # TODO: connect your socket to the server here.
 
+    # you can use this as a place to accumulate the entire message echoed back
+    # from the server
+    received_message = ''
+
     # this try/finally block exists purely to allow us to close the socket
     # when we are finished with it
     try:
@@ -17,19 +21,21 @@ def client(msg, log_buffer=sys.stderr):
         # TODO: send your message to the server here.
 
         # TODO: the server should be sending you back your message as a series
-        #       of 16-byte chunks.  You will want to log them as you receive
-        #       each one.  You will also need to check to make sure that
-        #       you have received the entire message you sent __before__
-        #       closing the socket.
+        #       of 16-byte chunks. Accumulate the chunks you get to build the
+        #       entire reply from the server. Make sure that you have received
+        #       the entire message and then you can break the loop.
         #
-        #       Make sure that you log each chunk you receive.  Use the print
-        #       statement below to do it. (The tests expect this log format)
+        #       Log each chunk you receive.  Use the print statement below to
+        #       do it. This will help in debugging problems
         chunk = ''
         print('received "{0}"'.format(chunk.decode('utf8')), file=log_buffer)
     finally:
         # TODO: after you break out of the loop receiving echoed chunks from
         #       the server you will want to close your client socket.
         print('closing socket', file=log_buffer)
+
+        # TODO: when all is said and done, you should return the reply you got
+        # from the server as the value of this function.
 
 
 if __name__ == '__main__':
