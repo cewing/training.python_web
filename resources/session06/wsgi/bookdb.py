@@ -1,7 +1,9 @@
 
 class BookDB():
     def titles(self):
-        titles = [dict(id=id, title=database[id]['title']) for id in database.keys()]
+        titles = [
+            dict(id=id, title=database[id]['title']) for id in database.keys()
+        ]
         return titles
 
     def title_info(self, id):

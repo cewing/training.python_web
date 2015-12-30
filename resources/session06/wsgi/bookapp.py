@@ -17,7 +17,7 @@ def application(environ, start_response):
     status = "200 OK"
     headers = [('Content-type', 'text/html')]
     start_response(status, headers)
-    return ["<h1>No Progress Yet</h1>", ]
+    return ["<h1>No Progress Yet</h1>".encode('utf8')]
 
 
 if __name__ == '__main__':
