@@ -1,3 +1,7 @@
+.. |br| raw:: html
+
+    <br />
+
 **********
 Session 05
 **********
@@ -104,17 +108,33 @@ What does this look like in practice?
 
 .. rst-class:: build
 
-* SMTP (Simple Message Transfer Protocol)
+* SMTP (Simple Message Transfer Protocol) |br| 
   http://tools.ietf.org/html/rfc5321#appendix-D
 
-* POP3 (Post Office Protocol)
+* POP3 (Post Office Protocol) |br| 
   http://www.faqs.org/docs/artu/ch05s03.html
 
-* IMAP (Internet Message Access Protocol)
+* IMAP (Internet Message Access Protocol) |br| 
   http://www.faqs.org/docs/artu/ch05s03.html
 
-* HTTP (Hyper-Text Transfer Protocol)
+* HTTP (Hyper-Text Transfer Protocol) |br| 
   http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol
+
+
+.. nextslide:: A Word on Typography
+
+Over the next few slides we'll be looking at server/client interactions.
+
+.. rst-class:: build
+.. container::
+
+    Each interaction is line-based, each line represents one message.
+
+    Messages from the Server to the Client are prefaced with ``S (<--)``
+
+    Messages from the Client to the Server are prefaced with ``C (-->)``
+
+    **All** lines end with the character sequence ``<CRLF>`` (``\r\n``)
 
 
 SMTP
@@ -138,6 +158,10 @@ What does SMTP look like?
 
 .. nextslide::
 
+.. ifslides::
+
+    What does SMTP look like?
+
 SMTP (Ask for information, provide answers)::
 
     C (-->): MAIL FROM:<Smith@bar.com>
@@ -155,6 +179,10 @@ SMTP (Ask for information, provide answers)::
 
 .. nextslide::
 
+.. ifslides::
+
+    What does SMTP look like?
+
 SMTP (Say goodbye)::
 
     C (-->): QUIT
@@ -166,7 +194,8 @@ SMTP (Say goodbye)::
 .. rst-class:: build
 
 * Interaction consists of commands and replies
-* Each command or reply is *one line* terminated by <CRLF>
+* Each command or reply is *one line* terminated by <CRLF> |br|
+  (there are exceptions, see the ``250`` reply to ``EHLO`` above)
 * The exception is message payload, terminated by <CRLF>.<CRLF>
 * Each command has a *verb* and one or more *arguments*
 * Each reply has a formal *code* and an informal *explanation*
@@ -192,6 +221,10 @@ What does POP3 look like?
 
 .. nextslide::
 
+.. ifslides::
+
+    What does POP3 look like?
+
 POP3 (Ask for information, provide answers)::
 
     C (-->): STAT
@@ -204,6 +237,10 @@ POP3 (Ask for information, provide answers)::
 
 .. nextslide::
 
+.. ifslides::
+
+    What does POP3 look like?
+
 POP3 (Ask for information, provide answers)::
 
     C (-->): RETR 1
@@ -215,6 +252,10 @@ POP3 (Ask for information, provide answers)::
 
 
 .. nextslide::
+
+.. ifslides::
+
+    What does POP3 look like?
 
 POP3 (Say goodbye)::
 
@@ -250,7 +291,11 @@ The exception to the one-line-per-message rule is *payload*
 
     In SMTP, the *client* has this ability
 
-    But in POP3, it belongs to the *server*.  Why?
+    But in POP3, it belongs to the *server*.
+
+    .. rst-class:: large centered
+
+        Why?
 
 IMAP
 ----
@@ -270,6 +315,10 @@ What does IMAP look like?
 
 .. nextslide::
 
+.. ifslides::
+
+    What does IMAP look like?
+
 IMAP (Ask for information, provide answers [connect to an inbox])::
 
     C (-->): A0002 SELECT INBOX
@@ -282,6 +331,10 @@ IMAP (Ask for information, provide answers [connect to an inbox])::
 
 .. nextslide::
 
+.. ifslides::
+
+    What does IMAP look like?
+
 IMAP (Ask for information, provide answers [Get message sizes])::
 
     C (-->): A0003 FETCH 1 RFC822.SIZE
@@ -290,6 +343,10 @@ IMAP (Ask for information, provide answers [Get message sizes])::
 
 
 .. nextslide::
+
+.. ifslides::
+
+    What does IMAP look like?
 
 IMAP (Ask for information, provide answers [Get first message header])::
 
@@ -302,6 +359,10 @@ IMAP (Ask for information, provide answers [Get first message header])::
 
 .. nextslide::
 
+.. ifslides::
+
+    What does IMAP look like?
+
 IMAP (Ask for information, provide answers [Get first message body])::
 
     C (-->): A0005 FETCH 1 BODY[TEXT]
@@ -312,6 +373,10 @@ IMAP (Ask for information, provide answers [Get first message body])::
     S (<--): A0005 OK FETCH completed
 
 .. nextslide::
+
+.. ifslides::
+
+    What does IMAP look like?
 
 IMAP (Say goodbye)::
 
@@ -365,54 +430,70 @@ Begin by importing the ``imaplib`` module from the Python Standard Library:
 .. rst-class:: build
 .. container::
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> import imaplib
-        >>> dir(imaplib)
-        ['AllowedVersions', 'CRLF', 'Commands',
-         'Continuation', 'Debug', 'Flags', 'IMAP4',
-         'IMAP4_PORT', 'IMAP4_SSL', 'IMAP4_SSL_PORT',
-         ...
-         'socket', 'ssl', 'sys', 'time']
-        >>> imaplib.Debug = 4
+        In [1]: import imaplib
+        In [2]: dir(imaplib)
+        Out[2]:
+        ['AllowedVersions',
+         'CRLF',
+         'Commands',
+        ...
+         'timedelta',
+         'timezone']
+        In [3]: imaplib.Debug = 4
 
     Setting ``imap.Debug`` shows us what is sent and received
 
 
 .. nextslide::
 
-I've prepared a server for us to use.
+I've prepared a server for us to use, but we'll need to set up a client to
+speak to it.
 
 .. rst-class:: build
 .. container::
 
-    We'll need to set up a client to speak to it.
-
     Our server requires SSL (Secure Socket Layer) for connecting to IMAP
     servers, so let's initialize an IMAP4_SSL client and authenticate:
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> conn = imaplib.IMAP4_SSL('mail.webfaction.com')
-          57:04.83 imaplib version 2.58
-          57:04.83 new IMAP4 connection, tag=FNHG
-          ...
-        >>> conn.login(username, password)
-          12:16.50 > IMAD1 LOGIN username password
-          12:18.52 < IMAD1 OK Logged in.
-        ('OK', ['Logged in.'])
+        In [4]: conn = imaplib.IMAP4_SSL('mail.webfaction.com')
+          22:40.32 imaplib version 2.58
+          22:40.32 new IMAP4 connection, tag=b'IMKC'
+          22:40.38 < b'* OK [CAPABILITY IMAP4rev1 LITERAL+ SASL-IR LOGIN-REFERRALS ID ENABLE IDLE AUTH=PLAIN] Dovecot ready.'
+          22:40.38 > b'IMKC0 CAPABILITY'
+          22:40.45 < b'* CAPABILITY IMAP4rev1 LITERAL+ SASL-IR LOGIN-REFERRALS ID ENABLE IDLE AUTH=PLAIN'
+          22:40.45 < b'IMKC0 OK Capability completed.'
+          22:40.45 CAPABILITIES: ('IMAP4REV1', 'LITERAL+', 'SASL-IR', 'LOGIN-REFERRALS', 'ID', 'ENABLE', 'IDLE', 'AUTH=PLAIN')
+        In [5]: conn.login('crisewing_demobox', 's00p3rs3cr3t')
+          22:59.92 > b'IMKC1 LOGIN crisewing_demobox "s00p3rs3cr3t"'
+          23:01.79 < b'* CAPABILITY IMAP4rev1 SASL-IR SORT THREAD=REFERENCES MULTIAPPEND UNSELECT LITERAL+ IDLE CHILDREN NAMESPACE LOGIN-REFERRALS STARTTLS AUTH=PLAIN'
+          23:01.79 < b'IMKC1 OK Logged in.'
+        Out[5]: ('OK', [b'Logged in.'])
 
 .. nextslide::
 
 We can start by listing the mailboxes we have on the server:
 
-.. code-block:: pycon
+.. code-block:: ipython
 
-    >>> conn.list()
-      00:41.91 > FNHG3 LIST "" *
-      00:41.99 < * LIST (\HasNoChildren) "." "INBOX"
-      00:41.99 < FNHG3 OK List completed.
-    ('OK', ['(\\HasNoChildren) "." "INBOX"'])
+    In [6]: conn.list()
+      26:30.64 > b'IMKC2 LIST "" *'
+      26:30.72 < b'* LIST (\\HasNoChildren) "." "Trash"'
+      26:30.72 < b'* LIST (\\HasNoChildren) "." "Drafts"'
+      26:30.72 < b'* LIST (\\HasNoChildren) "." "Sent"'
+      26:30.72 < b'* LIST (\\HasNoChildren) "." "Junk"'
+      26:30.72 < b'* LIST (\\HasNoChildren) "." "INBOX"'
+      26:30.72 < b'IMKC2 OK List completed.'
+    Out[6]:
+    ('OK',
+     [b'(\\HasNoChildren) "." "Trash"',
+      b'(\\HasNoChildren) "." "Drafts"',
+      b'(\\HasNoChildren) "." "Sent"',
+      b'(\\HasNoChildren) "." "Junk"',
+      b'(\\HasNoChildren) "." "INBOX"'])
 
 
 .. nextslide::
@@ -420,19 +501,19 @@ We can start by listing the mailboxes we have on the server:
 To interact with our email, we must select a mailbox from the list we received
 earlier:
 
-.. code-block:: pycon
+.. code-block:: ipython
 
-    >>> conn.select('INBOX')
-      00:00.47 > FNHG2 SELECT INBOX
-      00:00.56 < * FLAGS (\Answered \Flagged \Deleted \Seen \Draft)
-      00:00.56 < * OK [PERMANENTFLAGS (\Answered \Flagged \Deleted \Seen \Draft \*)] Flags permitted.
-      00:00.56 < * 2 EXISTS
-      00:00.57 < * 0 RECENT
-      00:00.57 < * OK [UNSEEN 2] First unseen.
-      00:00.57 < * OK [UIDVALIDITY 1357449499] UIDs valid
-      00:00.57 < * OK [UIDNEXT 3] Predicted next UID
-      00:00.57 < FNHG2 OK [READ-WRITE] Select completed.
-    ('OK', ['2'])
+    In [7]: conn.select('INBOX')
+      27:20.96 > b'IMKC3 SELECT INBOX'
+      27:21.04 < b'* FLAGS (\\Answered \\Flagged \\Deleted \\Seen \\Draft)'
+      27:21.04 < b'* OK [PERMANENTFLAGS (\\Answered \\Flagged \\Deleted \\Seen \\Draft \\*)] Flags permitted.'
+      27:21.04 < b'* 1 EXISTS'
+      27:21.04 < b'* 0 RECENT'
+      27:21.04 < b'* OK [UNSEEN 1] First unseen.'
+      27:21.04 < b'* OK [UIDVALIDITY 1357449499] UIDs valid'
+      27:21.04 < b'* OK [UIDNEXT 24] Predicted next UID'
+      27:21.04 < b'IMKC3 OK [READ-WRITE] Select completed.'
+    Out[7]: ('OK', [b'1'])
 
 
 .. nextslide::
@@ -442,17 +523,16 @@ We can search our selected mailbox for messages matching one or more criteria.
 .. rst-class:: build
 .. container::
 
-    The return value is a string list of the UIDs of messages that match our
-    search:
+    The return value is a list of bytestrings containing the UIDs of messages
+    that match our search:
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> conn.search(None, '(FROM "cris")')
-          18:25.41 > FNHG5 SEARCH (FROM "cris")
-          18:25.54 < * SEARCH 1
-          18:25.54 < FNHG5 OK Search completed.
-        ('OK', ['1'])
-        >>>
+        In [8]: conn.search(None, '(FROM "cris")')
+          28:43.02 > b'IMKC4 SEARCH (FROM "cris")'
+          28:43.09 < b'* SEARCH 1'
+          28:43.09 < b'IMKC4 OK Search completed.'
+        Out[8]: ('OK', [b'1'])
 
 .. nextslide::
 
@@ -464,18 +544,30 @@ command to read it from the server.
 
     IMAP allows fetching each part of a message independently:
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> conn.fetch('1', '(BODY[HEADER])')
-        ...
-        >>> conn.fetch('1', '(BODY[TEXT])')
-        ...
-        >>> conn.fetch('1', '(FLAGS)')
+        In [9]: conn.fetch('1', 'BODY[HEADER]')
+          ...
+        Out[9]: ('OK', ...)
+
+        In [10]: conn.fetch('1', 'FLAGS')
+          ...
+        Out[10]: ('OK', [b'1 (FLAGS (\\Seen))'])
+
+        In [11]: conn.fetch('1', 'BODY[TEXT]')
+          ...
+        Out[11]: ('OK', ...)
 
     What does the message say?
 
-    Python even includes an *email* library that would allow us to interact
-    with this message in an *OO* style.
+.. nextslide:: Batteries Included
+
+Python even includes an *email* library that would allow us to interact with
+this message in an *OO* style.
+
+.. rst-class:: build
+
+.. container::
 
     *Neat, Huh?*
 
@@ -509,6 +601,15 @@ Break Time
 
 Let's take a few minutes here to clear our heads.
 
+.. rst-class:: build
+.. container::
+
+    When we return, we'll learn about the king of protocols,
+
+    .. rst-class:: large centered
+
+    HTTP
+
 
 HTTP
 ====
@@ -528,6 +629,7 @@ HTTP
         * Requests (Asking for information)
         * Responses (Providing answers)
 
+
 What does HTTP look like?
 -------------------------
 
@@ -535,14 +637,20 @@ HTTP (Ask for information):
 
 .. code-block:: http
 
-    GET /index.html HTTP/1.1
-    Host: www.example.com
+    GET /index.html HTTP/1.1<CRLF>
+    Host: www.example.com<CRLF>
     <CRLF>
 
-**note**: the ``<CRLF>`` you see here is a visualization of an empty line. It's
-really just the standard line terminator on an empty line.
+.. ifnotslides::
 
-You don't need to type the ``<CRLF>`` there.
+    .. note:: the ``<CRLF>`` you see here is a visualization of the ``\r\n``
+              character sequence.
+
+.. ifslides::
+
+    **note**: the ``<CRLF>`` you see here is a visualization of the ``\r\n``
+    character sequence.
+
 
 .. nextslide::
 
@@ -562,7 +670,7 @@ HTTP (Provide answers):
     <CRLF>
     <!DOCTYPE html>\n<html>\n  <head>\n    <title>This is a .... </html>
 
-You don't need to type the ``<CRLF>`` here either.
+Pay particular attention to the ``<CRLF>`` on a line by itself.  
 
 
 .. nextslide:: HTTP Core Format
@@ -625,7 +733,7 @@ From inside ``resources/session05`` start a second python interpreter and run
 
         $ python tests.py
         [...]
-        Ran 10 tests in 0.003s
+        Ran 10 tests in 0.054s
 
         FAILED (failures=3, errors=7)
 
@@ -671,7 +779,7 @@ First, look at the printed output from your echo server.
 .. nextslide:: Echoing A Request
 
 Kill your server with ``ctrl-c`` (the keyboard interrupt) and you should see
-some printed content:
+some printed content in your browser:
 
 .. rst-class:: build
 .. container::
@@ -689,12 +797,13 @@ some printed content:
         Connection: keep-alive
         Cache-Control: max-age=0
 
-    Your results will vary from mine.
+    Your server is simply echoing what it receives, so this is an *HTTP
+    Request* as sent by your browser.
 
 .. nextslide:: HTTP Debugging
 
 
-When working on applications, it's nice to be able to see all this going back
+When working on HTTP applications, it's nice to be able to see all this going back
 and forth.
 
 .. rst-class:: build
@@ -726,11 +835,10 @@ Sometimes you need or want to debug http requests that are not going through
 your browser.
 
 .. rst-class:: build
+.. container::
 
-Or perhaps you need functionality that is not supported by in-browser tools
-(request munging, header mangling, decryption of https request/responses)
-
-.. container:: incremental
+    Or perhaps you need functionality that is not supported by in-browser tools
+    (request munging, header mangling, decryption of https request/responses)
 
     Then it might be time for an HTTP debugging proxy:
 
@@ -750,7 +858,7 @@ In HTTP 1.0, the only required line in an HTTP request is this:
 
 .. code-block:: http
 
-    GET /path/to/index.html HTTP/1.0
+    GET /path/to/index.html HTTP/1.0<CRLF>
     <CRLF>
 
 .. rst-class:: build
@@ -761,8 +869,8 @@ In HTTP 1.0, the only required line in an HTTP request is this:
 
     .. code-block:: http
     
-        GET /path/to/index.html HTTP/1.1
-        Host: www.mysite1.com:80
+        GET /path/to/index.html HTTP/1.1<CRLF>
+        Host: www.mysite1.com:80<CRLF>
         <CRLF>
 
 
@@ -777,8 +885,8 @@ response body:
 
     .. code-block:: http
     
-        HTTP/1.1 200 OK
-        Content-Type: text/plain
+        HTTP/1.1 200 OK<CRLF>
+        Content-Type: text/plain<CRLF>
         <CRLF>
         this is a pretty minimal response
 
@@ -800,12 +908,12 @@ Begin by implementing a new function in your ``http_server.py`` script called
 
         .. code-block:: http
         
-            HTTP/1.1 200 OK
-            Content-Type: text/plain
+            HTTP/1.1 200 OK<CRLF>
+            Content-Type: text/plain<CRLF>
             <CRLF>
             this is a pretty minimal response
 
-    **Remember, <CRLF> is a placeholder for an intentionally blank line**
+    **Remember, <CRLF> is a placeholder for the** ``\r\n`` **character sequence**
 
 
 .. nextslide:: My Solution
@@ -815,11 +923,13 @@ Begin by implementing a new function in your ``http_server.py`` script called
     def response_ok():
         """returns a basic HTTP response"""
         resp = []
-        resp.append("HTTP/1.1 200 OK")
-        resp.append("Content-Type: text/plain")
-        resp.append("")
-        resp.append("this is a pretty minimal response")
-        return "\r\n".join(resp)
+        resp.append(b"HTTP/1.1 200 OK")
+        resp.append(b"Content-Type: text/plain")
+        resp.append(b"")
+        resp.append(b"this is a pretty minimal response")
+        return b"\r\n".join(resp)
+
+Did you remember that sockets only accept bytes?
 
 
 .. nextslide:: Run The Tests
@@ -865,16 +975,15 @@ purpose:
     # ...
     try:
         while True:
-            print >>log_buffer, 'waiting for a connection'
-            conn, addr = sock.accept() # blocking
+            print('waiting for a connection', file=log_buffer)
+            conn, addr = sock.accept()  # blocking
             try:
-                print >>log_buffer, 'connection - {0}{1}'.format(*addr)
+                print('connection - {0}:{1}'.format(*addr), file=log_buffer)
                 while True:
                     data = conn.recv(1024)
                     if len(data) < 1024:
                         break
-
-                print >>log_buffer, 'sending response'
+                print('sending response', file=log_buffer)
                 response = response_ok()
                 conn.sendall(response)
             finally:
@@ -1026,7 +1135,7 @@ Let's keep things simple, our server will only respond to *GET* requests.
         method, uri, protocol = first_line.split()
         if method != "GET":
             raise NotImplementedError("We only accept GET")
-        print >>sys.stderr, 'request is okay'
+        print('request is okay', file=sys.stderr)
 
 
 .. nextslide:: Update the Server
@@ -1047,16 +1156,16 @@ We'll also need to update the server code. It should
     # ...
     conn, addr = sock.accept() # blocking
     try:
-        print >>log_buffer, 'connection - {0}{1}'.format(*addr)
+        print('connection - {0}:{1}'.format(*addr), file=log_buffer)
         request = ""
         while True:
             data = conn.recv(1024)
-            request += data
+            request += data.decode('utf8')
             if len(data) < 1024 or not data:
                 break
 
         parse_request(request)
-        print >>log_buffer, 'sending response'
+        print('sending response', file=log_buffer)
         response = response_ok()
         conn.sendall(response)
     finally:
@@ -1109,6 +1218,10 @@ our server has terminated as well.
 .. rst-class:: build
 .. container::
 
+    .. rst-class:: centered
+
+        **why?**
+
     The HTTP protocol allows us to handle errors like this more gracefully.
 
     .. rst-class:: centered
@@ -1154,9 +1267,9 @@ often:
     * ``500 Internal Server Error`` - Something bad happened
 
     Do not be afraid to use other, less common codes in building good apps.
-    There are a lot of them for a reason. See
+    There are a lot of them for a reason.
 
-        http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
+    See http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
 
 
 .. nextslide:: Handling our Error
@@ -1207,8 +1320,8 @@ correctly.  It should
     # ...
     while True:
         data = conn.recv(1024)
-        request += data
-        if len(data) < 1024 or not data:
+        request += data.decode('utf8')
+        if len(data) < 1024:
             break
 
     try:
@@ -1218,8 +1331,8 @@ correctly.  It should
     else:
         response = response_ok()
 
-    print >>sys.stderr, 'sending response'
-    conn.sendall(response)
+    print('sending response', file=log_buffer)
+    conn.sendall(response.encode('utf8'))
     # ...
 
 
@@ -1341,27 +1454,25 @@ Now we can update our server code so that it uses the return value of
     .. code-block:: python
     
         try:
-            uri = parse_request(request)
+            uri = parse_request(request)  # update this line
         except NotImplementedError:
             response = response_method_not_allowed()
         else:
-            content, type = resolve_uri(uri) # change this line
-        # and add this block
-        try:
-            response = response_ok(content, type)
-        except NameError:
-            response = response_not_found()
+            # and modify this block
+            try:
+                content, mime_type = resolve_uri(url)
+            except NameError:
+                response = response_not_found()
+            else:
+                response = response_ok(content, mime_type)
 
 Homework
 --------
 
-You may have noticed that we just added a call to functions that don't exist
+You may have noticed that we just added calls to functions that don't yet exist
 
 .. rst-class:: build
 .. container::
-
-    This is a common method for building working software, called
-    ``pseudocode``
 
     It's a program that shows you what you want to do, but won't actually run.
 
@@ -1370,28 +1481,35 @@ You may have noticed that we just added a call to functions that don't exist
 
     Your starting point will be what we've made here in class.
 
-    A working copy of which is in ``resources/session05`` as
-    ``http_server_at_home.py``
+    I've added a directory to ``resources/session05`` called ``homework``.
 
+    In it, you'll find this ``http_server.py`` file we've just written in class.
+
+    That file also contains enough stub code for the missing functions to let
+    the server run.
+
+    And there are more tests for you to make pass!
 
 One Step At A Time
 ------------------
 
 Take the following steps one at a time. Run the tests in
-``assignments/session02`` between to ensure that you are getting it right.
+``assignments/session05/homework`` between to ensure that you are getting it
+right.
 
 .. rst-class:: build
 
-* Update ``parse_request`` to return the URI it parses from the request.
+* Complete the stub ``resolve_uri`` function so that it handles looking up
+  resources on disk using the URI returned by ``parse_request``.
 
-* Write a new function ``resolve_uri`` that handles looking up resources on
-  disk using the URI.
+* Make sure that if the URI does not map to a file that exists, it raises an
+  appropriate error for our server to handle.
 
-* Write a new function ``response_not_found`` that returns a 404 response if the
-  resource does not exist.
+* Complete the ``response_not_found`` function stub so that it returns a 404
+  response.
 
 * Update ``response_ok`` so that it uses the values returned by ``resolve_uri``
-  by the URI.
+  by the URI. (these have already been added to the function signature)
 
 * You'll plug those values into the response you generate in the way required
   by the protocol
@@ -1400,9 +1518,9 @@ Take the following steps one at a time. Run the tests in
 HTTP Headers
 ------------
 
-Along the way, you'll discover that simply returning as the body in
-response_ok is insufficient. Different *types* of content need to be
-identified to your browser
+Along the way, you'll discover that simply returning the content of a file as
+an HTTP response body is insufficient. Different *types* of content need to
+be identified to your browser
 
 .. rst-class:: build
 .. container::
@@ -1439,17 +1557,18 @@ A very common header used in HTTP responses is ``Content-Type``. It tells the
 client what to expect.
 
 .. rst-class:: build
+.. container::
 
-* uses **mime-type** (Multi-purpose Internet Mail Extensions)
-* foo.jpeg - ``Content-Type: image/jpeg``
-* foo.png - ``Content-Type: image/png``
-* bar.txt - ``Content-Type: text/plain``
-* baz.html - ``Content-Type: text/html``
+    .. rst-class:: build
 
-.. rst-class:: build
+    * uses **mime-type** (Multi-purpose Internet Mail Extensions)
+    * foo.jpeg - ``Content-Type: image/jpeg``
+    * foo.png - ``Content-Type: image/png``
+    * bar.txt - ``Content-Type: text/plain``
+    * baz.html - ``Content-Type: text/html``
 
-There are *many* mime-type identifiers:
-http://www.webmaster-toolkit.com/mime-types.shtml
+    There are *many* mime-type identifiers:
+    http://www.webmaster-toolkit.com/mime-types.shtml
 
 
 Mapping Mime-types
@@ -1458,21 +1577,20 @@ Mapping Mime-types
 By mapping a given file to a mime-type, we can write a header.
 
 .. rst-class:: build
+.. container::
 
-The standard lib module ``mimetypes`` does just this.
+    The standard lib module ``mimetypes`` does just this.
 
-.. container:: incremental
+    We can guess the mime-type of a file based on the filename or map a file
+    extension to a type:
 
-  We can guess the mime-type of a file based on the filename or map a file
-  extension to a type:
+    .. code-block:: pycon
 
-  .. code-block:: python
-
-      >>> import mimetypes
-      >>> mimetypes.guess_type('file.txt')
-      ('text/plain', None)
-      >>> mimetypes.types_map['.txt']
-      'text/plain'
+        >>> import mimetypes
+        >>> mimetypes.guess_type('file.txt')
+        ('text/plain', None)
+        >>> mimetypes.types_map['.txt']
+        'text/plain'
 
 
 Resolving a URI
@@ -1488,8 +1606,8 @@ Your ``resolve_uri`` function will need to accomplish the following tasks:
 
 * It should have a 'home directory', and look only in that location.
 
-* If the URI is a directory, it should return a plain-text listing and the
-  mimetype ``text/plain``.
+* If the URI is a directory, it should return a plain-text listing of the
+  directory contents and the mimetype ``text/plain``.
 
 * If the URI is a file, it should return the contents of that file and its
   correct mimetype.
@@ -1505,14 +1623,13 @@ One of the benefits of test-driven development is that the tests that are
 failing should tell you what code you need to write.
 
 .. rst-class:: build
+.. container::
 
-As you work your way through the steps outlined above, look at your tests.
-Write code that makes them pass.
+    As you work your way through the steps outlined above, look at your tests.
+    Write code that makes them pass.
 
-.. rst-class:: build
-
-If all the tests in ``assignments/session02/tests.py`` are passing, you've
-completed the assignment.
+    If all the tests in ``assignments/session02/tests.py`` are passing, you've
+    completed the assignment.
 
 
 Submitting Your Homework
@@ -1520,17 +1637,20 @@ Submitting Your Homework
 
 To submit your homework:
 
-* Do your work in the ``assignments/session02`` directory of **your fork** of
-  the class respository
-
-* When you have all tests passing, push your work to **your fork** in github.
-
-* Using the github web interface, send me a pull request.
-
 .. rst-class:: build
+.. container::
 
-I will review your work when I receive your pull requests, make comments on it
-there, and then close the pull request.
+    .. rst-class:: build
+
+    * Do your work in the ``assignments/session02`` directory of **your fork** of
+      the class respository
+
+    * When you have all tests passing, push your work to **your fork** in github.
+
+    * Using the github web interface, send me a pull request.
+
+    I will review your work when I receive your pull requests, make comments on
+    it there, and then close the pull request.
 
 
 A Few Steps Further
