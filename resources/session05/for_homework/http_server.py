@@ -2,7 +2,7 @@ import socket
 import sys
 
 
-def response_ok():
+def response_ok(content="this is a pretty minimal response", mime_type="text/plain"):
     """returns a basic HTTP response"""
     resp = []
     resp.append("HTTP/1.1 200 OK")
@@ -20,34 +20,44 @@ def response_method_not_allowed():
     return "\r\n".join(resp)
 
 
+def response_not_found():
+    """returns a 404 Not Found response"""
+    return ""
+
+
 def parse_request(request):
     first_line = request.split("\r\n", 1)[0]
     method, uri, protocol = first_line.split()
     if method != "GET":
         raise NotImplementedError("We only accept GET")
-    print >>sys.stderr, 'request is okay'
+    print('request is okay', file=sys.stderr)
     return uri
 
 
-def server():
+def resolve_uri(uri):
+    """This method should return appropriate content and a mime type"""
+    return "still broken", "text/plain"
+
+
+def server(log_buffer=sys.stderr):
     address = ('127.0.0.1', 10000)
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    print >>sys.stderr, "making a server on %s:%s" % address
+    print("making a server on {0}:{1}".format(*address), file=log_buffer)
     sock.bind(address)
     sock.listen(1)
 
     try:
         while True:
-            print >>sys.stderr, 'waiting for a connection'
-            conn, addr = sock.accept() # blocking
+            print('waiting for a connection', file=log_buffer)
+            conn, addr = sock.accept()  # blocking
             try:
-                print >>sys.stderr, 'connection - %s:%s' % addr
-                request = ""
+                print('connection - {0}:{1}'.format(*addr), file=log_buffer)
+                request = ''
                 while True:
                     data = conn.recv(1024)
-                    request += data
-                    if len(data) < 1024 or not data:
+                    request += data.decode('utf8')
+                    if len(data) < 1024:
                         break
 
                 try:
@@ -55,20 +65,15 @@ def server():
                 except NotImplementedError:
                     response = response_method_not_allowed()
                 else:
-                    # replace this line with the following once you have
-                    # written resolve_uri
-                    response = response_ok()
-                    # content, type = resolve_uri(uri) # change this line
+                    try:
+                        content, mime_type = resolve_uri(uri)
+                    except NameError:
+                        response = response_not_found()
+                    else:
+                        response = response_ok(content, type)
 
-                    ## uncomment this try/except block once you have fixed
-                    ## response_ok and added response_not_found
-                    # try:
-                    #     response = response_ok(content, type)
-                    # except NameError:
-                    #     response = response_not_found()
-
-                print >>sys.stderr, 'sending response'
-                conn.sendall(response)
+                print('sending response', file=log_buffer)
+                conn.sendall(response.encode('utf8'))
             finally:
                 conn.close()
 
