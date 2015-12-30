@@ -4,7 +4,22 @@ import unittest
 
 
 CRLF = '\r\n'
-KNOWN_TYPES = set(mimetypes.types_map.values())
+CRLF_BYTES = CRLF.encode('utf8')
+KNOWN_TYPES = set(
+    map(lambda x: x.encode('utf8'), mimetypes.types_map.values())
+)
+
+
+def extract_response_code(response):
+    return response.split(CRLF_BYTES, 1)[0].split(b' ', 1)[1].strip()
+
+
+def extract_response_protocol(response):
+    return response.split(CRLF_BYTES, 1)[0].split(b' ', 1)[0].strip()
+
+
+def extract_headers(response):
+    return response.split(CRLF_BYTES*2, 1)[0].split(CRLF_BYTES)[1:]
 
 
 class ResponseOkTestCase(unittest.TestCase):
@@ -22,22 +37,22 @@ class ResponseOkTestCase(unittest.TestCase):
     def test_response_code(self):
         ok = self.call_function_under_test()
         expected = "200 OK"
-        actual = ok.split(CRLF)[0].split(' ', 1)[1].strip()
-        self.assertEqual(expected, actual)
+        actual = extract_response_code(ok)
+        self.assertEqual(expected.encode('utf8'), actual)
 
-    def test_response_method(self):
+    def test_response_protocol(self):
         ok = self.call_function_under_test()
         expected = 'HTTP/1.1'
-        actual = ok.split(CRLF)[0].split(' ', 1)[0].strip()
-        self.assertEqual(expected, actual)
+        actual = extract_response_protocol(ok)
+        self.assertEqual(expected.encode('utf8'), actual)
 
     def test_response_has_content_type_header(self):
         ok = self.call_function_under_test()
-        headers = ok.split(CRLF+CRLF, 1)[0].split(CRLF)[1:]
-        expected_name = 'content-type'
+        headers = extract_headers(ok)
+        expected_name = 'content-type'.encode('utf8')
         has_header = False
         for header in headers:
-            name, value = header.split(':')
+            name, value = header.split(b':')
             actual_name = name.strip().lower()
             if actual_name == expected_name:
                 has_header = True
@@ -46,10 +61,10 @@ class ResponseOkTestCase(unittest.TestCase):
 
     def test_response_has_legitimate_content_type(self):
         ok = self.call_function_under_test()
-        headers = ok.split(CRLF+CRLF, 1)[0].split(CRLF)[1:]
-        expected_name = 'content-type'
+        headers = extract_headers(ok)
+        expected_name = 'content-type'.encode('utf8')
         for header in headers:
-            name, value = header.split(':')
+            name, value = header.split(b':')
             actual_name = name.strip().lower()
             if actual_name == expected_name:
                 self.assertTrue(value.strip() in KNOWN_TYPES)
@@ -68,14 +83,14 @@ class ResponseMethodNotAllowedTestCase(unittest.TestCase):
     def test_response_code(self):
         resp = self.call_function_under_test()
         expected = "405 Method Not Allowed"
-        actual = resp.split(CRLF)[0].split(' ', 1)[1].strip()
-        self.assertEqual(expected, actual)
+        actual = extract_response_code(resp)
+        self.assertEqual(expected.encode('utf8'), actual)
 
     def test_response_method(self):
         resp = self.call_function_under_test()
         expected = 'HTTP/1.1'
-        actual = resp.split(CRLF)[0].split(' ', 1)[0].strip()
-        self.assertEqual(expected, actual)
+        actual = extract_response_protocol(resp)
+        self.assertEqual(expected.encode('utf8'), actual)
 
 
 class ParseRequestTestCase(unittest.TestCase):
@@ -87,13 +102,15 @@ class ParseRequestTestCase(unittest.TestCase):
         return parse_request(request)
 
     def test_get_method(self):
+        """verify that GET HTTP requests do not raise an error"""
         request = "GET / HTTP/1.1\r\nHost: example.com\r\n\r\n"
         try:
             self.call_function_under_test(request)
-        except (NotImplementedError, Exception), e:
+        except (NotImplementedError, Exception) as e:
             self.fail('GET method raises an error {0}'.format(str(e)))
 
     def test_bad_http_methods(self):
+        """verify that non-GET HTTP methods raise a NotImplementedError"""
         methods = ['POST', 'PUT', 'DELETE', 'HEAD']
         request_template = "{0} / HTTP/1.1\r\nHost: example.com\r\n\r\n"
         for method in methods:
@@ -101,6 +118,7 @@ class ParseRequestTestCase(unittest.TestCase):
             self.assertRaises(
                 NotImplementedError, self.call_function_under_test, request
             )
+
 
 class HTTPServerFunctionalTestCase(unittest.TestCase):
     """functional tests of the HTTP Server
@@ -118,7 +136,7 @@ class HTTPServerFunctionalTestCase(unittest.TestCase):
         response = ''
         try:
             response = client(message)
-        except socket.error, e:
+        except socket.error as e:
             if e.errno == 61:
                 msg = "Error: {0}, is the server running?"
                 self.fail(msg.format(e.strerror))
