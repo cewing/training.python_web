@@ -607,19 +607,19 @@ But still not great, because nothing is monitoring this process.
 
 There's no way to keep track of how it is doing. 
 
+We can do better.  First, let's kill the processes that spawned::
+
+    killall gunicorn
+
 .. nextslide:: Managing Gunicorn
 
 We can use a process manager to run the gunicorn command, and track the results.
 
-Kill the processes that spawned::
-
-    killall gunicorn
-
-Using linux upstart is nice and easy.  
+Using linux `upstart`_ is relatively simple.
 
 Put the following in ``/etc/init/djangoblog.conf``
 
-.. code-block:: upstart
+.. code-block:: cfg
 
     description "djangoblog"
 
@@ -634,5 +634,28 @@ Put the following in ``/etc/init/djangoblog.conf``
     env DATABASE_URL=postgres://awsuser:secret123@uwpcedb.c5zwspzpwwsq.us-west-2.rds.amazonaws.com:5432/djangoblog
     exec gunicorn -b 127.0.0.1:8000 -w 4 mysite.wsgi
 
+.. _upstart: http://blog.terminal.com/getting-started-with-upstart/
 
-And that's it!
+.. nextslide:: Using Upstart
+
+Once you've completed that, you will find that you can use the Linux
+``service`` command to control the gunicorn process.
+
+.. rst-class:: build
+.. container::
+
+    Use the following commands::
+
+        $ sudo service djangoblog status
+        $ sudo service djangoblog start
+        $ sudo service djangoblog stop
+        $ sudo service djangoblog restart
+
+    If you see an error message about an ``unknown job`` when you run one of those
+    commands, it means you have an error in your configuration file.
+
+    Find the error with this command::
+
+        $ init-checkconf /etc/init/djangoblog.conf
+
+    And that's it!
