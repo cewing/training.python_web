@@ -2,14 +2,14 @@ import socket
 import sys
 
 
-def response_ok(content="this is a pretty minimal response", mime_type="text/plain"):
+def response_ok(body=b"this is a pretty minimal response", mimetype=b"text/plain"):
     """returns a basic HTTP response"""
     resp = []
-    resp.append("HTTP/1.1 200 OK")
-    resp.append("Content-Type: text/plain")
-    resp.append("")
-    resp.append("this is a pretty minimal response")
-    return "\r\n".join(resp)
+    resp.append(b"HTTP/1.1 200 OK")
+    resp.append(b"Content-Type: text/plain")
+    resp.append(b"")
+    resp.append(b"this is a pretty minimal response")
+    return b"\r\n".join(resp)
 
 
 def response_method_not_allowed():
@@ -17,12 +17,12 @@ def response_method_not_allowed():
     resp = []
     resp.append("HTTP/1.1 405 Method Not Allowed")
     resp.append("")
-    return "\r\n".join(resp)
+    return "\r\n".join(resp).encode('utf8')
 
 
 def response_not_found():
     """returns a 404 Not Found response"""
-    return ""
+    return b""
 
 
 def parse_request(request):
@@ -30,13 +30,12 @@ def parse_request(request):
     method, uri, protocol = first_line.split()
     if method != "GET":
         raise NotImplementedError("We only accept GET")
-    print('request is okay', file=sys.stderr)
     return uri
 
 
 def resolve_uri(uri):
     """This method should return appropriate content and a mime type"""
-    return "still broken", "text/plain"
+    return b"still broken", b"text/plain"
 
 
 def server(log_buffer=sys.stderr):
@@ -70,10 +69,10 @@ def server(log_buffer=sys.stderr):
                     except NameError:
                         response = response_not_found()
                     else:
-                        response = response_ok(content, type)
+                        response = response_ok(content, mime_type)
 
                 print('sending response', file=log_buffer)
-                conn.sendall(response.encode('utf8'))
+                conn.sendall(response)
             finally:
                 conn.close()
 
