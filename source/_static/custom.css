@@ -115,6 +115,10 @@ article .small {
   font-weight: normal;
   font-size: 30px;
   line-height: 30px; }
+article .tiny .highlight pre {
+  font-size: 16px;
+  line-height: 20px;
+}
 article .credit {
   font-size: 75%;
   text-align: left; }

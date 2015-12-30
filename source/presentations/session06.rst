@@ -1,3 +1,7 @@
+.. |br| raw:: html
+
+    <br />
+
 **********
 Session 06
 **********
@@ -65,10 +69,17 @@ A computer has an *environment*:
         ALLUSERSPROFILE=C:\ProgramData
         ...
 
+    or in PowerShell:
+
+    .. code-block:: posh
+    
+        PS C:\> Get-ChildItem Env:
+        ALLUSERSPROFILE             C:\ProgramData
+        ...
+
+
 
 .. nextslide:: Setting The Environment
-
-This can be manipulated:
 
 .. rst-class:: build
 .. container::
@@ -89,6 +100,14 @@ This can be manipulated:
         C:\Users\Administrator\> echo %VARIABLE%
         'some value'
 
+    or in PowerShell:
+
+    .. code-block:: posh
+    
+        PS C:\> $env:VARIABLE = "some value"
+        PS C:\> Get-ChildItem Env:VARIABLE
+        'some value'
+
 
 .. nextslide:: Viewing the Results
 
@@ -102,7 +121,6 @@ These new values are now part of the *environment*
     .. code-block:: bash
 
         $ printenv
-        TERM_PROGRAM=iTerm.app
         ...
         VARIABLE=some value
 
@@ -111,9 +129,16 @@ These new values are now part of the *environment*
     .. code-block:: posh
 
         C:\> set
-        ALLUSERSPROFILE=C:\ProgramData
         ...
         VARIABLE='some value'
+
+    PowerShell:
+
+    .. code-block:: posh
+    
+        PS C:\> Get-ChildItem Env:
+        ...
+        VARIABLE                    'some value'
 
 .. nextslide:: Environment in Python
 
@@ -191,7 +216,7 @@ What is CGI
 First discussed in 1993, formalized in 1997, the current version (1.1) has
 been in place since 2004.
 
-From the preamble:
+From the preamble::
 
     This memo provides information for the Internet community. It does not
     specify an Internet standard of any kind.
@@ -257,7 +282,7 @@ In the class resources for this session, you'll find a directory named ``cgi``.
     .. rst-class:: build
 
     * Open *two* terminal windows in this ``cgi`` directory
-    * In the first terminal, run ``python -m CGIHTTPServer``
+    * In the first terminal, run ``python -m http.server --cgi``
     * Open a web browser and load ``http://localhost:8000/``
     * Click on *CGI Test 1*
 
@@ -266,9 +291,8 @@ In the class resources for this session, you'll find a directory named ``cgi``.
 
 .. rst-class:: build
 
-* If nothing at all happens, check your terminal window
-* Look for this: ``OSError: [Errno 13] Permission denied``
-* If you see something like that, check permissions for ``cgi-bin`` *and*
+* Your browser might show a 404 or 403 error
+* If you see something like that, check the permissions for ``cgi-bin`` *and*
   ``cgi_1.py``
 * The file must be executable, the ``cgi-bin`` directory needs to be readable
   *and* executable.
@@ -352,7 +376,7 @@ Let's fix the error from our traceback.  Edit your ``cgi_1.py`` file to match:
 .. rst-class:: build
 .. container::
 
-    Notice the first line of that script: ``#!/usr/bin/python``.
+    Notice the first line of that script: ``#!/usr/bin/env python``.
 
     This is called a *shebang* (short for hash-bang)
 
@@ -362,7 +386,7 @@ Let's fix the error from our traceback.  Edit your ``cgi_1.py`` file to match:
 CGI Process Execution
 ---------------------
 
-Servers like ``CGIHTTPServer`` run CGI scripts as a system user called
+Servers like ``http.server --cgi`` run CGI scripts as a system user called
 ``nobody``.
 
 .. rst-class:: build
@@ -419,36 +443,47 @@ Let's find 'em.  In a terminal fire up python:
 .. rst-class:: build
 .. container::
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> import CGIHTTPServer
-        >>> CGIHTTPServer.__file__
-        '/big/giant/path/to/lib/python2.6/CGIHTTPServer.py'
+        In [1]: from http import server
+        In [2]: server.__file__
+        Out[2]: '/Users/cewing/pythons/parts/opt/lib/python3.5/http/server.py'
+        In [3]: !subl '/Users/cewing/pythons/parts/opt/lib/python3.5/http/server.py'
 
-    Copy this path and open the file it points to in your text editor
+    If you don't have the ``subl`` command, or another one that starts your
+    editor, copy this path and open it in your text editor.
 
 
 .. nextslide:: Environmental Set Up
 
-From CGIHTTPServer.py, in the CGIHTTPServer.run_cgi method:
+From ``http/server.py``, in the ``CGIHTTPRequestHandler`` class, in the
+``run_cgi`` method:
 
+.. rst-class:: tiny
 .. code-block:: python
 
-    # Reference: http://hoohoo.ncsa.uiuc.edu/cgi/env.html
-    # XXX Much of the following could be prepared ahead of time!
-    env = {}
+    env = copy.deepcopy(os.environ)
     env['SERVER_SOFTWARE'] = self.version_string()
     env['SERVER_NAME'] = self.server.server_name
     env['GATEWAY_INTERFACE'] = 'CGI/1.1'
-    env['SERVER_PROTOCOL'] = self.protocol_version
-    env['SERVER_PORT'] = str(self.server.server_port)
-    env['REQUEST_METHOD'] = self.command
     ...
-    ua = self.headers.getheader('user-agent')
-    if ua:
-        env['HTTP_USER_AGENT'] = ua
-    ...
-    os.environ.update(env)
+    if self.have_fork:
+        # Unix -- fork as we should
+        ...
+        pid = os.fork()
+        ...
+        try:
+            ...
+            os.execve(scriptfile, args, env)
+        ...
+    else:
+        # Non-Unix -- use subprocess
+        import subprocess
+        ...
+        p = subprocess.Popen(cmdline,
+                             ...
+                             env = env
+                             )
     ...
 
 
@@ -468,6 +503,22 @@ environment so it has what is needed.
     Use the same method as above to import and open the source file for the
     ``cgi`` module. Note what ``test`` does for an example of this.
 
+    .. rst-class:: tiny
+    .. code-block:: python
+    
+        def test(environ=os.environ):
+            ...
+            print("Content-type: text/html")
+            print()
+            try:
+                form = FieldStorage()   # Replace with other classes to test those
+                print_directory()
+                print_arguments()
+                print_form(form)
+                ...
+            except:
+                print_exception()
+
 
 .. nextslide:: Recap
 
@@ -477,19 +528,19 @@ What the Server Does:
 
 * parses the request
 * sets up the environment, including HTTP and SERVER variables
+* sends a ``HTTP/1.1 200 OK\r\n`` first line to the client 
 * figures out if the URI points to a CGI script and runs it
-* builds an appropriate HTTP Response first line ('HTTP/1.1 200 OK\\r\\n')
 * appends what comes from the script on stdout and sends that back
 
 What the Script Does:
 
 .. rst-class:: build
 
-* names appropriate *executable* in it's *shebang* line
+* names appropriate *executable* in the *shebang* line
 * uses os.environ to read information from the HTTP request
-* builds *any and all* appropriate **HTTP Headers** (Content-type:,
-  Content-length:, ...)
-* prints headers, empty line and script output (body) to stdout
+* builds *any and all* extra **HTTP Headers** |br| 
+  (Content-type:, Content-length:, ...)
+* prints the headers, empty line and script output (body) to stdout
 
 
 In-Class Exercise I
@@ -505,10 +556,9 @@ Let's make our own version of this.
 
     * In the directory ``cgi-bin`` you will find the file ``cgi_2.py``.
     * Open that file in your editor.
-    * The script contains some html with text naming elements of the CGI
-      environment.
-    * You should use the values in os.environ to fill in the blanks.
-    * You should be able to view the results of your work by loading
+    * The script contains some html with text containing placeholders.
+    * You should use Python and the CGI environment to fill the the blanks.
+    * You can view the results of your work by loading
       ``http://localhost:8000/`` and clicking on *Exercise One*
 
     **GO**
@@ -524,19 +574,22 @@ All this is well and good, but where's the *dynamic* stuff?
 
     It'd be nice if a user could pass form data to our script for it to use.
 
-    In HTTP, these types of inputs show up in the URL *query* (the part after
-    the ``?``)::
+    In HTTP, data is often passed to the server as a part of a URL called the
+    *query string*
 
-        http://myhost.com/script.py?a=23&b=37
+    The URL query string is formatted as ``name=value`` pairs, separated by the
+    ampersand (``&``) character
 
-    You've seen this before, right?  In your Pyramid learning journal?
+    The entire query string is separated from other parts of the URL by a
+    question mark::
 
-    It's how we got the ``id`` of an entry to the edit form.
+        http://localhost:8000/cgi_bin/somescript.py?a=23&b=46&b=92
 
 
-.. nextslide:: Form Data in CGI
+.. nextslide:: The Query String in CGI
 
-In the ``cgi`` module, we get access to this with the ``FieldStorage`` class:
+In the ``cgi`` module, we get access to the query string with the
+``FieldStorage`` class:
 
 .. code-block:: python
 
@@ -580,20 +633,17 @@ Let's create a dynamic adding machine.
 
     form = cgi.FieldStorage()
     operands = form.getlist('operand')
-    total = 0
-    for operand in operands:
-        try:
-            value = int(operand)
-        except ValueError:
-            value = 0
-        total += value
+    msg = "your total is {total}"
+    try:
+        total = sum(map(int, operands))
+        msg = msg.format(total=total)
+    except (ValueError, TypeError):
+        msg = "Unable to calculate a sum, please provide integer operands"
 
-    output = str(total)
-
-    print "Content-Type: text/plain"
-    print "Content-Length: %s" % len(output)
-    print
-    print output
+    print("Content-Type: text/plain")
+    print("Content-Length: %s" % len(msg))
+    print()
+    print(msg)
 
 
 .. nextslide:: Break Time
@@ -606,6 +656,9 @@ Let's take a break here, before continuing
 WSGI
 ====
 
+.. rst-class:: center large
+
+The Web Server Gateway Interface
 
 CGI Problems
 ------------
@@ -664,7 +717,9 @@ Enter WSGI, the Web Server Gateway Interface.
 
     Developers can write WSGI-capable apps and deploy them on any WSGI server.
 
-    Read the WSGI spec: http://www.python.org/dev/peps/pep-0333
+    Read the original WSGI spec: http://www.python.org/dev/peps/pep-0333
+
+    There is also an update for Python 3: |br| https://www.python.org/dev/peps/pep-3333
 
 
 Apps and Servers
@@ -884,8 +939,8 @@ Let's start simply.  We'll begin by repeating our first CGI exercise in WSGI
 * Find the ``wsgi`` directory in the class resources. Copy it to your working
   directory.
 * Open the file ``wsgi_1.py`` in your text editor.
-* We will fill in the missing values using the wsgi ``environ``, just as we
-  use ``os.environ`` in cgi
+* We will fill in the missing values using Python and the wsgi ``environ``,
+  just as we use ``os.environ`` in cgi
 
 .. rst-class:: build centered
 
@@ -924,7 +979,7 @@ Let's start simply.  We'll begin by repeating our first CGI exercise in WSGI
         response_headers = [('Content-Type', 'text/html'),
                             ('Content-Length', str(len(response_body)))]
         start_response(status, response_headers)
-        return [response_body]
+        return [response_body.encode('utf8')]
 
 .. rst-class:: build
 .. container::
@@ -932,6 +987,8 @@ Let's start simply.  We'll begin by repeating our first CGI exercise in WSGI
     We do not define ``start_response``, the application does that.
 
     We *are* responsible for determining the HTTP status.
+
+    And the content we hand back *must* be ``bytes``, not unicode.
 
 .. nextslide:: Running a WSGI Script
 
@@ -1010,8 +1067,6 @@ that can handle that request.
 .. container::
 
     This process is called ``dispatch``. There are many possible approaches.
-
-    You've seen one approach in the Learning Journal you built with Pyramid.
 
     Let's begin by designing this piece of our app.
 
@@ -1110,7 +1165,7 @@ We need to hook our new dispatch function into the application.
         finally:
             headers.append(('Content-length', str(len(body))))
             start_response(status, headers)
-            return [body]
+            return [body.encode('utf8')]
 
 
 Test Your Work
