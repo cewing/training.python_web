@@ -991,7 +991,7 @@ app.
     Just add a file called ``runtime.txt`` to your repository, with one line
     only:
 
-    .. code-block:: txt
+    .. code-block:: ini
     
         python-3.5.0
 
