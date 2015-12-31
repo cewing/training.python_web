@@ -958,10 +958,10 @@ stroke.
 
         from django.contrib import admin # <- should be present already
 
-        urlpatterns = patterns('',
+        urlpatterns = [
             ...
             url(r'^admin/', include(admin.site.urls)), #<- this should be too
-        )
+        ]
 
 We can now view the admin.  We'll use the Django development server.
 
