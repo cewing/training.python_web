@@ -8,5 +8,5 @@ urlpatterns = patterns(
         name="blog_index"),
     url(r'^posts/(?P<post_id>\d+)/$',
         'stub_view',
-        name="blog_detail"),
+        name='blog_detail'),
 )
