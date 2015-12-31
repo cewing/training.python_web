@@ -4,7 +4,7 @@ Session 07
 
 .. figure:: /_static/granny_mashup.png
     :align: center
-    :width: 50%
+    :width: 70%
 
     Paul Downey http://www.flickr.com/photos/psd/492139935/ - CC-BY
 
@@ -163,11 +163,11 @@ Luckily, there are tools to help with this.
 
     .. code-block:: bash
 
-        $ virtualenv soupenv
+        $ pyvenv soupenv
         ...
         $ source soupenv/bin/activate
 
-    (remember, for Windows users that should be ``soupenv/Scripts/activate``)
+    (remember, for Windows users that should be ``soupenv/Scripts/activate.bat``)
 
 
 .. nextslide:: Install BeautifulSoup
@@ -213,6 +213,9 @@ Again, this is pretty simple::
     BeautifulSoup will choose the "best" available.
 
     You can specify the parser if you need to for some reason.
+
+    In fact, in recent versions of BeautifulSoup, you'll be warned if you don't
+    (though you can ignore the warning).
 
 
 .. nextslide:: Install Requests
@@ -387,6 +390,7 @@ My Solution
 Here's the one I created:
 
 .. rst-class:: build
+
 .. code-block:: python
 
     import requests
@@ -399,7 +403,7 @@ Here's the one I created:
                 params[key] = val
         resp = requests.get(url, params=params)
         resp.raise_for_status()
-        return resp.content, resp.encoding
+        return resp.text
 
 
 Parse the Results
@@ -444,8 +448,8 @@ Take a shot at writing this new function in ``mashup.py``
     from bs4 import BeautifulSoup
 
     # then add this function lower down
-    def parse_source(html, encoding='utf-8'):
-        parsed = BeautifulSoup(html, from_encoding=encoding)
+    def parse_source(html):
+        parsed = BeautifulSoup(html)
         return parsed
 
 
@@ -472,7 +476,7 @@ We'll need to make our script do something when run.
 
         Use the ``prettify`` method on a BeautifulSoup object::
 
-            print parsed.prettify()
+            print(parsed.prettify())
 
 
 My Solution
@@ -489,9 +493,9 @@ Try to come up with the proper code on your own.  Add it to ``mashup.py``
             'Inspection_End': '2/1/2015',
             'Zip_Code': '98101'
         }
-        html, encoding = get_inspection_page(**use_params)
-        parsed = parse_source(html, encoding)
-        print parsed.prettify(encoding=encoding)
+        html = get_inspection_page(**use_params)
+        parsed = parse_source(html)
+        print(parsed.prettify())
 
 
 .. nextslide:: Test The Results
@@ -527,10 +531,10 @@ script.
 
 .. nextslide:: Preserve the Results
 
-Try it again, this time redirect the output to a local file, so we can use
-it without needing to hit the King County servers each time::
+Now, let's re-run the script, saving the output to a file so we can use it
+later::
 
-    (soupenv)$ python mashup.py > inspection_page.html
+    $ python mashup.py > inspection_page.html
 
 .. rst-class:: build
 .. container::
@@ -540,17 +544,16 @@ it without needing to hit the King County servers each time::
     .. code-block:: python
 
         def load_inspection_page(name):
-            with open(name, 'r') as fh:
-                content = fh.read()
-                return content, 'utf-8'
+            file_path = pathlib.Path(name)
+            return file_path.read_text(encoding='utf8')
 
     Finally, bolt that in to your script to use it:
 
     .. code-block:: python
 
         # COMMENT OUT THIS LINE AND REPLACE IT
-        # html, encoding = get_inspection_page(**use_params)
-        html, encoding = load_inspection_page('inspection_page.html')
+        # html = get_inspection_page(**use_params)
+        html = load_inspection_page('inspection_page.html')
 
 
 Extracting Data
@@ -613,9 +616,9 @@ The ``find`` method allows us to pass *kwargs*.
     .. code-block:: python
 
         #...
-        parsed = parse_source(html, encoding)
+        parsed = parse_source(html)
         content_col = parsed.find("td", id="contentcol")
-        print content_col.prettify(encoding=encoding)
+        print content_col.prettify()
 
     .. code-block:: bash
 
@@ -760,15 +763,16 @@ Each record consists of a table with a series of *rows* (``<tr>``).
 
 Let's try this out in an interpreter:
 
-.. code-block:: pycon
+.. code-block:: ipython
 
-    >>> from mashup import load_inspection_page, parse_source
-    >>> from mashup import restaurant_data_generator, has_two_tds
-    >>> html, encoding = load_inspection_page('inspection_page.html')
-    >>> parsed = parse_source(html, encoding)
-    >>> content_col = parsed.find("td", id="contentcol")
-    >>> records = restaurant_data_generator(content_col)
-    >>> rec = records[4]
+    In [1]: from mashup_3 import load_inspection_page, parse_source,
+            restaurant_data_generator, has_two_tds
+    In [2]: html = load_inspection_page('inspection_page.html')
+    In [3]: parsed = parse_source(html)
+    ...
+    In [4]: content_col = parsed.find('td', id='contentcol')
+    In [5]: records = restaurant_data_generator(content_col)
+    In [6]: rec = records[4]
 
 .. nextslide:: Test It Out
 
@@ -782,18 +786,18 @@ We'd like to find all table rows in that div that contain *two* cells
     We only want the ones at the top of that tag (ones nested more deeply
     contain other data)
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> data_rows = rec.find('tbody').find_all(has_two_tds, recursive=False)
-        >>> len(data_rows)
-        7
-        >>> data_rows[0]
+        In [13]: data_rows = rec.find('tbody').find_all(has_two_tds, recursive=False)
+        In [14]: len(data_rows)
+        Out[14]: 7
+        In [15]: print(data_rows[0].prettify())
         <tr>
          <td class="promptTextBox" style="width: 125px; font-weight: bold">
           - Business Name
          </td>
          <td class="promptTextBox" style="width: 520px; font-weight: bold">
-          WORLD FRESH MARKET
+          SPICE ORIENT
          </td>
         </tr>
 
@@ -811,13 +815,13 @@ Now we have a list of the rows that contain our data.
 
     Let's start by trying to get at the first label
 
-    .. code-block:: pycon
+    .. code-block:: ipython
     
-        >>> row1 = data_rows[0]
-        >>> cells = row1.find_all('td')
-        >>> cell1 = cells[0]
-        >>> cell1.text
-        u'\n            - Business Name\n           '
+        In [18]: row1 = data_rows[0]
+        In [19]: cells = row1.find_all('td')
+        In [20]: cell1 = cells[0]
+        In [21]: cell1.text
+        Out[21]: '\n            - Business Name\n           '
 
     That works well enough, but all that extra stuff is nasty
 
@@ -836,18 +840,18 @@ Try writing such a function for yourself now in ``mashup.py``
     .. code-block:: python
 
         def clean_data(td):
-            return unicode(td.text).strip(" \n:-")
+            return td.text.strip(" \n:-")
 
     Add it to your interpreter and test it out:
 
-    .. code-block:: pycon
+    .. code-block:: ipython
     
-        >>> def clean_data(td):
-        ...     return unicode(td.text).strip(" \n:-")
-        ...
-        >>> clean_data(cell1)
-        u'Business Name'
-        >>>
+        In [25]: def clean_data(td):
+           ....:     return td.text.strip(" \n:-")
+           ....:
+        In [26]: clean_data(cell1)
+        Out[26]: 'Business Name'
+        In [27]:
 
     Ahhh, much better
 
@@ -990,9 +994,9 @@ We can test this function by adding it into our script:
         metadata = extract_restaurant_metadata(data_div)
         # UPDATE THIS BELOW HERE
         inspection_rows = data_div.find_all(is_inspection_data_row)
-        print metadata
-        print len(inspection_rows)
-        print '*'*10
+        print(metadata)
+        print(len(inspection_rows))
+        print('*'*10)
 
 .. rst-class:: build
 .. container::
@@ -1052,8 +1056,8 @@ Try writing this routine yourself.
                 high_score = intval if intval > high_score else high_score
         if samples:
             average = total/float(samples)
-        return {u'Average Score': average, u'High Score': high_score,
-                u'Total Inspections': samples}
+        return {'Average Score': average, 'High Score': high_score,
+                'Total Inspections': samples}
 
 .. nextslide:: Test It Out
 
@@ -1134,12 +1138,6 @@ RSS is one of the earliest forms of Web Services
 .. rst-class:: build
 .. container::
 
-    .. rst-class:: build
-
-    * First known as ``RDF Site Summary``
-    * Became ``Really Simple Syndication``
-    * More at http://www.rss-specification.com/rss-specifications.htm
-
     A single web-based *endpoint* provides a dynamically updated listing of
     content
 
@@ -1151,74 +1149,23 @@ RSS is one of the earliest forms of Web Services
 
 .. _feedparser: https://pythonhosted.org/feedparser/
 
-.. nextslide:: RSS Document
-
-.. code-block:: xml
-
-    <?xml version="1.0" encoding="UTF-8" ?>
-    <rss version="2.0">
-    <channel>
-      <title>RSS Title</title>
-      <description>This is an example of an RSS feed</description>
-      <link>http://www.someexamplerssdomain.com/main.html</link>
-      <lastBuildDate>Mon, 06 Sep 2010 00:01:00 +0000 </lastBuildDate>
-      <pubDate>Mon, 06 Sep 2009 16:45:00 +0000 </pubDate>
-      <ttl>1800</ttl>
-
-      <item>
-        <title>Example entry</title>
-        <description>Here is some text containing an interesting description.</description>
-        <link>http://www.wikipedia.org/</link>
-        <guid>unique string per item</guid>
-        <pubDate>Mon, 06 Sep 2009 16:45:00 +0000 </pubDate>
-      </item>
-      ...
-    </channel>
-    </rss>
-
 .. nextslide:: XML-RPC
 
-RSS provides a pre-defined data set, can we also allow *calling procedures* to
-get more dynamic data?
+XML-RPC extended the essentially static nature of RSS by allowing users to call
+procedures and pass arguments.
 
 .. rst-class:: build
 .. container::
 
-    We can!  Enter XML-RPC (Remote Procedure Call)
-
     .. rst-class:: build
 
-    * Provides a set of defined procedures which can take arguments
     * Calls are made via HTTP GET, by passing an XML document
     * Returns from a call are sent to the client in XML
 
     In python, you can access XML-RPC services using `xmlrpclib`_ from the
     standard library
 
-    We will not cover XML-RPC here, though.
-
 .. _xmlrpclib: https://docs.python.org/2/library/xmlrpclib.html
-
-.. nextslide:: Beyond XML-RPC
-
-.. rst-class:: build
-.. container::
-
-    .. rst-class:: build
-
-    * XML-RPC allows introspection
-    * XML-RPC forces you to introspect to get information
-    * **Wouldn't it be nice to get that automatically?**
-    * XML-RPC provides data types
-    * XML-RPC provides only *certain* data types
-    * **Wouldn't it be nice to have an extensible system for types?**
-    * XML-RPC allows calling methods with parameters
-    * XML-RPC only allows calling methods, nothing else
-    * **wouldn't it be nice to have contextual data as well?**
-
-    .. rst-class:: centered
-
-    **Enter SOAP: Simple Object Access Protocol**
 
 .. nextslide:: SOAP
 
@@ -1232,48 +1179,28 @@ SOAP extends XML-RPC in a couple of useful ways:
 * It establishes a method for extending available data types using XML
   namespaces
 
-* It provides a wrapper around method calls called the **envelope**, which
-  allows the inclusion of a **header** with system meta-data that can be used
-  by the application
-
-
-.. nextslide:: SOAP in Python
-
-There is no standard library module that supports SOAP directly.
-
 .. rst-class:: build
 .. container::
+
+    There is no standard library module that supports SOAP directly.
 
     .. rst-class:: build
 
     * The best-known and best-supported module available is **Suds**
     * The homepage is https://fedorahosted.org/suds/
     * It can be installed using ``easy_install`` or ``pip install``
+    * But it hasn't been updated since Sept. 2010.
 
-    But we're going to move on
-
-.. nextslide:: Afterword
-
-SOAP (and XML-RPC) have some problems:
-
-.. rst-class:: build
-.. container::
-
-    .. rst-class:: build
-
-    * XML is pretty damned inefficient as a data transfer medium
-    * Why should I need to know method names?
-    * If I can discover method names at all, I have to read a WSDL to do it?
-
-    Suds is the best we have, and it hasn't been updated since Sept. 2010.
-
-    There appear to be maintenance forks of Suds, but they are sketchy.
+    So we're going to move on
 
 .. nextslide:: If Not XML, Then What?
 
+XML is a pretty inefficient medium for transmitting data.  There's a lot of
+extra characters transmitted that lack any meaning.
+
 .. rst-class:: build large centered
 
-**JSON**
+**Let's Use JSON**
 
 
 JSON
@@ -1358,17 +1285,17 @@ You can encode python to json, and decode json back to python:
 
     .. code-block:: python
 
-        >>> import json
-        >>> array = [1,2,3]
-        >>> json.dumps(array)
-        >>> '[1, 2, 3]'
-        >>> orig = {'foo': [1,2,3], 'bar': u'my resumé', 'baz': True}
-        >>> encoded = json.dumps(orig)
-        >>> encoded
-        '{"baz": true, "foo": [1, 2, 3], "bar": "my resum\\u00e9"}'
-        >>> decoded = json.loads(encoded)
-        >>> decoded == orig
-        True
+        In [1]: import json
+        In [2]: array = [1, 2, 3]
+        In [3]: json.dumps(array)
+        Out[3]: '[1, 2, 3]'
+        In [4]: orig = {'foo': [1,2,3], 'bar': 'my resumé', 'baz': True}
+        In [5]: encoded = json.dumps(orig)
+        In [6]: encoded
+        Out[6]: '{"foo": [1, 2, 3], "bar": "my resum\\u00e9", "baz": true}'
+        In [7]: decoded = json.loads(encoded)
+        In [8]: decoded == orig
+        Out[8]: True
 
     Customizing the encoder or decoder class allows for specialized serializations
 
@@ -1533,18 +1460,16 @@ https://developers.google.com/maps/documentation/geocoding
 
         (soupenv)$ python
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> import requests
-        >>> import json
-        >>> from pprint import pprint
-        >>> url = 'http://maps.googleapis.com/maps/api/geocode/json'
-        >>> addr = '1325 4th Ave, Seattle, 98101'
-        >>> parameters = {'address': addr, 'sensor': 'false' }
-        >>> resp = requests.get(url, params=parameters)
-        >>> data = json.loads(resp.text)
-        >>> if data['status'] == 'OK':
-        ...     pprint(data)
+        In [1]: import requests
+        In [2]: import json
+        In [3]: from pprint import pprint
+        In [4]: url = 'http://maps.googleapis.com/maps/api/geocode/json'
+        In [5]: addr = '1325 4th Ave, Seattle, 98101'
+        In [6]: parameters = {'address': addr, 'sensor': 'false'}
+        In [7]: resp = requests.get(url, params=parameters)
+        In [8]: data = resp.json()
 
 
 .. nextslide:: Reverse Geocoding
@@ -1555,18 +1480,18 @@ back address information:
 .. rst-class:: build
 .. container::
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> location = data['results'][0]['geometry']['location']
-        >>> latlng="{lat},{lng}".format(**location)
-        >>> parameters = {'latlng': latlng, 'sensor': 'false'}
-        >>> resp = requests.get(url, params=paramters)
-        >>> data = json.loads(resp.text)
-        >>> if data['status'] == 'OK':
-        ...     pprint(data)
+        In [15]: if data['status'] == 'OK':
+           ....:     pprint(data['results'])
+           ....:
+        [{'address_components': [{'long_name': '1325',
+                                  'short_name': '1325',
+          ...
+          'types': ['street_address']}]
 
-    Notice that there are a number of results returned, ordered from most specific
-    to least.
+    Notice that there may be a number of results returned, ordered from most
+    specific to least.
 
 
 Mashing It Up
@@ -1677,13 +1602,13 @@ The API for geocoding with ``geocoder`` is the same for all providers.
 
     You provide latitude and longitude, it provides address data
 
-    .. code-block:: python
+    .. code-block:: ipython
     
-        >>> response = geocoder.google(<address>)
-        >>> response.json
-        # json result data
-        >>> response.geojson
-        # geojson result data
+        In [1]: response = geocoder.google(<address>)
+        In [2]: response.json
+        Out[2]: # json result data
+        In [3]: response.geojson
+        Out[3]: # geojson result data
 
 .. nextslide:: Adding The Function
 
@@ -1886,7 +1811,8 @@ Homework
     .. rst-class:: build
     .. container::
 
-        Begin by sorting the results of our search by the average score.
+        Begin by sorting the results of our search by the average score (can
+        you do this and still use a generator for getting the geojson?).
 
         Then, update your script to allow the user to choose how to sort, by
         average, high score or most inspections::
@@ -1932,10 +1858,10 @@ css-style color (``#FF0000``)
     information.
 
     You will also need to learn about how to properly quote special characters
-    for a URL, using the `urllib`_ ``quote`` function.
+    for a URL, using the `urllib.parse`_ ``quote`` function.
 
-.. _urllib: https://docs.python.org/2/library/urllib.html#urllib.quote
-.. _webbrowser: https://docs.python.org/2/library/webbrowser.html
+.. _urllib.parse: https://docs.python.org/3/library/urllib.parse.html#urllib.parse.quote
+.. _webbrowser: https://docs.python.org/3/library/webbrowser.html
 
 Submitting Your Work
 --------------------
