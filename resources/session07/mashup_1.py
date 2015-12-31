@@ -32,20 +32,20 @@ def get_inspection_page(**kwargs):
             params[key] = val
     resp = requests.get(url, params=params)
     resp.raise_for_status()
-    return resp.content, resp.encoding
+    return resp.text
 
 
-def parse_source(html, encoding='utf-8'):
-    parsed = BeautifulSoup(html, from_encoding=encoding)
+def parse_source(html):
+    parsed = BeautifulSoup(html)
     return parsed
 
 
 if __name__ == '__main__':
     use_params = {
-        'Inspection_Start': '2/1/2013',
-        'Inspection_End': '2/1/2015',
+        'Inspection_Start': '2/1/2014',
+        'Inspection_End': '2/1/2016',
         'Zip_Code': '98101'
     }
-    html, encoding = get_inspection_page(**use_params)
-    parsed = parse_source(html, encoding)
-    print parsed.prettify(encoding=encoding)
+    html = get_inspection_page(**use_params)
+    parsed = parse_source(html)
+    print(parsed.prettify())
