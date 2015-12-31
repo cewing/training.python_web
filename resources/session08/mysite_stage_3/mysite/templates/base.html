@@ -9,9 +9,7 @@
     <div id="header">
       <ul id="control-bar">
       {% if user.is_authenticated %}
-        {% if user.is_staff %}
-          <li><a href="{% url 'admin:index' %}">admin</a></li>
-        {% endif %}
+        {% if user.is_staff %}<li><a href="{% url 'admin:index' %}">admin</a></li>{% endif %}
         <li><a href="{% url 'logout' %}">logout</a></li>
       {% else %}
         <li><a href="{% url 'login' %}">login</a></li>

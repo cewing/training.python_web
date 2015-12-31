@@ -1,6 +1,7 @@
-from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.shortcuts import render
 from django.template import RequestContext, loader
+
 from myblog.models import Post
 
 
