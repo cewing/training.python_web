@@ -3,7 +3,7 @@
     <br />
 
 **********
-Session 06
+Session 03
 **********
 
 .. figure:: /_static/gateway.jpg

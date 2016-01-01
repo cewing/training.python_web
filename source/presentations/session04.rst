@@ -1,5 +1,5 @@
 **********
-Session 07
+Session 04
 **********
 
 .. figure:: /_static/granny_mashup.png

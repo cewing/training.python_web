@@ -1,5 +1,5 @@
 **********
-Session 09
+Session 10
 **********
 
 .. figure:: /_static/django-pony.png

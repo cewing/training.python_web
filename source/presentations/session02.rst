@@ -3,7 +3,7 @@
     <br />
 
 **********
-Session 05
+Session 02
 **********
 
 .. figure:: /_static/protocol.png

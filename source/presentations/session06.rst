@@ -2,7 +2,7 @@
     :autoslides: True
 
 **********
-Session 02
+Session 06
 **********
 
 .. image:: /_static/lj_entry.png
