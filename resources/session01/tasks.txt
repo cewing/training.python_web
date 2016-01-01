@@ -1,0 +1,53 @@
+Session 4 Homework
+==================
+
+Required Tasks:
+---------------
+
+* Complete the code in ``echo_server.py`` to create a server that sends back
+  whatever messages it receives from a client
+
+* Complete the code in ``echo_client.py`` to create a client function that
+  can send a message and receive a reply.
+
+* Ensure that the tests in ``tests.py`` pass.
+
+To run the tests:
+
+* Open one terminal while in this folder and execute this command:
+
+    $ python echo_server.py
+
+* Open a second terminal in this same folder and execute this command:
+
+    $ python tests.py
+
+
+
+
+Optional Tasks:
+---------------
+
+Simple:
+
+* Write a python function that lists the services provided by a given range of
+  ports.
+
+  * accept the lower and upper bounds as arguments
+  * provide sensible defaults
+  * Ensure that it only accepts valid port numbers (0-65535)
+
+Challenging:
+
+* The echo server as outlined will only process a connection from one client
+  at a time. If a second client were to attempt a connection, it would have to
+  wait until the first message was fully echoed before it could be dealt with.
+
+  Python provides a module called `select` that allows waiting for I/O events
+  in order to control flow. The `select.select` method can be used to allow
+  our echo server to handle more than one incoming connection in "parallel".
+
+  Read the documentation about the `select` module
+  (http://docs.python.org/2/library/select.html) and attempt to write a second
+  version of the echo server that can handle multiple client connections in
+  "parallel".  You do not need to invoke threading of any kind to do this.
