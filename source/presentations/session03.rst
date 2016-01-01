@@ -1374,8 +1374,15 @@ standard library.
 .. rst-class:: build
 .. container::
 
-    This is a common occurance in web development.  But it can be hazardous
+    This is a common occurence in web development.  But it can be hazardous.
 
+    In order to practice safe development I am going to ask you to read and
+    follow through a `brief tutorial`_ I've created on the subject.
+
+    If you have any trouble, or if things do not work the way they are supposed
+    to, please reach out.  We will need this to be working next week.
+
+.. _brief tutorial: ../../html/presentations/venv_intro.html
 
 Wrap-Up
 -------
