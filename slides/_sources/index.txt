@@ -28,7 +28,7 @@ Internet Programming with Python
        presentations/index
        readings
 
-Winter Term, 2015 (10 sessions)
+Winter Term, 2016 (10 sessions)
 
 Tuesdays, 6-9 pm, January 5 - March 8
 

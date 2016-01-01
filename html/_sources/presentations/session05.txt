@@ -10,32 +10,16 @@ Session 05
     :width: 43%
 
 
-Introductions
-=============
-
-.. rst-class:: large centered
-
-Wherin we learn about the Model View Controller approach to app design and
-explore data persistence in Python.
-
-
-.. nextslide:: Break Time
-
-Let's take a moment to rest up and absorb what we've learned.
-
-When we return, we'll begin talking about a particular approach to thinking
-about application design:
-
-.. rst-class:: centered
-
-**Model View Controller**
 
 MVC Applications
 ================
 
+Wherin we learn about the Model View Controller approach to app design and
+explore data persistence in Python.
+
 .. figure:: http://upload.wikimedia.org/wikipedia/commons/4/40/MVC_passive_view.png
     :align: center
-    :width: 50%
+    :width: 40%
 
     By Alan Evangelista (Own work) [CC0], via Wikimedia Commons
 
