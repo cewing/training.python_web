@@ -1,1130 +1,1803 @@
 **********
-Session 04
+Session 07
 **********
 
-.. figure:: /_static/python.png
+.. figure:: /_static/granny_mashup.png
     :align: center
-    :width: 50%
+    :width: 70%
 
-    **Networking and Sockets**
+    Paul Downey http://www.flickr.com/photos/psd/492139935/ - CC-BY
+
+Scraping, APIs and Mashups
+==========================
+
+Wherein we learn how to make order from the chaos of the wild internet.
 
 
-Computer Communications
-=======================
+A Dilemma
+---------
+
+The internet makes a vast quantity of data available.
+
+.. rst-class:: build
+.. container::
+
+    But not always in the form or combination you want.
+
+    It would be nice to be able to combine data from different sources to
+    create *meaning*.
+
+
+The Big Question
+----------------
+
+.. rst-class:: large centered
+
+But How?
+
+
+The Big Answer
+--------------
+
+.. rst-class:: large centered
+
+Mashups
+
+
+Mashups
+-------
+
+A mashup is::
+
+    a web page, or web application, that uses and combines data, presentation
+    or functionality from two or more sources to create new services.
+
+    -- wikipedia (http://en.wikipedia.org/wiki/Mashup_(web_application_hybrid))
+
+
+Data Sources
+------------
+
+The key to mashups is the idea of data sources.
+
+.. rst-class:: build
+.. container::
+
+    These come in many flavors:
+
+    .. rst-class:: build
+
+    * Simple websites with data in HTML
+    * Web services providing structured data
+    * Web services providing tranformative service (geocoding)
+    * Web services providing presentation (mapping)
+
+Web Scraping
+============
 
 .. rst-class:: left
 .. container::
 
-    We've spent the first few weeks of this course building and deploying a
-    simple web application.
+    It would be nice if all online data were available in well-structured formats.
 
     .. rst-class:: build
     .. container::
 
-        now it's time to step back and look at the technologies underlying the
-        work we've done.
+        The reality is that much data is available only in HTML.
 
-        We'll begin by discussing the basics of networking computers.
+        Still we can get at it, with some effort.
 
-        You'll learn a bit here about how computers talk to each other across a
-        distance.
+        By scraping the data from the web pages.
 
-TCP/IP
-------
 
-.. figure:: /_static/network_topology.png
-    :align: left
+HTML
+----
 
-    http://en.wikipedia.org/wiki/Internet_Protocol_Suite
+.. ifnotslides::
 
-.. rst-class:: build
+    Ideally, it looks like this:
 
-* processes can communicate
-* inside one machine
-* between two machines
-* among many machines
+.. code-block:: html
 
+    <!DOCTYPE html>
+    <html>
+      <head>
+      </head>
+      <body>
+        <p>A nice clean paragraph</p>
+        <p>And another nice clean paragraph</p>
+      </body>
+    </html>
 
-.. nextslide::
 
-.. figure:: /_static/data_in_tcpip_stack.png
-    :align: left
-    :width: 100%
+.. nextslide:: HTML... IRL
 
-    http://en.wikipedia.org/wiki/Internet_Protocol_Suite
+.. ifnotslides::
 
-.. rst-class:: build
+    But in real life, it's more often like this:
 
-* Process divided into 'layers'
-* 'Layers' are mostly arbitrary
-* Different descriptions have different layers
-* Most common is the 'TCP/IP Stack'
+.. code-block:: html
 
+    <html>
+     <form>
+      <table>
+       <td><input name="input1">Row 1 cell 1
+       <tr><td>Row 2 cell 1
+      </form>
+      <td>Row 2 cell 2<br>This</br> sure is a long cell
+     </body>
+    </html>
 
-The TCP/IP Stack - Link
------------------------
 
-The bottom layer is the 'Link Layer'
+.. nextslide:: FFFFFFFFFUUUUUUUUUUUUU!!!!
 
-.. rst-class:: build
+.. figure:: /_static/scream.jpg
+    :align: center
+    :width: 32%
 
-* Deals with the physical connections between machines, 'the wire'
+    Photo by Matthew via Flickr (http://www.flickr.com/photos/purplemattfish/3918004964/) - CC-BY-NC-ND
 
-* Packages data for physical transport
 
-* Executes transmission over a physical medium
+.. nextslide:: The Law of The Internet
 
-  .. rst-class:: build
+.. rst-class:: large centered
 
-  * what that medium is is arbitrary
+"Be strict in what you send and tolerant in what you receive"
 
-* Implemented in the Network Interface Card(s) (NIC) in your computer
 
-
-The TCP/IP Stack - Internet
----------------------------
-
-Moving up, we have the 'Internet Layer'
-
-.. rst-class:: build
-
-* Deals with addressing and routing
-
-  .. rst-class:: build
-
-  * Where are we going and how do we get there?
-
-* Agnostic as to physical medium (IP over Avian Carrier - IPoAC)
-
-* Makes no promises of reliability
-
-* Two addressing systems
-
-  .. rst-class:: build
-
-  * IPv4 (current, limited '192.168.1.100')
-
-  * IPv6 (future, 3.4 x 10^38 addresses, '2001:0db8:85a3:0042:0000:8a2e:0370:7334')
-
-
-.. nextslide::
-
-.. rst-class:: large center
-
-That's 4.3 x 10^28 addresses *per person alive today*
-
-
-The TCP/IP Stack - Transport
-----------------------------
-
-Next up is the 'Transport Layer'
-
-.. rst-class:: build
-
-* Deals with transmission and reception of data
-
-  * error correction, flow control, congestion management
-
-* Common protocols include TCP & UDP
-
-  * TCP: Tranmission Control Protocol
-
-  * UDP: User Datagram Protocol
-
-* Not all Transport Protocols are 'reliable'
-
-  .. rst-class:: build
-
-  * TCP ensures that dropped packets are resent
-
-  * UDP makes no such assurance
-
-  * Reliability is slow and expensive
-
-
-.. nextslide::
-
-The 'Transport Layer' also establishes the concept of a **port**
-
-.. rst-class:: build
-.. container::
-
-    .. rst-class:: build
-
-    * IP Addresses designate a specific *machine* on the network
-
-    * A **port** provides addressing for individual *applications* in a single
-      host
-
-    * 192.168.1.100:80  (the *:80* part is the **port**)
-
-    * [2001:db8:85a3:8d3:1319:8a2e:370:7348]:443 (*:443* is the **port**)
-
-    This means that you don't have to worry about information intended for your
-    web browser being accidentally read by your email client.
-
-
-.. nextslide::
-
-There are certain **ports** which are commonly understood to belong to given
-applications or protocols:
-
-.. rst-class:: build
-.. container::
-
-    .. rst-class:: build
-
-    * 80/443 - HTTP/HTTPS
-    * 20 - FTP
-    * 22 - SSH
-    * 23 - Telnet
-    * 25 - SMTP
-    * ...
-
-    These ports are often referred to as **well-known ports**
-
-    .. rst-class:: small
-
-    (see http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers)
-
-.. nextslide::
-
-Ports are grouped into a few different classes
-
-.. rst-class:: build
-
-* Ports numbered 0 - 1023 are *reserved*
-
-* Ports numbered 1024 - 65535 are *open*
-
-* Ports numbered 1024 - 49151 may be *registered*
-
-* Ports numbered 49152 - 65535 are called *ephemeral*
-
-
-The TCP/IP Stack - Application
-------------------------------
-
-The topmost layer is the 'Application Layer'
-
-.. rst-class:: build
-.. container::
-
-    .. rst-class:: build
-
-    * Deals directly with data produced or consumed by an application
-
-    * Reads or writes data using a set of understood, well-defined **protocols**
-
-      * HTTP, SMTP, FTP etc.
-
-    * Does not know (or need to know) about lower layer functionality
-
-      * The exception to this rule is **endpoint** data (or IP:Port)
-
-    .. rst-class:: centered
-
-    **this is where we live and work**
-
-
-Sockets
--------
-
-Think back for a second to what we just finished discussing, the TCP/IP stack.
-
-.. rst-class:: build
-.. container::
-
-    .. rst-class:: build
-
-    * The *Internet* layer gives us an **IP Address**
-
-    * The *Transport* layer establishes the idea of a **port**.
-
-    * The *Application* layer doesn't care about what happens below...
-
-    * *Except for* **endpoint data** (IP:Port)
-
-    A **Socket** is the software representation of that endpoint.
-
-    Opening a **socket** creates a kind of transceiver that can send and/or
-    receive *bytes* at a given IP address and Port.
-
-
-Sockets in Python
------------------
-
-Python provides a standard library module which provides socket functionality.
-It is called **socket**.
-
-.. rst-class:: build
-.. container::
-
-    The library is really just a very thin wrapper around the system
-    implementation of *BSD Sockets*
-
-    Let's spend a few minutes getting to know this module.
-
-    We're going to do this next part together, so open up a terminal and start
-    an iPython interpreter
-
-
-.. nextslide::
-
-The Python sockets library allows us to find out what port a *service* uses:
-
-.. rst-class:: build
-.. container::
-
-    .. code-block:: ipython
-
-        In [1]: import socket
-
-        In [2]: socket.getservbyname('ssh')
-        Out[2]: 22
-
-    You can also do a *reverse lookup*, finding what service uses a given *port*:
-
-    .. code-block:: ipython
-
-        In [3]: socket.getservbyport(80)
-        Out[3]: 'http'
-
-
-.. nextslide::
-
-The sockets library also provides tools for finding out information about
-*hosts*. For example, you can find out about the hostname and IP address of
-the machine you are currently using:
-
-.. code-block:: ipython
-
-    In [4]: socket.gethostname()
-    Out[4]: 'Banks'
-
-    In [5]: socket.gethostbyname(socket.gethostname())
-    Out[5]: '127.0.0.1'
-
-.. nextslide::
-
-You can also find out about machines that are located elsewhere, assuming you
-know their hostname. For example:
-
-.. code-block:: ipython
-
-    In [6]: socket.gethostbyname('google.com')
-    Out[6]: '173.194.33.100'
-
-    In [7]: socket.gethostbyname('uw.edu')
-    Out[7]: '128.95.155.134'
-
-    In [8]: socket.gethostbyname('crisewing.com')
-    Out[8]: '108.168.213.86'
-
-
-.. nextslide::
-
-The ``gethostbyname_ex`` method of the ``socket`` library provides more
-information about the machines we are exploring:
-
-.. code-block:: ipython
-
-    In [9]: socket.gethostbyname_ex('crisewing.com')
-    Out[9]: ('crisewing.com', [], ['108.168.213.86'])
-
-    In [10]: socket.gethostbyname_ex('google.com')
-    Out[10]:
-    ('google.com',
-     [],
-     ['173.194.33.100', '173.194.33.103',
-      ...
-      '173.194.33.97', '173.194.33.104'])
-
-.. nextslide::
-
-To create a socket, you use the **socket** method of the ``socket`` library.
-It takes up to three optional positional arguments (here we use none to get
-the default behavior):
-
-.. code-block:: ipython
-
-    In [11]: foo = socket.socket()
-
-    In [12]: foo
-    Out[12]: <socket.socket fd=10, family=AddressFamily.AF_INET,
-              type=SocketKind.SOCK_STREAM, proto=0, laddr=('0.0.0.0', 0)>
-
-.. nextslide::
-
-A socket has some properties that are immediately important to us. These
-include the *family*, *type* and *protocol* of the socket:
-
-.. rst-class:: build
-.. container::
-
-    .. code-block:: ipython
-
-        In [13]: foo.family
-        Out[13]: <AddressFamily.AF_INET: 2>
-
-        In [14]: foo.type
-        Out[14]: <SocketKind.SOCK_STREAM: 1>
-
-        In [15]: foo.proto
-        Out[15]: 0
-
-    You might notice that the values for these properties are integers.  In
-    fact, these integers are **constants** defined in the socket library.
-
-
-.. nextslide:: A quick utility method
-
-Let's define a method in place to help us see these constants. It will take a
-single argument, the shared prefix for a defined set of constants:
-
-.. rst-class:: build
-.. container::
-
-    (you can also find this in ``resources/session04/socket_tools.py``)
-
-    .. code-block:: ipython
-
-        In [37]: def get_constants(prefix):
-           ....:     """mapping of socket module constants to their names"""
-           ....:     return {getattr(socket, n): n
-           ....:             for n in dir(socket)
-           ....:             if n.startswith(prefix)
-           ....:     }
-           ....:
-
-
-Socket Families
+Taming the Mess
 ---------------
 
-Think back a moment to our discussion of the *Internet* layer of the TCP/IP
-stack.  There were a couple of different types of IP addresses:
+Luckily, there are tools to help with this.
+
+.. rst-class:: build
+.. container::
+
+    In python there are several candidates, but I like ``BeautifulSoup``.
+
+    BeautifulSoup is a great tool, but it's not in the Standard Library.
+
+    We'll need to install it.
+
+    Create a virtualenv to do so:
+
+    .. code-block:: bash
+
+        $ pyvenv soupenv
+        ...
+        $ source soupenv/bin/activate
+
+    (remember, for Windows users that should be ``soupenv/Scripts/activate.bat``)
+
+
+.. nextslide:: Install BeautifulSoup
+
+Once the virtualenv is activated, you can simply use pip or easy_install to
+install the libraries you want:
+
+.. code-block:: bash
+
+    (soupenv)$ pip install beautifulsoup4
+
+
+.. nextslide:: Choose a Parsing Engine
+
+BeautifulSoup is built to use the Python HTMLParser.
+
+.. rst-class:: build
+
+* Batteries Included.  It's already there
+* It's not great, especially before Python 2.7.3
+
+.. rst-class:: build
+.. container::
+
+    BeautifulSoup also supports using other parsers.
+
+    There are two good choices: ``lxml`` and ``html5lib``.
+
+    ``lxml`` is better, but much harder to install.  Let's use ``html5lib``.
+
+
+.. nextslide:: Install a Parsing Engine
+
+Again, this is pretty simple::
+
+    (soupenv)$ pip install html5lib
+
+.. rst-class:: build
+.. container::
+
+    Once installed, BeautifulSoup will choose it automatically.
+
+    BeautifulSoup will choose the "best" available.
+
+    You can specify the parser if you need to for some reason.
+
+    In fact, in recent versions of BeautifulSoup, you'll be warned if you don't
+    (though you can ignore the warning).
+
+
+.. nextslide:: Install Requests
+
+Python provides tools for opening urls and communicating with servers. It's
+spread across the ``urllib`` and ``urllib2`` packages.
+
+.. rst-class:: build
+.. container::
+
+    These packages have pretty unintuitive APIs.
+
+    The ``requests`` library is becoming the de-facto standard for this type of
+    work.  Let's install it too.
+
+    .. code-block:: bash
+
+        (soupenv)$ pip install requests
+
+
+Our Class Mashup
+----------------
+
+We're going to explore some tools for making a mashup today
+
+.. rst-class:: build
+.. container::
+
+    We'll be starting by scraping restaurant health code data for
+    a given ZIP code
+
+    Then, we'll look up the geographic location of those zipcodes using Google
+
+    Finally, we'll display the results of our work on a map
+
+    Start by opening a new file in your editor: ``mashup.py``.
+
+
+.. nextslide:: Getting Some HTML
+
+The source for the data we'll be displaying is a search tool provided by King
+County.
+
+.. rst-class:: build
+.. container::
+
+    It's supposed to have a web service, but the service is broken.
+
+    Luckily, the HTML search works just fine.
+
+    Open `the search form`_ in your browser.
+
+    Fill in a ZIP code (perhaps 98101).
+
+    Add a start and end date (perhaps about 1 or 2 years apart).
+
+    Submit the form, and take a look at what you get.
+
+.. _the search form: http://info.kingcounty.gov/health/ehs/foodsafety/inspections/search.aspx
+
+
+.. nextslide:: Repeat, But Automate
+
+Next we want to automate the process.
+
+.. rst-class:: build
+.. container::
+
+    Copy the domain and path of the url into your new ``mashup.py`` file like
+    so:
+
+    .. code-block:: python
+
+        INSPECTION_DOMAIN = "http://info.kingcounty.gov"
+        INSPECTION_PATH = "/health/ehs/foodsafety/inspections/Results.aspx"
+
+.. nextslide:: Repeat, But Automate
+
+Next, copy the query parameters from the URL and convert them to a dictionary:
+
+.. code-block:: python
+
+    INSPECTION_PARAMS = {
+        'Output': 'W',
+        'Business_Name': '',
+        'Business_Address': '',
+        'Longitude': '',
+        'Latitude': '',
+        'City': '',
+        'Zip_Code': '',
+        'Inspection_Type': 'All',
+        'Inspection_Start': '',
+        'Inspection_End': '',
+        'Inspection_Closed_Business': 'A',
+        'Violation_Points': '',
+        'Violation_Red_Points': '',
+        'Violation_Descr': '',
+        'Fuzzy_Search': 'N',
+        'Sort': 'H'
+    }
+
+
+Fetching Search Results
+-----------------------
+
+Next we'll use the ``requests`` library to write a function to fetch these
+results on demand.
+
+.. rst-class:: build
+.. container::
+
+    In ``requests``, each HTTP method has a module-level function:
+
+    .. rst-class:: build
+
+    * ``GET`` == ``requests.get(url, **kwargs)``
+    * ``POST`` == ``requests.post(url, **kwargs)``
+    * ...
+
+    ``kwargs`` represent other parts of an HTTP request:
+
+    .. rst-class:: build
+
+    * ``params``: a dict of url parameters (?foo=bar&baz=bim)
+    * ``headers``: a dict of headers to send with the request
+    * ``data``: the body of the request, if any (form data for POST goes here)
+    * ...
+
+
+.. nextslide:: Handling Requests Responses
+
+The return value from one of these functions is a ``response`` object which
+provides:
 
 .. rst-class:: build
 .. container::
 
     .. rst-class:: build
 
-    * IPv4 ('192.168.1.100')
+    * ``response.status_code``: see the HTTP Status Code returned
+    * ``response.ok``: True if ``response.status_code`` is not an error
+    * ``response.raise_for_status()``: call to raise a python error if it is
+    * ``response.headers``: The headers sent from the server
+    * ``response.text``: Body of the response, decoded to unicode
+    * ``response.encoding``: The encoding used to decode
+    * ``response.content``: The original encoded response body as bytes
 
-    * IPv6 ('2001:0db8:85a3:0042:0000:8a2e:0370:7334')
+    ``requests documentation``: http://docs.python-requests.org/en/latest/
 
+.. nextslide:: Fetch Search Results
 
-    The **family** of a socket corresponds to the *addressing system* it uses
-    for connecting.
-
-.. nextslide::
-
-Families defined in the ``socket`` library are prefixed by ``AF_``:
+We'll start by writing a function ``get_inspection_page``
 
 .. rst-class:: build
 .. container::
 
-    .. code-block:: ipython
+    .. rst-class:: build
 
-        In [39]: families = get_constants('AF_')
+    * It will accept keyword arguments for each of the possible query values
+    * It will build a dictionary of request query parameters from incoming
+      keywords
+    * It will make a request to the inspection service search page using this
+      query
+    * It will return the encoded content and the encoding used as a tuple
 
-        In [40]: families
-        Out[40]:
-        {<AddressFamily.AF_UNSPEC: 0>: 'AF_UNSPEC',
-         <AddressFamily.AF_UNIX: 1>: 'AF_UNIX',
-         <AddressFamily.AF_INET: 2>: 'AF_INET',
+    Try writing this function. Put it in ``mashup.py``
+
+
+My Solution
+-----------
+
+Here's the one I created:
+
+.. rst-class:: build
+
+.. code-block:: python
+
+    import requests
+
+    def get_inspection_page(**kwargs):
+        url = INSPECTION_DOMAIN + INSPECTION_PATH
+        params = INSPECTION_PARAMS.copy()
+        for key, val in kwargs.items():
+            if key in INSPECTION_PARAMS:
+                params[key] = val
+        resp = requests.get(url, params=params)
+        resp.raise_for_status()
+        return resp.text
+
+
+Parse the Results
+-----------------
+
+Next, we'll need to parse the results we get when we call that function
+
+But before we start, a word about parsing HTML with BeautifulSoup
+
+
+.. nextslide:: Parsing HTML with BeautifulSoup
+
+The BeautifulSoup object can be instantiated with a string or a file-like
+object as the sole argument:
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: python
+
+        from bs4 import BeautifulSoup
+        parsed = BeautifulSoup('<h1>Some HTML</h1>')
+
+        fh = open('a_page.html', 'r')
+        parsed = BeautifulSoup(fh)
+
+        page = urllib2.urlopen('http://site.com/page.html')
+        parsed = BeautifulSoup(page)
+
+    You might want to open the documentation as reference
+    (http://www.crummy.com/software/BeautifulSoup/bs4/doc)
+
+
+My Solution
+-----------
+
+Take a shot at writing this new function in ``mashup.py``
+
+.. code-block:: python
+
+    # add this import at the top
+    from bs4 import BeautifulSoup
+
+    # then add this function lower down
+    def parse_source(html):
+        parsed = BeautifulSoup(html)
+        return parsed
+
+
+Put It Together
+---------------
+
+We'll need to make our script do something when run.
+
+.. code-block:: python
+
+    if __name__ == '__main__':
+        # do something
+
+.. rst-class:: build
+.. container::
+
+    .. rst-class:: build
+
+    * Fetch a search results page
+    * Parse the resulting HTML
+    * For now, print out the results so we can see what we get
+
+    .. container::
+
+        Use the ``prettify`` method on a BeautifulSoup object::
+
+            print(parsed.prettify())
+
+
+My Solution
+-----------
+
+Try to come up with the proper code on your own.  Add it to ``mashup.py``
+
+.. rst-class:: build
+.. code-block:: python
+
+    if __name__ == '__main__':
+        use_params = {
+            'Inspection_Start': '2/1/2013',
+            'Inspection_End': '2/1/2015',
+            'Zip_Code': '98101'
+        }
+        html = get_inspection_page(**use_params)
+        parsed = parse_source(html)
+        print(parsed.prettify())
+
+
+.. nextslide:: Test The Results
+
+Assuming your virtualenv is still active, you should be able to execute the
+script.
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: bash
+    
+        (soupenv)$ python mashup.py
+        ...
+           <script src="http://www.kingcounty.gov/kcscripts/kcPageAnalytics.js" type="text/javascript">
+           </script>
+           <script type="text/javascript">
+             //<![CDATA[
+             var usasearch_config = { siteHandle:"kingcounty" };
+             var script = document.createElement("script");
+             script.type = "text/javascript";
+             script.src = "http://search.usa.gov/javascripts/remote.loader.js";
+             document.getElementsByTagName("head")[0].appendChild(script);
+             //]]>
+           </script>
+          </form>
+         </body>
+        </html>
+
+    This script is available as ``resources/session07/mashup_1.py``
+
+
+
+.. nextslide:: Preserve the Results
+
+Now, let's re-run the script, saving the output to a file so we can use it
+later::
+
+    $ python mashup.py > inspection_page.html
+
+.. rst-class:: build
+.. container::
+
+    Then add a quick function to our script that will use these saved results:
+
+    .. code-block:: python
+
+        def load_inspection_page(name):
+            file_path = pathlib.Path(name)
+            return file_path.read_text(encoding='utf8')
+
+    Finally, bolt that in to your script to use it:
+
+    .. code-block:: python
+
+        # COMMENT OUT THIS LINE AND REPLACE IT
+        # html = get_inspection_page(**use_params)
+        html = load_inspection_page('inspection_page.html')
+
+
+Extracting Data
+---------------
+
+Next we find the bits of this pile of HTML that matter to us.
+
+.. rst-class:: build
+.. container::
+
+    Open the page you just wrote to disk in your web browser and open the
+    developer tools to inspect the page source.
+
+    You'll want to start by finding the element in the page that contains all
+    our search results.
+
+    Look at the source and identify the single element we are looking for.
+
+.. nextslide:: Tags and Searching
+
+Having found it visually, we can now search for it automatically. In
+BeautifulSoup:
+
+.. rst-class:: build
+.. container::
+
+    .. rst-class:: build
+
+    * All HTML elements (including the parsed document itself) are ``tags``
+    * A ``tag`` can be searched using its ``find`` or ``find_all`` methods
+    * This searches the descendents of the tag on which it is called.
+    * It takes arguments which act as *filters* on the search results
+
+    .. container::
+
+        like so::
+
+            tag.find(name, attrs, recursive, text, **kwargs)
+            tag.find_all(name, attrs, recursive, text, limit, **kwargs)
+
+
+.. nextslide:: Searching by Attribute
+
+The ``find`` method allows us to pass *kwargs*.
+
+.. rst-class:: build
+.. container::
+
+    Keywords that are not among the named parameters will be considered an HTML
+    attribute.
+
+    We can use this to find the column that holds our search results:
+
+    .. code-block:: python
+
+        content_col = parsed.find('td', id="contentcol")
+
+    Add that line to our mashup script and try it out:
+
+    .. code-block:: python
+
+        #...
+        parsed = parse_source(html)
+        content_col = parsed.find("td", id="contentcol")
+        print content_col.prettify()
+
+    .. code-block:: bash
+
+        (soupenv)$ python mashup.py
+        <td id="contentcol">
+            ...
+        </td>
+
+
+.. nextslide:: Filtering By Regular Expression
+
+The next job is to find the inspection data we can see when we click on the
+restaurant names in our page.
+
+.. rst-class:: build
+.. container::
+
+    Do you notice a pattern in how that data is structured?
+
+    For each restaurant in our results, there are *two* ``<div>`` tags.
+
+    The first contains the content you see at first, the second the content
+    that displays when we click.
+
+    What can you see that identifies these items?
+
+    ``<div id="PR0084952"...>`` and ``<div id="PR0084952~"...>``
+
+    Each pair shares an ID, and the stuff we want is in the second one
+
+    Each number is different for each restaurant
+
+    We can use a regular expression to help us here.
+
+.. nextslide:: Getting the Information Divs
+
+Let's write a function in ``mashup.py`` that will find all the divs in our
+column with the right kind of id:
+
+.. rst-class:: build
+.. container::
+
+    .. rst-class:: build
+
+    * It should match ``<div>`` tags only
+    * It should match ids that start with ``PR``
+    * It should match ids that contain some number of *digits* after that
+    * It should match ids that end with a *tilde* (``~``) character
+
+    .. code-block:: python
+
+        # add an import up top
+        import re
+
+        # and add this function
+        def restaurant_data_generator(html):
+            id_finder = re.compile(r'PR[\d]+~')
+            return html.find_all('div', id=id_finder)
+
+
+.. nextslide:: Verify It Works
+
+Let's add that step to the *main* block at the bottom of ``mashup.py`` (only
+print the first of the many divs that match):
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: python
+
+        html, encoding = load_inspection_page('inspection_page.html')
+        parsed = parse_source(html, encoding)
+        content_col = parsed.find("td", id="contentcol")
+        data_list = restaurant_data_generator(content_col)
+        print data_list[0].prettify()
+
+
+    Finally, test it out:
+
+    .. code-block:: bash
+
+        (soupenv)$ python mashup.py
+        <div id="PR0001203~" name="PR0001203~" onclick="toggleShow(this.id);"...>
+         <table style="width: 635px;">
          ...
-         <AddressFamily.AF_INET6: 30>: 'AF_INET6',
-         <AddressFamily.AF_SYSTEM: 32>: 'AF_SYSTEM'}
+         </table>
+        </div>
 
-    *Your results may vary*
-
-    Of all of these, the ones we care most about are ``2`` (IPv4) and ``30``
-    (IPv6).
+    This code is available as ``/resources/session07/mashup_2.py``
 
 
-.. nextslide:: Unix Domain Sockets
+Parsing Restaurant Data
+-----------------------
 
-
-When you are on a machine with an operating system that is Unix-like, you will
-find another generally useful socket family: ``AF_UNIX``, or Unix Domain
-Sockets. Sockets in this family:
-
-.. rst-class:: build
-
-* connect processes **on the same machine**
-
-* are generally a bit slower than IPC connnections
-
-* have the benefit of allowing the same API for programs that might run on one
-  machine __or__ across the network
-
-* use an 'address' that looks like a pathname ('/tmp/foo.sock')
-
-
-.. nextslide:: Test your skills
-
-What is the *default* family for the socket we created just a moment ago?
+Now that we have the records we want, we need to parse them. We want to preserve:
 
 .. rst-class:: build
 .. container::
 
-    (remember we bound the socket to the symbol ``foo``)
+    We'll start by parsing out the information about the restaurant themselves:
 
-    How did you figure this out?
+    .. rst-class:: build
+
+    * Name
+    * Address
+    * Location
+    * ...
+
+    How is this information contained in our records?
 
 
-Socket Types
-------------
+.. nextslide:: Complex Filtering
 
-The socket *type* determines the semantics of socket communications.
+Each record consists of a table with a series of *rows* (``<tr>``).
 
 .. rst-class:: build
 .. container::
 
-    Look up socket type constants with the ``SOCK_`` prefix:
+    The rows we want at this time all have two *cells* inside them.
+
+    The first contains the *label* of the data, the second contains the *value*
+
+    We'll need a function in ``mashup.py`` that:
+
+    .. rst-class:: build
+
+    * takes an HTML element as an argument
+    * verifies that it is a ``<tr>`` element
+    * verifies that it has two immediate children that are ``<td>`` elements
+
+    My solution:
+
+    .. code-block:: python
+
+        def has_two_tds(elem):
+            is_tr = elem.name == 'tr'
+            td_children = elem.find_all('td', recursive=False)
+            has_two = len(td_children) == 2
+            return is_tr and has_two
+
+.. nextslide:: Test It Out
+
+Let's try this out in an interpreter:
+
+.. code-block:: ipython
+
+    In [1]: from mashup_3 import load_inspection_page, parse_source,
+            restaurant_data_generator, has_two_tds
+    In [2]: html = load_inspection_page('inspection_page.html')
+    In [3]: parsed = parse_source(html)
+    ...
+    In [4]: content_col = parsed.find('td', id='contentcol')
+    In [5]: records = restaurant_data_generator(content_col)
+    In [6]: rec = records[4]
+
+.. nextslide:: Test It Out
+
+We'd like to find all table rows in that div that contain *two* cells
+
+.. rst-class:: build
+.. container::
+
+    The table rows are all contained in a ``<tbody>`` tag.
+
+    We only want the ones at the top of that tag (ones nested more deeply
+    contain other data)
 
     .. code-block:: ipython
 
-        In [42]: types = get_constants('SOCK_')
+        In [13]: data_rows = rec.find('tbody').find_all(has_two_tds, recursive=False)
+        In [14]: len(data_rows)
+        Out[14]: 7
+        In [15]: print(data_rows[0].prettify())
+        <tr>
+         <td class="promptTextBox" style="width: 125px; font-weight: bold">
+          - Business Name
+         </td>
+         <td class="promptTextBox" style="width: 520px; font-weight: bold">
+          SPICE ORIENT
+         </td>
+        </tr>
 
-        In [43]: types
-        Out[43]:
-        {<SocketKind.SOCK_STREAM: 1>: 'SOCK_STREAM',
-         <SocketKind.SOCK_DGRAM: 2>: 'SOCK_DGRAM',
-         <SocketKind.SOCK_RAW: 3>: 'SOCK_RAW',
-         <SocketKind.SOCK_RDM: 4>: 'SOCK_RDM',
-         <SocketKind.SOCK_SEQPACKET: 5>: 'SOCK_SEQPACKET'}
+.. nextslide:: Extracting Labels and Values
 
-    The most common are ``1`` (Stream communication (TCP)) and ``2`` (Datagram
-    communication (UDP)).
-
-
-.. nextslide:: Test your skills
-
-What is the *default* type for our generic socket, ``foo``?
-
-
-Socket Protocols
-----------------
-
-A socket also has a designated *protocol*. The constants for these are
-prefixed by ``IPPROTO_``:
+Now we have a list of the rows that contain our data.
 
 .. rst-class:: build
 .. container::
 
+    Next we have to collect the data they contain
+
+    The *label/value* structure of this data should suggest the right container
+    to store the information.
+
+    Let's start by trying to get at the first label
+
     .. code-block:: ipython
+    
+        In [18]: row1 = data_rows[0]
+        In [19]: cells = row1.find_all('td')
+        In [20]: cell1 = cells[0]
+        In [21]: cell1.text
+        Out[21]: '\n            - Business Name\n           '
 
-        In [45]: protocols = get_constants('IPPROTO_')
+    That works well enough, but all that extra stuff is nasty
 
-        In [46]: protocols
-        Out[46]:
-        {0: 'IPPROTO_IP',
-         ...
-         6: 'IPPROTO_TCP',
-         ...
-         17: 'IPPROTO_UDP',
-         ...}
+    We need a method to clean up the text we get from these cells
 
-    The choice of which protocol to use for a socket is determined by the
-    *internet layer* protocol you intend to use. ``TCP``? ``UDP``? ``ICMP``?
-    ``IGMP``?
+    It should strip extra whitespace, and characters like ``-`` and ``:`` we
+    don't want.
 
+.. nextslide:: My Solution
 
-.. nextslide:: Test your skills
-
-What is the *default* protocol used by our generic socket, ``foo``?
-
-
-Customizing Sockets
--------------------
-
-These three properties of a socket correspond to the three positional
-arguments you may pass to the socket constructor.
+Try writing such a function for yourself now in ``mashup.py``
 
 .. rst-class:: build
 .. container::
 
-    Using them allows you to create sockets with specific communications
-    profiles:
+    .. code-block:: python
+
+        def clean_data(td):
+            return td.text.strip(" \n:-")
+
+    Add it to your interpreter and test it out:
 
     .. code-block:: ipython
+    
+        In [25]: def clean_data(td):
+           ....:     return td.text.strip(" \n:-")
+           ....:
+        In [26]: clean_data(cell1)
+        Out[26]: 'Business Name'
+        In [27]:
 
-        In [3]: socket.socket(socket.AF_INET,
-           ...:               socket.SOCK_DGRAM,
-           ...:               socket.IPPROTO_UDP)
-        Out[3]: <socket.socket fd=7,
-                    family=AddressFamily.AF_INET,
-                    type=SocketKind.SOCK_DGRAM,
-                    proto=17,
-                    laddr=('0.0.0.0', 0)>
+    Ahhh, much better
 
+.. nextslide:: The Complete Function
+
+So we can get a list of the rows that contain label/value pairs.
+
+.. rst-class:: build
+.. container::
+
+    And we can extract clean values from the cells in these rows
+
+    Now we need a function in ``mashup.py`` that will iterate through the rows
+    we find and build a dictionary of the pairs.
+
+    We have to be cautious because some rows don't have a label.
+
+    The values in these rows should go with the label from the previous row.
+
+.. nextslide:: My Solution
+
+Here's the version I came up with:
+
+.. code-block:: python
+
+    def extract_restaurant_metadata(elem):
+        restaurant_data_rows = elem.find('tbody').find_all(
+            has_two_tds, recursive=False
+        )
+        rdata = {}
+        current_label = ''
+        for data_row in restaurant_data_rows:
+            key_cell, val_cell = data_row.find_all('td', recursive=False)
+            new_label = clean_data(key_cell)
+            current_label = new_label if new_label else current_label
+            rdata.setdefault(current_label, []).append(clean_data(val_cell))
+        return rdata
+
+
+.. nextslide:: Testing It Out
+
+Add it to our script:
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: python
+    
+        # ...
+        data_list = restaurant_data_generator(content_col)
+        for data_div in data_list:
+            metadata = extract_restaurant_metadata(data_div)
+            print metadata
+
+    And then try it out:
+
+    .. code-block:: bash
+    
+        (soupenv)$ python mashup.py
+        ...
+        {u'Business Category': [u'Seating 0-12 - Risk Category III'],
+         u'Longitude': [u'122.3401786000'], u'Phone': [u'(206) 501-9554'],
+         u'Business Name': [u"ZACCAGNI'S"], u'Address': [u'97B PIKE ST', u'SEATTLE, WA 98101'],
+         u'Latitude': [u'47.6086651300']}
+
+    This script is available as ``resources/session07/mashup_3.py``
+
+
+Extracting Inspection Data
+--------------------------
+
+The final step is to extract the inspection data for each restaurant.
+
+.. rst-class:: build
+.. container::
+
+    We want to capture only the score from each inspection, details we can
+    leave behind.
+
+    We'd like to calculate the average score for all known inspections.
+
+    We'd also like to know how many inspections there were in total.
+
+    Finally, we'd like to preserve the highest score of all inspections for a
+    restaurant.
+
+    We'll add this information to our metadata about the restaurant.
+
+
+.. nextslide:: Finding the Data
+
+Let's start by getting our bearings. Return to viewing the
+``inspection_page.html`` you saved in a browser.
+
+.. rst-class:: build
+.. container::
+
+    Find a restaurant that has had an inspection or two.
+
+    What can you say about the HTML that contains the scores for these
+    inspections?
+
+    I notice four characteristics that let us isolate the information we want:
+
+    .. rst-class:: build
+
+    * Inspection data is containd in ``<tr>`` elements
+    * Rows with inspection data in them have four ``<td>`` children
+    * The text in the first cell contains the word "inspection"
+    * But the text does not *start* with the word "inspection"
+    
+    Let's try to write a filter function like the one above that will catch
+    these rows for us.
+
+.. nextslide:: The filter
+
+Add this new function ``is_inspection_data_row`` to ``mashup.py``
+
+.. rst-class:: build
+.. code-block:: python
+
+    def is_inspection_data_row(elem):
+        is_tr = elem.name == 'tr'
+        if not is_tr:
+            return False
+        td_children = elem.find_all('td', recursive=False)
+        has_four = len(td_children) == 4
+        this_text = clean_data(td_children[0]).lower()
+        contains_word = 'inspection' in this_text
+        does_not_start = not this_text.startswith('inspection')
+        return is_tr and has_four and contains_word and does_not_start
+
+.. nextslide:: Test It Out
+
+We can test this function by adding it into our script:
+
+.. code-block:: python
+
+    for data_div in data_list:
+        metadata = extract_restaurant_metadata(data_div)
+        # UPDATE THIS BELOW HERE
+        inspection_rows = data_div.find_all(is_inspection_data_row)
+        print(metadata)
+        print(len(inspection_rows))
+        print('*'*10)
+
+.. rst-class:: build
+.. container::
+
+    And try running the script in your terminal:
+
+    .. code-block:: bash
+    
+        (soupenv)$ python mashup.py
+        {u'Business Category': [u'Seating 0-12 - Risk Category III'],
+         u'Longitude': [u'122.3401786000'], u'Phone': [u'(206) 501-9554'],
+         u'Business Name': [u"ZACCAGNI'S"], u'Address': [u'97B PIKE ST', u'SEATTLE, WA 98101'],
+         u'Latitude': [u'47.6086651300']}
+        0
+        **********
+
+.. nextslide:: Building Inspection Data
+
+Now we can isolate a list of the rows that contain inspection data.
+
+.. rst-class:: build
+.. container::
+
+    Next we need to calculate the average score, total number and highest score
+    for each restaurant.
+
+    Let's add a function to ``mashup.py`` that will:
+
+    .. rst-class:: build
+
+    * Take a div containing a restaurant record
+    * Extract the rows containing inspection data
+    * Keep track of the highest score recorded
+    * Sum the total of all inspections
+    * Count the number of inspections made
+    * Calculate the average score for inspections
+    * Return the three calculated values in a dictionary
+
+.. nextslide:: My Solution
+
+Try writing this routine yourself.
+
+.. code-block:: python
+
+    def get_score_data(elem):
+        inspection_rows = elem.find_all(is_inspection_data_row)
+        samples = len(inspection_rows)
+        total = high_score = average = 0
+        for row in inspection_rows:
+            strval = clean_data(row.find_all('td')[2])
+            try:
+                intval = int(strval)
+            except (ValueError, TypeError):
+                samples -= 1
+            else:
+                total += intval
+                high_score = intval if intval > high_score else high_score
+        if samples:
+            average = total/float(samples)
+        return {'Average Score': average, 'High Score': high_score,
+                'Total Inspections': samples}
+
+.. nextslide:: Test It Out
+
+We can now incorporate this new routine into our ``mashup`` script.
+
+.. rst-class:: build
+.. container::
+
+    We'll want to add the data it produces to the metadata we've already
+    extracted.
+
+    .. code-block:: python
+
+        for data_div in data_list:
+            metadata = extract_restaurant_metadata(data_div)
+            inspection_data = get_score_data(data_div)
+            metadata.update(inspection_data)
+            print metadata
+
+    And test it out at the command line:
+
+    .. code-block:: bash
+
+        (soupenv)$ python mashup.py
+        ...
+        {u'Business Category': [u'Seating 0-12 - Risk Category III'],
+         u'Longitude': [u'122.3401786000'], u'High Score': 0,
+         u'Phone': [u'(206) 501-9554'], u'Business Name': [u"ZACCAGNI'S"],
+         u'Total Inspections': 0, u'Address': [u'97B PIKE ST', u'SEATTLE, WA 98101'],
+         u'Latitude': [u'47.6086651300'], u'Average Score': 0}
 
 Break Time
 ----------
 
-So far we have:
+Once you have this working, take a break.
 
-.. rst-class:: build
-.. container::
+When we return, we'll try a saner approach to getting data from online
 
-    .. rst-class:: build
 
-    * learned about the "layers" of the TCP/IP Stack
-    * discussed *families*, *types* and *protocols* in sockets
-    * learned how to create sockets with a specific communications profile.
 
-    When we return we'll learn how to find the communcations profiles of remote
-    sockets, how to connect to them, and how to send and receive messages.
-
-    Take a few minutes now to clear your head (do not quit your python
-    interpreter).
-
-
-Address Information
--------------------
-
-When you are creating a socket to communicate with a remote service, the
-remote socket will have a specific communications profile.
-
-.. rst-class:: build
-.. container::
-
-    The local socket you create must match that communications profile.
-
-    How can you determine the *correct* values to use?
-
-    .. rst-class:: centered
-
-    **You ask.**
-
-.. nextslide::
-
-The function ``socket.getaddrinfo`` provides information about available
-connections on a given host.
-
-.. code-block:: python
-
-    socket.getaddrinfo('127.0.0.1', 80)
-
-.. rst-class:: build
-.. container::
-
-    This provides all you need to make a proper connection to a socket on a
-    remote host. The value returned is a tuple of:
-
-    .. rst-class:: build
-
-    * socket family
-    * socket type
-    * socket protocol
-    * canonical name (usually empty, unless requested by flag)
-    * socket address (tuple of IP and Port)
-
-
-.. nextslide:: A quick utility method
-
-Again, let's create a utility method in-place so we can see this in action:
-
-.. code-block:: ipython
-
-    In [10]: def get_address_info(host, port):
-       ....:     for response in socket.getaddrinfo(host, port):
-       ....:         fam, typ, pro, nam, add = response
-       ....:         print('family: {}'.format(families[fam]))
-       ....:         print('type: {}'.format(types[typ]))
-       ....:         print('protocol: {}'.format(protocols[pro]))
-       ....:         print('canonical name: {}'.format(nam))
-       ....:         print('socket address: {}'.format(add))
-       ....:         print('')
-       ....:
-
-(you can also find this in ``resources/session04/socket_tools.py``)
-
-
-.. nextslide:: On Your Own Machine
-
-Now, ask your own machine what possible connections are available for 'http':
-
-.. rst-class:: build
-.. container::
-
-    .. code-block:: ipython
-
-        In [11]: get_address_info(socket.gethostname(), 'http')
-        family: AF_INET
-        type: SOCK_DGRAM
-        protocol: IPPROTO_UDP
-        canonical name:
-        socket address: ('127.0.0.1', 80)
-
-        family: AF_INET
-        type: SOCK_STREAM
-        protocol: IPPROTO_TCP
-        canonical name:
-        socket address: ('127.0.0.1', 80)
-
-    What answers do you get?
-
-
-.. nextslide:: On the Internet
-
-.. code-block:: ipython
-
-    In [12]: get_address_info('crisewing.com', 'http')
-    family: AF_INET
-    type: SOCK_DGRAM
-    protocol: IPPROTO_UDP
-    canonical name:
-    socket address: ('108.168.213.86', 80)
-
-    family: AF_INET
-    type: SOCK_STREAM
-    protocol: IPPROTO_TCP
-    canonical name:
-    socket address: ('108.168.213.86', 80)
-
-.. rst-class:: build
-.. container::
-
-    Try a few other servers you know about.
-
-
-Client Side
-===========
-
-.. rst-class:: build
-.. container::
-
-    .. rst-class:: large
-
-    Let's put this to use
-
-    We'll communicate with a remote server as a *client*
-
-
-Construct a Socket
-------------------
-
-We've already made a socket ``foo`` using the generic constructor without any
-arguments.  We can make a better one now by using real address information from
-a real server online [**do not type this yet**]:
-
-.. code-block:: ipython
-
-    In [13]: streams = [info
-       ....:     for info in socket.getaddrinfo('crisewing.com', 'http')
-       ....:     if info[1] == socket.SOCK_STREAM]
-       ....:
-    In [14]: streams
-    Out[14]:
-    [(<AddressFamily.AF_INET: 2>,
-      <SocketKind.SOCK_STREAM: 1>,
-      6,
-      '',
-      ('108.168.213.86', 80))]
-    In [15]: info = streams[0]
-    In [16]: cewing_socket = socket.socket(*info[:3])
-
-
-Connecting a Socket
--------------------
-
-Once the socket is constructed with the appropriate *family*, *type* and
-*protocol*, we can connect it to the address of our remote server:
-
-.. code-block:: ipython
-
-    In [18]: cewing_socket.connect(info[-1])
-
-.. rst-class:: build
-
-* a successful connection returns ``None``
-
-* a failed connection raises an error
-
-* you can use the *type* of error returned to tell why the connection failed.
-
-
-Sending a Message
------------------
-
-Send a message to the server on the other end of our connection (we'll
-learn in session 2 about the message we are sending):
-
-.. code-block:: ipython
-
-    In [19]: msg = "GET / HTTP/1.1\r\n"
-    In [20]: msg += "Host: crisewing.com\r\n\r\n"
-    In [21]: msg = msg.encode('utf8')
-    In [22]: msg
-    Out[22]: b'GET / HTTP/1.1\r\nHost: crisewing.com\r\n\r\n'
-    In [23]: cewing_socket.sendall(msg)
-
-.. rst-class:: build small
-
-* the transmission continues until all data is sent or an error occurs
-* success returns ``None``
-* failure to send raises an error
-* the type of error can tell you why the transmission failed
-* but you **cannot** know how much, if any, of your data was sent
-
-
-Messages Are Bytes
-------------------
-
-One detail from the previous code should stand out:
-
-.. code-block:: ipython
-
-    In [21]: msg = msg.encode('utf8')
-    In [22]: msg
-    Out[22]: b'GET / HTTP/1.1\r\nHost: crisewing.com\r\n\r\n'
-
-You can **only** send bytes through a socket, **never** unicode
-
-.. code-block:: ipython
-
-    In [35]: cewing_socket.sendall(msg.decode('utf8'))
-    ---------------------------------------------------------------------------
-    TypeError                                 Traceback (most recent call last)
-    <ipython-input-35-8178ec7f234d> in <module>()
-    ----> 1 cewing_socket.sendall(msg.decode('utf8'))
-
-    TypeError: 'str' does not support the buffer interface
-
-
-Receiving a Reply
------------------
-
-Whatever reply we get is received by the socket we created. We can read it
-back out (again, **do not type this yet**):
-
-.. code-block:: ipython
-
-    In [24]: response = cewing_socket.recv(4096)
-    In [25]: response[:60]
-    Out[25]: b'HTTP/1.1 200 OK\r\nServer: nginx\r\nDate: Sun, 20 Sep 2015 03:38'
-
-.. rst-class:: build
-
-* The sole required argument is ``buffer_size`` (an integer). It should be a
-  power of 2 and smallish (~4096)
-* It returns a byte string of ``buffer_size`` (or smaller if less data was
-  received)
-* If the response is longer than ``buffer size``, you can call the method
-  repeatedly. The last bunch will be less than ``buffer size``.
-
-
-Cleaning Up
------------
-
-When you are finished with a connection, you should always close it::
-
-    cewing_socket.close()
-
-
-Putting it all together
------------------------
-
-First, connect and send a message:
-
-.. code-block:: ipython
-
-    In [55]: info = socket.getaddrinfo('crisewing.com', 'http')
-    In [56]: streams = [i for i in info if i[1] == socket.SOCK_STREAM]
-    In [57]: sock_info = streams[0]
-    In [58]: msg = "GET / HTTP/1.1\r\n"
-    In [59]: msg += "Host: crisewing.com\r\n\r\n"
-    In [60]: msg = msg.encode('utf8')
-    In [61]: cewing_socket = socket.socket(*sock_info[:3])
-    In [62]: cewing_socket.connect(sock_info[-1])
-    In [63]: cewing_socket.sendall(msg)
-
-
-.. nextslide::
-
-Then, receive a reply, iterating until it is complete:
-
-.. code-block:: ipython
-
-    In [65]: buffsize = 4096
-    In [66]: response = b''
-    In [67]: done = False
-    In [68]: while not done:
-       ....:     msg_part = cewing_socket.recv(buffsize)
-       ....:     if len(msg_part) < buffsize:
-       ....:         done = True
-       ....:         cewing_socket.close()
-       ....:     response += msg_part
-       ....:
-    In [69]: len(response)
-    Out[69]: 19464
-
-
-Server Side
-===========
-
-.. rst-class:: build
-.. container::
-
-    .. rst-class:: large
-
-    What about the other half of the equation?
-
-    Let's build a server and see how that part works.
-
-Construct a Socket
-------------------
-
-**For the moment, stop typing this into your interpreter.**
-
-.. rst-class:: build
-.. container::
-
-    Again, we begin by constructing a socket. Since we are actually the server
-    this time, we get to choose family, type and protocol:
-
-    .. code-block:: ipython
-
-        In [70]: server_socket = socket.socket(
-           ....:     socket.AF_INET,
-           ....:     socket.SOCK_STREAM,
-           ....:     socket.IPPROTO_TCP)
-
-        In [71]: server_socket
-        Out[71]: <socket.socket fd=12, family=AddressFamily.AF_INET,
-                    type=SocketKind.SOCK_STREAM, proto=6, laddr=('0.0.0.0', 0)>
-
-
-Bind the Socket
----------------
-
-Our server socket needs to be **bound** to an address. This is the IP Address
-and Port to which clients must connect:
-
-.. rst-class:: build
-.. container::
-
-    .. code-block:: ipython
-
-        In [72]: address = ('127.0.0.1', 50000)
-        In [73]: server_socket.bind(address)
-
-    **Terminology Note**: In a server/client relationship, the server *binds*
-    to an address and port. The client *connects*
-
-Listen for Connections
-----------------------
-
-Once our socket is bound to an address, we can listen for attempted
-connections:
-
-.. code-block:: ipython
-
-    In [74]: server_socket.listen(1)
-
-.. rst-class:: build
-
-* The argument to ``listen`` is the *backlog*
-* The *backlog* is the **maximum** number of connection requests that the
-  socket will queue
-* Once the limit is reached, the socket refuses new connections.
-
-
-Accept A Connection
--------------------
-
-When a socket is listening, it can receive incoming connection requests:
-
-.. code-block:: ipython
-
-    In [75]: connection, client_address = server_socket.accept()
-
-.. rst-class:: build
-
-* The call to ``socket.accept()`` is a *blocking* call.  It will not return
-  values until a client *connects*
-* The ``connection`` returned by a call to ``accept`` is a **new socket**.
-  This new socket is used to communicate with the client
-* The ``client_address`` is a two-tuple of IP Address and Port for the client
-  socket
-* When a connection request is 'accepted', it is removed from the backlog
-  queue.
-
-
-Communicate
------------
-
-The ``connection`` socket can now be used to receive messages from the client
-which made the connection:
-
-.. code-block:: ipython
-
-    In [76]: connection.recv(buffsize)
-
-It may also be used to return a reply:
-
-.. code-block:: ipython
-
-    In [77]: connection.sendall("message received")
-
-
-Clean Up
---------
-
-Once a transaction between the client and server is complete, the
-``connection`` socket should be closed:
-
-.. rst-class:: build
-.. container::
-
-    .. code-block:: ipython
-
-        In [78]: connection.close()
-
-    At this point, the ``server_socket`` can again accept a new client
-    connection.
-
-    Note that the ``server_socket`` is *never* closed as long as the server
-    continues to run.
-
-
-Getting the Flow
+Another Approach
 ================
 
 .. rst-class:: left
 .. container::
 
-    The flow of this interaction can be a bit confusing.  Let's see it in
-    action step-by-step.
+    Scraping web pages is tedious and inherently brittle
 
     .. rst-class:: build
     .. container::
 
-        .. container::
+        The owner of the website updates their layout, your code breaks
 
-            Open a second iPython interpreter and place it next to your first so
-            you can see both of them at the same time.
+        But there is another way to get information from the web in a more normalized
+        fashion
+
+        .. rst-class:: centered
+
+        **Web Services**
 
 
-Create a Server
----------------
+Web Services
+------------
 
-In your first python interpreter, create a server socket and prepare it for
-connections:
+"a software system designed to support interoperable machine-to-machine
+interaction over a network" - W3C
+
+.. rst-class:: build
+
+* provides a defined set of calls
+* returns structured data
+
+
+.. nextslide:: Early Web Services
+
+RSS is one of the earliest forms of Web Services
+
+.. rst-class:: build
+.. container::
+
+    A single web-based *endpoint* provides a dynamically updated listing of
+    content
+
+    Implemented in pure HTTP.  Returns XML
+
+    **Atom** is a competing, but similar standard
+
+    There's a solid Python library for consuming RSS: `feedparser`_.
+
+.. _feedparser: https://pythonhosted.org/feedparser/
+
+.. nextslide:: XML-RPC
+
+XML-RPC extended the essentially static nature of RSS by allowing users to call
+procedures and pass arguments.
+
+.. rst-class:: build
+.. container::
+
+    .. rst-class:: build
+
+    * Calls are made via HTTP GET, by passing an XML document
+    * Returns from a call are sent to the client in XML
+
+    In python, you can access XML-RPC services using `xmlrpclib`_ from the
+    standard library
+
+.. _xmlrpclib: https://docs.python.org/2/library/xmlrpclib.html
+
+.. nextslide:: SOAP
+
+SOAP extends XML-RPC in a couple of useful ways:
+
+.. rst-class:: build
+
+* It uses Web Services Description Language (WSDL) to provide meta-data about
+  an entire service in a machine-readable format (Automatic introspection)
+
+* It establishes a method for extending available data types using XML
+  namespaces
+
+.. rst-class:: build
+.. container::
+
+    There is no standard library module that supports SOAP directly.
+
+    .. rst-class:: build
+
+    * The best-known and best-supported module available is **Suds**
+    * The homepage is https://fedorahosted.org/suds/
+    * It can be installed using ``easy_install`` or ``pip install``
+    * But it hasn't been updated since Sept. 2010.
+
+    So we're going to move on
+
+.. nextslide:: If Not XML, Then What?
+
+XML is a pretty inefficient medium for transmitting data.  There's a lot of
+extra characters transmitted that lack any meaning.
+
+.. rst-class:: build large centered
+
+**Let's Use JSON**
+
+
+JSON
+----
+
+JavaScript Object Notation:
+
+.. rst-class:: build
+.. container::
+
+    .. rst-class:: build
+
+    * a lightweight data-interchange format
+    * easy for humans to read and write
+    * easy for machines to parse and generate
+
+    Based on Two Structures:
+
+    * object: ``{ string: value, ...}``
+    * array: ``[value, value, ]``
+
+    .. rst-class:: centered
+
+    pythonic, no?
+
+
+.. nextslide:: JSON Data Types
+
+JSON provides a few basic data types (see http://json.org/):
+
+.. rst-class:: build
+.. container::
+
+    .. rst-class:: build
+
+    * string: unicode, anything but ", \\ and control characters
+    * number: any number, but json does not use octal or hexadecimal
+    * object, array (we've seen these above)
+    * true
+    * false
+    * null
+
+    .. rst-class:: centered
+
+    **No date type? OMGWTF??!!1!1**
+
+.. nextslide:: Dates in JSON
+
+You have two options:
+
+.. rst-class:: build
+.. container::
+
+    .. container::
+
+        Option 1 - Unix Epoch Time (number):
+
+        .. code-block:: python
+
+            >>> import time
+            >>> time.time()
+            1358212616.7691269
+
+    .. container::
+
+        Option 2 - ISO 8661 (string):
+
+        .. code-block:: python
+
+            >>> import datetime
+            >>> datetime.datetime.now().isoformat()
+            '2013-01-14T17:18:10.727240'
+
+
+JSON in Python
+--------------
+
+You can encode python to json, and decode json back to python:
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: python
+
+        In [1]: import json
+        In [2]: array = [1, 2, 3]
+        In [3]: json.dumps(array)
+        Out[3]: '[1, 2, 3]'
+        In [4]: orig = {'foo': [1,2,3], 'bar': 'my resumé', 'baz': True}
+        In [5]: encoded = json.dumps(orig)
+        In [6]: encoded
+        Out[6]: '{"foo": [1, 2, 3], "bar": "my resum\\u00e9", "baz": true}'
+        In [7]: decoded = json.loads(encoded)
+        In [8]: decoded == orig
+        Out[8]: True
+
+    Customizing the encoder or decoder class allows for specialized serializations
+
+
+.. nextslide::
+
+the json module also supports reading and writing to *file-like objects* via
+``json.dump(fp)`` and ``json.load(fp)`` (note the missing 's')
+
+.. rst-class:: build
+.. container::
+
+    Remember duck-typing. Anything with a ``.write`` and a ``.read`` method is
+    *file-like*
+
+    This usage can be much more memory-friendly with large files/sources
+
+.. nextslide:: What about WSDL?
+
+SOAP was invented in part to provide completely machine-readable
+interoperability.
+
+.. rst-class:: build
+.. container::
+
+    *Does that really work in real life?*
+
+    .. rst-class:: centered
+
+    Hardly ever
+
+    Another reason was to provide extensibility via custom types
+
+    *Does that really work in real life?*
+
+    .. rst-class:: centered
+
+    Hardly ever
+
+.. nextslide:: Why Do All The Work?
+
+So, if neither of these goals is really achieved by using SOAP, why pay all
+the overhead required to use the protocol?
+
+.. rst-class:: build
+.. container::
+
+    Is there another way we could consider approaching the problem?
+
+    .. rst-class:: centered
+
+    **Enter REST**
+
+
+REST
+----
+
+.. rst-class:: centered
+
+**Representational State Transfer**
+
+.. rst-class:: build
+.. container::
+
+    .. rst-class:: build
+
+    * Originally described by Roy T. Fielding (worth reading)
+    * Use HTTP for what it can do
+    * Read more in `RESTful Web Services <http://www.crummy.com/writing/RESTful-Web-Services/>`_\*
+
+    \* Seriously. Buy it and read it
+
+.. nextslide:: A Comparison
+
+The XML-RCP/SOAP way:
+
+.. rst-class:: build
+
+* POST /getComment HTTP/1.1
+* POST /getComments HTTP/1.1
+* POST /addComment HTTP/1.1
+* POST /editComment HTTP/1.1
+* POST /deleteComment HTTP/1.1
+
+.. rst-class:: build
+.. container::
+
+    The RESTful way:
+
+    .. rst-class:: build
+
+    * GET /comment/<id> HTTP/1.1
+    * GET /comment HTTP/1.1
+    * POST /comment HTTP/1.1
+    * PUT /comment/<id> HTTP/1.1
+    * DELETE /comment/<id> HTTP/1.1
+
+
+.. nextslide:: ROA
+
+REST is a **Resource Oriented Architecture**
+
+.. rst-class:: build
+.. container::
+
+    The URL represents the *resource* we are working with
+
+    The HTTP Method indicates the ``action`` to be taken
+
+    The HTTP Code returned tells us the ``result`` (whether success or failure)
+
+.. nextslide:: HTTP Codes Revisited
+
+.. rst-class:: build
+.. container::
+
+    POST /comment HTTP/1.1  (creating a new comment):
+
+    .. rst-class:: build
+
+    * Success: ``HTTP/1.1 201 Created``
+    * Failure (unauthorized): ``HTTP/1.1 401 Unauthorized``
+    * Failure (NotImplemented): ``HTTP/1.1 405 Not Allowed``
+    * Failure (ValueError): ``HTTP/1.1 406 Not Acceptable``
+
+    PUT /comment/<id> HTTP/1.1 (edit comment):
+
+    .. rst-class:: build
+
+    * Success: ``HTTP/1.1 200 OK``
+    * Failure: ``HTTP/1.1 409 Conflict``
+
+    DELETE /comment/<id> HTTP/1.1 (delete comment):
+
+    .. rst-class:: build
+
+    * Success: ``HTTP/1.1 204 No Content``
+
+
+Playing With REST
+-----------------
+
+Let's take a moment to play with REST.
+
+.. rst-class:: build
+.. container::
+
+    We'll use a common, public API provided by Google.
+
+    .. rst-class:: centered
+
+    **Geocoding**
+
+.. nextslide:: Geocoding with Google APIs
+
+https://developers.google.com/maps/documentation/geocoding
+
+.. rst-class:: build
+.. container::
+
+    Open a python interpreter using our virtualenv::
+
+        (soupenv)$ python
+
+    .. code-block:: ipython
+
+        In [1]: import requests
+        In [2]: import json
+        In [3]: from pprint import pprint
+        In [4]: url = 'http://maps.googleapis.com/maps/api/geocode/json'
+        In [5]: addr = '1325 4th Ave, Seattle, 98101'
+        In [6]: parameters = {'address': addr, 'sensor': 'false'}
+        In [7]: resp = requests.get(url, params=parameters)
+        In [8]: data = resp.json()
+
+
+.. nextslide:: Reverse Geocoding
+
+You can do the same thing in reverse, supply latitude and longitude and get
+back address information:
 
 .. rst-class:: build
 .. container::
 
     .. code-block:: ipython
 
-        In [81]: server_socket = socket.socket(
-           ....:     socket.AF_INET,
-           ....:     socket.SOCK_STREAM,
-           ....:     socket.IPPROTO_IP)
-        In [82]: server_socket.bind(('127.0.0.1', 50000))
-        In [83]: server_socket.listen(1)
-        In [84]: conn, addr = server_socket.accept()
+        In [15]: if data['status'] == 'OK':
+           ....:     pprint(data['results'])
+           ....:
+        [{'address_components': [{'long_name': '1325',
+                                  'short_name': '1325',
+          ...
+          'types': ['street_address']}]
+
+    Notice that there may be a number of results returned, ordered from most
+    specific to least.
 
 
-    At this point, you should **not** get back a prompt. The server socket is
-    waiting for a connection to be made.
+Mashing It Up
+-------------
 
-
-Create a Client
----------------
-
-In your second interpreter, create a client socket and prepare to send a
-message:
+Google's geocoding data is quite nice.
 
 .. rst-class:: build
 .. container::
 
-    .. code-block:: ipython
+    But it's not in a format we can use directly to create a map
 
-        In [1]: import socket
-        In [2]: client_socket = socket.socket(
-           ...:     socket.AF_INET,
-           ...:     socket.SOCK_STREAM,
-           ...:     socket.IPPROTO_IP)
+    For that we need `geojson`
 
-    Before connecting, keep your eye on the server interpreter:
+    Moreover, formatting the data for all those requests is going to get
+    tedious.
 
-    .. code-block:: ipython
+    Luckily, people create *wrappers* for popular REST apis like google's
+    geocoding service.
 
-        In [3]: client_socket.connect(('127.0.0.1', 50000))
+    Once such wrapper is `geocoder`_, which provides not only google's service,
+    but many others under a single umbrella.
 
+.. _geocoder: http://geocoder.readthedocs.org/en/latest/
+.. _geojson: http://geojson.org
 
-Send a Message Client->Server
------------------------------
+.. nextslide:: Install ``geocoder``
 
-As soon as you made the connection above, you should have seen the prompt
-return in your server interpreter. The ``accept`` method finally returned a
-new connection socket.
+Install geocoder into your ``soupenv`` so that it's available to use:
+
+.. code-block:: bash
+
+    (soupenv)$ pip install geocoder
 
 .. rst-class:: build
 .. container::
 
-    When you're ready, type the following in the *client* interpreter:
+    Our final step for tonight will be to geocode the results we have scraped
+    from the inspection site.
+
+    We'll then convert that to ``geojson``, insert our own properties and map
+    the results.
+
+    Let's begin by converting our script so that what we have so far is
+    contained in a generator function
+
+    We'll eventually sort our results and generate the top 10 or so for
+    geocoding.
+
+    Open up ``mashup.py`` and copy everthing in the ``main`` block.
+
+.. nextslide:: Make a Generator Function
+
+Add a new function ``result_generator`` to the ``mashup.py`` script. Paste the
+code you copied from the ``main`` block and then update it a bit:
+
+.. rst-class:: build
+.. code-block:: python
+
+    def result_generator(count):
+        use_params = {
+            'Inspection_Start': '2/1/2013',
+            'Inspection_End': '2/1/2015',
+            'Zip_Code': '98101'
+        }
+        # html, encoding = get_inspection_page(**use_params)
+        html, encoding = load_inspection_page('inspection_page.html')
+        parsed = parse_source(html, encoding)
+        content_col = parsed.find("td", id="contentcol")
+        data_list = restaurant_data_generator(content_col)
+        for data_div in data_list[:count]:
+            metadata = extract_restaurant_metadata(data_div)
+            inspection_data = get_score_data(data_div)
+            metadata.update(inspection_data)
+            yield metadata
+
+
+.. nextslide:: Test It Out
+
+Update the ``main`` block of your ``mashup.py`` script to use the new function:
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: python
+
+        if __name__ == '__main__':
+            for result in result_generator(10):
+                print result
+
+    Then run your script and verify that the only thing that has changed is the
+    number of results that print.
+
+    .. code-block:: bash
+    
+        (soupenv)$ python mashup.py
+        # you should see 10 dictionaries print here.
+
+Add Geocoding
+-------------
+
+The API for geocoding with ``geocoder`` is the same for all providers.
+
+.. rst-class:: build
+.. container::
+
+    You give an address, it returns geocoded data.
+
+    You provide latitude and longitude, it provides address data
 
     .. code-block:: ipython
+    
+        In [1]: response = geocoder.google(<address>)
+        In [2]: response.json
+        Out[2]: # json result data
+        In [3]: response.geojson
+        Out[3]: # geojson result data
 
-        In [4]: client_socket.sendall('Hey, can you hear me?'.encode('utf8'))
+.. nextslide:: Adding The Function
 
+Let's add a new function ``get_geojson`` to ``mashup.py``
 
-Receive and Respond
+.. rst-class:: build
+.. container::
+
+    It will 
+
+    .. rst-class:: build
+
+    * Take a result from our search as it's input
+    * Get geocoding data from google using the address of the restaurant
+    * Return the geojson representation of that data
+
+    Try to write this function on your own
+
+    .. code-block:: python
+    
+        def get_geojson(result):
+            address = " ".join(result.get('Address', ''))
+            if not address:
+                return None
+            geocoded = geocoder.google(address)
+            return geocoded.geojson
+
+.. nextslide:: Testing It Out
+
+Next, update our ``main`` block to get the geojson for each result and print
+it:
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: python
+
+        if __name__ == '__main__':
+            for result in result_generator(10):
+                geojson = get_geojson(result)
+                print geojson
+
+    Then test your results by running your script:
+
+    .. code-block:: bash
+    
+        (soupenv)$ python mashup.py
+        {'geometry': {'type': 'Point', 'coordinates': [-122.3393005, 47.6134378]},
+         'type': 'Feature', 'properties': {'neighborhood': 'Belltown',
+         'encoding': 'utf-8', 'county': 'King County', 'city_long': 'Seattle',
+         'lng': -122.3393005, 'quality': u'street_address', 'city': 'Seattle',
+         'confidence': 9, 'state': 'WA', 'location': u'1933 5TH AVE SEATTLE, WA 98101',
+         'provider': 'google', 'housenumber': '1933', 'accuracy': 'ROOFTOP',
+         'status': 'OK', 'state_long': 'Washington',
+         'address': '1933 5th Avenue, Seattle, WA 98101, USA', 'lat': 47.6134378,
+         'postal': '98101', 'ok': True, 'road_long': '5th Avenue', 'country': 'US',
+         'country_long': 'United States', 'street': '5th Ave'},
+         'bbox': [-122.3406494802915, 47.6120888197085, -122.3379515197085, 47.6147867802915]}
+
+.. nextslide:: Update Geojson Properties
+
+The ``properties`` of our geojson records are filled with data we don't really
+care about.
+
+.. rst-class:: build
+.. container::
+
+    Let's replace that information with some of the metadata from our
+    inspection results.
+
+    We'll update our ``get_geojson`` function so that it:
+
+    .. rst-class:: build
+
+    * Builds a dictionary containing only the values we want from our
+      inspection record.
+    * Converts list values to strings (geojson requires this)
+    * Replaces the 'properties' of our geojson with this new data
+    * Returns the modified geojson record
+
+.. nextslide:: Write the Function
+
+See if you can make the updates on your own.
+
+.. rst-class:: build
+.. code-block:: python
+
+    def get_geojson(result):
+        # ...
+        geocoded = geocoder.google(address)
+        geojson = geocoded.geojson
+        inspection_data = {}
+        use_keys = (
+            'Business Name', 'Average Score', 'Total Inspections', 'High Score'
+        )
+        for key, val in result.items():
+            if key not in use_keys:
+                continue
+            if isinstance(val, list):
+                val = " ".join(val)
+            inspection_data[key] = val
+        geojson['properties'] = inspection_data
+        return geojson
+
+.. nextslide:: Making Mappable Data
+
+We are now generating a series of ``geojson`` *Feature* objects.
+
+.. rst-class:: build
+.. container::
+
+    To map these objects, we'll need to create a file which contains a
+    ``geojson`` *FeatureCollection*.
+
+    The structure of such a collection looks like this:
+
+    .. code-block:: json
+    
+        {'type': 'FeatureCollection', 'features': [...]}
+
+    Let's update our ``main`` function to append each feature to such a
+    structure.
+
+    Then we can dump the structure as ``json`` to a file.
+
+.. nextslide:: Update the Script
+
+In ``mashup.py`` update the ``main`` block like so:
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: python
+
+        # add an import at the top:
+        import json
+
+        if __name__ == '__main__':
+            total_result = {'type': 'FeatureCollection', 'features': []}
+            for result in result_generator(10):
+                geojson = get_geojson(result)
+                total_result['features'].append(geojson)
+            with open('my_map.json', 'w') as fh:
+                json.dump(total_result, fh)
+
+    When you run the script nothing will print, but the new file will appear.
+
+    .. code-block:: bash
+
+        (soupenv)$ python mashup.py
+
+    This script is available as ``resources/session07/mashup_5.py``
+
+Display the Results
 -------------------
 
-Back in your server interpreter, go ahead and receive the message from your
-client:
+Once the new file is written you are ready to display your results.
 
 .. rst-class:: build
 .. container::
 
-    .. code-block:: ipython
+    Open your web browser and go to http://geojson.io
 
-        In [87]: msg = conn.recv(4096)
-        In [88]: msg
-        Out[88]: b'Hey, can you hear me?'
+    Then drag and drop the new file you wrote onto the map you see there.
 
-    Send a message back, and then close up your connection:
+    .. figure:: /_static/geojson-io.png
+        :align: center
+        :width: 75%
 
-    .. code-block:: ipython
+Wrap Up
+-------
 
-        In [89]: conn.sendall('Yes, I can hear you.'.encode('utf8'))
-        In [90]: conn.close()
-
-Finish Up
----------
-
-Back in your client interpreter, take a look at the response to your message,
-then be sure to close your client socket too:
+We've built a simple mashup combining data from different sources.
 
 .. rst-class:: build
 .. container::
 
-    .. code-block:: ipython
+    We scraped health inspection data from the King County government site.
 
-        In [5]: from_server = client_socket.recv(4096)
-        In [6]: from_server
-        Out[6]: b'Yes, I can hear you.'
-        In [7]: client_socket.close()
+    We geocoded that data.
 
-    And now that we're done, we can close up the server socket too (back in the
-    server interpreter):
+    And we've displayed the results on a map.
 
-    .. code-block:: ipython
+    What other sources of data might we choose to combine?
 
-        In [91]: server_socket.close()
+    Check out `programmable web <http://www.programmableweb.com/apis/directory>`_
+    to see some of the possibilities
 
 
-.. nextslide:: Congratulations!
-
-.. rst-class:: large center
-
-You've run your first client-server interaction
 
 
 Homework
@@ -1133,103 +1806,80 @@ Homework
 .. rst-class:: left
 .. container::
 
-    Your homework assignment for this week is to take what you've learned here
-    and build a simple "echo" server.
+    For your homework this week, you'll be polishing this mashup.
 
     .. rst-class:: build
     .. container::
 
-        The server should automatically return to any client that connects *exactly*
-        what it receives (it should **echo** all messages).
+        Begin by sorting the results of our search by the average score (can
+        you do this and still use a generator for getting the geojson?).
 
-        You will also write a python script that, when run, will send a message to the
-        server and receive the reply, printing it to ``stdout``.
+        Then, update your script to allow the user to choose how to sort, by
+        average, high score or most inspections::
 
-        Finally, you'll do all of this so that it can be tested.
+            (soupenv)$ python mashup.py highscore
 
+        Next, allow the user to choose how many results to map::
 
-Your Task
----------
+            (soupenv)$ python mashup.py highscore 25
 
-In our class repository, there is a folder ``resources/session04``.
+        Or allow them to reverse the results, showing the lowest scores first::
 
-.. rst-class:: build
-.. container::
+            (soupenv)$ python mashup.py highscore 25 reverse
 
-    Inside that folder, you should find:
+        If you're feeling particularly adventurous, see if you can use the
+        `argparse`_ module from the standard library to handle command line
+        arguments
 
-    .. rst-class:: build
+.. _argparse: https://docs.python.org/2/library/argparse.html#module-argparse
 
-    * A file ``tasks.txt`` that contains these instructions
+More Fun
+--------
 
-    * A skeleton for your server in ``echo_server.py``
-
-    * A skeleton for your client script in ``echo_client.py``
-
-    * Some simple tests in ``tests.py``
-
-    Your task is to make the tests pass.
-
-
-Running the Tests
------------------
-
-To run the tests, you'll have to set the server running in one terminal:
+Next, try adding a bit of information to your map by setting the
+``marker-color`` property. This will display a marker with the provided
+css-style color (``#FF0000``)
 
 .. rst-class:: build
 .. container::
 
-    .. code-block:: bash
+    See if you can make the color change according to the values used for the
+    sorting of the list.  Either vary the intensity of the color, or the hue.
 
-        $ python echo_server.py
+    Finally, if you are feeling particularly frisky, you can update your script
+    to automatically open a browser window with your map loaded on
+    *geojson.io*.
 
-    Then, in a second terminal, you will execute the tests:
+    To do this, you'll want to read about the `webbrowser`_ module from the
+    standard library.
 
-    .. code-block:: bash
+    In addition, you'll want to read up on using the URL parameters API for
+    *geojson.io*.  Click on the **help** tab in the sidebar to view the
+    information.
 
-        $ python tests.py
+    You will also need to learn about how to properly quote special characters
+    for a URL, using the `urllib.parse`_ ``quote`` function.
 
-    You should see output like this:
+.. _urllib.parse: https://docs.python.org/3/library/urllib.parse.html#urllib.parse.quote
+.. _webbrowser: https://docs.python.org/3/library/webbrowser.html
 
-    .. code-block:: bash
+Submitting Your Work
+--------------------
 
-        [...]
-        FAILED (failures=2)
+Create a github repository to contain your mashup work. Start by populating it
+with the script as we finished it today (mashup_5.py).
 
+As you implement the above features, commit early and commit often.
 
-Submitting Your Homework
-------------------------
+When you're ready for us to look it over, email a link to your repository to
+Maria and I.
 
-To submit your homework:
+Final Thoughts
+--------------
 
-.. rst-class:: build
-.. container::
+In preparation for our work next week, I'd like you to get started a bit ahead
+of time.
 
-    .. rst-class:: build
+Please read and follow along with this `basic intro to Django`_.
 
-    * Create a new repository in GitHub.  Call it ``echo_sockets``.
-
-    * Put the ``echo_server.py``, ``echo_client.py`` and ``tests.py`` files in
-      this repository.
-
-    * Send us an email with a link to your repository when you are
-      done.
-
-    We will clone your repository and run the tests as described above.
-
-    And we'll make comments inline on your repository.
-
-
-Going Further
--------------
-
-In ``assignments/session04/tasks.txt`` you'll find a few extra problems to try.
-
-.. rst-class:: build
-.. container::
-
-    If you finish the first part of the homework in less than 3-4 hours give
-    one or more of these a whirl.
-
-    They are not required, but if you include solutions in your repository,
-    we'll review your work.
+.. _basic intro to Django: django_intro.html
