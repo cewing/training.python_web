@@ -9,3 +9,10 @@ resources
 source
 src
 doctrees
+include
+share
+TODO.txt
+lib
+testenvs
+pyweb.sublime-*
+pip-selfcheck.json
