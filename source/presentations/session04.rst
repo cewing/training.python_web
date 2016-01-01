@@ -525,7 +525,7 @@ script.
          </body>
         </html>
 
-    This script is available as ``resources/session07/mashup_1.py``
+    This script is available as ``resources/session04/mashup_1.py``
 
 
 
@@ -707,7 +707,7 @@ print the first of the many divs that match):
          </table>
         </div>
 
-    This code is available as ``/resources/session07/mashup_2.py``
+    This code is available as ``/resources/session04/mashup_2.py``
 
 
 Parsing Restaurant Data
@@ -917,7 +917,7 @@ Add it to our script:
          u'Business Name': [u"ZACCAGNI'S"], u'Address': [u'97B PIKE ST', u'SEATTLE, WA 98101'],
          u'Latitude': [u'47.6086651300']}
 
-    This script is available as ``resources/session07/mashup_3.py``
+    This script is available as ``resources/session04/mashup_3.py``
 
 
 Extracting Inspection Data
@@ -1760,7 +1760,7 @@ In ``mashup.py`` update the ``main`` block like so:
 
         (soupenv)$ python mashup.py
 
-    This script is available as ``resources/session07/mashup_5.py``
+    This script is available as ``resources/session04/mashup_5.py``
 
 Display the Results
 -------------------
@@ -1874,12 +1874,3 @@ As you implement the above features, commit early and commit often.
 When you're ready for us to look it over, email a link to your repository to
 Maria and I.
 
-Final Thoughts
---------------
-
-In preparation for our work next week, I'd like you to get started a bit ahead
-of time.
-
-Please read and follow along with this `basic intro to Django`_.
-
-.. _basic intro to Django: django_intro.html

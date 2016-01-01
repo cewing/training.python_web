@@ -697,7 +697,7 @@ Let's investigate the HTTP protocol a bit in real life.
     We'll do so by building a simplified HTTP server, one step at a time.
 
     There is a copy of the echo server from last time in
-    ``resources/session05``. It's called ``http_server.py``.
+    ``resources/session02``. It's called ``http_server.py``.
 
     In a terminal, move into that directory. We'll be doing our work here for
     the rest of the session
@@ -721,7 +721,7 @@ Test Driven Development (TDD) is all the rage these days.
 
 .. nextslide:: Run the Tests
 
-From inside ``resources/session05`` start a second python interpreter and run
+From inside ``resources/session02`` start a second python interpreter and run
 ``$ python http_server.py``
 
 .. rst-class:: build
@@ -1481,7 +1481,7 @@ You may have noticed that we just added calls to functions that don't yet exist
 
     Your starting point will be what we've made here in class.
 
-    I've added a directory to ``resources/session05`` called ``homework``.
+    I've added a directory to ``resources/session02`` called ``homework``.
 
     In it, you'll find this ``http_server.py`` file we've just written in class.
 
@@ -1494,7 +1494,7 @@ One Step At A Time
 ------------------
 
 Take the following steps one at a time. Run the tests in
-``assignments/session05/homework`` between to ensure that you are getting it
+``assignments/session02/homework`` between to ensure that you are getting it
 right.
 
 .. rst-class:: build

@@ -1365,6 +1365,18 @@ Homework
         When you are done, send Maria and I an email with a link to your
         repository.
 
+One Last Task
+-------------
+
+Next week we will be installing Python packages that are not part of the
+standard library.
+
+.. rst-class:: build
+.. container::
+
+    This is a common occurance in web development.  But it can be hazardous
+
+
 Wrap-Up
 -------
 

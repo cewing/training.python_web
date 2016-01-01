@@ -1867,18 +1867,20 @@ And that's probably enough for now.
 .. rst-class:: build
 .. container::
 
-    There's no homework for you this week.
-
-    You've worked hard enough.
+    There's no homework for you to submit this week. You've worked hard enough.
 
     Take the week to review what we've done and make sure you have a solid
     understanding of it.
 
     If you wish, play with HTML and CSS to make your journal more personalized.
 
-    Next session we'll dive down deep and begin to learn about the technology
-    that lies beneath everything we've just built.
+    In preparation for our work with Django next week, I'd like you to get
+    started a bit ahead of time.
+
+    Please read and follow along with this `basic intro to Django`_.
 
     .. rst-class:: centered
 
     **See You Then**
+
+.. _basic intro to Django: django_intro.html

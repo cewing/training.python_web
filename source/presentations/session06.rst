@@ -58,24 +58,10 @@ Over the last week, your assignment was to create the new model.
 
 .. nextslide:: A Complete Example
 
-I have added a new folder to our `class repository`_, ``resources``.
+I've added a working ``models.py`` file to our `class repository`_ in the
+``resources/session06/`` folder.
 
-.. _class repository: https://github.com/UWPCE-PythonCert/training.python_web/
-
-.. rst-class:: build
-.. container::
-
-    If you clone the repository to your local machine you can get to it.
-
-    You can also just browse the repository in github to view it.
-
-    In this folder, I added a ``session02`` folder that contains resources for
-    today.
-
-    Among these resources is the completed ``models.py`` file with this new
-    model added.
-
-    Let's review how it works.
+Let's review how it works.
 
 .. nextslide:: Demo Interaction
 
@@ -1230,7 +1216,7 @@ I've created some very very basic styles for our learning journal.
 .. rst-class:: build
 .. container::
 
-    You can find them in ``resources/session02/styles.css``.  Go ahead and copy
+    You can find them in ``resources/session06/styles.css``.  Go ahead and copy
     that file.
 
     Add it to ``learning_journal/static``.

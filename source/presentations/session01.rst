@@ -8,26 +8,88 @@ Session 01
 
     **Networking and Sockets**
 
-
 Computer Communications
 =======================
+
+.. rst-class:: large centered
+
+Wherein we learn about how computers speak to each-other over a network.
+
+But First
+---------
 
 .. rst-class:: left
 .. container::
 
-    We've spent the first few weeks of this course building and deploying a
-    simple web application.
+    Class presentations are available online for your use
+
+    .. rst-class:: small
+
+    https://github.com/UWPCE-PythonCert/training.python_web
 
     .. rst-class:: build
     .. container::
 
-        now it's time to step back and look at the technologies underlying the
-        work we've done.
+        Licensed with Creative Commons BY-NC-SA
 
-        We'll begin by discussing the basics of networking computers.
+        .. rst-class:: build
 
-        You'll learn a bit here about how computers talk to each other across a
-        distance.
+        * You must attribute the work
+        * You may not use the work for commercial purposes
+        * You have to share your versions just like this one
+
+        Find mistakes? See improvements? Make a pull request.
+
+.. nextslide::
+
+The rendered documentation is available as well:
+
+http://uwpce-pythoncert.github.io
+
+Please check frequently. I will update with great regularity
+
+.. nextslide::
+
+**Classroom Protocol**
+
+.. rst-class:: build
+.. container::
+
+    Questions to ask:
+
+    .. rst-class:: build
+
+    * What did you just say?
+    * Please explain what we just did again?
+    * How did that work?
+    * Why didn't that work for me?
+    * Is that a typo?
+
+.. nextslide::
+
+**Classroom Protocol**
+
+.. rst-class:: build
+.. container::
+
+    Questions **not** to ask:
+
+    .. rst-class:: build
+
+    * **Hypotheticals**: What happens if I do X?
+    * **Research**: Can Python do Y?
+    * **Syllabus**: Are we going to cover Z in class?
+    * **Marketing questions**: please just don't.
+    * **Performance questions**: Is Python fast enough?
+    * **Unpythonic**: Why doesn't Python do it some other way?
+    * **Show off**: Look what I just did!
+
+.. nextslide::
+
+.. rst-class:: large center
+
+Introductions
+
 
 TCP/IP
 ------
@@ -385,7 +447,7 @@ single argument, the shared prefix for a defined set of constants:
 .. rst-class:: build
 .. container::
 
-    (you can also find this in ``resources/session04/socket_tools.py``)
+    (you can also find this in ``resources/session01/socket_tools.py``)
 
     .. code-block:: ipython
 
@@ -640,7 +702,7 @@ Again, let's create a utility method in-place so we can see this in action:
        ....:         print('')
        ....:
 
-(you can also find this in ``resources/session04/socket_tools.py``)
+(you can also find this in ``resources/session01/socket_tools.py``)
 
 
 .. nextslide:: On Your Own Machine
@@ -1151,7 +1213,7 @@ Homework
 Your Task
 ---------
 
-In our class repository, there is a folder ``resources/session04``.
+In our class repository, there is a folder ``resources/session01``.
 
 .. rst-class:: build
 .. container::
@@ -1223,7 +1285,7 @@ To submit your homework:
 Going Further
 -------------
 
-In ``assignments/session04/tasks.txt`` you'll find a few extra problems to try.
+In ``assignments/session01/tasks.txt`` you'll find a few extra problems to try.
 
 .. rst-class:: build
 .. container::
