@@ -479,15 +479,20 @@ Back on the EC2 instance, in your ssh terminal, clone your django application:
 .. rst-class:: build
 .. container::
 
-    pip install the requirements for your app:
+    pip install the requirements for your app::
 
-        cd djangoblog_uwpce
-        pip install -r requirements.txt
+        $ cd djangoblog_uwpce
+        $ pip install -r requirements.txt
 
-    Finally, export a system environment variable called DATABASE_URL with the
-    following format::
+.. nextslide::
 
-        postgres://username:password@host:port/dbname
+Finally, export a system environment variable called DATABASE_URL with the
+following format::
+
+    postgres://username:password@host:port/dbname
+
+.. rst-class:: build
+.. container::
 
     .. code-block:: bash
     
@@ -631,7 +636,7 @@ Put the following in ``/etc/init/djangoblog.conf``
     setgid nogroup
     chdir /home/ubuntu/djangoblog_uwpce
     env DJANGO_SETTINGS_MODULE=mysite.production
-    env DATABASE_URL=postgres://awsuser:secret123@uwpcedb.c5zwspzpwwsq.us-west-2.rds.amazonaws.com:5432/djangoblog
+    env DATABASE_URL=postgres://<username>:<password>@<host>:<port>/djangoblog
     exec gunicorn -b 127.0.0.1:8000 -w 4 mysite.wsgi
 
 .. _upstart: http://blog.terminal.com/getting-started-with-upstart/
