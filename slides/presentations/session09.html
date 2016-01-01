@@ -19,6 +19,7 @@ URL: https://code.google.com/p/io-2012-slides
   <!--This one seems to work all the time, but really small on ipad-->
   <!--<meta name="viewport" content="initial-scale=0.4">-->
   <meta name="apple-mobile-web-app-capable" content="yes">
+
   
   <link rel="stylesheet" media="all"
         href="../_static/theme/css/default.css">
@@ -38,7 +39,7 @@ URL: https://code.google.com/p/io-2012-slides
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '2.0',
+        VERSION:     '3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -53,7 +54,7 @@ URL: https://code.google.com/p/io-2012-slides
     
     <link rel="top" title="Internet Programming with Python" href="../index.html" />
     <link rel="up" title="Course Presentations" href="index.html" />
-    <link rel="next" title="Supplementary Course Readings" href="../readings.html" />
+    <link rel="next" title="Session 09" href="session10.html" />
     <link rel="prev" title="Session 08" href="session08.html" /> 
 </head>
 <body style="opacity: 0">
@@ -71,21 +72,23 @@ URL: https://code.google.com/p/io-2012-slides
 </slide>
 
   
-    <slide class="level-1">
+    <slide class="title-slide segue nobackground level-1" id="session-09">
     <hgroup>
       <h1>Session 09</h1>
     </hgroup>
     <article class="">
-      <div class="figure align-center">
+      <div class="figure align-center" id="id1">
 <a class="reference internal image-reference" href="../_images/django-pony.png"><img alt="../_images/django-pony.png" src="../_images/django-pony.png" style="width: 60%;" /></a>
-<p class="caption">image: <a class="reference external" href="http://djangopony.com/">http://djangopony.com/</a></p>
+<p class="caption"><span class="caption-text">image: <a class="reference external" href="http://djangopony.com/">http://djangopony.com/</a></span></p>
 </div>
 
 
 
+<div class="slide-no">1</div>
+
 
     </article>
-  </slide>  <slide class="level-2">
+  </slide>  <slide class="level-2" id="extending-django">
     <hgroup>
       <h2>Extending Django</h2>
     </hgroup>
@@ -94,9 +97,11 @@ URL: https://code.google.com/p/io-2012-slides
 
 
 
+<div class="slide-no">2</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="last-week">
     <hgroup>
       <h3>Last Week</h3>
     </hgroup>
@@ -111,9 +116,11 @@ it works.</p>
 
 
 
+<div class="slide-no">3</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="preparation">
     <hgroup>
       <h3>Preparation</h3>
     </hgroup>
@@ -135,9 +142,11 @@ the following repository to your github account:</p>
 
 
 
+<div class="slide-no">4</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="connect-to-your-partner">
     <hgroup>
       <h3>Connect to Your Partner</h3>
     </hgroup>
@@ -155,9 +164,11 @@ to enter your github password).</p>
 
 
 
+<div class="slide-no">5</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="while-you-work">
     <hgroup>
       <h3>While You Work</h3>
     </hgroup>
@@ -189,9 +200,11 @@ to enter your github password).</p>
 
 
 
+<div class="slide-no">6</div>
+
 
     </article>
-  </slide>  <slide class="level-2">
+  </slide>  <slide class="level-2" id="homework">
     <hgroup>
       <h2>Homework</h2>
     </hgroup>
@@ -208,9 +221,11 @@ Django app.</p>
 
 
 
+<div class="slide-no">7</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="sign-up-for-aws">
     <hgroup>
       <h3>Sign Up For AWS</h3>
     </hgroup>
@@ -228,9 +243,11 @@ charges for work you do in this class.</p>
 
 
 
+<div class="slide-no">8</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="set-up-an-iam-user">
     <hgroup>
       <h3>Set Up an IAM User</h3>
     </hgroup>
@@ -246,9 +263,11 @@ charges for work you do in this class.</p>
 
 
 
+<div class="slide-no">9</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="prepare-for-login">
     <hgroup>
       <h3>Prepare for Login</h3>
     </hgroup>
@@ -258,7 +277,7 @@ charges for work you do in this class.</p>
 <li>Choose the 'US West (Oregon)' region since it's geographically closest to you.&lt;/li&gt;</li>
 <li>When you download your private key, save it to ~/.ssh/pk-aws.pem</li>
 <li>Make sure that the private key is secure and useable by doing the following command<ul>
-<li><tt class="docutils literal"><span class="pre">$</span> <span class="pre">chmod</span> <span class="pre">400</span> <span class="pre">~/.ssh/pk-aws.pem</span></tt></li>
+<li><code class="docutils literal"><span class="pre">$</span> <span class="pre">chmod</span> <span class="pre">400</span> <span class="pre">~/.ssh/pk-aws.pem</span></code></li>
 </ul>
 </li>
 </ul>
@@ -274,6 +293,8 @@ charges for work you do in this class.</p>
 
 
 
+<div class="slide-no">10</div>
+
 
     </article>
   </slide>
@@ -282,7 +303,7 @@ charges for work you do in this class.</p>
     <slide class="thank-you-slide segue nobackground">
     <aside class="gdbar right"><img src="../_static/logo_UW.png"></aside>
     <article class="flexbox vleft auto-fadein">
-      <h2>&lt;Thank You!&gt;</h2>
+      <h2>Good Night!</h2>
       <p>&nbsp;</p>
     </article>
     <p class="auto-fadein" data-config-contact>

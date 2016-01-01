@@ -74,6 +74,15 @@ aside.gdbar {
     top: 4px;
   }
 
+.title-slide:first-child hgroup {
+  top: 35%;
+}
+
+/* line 888, ../scss/default.scss */
+.title-slide hgroup {
+  top: 0px;
+}
+
 em {
   font-style: italic; }
 
@@ -106,6 +115,10 @@ article .small {
   font-weight: normal;
   font-size: 30px;
   line-height: 30px; }
+article .tiny .highlight pre {
+  font-size: 16px;
+  line-height: 20px;
+}
 article .credit {
   font-size: 75%;
   text-align: left; }
@@ -126,6 +139,11 @@ article .toctree-wrapper li a {
   border-bottom: none; }
 article table.docutils tr td {
   vertical-align: top; }
+slide article div.slide-no {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+}
 
 .level-1 h1 {
   font-size: 65px;
@@ -171,4 +189,3 @@ article table.docutils tr td {
   text-align: left;
   float: left;
 }
-

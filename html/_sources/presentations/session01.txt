@@ -1,22 +1,19 @@
-.. slideconf::
-    :autoslides: True
-
 **********
 Session 01
 **********
 
-.. image:: /_static/python.png
+.. figure:: /_static/python.png
     :align: center
-    :width: 43%
+    :width: 50%
 
+    **Networking and Sockets**
 
-Introductions
-=============
+Computer Communications
+=======================
 
 .. rst-class:: large centered
 
-Wherin we learn about the Model View Controller approach to app design and
-explore data persistence in Python.
+Wherein we learn about how computers speak to each-other over a network.
 
 But First
 ---------
@@ -94,1711 +91,1207 @@ Please check frequently. I will update with great regularity
 Introductions
 
 
-Working with Virtualenv
-=======================
+TCP/IP
+------
 
-.. rst-class:: large
+.. figure:: /_static/network_topology.png
+    :align: left
 
-| For every
-| add-on package installed
-| in a system Python,
-| the gods kill a kitten
-|
-| - me
+    http://en.wikipedia.org/wiki/Internet_Protocol_Suite
 
-Why Virtualenv?
+.. rst-class:: build
+
+* processes can communicate
+* inside one machine
+* between two machines
+* among many machines
+
+
+.. nextslide::
+
+.. figure:: /_static/data_in_tcpip_stack.png
+    :align: left
+    :width: 100%
+
+    http://en.wikipedia.org/wiki/Internet_Protocol_Suite
+
+.. rst-class:: build
+
+* Process divided into 'layers'
+* 'Layers' are mostly arbitrary
+* Different descriptions have different layers
+* Most common is the 'TCP/IP Stack'
+
+
+The TCP/IP Stack - Link
+-----------------------
+
+The bottom layer is the 'Link Layer'
+
+.. rst-class:: build
+
+* Deals with the physical connections between machines, 'the wire'
+
+* Packages data for physical transport
+
+* Executes transmission over a physical medium
+
+  .. rst-class:: build
+
+  * what that medium is is arbitrary
+
+* Implemented in the Network Interface Card(s) (NIC) in your computer
+
+
+The TCP/IP Stack - Internet
+---------------------------
+
+Moving up, we have the 'Internet Layer'
+
+.. rst-class:: build
+
+* Deals with addressing and routing
+
+  .. rst-class:: build
+
+  * Where are we going and how do we get there?
+
+* Agnostic as to physical medium (IP over Avian Carrier - IPoAC)
+
+* Makes no promises of reliability
+
+* Two addressing systems
+
+  .. rst-class:: build
+
+  * IPv4 (current, limited '192.168.1.100')
+
+  * IPv6 (future, 3.4 x 10^38 addresses, '2001:0db8:85a3:0042:0000:8a2e:0370:7334')
+
+
+.. nextslide::
+
+.. rst-class:: large center
+
+That's 4.3 x 10^28 addresses *per person alive today*
+
+
+The TCP/IP Stack - Transport
+----------------------------
+
+Next up is the 'Transport Layer'
+
+.. rst-class:: build
+
+* Deals with transmission and reception of data
+
+  * error correction, flow control, congestion management
+
+* Common protocols include TCP & UDP
+
+  * TCP: Tranmission Control Protocol
+
+  * UDP: User Datagram Protocol
+
+* Not all Transport Protocols are 'reliable'
+
+  .. rst-class:: build
+
+  * TCP ensures that dropped packets are resent
+
+  * UDP makes no such assurance
+
+  * Reliability is slow and expensive
+
+
+.. nextslide::
+
+The 'Transport Layer' also establishes the concept of a **port**
+
+.. rst-class:: build
+.. container::
+
+    .. rst-class:: build
+
+    * IP Addresses designate a specific *machine* on the network
+
+    * A **port** provides addressing for individual *applications* in a single
+      host
+
+    * 192.168.1.100:80  (the *:80* part is the **port**)
+
+    * [2001:db8:85a3:8d3:1319:8a2e:370:7348]:443 (*:443* is the **port**)
+
+    This means that you don't have to worry about information intended for your
+    web browser being accidentally read by your email client.
+
+
+.. nextslide::
+
+There are certain **ports** which are commonly understood to belong to given
+applications or protocols:
+
+.. rst-class:: build
+.. container::
+
+    .. rst-class:: build
+
+    * 80/443 - HTTP/HTTPS
+    * 20 - FTP
+    * 22 - SSH
+    * 23 - Telnet
+    * 25 - SMTP
+    * ...
+
+    These ports are often referred to as **well-known ports**
+
+    .. rst-class:: small
+
+    (see http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers)
+
+.. nextslide::
+
+Ports are grouped into a few different classes
+
+.. rst-class:: build
+
+* Ports numbered 0 - 1023 are *reserved*
+
+* Ports numbered 1024 - 65535 are *open*
+
+* Ports numbered 1024 - 49151 may be *registered*
+
+* Ports numbered 49152 - 65535 are called *ephemeral*
+
+
+The TCP/IP Stack - Application
+------------------------------
+
+The topmost layer is the 'Application Layer'
+
+.. rst-class:: build
+.. container::
+
+    .. rst-class:: build
+
+    * Deals directly with data produced or consumed by an application
+
+    * Reads or writes data using a set of understood, well-defined **protocols**
+
+      * HTTP, SMTP, FTP etc.
+
+    * Does not know (or need to know) about lower layer functionality
+
+      * The exception to this rule is **endpoint** data (or IP:Port)
+
+    .. rst-class:: centered
+
+    **this is where we live and work**
+
+
+Sockets
+-------
+
+Think back for a second to what we just finished discussing, the TCP/IP stack.
+
+.. rst-class:: build
+.. container::
+
+    .. rst-class:: build
+
+    * The *Internet* layer gives us an **IP Address**
+
+    * The *Transport* layer establishes the idea of a **port**.
+
+    * The *Application* layer doesn't care about what happens below...
+
+    * *Except for* **endpoint data** (IP:Port)
+
+    A **Socket** is the software representation of that endpoint.
+
+    Opening a **socket** creates a kind of transceiver that can send and/or
+    receive *bytes* at a given IP address and Port.
+
+
+Sockets in Python
+-----------------
+
+Python provides a standard library module which provides socket functionality.
+It is called **socket**.
+
+.. rst-class:: build
+.. container::
+
+    The library is really just a very thin wrapper around the system
+    implementation of *BSD Sockets*
+
+    Let's spend a few minutes getting to know this module.
+
+    We're going to do this next part together, so open up a terminal and start
+    an iPython interpreter
+
+
+.. nextslide::
+
+The Python sockets library allows us to find out what port a *service* uses:
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: ipython
+
+        In [1]: import socket
+
+        In [2]: socket.getservbyname('ssh')
+        Out[2]: 22
+
+    You can also do a *reverse lookup*, finding what service uses a given *port*:
+
+    .. code-block:: ipython
+
+        In [3]: socket.getservbyport(80)
+        Out[3]: 'http'
+
+
+.. nextslide::
+
+The sockets library also provides tools for finding out information about
+*hosts*. For example, you can find out about the hostname and IP address of
+the machine you are currently using:
+
+.. code-block:: ipython
+
+    In [4]: socket.gethostname()
+    Out[4]: 'Banks'
+
+    In [5]: socket.gethostbyname(socket.gethostname())
+    Out[5]: '127.0.0.1'
+
+.. nextslide::
+
+You can also find out about machines that are located elsewhere, assuming you
+know their hostname. For example:
+
+.. code-block:: ipython
+
+    In [6]: socket.gethostbyname('google.com')
+    Out[6]: '173.194.33.100'
+
+    In [7]: socket.gethostbyname('uw.edu')
+    Out[7]: '128.95.155.134'
+
+    In [8]: socket.gethostbyname('crisewing.com')
+    Out[8]: '108.168.213.86'
+
+
+.. nextslide::
+
+The ``gethostbyname_ex`` method of the ``socket`` library provides more
+information about the machines we are exploring:
+
+.. code-block:: ipython
+
+    In [9]: socket.gethostbyname_ex('crisewing.com')
+    Out[9]: ('crisewing.com', [], ['108.168.213.86'])
+
+    In [10]: socket.gethostbyname_ex('google.com')
+    Out[10]:
+    ('google.com',
+     [],
+     ['173.194.33.100', '173.194.33.103',
+      ...
+      '173.194.33.97', '173.194.33.104'])
+
+.. nextslide::
+
+To create a socket, you use the **socket** method of the ``socket`` library.
+It takes up to three optional positional arguments (here we use none to get
+the default behavior):
+
+.. code-block:: ipython
+
+    In [11]: foo = socket.socket()
+
+    In [12]: foo
+    Out[12]: <socket.socket fd=10, family=AddressFamily.AF_INET,
+              type=SocketKind.SOCK_STREAM, proto=0, laddr=('0.0.0.0', 0)>
+
+.. nextslide::
+
+A socket has some properties that are immediately important to us. These
+include the *family*, *type* and *protocol* of the socket:
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: ipython
+
+        In [13]: foo.family
+        Out[13]: <AddressFamily.AF_INET: 2>
+
+        In [14]: foo.type
+        Out[14]: <SocketKind.SOCK_STREAM: 1>
+
+        In [15]: foo.proto
+        Out[15]: 0
+
+    You might notice that the values for these properties are integers.  In
+    fact, these integers are **constants** defined in the socket library.
+
+
+.. nextslide:: A quick utility method
+
+Let's define a method in place to help us see these constants. It will take a
+single argument, the shared prefix for a defined set of constants:
+
+.. rst-class:: build
+.. container::
+
+    (you can also find this in ``resources/session01/socket_tools.py``)
+
+    .. code-block:: ipython
+
+        In [37]: def get_constants(prefix):
+           ....:     """mapping of socket module constants to their names"""
+           ....:     return {getattr(socket, n): n
+           ....:             for n in dir(socket)
+           ....:             if n.startswith(prefix)
+           ....:     }
+           ....:
+
+
+Socket Families
 ---------------
 
-.. rst-class:: build
-
-* You will need to install packages that aren't in the Python standard
-  Library
-* You often need to install *different* versions of the *same* library for
-  different projects
-* Conflicts arising from having the wrong version of a dependency installed can
-  cause long-term nightmares
-* Use `virtualenv`_ ...
-* **Always**
-
-.. _virtualenv: http://www.virtualenv.org/
-
-Installing Virtualenv
----------------------
-
-The best way is to install directly in your system Python (one exception to the
-rule).
+Think back a moment to our discussion of the *Internet* layer of the TCP/IP
+stack.  There were a couple of different types of IP addresses:
 
 .. rst-class:: build
 .. container::
 
-    To do so you will have to have `pip`_ installed.
+    .. rst-class:: build
 
-    Try the following command:
+    * IPv4 ('192.168.1.100')
 
-    .. code-block:: bash
+    * IPv6 ('2001:0db8:85a3:0042:0000:8a2e:0370:7334')
 
-        $ which pip
-        /usr/local/bin/pip
 
-    If the ``which`` command returns no value for you, then ``pip`` is not
-    installed in your system. To fix this, follow `the instructions here`_.
-
-.. _pip: https://pip.pypa.io/en/latest/index.html
-.. _the instructions here: https://pip.pypa.io/en/latest/installing.html
+    The **family** of a socket corresponds to the *addressing system* it uses
+    for connecting.
 
 .. nextslide::
 
-Once you have ``pip`` installed in your system, you can use it to install
-`virtualenv`_.
+Families defined in the ``socket`` library are prefixed by ``AF_``:
 
 .. rst-class:: build
 .. container::
 
-    Because you are installing it into your system python, you will most likely
-    need ``superuser`` privileges to do so:
+    .. code-block:: ipython
 
-    .. code-block:: bash
+        In [39]: families = get_constants('AF_')
 
-        $ sudo pip install virtualenv
-        Downloading/unpacking virtualenv
-          Downloading virtualenv-1.11.2-py2.py3-none-any.whl (2.8MB): 2.8MB downloaded
-        Installing collected packages: virtualenv
-        Successfully installed virtualenv
-        Cleaning up...
+        In [40]: families
+        Out[40]:
+        {<AddressFamily.AF_UNSPEC: 0>: 'AF_UNSPEC',
+         <AddressFamily.AF_UNIX: 1>: 'AF_UNIX',
+         <AddressFamily.AF_INET: 2>: 'AF_INET',
+         ...
+         <AddressFamily.AF_INET6: 30>: 'AF_INET6',
+         <AddressFamily.AF_SYSTEM: 32>: 'AF_SYSTEM'}
 
-.. nextslide::
+    *Your results may vary*
 
-Great.  Once that's done, you should find that you have a ``virtualenv``
-command available to you from your shell:
+    Of all of these, the ones we care most about are ``2`` (IPv4) and ``30``
+    (IPv6).
 
-.. code-block:: bash
 
-    $ virtualenv --help
-    Usage: virtualenv [OPTIONS] DEST_DIR
+.. nextslide:: Unix Domain Sockets
 
-    Options:
-      --version             show program's version number and exit
-      -h, --help            ...
 
-Using Virtuelenv
-----------------
+When you are on a machine with an operating system that is Unix-like, you will
+find another generally useful socket family: ``AF_UNIX``, or Unix Domain
+Sockets. Sockets in this family:
 
-Creating a new virtualenv is very very simple:
+.. rst-class:: build
+
+* connect processes **on the same machine**
+
+* are generally a bit slower than IPC connnections
+
+* have the benefit of allowing the same API for programs that might run on one
+  machine __or__ across the network
+
+* use an 'address' that looks like a pathname ('/tmp/foo.sock')
+
+
+.. nextslide:: Test your skills
+
+What is the *default* family for the socket we created just a moment ago?
 
 .. rst-class:: build
 .. container::
 
-    .. code-block:: bash
+    (remember we bound the socket to the symbol ``foo``)
 
-        $ virtualenv [options] <ENV>
-
-
-    ``<ENV>`` is just the name of the environment you want to create.
-
-    It's arbitrary, so name them to be easily remembered.
-
-.. nextslide::
-
-Let's make one for demonstration purposes:
-
-.. code-block:: bash
-
-    $ virtualenv demoenv
-    New python executable in demoenv/bin/python
-    Installing setuptools, pip...done.
+    How did you figure this out?
 
 
-.. nextslide:: What Happened?
-
-When you ran that command, a couple of things took place:
-
-.. rst-class:: build
-
-* A new directory with your requested name was created
-* A new Python executable was created in <ENV>/bin (<ENV>/Scripts on Windows)
-* The new Python was cloned from your system Python (where virtualenv was
-  installed)
-* The new Python was isolated from any libraries installed in the old Python
-* Setuptools was installed so you have ``easy_install`` for this new python
-* Pip was installed so you have ``pip`` for this new python
-
-Activation
-----------
-
-Every virtualenv you create contains an executable Python command.
-
-.. rst-class:: build
-.. container::
-
-    If you do a quick check to see which Python executable is found by your
-    terminal, you'll see that it is not the one:
-
-    .. code-block:: bash
-
-        $ which python
-        /usr/bin/python
-
-    You can execute the new Python by explicitly pointing to it:
-
-    .. code-block:: bash
-
-        $ ./demoenv/bin/python -V
-        Python 2.7.5
-
-.. nextslide::
-
-But that's tedious and hard to remember.
-
-.. rst-class:: build
-.. container::
-
-    Instead, ``activate`` your virtualenv using the ``source`` shell command:
-
-    .. code-block:: bash
-
-        $ source demoenv/bin/activate
-        (demoenv)$ which python
-        /Users/cewing/demoenv/bin/python
-
-    Notice that when a virtualenv is *active* you can see it in your command
-    prompt.
-
-    So long as the virtualenv is *active* the ``python`` executable that will
-    be used will be the new one in your ``demoenv``.
-
-Installing Packages
--------------------
-
-Since ``pip`` is also installed, the ``pip`` that is used to install new
-software will also be the one in ``demoenv``.
-
-.. code-block:: bash
-
-    (demoenv)$ which pip
-    /Users/cewing/demoenv/bin/pip
-
-.. rst-class:: build
-.. container::
-
-    This means that using these tools to install packages will install them
-    *into your virtual environment only*
-
-    The are not installed into the system Python.
-
-    Let's see this in action.
-
-.. nextslide::
-
-We'll install a package called ``docutils``
-
-.. rst-class:: build
-.. container::
-
-    It provides tools for creating documentation using ReStructuredText
-
-    Install it using pip (while your virtualenv is active):
-
-    .. code-block:: bash
-
-        (demoenv)$ pip install docutils
-        Downloading/unpacking docutils
-          Downloading docutils-0.11.tar.gz (1.6MB): 1.6MB downloaded
-          Running setup.py (path:/Users/cewing/demoenv/build/docutils/setup.py) egg_info for package docutils
-            ...
-            changing mode of /Users/cewing/demoenv/bin/rst2xml.py to 755
-            changing mode of /Users/cewing/demoenv/bin/rstpep2html.py to 755
-        Successfully installed docutils
-        Cleaning up...
-
-.. nextslide::
-
-And now, when we fire up our Python interpreter, the docutils package is
-available to us:
-
-.. code-block:: pycon
-
-    (demoenv)$ python
-    Python 2.7.5 (default, Aug 25 2013, 00:04:04)
-    [GCC 4.2.1 Compatible Apple LLVM 5.0 (clang-500.0.68)] on darwin
-    Type "help", "copyright", "credits" or "license" for more information.
-    >>> import docutils
-    >>> docutils.__path__
-    ['/Users/cewing/demoenv/lib/python2.7/site-packages/docutils']
-    >>> ^d
-    (demoenv)$
-
-.. nextslide:: Side Effects
-
-Like some other Python libraries, the ``docutils`` package provides a number of
-executable scripts when it is installed.
-
-.. rst-class:: build
-.. container::
-
-    You can see these in the ``bin`` directory inside your virtualenv:
-
-    .. code-block:: bash
-
-        (demoenv)$ ls ./demoenv/bin
-        ...
-        python
-        rst2html.py
-        rst2latex.py
-        ...
-
-    These scripts are set up to execute using the Python with which they were
-    built.
-
-    Running these scripts will use the Python executable in your virtualenv,
-    *even if that virtualenv is not active*!
-
-Deactivation
+Socket Types
 ------------
 
-So you've got a virtual environment created and activated so you can work with
-it.
+The socket *type* determines the semantics of socket communications.
 
 .. rst-class:: build
 .. container::
 
-    Eventually you'll need to stop working with this ``virtualenv`` and switch
-    to another
+    Look up socket type constants with the ``SOCK_`` prefix:
 
-    It's a good idea to keep a separate ``virtualenv`` for every project you
-    work on.
+    .. code-block:: ipython
 
-    When a ``virtualenv`` is active, all you have to do is use the
-    ``deactivate`` command:
+        In [42]: types = get_constants('SOCK_')
 
-    .. code-block:: bash
+        In [43]: types
+        Out[43]:
+        {<SocketKind.SOCK_STREAM: 1>: 'SOCK_STREAM',
+         <SocketKind.SOCK_DGRAM: 2>: 'SOCK_DGRAM',
+         <SocketKind.SOCK_RAW: 3>: 'SOCK_RAW',
+         <SocketKind.SOCK_RDM: 4>: 'SOCK_RDM',
+         <SocketKind.SOCK_SEQPACKET: 5>: 'SOCK_SEQPACKET'}
 
-        (demoenv)$ deactivate
-        $ which python
-        /usr/bin/python
+    The most common are ``1`` (Stream communication (TCP)) and ``2`` (Datagram
+    communication (UDP)).
 
-    Note that your shell prompt returns to normal, and now the executable
-    Python found when you check ``python`` is the system one again.
+
+.. nextslide:: Test your skills
+
+What is the *default* type for our generic socket, ``foo``?
+
+
+Socket Protocols
+----------------
+
+A socket also has a designated *protocol*. The constants for these are
+prefixed by ``IPPROTO_``:
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: ipython
+
+        In [45]: protocols = get_constants('IPPROTO_')
+
+        In [46]: protocols
+        Out[46]:
+        {0: 'IPPROTO_IP',
+         ...
+         6: 'IPPROTO_TCP',
+         ...
+         17: 'IPPROTO_UDP',
+         ...}
+
+    The choice of which protocol to use for a socket is determined by the
+    *internet layer* protocol you intend to use. ``TCP``? ``UDP``? ``ICMP``?
+    ``IGMP``?
+
+
+.. nextslide:: Test your skills
+
+What is the *default* protocol used by our generic socket, ``foo``?
+
+
+Customizing Sockets
+-------------------
+
+These three properties of a socket correspond to the three positional
+arguments you may pass to the socket constructor.
+
+.. rst-class:: build
+.. container::
+
+    Using them allows you to create sockets with specific communications
+    profiles:
+
+    .. code-block:: ipython
+
+        In [3]: socket.socket(socket.AF_INET,
+           ...:               socket.SOCK_DGRAM,
+           ...:               socket.IPPROTO_UDP)
+        Out[3]: <socket.socket fd=7,
+                    family=AddressFamily.AF_INET,
+                    type=SocketKind.SOCK_DGRAM,
+                    proto=17,
+                    laddr=('0.0.0.0', 0)>
+
+
+Break Time
+----------
+
+So far we have:
+
+.. rst-class:: build
+.. container::
+
+    .. rst-class:: build
+
+    * learned about the "layers" of the TCP/IP Stack
+    * discussed *families*, *types* and *protocols* in sockets
+    * learned how to create sockets with a specific communications profile.
+
+    When we return we'll learn how to find the communcations profiles of remote
+    sockets, how to connect to them, and how to send and receive messages.
+
+    Take a few minutes now to clear your head (do not quit your python
+    interpreter).
+
+
+Address Information
+-------------------
+
+When you are creating a socket to communicate with a remote service, the
+remote socket will have a specific communications profile.
+
+.. rst-class:: build
+.. container::
+
+    The local socket you create must match that communications profile.
+
+    How can you determine the *correct* values to use?
+
+    .. rst-class:: centered
+
+    **You ask.**
+
+.. nextslide::
+
+The function ``socket.getaddrinfo`` provides information about available
+connections on a given host.
+
+.. code-block:: python
+
+    socket.getaddrinfo('127.0.0.1', 80)
+
+.. rst-class:: build
+.. container::
+
+    This provides all you need to make a proper connection to a socket on a
+    remote host. The value returned is a tuple of:
+
+    .. rst-class:: build
+
+    * socket family
+    * socket type
+    * socket protocol
+    * canonical name (usually empty, unless requested by flag)
+    * socket address (tuple of IP and Port)
+
+
+.. nextslide:: A quick utility method
+
+Again, let's create a utility method in-place so we can see this in action:
+
+.. code-block:: ipython
+
+    In [10]: def get_address_info(host, port):
+       ....:     for response in socket.getaddrinfo(host, port):
+       ....:         fam, typ, pro, nam, add = response
+       ....:         print('family: {}'.format(families[fam]))
+       ....:         print('type: {}'.format(types[typ]))
+       ....:         print('protocol: {}'.format(protocols[pro]))
+       ....:         print('canonical name: {}'.format(nam))
+       ....:         print('socket address: {}'.format(add))
+       ....:         print('')
+       ....:
+
+(you can also find this in ``resources/session01/socket_tools.py``)
+
+
+.. nextslide:: On Your Own Machine
+
+Now, ask your own machine what possible connections are available for 'http':
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: ipython
+
+        In [11]: get_address_info(socket.gethostname(), 'http')
+        family: AF_INET
+        type: SOCK_DGRAM
+        protocol: IPPROTO_UDP
+        canonical name:
+        socket address: ('127.0.0.1', 80)
+
+        family: AF_INET
+        type: SOCK_STREAM
+        protocol: IPPROTO_TCP
+        canonical name:
+        socket address: ('127.0.0.1', 80)
+
+    What answers do you get?
+
+
+.. nextslide:: On the Internet
+
+.. code-block:: ipython
+
+    In [12]: get_address_info('crisewing.com', 'http')
+    family: AF_INET
+    type: SOCK_DGRAM
+    protocol: IPPROTO_UDP
+    canonical name:
+    socket address: ('108.168.213.86', 80)
+
+    family: AF_INET
+    type: SOCK_STREAM
+    protocol: IPPROTO_TCP
+    canonical name:
+    socket address: ('108.168.213.86', 80)
+
+.. rst-class:: build
+.. container::
+
+    Try a few other servers you know about.
+
+
+Client Side
+===========
+
+.. rst-class:: build
+.. container::
+
+    .. rst-class:: large
+
+    Let's put this to use
+
+    We'll communicate with a remote server as a *client*
+
+
+Construct a Socket
+------------------
+
+We've already made a socket ``foo`` using the generic constructor without any
+arguments.  We can make a better one now by using real address information from
+a real server online [**do not type this yet**]:
+
+.. code-block:: ipython
+
+    In [13]: streams = [info
+       ....:     for info in socket.getaddrinfo('crisewing.com', 'http')
+       ....:     if info[1] == socket.SOCK_STREAM]
+       ....:
+    In [14]: streams
+    Out[14]:
+    [(<AddressFamily.AF_INET: 2>,
+      <SocketKind.SOCK_STREAM: 1>,
+      6,
+      '',
+      ('108.168.213.86', 80))]
+    In [15]: info = streams[0]
+    In [16]: cewing_socket = socket.socket(*info[:3])
+
+
+Connecting a Socket
+-------------------
+
+Once the socket is constructed with the appropriate *family*, *type* and
+*protocol*, we can connect it to the address of our remote server:
+
+.. code-block:: ipython
+
+    In [18]: cewing_socket.connect(info[-1])
+
+.. rst-class:: build
+
+* a successful connection returns ``None``
+
+* a failed connection raises an error
+
+* you can use the *type* of error returned to tell why the connection failed.
+
+
+Sending a Message
+-----------------
+
+Send a message to the server on the other end of our connection (we'll
+learn in session 2 about the message we are sending):
+
+.. code-block:: ipython
+
+    In [19]: msg = "GET / HTTP/1.1\r\n"
+    In [20]: msg += "Host: crisewing.com\r\n\r\n"
+    In [21]: msg = msg.encode('utf8')
+    In [22]: msg
+    Out[22]: b'GET / HTTP/1.1\r\nHost: crisewing.com\r\n\r\n'
+    In [23]: cewing_socket.sendall(msg)
+
+.. rst-class:: build small
+
+* the transmission continues until all data is sent or an error occurs
+* success returns ``None``
+* failure to send raises an error
+* the type of error can tell you why the transmission failed
+* but you **cannot** know how much, if any, of your data was sent
+
+
+Messages Are Bytes
+------------------
+
+One detail from the previous code should stand out:
+
+.. code-block:: ipython
+
+    In [21]: msg = msg.encode('utf8')
+    In [22]: msg
+    Out[22]: b'GET / HTTP/1.1\r\nHost: crisewing.com\r\n\r\n'
+
+You can **only** send bytes through a socket, **never** unicode
+
+.. code-block:: ipython
+
+    In [35]: cewing_socket.sendall(msg.decode('utf8'))
+    ---------------------------------------------------------------------------
+    TypeError                                 Traceback (most recent call last)
+    <ipython-input-35-8178ec7f234d> in <module>()
+    ----> 1 cewing_socket.sendall(msg.decode('utf8'))
+
+    TypeError: 'str' does not support the buffer interface
+
+
+Receiving a Reply
+-----------------
+
+Whatever reply we get is received by the socket we created. We can read it
+back out (again, **do not type this yet**):
+
+.. code-block:: ipython
+
+    In [24]: response = cewing_socket.recv(4096)
+    In [25]: response[:60]
+    Out[25]: b'HTTP/1.1 200 OK\r\nServer: nginx\r\nDate: Sun, 20 Sep 2015 03:38'
+
+.. rst-class:: build
+
+* The sole required argument is ``buffer_size`` (an integer). It should be a
+  power of 2 and smallish (~4096)
+* It returns a byte string of ``buffer_size`` (or smaller if less data was
+  received)
+* If the response is longer than ``buffer size``, you can call the method
+  repeatedly. The last bunch will be less than ``buffer size``.
+
 
 Cleaning Up
 -----------
 
-The final advantage that ``virtualenv`` offers you as a developer is
-the ability to easily remove a batch of installed Python software from your
-system.
+When you are finished with a connection, you should always close it::
 
-.. rst-class:: build
-.. container::
+    cewing_socket.close()
 
-    Consider a situation where you installed a library that breaks your Python
-    (it happens)
 
-    If you are working in your system Python, you now have to figure out what
-    that package installed
+Putting it all together
+-----------------------
 
-    You have to figure out where it is
+First, connect and send a message:
 
-    And you have to go clean it out manually.
+.. code-block:: ipython
 
-    With ``virtualenv`` you simply remove the directory ``virtualenv`` created
-    when you started out.
+    In [55]: info = socket.getaddrinfo('crisewing.com', 'http')
+    In [56]: streams = [i for i in info if i[1] == socket.SOCK_STREAM]
+    In [57]: sock_info = streams[0]
+    In [58]: msg = "GET / HTTP/1.1\r\n"
+    In [59]: msg += "Host: crisewing.com\r\n\r\n"
+    In [60]: msg = msg.encode('utf8')
+    In [61]: cewing_socket = socket.socket(*sock_info[:3])
+    In [62]: cewing_socket.connect(sock_info[-1])
+    In [63]: cewing_socket.sendall(msg)
 
-.. nextslide::
-
-Let's do that with our ``demoenv``:
-
-.. rst-class:: build
-.. container::
-
-    .. code-block:: bash
-
-        $ rm -rf demoenv
-
-    And that's it.
-
-    The entire environment and all the packages you installed into it are now
-    gone.
-
-    There are no traces left to pollute your world.
-
-.. nextslide:: Break Time
-
-Let's take a moment to rest up and absorb what we've learned.
-
-When we return, we'll begin talking about a particular approach to thinking
-about application design:
-
-.. rst-class:: centered
-
-**Model View Controller**
-
-MVC Applications
-================
-
-.. figure:: http://upload.wikimedia.org/wikipedia/commons/4/40/MVC_passive_view.png
-    :align: center
-    :width: 50%
-
-    By Alan Evangelista (Own work) [CC0], via Wikimedia Commons
-
-Separation of Concerns
-----------------------
-
-.. rst-class:: build
-.. container::
-
-    In the first part of this course, you were introduced to the concept of
-    *Object Oriented Programming*
-
-    OOP was `first formalized`_ in the 1970s in *Smalltalk*, invented by Alan
-    Kay at *Xerox PARC*
-
-    *Smalltalk* was also the first language which utilized the
-    `Model View Controller`_ design pattern.
-
-    This pattern (like all `design patterns`_) seeks to provide a way of
-    thinking that helps to make software design easier.
-
-    In this case, the goal is to help clarify the high-level *separation of
-    concerns* in a system.
-
-.. _first formalized: http://en.wikipedia.org/wiki/Object-oriented_programming#History
-.. _Model View Controller: http://en.wikipedia.org/wiki/Model–view–controller
-.. _design patterns: http://en.wikipedia.org/wiki/Software_design_pattern
-
-Three Components
-----------------
-
-The pattern divides the elements of a system into three parts:
-
-.. rst-class:: build
-
-Model:
-  This component represents the *data* that comprises the system, and the
-  *logic* used to manipulate that data.
-
-View:
-  This component can be any *representation* of the data to the outside world:
-  a chart, diagram, table, user interface, etc.
-
-  It also includes representations of the *actions* available in the system.
-
-Controller:
-  This component coordinates the Model and the View in a system.
-
-  It accepts input from a user and channels that input into the Model.
-
-  It accepts information about the current state of the Model and transmits
-  that information to the View.
-
-On the Web
-----------
-
-This pattern has proven useful for thinking about the applications we build for
-the web.
-
-.. rst-class:: build
-.. container::
-
-    A web browser provides a convenient container for *views* of data.
-
-    These *views* are created by *controller* software hosted on a server.
-
-    This *controller* software accepts input from users via *HTTP requests*,
-    channeling it into a *data model* usually stored in some database.
-
-    The *controller* returns information about the state of the *data model* to
-    the user via *HTTP responses*
 
 .. nextslide::
 
-This approach is so common, that it has been formalized into any number of *web
-frameworks*
+Then, receive a reply, iterating until it is complete:
+
+.. code-block:: ipython
+
+    In [65]: buffsize = 4096
+    In [66]: response = b''
+    In [67]: done = False
+    In [68]: while not done:
+       ....:     msg_part = cewing_socket.recv(buffsize)
+       ....:     if len(msg_part) < buffsize:
+       ....:         done = True
+       ....:         cewing_socket.close()
+       ....:     response += msg_part
+       ....:
+    In [69]: len(response)
+    Out[69]: 19464
+
+
+Server Side
+===========
 
 .. rst-class:: build
 .. container::
 
-    *Web frameworks* abstract away the specifics of the *HTTP request/response
-    cycle*, leaving simple MVC components for the developer to use.
+    .. rst-class:: large
 
-    *Web frameworks* exist in nearly all modern languages.
+    What about the other half of the equation?
 
-    Python has scores of them.
+    Let's build a server and see how that part works.
 
-    Over the weeks to come, we'll learn about two of them, `Pyramid`_ and
-    `Django`_.
+Construct a Socket
+------------------
 
-.. _Pyramid: http://www.pylonsproject.org/projects/pyramid/about
-.. _Django: https://www.djangoproject.com/
-
-A Word About Terminology
-------------------------
-
-Although the MVC pattern is a useful abstraction, there are a few differences
-in how things are named in Python web frameworks
-
-.. rst-class:: build centered
-.. container::
-
-    model <--> model
-
-    controller <--> view
-
-    view <--> template (or even HTTP response)
-
-    .. rst-class:: left
-
-    For more on this difference, you can `read this`_ from the Pyramid design
-    documentation.
-
-.. _read this: http://docs.pylonsproject.org/projects/pyramid/en/latest/designdefense.html#pyramid-gets-its-terminology-wrong-mvc
-
-Our First Application
-=====================
-
-.. rst-class:: left
-
-But enough abstract blabbering.
-
-.. rst-class:: build left
-.. container::
-
-    There's no better way to make concepts like these concrete than to build
-    something using them.
-
-    Let's make an application!
-
-    We're going to build a Learning Journal.
-
-    When we're done, you'll have a live, online application you can use to keep
-    note of the things you are learning about Python development.
-
-    We'll use one of our Python web framework to do this: `Pyramid`_
-
-Pyramid
--------
-
-First published in 2010, `Pyramid`_ is a powerful, flexible web framework.
+**For the moment, stop typing this into your interpreter.**
 
 .. rst-class:: build
 .. container::
 
-    You can create compelling one-page applications, much like in
-    microframeworks like Flask
+    Again, we begin by constructing a socket. Since we are actually the server
+    this time, we get to choose family, type and protocol:
 
-    You can also create powerful, scalable applications using the full
-    power of Python
+    .. code-block:: ipython
 
-    Created by the combined powers of the teams behind Pylons and Zope
+        In [70]: server_socket = socket.socket(
+           ....:     socket.AF_INET,
+           ....:     socket.SOCK_STREAM,
+           ....:     socket.IPPROTO_TCP)
 
-    It represents the first true second-generation web framework in
-    existence.
+        In [71]: server_socket
+        Out[71]: <socket.socket fd=12, family=AddressFamily.AF_INET,
+                    type=SocketKind.SOCK_STREAM, proto=6, laddr=('0.0.0.0', 0)>
 
-Starting the Project
---------------------
 
-The first step is to prepare for the project.
-
-.. rst-class:: build
-.. container::
-
-    Begin by creating a location where you'll do your work.
-
-    I generally put all my work in a folder called ``projects`` in my home
-    directory:
-
-    .. code-block:: bash
-
-        $ cd
-        $ mkdir projects
-        $ cd projects
-        $ mkdir learning-journal
-        $ cd learning-journal
-        $ pwd
-        /Users/cewing/project/learning-journal
-
-.. nextslide:: Creating an Environment
-
-We continue our preparations by creating a virtualenv we will use for it.
-
-.. rst-class:: build
-.. container::
-
-    Again, this will help us to keep our work here isolated from anything else
-    we do.
-
-    Remember how to make a new virtualenv?
-
-    .. code-block:: bash
-
-        $ virtualenv ljenv
-        New python executable in ljenv/bin/python
-        Installing setuptools, pip...done.
-
-    And then, how to activate it?
-
-    .. code-block:: bash
-
-        $ source ljenv/bin/activate
-        (ljenv)$
-
-.. nextslide:: Installing Pyramid
-
-Next, we install the Pyramid web framework into our new virtualenv.
-
-.. rst-class:: build
-.. container::
-
-    We can do this with the ``pip`` in our active ``ljenv``:
-
-    .. code-block:: bash
-
-        (ljenv)$ pip install pyramid
-        Collecting pyramid
-          Downloading pyramid-1.5.2-py2.py3-none-any.whl (545kB)
-            100% |################################| 548kB 172kB/s
-        ...
-        Successfully installed PasteDeploy-1.5.2 WebOb-1.4
-        pyramid-1.5.2 repoze.lru-0.6 translationstring-1.3
-        venusian-1.0 zope.deprecation-4.1.1 zope.interface-4.1.2
-
-    Once that is complete, we are ready to create a *scaffold* for our project.
-
-Working with Pyramid
---------------------
-
-Many web frameworks require at least a bit of *boilerplate* code to get
-started.
-
-.. rst-class:: build
-.. container::
-
-    Pyramid does not.
-
-    However, our application will require a database and handling that does
-    require some.
-
-    Pyramid provides a system for creating boilerplate called ``pcreate``.
-
-    You use it to generate the skeleton for a project based on some pattern:
-
-    .. code-block:: bash
-
-        (ljenv)$ pcreate -s alchemy learning_journal
-        Creating directory /Users/cewing/projects/learning-journal/learning_journal
-        ...
-        Welcome to Pyramid.  Sorry for the convenience.
-        ===============================================================================
-
-    Let's take a quick look at what that did
-
-.. nextslide:: What You Get
-
-.. code-block:: bash
-
-    (ljenv)$ tree learning_journal/
-    learning_journal/
-    ...
-    ├── development.ini
-    ├── learning_journal
-    │   ├── __init__.py
-    │   ├── models.py
-    │   ├── scripts
-    │   │   ├── __init__.py
-    │   │   └── initializedb.py
-    │   ├── static
-    ...
-    │   ├── templates
-    │   │   └── mytemplate.pt
-    │   ├── tests.py
-    │   └── views.py
-    ├── production.ini
-    └── setup.py
-
-.. nextslide:: Saving Your Work
-
-You've now created something worth saving.
-
-.. rst-class:: build
-.. container::
-
-    Start by initializing a new git repository in the `learning_journal` folder
-    you just created:
-
-    .. code-block:: bash
-
-        (ljenv)$ cd learning_journal
-        (ljenv)$ git init
-        Initialized empty Git repository in
-         /Users/cewing/projects/learning-journal/learning_journal/.git/
-
-.. nextslide:: Saving Your Work
-
-Check ``git status`` to see where things stand:
-
-.. code-block:: bash
-
-    (ljenv)$ git status
-    On branch master
-
-    Initial commit
-
-    Untracked files:
-      (use "git add <file>..." to include in what will be committed)
-
-        CHANGES.txt
-        MANIFEST.in
-        README.txt
-        development.ini
-        learning_journal/
-        production.ini
-        setup.py
-
-.. nextslide:: Add the Project Code
-
-Add your work to this new repository:
-
-.. code-block:: bash
-
-    (ljenv)$ git add .
-    (ljenv)$ git status
-    ...
-    Changes to be committed:
-      (use "git rm --cached <file>..." to unstage)
-
-        new file:   CHANGES.txt
-        new file:   MANIFEST.in
-        ...
-        new file:   production.ini
-        new file:   setup.py
-
-.. nextslide:: Ignore Irrelevant Files
-
-Python creates ``.pyc`` files when it executes your code.
-
-.. rst-class:: build
-.. container::
-
-    There are many other files you don't want or need in your repository
-
-    You can ignore this in ``git`` with the ``.gitignore`` file.
-
-    Create one now, in this same directory, and add the following basic lines::
-
-        *.pyc
-        .DS_Store
-
-    Finally, add this new file to your repository, too.
-
-.. nextslide:: Make It Permanent
-
-To preserve all these changes, you'll need to commit what you've done:
-
-.. code-block:: bash
-
-    (ljenv)$ git commit -m "initial commit of the Pyramid learning journal"
-
-.. rst-class:: build
-.. container::
-
-    This will make a first commit here in this local repository.
-
-    For homework, you'll put this into GitHub, but this is enough for now.
-
-    Let's move on to learning about what we've built so far.
-
-.. nextslide:: Project Structure
-
-When you ran the ``pcreate`` command, a new folder was created:
-``learning_journal``.
-
-.. rst-class:: build
-.. container::
-
-    This folder contains your *project*.
-
-    At the top level, you have *configuration* (.ini files)
-
-    You also have a file called ``setup.py``
-
-    This file turns this collection of Python code and configuration into an
-    *installable Python distribution*
-
-    Let's take a moment to look over the code in that file
-
-.. nextslide:: ``setup.py``
-
-.. code-block:: python
-
-    from setuptools import setup, find_packages
-    ...
-    requires = [
-        'pyramid',
-        ... # packages on which this software depends (dependencies)
-        ]
-    setup(name='learning_journal',
-          version='0.0',
-          ... # package metadata (used by PyPI)
-          install_requires=requires,
-          # Entry points are ways that we can run our code once installed
-          entry_points="""\
-          [paste.app_factory]
-          main = learning_journal:main
-          [console_scripts]
-          initialize_learning_journal_db = learning_journal.scripts.initializedb:main
-          """,
-          )
-
-Pyramid is Python
------------------
-
-In the ``__init__.py`` file of your app *package*, you'll find a ``main``
-function:
-
-.. code-block:: python
-
-    def main(global_config, **settings):
-        """ This function returns a Pyramid WSGI application.
-        """
-        engine = engine_from_config(settings, 'sqlalchemy.')
-        DBSession.configure(bind=engine)
-        Base.metadata.bind = engine
-        config = Configurator(settings=settings)
-        config.include('pyramid_chameleon')
-        config.add_static_view('static', 'static', cache_max_age=3600)
-        config.add_route('home', '/')
-        config.scan()
-        return config.make_wsgi_app()
-
-Let's take a closer look at this, line by line.
-
-.. nextslide:: System Configuration
-
-.. code-block:: python
-
-    def main(global_config, **settings):
-
-Configuration is passed in to an application after being read from the
-``.ini`` file we saw above.
-
-.. rst-class:: build
-.. container::
-
-    These files contain sections (``[app:main]``) containing ``name = value``
-    pairs of *configuration data*
-
-    This data is parsed with the Python
-    `ConfigParser <http://docs.python.org/2/library/configparser.html>`_ module.
-
-    The result is a dict of values:
-
-    .. code-block:: python
-
-        {'app:main': {'pyramid.reload_templates': True, ...}, ...}
-
-    The default section of the file is passed in as ``global_config``, the
-    section for *this app* as ``settings``.
-
-.. nextslide:: Database Configuration
-
-.. code-block:: python
-
-    from sqlalchemy import engine_from_config
-    from .models import DBSession, Base
-    ...
-    engine = engine_from_config(settings, 'sqlalchemy.')
-    DBSession.configure(bind=engine)
-    Base.metadata.bind = engine
-
-We will use a package called ``SQLAlchemy`` to interact with our database.
-
-.. rst-class:: build
-.. container::
-
-    Our connection is set up using settings read from the ``.ini`` file.
-
-    Can you find the settings for the database?
-
-    The ``DBSession`` ensures that each *database transaction* is tied to HTTP
-    requests.
-
-    The ``Base`` provides a parent class that will hook our *models* to the
-    database.
-
-.. nextslide:: App Configuration
-
-.. code-block:: python
-
-    config = Configurator(settings=settings)
-    config.include('pyramid_chameleon')
-    config.add_static_view('static', 'static', cache_max_age=3600)
-    config.add_route('home', '/')
-    config.scan()
-
-Pyramid controlls application-level configuration using a ``Configurator`` class.
-
-.. rst-class:: build
-.. container::
-
-    It uses app-specific settings passed in from the ``.ini`` file
-
-    We can also ``include`` configuration from other add-on packages
-
-    Additionally, we can configure *routes* and *views* needed to connect our
-    application to the outside world here (more on this next week).
-
-    Finally, the ``Configurator`` instance performs a ``scan`` to ensure there
-    are no problems with what we've created.
-
-.. nextslide:: A Last Word on Configuration
-
-We will return to the configuration of our application repeatedly over the next
-sessions.
-
-.. rst-class:: build
-.. container::
-
-    Pyramid configuration is powerful and flexible.
-
-    We'll use a few of its features
-
-    But there's a lot more you could (and should) learn.
-
-    Read about it in the `configuration chapter`_ of the Pyramid documentation.
-
-.. _configuration chapter: http://docs.pylonsproject.org/projects/pyramid/en/latest/api/config.html
-
-.. nextslide:: Break Time
-
-Let's take a moment to rest up and absorb what we've learned.
-
-When we return, we'll see how we can create *models* that will embody the data
-for our Learning Journal application.
-
-.. rst-class:: centered
-
-**Pyramid Models**
-
-
-Models in Pyramid
-=================
-
-.. rst-class:: left
-.. container::
-
-    The central component of MVC, the model, captures the behavior of the
-    application in terms of its problem domain, independent of the user
-    interface. The model directly manages the data, logic and rules of the
-    application
-
-    -- from the Wikipedia article on `Model-view-controller`_
-
-.. _Model-view-controller: http://en.wikipedia.org/wiki/Model–view–controller
-
-Models and ORMs
+Bind the Socket
 ---------------
 
-In an MVC application, we define the *problem domain* by creating one or more
-*Models*.
+Our server socket needs to be **bound** to an address. This is the IP Address
+and Port to which clients must connect:
 
 .. rst-class:: build
 .. container::
 
-    These capture relevant details about the information we want to preserve
-    and how we want to interact with it.
+    .. code-block:: ipython
 
-    In Python-based MVC applications, these *Models* are implemented as Python
-    classes.
+        In [72]: address = ('127.0.0.1', 50000)
+        In [73]: server_socket.bind(address)
 
-    The individual bits of data we want to know about are *attributes* of our
-    classes.
+    **Terminology Note**: In a server/client relationship, the server *binds*
+    to an address and port. The client *connects*
 
-    The actions we want to take using that data are *methods* of our classes.
+Listen for Connections
+----------------------
 
-    Together, we can refer to this as the *API* of our system.
+Once our socket is bound to an address, we can listen for attempted
+connections:
 
-.. nextslide:: Persistence
+.. code-block:: ipython
 
-It's all well and good to have a set of Python classes that represent your
-system.
+    In [74]: server_socket.listen(1)
+
+.. rst-class:: build
+
+* The argument to ``listen`` is the *backlog*
+* The *backlog* is the **maximum** number of connection requests that the
+  socket will queue
+* Once the limit is reached, the socket refuses new connections.
+
+
+Accept A Connection
+-------------------
+
+When a socket is listening, it can receive incoming connection requests:
+
+.. code-block:: ipython
+
+    In [75]: connection, client_address = server_socket.accept()
+
+.. rst-class:: build
+
+* The call to ``socket.accept()`` is a *blocking* call.  It will not return
+  values until a client *connects*
+* The ``connection`` returned by a call to ``accept`` is a **new socket**.
+  This new socket is used to communicate with the client
+* The ``client_address`` is a two-tuple of IP Address and Port for the client
+  socket
+* When a connection request is 'accepted', it is removed from the backlog
+  queue.
+
+
+Communicate
+-----------
+
+The ``connection`` socket can now be used to receive messages from the client
+which made the connection:
+
+.. code-block:: ipython
+
+    In [76]: connection.recv(buffsize)
+
+It may also be used to return a reply:
+
+.. code-block:: ipython
+
+    In [77]: connection.sendall("message received")
+
+
+Clean Up
+--------
+
+Once a transaction between the client and server is complete, the
+``connection`` socket should be closed:
 
 .. rst-class:: build
 .. container::
 
-    But what happens when you want to *save* information.
+    .. code-block:: ipython
 
-    What happens to a instance of a Python class when you quit the interprer?
+        In [78]: connection.close()
 
-    When your script stops running?
+    At this point, the ``server_socket`` can again accept a new client
+    connection.
 
-    The code in a website runs when an HTTP request comes in from a client.
+    Note that the ``server_socket`` is *never* closed as long as the server
+    continues to run.
 
-    It stops running when an HTTP response goes back out to the client.
 
-    So what happens to the data in your system in-between these moments?
+Getting the Flow
+================
 
-    The data must be *persisted*
-
-.. nextslide:: Alternatives
-
-In the last class from part one of this series, you explored a number of
-alternatives for persistence
-
-.. rst-class:: build
-
-* Python Literals
-* Pickle/Shelf
-* Interchange Files (CSV, XML, INI)
-* Object Stores (ZODB, Durus)
-* NoSQL Databases (MongoDB, CouchDB)
-* SQL Databases (sqlite, MySQL, PostgreSQL, Oracle, SQLServer)
-
-.. rst-class:: build
+.. rst-class:: left
 .. container::
 
-    Any of these might be useful for certain types of applications.
-
-    On the web, you tend to see two used the most:
+    The flow of this interaction can be a bit confusing.  Let's see it in
+    action step-by-step.
 
     .. rst-class:: build
-
-    * NoSQL
-    * SQL
-
-.. nextslide:: Choosing One
-
-How do you choose one over the other?
-
-.. rst-class:: build
-.. container::
-
-    In general, the telling factor is going to be how you intend to use your
-    data.
-
-    In systems where the dominant feature is viewing/interacting with
-    individual objects, a NoSQL storage solution might be the best way to go.
-
-    In systems with objects that are related to eachother, SQL-based Relational
-    Databases are a better choice.
-
-    Our system is more like this latter type (trust me on that one for now).
-
-    We'll be using SQL (sqlite to start with).
-
-
-.. nextslide:: Objects and Tables
-
-So we have a system where our data is captured in Python *objects*
-
-.. rst-class:: build
-.. container::
-
-    And a storage system where our data must be rendered as database *tables*
-
-    Python provides a specification for interacting directly with databases:
-    `dbapi2`_
-
-    And there are multiple Python packages that implement this specification
-    for various databases:
-
-    .. rst-class:: build
-
-    * sqlite3
-    * python-mysql
-    * psycopg2
-    * ...
-
-    With these, you can write SQL to save your Python objects into your
-    database.
-
-.. _dbapi2: https://www.python.org/dev/peps/pep-0249/
-
-.. nextslide:: ORMs
-
-But that's a pain.
-
-.. rst-class:: build
-.. container::
-
-    SQL, while not impossible, is yet another language to learn.
-
-    And there is a viable alternative in using an *Object Relational Manager*
-    (ORM)
-
-    An ORM provides a layer of *abstraction* between you and SQL
-
-    You instantiate Python objects and set attributes on them
-
-    The ORM handles converting data from these objects into SQL statements (and
-    back)
-
-SQLAlchemy
-----------
-
-In our project we will be using the `SQLAlchemy`_ ORM.
-
-.. rst-class:: build
-.. container::
-
-    You can find SQLAlchemy among the packages in ``requires`` in ``setup.py``
-    in our new ``learning_journal`` package.
-
-    However, we don't yet have that code installed.
-
-    To do so, we will need to "install" our own package
-
-    Make sure your ``ljenv`` virtualenv is active and then type the following:
-
-    .. code-block:: bash
-
-        (ljenv)$ python setup.py develop
-        running develop
-        running egg_info
-        creating learning_journal.egg-info
-        ...
-        Finished processing dependencies for learning-journal==0.0
-
-.. nextslide::
-
-Once that is complete, all the *dependencies* listed in our ``setup.py`` will
-be installed.
-
-.. rst-class:: build
-.. container::
-
-    You can also install the package using ``python setup.py install``
-
-    But using ``develop`` allows us to continue developing our package without
-    needing to re-install it every time we change something.
-
-    It is very similar to using the ``-e`` option to ``pip``
-
-    Now, we'll only need to re-run this command if we change ``setup.py``
-    itself.
-
-.. nextslide::
-
-We also need to adjust our ``.gitignore`` file:
-
-.. rst-class:: build
-.. code-block:: bash
-
-    (ljenv)$ git status
-    ...
-    Untracked files:
-      (use "git add <file>..." to include in what will be committed)
-
-        learning_journal.egg-info/
-
-.. rst-class:: build
-.. container::
-
-    The ``egg-info`` directory that was just created is an artifact of
-    installing a Python egg.
-
-    It should never be committed to a repository.
-
-    Let's add ``*.egg-info`` to our ``.gitignore`` file and then commit that
-    change
-
-    Remember how?
-
-.. nextslide:: Our First Model
-
-Our project skeleton contains up a first, basic model created for us:
-
-.. code-block:: python
-
-    # in models.py
-    Base = declarative_base()
-
-    class MyModel(Base):
-        __tablename__ = 'models'
-        id = Column(Integer, primary_key=True)
-        name = Column(Text)
-        value = Column(Integer)
-    Index('my_index', MyModel.name, unique=True, mysql_length=255)
-
-.. _SQLAlchemy: http://docs.sqlalchemy.org/en/rel_0_9/
-
-.. rst-class:: build
-.. container::
-
-    Our class inherits from ``Base``
-
-    We ran into ``Base`` earlier when discussing configuration.
-
-    We were binding it to the database we wanted to use (the ``engine``)
-
-.. nextslide:: ``Base``
-
-Any class we create that inherits from this ``Base`` becomes a *model*
-
-.. rst-class:: build
-.. container::
-
-    It will be connected through the ORM to a table in our database.
-
-    The name of the table is determined by the ``__tablename__`` special
-    attribute.
-
-    Other aspects of table configuration can also be controlled through special
-    attributes
-
-    Instances of the class, once saved, will become rows in the table.
-
-    Attributes of the model that are instances of ``Column`` will become
-    columns in the table.
-
-    You can learn much more in the `Declarative`_ chapter of the SQLAlchemy docs
-
-.. _Declarative: http://docs.sqlalchemy.org/en/rel_0_9/orm/extensions/declarative/
-
-.. nextslide:: Columns
-
-Each attribute of your model that will be persisted must be an instance of
-`Column`_.
-
-.. rst-class:: build
-.. container::
-
-    Each instance requires *at least* a specific `data type`_ (such as
-    Integer).
-
-    Additionally, you can control other aspects of the column such as it being
-    a primary key.
-
-    In the *declarative* style we are using, the name of the column in the
-    database will default to the attribute name you assigned.
-
-    If you wish, you may provide a name specifically.  It must be the first
-    argument and must be a string.
-
-.. _Column: http://docs.sqlalchemy.org/en/rel_0_9/core/metadata.html#sqlalchemy.schema.Column
-.. _data type: http://docs.sqlalchemy.org/en/rel_0_9/core/types.html
-
-Creating The Database
----------------------
-
-We have a *model* which allows us to persist Python objects to an SQL database.
-
-.. rst-class:: build
-.. container::
-
-    But we're still missing one ingredient here.
-
-    We need to create our database, or there will be nowhere for our data to
-    go.
-
-    Luckily, our ``pcreate`` scaffold also gave us a convenient way to handle
-    this:
-
-    .. code-block:: python
-
-        # in setup.py
-        entry_points="""\
-        [paste.app_factory]
-        main = learning_journal:main
-        [console_scripts]
-        initialize_learning_journal_db = learning_journal.scripts.initializedb:main
-        """,
-
-    The ``console_script`` set up as an entry point will help us.
-
-.. nextslide:: ``initialize_learning_journal_db``
-
-Let's look at that code for a moment.
-
-.. code-block:: python
-
-    # in scripts/intitalizedb.py
-    from ..models import DBSession, MyModel, Base
-    # ...
-    def main(argv=sys.argv):
-        if len(argv) < 2:
-            usage(argv)
-        config_uri = argv[1]
-        options = parse_vars(argv[2:])
-        setup_logging(config_uri)
-        settings = get_appsettings(config_uri, options=options)
-        engine = engine_from_config(settings, 'sqlalchemy.')
-        DBSession.configure(bind=engine)
-        Base.metadata.create_all(engine)
-        with transaction.manager:
-            model = MyModel(name='one', value=1)
-            DBSession.add(model)
-
-.. nextslide:: Console Scripts
-
-By connecting this function as a ``console script``, our Python package makes
-this command available to us.
-
-.. rst-class:: build
-.. container::
-
-    When we exectute ``initialize_learning_journal_db`` at the command line, we
-    will be running this function.
-
-    Let's try it out.
-
-    We'll need to provide a configuration file name, let's use
-    ``development.ini``:
-
-    .. code-block:: bash
-
-        (ljenv)$ initialize_learning_journal_db development.ini
-        2015-01-05 18:59:55,426 INFO  [sqlalchemy.engine.base.Engine][MainThread] SELECT CAST('test plain returns' AS VARCHAR(60)) AS anon_1
-        ...
-        2015-01-05 18:59:55,434 INFO  [sqlalchemy.engine.base.Engine][MainThread] COMMIT
-
-    The ``[loggers]`` configuration in our ``.ini`` file sends a stream of
-    INFO-level logging to sys.stdout as the console script runs.
-
-.. nextslide:: A Bit More Cleanup
-
-So what was the outcome of running that script?
-
-.. rst-class:: build
-.. container::
-
-    .. code-block:: bash
-
-        (ljenv)$ ls
-        ...
-        learning_journal.sqlite
-        ...
-
-    We've now created an sqlite database.
-
-    You'll need to add ``*.sqlite`` to ``.gitignore`` so you don't add that
-    file to your repository.
-
-    Once you've done so, commit the change to your repository
-
-Interacting with SQLA Models
-----------------------------
-
-It's pretty easy to play with your models from in an interpreter.
-
-.. rst-class:: build
-.. container::
-
-    Let's try that out and see what we have.  Start up an interpreter:
-
-    .. code-block:: pycon
-
-        >>> config = 'development.ini'
-        >>> from pyramid.paster import get_appsettings
-        >>> settings = get_appsettings(config)
-        >>> from sqlalchemy import engine_from_config
-        >>> engine = engine_from_config(settings, 'sqlalchemy.')
-        >>> from sqlalchemy.orm import sessionmaker
-        >>> Session = sessionmaker(bind=engine)
-        >>> session = Session()
-        >>> from learning_journal.models import MyModel
-        >>> session.query(MyModel).all()
-        [<learning_journal.models.MyModel object at 0x10b075ed0>]
-
-    We are basically stealing the important bits from ``initializedb.py``
-
-.. nextslide:: Basic Interactions
-
-Any interaction with the database requires a ``session``.
-
-.. rst-class:: build
-.. container::
-
-    This object represents the connection to the database.
-
-    All database queries are phrased as methods of the session.
-
     .. container::
 
-        .. code-block:: pycon
+        .. container::
 
-            >>> query = session.query(MyModel)
-            >>> type(query)
-            <class 'sqlalchemy.orm.query.Query'>
+            Open a second iPython interpreter and place it next to your first so
+            you can see both of them at the same time.
 
-        The ``query`` method of the session object returns a ``Query`` object
 
-    Arguments to the ``query`` method can be a *model* class or *columns* from
-    a model class.
+Create a Server
+---------------
 
-.. nextslide:: Queries are Iterators
-
-You can iterate over a query object.  The result depends on the args you
-passed.
+In your first python interpreter, create a server socket and prepare it for
+connections:
 
 .. rst-class:: build
 .. container::
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> q1 = session.query(MyModel)
-        >>> for row in q1:
-        ...   print row
-        ...   type(row)
-        ...
-        <learning_journal.models.MyModel object at 0x1103d9f10>
-        <class 'learning_journal.models.MyModel'>
+        In [81]: server_socket = socket.socket(
+           ....:     socket.AF_INET,
+           ....:     socket.SOCK_STREAM,
+           ....:     socket.IPPROTO_IP)
+        In [82]: server_socket.bind(('127.0.0.1', 50000))
+        In [83]: server_socket.listen(1)
+        In [84]: conn, addr = server_socket.accept()
 
-    .. code-block:: pycon
 
-        >>> q2 = session.query(MyModel.name, MyModel.id, MyModel.value)
-        >>> for name, id, val in q2:
-        ...   print name, type(name)
-        ...   print id, type(id)
-        ...   print val, type(val)
-        ...
-        one <type 'unicode'>
-        1 <type 'int'>
-        1 <type 'int'>
+    At this point, you should **not** get back a prompt. The server socket is
+    waiting for a connection to be made.
 
-.. nextslide:: Queries have SQL
 
-You can view the SQL that your query will use:
+Create a Client
+---------------
+
+In your second interpreter, create a client socket and prepare to send a
+message:
 
 .. rst-class:: build
 .. container::
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> str(q1)
-        'SELECT models.id AS models_id, models.name AS models_name, models.value AS models_value \nFROM models'
-        >>> str(q2)
-        'SELECT models.name AS models_name, models.id AS models_id, models.value AS models_value \nFROM models'
+        In [1]: import socket
+        In [2]: client_socket = socket.socket(
+           ...:     socket.AF_INET,
+           ...:     socket.SOCK_STREAM,
+           ...:     socket.IPPROTO_IP)
 
-    You can use this to check that the query the ORM is constructing looks like
-    you expect.
+    Before connecting, keep your eye on the server interpreter:
 
-    It can be helpful in debugging.
+    .. code-block:: ipython
 
-.. nextslide:: Methods of the Query Object
+        In [3]: client_socket.connect(('127.0.0.1', 50000))
 
-The methods of the ``Query`` object fall into two rough categories
 
-.. rst-class:: build
-.. container::
+Send a Message Client->Server
+-----------------------------
 
-    .. rst-class:: build
-
-    1.  Methods that return a new ``Query`` object
-    2.  Methods that return *scalar* values or *model* instances
-
-    Let's start by looking quickly at a few methods from the second category
-
-.. nextslide:: ``query.get()``
-
-A good example of this category of methods is ``get``, which returns one
-instance only.
+As soon as you made the connection above, you should have seen the prompt
+return in your server interpreter. The ``accept`` method finally returned a
+new connection socket.
 
 .. rst-class:: build
 .. container::
 
-    It takes a primary key as an argument:
+    When you're ready, type the following in the *client* interpreter:
 
-    .. code-block:: pycon
+    .. code-block:: ipython
 
-        >>> session.query(MyModel).get(1)
-        <learning_journal.models.MyModel object at 0x1103d9f10>
-        >>> session.query(MyModel).get(10)
-        >>>
+        In [4]: client_socket.sendall('Hey, can you hear me?'.encode('utf8'))
 
-    If no item with that primary key is present, then the method returns
-    ``None``
 
-.. nextslide:: ``query.all()``
+Receive and Respond
+-------------------
 
-Another example is one we've already seen.
+Back in your server interpreter, go ahead and receive the message from your
+client:
 
 .. rst-class:: build
 .. container::
 
-    ``query.all()`` returns a list of all rows returned by the database:
+    .. code-block:: ipython
 
-    .. code-block:: pycon
+        In [87]: msg = conn.recv(4096)
+        In [88]: msg
+        Out[88]: b'Hey, can you hear me?'
 
-        >>> q1.all()
-        [<learning_journal.models.MyModel object at 0x1103d9f10>]
-        >>> type(q1.all())
-        <type 'list'>
+    Send a message back, and then close up your connection:
 
-    ``query.count()`` returns the number of rows that would have been returned
-    by the query:
+    .. code-block:: ipython
 
-    .. code-block:: pycon
+        In [89]: conn.sendall('Yes, I can hear you.'.encode('utf8'))
+        In [90]: conn.close()
 
-        >>> q1.count()
-        1
+Finish Up
+---------
 
-.. nextslide:: Creating New Objects
-
-Before getting into the other category, let's learn how to create new objects.
+Back in your client interpreter, take a look at the response to your message,
+then be sure to close your client socket too:
 
 .. rst-class:: build
 .. container::
 
-    .. container::
+    .. code-block:: ipython
 
-        We can create new instances of our *model* just like normal Python
-        objects:
+        In [5]: from_server = client_socket.recv(4096)
+        In [6]: from_server
+        Out[6]: b'Yes, I can hear you.'
+        In [7]: client_socket.close()
 
-        .. code-block:: pycon
+    And now that we're done, we can close up the server socket too (back in the
+    server interpreter):
 
-            >>> new_model = MyModel(name='fred', value=3)
-            >>> new_model
-            <learning_journal.models.MyModel object at 0x1103e38d0>
+    .. code-block:: ipython
 
-    .. container::
+        In [91]: server_socket.close()
 
-        In this state, the instance is *ephemeral*, our ``session`` knows
-        nothing about it:
 
-        .. code-block:: pycon
+.. nextslide:: Congratulations!
 
-            >>> session.new
-            IdentitySet([])
+.. rst-class:: large center
 
-.. nextslide:: Adding Objects to the Session
+You've run your first client-server interaction
 
-For the database to know about our new object, we must ``add`` it to the
-session:
-
-.. rst-class:: build
-.. container::
-
-    .. code-block:: pycon
-
-        >>> session.add(new_model)
-        >>> session.new
-        IdentitySet([<learning_journal.models.MyModel object at 0x1103e38d0>])
-
-    We can even bulk-add new objects:
-
-    .. code-block:: pycon
-
-        >>> new = []
-        >>> for name, val in [('bob', 34), ('tom', 13)]:
-        ...   new.append(MyModel(name=name, value=val))
-        ...
-        >>> session.add_all(new)
-        >>> session.new
-        IdentitySet([<learning_journal.models.MyModel object at 0x1103e3f50>,
-                     <learning_journal.models.MyModel object at 0x1103e38d0>,
-                     <learning_journal.models.MyModel object at 0x1103e3fd0>])
-
-.. nextslide:: Committing Changes
-
-Up until now, the changes you've made are not permanent.
-
-.. rst-class:: build
-.. container::
-
-    In order for these new objects to be saved to the database, the session
-    must be ``committed``:
-
-    .. code-block:: pycon
-
-        >>> other_session = Session()
-        >>> other_session.query(MyModel).count()
-        1
-        >>> session.commit()
-        >>> other_session.query(MyModel).count()
-
-    When you are using a ``scoped_session`` in Pyramid, this action is
-    automatically handled for you.
-
-    The session that is bound to a particular HTTP request is committed when a
-    response is sent back.
-
-.. nextslide:: Altering Objects
-
-You can edit objects that are already part of a session, or that are fetched by
-a query.
-
-.. rst-class:: build
-.. container::
-
-    Simply change the values of a persisted attribute, the session will know
-    it's been updated:
-
-    .. code-block:: pycon
-    
-        >>> new_model
-        <learning_journal.models.MyModel object at 0x1103e38d0>
-        >>> new_model.name
-        u'fred'
-        >>> new_model.name = 'larry'
-        >>> session.dirty
-        IdentitySet([<learning_journal.models.MyModel object at 0x1103e38d0>])
-
-    Commit the session to persist the changes:
-
-    .. code-block:: pycon
-    
-        >>> session.commit()
-
-.. nextslide:: Methods Returning Queries
-
-Returning to queries, the second category is typified by the ``filter`` method
-
-.. rst-class:: build
-.. container::
-
-    This method allows you to reduce the number of results, based on criteria:
-
-    .. code-block:: pycon
-    
-        >>> for obj in session.query(MyModel).filter(MyModel.value < 20):
-        ...   print obj.name, obj.value
-        ...
-        one 1
-        larry 3
-        tom 13
-
-.. nextslide:: ``order_by``
-
-Another typical method in this category is ``order_by``:
-
-.. rst-class:: build
-.. container::
-
-    .. code-block:: pycon
-    
-        >>> for obj in session.query(MyModel).order_by(MyModel.value):
-        ...   print obj.name, obj.value
-        ...
-        one 1
-        larry 3
-        tom 13
-        bob 34
-
-    .. code-block:: pycon
-
-        >>> for obj in session.query(MyModel).order_by(MyModel.name):
-        ...   print obj.name, obj.value
-        ...
-        bob 34
-        larry 3
-        one 1
-        tom 13
-
-.. nextslide:: Method Chaining
-
-Since methods in this category return ``Query`` objects, they can be safely
-*chained* to build more complex queries:
-
-.. rst-class:: build
-.. container::
-
-    .. code-block:: pycon
-
-        >>> q1 = session.query(MyModel).filter(MyModel.value < 20)
-        >>> q1 = q1.order_by(MyModel.name)
-        >>> for obj in q1:
-        ...   print obj.name, obj.value
-        ...
-        larry 3
-        one 1
-        tom 13
-
-    Note that you can do this inline as well
-    (``s.query(Model).filter().order_by()``)
-
-    Also note that when using chained queries like this, no query is actually
-    sent to the database until you require a result.
 
 Homework
 ========
 
 .. rst-class:: left
-
-Okay, that's enough for the moment.
-
-.. rst-class:: build left
 .. container::
 
-    You've learned quite a bit about how *models* work in SQLAlchemy
+    Your homework assignment for this week is to take what you've learned here
+    and build a simple "echo" server.
 
-    It's time to put that knowledge to good use.
+    .. rst-class:: build
+    .. container::
 
-    For the first part of your assignment this week you will begin to define
-    the data model for our learning journal application.
+        The server should automatically return to any client that connects *exactly*
+        what it receives (it should **echo** all messages).
 
-    I'll provide a specification, you define the model required to do the job.
+        You will also write a python script that, when run, will send a message to the
+        server and receive the reply, printing it to ``stdout``.
 
-    I'll also ask you to define a few methods to complete the first part of our
-    API.
+        Finally, you'll do all of this so that it can be tested.
 
-The Model
+
+Your Task
 ---------
 
-Our model will be called an ``Entry``. Here's what you need to know:
+In our class repository, there is a folder ``resources/session01``.
 
-* It should be stored in a database table called ``entries``
-* It should have a primary key field called ``id``
-* It should have a ``title`` field which accepts unicode text up to 255 characters in length
-* The ``title`` should be unique and it should be impossible to save an
-  ``entry`` without a ``title``.
-* It should have a ``body`` field which accepts unicode text of any length
-  (including none)
-* It should have a ``created`` field which stores the date and time the object
-  was created.
-* It should have an ``edited`` field which stores the date and time the object
-  was last edited.
-* Both the ``created`` and ``edited`` field should default to ``now`` if not
-  provided when a new instance is constructed.
-* The ``entry`` class should support a classmethod ``all`` that returns all the
-  entries in the database, ordered so that the most recent entry is first.
-* The ``entry`` class should support a classmethod ``by_id`` that returns a
-  single entry, given an ``id``.
+.. rst-class:: build
+.. container::
 
-.. nextslide:: Words of Advice
+    Inside that folder, you should find:
 
-Use the documentation linked in this presentation to assist you.  SQLAlchemy
-has fantastic documentation, but it can be a bit overwhelming.  Everything you
-require for this assignment is on one or more of the pages linked above.
+    .. rst-class:: build
 
-As you define this new model for our application, make frequent commits to your
-github repository. Remember to write meaningful commit messages.
+    * A file ``tasks.txt`` that contains these instructions
 
-Don't be afraid to start up a Python interpreter and play with your model. Try
-things out. Learn how this all works by making mistakes.
+    * A skeleton for your server in ``echo_server.py``
 
-Errors at the SQL level can sometimes leave your session unusable. To restore
-it, use the ``session.rollback()`` method.  You'll lose uncommitted changes,
-but you'll gain a session that can be used again.
+    * A skeleton for your client script in ``echo_client.py``
 
-.. nextslide:: Submitting Your Work
+    * Some simple tests in ``tests.py``
 
-I want to be able to review your code (and you want to be able to share it).
+    Your task is to make the tests pass.
 
-To submit this assignment, you'll need to add this learning_journal repository
-to GitHub.
 
-On the GitHub website you can create a new repository.  Set it up to be
-completely empty. Name it ``learning_journal`` and give it any description you
-like.
+Running the Tests
+-----------------
 
-When you've created an empty repository in GitHub, you should see a set of
-directions for connecting it to a repository that you've already built. Follow
-those instructions to connect your emtpy GitHub repository as the ``origin``
-remote to your ``learning_journal`` repository on your machine.
+To run the tests, you'll have to set the server running in one terminal:
 
-Finally, push your ``master`` branch to your new ``origin`` remote on GitHub.
+.. rst-class:: build
+.. container::
 
-When you are done, send me an email with the URL for your new repository.
+    .. code-block:: bash
 
-.. nextslide::
+        $ python echo_server.py
 
-**Our work next week will assume that you have completed this assignment**
+    Then, in a second terminal, you will execute the tests:
 
-Do not delay working on this until the last moment.
+    .. code-block:: bash
 
-Do not skip this assignment.
+        $ python tests.py
 
-Do ask questions frequently via email (use the `class google group`_).
+    You should see output like this:
 
-See you next week!
+    .. code-block:: bash
 
-.. _class google group: https://groups.google.com/forum/#!forum/programming-in-python
+        [...]
+        FAILED (failures=2)
+
+
+Submitting Your Homework
+------------------------
+
+To submit your homework:
+
+.. rst-class:: build
+.. container::
+
+    .. rst-class:: build
+
+    * Create a new repository in GitHub.  Call it ``echo_sockets``.
+
+    * Put the ``echo_server.py``, ``echo_client.py`` and ``tests.py`` files in
+      this repository.
+
+    * Send us an email with a link to your repository when you are
+      done.
+
+    We will clone your repository and run the tests as described above.
+
+    And we'll make comments inline on your repository.
+
+
+Going Further
+-------------
+
+In ``assignments/session01/tasks.txt`` you'll find a few extra problems to try.
+
+.. rst-class:: build
+.. container::
+
+    If you finish the first part of the homework in less than 3-4 hours give
+    one or more of these a whirl.
+
+    They are not required, but if you include solutions in your repository,
+    we'll review your work.

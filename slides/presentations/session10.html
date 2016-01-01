@@ -10,7 +10,7 @@ URL: https://code.google.com/p/io-2012-slides
 
 <html>
 <head>
-  <title>Session 09 &mdash; Internet Programming with Python</title>
+  <title>Session 10 &mdash; Internet Programming with Python</title>
   <meta charset="utf-8">
   
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
@@ -19,6 +19,7 @@ URL: https://code.google.com/p/io-2012-slides
   <!--This one seems to work all the time, but really small on ipad-->
   <!--<meta name="viewport" content="initial-scale=0.4">-->
   <meta name="apple-mobile-web-app-capable" content="yes">
+
   
   <link rel="stylesheet" media="all"
         href="../_static/theme/css/default.css">
@@ -38,7 +39,7 @@ URL: https://code.google.com/p/io-2012-slides
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '2.0',
+        VERSION:     '3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -51,7 +52,10 @@ URL: https://code.google.com/p/io-2012-slides
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     
-    <link rel="top" title="Internet Programming with Python" href="../index.html" /> 
+    <link rel="top" title="Internet Programming with Python" href="../index.html" />
+    <link rel="up" title="Course Presentations" href="index.html" />
+    <link rel="next" title="Supplementary Course Readings" href="../readings.html" />
+    <link rel="prev" title="Session 09" href="session09.html" /> 
 </head>
 <body style="opacity: 0">
 
@@ -68,21 +72,23 @@ URL: https://code.google.com/p/io-2012-slides
 </slide>
 
   
-    <slide class="level-1">
+    <slide class="title-slide segue nobackground level-1" id="session-10">
     <hgroup>
-      <h1>Session 09</h1>
+      <h1>Session 10</h1>
     </hgroup>
     <article class="">
-      <div class="figure align-center">
+      <div class="figure align-center" id="id1">
 <a class="reference internal image-reference" href="../_images/django-pony.png"><img alt="../_images/django-pony.png" src="../_images/django-pony.png" style="width: 60%;" /></a>
-<p class="caption">image: <a class="reference external" href="http://djangopony.com/">http://djangopony.com/</a></p>
+<p class="caption"><span class="caption-text">image: <a class="reference external" href="http://djangopony.com/">http://djangopony.com/</a></span></p>
 </div>
 
 
 
+<div class="slide-no">1</div>
+
 
     </article>
-  </slide>  <slide class="level-2">
+  </slide>  <slide class="level-2" id="deploying-django">
     <hgroup>
       <h2>Deploying Django</h2>
     </hgroup>
@@ -101,9 +107,11 @@ see it.</p>
 
 
 
+<div class="slide-no">2</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="choosing-a-deployment-strategy">
     <hgroup>
       <h3>Choosing a Deployment Strategy</h3>
     </hgroup>
@@ -122,9 +130,11 @@ see it.</p>
 
 
 
+<div class="slide-no">3</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id2">
     <hgroup>
       <h3>Choosing a Deployment Strategy</h3>
     </hgroup>
@@ -146,9 +156,11 @@ for you.</p>
 
 
 
+<div class="slide-no">4</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id3">
     <hgroup>
       <h3>Our Choice for Today</h3>
     </hgroup>
@@ -163,9 +175,11 @@ stack so that we can learn how the stack works from front to back?</p>
 
 
 
+<div class="slide-no">5</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="preparing-for-aws-deployment">
     <hgroup>
       <h3>Preparing for AWS Deployment</h3>
     </hgroup>
@@ -185,9 +199,11 @@ that path tonight.</p>
 
 
 
+<div class="slide-no">6</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id4">
     <hgroup>
       <h3>Preparing for AWS Deployment</h3>
     </hgroup>
@@ -207,9 +223,11 @@ virtual environment.</p>
 
 
 
+<div class="slide-no">7</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id5">
     <hgroup>
       <h3>12-Factor</h3>
     </hgroup>
@@ -222,20 +240,22 @@ is <em>external</em> to the app itself, should be separated from the app.</p>
 <p>The link about contains much more effective explanations, read it.</p>
 <p>We've already done this to some degree with our Pyramid application, by
 putting some configuration values into <em>environment variables</em></p>
-<p><tt class="docutils literal"><span class="pre">dj-database-url</span></tt> allows us to do that with the configuration for our
+<p><code class="docutils literal"><span class="pre">dj-database-url</span></code> allows us to do that with the configuration for our
 database.</p>
 </div>
 
 
 
+<div class="slide-no">8</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id6">
     <hgroup>
       <h3>Updating Settings</h3>
     </hgroup>
     <article class="">
-      <p>Open <tt class="docutils literal"><span class="pre">settings.py</span></tt> and replace the current DATABASES dictionary with this:</p>
+      <p>Open <code class="docutils literal"><span class="pre">settings.py</span></code> and replace the current DATABASES dictionary with this:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">DATABASES</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="n">dj_database_url</span><span class="o">.</span><span class="n">config</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="s">&#39;sqlite:///&#39;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">BASE_DIR</span><span class="p">,</span> <span class="s">&#39;db.sqlite3&#39;</span><span class="p">)</span>
@@ -244,8 +264,8 @@ database.</p>
 </pre></div>
 </div>
 <div class="build container">
-<p>The default behavior of <tt class="docutils literal"><span class="pre">dj-database-url</span></tt> is to look for a
-<tt class="docutils literal"><span class="pre">DATABASE_URL</span></tt> variable in the environment.</p>
+<p>The default behavior of <code class="docutils literal"><span class="pre">dj-database-url</span></code> is to look for a
+<code class="docutils literal"><span class="pre">DATABASE_URL</span></code> variable in the environment.</p>
 <p>If it doesn't find that, it uses the value you provide for <em>default</em>.</p>
 <p>It converts a <a class="reference external" href="https://github.com/kennethreitz/dj-database-url#url-schema">url-style</a> database connection string to the dictionary
 Django expects.</p>
@@ -254,9 +274,11 @@ Django expects.</p>
 
 
 
+<div class="slide-no">9</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id7">
     <hgroup>
       <h3>Repeatable Envs</h3>
     </hgroup>
@@ -264,7 +286,7 @@ Django expects.</p>
       <p>Another principle of the 12-factor philosophy is to keep the differences
 between production and development to a minimum.</p>
 <div class="build container">
-<p>Again, in our Pyramid app we handled this with a <tt class="docutils literal"><span class="pre">requirements.txt</span></tt> file.</p>
+<p>Again, in our Pyramid app we handled this with a <code class="docutils literal"><span class="pre">requirements.txt</span></code> file.</p>
 <p>Here we will do the same.</p>
 <p>At your command line, with the virtualenv active, run the following
 command:</p>
@@ -277,9 +299,11 @@ command:</p>
 
 
 
+<div class="slide-no">10</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="setting-up-an-ec2-instance">
     <hgroup>
       <h3>Setting up An EC2 Instance</h3>
     </hgroup>
@@ -294,14 +318,16 @@ password.</p>
 <p>When the page loads, you are viewing the AWS Console.</p>
 <p>If you don't see a big list of services in that first page, click on
 'Services' in the black header.</p>
-<p>From the list of services, click on <tt class="docutils literal"><span class="pre">EC2</span></tt>.</p>
+<p>From the list of services, click on <code class="docutils literal"><span class="pre">EC2</span></code>.</p>
 </div>
 
 
 
+<div class="slide-no">11</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id8">
     <hgroup>
       <h3>Setting up An EC2 Instance</h3>
     </hgroup>
@@ -319,9 +345,11 @@ system.</p>
 
 
 
+<div class="slide-no">12</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id9">
     <hgroup>
       <h3>Setting up An EC2 Instance</h3>
     </hgroup>
@@ -339,9 +367,11 @@ instance details&quot;</p>
 
 
 
+<div class="slide-no">13</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id10">
     <hgroup>
       <h3>Setting up An EC2 Instance</h3>
     </hgroup>
@@ -360,9 +390,11 @@ instance, but only on port 22 (SSH).</p>
 
 
 
+<div class="slide-no">14</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id11">
     <hgroup>
       <h3>Setting up An EC2 Instance</h3>
     </hgroup>
@@ -372,7 +404,7 @@ access to your new machine.</p>
 <div class="build container">
 <p>Without this key pair, you have no way to access the server, and you must
 destroy it and create a new one.</p>
-<p>Select your <tt class="docutils literal"><span class="pre">pk-aws</span></tt> pair from the list of existing key pairs.</p>
+<p>Select your <code class="docutils literal"><span class="pre">pk-aws</span></code> pair from the list of existing key pairs.</p>
 <p>Then, check the box that indicates you have the private key and click
 &quot;Launch Instance&quot;.</p>
 <p>It will take a few minutes for the new machine to initialize and be ready.</p>
@@ -380,9 +412,11 @@ destroy it and create a new one.</p>
 
 
 
+<div class="slide-no">15</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="accessing-your-instance">
     <hgroup>
       <h3>Accessing Your Instance</h3>
     </hgroup>
@@ -406,9 +440,11 @@ having the latest versions of any software you install:</p>
 
 
 
+<div class="slide-no">16</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="deployment-layer-1-web-server">
     <hgroup>
       <h3>Deployment Layer 1: Web Server</h3>
     </hgroup>
@@ -418,9 +454,9 @@ having the latest versions of any software you install:</p>
 <p>This software is responsible for receiving requests from clients' browsers.</p>
 <p>It will also handle serving static resources in order to relieve Django of
 that burden.</p>
-<p>If you are using <tt class="docutils literal"><span class="pre">https</span></tt>, it's also a good place to handle terminating an
+<p>If you are using <code class="docutils literal"><span class="pre">https</span></code>, it's also a good place to handle terminating an
 SSL connection.</p>
-<p>Begin by using the Ubuntu package manager to install <tt class="docutils literal"><span class="pre">nginx</span></tt>:</p>
+<p>Begin by using the Ubuntu package manager to install <code class="docutils literal"><span class="pre">nginx</span></code>:</p>
 <div class="highlight-bash"><div class="highlight"><pre>sudo apt-get install nginx
 </pre></div>
 </div>
@@ -428,14 +464,16 @@ SSL connection.</p>
 
 
 
+<div class="slide-no">17</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id12">
     <hgroup>
-      <h3>Controlling <tt class="docutils literal"><span class="pre">nginx</span></tt></h3>
+      <h3>Controlling <code class="docutils literal"><span class="pre">nginx</span></code></h3>
     </hgroup>
     <article class="">
-      <p>Like many other packages installed by <tt class="docutils literal"><span class="pre">apt-get</span></tt>, nginx is set up as a
+      <p>Like many other packages installed by <code class="docutils literal"><span class="pre">apt-get</span></code>, nginx is set up as a
 <em>service</em></p>
 <p>You can check the status of the service:</p>
 <div class="highlight-bash"><div class="highlight"><pre>sudo service nginx status
@@ -449,14 +487,16 @@ sudo service nginx start
 
 
 
+<div class="slide-no">18</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id13">
     <hgroup>
       <h3>Configuring Nginx</h3>
     </hgroup>
     <article class="">
-      <p>Default configuration for nginx lives in <tt class="docutils literal"><span class="pre">/etc/nginx</span></tt>.  Let's look at three
+      <p>Default configuration for nginx lives in <code class="docutils literal"><span class="pre">/etc/nginx</span></code>.  Let's look at three
 files there in particular:</p>
 <ul class="simple">
 <li>/etc/nginx/nginx.conf (controls behavior of the whole server)</li>
@@ -466,9 +506,11 @@ files there in particular:</p>
 
 
 
+<div class="slide-no">19</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id14">
     <hgroup>
       <h3>Check Your results</h3>
     </hgroup>
@@ -484,16 +526,18 @@ files there in particular:</p>
 
 
 
+<div class="slide-no">20</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="deployment-layer-3-database">
     <hgroup>
       <h3>Deployment Layer 3: Database</h3>
     </hgroup>
     <article class="">
       <p>In order to deploy our database, we'll need to install some more software</p>
 <div class="build container">
-<p>Use <tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">istall</span></tt> to add each of the following packages:</p>
+<p>Use <code class="docutils literal"><span class="pre">apt-get</span> <span class="pre">istall</span></code> to add each of the following packages:</p>
 <ul class="simple">
 <li>build-essential</li>
 <li>python-dev</li>
@@ -506,9 +550,11 @@ files there in particular:</p>
 
 
 
+<div class="slide-no">21</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id15">
     <hgroup>
       <h3>RDS</h3>
     </hgroup>
@@ -524,16 +570,18 @@ files there in particular:</p>
 
 
 
+<div class="slide-no">22</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id16">
     <hgroup>
       <h3>Deployment Layer 3: Database</h3>
     </hgroup>
     <article class="">
       <p>On the database details page, You have a bit of work to do.</p>
 <div class="build container">
-<p>First, select <tt class="docutils literal"><span class="pre">db.t2.micro</span></tt> as the instance type.</p>
+<p>First, select <code class="docutils literal"><span class="pre">db.t2.micro</span></code> as the instance type.</p>
 <p>Then, for multi-AZ deployment, select <strong>no</strong> (again)</p>
 <p>Finally, provide values for the last four inputs</p>
 <p>The database identifier must be unique to your account and region, use
@@ -544,9 +592,11 @@ files there in particular:</p>
 
 
 
+<div class="slide-no">23</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id17">
     <hgroup>
       <h3>Deployment Layer 3: Database</h3>
     </hgroup>
@@ -564,9 +614,11 @@ EC2</p>
 
 
 
+<div class="slide-no">24</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="deployment-layer-2-application">
     <hgroup>
       <h3>Deployment Layer 2: Application</h3>
     </hgroup>
@@ -577,14 +629,29 @@ EC2</p>
 </div>
 <div class="build container">
 <p>pip install the requirements for your app:</p>
-<q>
-cd djangoblog_uwpce
-pip install -r requirements.txt</q>
-<p>Finally, export a system environment variable called DATABASE_URL with the
+<div class="highlight-python"><div class="highlight"><pre>$ cd djangoblog_uwpce
+$ pip install -r requirements.txt
+</pre></div>
+</div>
+</div>
+
+
+
+<div class="slide-no">25</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id18">
+    <hgroup>
+      <h3>Deployment Layer 2: Application</h3>
+    </hgroup>
+    <article class="">
+      <p>Finally, export a system environment variable called DATABASE_URL with the
 following format:</p>
 <div class="highlight-python"><div class="highlight"><pre>postgres://username:password@host:port/dbname
 </pre></div>
 </div>
+<div class="build container">
 <div class="highlight-bash"><div class="highlight"><pre><span class="nb">export </span><span class="nv">DATABASE_URL</span><span class="o">=</span>&lt;that string&gt;
 </pre></div>
 </div>
@@ -597,9 +664,11 @@ following format:</p>
 
 
 
+<div class="slide-no">26</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id19">
     <hgroup>
       <h3>Wiring It Up</h3>
     </hgroup>
@@ -629,9 +698,11 @@ sudo vi /etc/nginx/sites-available/default
 
 
 
+<div class="slide-no">27</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id20">
     <hgroup>
       <h3>Deployment Layer 2: Application</h3>
     </hgroup>
@@ -651,9 +722,11 @@ want a long-running process we can leave behind.</p>
 
 
 
+<div class="slide-no">28</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="deployment-layer-4-permanence">
     <hgroup>
       <h3>Deployment Layer 4: Permanence</h3>
     </hgroup>
@@ -662,7 +735,7 @@ want a long-running process we can leave behind.</p>
 <div class="highlight-bash"><div class="highlight"><pre>pip install gunicorn
 </pre></div>
 </div>
-<p>Back on your own machine, create <tt class="docutils literal"><span class="pre">mysite/production.py</span></tt> and add the following
+<p>Back on your own machine, create <code class="docutils literal"><span class="pre">mysite/production.py</span></code> and add the following
 content:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">settings</span> <span class="kn">import</span> <span class="o">*</span>
 
@@ -677,9 +750,11 @@ content:</p>
 
 
 
+<div class="slide-no">29</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id21">
     <hgroup>
       <h3>Configuration Changes for Nginx</h3>
     </hgroup>
@@ -698,9 +773,11 @@ content:</p>
 
 
 
+<div class="slide-no">30</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id22">
     <hgroup>
       <h3>Running with Gunicorn</h3>
     </hgroup>
@@ -716,24 +793,26 @@ content:</p>
 <p>Wahooo!</p>
 <p>But still not great, because nothing is monitoring this process.</p>
 <p>There's no way to keep track of how it is doing.</p>
+<p>We can do better.  First, let's kill the processes that spawned:</p>
+<div class="highlight-python"><div class="highlight"><pre>killall gunicorn
+</pre></div>
+</div>
 
 
+
+<div class="slide-no">31</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id23">
     <hgroup>
       <h3>Managing Gunicorn</h3>
     </hgroup>
     <article class="">
       <p>We can use a process manager to run the gunicorn command, and track the results.</p>
-<p>Kill the processes that spawned:</p>
-<div class="highlight-python"><div class="highlight"><pre>killall gunicorn
-</pre></div>
-</div>
-<p>Using linux upstart is nice and easy.</p>
-<p>Put the following in <tt class="docutils literal"><span class="pre">/etc/init/djangoblog.conf</span></tt></p>
-<div class="highlight-upstart"><div class="highlight"><pre>description &quot;djangoblog&quot;
+<p>Using linux <a class="reference external" href="http://blog.terminal.com/getting-started-with-upstart/">upstart</a> is relatively simple.</p>
+<p>Put the following in <code class="docutils literal"><span class="pre">/etc/init/djangoblog.conf</span></code></p>
+<div class="highlight-cfg"><div class="highlight"><pre>description &quot;djangoblog&quot;
 
 start on (filesystem)
 stop on runlevel [016]
@@ -743,13 +822,44 @@ setuid nobody
 setgid nogroup
 chdir /home/ubuntu/djangoblog_uwpce
 env DJANGO_SETTINGS_MODULE=mysite.production
-env DATABASE_URL=postgres://awsuser:secret123@uwpcedb.c5zwspzpwwsq.us-west-2.rds.amazonaws.com:5432/djangoblog
+env DATABASE_URL=postgres://&lt;username&gt;:&lt;password&gt;@&lt;host&gt;:&lt;port&gt;/djangoblog
 exec gunicorn -b 127.0.0.1:8000 -w 4 mysite.wsgi
 </pre></div>
 </div>
+
+
+
+<div class="slide-no">32</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id24">
+    <hgroup>
+      <h3>Using Upstart</h3>
+    </hgroup>
+    <article class="">
+      <p>Once you've completed that, you will find that you can use the Linux
+<code class="docutils literal"><span class="pre">service</span></code> command to control the gunicorn process.</p>
+<div class="build container">
+<p>Use the following commands:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ sudo service djangoblog status
+$ sudo service djangoblog start
+$ sudo service djangoblog stop
+$ sudo service djangoblog restart
+</pre></div>
+</div>
+<p>If you see an error message about an <code class="docutils literal"><span class="pre">unknown</span> <span class="pre">job</span></code> when you run one of those
+commands, it means you have an error in your configuration file.</p>
+<p>Find the error with this command:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ init-checkconf /etc/init/djangoblog.conf
+</pre></div>
+</div>
 <p>And that's it!</p>
+</div>
 
 
+
+<div class="slide-no">33</div>
 
 
     </article>
@@ -759,7 +869,7 @@ exec gunicorn -b 127.0.0.1:8000 -w 4 mysite.wsgi
     <slide class="thank-you-slide segue nobackground">
     <aside class="gdbar right"><img src="../_static/logo_UW.png"></aside>
     <article class="flexbox vleft auto-fadein">
-      <h2>&lt;Thank You!&gt;</h2>
+      <h2>Good Night!</h2>
       <p>&nbsp;</p>
     </article>
     <p class="auto-fadein" data-config-contact>

@@ -1,1253 +1,1468 @@
+.. slideconf::
+    :autoslides: True
+
 **********
 Session 06
 **********
 
-.. figure:: /_static/gateway.jpg
+.. image:: /_static/lj_entry.png
+    :width: 65%
     :align: center
-    :width: 50%
 
-    The Wandering Angel http://www.flickr.com/photos/wandering_angel/1467802750/ - CC-BY
+Interacting with Data
+=====================
 
-CGI, WSGI and Living Online
-===========================
-
-Wherein we discover the gateways to dynamic processes on a server.
+**Wherein we learn to display our data, and to create and edit it too!**
 
 
 But First
 ---------
 
-.. rst-class:: large centered
-
-Homework Review and Questions
-
-
-Previously
-----------
-
-.. rst-class:: build
-
-* You've learned about passing messages back and forth with sockets
-* You've created a simple HTTP server using sockets
-* You may even have made your server *dynamic* by returning the output of a
-  python script.
+Last week we discussed the **model** part of the *MVC* application design
+pattern.
 
 .. rst-class:: build
 .. container::
 
-    What if you want to pass information to that script?
+    We set up a project using the `Pyramid`_ web framework and the `SQLAlchemy`_
+    library for persisting our data to a database.
 
-    How can you give the script access to information about the HTTP request
-    itself?
+    We looked at how to define a simple model by investigating the demo model
+    created on our behalf.
 
+    And we went over, briefly, the way we can interact with this model at the
+    command line to make sure we've got it right.
 
-Stepping Away: The Environment
-------------------------------
+    Finally, we defined what attributes a learning journal entry would have,
+    and a pair of methods we think we will need to make the model complete.
 
-A computer has an *environment*:
+.. _Pyramid: http://www.pylonsproject.org/projects/pyramid/about
+.. _SQLAlchemy: http://docs.sqlalchemy.org/en/rel_0_9/
 
-.. rst-class:: build
-.. container::
+Our Data Model
+--------------
 
-    in \*nix, you can see this in a shell:
-
-    .. code-block:: bash
-
-        $ printenv
-        TERM_PROGRAM=iTerm.app
-        ...
-
-    or in Windows at the command prompt:
-
-    .. code-block:: posh
-
-        C:\> set
-        ALLUSERSPROFILE=C:\ProgramData
-        ...
-
-
-.. nextslide:: Setting The Environment
-
-This can be manipulated:
+Over the last week, your assignment was to create the new model.
 
 .. rst-class:: build
 .. container::
 
-    In a ``bash`` shell we can do this:
+    Did you get that done?
 
-    .. code-block:: bash
+    If not, what stopped you?
 
-        $ export VARIABLE='some value'
-        $ echo $VARIABLE
-        some value
+    Let's take a few minutes here to answer questions about this task so you
+    are more comfortable.
 
-    or at a Windows command prompt:
+    Questions?
 
-    .. code-block:: posh
+.. nextslide:: A Complete Example
 
-        C:\Users\Administrator\> set VARIABLE='some value'
-        C:\Users\Administrator\> echo %VARIABLE%
-        'some value'
+I've added a working ``models.py`` file to our `class repository`_ in the
+``resources/session06/`` folder.
 
+Let's review how it works.
 
-.. nextslide:: Viewing the Results
+.. nextslide:: Demo Interaction
 
-These new values are now part of the *environment*
-
-.. rst-class:: build
-.. container::
-
-    \*nix:
-
-    .. code-block:: bash
-
-        $ printenv
-        TERM_PROGRAM=iTerm.app
-        ...
-        VARIABLE=some value
-
-    Windows:
-
-    .. code-block:: posh
-
-        C:\> set
-        ALLUSERSPROFILE=C:\ProgramData
-        ...
-        VARIABLE='some value'
-
-.. nextslide:: Environment in Python
-
-We can see this *environment* in Python, too::
-
-    $ python
-
-.. code-block:: pycon
-
-    >>> import os
-    >>> print os.environ['VARIABLE']
-    some_value
-    >>> print os.environ.keys()
-    ['VERSIONER_PYTHON_PREFER_32_BIT', 'VARIABLE',
-     'LOGNAME', 'USER', 'PATH', ...]
-
-
-.. nextslide:: Altering the Environment
-
-You can alter os environment values while in Python:
-
-.. code-block:: pycon
-
-    >>> os.environ['VARIABLE'] = 'new_value'
-    >>> print os.environ['VARIABLE']
-    new_value
+I've also made a few small changes to make the ``pshell`` command a bit more
+helpful.
 
 .. rst-class:: build
 .. container::
 
-    But that doesn't change the original value, *outside* Python:
-
-    .. code-block:: bash
-
-        >>> ^D
-
-        $ echo this is the value: $VARIABLE
-        this is the value: some_value
-        <OR>
-        C:\> \Users\Administrator\> echo %VARIABLE%
-        'some value'
-
-.. nextslide:: Lessons Learned
-
-.. rst-class:: build
-.. container::
-
-    .. rst-class:: build
-
-    * Subprocesses inherit their environment from their Parent
-    * Parents do not see changes to environment in subprocesses
-    * In Python, you can actually set the environment for a subprocess explicitly
+    In ``learning_journal/__init__.py`` I added the following function:
 
     .. code-block:: python
 
-        subprocess.Popen(args, bufsize=0, executable=None,
-                         stdin=None, stdout=None, stderr=None,
-                         preexec_fn=None, close_fds=False,
-                         shell=False, cwd=None, env=None, # <-------
-                         universal_newlines=False, startupinfo=None,
-                         creationflags=0)
+        def create_session(settings):
+            from sqlalchemy.orm import sessionmaker
+            engine = engine_from_config(settings, 'sqlalchemy.')
+            Session = sessionmaker(bind=engine)
+            return Session()
 
+    Then, in ``development.ini`` I added the following configuration:
 
-CGI - The Web Environment
-=========================
+    .. code-block:: ini
 
-.. rst-class:: large centered
+        [pshell]
+        create_session = learning_journal.create_session
+        entry = learning_journal.models.Entry
 
-CGI is little more than a set of standard environmental variables
+.. nextslide:: Using the new ``pshell``
 
-
-What is CGI
------------
-
-First discussed in 1993, formalized in 1997, the current version (1.1) has
-been in place since 2004.
-
-From the preamble:
-
-    This memo provides information for the Internet community. It does not
-    specify an Internet standard of any kind.
-
-    -- RFC 3875 - CGI Version 1.1: http://tools.ietf.org/html/rfc3875
-
-
-.. nextslide:: Meta-Variables
-
-::
-
-    4.  The CGI Request . . . . . . . . . . . . . . . . . . . . . . .  10
-        4.1. Request Meta-Variables . . . . . . . . . . . . . . . . .  10
-             4.1.1.  AUTH_TYPE. . . . . . . . . . . . . . . . . . . .  11
-             4.1.2.  CONTENT_LENGTH . . . . . . . . . . . . . . . . .  12
-             4.1.3.  CONTENT_TYPE . . . . . . . . . . . . . . . . . .  12
-             4.1.4.  GATEWAY_INTERFACE. . . . . . . . . . . . . . . .  13
-             4.1.5.  PATH_INFO. . . . . . . . . . . . . . . . . . . .  13
-             4.1.6.  PATH_TRANSLATED. . . . . . . . . . . . . . . . .  14
-             4.1.7.  QUERY_STRING . . . . . . . . . . . . . . . . . .  15
-             4.1.8.  REMOTE_ADDR. . . . . . . . . . . . . . . . . . .  15
-             4.1.9.  REMOTE_HOST. . . . . . . . . . . . . . . . . . .  16
-             4.1.10. REMOTE_IDENT . . . . . . . . . . . . . . . . . .  16
-             4.1.11. REMOTE_USER. . . . . . . . . . . . . . . . . . .  16
-             4.1.12. REQUEST_METHOD . . . . . . . . . . . . . . . . .  17
-             4.1.13. SCRIPT_NAME. . . . . . . . . . . . . . . . . . .  17
-             4.1.14. SERVER_NAME. . . . . . . . . . . . . . . . . . .  17
-             4.1.15. SERVER_PORT. . . . . . . . . . . . . . . . . . .  18
-             4.1.16. SERVER_PROTOCOL. . . . . . . . . . . . . . . . .  18
-             4.1.17. SERVER_SOFTWARE. . . . . . . . . . . . . . . . .  19
-
-
-Running CGI
------------
-
-You have a couple of options:
+Here's a demo interaction using ``pshell`` with these new features:
 
 .. rst-class:: build
 .. container::
+
+    First ``cd`` to your project code, fire up your project virtualenv and
+    start python:
+
+    .. code-block:: bash
+
+        $ cd projects/learning-journal/learning_journal
+        $ source ../ljenv/bin/activate
+        (ljenv)$ pshell development.ini
+        Python 3.5.0 (default, Sep 16 2015, 10:42:55)
+        ...
+        Environment:
+          app          The WSGI application.
+          ...
+        Custom Variables:
+          create_session learning_journal.create_session
+          entry        learning_journal.models.Entry
+        
+        In [1]: session = create_session(registry.settings)
+
+    [demo]
+
+The MVC Controller
+==================
+
+.. rst-class:: left
+.. container::
+
+    Let's go back to thinking for a bit about the *Model-View-Controller*
+    pattern.
+
+    .. figure:: http://upload.wikimedia.org/wikipedia/commons/4/40/MVC_passive_view.png
+        :align: center
+        :width: 25%
+
+        By Alan Evangelista (Own work) [CC0], via Wikimedia Commons
+
+    .. rst-class:: build
+    .. container::
+
+        We talked last week (and today) about the *model*
+
+        Today, we'll dig into *controllers* and *views*
+
+        or as we will know them in Pyramid: *views* and *renderers*
+
+
+HTTP Request/Response
+---------------------
+
+Internet software is driven by the HTTP Request/Response cycle.
+
+.. rst-class:: build
+.. container::
+
+    A *client* (perhaps a user with a web browser) makes a **request**
+
+    A *server* receives and handles that request and returns a **response**
+
+    The *client* receives the response and views it, perhaps making a new
+    **request**
+
+    And around and around it goes.
+
+.. nextslide:: URLs
+
+An HTTP request arrives at a server through the magic of a **URL**
+
+.. code-block:: bash
+
+    http://uwpce-pythoncert.github.io/training.python_web/html/index.html
+
+.. rst-class:: build
+.. container::
+
+    Let's break that up into its constituent parts:
 
     .. rst-class:: build
 
-    * Python Standard Library CGIHTTPServer
-    * Apache
-    * IIS (on Windows)
-    * Some other HTTP server that implements CGI (lighttpd, ...?)
+    \http://:
+      This part is the *protocol*, it determines how the request will be sent
 
-    Let's keep it simple by using the Python module
+    uwpce-pythoncert.github.io:
+      This is a *domain name*.  It's the human-facing address for a server
+      somewhere.
 
+    /training.python_web/html/index.html:
+      This part is the *path*.  It serves as a locator for a resource *on the
+      server*
 
-.. nextslide:: Preparations
+.. nextslide:: Paths
 
-In the class resources for this session, you'll find a directory named ``cgi``.
-
-.. rst-class:: build
-.. container::
-
-    Make a copy of that folder in your class working directory.
-
-    Windows Users, you may have to edit the first line of
-    ``cgi/cgi-bin/cgi_1.py`` to point to your python executable.
-
-    .. rst-class:: build
-
-    * Open *two* terminal windows in this ``cgi`` directory
-    * In the first terminal, run ``python -m CGIHTTPServer``
-    * Open a web browser and load ``http://localhost:8000/``
-    * Click on *CGI Test 1*
-
-
-.. nextslide:: Did that work?
-
-.. rst-class:: build
-
-* If nothing at all happens, check your terminal window
-* Look for this: ``OSError: [Errno 13] Permission denied``
-* If you see something like that, check permissions for ``cgi-bin`` *and*
-  ``cgi_1.py``
-* The file must be executable, the ``cgi-bin`` directory needs to be readable
-  *and* executable.
-
+In a static website (like our documentation) the *path* identifies a **physical
+location** in the server's filesystem.
 
 .. rst-class:: build
 .. container::
 
-    Remember that you can use the bash ``chmod`` command to change permissions
-    in \*nix: ``chmod a+x cgi-bin/cgi_1.py``
+    Some directory on the server is the *home* for the web process, and the
+    *path* is looked up there.
 
-    Windows users, use the 'properties' context menu to get to permissions,
-    just grant 'full'
+    Whatever resource (a file, an image, whatever) is located there is returned
+    to the user as a response.
 
+    If the path leads to a location that doesn't exist, the server responds
+    with a **404 Not Found** error.
 
-.. nextslide:: Break It
+    In the golden days of yore, this was the only way content was served via
+    HTTP.
 
-Problems with permissions can lead to failure. So can scripting errors
+.. nextslide:: Paths in an MVC System
 
-.. rst-class:: build
-.. container::
-
-    .. rst-class:: build
-
-    * Open ``cgi/cgi-bin/cgi_1.py`` in an editor
-    * Before where it says ``cgi.test()``, add a single line:
-
-    .. code-block:: python
-
-        1 / 0
-
-    Reload your browser, what happens now?
-
-
-.. nextslide:: Errors in CGI
-
-CGI is famously difficult to debug.  There are reasons for this:
-
-.. rst-class:: build
-
-* CGI is designed to provide access to runnable processes to *the internet*
-* The internet is a wretched hive of scum and villainy
-* Revealing error conditions can expose data that could be exploited
-
-
-.. nextslide:: Viewing Errors in Python CGI
-
-Back in your editor, add the following lines, just below ``import cgi``:
+In todays world we have dynamic systems, server-side web frameworks like
+Pyramid.
 
 .. rst-class:: build
 .. container::
 
-    .. code-block:: python
+    The requests that you send to a server are handled by a software process
+    that assembles a response instead of looking up a physical location.
 
-        import cgitb
-        cgitb.enable()
+    But we still have URLs, with *protocol*, *domain* and *path*.
 
-    Now, reload again.
+    What is the role for a path in a process that doesn't refer to a physical
+    file system?
 
-.. nextslide:: cgitb Output
+    Most web frameworks now call the *path* a **route**.
 
-.. figure:: /_static/cgitb_output.png
-    :align: center
-    :width: 100%
+    They provide a way of matching *routes* to the code that will be run to
+    handle requests.
 
+Routes in Pyramid
+-----------------
 
-.. nextslide:: Repair the Error
-
-Let's fix the error from our traceback.  Edit your ``cgi_1.py`` file to match:
+In Pyramid, routes are handled as *configuration* and are set up in the *main*
+function in ``__init__.py``:
 
 .. code-block:: python
 
-    #!/usr/bin/env python
-    import cgi
-    import cgitb
-
-    cgitb.enable()
-
-    cgi.test()
+    # learning_journal/__init__.py
+    def main(global_config, **settings):
+        # ...
+        config.add_route('home', '/')
+        # ...
 
 .. rst-class:: build
 .. container::
 
-    Notice the first line of that script: ``#!/usr/bin/python``.
+    Our code template created a sample route for us, using the ``add_route``
+    method of the ``Configurator`` class.
 
-    This is called a *shebang* (short for hash-bang)
+    The ``add_route`` method has two required arguments: a *name* and a
+    *pattern*
 
-    It tells the system what executable program to use when running the script.
+    In our sample route, the *name* is ``'home'``
 
-
-CGI Process Execution
----------------------
-
-Servers like ``CGIHTTPServer`` run CGI scripts as a system user called
-``nobody``.
-
-.. rst-class:: build
-.. container::
-
-    This is just like you calling::
-
-        $ ./cgi_bin/cgi_1.py
-
-    In fact try that now in your second terminal (use the real path), what do
-    you get?
-
-    Windows folks, you may need ``C:\>python cgi-bin/cgi_1.py``
-
-    Notice what is missing?
-
+    In our sample route, the *pattern* is ``'/'``
 
 .. nextslide::
 
-There are a couple of important facts about CGI that derive from this:
-
-.. rst-class:: build
-
-* The script **must** include a *shebang* so that the system knows how to run
-  it.
-* The script **must** be executable.
-* The *executable* named in the *shebang* will be called as the *nobody* user.
-* This is a security feature to prevent CGI scripts from running as a user
-  with any privileges.
-* This means that the *executable* from the script *shebang* must be one that
-  *anyone* can run.
-
-
-.. nextslide:: The CGI Environment
-
-CGI is largely a set of agreed-upon environmental variables.
+When a request comes in to a Pyramid application, the framework looks at all
+the *routes* that have been configured.
 
 .. rst-class:: build
 .. container::
 
-    We've seen how environmental variables are found in python in
-    ``os.environ``
+    One by one, in order, it tries to match the *path* of the incoming request
+    against the *pattern* of the route.
 
-    We've also seen that at least some of the variables in CGI are **not** part
-    of the system environment.
+    As soon as a *pattern* matches the *path* from the incoming request, that
+    route is used and no further matching is performed.
 
-    Where do they come from?
+    If no route is found that matches, then the request will automatically get
+    a **404 Not Found** error response.
 
+    In our sample app, we have one sample *route* named ``'home'``, with a
+    pattern of ``/``.
 
-.. nextslide:: CGI Servers
+    This means that any request that comes in for ``/`` will be matched to this
+    route, and any other request will be **404**.
 
-Let's find 'em.  In a terminal fire up python:
+.. nextslide:: Routes as API
 
-.. rst-class:: build
-.. container::
-
-    .. code-block:: pycon
-
-        >>> import CGIHTTPServer
-        >>> CGIHTTPServer.__file__
-        '/big/giant/path/to/lib/python2.6/CGIHTTPServer.py'
-
-    Copy this path and open the file it points to in your text editor
-
-
-.. nextslide:: Environmental Set Up
-
-From CGIHTTPServer.py, in the CGIHTTPServer.run_cgi method:
-
-.. code-block:: python
-
-    # Reference: http://hoohoo.ncsa.uiuc.edu/cgi/env.html
-    # XXX Much of the following could be prepared ahead of time!
-    env = {}
-    env['SERVER_SOFTWARE'] = self.version_string()
-    env['SERVER_NAME'] = self.server.server_name
-    env['GATEWAY_INTERFACE'] = 'CGI/1.1'
-    env['SERVER_PROTOCOL'] = self.protocol_version
-    env['SERVER_PORT'] = str(self.server.server_port)
-    env['REQUEST_METHOD'] = self.command
-    ...
-    ua = self.headers.getheader('user-agent')
-    if ua:
-        env['HTTP_USER_AGENT'] = ua
-    ...
-    os.environ.update(env)
-    ...
-
-
-.. nextslide:: CGI Scripts
-
-And that's it, the big secret. The server takes care of setting up the
-environment so it has what is needed.
+In a very real sense, the *routes* defined in an application *are* the public
+API.
 
 .. rst-class:: build
 .. container::
 
-    Now, in reverse. How does the information that a script creates end up in
-    your browser?
+    Any route that is present represents something the user can do.
 
-    A CGI Script must print its results to stdout.
+    Any route that is not present is something the user cannot do.
 
-    Use the same method as above to import and open the source file for the
-    ``cgi`` module. Note what ``test`` does for an example of this.
+    You can use the proper definition of routes to help conceptualize what your
+    app will do.
 
+    What routes might we want for a learning journal application?
 
-.. nextslide:: Recap
+    What will our application do?
 
-What the Server Does:
+.. nextslide:: Defining our Routes
 
-.. rst-class:: build
-
-* parses the request
-* sets up the environment, including HTTP and SERVER variables
-* figures out if the URI points to a CGI script and runs it
-* builds an appropriate HTTP Response first line ('HTTP/1.1 200 OK\\r\\n')
-* appends what comes from the script on stdout and sends that back
-
-What the Script Does:
-
-.. rst-class:: build
-
-* names appropriate *executable* in it's *shebang* line
-* uses os.environ to read information from the HTTP request
-* builds *any and all* appropriate **HTTP Headers** (Content-type:,
-  Content-length:, ...)
-* prints headers, empty line and script output (body) to stdout
-
-
-In-Class Exercise I
--------------------
-
-You've seen the output from the ``cgi.test()`` method from the ``cgi`` module.
-Let's make our own version of this.
+Let's add routes for our application.
 
 .. rst-class:: build
 .. container::
 
-    .. rst-class:: build
+    Open ``learning_journal/__init__.py``.
 
-    * In the directory ``cgi-bin`` you will find the file ``cgi_2.py``.
-    * Open that file in your editor.
-    * The script contains some html with text naming elements of the CGI
-      environment.
-    * You should use the values in os.environ to fill in the blanks.
-    * You should be able to view the results of your work by loading
-      ``http://localhost:8000/`` and clicking on *Exercise One*
+    For our list page, the existing ``'home'`` route will do fine, leave it.
 
-    **GO**
+    Add the following two routes:
 
+    .. code-block:: python
 
-Getting Data from Users
------------------------
+        config.add_route('home', '/') # already there
+        config.add_route('detail', '/journal/{id:\d+}')
+        config.add_route('action', '/journal/{action}')
 
-All this is well and good, but where's the *dynamic* stuff?
+    The ``'detail'`` route will serve a single journal entry, identified by an
+    ``id``.
 
-.. rst-class:: build
-.. container::
+    The ``action`` route will serve ``create`` and ``edit`` views, depending on
+    the ``action`` specified.
 
-    It'd be nice if a user could pass form data to our script for it to use.
+    In both cases, we want to capture a portion of the matched path to use
+    information it provides.
 
-    In HTTP, these types of inputs show up in the URL *query* (the part after
-    the ``?``)::
+.. nextslide:: Matching an ID
 
-        http://myhost.com/script.py?a=23&b=37
-
-    You've seen this before, right?  In your Pyramid learning journal?
-
-    It's how we got the ``id`` of an entry to the edit form.
-
-
-.. nextslide:: Form Data in CGI
-
-In the ``cgi`` module, we get access to this with the ``FieldStorage`` class:
-
-.. code-block:: python
-
-    import cgi
-
-    form = cgi.FieldStorage()
-    stringval = form.getvalue('a', None)
-    listval = form.getlist('b')
-
-.. rst-class:: build
-
-* The values in the ``FieldStorage`` are *always* strings
-* ``getvalue`` allows you to return a default, in case the field isn't present
-* ``getlist`` always returns a list: empty, one-valued, or as many values as
-  are present
-
-
-In-Class Exercise II
---------------------
-
-Let's create a dynamic adding machine.
-
-.. rst-class:: build
-
-* In the ``cgi-bin`` directory you'll find ``cgi_sums.py``.
-* In the ``index.html`` file in the ``cgi`` directory, the third link leads to
-  this file.
-* You will use the structure of that link, and what you learned just now about
-  ``cgi.FieldStorage``.
-* Complete the cgi script in ``cgi_sums.py`` so that the result of adding all
-  operands sent via the url query is returned.
-* Return the results as plain text, with the appropriate ``Content-Type``
-  header.
-
-
-.. nextslide:: My Solution
-
-.. rst-class:: build
-
-.. code-block:: python
-
-    form = cgi.FieldStorage()
-    operands = form.getlist('operand')
-    total = 0
-    for operand in operands:
-        try:
-            value = int(operand)
-        except ValueError:
-            value = 0
-        total += value
-
-    output = str(total)
-
-    print "Content-Type: text/plain"
-    print "Content-Length: %s" % len(output)
-    print
-    print output
-
-
-.. nextslide:: Break Time
-
-.. rst-class:: centered
-
-Let's take a break here, before continuing
-
-
-WSGI
-====
-
-
-CGI Problems
-------------
-
-CGI is great, but there are problems:
+In a pattern, you can capture a ``path segment`` *replacement
+marker*, a valid Python symbol surrounded by curly braces:
 
 .. rst-class:: build
 .. container::
 
-    .. rst-class:: build
+    ::
 
-    * Code is executed *in a new process*
-    * **Every** call to a CGI script starts a new process on the server
-    * Starting a new process is expensive in terms of server resources
-    * *Especially for interpreted languages like Python*
+        /home/{foo}/
 
-    How do we overcome this problem?
+    If you want to match a particular pattern, like digits only, add a
+    *regular expression*::
 
-.. nextslide:: Alternatives to CGI
+        /journal/{id:\d+}
 
-The most popular approach is to have a long-running process *inside* the
-server that handles CGI scripts.
+    Matched path segments are captured in a ``matchdict``::
 
-.. rst-class:: build
-.. container::
+        # pattern          # actual url   # matchdict
+        /journal/{id:\d+}  /journal/27    {'id': '27'}
 
-    FastCGI and SCGI are existing implementations of CGI in this fashion.
+    The ``matchdict`` is made available as an attribute of the *request object*
 
-    The PHP scripting language works in much the same way.
-
-    The Apache module **mod_python** offers a similar capability for Python
-    code.
-
-    .. rst-class:: build
-
-    * Each of these options has a specific API
-    * None are compatible with each-other
-    * Code written for one is **not portable** to another
-
-    This makes it much more difficult to *share resources*
+    (more on that soon)
 
 
-A Solution
-----------
+.. nextslide:: Connecting Routes to Views
 
-Enter WSGI, the Web Server Gateway Interface.
+In Pyramid, a *route* is connected by configuration to a *view*.
 
 .. rst-class:: build
 .. container::
 
-    Other alternatives are specific implementations of the CGI standard.
+    In our app, a sample view has been created for us, in ``views.py``:
 
-    WSGI is itself a new standard, not an implementation.
+    .. code-block:: python
 
-    WSGI is generalized to describe a set of interactions.
+        @view_config(route_name='home', renderer='templates/mytemplate.pt')
+        def my_view(request):
+            # ...
 
-    Developers can write WSGI-capable apps and deploy them on any WSGI server.
+    The order in which *routes* are configured *is important*, so that must be
+    done in ``__init__.py``.
 
-    Read the WSGI spec: http://www.python.org/dev/peps/pep-0333
+    The order in which views are connected to routes *is not important*, so the
+    *declarative* ``@view_config`` decorator can be used.
 
+    When ``config.scan`` is called, all files in our application are searched
+    for such *declarative configuration* and it is added.
 
-Apps and Servers
+The Pyramid View
 ----------------
 
-WSGI consists of two parts, a *server* and an *application*.
+Let's imagine that a *request* has come to our application for the path
+``'/'``.
 
 .. rst-class:: build
 .. container::
 
-    .. container::
+    The framework made a match of that path to a *route* with the pattern ``'/'``.
 
-        A WSGI Server must:
+    Configuration connected that route to a *view* in our application.
 
-        .. rst-class:: build
+    Now, the view that was connected will be *called*, which brings us to the
+    nature of *views*
 
-        * set up an environment, much like the one in CGI
-        * provide a method ``start_response(status, headers, exc_info=None)``
-        * build a response body by calling an *application*, passing
-          ``environment`` and ``start_response`` as args
-        * return a response with the status, headers and body
+    .. rst-class:: centered
 
-    .. container::
+    --A Pyramid view is a *callable* that takes *request* as an argument--
 
-        A WSGI Appliction must:
+    Remember what a *callable* is?
 
-        .. rst-class:: build
+.. nextslide:: What the View Does
 
-        * Be a callable (function, method, class)
-        * Take an environment and a ``start_response`` callable as arguments
-        * Call the ``start_response`` method.
-        * Return an *iterable* of 0 or more strings, which are treated as the
-          body of the response.
-
-
-.. nextslide:: Simplified WSGI Server
-
-.. code-block:: python
-
-    from some_application import simple_app
-
-    def build_env(request):
-        # put together some environment info from the reqeuest
-        return env
-
-    def handle_request(request, app):
-        environ = build_env(request)
-        iterable = app(environ, start_response)
-        for data in iterable:
-            # send data to client here
-
-    def start_response(status, headers):
-        # start an HTTP response, sending status and headers
-
-    # listen for HTTP requests and pass on to handle_request()
-    serve(simple_app)
-
-
-.. nextslide:: Simple WSGI Application
-
-Where the simplified server above is **not** functional, this *is* a complete
-app:
-
-.. code-block:: python
-
-    def application(environ, start_response)
-        status = "200 OK"
-        body = "Hello World\n"
-        response_headers = [('Content-type', 'text/plain'),
-                            ('Content-length', len(body))]
-        start_response(status, response_headers)
-        return [body]
-
-
-.. nextslide:: WSGI Middleware
-
-A third part of the puzzle is something called WSGI *middleware*
+So, a *view* is a callable that takes the *request* as an argument.
 
 .. rst-class:: build
 .. container::
+
+    It can then use information from that request to build appropriate data,
+    perhaps using the application's *models*.
+
+    Then, it returns the data it assembled, passing it on to a `renderer`_.
+
+    Which *renderer* to use is determined, again, by configuration:
+
+    .. code-block:: python
+
+        @view_config(route_name='home', renderer='templates/mytemplate.pt')
+        def my_view(request):
+            # ...
+
+    More about this in a moment.
+
+    The *view* stands at the intersection of *input data*, the application
+    *model* and *renderers* that offer rendering of the results.
+
+    It is the *Controller* in our MVC application.
+
+.. _renderer: http://docs.pylonsproject.org/projects/pyramid/en/1.5-branch/narr/renderers.html
+
+
+.. nextslide:: Adding Stub Views
+
+Add temporary views to our application in ``views.py`` (and comment out the
+sample view):
+
+.. code-block:: python
+
+    @view_config(route_name='home', renderer='string')
+    def index_page(request):
+        return 'list page'
+
+    @view_config(route_name='detail', renderer='string')
+    def view(request):
+        return 'detail page'
+
+    @view_config(route_name='action', match_param='action=create', renderer='string')
+    def create(request):
+        return 'create page'
+
+    @view_config(route_name='action', match_param='action=edit', renderer='string')
+    def update(request):
+        return 'edit page'
+
+.. nextslide:: Testing Our Views
+
+Now we can verify that our view configuration has worked.
+
+.. rst-class:: build
+.. container::
+
+    Make sure your virtualenv is properly activated, and start the web server:
+
+    .. code-block:: bash
+
+        (ljenv)$ pserve development.ini
+        Starting server in PID 84467.
+        serving on http://0.0.0.0:6543
+
+    Then try viewing some of the expected application urls:
 
     .. rst-class:: build
 
-    * Middleware implements both the *server* and *application* interfaces
-    * Middleware acts as a server when viewed from an application
-    * Middleware acts as an application when viewed from a server
+    * http://localhost:6543/
+    * http://localhost:6543/journal/1
+    * http://localhost:6543/journal/create
+    * http://localhost:6543/journal/edit
 
-    .. figure:: /_static/wsgi_middleware_onion.png
+    What happens if you visit a URL that *isn't* in our configuration?
+
+.. nextslide:: Interacting With the Model
+
+Now that we've got temporary views that work, we can fix them to get
+information from our database
+
+.. rst-class:: build
+.. container::
+
+    We'll begin with the list view.
+
+    We need some code that will fetch all the journal entries we've written, in
+    reverse order, and hand that collection back for rendering.
+
+    .. code-block:: python
+
+        from .models import (
+            DBSession,
+            MyModel,
+            Entry, # <- Add this import
+        )
+
+        # and update this view function
+        def index_page(request):
+            entries = Entry.all()
+            return {'entries': entries}
+
+.. nextslide:: Using the ``matchdict``
+
+Next, we want to write the view for a single entry.
+
+.. rst-class:: build
+.. container::
+
+    We'll need to use the ``id`` value our route captures into the
+    ``matchdict``.
+
+    Remember that the ``matchdict`` is an attribute of the request.
+
+    We'll get the ``id`` from there, and use it to get the correct entry.
+
+    .. code-block:: python
+
+        # add this import at the top
+        from pyramid.httpexceptions import HTTPNotFound
+
+        # and update this view function:
+        def view(request):
+            this_id = request.matchdict.get('id', -1)
+            entry = Entry.by_id(this_id)
+            if not entry:
+                return HTTPNotFound()
+            return {'entry': entry}
+
+.. nextslide:: Testing Our Views
+
+We can now verify that these views work correctly.
+
+.. rst-class:: build
+.. container::
+
+    Make sure your virtualenv is properly activated, and start the web server:
+
+    .. code-block:: bash
+
+        (ljenv)$ pserve development.ini
+        Starting server in PID 84467.
+        serving on http://0.0.0.0:6543
+
+    Then try viewing the list page and an entry page:
+
+    * http://localhost:6543
+    * http://localhost:6543/journal/1
+
+    What happens when you request an entry with an id that isn't in the
+    database?
+
+    * http://localhost:6543/journal/100
+
+The MVC View
+============
+
+.. rst-class:: left
+.. container::
+
+    Again, back to the *Model-View-Controller* pattern.
+
+    .. figure:: http://upload.wikimedia.org/wikipedia/commons/4/40/MVC_passive_view.png
         :align: center
-        :width: 38%
+        :width: 25%
 
-
-.. nextslide:: WSGI Data Flow
-
-.. rst-class:: build
-.. container::
-
-    .. container::
-
-        WSGI Servers:
-
-        .. rst-class:: large centered
-
-        **HTTP <---> WSGI**
-
-    .. container::
-
-        WSGI Applications:
-
-        .. rst-class:: large centered
-
-        **WSGI <---> app code**
-
-
-.. nextslide:: The WSGI Stack
-
-The WSGI *Stack* can thus be expressed like so:
-
-.. rst-class:: build large centered
-
-**HTTP <---> WSGI <---> app code**
-
-
-.. nextslide:: Using wsgiref
-
-The Python standard lib provides a reference implementation of WSGI:
-
-.. figure:: /_static/wsgiref_flow.png
-    :align: center
-    :width: 80%
-
-
-.. nextslide:: Apache mod_wsgi
-
-You can also deploy with Apache as your HTTP server, using **mod_wsgi**:
-
-.. figure:: /_static/mod_wsgi_flow.png
-    :align: center
-    :width: 80%
-
-
-.. nextslide:: Proxied WSGI Servers
-
-Finally, it is also common to see WSGI apps deployed via a proxied WSGI
-server:
-
-.. figure:: /_static/proxy_wsgi.png
-    :align: center
-    :width: 80%
-
-
-The WSGI Environment
---------------------
-
-REQUEST_METHOD:
-  The HTTP request method, such as "GET" or "POST". This cannot ever be an
-  empty string, and so is always required.
-SCRIPT_NAME:
-  The initial portion of the request URL's "path" that corresponds to the
-  application object, so that the application knows its virtual "location".
-  This may be an empty string, if the application corresponds to the "root" of
-  the server.
-PATH_INFO:
-  The remainder of the request URL's "path", designating the virtual
-  "location" of the request's target within the application. This may be an
-  empty string, if the request URL targets the application root and does not
-  have a trailing slash.
-QUERY_STRING:
-  The portion of the request URL that follows the "?", if any. May be empty or
-  absent.
-CONTENT_TYPE:
-  The contents of any Content-Type fields in the HTTP request. May be empty or
-  absent.
-
-
-.. nextslide:: The WSGI Environment
-
-CONTENT_LENGTH:
-  The contents of any Content-Length fields in the HTTP request. May be empty
-  or absent.
-SERVER_NAME, SERVER_PORT:
-  When combined with SCRIPT_NAME and PATH_INFO, these variables can be used to
-  complete the URL. Note, however, that HTTP_HOST, if present, should be used
-  in preference to SERVER_NAME for reconstructing the request URL. See the URL
-  Reconstruction section below for more detail. SERVER_NAME and SERVER_PORT
-  can never be empty strings, and so are always required.
-SERVER_PROTOCOL:
-  The version of the protocol the client used to send the request. Typically
-  this will be something like "HTTP/1.0" or "HTTP/1.1" and may be used by the
-  application to determine how to treat any HTTP request headers. (This
-  variable should probably be called REQUEST_PROTOCOL, since it denotes the
-  protocol used in the request, and is not necessarily the protocol that will
-  be used in the server's response. However, for compatibility with CGI we
-  have to keep the existing name.)
-
-
-.. nextslide:: The WSGI Environment
-
-HTTP\_ Variables:
-  Variables corresponding to the client-supplied HTTP request headers (i.e.,
-  variables whose names begin with "HTTP\_"). The presence or absence of these
-  variables should correspond with the presence or absence of the appropriate
-  HTTP header in the request.
-
-.. rst-class:: build large centered
-
-**Seem Familiar?**
-
-
-In-Class Exercise III
----------------------
-
-Let's start simply.  We'll begin by repeating our first CGI exercise in WSGI
-
-.. rst-class:: build
-
-* Find the ``wsgi`` directory in the class resources. Copy it to your working
-  directory.
-* Open the file ``wsgi_1.py`` in your text editor.
-* We will fill in the missing values using the wsgi ``environ``, just as we
-  use ``os.environ`` in cgi
-
-.. rst-class:: build centered
-
-**But First**
-
-
-.. nextslide:: Orientation
-
-.. code-block:: python
-
-    if __name__ == '__main__':
-        from wsgiref.simple_server import make_server
-        srv = make_server('localhost', 8080, application)
-        srv.serve_forever()
-
-.. rst-class:: build
-.. container::
-
-    Note that we pass our ``application`` function to the server factory
-
-    We don't have to write a server, ``wsgiref`` does that for us.
-
-    In fact, you should *never* have to write a WSGI server.
-
-
-.. nextslide:: Orientation
-
-.. code-block:: python
-
-    def application(environ, start_response):
-        response_body = body % (
-             environ.get('SERVER_NAME', 'Unset'), # server name
-                ...
-             )
-        status = '200 OK'
-        response_headers = [('Content-Type', 'text/html'),
-                            ('Content-Length', str(len(response_body)))]
-        start_response(status, response_headers)
-        return [response_body]
-
-.. rst-class:: build
-.. container::
-
-    We do not define ``start_response``, the application does that.
-
-    We *are* responsible for determining the HTTP status.
-
-.. nextslide:: Running a WSGI Script
-
-You can run this script with python::
-
-    $ python wsgi_1.py
-
-.. rst-class:: build
-.. container::
-
-    This will start a wsgi server. What host and port will it use?
-
-    Point your browser at ``http://localhost:8080/``. Did it work?
-
-    Go ahead and fill in the missing bits. Use the ``environ`` passed into
-    ``application``
-
-
-.. nextslide:: Some Tips
-
-WSGI is a long-running process.
-
-.. rst-class:: build
-.. container::
-
-    The file you are editing is *not* reloaded after you edit it.
-
-    You'll need to quit and re-run the script between edits.
-
-    Notice the use of ``pprint.pprint``, check your terminal for useful output.
-
-
-A WSGI Application
-------------------
-
-So now we've learned a bit about the WSGI specification and how a WSGI
-application can get data that comes in via an HTTP request.
-
-.. rst-class:: build
-.. container::
-
-    Let's create a multi-page wsgi application.
-
-    It will serve a small database of python books.
-
-    The database (with a very simple api) can be found in ``wsgi/bookdb.py``
+        By Alan Evangelista (Own work) [CC0], via Wikimedia Commons
 
     .. rst-class:: build
-
-    * We'll need a listing page that shows the titles of all the books
-    * Each title will link to a details page for that book
-    * The details page for each book will display all the information and have
-      a link back to the list
-
-
-.. nextslide:: Some Questions to Ponder
-
-When viewing our first wsgi app, do we see the name of the wsgi application
-script anywhere in the URL?
-
-.. rst-class:: build
-.. container::
-
-    In our wsgi application script, how many applications did we actually have?
-
-    How are we going to serve different types of information out of a single
-    application?
-
-
-.. nextslide:: Dispatch
-
-We have to write an app that will map our incoming request path to some code
-that can handle that request.
-
-.. rst-class:: build
-.. container::
-
-    This process is called ``dispatch``. There are many possible approaches.
-
-    You've seen one approach in the Learning Journal you built with Pyramid.
-
-    Let's begin by designing this piece of our app.
-
-    Open ``bookapp.py`` from the ``wsgi`` folder.  We'll do our work here.
-
-
-.. nextslide:: PATH
-
-The wsgi environment gives us access to *PATH_INFO*.
-
-.. rst-class:: build
-.. container::
-
-    This value is the URI from the client's HTTP request.
-
-    We can design the URLs that our app will use to assist us in routing.
-
-    Let's declare that any request for ``/`` will map to the list page.
-
     .. container::
 
-        We can also say that the URL for a book will look like this::
+        We've built a *model* and we've created some *controllers* that use it.
 
-            http://localhost:8080/book/<identifier>
+        In Pyramid, we call *controllers* **views** and they are callables that
+        take *request* as an argument.
 
-Writing ``resolve_path``
-------------------------
+        Let's turn to the last piece of the *MVC* patter, the *view*
 
-Let's write a function, called ``resolve_path`` in our application file.
-
-.. rst-class:: build
-
-* It should take the *PATH_INFO* value from environ as an argument.
-* It should return the function that will be called.
-* It should also return any arguments needed to call that function.
-* This implies of course that the arguments should be part of the PATH
-
-
-.. nextslide:: My Solution
-
-.. rst-class:: build
-
-.. code-block:: python
-
-    def resolve_path(path):
-        urls = [(r'^$', books),
-                (r'^book/(id[\d]+)$', book)]
-        matchpath = path.lstrip('/')
-        for regexp, func in urls:
-            match = re.match(regexp, matchpath)
-            if match is None:
-                continue
-            args = match.groups([])
-            return func, args
-        # we get here if no url matches
-        raise NameError
-
-
-.. nextslide:: Application Updates
-
-We need to hook our new dispatch function into the application.
-
-.. rst-class:: build
-
-* The path should be extracted from ``environ``.
-* The dispatch function should be used to get a function and arguments
-* The body to return should come from calling that function with those
-  arguments
-* If an error is raised by calling the function, an appropriate response
-  should be returned
-* If the router raises a NameError, the application should return a 404
-  response
-
-
-.. nextslide:: My Solution
-
-.. rst-class:: build
-
-.. code-block:: python
-
-    def application(environ, start_response):
-        headers = [("Content-type", "text/html")]
-        try:
-            path = environ.get('PATH_INFO', None)
-            if path is None:
-                raise NameError
-            func, args = resolve_path(path)
-            body = func(*args)
-            status = "200 OK"
-        except NameError:
-            status = "404 Not Found"
-            body = "<h1>Not Found</h1>"
-        except Exception:
-            status = "500 Internal Server Error"
-            body = "<h1>Internal Server Error</h1>"
-        finally:
-            headers.append(('Content-length', str(len(body))))
-            start_response(status, headers)
-            return [body]
-
-
-Test Your Work
---------------
-
-Once you've got your script settled, run it::
-
-    $ python bookapp.py
-
-.. rst-class:: build
-.. container::
-
-    Then point your browser at ``http://localhost:8080/``
-
-    .. rst-class:: build
-
-    * ``http://localhost/book/id3``
-    * ``http://localhost/book/id73/``
-    * ``http://localhost/sponge/damp``
-
-    Did that all work as you would have expected?
-
-
-Building the Book List
-----------------------
-
-The function ``books`` should return an html list of book titles where each
-title is a link to the detail page for that book
-
-.. rst-class:: build
-
-* You'll need all the ids and titles from the book database.
-* You'll need to build a list in HTML using this information
-* Each list item should have the book title as a link
-* The href for the link should be of the form ``/book/<id>``
-
-
-.. nextslide:: My Solution
-
-.. rst-class:: build
-
-.. code-block:: python
-
-    def books():
-        all_books = DB.titles()
-        body = ['<h1>My Bookshelf</h1>', '<ul>']
-        item_template = '<li><a href="/book/{id}">{title}</a></li>'
-        for book in all_books:
-            body.append(item_template.format(**book))
-        body.append('</ul>')
-        return '\n'.join(body)
-
-
-Test Your Work
---------------
-
-Quit and then restart your application script::
-
-    $ python bookapp.py
-
-.. rst-class:: build
-.. container::
-
-    .. container::
-
-        Then reload the root of your application::
-
-            http://localhost:8080/
-
-    You should see a nice list of the books in the database. Do you?
-
-    Click on a link to view the detail page. Does it load without error?
-
-
-Showing Details
+Presenting Data
 ---------------
 
-The next step of course is to polish up those detail pages.
+The job of the *view* in the *MVC* pattern is to present data in a format that
+is readable to the user of the system.
 
 .. rst-class:: build
 .. container::
 
-    .. rst-class:: build
+    There are many ways to present data.
 
-    * You'll need to retrieve a single book from the database
-    * You'll need to format the details about that book and return them as HTML
-    * You'll need to guard against ids that do not map to books
+    Some are readable by humans (tables, charts, graphs, HTML pages, text
+    files).
 
-    In this last case, what's the right HTTP response code to send?
+    Some are more for machines (xml files, csv, json).
 
+    Which of these formats is the *right one* depends on your purpose.
 
-.. nextslide:: My Solution
+    What is the purpose of our learning journal?
+
+Pyramid Renderers
+-----------------
+
+In Pyramid, the job of presenting data is performed by a *renderer*.
 
 .. rst-class:: build
+.. container::
+
+    So we can consider the Pyramid **renderer** to be the *view* in our *MVC*
+    app.
+
+    We've already seen how we can connect a *renderer* to a Pyramid *view* with
+    configuration.
+
+    In fact, we have already done so, using a built-in renderer called
+    ``'string'``.
+
+    This renderer converts the return value of its *view* to a string and sends
+    that back to the client as an HTTP response.
+
+    But the result isn't so nice looking.
+
+.. nextslide:: Template Renderers
+
+The `built-in renderers` (``'string'``, ``'json'``, ``'jsonp'``) in Pyramid are
+not the only ones available.
+
+.. _built-in renderers: http://docs.pylonsproject.org/projects/pyramid/en/1.5-branch/narr/renderers.html#built-in-renderers
+
+.. rst-class:: build
+.. container::
+
+    There are add-ons to Pyramid that support using various *template
+    languages* as renderers.
+
+    In fact, one of these was installed by default when you created this
+    project.
+
+.. nextslide:: Configuring a Template Renderer
 
 .. code-block:: python
 
-    def book(book_id):
-        page = """
-    <h1>{title}</h1>
-    <table>
-        <tr><th>Author</th><td>{author}</td></tr>
-        <tr><th>Publisher</th><td>{publisher}</td></tr>
-        <tr><th>ISBN</th><td>{isbn}</td></tr>
-    </table>
-    <a href="/">Back to the list</a>
-    """
-        book = DB.title_info(book_id)
-        if book is None:
-            raise NameError
-        return page.format(**book)
+    # in setup.py
+    requires = [
+        # ...
+        'pyramid_chameleon',
+        # ...
+    ]
 
-
-.. nextslide:: Revel in Your Success
-
-Quit and restart your script one more time
+    # in learning_journal/__init__.py
+    def main(global_config, **settings):
+        # ...
+        config.include('pyramid_chameleon')
 
 .. rst-class:: build
 .. container::
 
-    Then poke around at your application and see the good you've made
+    The `pyramid_chameleon` package supports using the `chameleon` template
+    language.
 
-    And your application is portable and sharable
+    The language is quite nice and powerful, but not so easy to learn.
 
-    It should run equally well under any `wsgi server <http://wsgi.readthedocs.org/en/latest/servers.html>`_
+    Let's use a different one, *jinja2*
+
+.. nextslide:: Changing Template Renderers
+
+Change ``pyramid_chameleon`` to ``pyramid_jinja2`` in both of these files:
+
+.. code-block:: python
+
+    # in setup.py
+    requires = [
+        # ...
+        'pyramid_jinja2',
+        # ...
+    ]
+
+    # in learning_journal/__init__.py
+    def main(global_config, **settings):
+        # ...
+        config.include('pyramid_jinja2')
+
+.. nextslide:: Picking up the Changes
+
+We've changed the dependencies for our Pyramid project.
+
+.. rst-class:: build
+.. container::
+
+    As a result, we will need to re-install it so the new dependencies are also
+    installed:
+
+    .. code-block:: bash
+
+        (ljenv)$ python setup.py develop
+        ...
+        Finished processing dependencies for learning-journal==0.0
+        (ljenv)$
+
+    Now, we can use *Jinja2* templates in our project.
+
+    Let's learn a bit about how `Jinja2 templates`_ work.
+
+.. _Jinja2 templates: http://jinja.pocoo.org/docs/templates/
+
+Jinja2 Template Basics
+----------------------
+
+We'll start with the absolute basics.
+
+.. rst-class:: build
+.. container::
+
+    Fire up an iPython interpreter, using your `ljenv` virtualenv:
+
+    .. code-block:: bash
+
+        (ljenv)$ ipython
+        ...
+        In [1]:
+
+    Then import the ``Template`` class from the ``jinja2`` package:
+
+    .. code-block:: ipython
+
+        In [1]: from jinja2 import Template
+
+.. nextslide:: Templates are Strings
+
+A template is constructed with a simple string:
+
+.. code-block:: ipython
+
+    In [2]: t1 = Template("Hello {{ name }}, how are you")
+
+.. rst-class:: build
+.. container::
+
+    Here, we've simply typed the string directly, but it is more common to
+    build a template from the contents of a *file*.
+
+    Notice that our string has some odd stuff in it: ``{{ name }}``.
+
+    This is called a *placeholder* and when the template is *rendered* it is
+    replaced.
+
+.. nextslide:: Rendering a Template
+
+Call the ``render`` method, providing *context*:
+
+.. code-block:: ipython
+
+    In [3]: t1.render(name="Freddy")
+    Out[3]: 'Hello Freddy, how are you'
+    In [4]: t1.render(name="Gloria")
+    Out[4]: 'Hello Gloria, how are you'
+
+.. rst-class:: build
+.. container::
+
+    *Context* can either be keyword arguments, or a dictionary
+
+    Note the resemblance to something you've seen before:
+
+    .. code-block:: python
+    
+        >>> "This is {owner}'s string".format(owner="Cris")
+        'This is Cris's string'
 
 
-.. nextslide:: A Few Steps Further
+.. nextslide:: Dictionaries in Context
 
-Next steps for an app like this might be:
+Dictionaries passed in as part of the *context* can be addressed with *either*
+subscript or dotted notation:
 
-* Create a shared full page template and incorporate it into your app
-* Improve the error handling by emitting error codes other than 404 and 500
-* Swap out the basic backend here with a different one, maybe a Web Service?
-* Think about ways to make the application less tightly coupled to the pages
-  it serves
+.. code-block:: ipython
 
+    In [5]: person = {'first_name': 'Frank',
+       ...:           'last_name': 'Herbert'}
+    In [6]: t2 = Template("{{ person.last_name }}, {{ person['first_name'] }}")
+    In [7]: t2.render(person=person)
+    Out[7]: 'Herbert, Frank'
+
+.. rst-class:: build
+
+* Jinja2 will try the *correct* way first (attr for dotted, item for
+  subscript).
+* If nothing is found, it will try the opposite.
+* If nothing is found, it will return an *undefined* object.
+
+
+.. nextslide:: Objects in Context
+
+The exact same is true of objects passed in as part of *context*:
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: ipython
+
+        In [8]: t3 = Template("{{ obj.x }} + {{ obj['y'] }} = Fun!")
+        In [9]: class Game(object):
+           ...:     x = 'babies'
+           ...:     y = 'bubbles'
+           ...:
+        In [10]: bathtime = Game()
+        In [11]: t3.render(obj=bathtime)
+        Out[11]: 'babies + bubbles = Fun!'
+
+    This means your templates can be agnostic as to the nature of the
+    things found in *context*
+
+.. nextslide:: Filtering values in Templates
+
+You can apply `filters`_ to the data passed in *context* with the pipe ('|')
+operator:
+
+.. _filters: http://jinja.pocoo.org/docs/dev/templates/#filters
+
+.. code-block:: ipython
+
+    In [12]: t4 = Template("shouted: {{ phrase|upper }}")
+    In [13]: t4.render(phrase="this is very important")
+    Out[13]: 'shouted: THIS IS VERY IMPORTANT'
+
+.. rst-class:: build
+.. container::
+
+    You can also chain filters together:
+
+    .. code-block:: ipython
+
+        In [14]: t5 = Template("confusing: {{ phrase|upper|reverse }}")
+        In [15]: t5.render(phrase="howdy doody")
+        Out[15]: 'confusing: YDOOD YDWOH'
+
+.. nextslide:: Control Flow
+
+Logical `control structures`_ are also available:
+
+.. _control structures: http://jinja.pocoo.org/docs/dev/templates/#list-of-control-structures
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: ipython
+
+        In [16]: tmpl = """
+           ....: {% for item in list %}{{ item}}, {% endfor %}
+           ....: """
+        In [17]: t6 = Template(tmpl)
+        In [18]: t6.render(list=['a', 'b', 'c', 'd', 'e'])
+        Out[18]: '\na, b, c, d, e, '
+
+    Any control structure introduced in a template **must** be paired with an
+    explicit closing tag (``{% for %}...{% endfor %}``)
+
+    Remember, although template tags like ``{% for %}`` or ``{% if %}`` look a
+    lot like Python, *they are not*.
+
+    The syntax is specific and must be followed correctly.
+
+.. nextslide:: Template Tests
+
+There are a number of specialized *tests* available for use with the
+``if...elif...else`` control structure:
+
+.. code-block:: ipython
+
+    In [19]: tmpl = """
+       ....: {% if phrase is upper %}
+       ....:   {{ phrase|lower }}
+       ....: {% elif phrase is lower %}
+       ....:   {{ phrase|upper }}
+       ....: {% else %}{{ phrase }}{% endif %}"""
+    In [20]: t7 = Template(tmpl)
+    In [21]: t7.render(phrase="FOO")
+    Out[21]: '\n\n  foo\n'
+    In [22]: t7.render(phrase='bar')
+    Out[22]: '\n\n  BAR\n'
+    In [23]: t7.render(phrase='This should print as-is')
+    Out[23]: '\nThis should print as-is'
+
+
+.. nextslide:: Basic Expressions
+
+Basic `Python-like expressions`_ are also supported:
+
+.. _Python-like expressions: http://jinja.pocoo.org/docs/dev/templates/#expressions
+
+.. code-block:: ipython
+
+    In [24]: tmpl = """
+       ....: {% set sum = 0 %}
+       ....: {% for val in values %}
+       ....: {{ val }}: {{ sum + val }}
+       ....:   {% set sum = sum + val %}
+       ....: {% endfor %}
+       ....: """
+    In [25]: t8 = Template(tmpl)
+    In [26]: t8.render(values=range(1, 11))
+    Out[26]: '\n\n\n1: 1\n  \n\n2: 3\n  \n\n3: 6\n  \n\n4: 10\n
+              \n\n5: 15\n  \n\n6: 21\n  \n\n7: 28\n  \n\n8: 36\n
+              \n\n9: 45\n  \n\n10: 55\n  \n\n'
+
+
+Our Templates
+-------------
+
+There's more that Jinja2 templates can do, but it will be easier to introduce
+you to that in the context of a working template.  So let's make some.
+
+.. nextslide:: Detail Template
+
+We have a Pyramid view that returns a single entry. Let's create a template to
+show it.
+
+.. rst-class:: build
+.. container::
+
+    In ``learning_journal/templates`` create a new file ``detail.jinja2``:
+
+    .. code-block:: jinja
+    
+        <article>
+          <h1>{{ entry.title }}</h1>
+          <hr/>
+          <p>{{ entry.body }}</p>
+          <hr/>
+          <p>Created <strong title="{{ entry.created }}">{{entry.created}}</strong></p>
+        </article>
+
+    Then wire it up to the detail view in ``views.py``:
+
+    .. code-block:: ipython
+    
+        # views.py
+        @view_config(route_name='detail', renderer='templates/detail.jinja2')
+        def view(request):
+            # ...
+
+.. nextslide:: Try It Out
+
+Now we should be able to see some rendered HTML for our journal entry details.
+
+.. rst-class:: build
+.. container::
+
+    Start up your server:
+
+    .. code-block:: bash
+
+        (ljenv)$ pserve development.ini
+        Starting server in PID 90536.
+        serving on http://0.0.0.0:6543
+
+    Then try viewing an individual journal entry
+
+    * http://localhost:6543/journal/1
+
+.. nextslide:: Listing Page
+
+The index page of our journal should show a list of journal entries, let's do
+that next.
+
+.. rst-class:: build
+.. container::
+
+    In ``learning_journal/templates`` create a new file ``list.jinja2``:
+
+    .. code-block:: jinja
+
+        {% if entries %}
+        <h2>Journal Entries</h2>
+        <ul>
+          {% for entry in entries %}
+            <li>
+            <a href="{{ request.route_url('detail', id=entry.id) }}">{{ entry.title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <p>This journal is empty</p>
+        {% endif %}
+
+.. nextslide::
+
+It's worth taking a look at a few specifics of this template.
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: jinja
+
+        {% for entry in entries %}
+         ...
+        {% endfor %}
+
+    Jinja2 templates are rendered with a *context*.
+
+    A Pyramid *view* returns a dictionary, which is passed to the renderer as
+    part of of that *context*
+
+    This means we can access values we return from our *view* in the *renderer*
+    using the names we assigned to them.
+
+.. nextslide::
+
+It's worth taking a look at a few specifics of this template.
+
+    .. code-block:: jinja
+    
+        <a href="{{ request.route_url('detail', id=entry.id) }}">{{ entry.title }}</a>
+
+    The *request* object is also placed in the context by Pyramid.
+
+    Request has a method ``route_url`` that will create a URL for a named
+    route.
+
+    This allows you to include URLs in your template without needing to know
+    exactly what they will be.
+
+    This process is called *reversing*, since it's a bit like a reverse phone
+    book lookup.
+
+.. nextslide::
+
+Finally, you'll need to connect this new renderer to your listing view:
+
+.. code-block:: python
+
+    @view_config(route_name='home', renderer='templates/list.jinja2')
+    def index_page(request):
+        # ...
+
+.. nextslide:: Try It Out
+
+We can now see our list page too.  Let's try starting the server:
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: bash
+
+        (ljenv)$ pserve development.ini
+        Starting server in PID 90536.
+        serving on http://0.0.0.0:6543
+
+    Then try viewing the home page of your journal:
+
+    * http://localhost:6543/
+
+    Click on the link to an entry, it should work.
+
+.. nextslide:: Sharing Structure
+
+These views are reasonable, if quite plain.
+
+.. rst-class:: build
+.. container::
+
+    It'd be nice to put them into something that looks a bit more like a
+    website.
+
+    Jinja2 allows you to combine templates using something called
+    `template inheritance`_.
+
+    You can create a basic page structure, and then *inherit* that structure in
+    other templates.
+
+    In our class resources I've added a page template ``layout.jinja2``.  Copy
+    that page to your templates directory
+
+.. _template inheritance: http://jinja.pocoo.org/docs/dev/templates/#template-inheritance
+
+.. nextslide:: ``layout.jinja2``
+
+.. code-block:: jinja
+
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="utf-8">
+        <title>Python Learning Journal</title>
+        <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+      </head>
+      <body>
+        <header>
+          <nav><ul><li><a href="{{ request.route_url('home') }}">Home</a></li></ul></nav>
+        </header>
+        <main>
+          <h1>My Python Journal</h1>
+          <section id="content">{% block body %}{% endblock %}</section>
+        </main>
+        <footer><p>Created in the UW PCE Python Certificate Program</p></footer>
+      </body>
+    </html>
+
+.. nextslide:: Template Blocks
+
+The important part here is the ``{% block body %}{% endblock %}`` expression.
+
+.. rst-class:: build
+.. container::
+
+    This is a template **block** and it is a kind of placeholder.
+
+    Other templates can inherit from this one, and fill that block with
+    additional HTML.
+
+    Let's update our detail and list templates:
+
+    .. code-block:: jinja
+    
+        {% extends "layout.jinja2" %}
+        {% block body %}
+        <!-- everything else that was already there goes here -->
+        {% endblock %}
+
+.. nextslide:: Try It Out
+
+Let's try starting the server so we can see the result:
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: bash
+
+        (ljenv)$ pserve development.ini
+        Starting server in PID 90536.
+        serving on http://0.0.0.0:6543
+
+    Then try viewing the home page of your journal:
+
+    * http://localhost:6543/
+
+    Click on the link to an entry, it should work.
+
+    And now you have shared page structure that is in both.
+
+Static Assets
+-------------
+
+Although we have a shared structure, it isn't particularly nice to look at.
+
+.. rst-class:: build
+.. container::
+
+    Aspects of how a website looks are controlled by CSS (*Cascading Style
+    Sheets*).
+
+    Stylesheets are one of what we generally speak of as *static assets*.
+
+    Other static assets include *images* that are part of the look and feel of
+    the site (logos, button images, etc) and the *JavaScript* files that add
+    client-side dynamic behavior to the site.
+
+.. nextslide:: Static Assets in Pyramid
+
+Serving static assets in Pyramid requires a *static view* to configuration.
+Luckily, ``pcreate`` already handled that for us:
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: python
+    
+        # in learning_journal/__init__.py
+        def main(global_config, **settings):
+            # ...
+            config.add_static_view('static', 'static', cache_max_age=3600)
+            # ...
+
+    The first argument to ``add_static_view`` is a *name* that will need to
+    appear in the path of URLs requesting assets.
+
+    The second argument is a *path* that is relative to the package being
+    configured.
+
+    Assets referenced by the *name* in a URL will be searched for in the
+    location defined by the *path*
+
+    Additional keyword arguments control other aspects of how the view works.
+
+.. nextslide:: Static Assets in Templates
+
+Once you have a static view configured, you can use assets in that location in
+templates.
+
+.. rst-class:: build
+.. container::
+
+    The *request* object in Pyramid provides a ``static_path`` method that
+    will render an appropriate asset path for us.
+
+    Add the following to our ``layout.jinja2`` template:
+
+    .. code-block:: jinja
+    
+        <head>
+          <!-- ... -->
+          <link href="{{ request.static_path('learning_journal:static/styles.css') }}" rel="stylesheet">
+        </head>
+
+    The one required argument to ``request.static_path`` is a *path* to an
+    asset.
+
+    Note that because any package *might* define a static view, we have to
+    specify which package we want to look in.
+
+    That's why we have ``learning_journal:static/styles.css`` in our call.
+
+.. nextslide:: Basic Styles
+
+I've created some very very basic styles for our learning journal.
+
+.. rst-class:: build
+.. container::
+
+    You can find them in ``resources/session06/styles.css``.  Go ahead and copy
+    that file.
+
+    Add it to ``learning_journal/static``.
+
+    Then restart your web server and see what a difference a little style
+    makes:
+
+    .. code-block:: bash
+
+        (ljenv)$ pserve development.ini
+        Starting server in PID 90536.
+        serving on http://0.0.0.0:6543
+
+.. nextslide:: The Outcome
+
+Your site should look something like this:
+
+.. figure:: /_static/learning_journal_styled.png
+    :align: center
+    :width: 75%
+
+    The learning journal with basic styles applied
+
+Getting Interactive
+===================
+
+.. rst-class:: left
+.. container::
+
+    We have a site that allows us to view a list of journal entries.
+
+    .. rst-class:: build
+    .. container::
+
+        We can also view the details of a single entry.
+
+        But as yet, we don't really have any *interaction* in our site yet.
+
+        We can't create new entries.
+
+        Let's add that functionality next.
+
+User Input
+----------
+
+In HTML websites, the traditional way of getting input from users is via
+`HTML forms`_.
+
+.. rst-class:: build
+.. container::
+
+    Forms use *input elements* to allow users to enter data, pick from
+    drop-down lists, or choose items via checkbox or radio button.
+
+    It is possible to create plain HTML forms in templates and use them with
+    Pyramid.
+
+    It's a lot easier, however, to work with a *form library* to create forms,
+    render them in templates and interact with data sent by a client.
+
+    We'll be using a form library called `WTForms`_ in our project
+
+.. _HTML forms: https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Forms
+.. _WTForms: http://wtforms.readthedocs.org/en/latest/
+
+.. nextslide:: Installing WTForms
+
+The first step to working with this library is to install it.
+
+.. rst-class:: build
+.. container::
+
+    Start by makin the library as a *dependency* of our package by adding it to
+    the *requires* list in ``setup.py``:
+
+    .. code-block:: python
+
+        requires = [
+            # ...
+            'wtforms', # <- add this to the list
+        ]
+
+    Then, re-install our package to download and install the new dependency:
+
+    .. code-block:: bash
+
+        (ljenv)$ python setup.py develop
+        ...
+        Finished processing dependencies for learning-journal==0.0
+
+Using WTForms
+-------------
+
+We'll want a form to allow a user to create a new Journal Entry.
+
+.. rst-class:: build
+.. container::
+
+    Add a new file called ``forms.py`` in our learning_journal package, next to
+    ``models.py``:
+
+    .. code-block:: python
+    
+        from wtforms import Form, TextField, TextAreaField, validators
+
+        strip_filter = lambda x: x.strip() if x else None
+
+        class EntryCreateForm(Form):
+            title = TextField(
+                'Entry title',
+                [validators.Length(min=1, max=255)],
+                filters=[strip_filter])
+            body = TextAreaField(
+                'Entry body',
+                [validators.Length(min=1)],
+                filters=[strip_filter])
+
+.. nextslide:: Using a Form in a View
+
+Next, we need to add a new view that uses this form to create a new entry.
+
+.. rst-class:: build
+.. container::
+
+    Add this to ``views.py``:
+
+    .. code-block:: python
+
+        # add these imports
+        from pyramid.httpexceptions import HTTPFound
+        from .forms import EntryCreateForm
+
+        # and update this view function
+        def create(request):
+            entry = Entry()
+            form = EntryCreateForm(request.POST)
+            if request.method == 'POST' and form.validate():
+                form.populate_obj(entry)
+                DBSession.add(entry)
+                return HTTPFound(location=request.route_url('home'))
+            return {'form': form, 'action': request.matchdict.get('action')}
+
+.. nextslide:: Testing the Route/View Connection
+
+We already have a route that connects here.  Let's test it.
+
+.. rst-class:: build
+.. container::
+
+    Start your server:
+
+    .. code-block:: bash
+
+        (ljenv)$ pserve development.ini
+        Starting server in PID 90536.
+        serving on http://0.0.0.0:6543
+
+    And then try connecting to the ``action`` route:
+
+    * http://localhost:6543/journal/create
+    
+    You should see something like this::
+
+        {'action': u'create', 'form': <learning_journal.forms.EntryCreateForm object at 0x10e7d6b90>}
+
+.. nextslide:: Rendering A Form
+
+Finally, we need to create a template that will render our form.
+
+.. rst-class:: build
+.. container::
+
+    Add a new template called ``edit.jinja2`` in
+    ``learning_journal/templates``:
+
+    .. code-block:: jinja
+
+        {% extends "templates/layout.jinja2" %}
+        {% block body %}
+        <form action="." method="POST">
+        {% for field in form %}
+          {% if field.errors %}
+            <ul>
+            {% for error in field.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+            <p>{{ field.label }}: {{ field }}</p>
+        {% endfor %}
+            <p><input type="submit" name="submit" value="Submit" /></p>
+        </form>
+        {% endblock %}
+
+.. nextslide:: Connecting the Renderer
+
+You'll need to update the view configuration to use this new renderer.
+
+.. rst-class:: build
+.. container::
+
+    Update the configuration in ``learning_journal/views.py``:
+
+    .. code-block:: python
+    
+        @view_config(route_name='action', match_param='action=create',
+                     renderer='templates/edit.jinja2')
+        def create(request):
+            # ...
+
+    And then you should be able to start your server and test:
+
+    .. code-block:: bash
+
+        (ljenv)$ pserve development.ini
+        Starting server in PID 90536.
+        serving on http://0.0.0.0:6543
+
+    * http://localhost:6543/create
+
+.. nextslide:: Providing Access
+
+Great!  Now you can add new entries to your journal.
+
+.. rst-class:: build
+.. container::
+
+    But in order to do so, you have to hand-enter the url.
+
+    You should add a new link in the UI somewhere that helps you get there more
+    easily.
+
+    Add the following to ``list.jinja2``:
+
+    .. code-block:: jinja
+
+        {% extends "layout.jinja2" %}
+        {% block body %}
+        {% if entries %}
+        ...
+        {% else %}
+        ...
+        {% endif %}
+        <!-- Add This Link -->
+        <p><a href="{{ request.route_url('action', action='create') }}">New Entry</a></p>
+        {% endblock %}
 
 Homework
 ========
@@ -1255,72 +1470,117 @@ Homework
 .. rst-class:: left
 .. container::
 
-    For your homework this week, you'll be creating a wsgi application of your
-    own.
+    You have a website now that allows you to create, view and list journal
+    entries
 
     .. rst-class:: build
     .. container::
 
-        You'll create an online calculator that can perform several operations
+        However, there are still a few flaws in this system.
 
-        You'll need to support:
+        You should be able to edit a journal entry that already exists, in case
+        you make a spelling error.
 
-        .. rst-class:: build
+        It would also be nice to see a prettier site.
 
-        * Addition
-        * Subtraction
-        * Multiplication
-        * Division
+        Let's handle that for homework this week.
 
-        .. container::
+Part 1: Add Editing
+-------------------
 
-            Your users should be able to send appropriate requests and get back
-            proper responses::
+For part one of your assignment, add editing of existing entries. You will need:
 
-                http://localhost:8080/multiply/3/5  => 15
-                http://localhost:8080/add/23/42     => 65
-                http://localhost:8080/divide/6/0    => HTTP "400 Bad Request"
+* A form that shows an existing entry (what is different about this form from
+  one for creating a new entry?)
+* A pyramid view that handles that form. It should:
+
+  * Show the form with the requested entry when the page is first loaded
+  * Accept edits only on POST
+  * Update an existing entry with new data from the form
+  * Show the view of the entry after editing so that the user can see the edits
+    saved correctly
+  * Show errors from form validation, if any are present
+
+* A link somewhere that leads to the editing page for a single entry (probably
+  on the view page for a entry)
+
+You'll need to update a bit of configuration, but not much.  Use the create
+form we did here in class as an example.
+
+Part 2: Make it Yours
+---------------------
+
+I've created for you a very bare-bones layout and stylesheet.
+
+You will certainly want to add a bit of your own style and panache.
+
+Spend a few hours this week playing with the styles and getting a site that
+looks more like you want it to look.
+
+The Mozilla Developer Network has `some excellent resources`_ for learning CSS.
+
+In particular, the `Getting Started with CSS`_ tutorial is a thorough
+introduction to the basics.
+
+You might also look at their `CSS 3 Demos`_ to help fire up your creative
+juices.
+
+Here are a few more resources:
+
+* `A List Apart <http://alistapart.com>`_ offers outstanding articles.  Their
+  `Topics list <http://alistapart.com/topics>`_ is worth a browse.
+* `Smashing Magazine <http://www.smashingmagazine.com>`_ is another excellent
+  resource for articles on design.
+
+.. _some excellent resources: https://developer.mozilla.org/en-US/docs/Web/CSS
+.. _Getting Started with CSS: https://developer.mozilla.org/en-US/docs/CSS/Getting_Started
+.. _CSS 3 Demos: https://developer.mozilla.org/en-US/demos/tag/tech:css3
 
 
-.. nextslide:: Submitting Your Homework
+Part 3: User Model
+------------------
 
-.. rst-class:: left
-.. container::
+As it stands, our journal accepts entries from anyone who comes by.
 
-    To submit your homework:
+Next week we will add security to allow only logged-in users to create and edit
+entries.
 
-    .. rst-class:: build
+To do so, we'll need a user model
 
-    * Create a new github repository.  Call it ``wsgi-calc``.
-    * Add a python script to it called ``calculator.py``.
-    * Your script should be runnable using ``$ python calculator.py``
-    * When the script is running, I should be able to view your application in
-      my browser.
-    * I should be able to see a home page that explains how to perform
-      calculations.
+The model should have:
 
-    .. rst-class:: build
-    .. container::
+* An ``id`` field that is a primary key
+* A ``username`` field that is unicode, no more than 255 characters, not
+  nullable, unique and indexed.
+* A ``password`` field that is unicode and not nullable
 
-        Your repository should include a README.md file.
+In addition, the model should have a classmethod that retrieves a specific user
+when given a username.
 
-        Include all instructions I need to successfully run and view your
-        script.
+Part 4: Preparation for Deployment
+----------------------------------
 
-        When you are done, send Maria and I an email with a link to your
-        repository.
+At the end of class next week we will be deploying our application to Heroku.
 
-Wrap-Up
--------
+You will need to get a free account.
 
-For educational purposes, you might wish to take a look at the source code for
-the ``wsgiref`` module. It's the canonical example of a simple wsgi server
+Once you have your free account set up and you have logged in, run through the
+`getting started with Python`_ tutorial.
 
-    >>> import wsgiref
-    >>> wsgiref.__file__
-    '/full/path/to/your/copy/of/wsgiref.py'
-    ...
+Be sure to at least complete the *set up* step. It will have you install the
+Heroku Toolbelt, which you will need to have ready in class.
 
-.. rst-class:: build centered
+.. _getting started with Python: https://devcenter.heroku.com/articles/getting-started-with-python#introduction
 
-**See you Next Time**
+Submitting Your Work
+--------------------
+
+As usual, submit your work by committing and pushing it to your project github
+repository
+
+Commit early and commit often.  
+
+Write yourself good commit messages explaining what you have done and why.
+
+When you are ready to have your work reviewed, email the link to your
+repository to us, we'll take a look and make comments.

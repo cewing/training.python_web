@@ -23,9 +23,9 @@ This will ensure that it is isolated from everything else we do in class
 
 Remember the basic format for creating a virtualenv::
 
-    $ python virtualenv.py [options] <ENV>
+    $ python -m venv [options] <ENV>
     <or>
-    $ virtualenv [options] <ENV>
+    $ pyvenv [options] <ENV>
 
 
 Set Up a VirtualEnv
@@ -33,16 +33,16 @@ Set Up a VirtualEnv
 
 Start by creating your virtualenv::
 
-    $ python virtualenv.py djangoenv
+    $ python -m venv djangoenv
     <or>
-    $ virtualenv djangoenv
+    $ pyvenv djangoenv
     ...
 
 Then, activate it::
 
     $ source djangoenv/bin/activate
     <or>
-    C:\> djangoenv\Scripts\activate
+    C:\> djangoenv\Scripts\activate.bat
 
 
 Install Django
@@ -50,12 +50,12 @@ Install Django
 
 Finally, install Django 1.7.4 using ``pip``::
 
-    (djangoenv)$ pip install Django==1.7.4
-    Downloading/unpacking Django==1.7.4
-      Downloading Django-1.7.4-py2.py3-none-any.whl (7.4MB): 7.4MB downloaded
-    Installing collected packages: django
-    Successfully installed django
-    Cleaning up...
+    (djangoenv)$ pip install Django==1.9
+    Collecting Django==1.9
+      Downloading Django-1.9-py2.py3-none-any.whl (6.6MB)
+        100% |████████████████████████████████| 6.6MB 47kB/s
+    Installing collected packages: Django
+    Successfully installed Django-1.9
     (djangoenv)$
 
 
@@ -67,13 +67,21 @@ create one. We'll use a script installed by Django, ``django-admin.py``:
 
 .. code-block:: bash
 
-    (djangoenv)$ django-admin.py startproject mysite
+    (djangoenv)$ django-admin startproject mysite
 
 If you're on windows, that command is slightly different:
 
 .. code-block:: bash
 
     django-admin.exe startproject mysite
+
+.. note:: If you run into trouble at this stage, please consult the
+          `installation documentation`_. For windows users, see also
+          `this guide to installation on Windows`_
+
+.. _installation documentation: https://docs.djangoproject.com/en/1.9/intro/install/
+.. _this guide to installation on Windows: https://docs.djangoproject.com/en/1.9/howto/windows/
+
 
 This will create a folder called 'mysite'. The folder contains the following
 structure::
@@ -105,14 +113,14 @@ What Got Created
   symbol ``application``
 * **manage.py**: a management control script.
 
-*django-admin.py* provides a hook for administrative tasks and abilities:
+*django-admin* provides a hook for administrative tasks and abilities:
 
 * creating a new project or app
 * running the development server
 * executing tests
 * entering a python interpreter
 * entering a database shell session with your database
-* much much more (run ``django-admin.py`` without an argument)
+* much much more (run ``django-admin`` without an argument)
 
 *manage.py* wraps this functionality, adding the full environment of your
 project.
@@ -147,7 +155,7 @@ Development Server
 At this point, you should be ready to use the development server::
 
     (djangoenv)$ cd mysite
-    (djangoenv)$ python manage.py runserver
+    (djangoenv)$ ./manage.py runserver
     ...
 
 You'll see a scary warning about unapplied migrations.  Ignore it for a moment.
@@ -200,7 +208,7 @@ Run the following command:
 
 .. code-block:: bash
 
-    (djangoenv)$ python manage.py migrate
+    (djangoenv)$ ./manage.py migrate
     Operations to perform:
       Apply all migrations: admin, contenttypes, auth, sessions
     Running migrations:
@@ -214,7 +222,7 @@ Great!  Now we can set up an initial user who'll be able to do anything, a
 
 .. code-block:: bash
 
-    (djangoenv)$ python manage.py createsuperuser
+    (djangoenv)$ ./manage.py createsuperuser
     Username (leave blank to use 'cewing'):
     Email address: cris@crisewing.com
     Password:
@@ -275,7 +283,7 @@ Then:
 
 .. code-block:: bash
 
-    (djangoenv)$ python manage.py startapp myblog
+    (djangoenv)$ ./manage.py startapp myblog
 
 This should leave you with the following structure:
 
@@ -315,7 +323,7 @@ the Django ``Model`` class. This base class hooks in to the ORM functionality
 converting Python code to SQL. You can override methods from the base ``Model``
 class to alter how this works or write new methods to add functionality.
 
-Learn more about `models <https://docs.djangoproject.com/en/1.7/topics/db/models/>`_
+Learn more about `models <https://docs.djangoproject.com/en/1.9/topics/db/models/>`_
 
 
 Our Post Model
@@ -350,7 +358,7 @@ attributes.
 * There are also arguments specific to individual types
 
 You can read much more about
-`Model Fields and options <https://docs.djangoproject.com/en/1.7/ref/models/fields/>`_
+`Model Fields and options <https://docs.djangoproject.com/en/1.9/ref/models/fields/>`_
 
 There are some features of our fields worth mentioning in specific. Notice we
 have no field that is designated as the *primary key*
@@ -411,6 +419,9 @@ Field Details
   field is *required*
 * The related ``null`` argument affects the SQL definition of a field: is the
   column NULL or NOT NULL
+* Django recommends that you **not** use the ``null`` option for text fields.
+  It will automatically insert an empty string into the database if the field
+  is left blank.
 
 
 Installing Apps
@@ -440,7 +451,7 @@ Once Django is made aware of the existence of this new app, it can  make a new
 
 .. code-block:: bash
 
-    (djangoenv)$ python manage.py makemigrations myblog
+    (djangoenv)$ ./manage.py makemigrations myblog
     Migrations for 'myblog':
       0001_initial.py:
         - Create model Post
@@ -449,10 +460,11 @@ And now you can run that migration to make the changes to your database:
 
 .. code-block:: bash
 
-    (djangoenv)$ python manage.py migrate
+    (djangoenv)$ ./manage.py migrate
     Operations to perform:
-      Apply all migrations: admin, myblog, contenttypes, auth, sessions
+      Apply all migrations: sessions, myblog, contenttypes, auth, admin
     Running migrations:
+      Rendering model states... DONE
       Applying myblog.0001_initial... OK
 
 
@@ -468,30 +480,39 @@ Django provides a management command ``shell``:
 * Handles connections to your database, so you can interact with live data
   directly.
 
+The Django ``shell`` will use more advanced Python interpreters such as
+``iPython`` if they are available. Let's go ahead and install iPython in our
+``djangoenv`` to get this advantage:
+
+.. code-block:: bash
+
+    (djangoenv)$ pip install ipython
+    ...
+
 Let's explore the Model Instance API directly using this shell:
 
 ::
 
-    (djangoenv)$ python manage.py shell
+    (djangoenv)$ ./manage.py shell
 
 Instances of our model can be created by simple instantiation:
 
-.. code-block:: python
+.. code-block:: ipython
 
-    >>> from myblog.models import Post
-    >>> p1 = Post(title="My first post",
-    ...           text="This is the first post I've written")
-    >>> p1
-    <Post: Post object>
+    In [1]: from myblog.models import Post
+    In [2]: p1 = Post(title='My First Post',
+       ...:           text='This is the first post I\'ve written')
+    In [3]: p1
+    Out[3]: <Post: Post object>
 
 We can also validate that our new object is okay before we try to save it:
 
-.. code-block:: python
+.. code-block:: ipython
 
-    >>> p1.full_clean()
-    Traceback (most recent call last):
-      ...
-    ValidationError: {'author': [u'This field cannot be null.']}
+    In [4]: p1.full_clean()
+    ...
+
+    ValidationError: {'author': ['This field cannot be null.']}
 
 
 Django Model Managers
@@ -507,21 +528,20 @@ All Django models have a *manager*. By default it is accessed through the
 
 Let's use the *manager* to get an instance of the ``User`` class:
 
-.. code-block:: python
+.. code-block:: ipython
 
-    >>> from django.contrib.auth.models import User
-    >>> all_users = User.objects.all()
-    >>> all_users
-    [<User: cewing>]
-    >>> u1 = all_users[0]
-    >>> p1.author = u1
+    In [5]: from django.contrib.auth.models import User
+    In [6]: all_users = User.objects.all()
+    In [7]: all_users
+    Out[7]: [<User: cewing>]
+    In [8]: p1.author = all_users[0]
 
 And now our instance should validate properly:
 
-.. code-block:: python
+.. code-block:: ipython
 
-    >>> p1.full_clean()
-    >>>
+    In [9]: p1.full_clean()
+    In [10]:
 
 
 Saving New Objects
@@ -530,24 +550,24 @@ Saving New Objects
 Our model has three date fields, two of which are supposed to be
 auto-populated:
 
-.. class:: python
+.. code-block:: ipython
 
-    >>> print(p1.created_date)
+    In [11]: print(p1.created_date)
     None
-    >>> print(p1.modified_date)
+    In [12]: print(p1.modified_date)
     None
 
 Although we've instantiated a Post object, it doesn't have these values yet.
 That's because a model is not *created* until it's saved into the database.
 When we save our post, these fields will get values assigned:
 
-.. code-block:: python
+.. code-block:: ipython
 
-    >>> p1.save()
-    >>> p1.created_date
-    datetime.datetime(2015, 2, 15, 9, 3, 13, 719381, tzinfo=<UTC>)
-    >>> p1.modified_date
-    datetime.datetime(2015, 2, 15, 9, 3, 13, 719932, tzinfo=<UTC>)
+    In [13]: p1.save()
+    In [14]: print(p1.created_date)
+    2015-12-31 19:24:29.019293+00:00
+    In [15]: print(p1.modified_date)
+    2015-12-31 19:24:29.019532+00:00
 
 
 Updating An Instance
@@ -557,12 +577,12 @@ Models operate much like 'normal' python objects. To change the value of a
 field, simply set the instance attribute to a new value. Call ``save()`` to
 persist the change:
 
-.. code-block:: python
+.. code-block:: ipython
 
-    >>> p1.title = p1.title + " (updated)"
-    >>> p1.save()
-    >>> p1.title
-    'My first post (updated)'
+    In [16]: p1.title = p1.title + " (updated)"
+    In [17]: p1.save()
+    In [18]: p1.title
+    Out[18]: 'My First Post (updated)'
 
 
 Create a Few Posts
@@ -571,19 +591,19 @@ Create a Few Posts
 Let's create a few more posts so we can explore the Django model manager query
 API:
 
-.. code-block:: python
+.. code-block:: ipython
 
-    >>> p2 = Post(title="Another post",
-    ...           text="The second one created",
-    ...           author=u1).save()
-    >>> p3 = Post(title="The third one",
-    ...           text="With the word 'heffalump'",
-    ...           author=u1).save()
-    >>> p4 = Post(title="Posters are great decoration",
-    ...           text="When you are a poor college student",
-    ...           author=u1).save()
-    >>> Post.objects.count()
-    4
+    In [20]: p2 = Post(title="Another post",
+       ....:           text="The second one created",
+       ....:           author=all_users[0]).save()
+    In [21]: p3 = Post(title="The third one",
+       ....:           text="With the word 'heffalump'",
+       ....:           author=all_users[0]).save()
+    In [22]: p4 = Post(title="Posters are a great decoration",
+       ....:           text="When you are a poor college student",
+       ....:           author=all_users[0]).save()
+       ....: Post.objects.count()
+    Out[22]: 4
 
 
 The Django Query API
@@ -614,18 +634,22 @@ return ``QuerySets`` and those that do not.
 
 The former may be chained without hitting the database:
 
-.. code-block:: pycon
+.. code-block:: ipython
 
-    >>> a = Post.objects.all() #<-- no query yet
-    >>> b = a.filter(title__icontains="post") #<-- not yet
-    >>> c = b.exclude(text__contains="created") #<-- nope
-    >>> [(p.title, p.text) for p in c] #<-- This will issue the query
+    In [24]: a = Post.objects.all()  #<-- no query yet
+    In [25]: b = a.filter(title__icontains="post")  #<- not yet
+    In [26]: c = b.exclude(text__contains="created")  #<-- nope
+    In [27]: [(p.title, p.text) for p in c]  #<-- This will issue the query
+    Out[27]:
+    [('My First Post (updated)', "This is the first post I've written"),
+     ('Posters are a great decoration', 'When you are a poor college student')]
 
 Conversely, the latter will issue an SQL query when executed.
 
-.. code-block:: python
+.. code-block:: ipython
 
-    >>> a.count() # immediately executes an SQL query
+    In [28]: a.count()  #<-- immediately executes an SQL query
+    Out[28]: 4 
 
 
 QuerySets and SQL
@@ -633,69 +657,74 @@ QuerySets and SQL
 
 If you are curious, you can see the SQL that a given QuerySet will use:
 
-.. code-block:: pycon
+.. code-block:: ipython
 
-    >>> print(c.query)
-    SELECT "myblog_post"."id", "myblog_post"."title",
-        "myblog_post"."text", "myblog_post"."author_id",
-        "myblog_post"."created_date", "myblog_post"."modified_date",
-        "myblog_post"."published_date"
-    FROM "myblog_post"
-    WHERE ("myblog_post"."title" LIKE %post% ESCAPE '\'
-           AND NOT ("myblog_post"."text" LIKE %created% ESCAPE '\' )
+    In [29]: print(c.query)
+    SELECT "myblog_post"."id", "myblog_post"."title", "myblog_post"."text",
+           "myblog_post"."author_id", "myblog_post"."created_date",
+           "myblog_post"."modified_date", "myblog_post"."published_date" 
+    FROM "myblog_post" 
+    WHERE (
+        "myblog_post"."title" LIKE %post% ESCAPE '\' 
+        AND NOT ("myblog_post"."text" LIKE %created% ESCAPE '\')
     )
 
 The SQL will vary depending on which DBAPI backend you use (yay ORM!!!)
+
+.. note:: Incidentally, using this as a way to learn SQL is not a bad idea.
 
 
 Exploring the QuerySet API
 --------------------------
 
-See https://docs.djangoproject.com/en/1.7/ref/models/querysets
+See https://docs.djangoproject.com/en/1.9/ref/models/querysets
 
 
-.. code-block:: python
+.. code-block:: ipython
 
-    >>> [p.pk for p in Post.objects.all().order_by('created_date')]
-    [1, 2, 3, 4]
-    >>> [p.pk for p in Post.objects.all().order_by('-created_date')]
-    [4, 3, 2, 1]
-    >>> [p.pk for p in Post.objects.filter(title__contains='post')]
-    [1, 2, 4]
-    >>> [p.pk for p in Post.objects.exclude(title__contains='post')]
-    [3]
-    >>> qs = Post.objects.exclude(title__contains='post')
-    >>> qs = qs.exclude(id__exact=3)
-    >>> [p.pk for p in qs]
-    []
-    >>> qs = Post.objects.exclude(title__contains='post', id__exact=3)
-    >>> [p.pk for p in qs]
-    [1, 2, 3, 4]
+    In [3]: [p.pk for p in Post.objects.all().order_by('created_date')]
+    Out[3]: [1, 2, 3, 4]
+    In [4]: [p.pk for p in Post.objects.all().order_by('-created_date')]
+    Out[4]: [4, 3, 2, 1]
+    In [5]: [p.pk for p in Post.objects.filter(title__contains='post')]
+    Out[5]: [1, 2, 4]
+    In [6]: [p.pk for p in Post.objects.exclude(title__contains='post')]
+    Out[6]: [3]
+    In [7]: qs = Post.objects.exclude(title__contains='post')
+    In [8]: qs = qs.exclude(id__exact=3)
+    In [9]: [p.pk for p in qs]
+    Out[9]: []
+    In [10]: qs = Post.objects.exclude(title__contains='post', id__exact=3)
+    In [11]: [p.pk for p in qs]
+    Out[11]: [1, 2, 3, 4]
+
+Do all of those make sense to you?  Especially consider the difference between
+those last two results? Can you explain that?
 
 
 Updating via QuerySets
 ----------------------
 
-You can update all selected objects at the same time.
+You can update all the objects in a QuerySet at the same time. Changes are persisted
+without calling the ``save`` instance method:
 
-.. rst-class:: build
+.. code-block:: ipython
 
-Changes are persisted without needing to call ``save``.
-
-.. code-block:: python
-
-    >>> qs = Post.objects.all()
-    >>> [p.published_date for p in qs]
-    [None, None, None, None]
-    >>> from datetime import datetime
-    >>> from django.utils.timezone import UTC
-    >>> utc = UTC()
-    >>> now = datetime.now(utc)
-    >>> qs.update(published_date=now)
-    4
-    >>> [p.published_date for p in qs]
-    [datetime.datetime(2015, 2, 15, 9, 11, 32, 214189, tzinfo=<UTC>),
-     ...]
+    In [12]: qs = Post.objects.all()
+    In [13]: [p.published_date for p in qs]
+    Out[13]: [None, None, None, None]
+    In [14]: from datetime import datetime
+    In [15]: from django.utils.timezone import UTC
+    In [16]: utc = UTC()
+    In [17]: now = datetime.now(utc)
+    In [18]: qs.update(published_date=now)
+    Out[18]: 4
+    In [19]: [p.published_date for p in qs]
+    Out[19]:
+    [datetime.datetime(2015, 12, 31, 19, 50, 4, 99980, tzinfo=<UTC>),
+     datetime.datetime(2015, 12, 31, 19, 50, 4, 99980, tzinfo=<UTC>),
+     datetime.datetime(2015, 12, 31, 19, 50, 4, 99980, tzinfo=<UTC>),
+     datetime.datetime(2015, 12, 31, 19, 50, 4, 99980, tzinfo=<UTC>)]
 
 
 Testing Our Model
@@ -756,13 +785,16 @@ Look at the way our Post represents itself in the Django shell:
 
 .. code-block:: python
 
-    >>> [p for p in Post.objects.all()]
-    [<Post: Post object>, <Post: Post object>,
-     <Post: Post object>, <Post: Post object>]
+    In [2]: [p for p in Post.objects.all()]
+    Out[2]:
+    [<Post: Post object>,
+     <Post: Post object>,
+     <Post: Post object>,
+     <Post: Post object>]
 
 Wouldn't it be nice if the posts showed their titles instead? In Django, the
-``__unicode__`` method is used to determine how a Model instance represents
-itself. Then, calling ``unicode(instance)`` gives the desired result.
+``__str__`` method is used to determine how a Model instance represents
+itself. Then, calling ``str(instance)`` gives the desired result.
 
 Let's write a test that demonstrates our desired outcome:
 
@@ -772,10 +804,10 @@ Let's write a test that demonstrates our desired outcome:
     from myblog.models import Post
 
     # and this test method to the PostTestCase
-    def test_unicode(self):
+    def test_string_representation(self):
         expected = "This is a title"
         p1 = Post(title=expected)
-        actual = unicode(p1)
+        actual = str(p1)
         self.assertEqual(expected, actual)
 
 
@@ -787,7 +819,7 @@ Quit your Django shell and in your terminal run the test we wrote:
 
 .. code-block:: bash
 
-    (djangoenv)$ python manage.py test myblog
+    (djangoenv)$ ./manage.py test myblog
 
 We have yet to implement this enhancement, so our test should fail:
 
@@ -796,10 +828,10 @@ We have yet to implement this enhancement, so our test should fail:
     Creating test database for alias 'default'...
     F
     ======================================================================
-    FAIL: test_unicode (myblog.tests.PostTestCase)
+    FAIL: test_string_representation (myblog.tests.PostTestCase)
     ----------------------------------------------------------------------
     Traceback (most recent call last):
-      File "/Users/cewing/projects/training/uw_pce/training.python_web/scripts/session07/mysite/myblog/tests.py", line 15, in test_unicode
+      File "/Users/cewing/projects/training/uw_pce/training.python_web/scripts/session07/mysite/myblog/tests.py", line 15, in test_string_representation
         self.assertEqual(expected, actual)
     AssertionError: 'This is a title' != u'Post object'
 
@@ -809,7 +841,7 @@ We have yet to implement this enhancement, so our test should fail:
     FAILED (failures=1)
     Destroying test database for alias 'default'...
 
-Let's add an appropriate ``__unicode__`` method to our Post class.
+Let's add an appropriate ``__str__`` method to our Post class.
 
 * It will take ``self`` as its only argument
 * And it should return its own title as the result
@@ -820,12 +852,12 @@ Let's add an appropriate ``__unicode__`` method to our Post class.
     class Post(models.Model):
         #...
 
-        def __unicode__(self):
+        def __str__(self):
             return self.title
 
 Re-run the tests to see if that worked::
 
-    (djangoenv)$ python manage.py test myblog
+    (djangoenv)$ ./manage.py test myblog
     Creating test database for alias 'default'...
     .
     ----------------------------------------------------------------------
@@ -852,7 +884,7 @@ of style and taste (and of budget).
 We've only begun to test our blog app. We'll be adding many more tests later.
 In between, you might want to take a look at the `Django testing documentation`_:
 
-.. _Django testing documentation: https://docs.djangoproject.com/en/1.7/topics/testing/
+.. _Django testing documentation: https://docs.djangoproject.com/en/1.9/topics/testing/
 
 
 The Django Admin
@@ -926,10 +958,10 @@ stroke.
 
         from django.contrib import admin # <- should be present already
 
-        urlpatterns = patterns('',
+        urlpatterns = [
             ...
             url(r'^admin/', include(admin.site.urls)), #<- this should be too
-        )
+        ]
 
 We can now view the admin.  We'll use the Django development server.
 
@@ -942,7 +974,7 @@ development server:
 
 ::
 
-    (djangoenv)$ python manage.py runserver
+    (djangoenv)$ ./manage.py runserver
     Validating models...
 
     0 errors found
@@ -998,7 +1030,7 @@ Reload the admin index page in your browser. You should now see a listing for
 the Myblog app, and an entry for Posts.
 
 Visit the admin page for Posts. You should see the posts we created earlier in
-the Django shell. Look at the listing of Posts. Because of our ``__unicode__``
+the Django shell. Look at the listing of Posts. Because of our ``__str__``
 method we see a nice title.
 
 Are there other fields you'd like to see listed? Click on a Post, note what is

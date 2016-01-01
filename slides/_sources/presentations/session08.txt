@@ -108,15 +108,22 @@ Clearly the most popular full-stack Python web framework at this time
 Django releases in the last 12+ months (a short list):
 
 .. rst-class:: build
+.. container::
 
-* 1.7.4 (January 2015)
-* 1.6.9 (January 2015)
-* 1.7.1 (October 2014)
-* 1.6.7 (September 2014)
-* 1.7 (September 2014)
-* 1.6.5 (May 2014)
-* 1.6.2 (February 2014)
-* 1.6 (November 2013)
+    .. rst-class:: build
+
+    * 1.9 (December 2015)
+    * 1.8.7 (November 2015)
+    * 1.7.11 (November 2015)
+    * 1.8.5 (October 2015)
+    * 1.7.10 (August 2015)
+    * 1.8.3 (July 2015)
+    * 1.8 (April 2015)
+    * 1.7.7 (March 2015)
+    * 1.7.4 (January 2014)
+      
+    Django 1.8 is the second *Long Term Support* version, with a guaranteed support
+    period of three years.
 
 .. nextslide:: Great Documentation
 
@@ -214,7 +221,7 @@ fall into.
         class Category(models.Model):
             name = models.CharField(max_length=128)
             description = models.TextField(blank=True)
-            posts = models.ManyToManyField(Post, blank=True, null=True,
+            posts = models.ManyToManyField(Post, blank=True,
                                            related_name='categories')
 
 
@@ -248,7 +255,7 @@ To get these changes set up, we now add a new migration.
 
     .. code-block:: bash
 
-        (djangoenv)$ python manage.py makemigrations
+        (djangoenv)$ ./manage.py makemigrations
         Migrations for 'myblog':
           0002_category.py:
             - Create model Category
@@ -263,10 +270,11 @@ management command.
 
     .. code-block:: bash
 
-        (djangoenv)$ python manage.py migrate
+        (djangoenv)$ ./manage.py migrate
         Operations to perform:
-          Apply all migrations: admin, myblog, contenttypes, auth, sessions
+          Apply all migrations: sessions, contenttypes, admin, myblog, auth
         Running migrations:
+          Rendering model states... DONE
           Applying myblog.0002_category... OK
 
     You can even look at the migration file you just applied,
@@ -291,10 +299,10 @@ Start with a test:
         # and the test case and test
         class CategoryTestCase(TestCase):
 
-            def test_unicode(self):
+            def test_string_representation(self):
                 expected = "A Category"
                 c1 = Category(name=expected)
-                actual = unicode(c1)
+                actual = str(c1)
                 self.assertEqual(expected, actual)
 
 .. nextslide:: Make it Pass
@@ -307,7 +315,7 @@ When you run your tests, you now have two, and one is failing because the
 
     .. code-block:: bash
 
-        (djangoenv)$ python manage.py test myblog
+        (djangoenv)$ ./manage.py test myblog
         Creating test database for alias 'default'...
         ...
 
@@ -322,7 +330,7 @@ When you run your tests, you now have two, and one is failing because the
         class Category(models.Model):
             #...
 
-            def __unicode__(self):
+            def __str__(self):
                 return self.name
 
 
@@ -350,7 +358,7 @@ Fire up the Django development server and see what you have in the admin:
 
 .. code-block:: bash
 
-    (djangoenv)$ python manage.py runserver
+    (djangoenv)$ ./manage.py runserver
     Validating models...
     ...
     Starting development server at http://127.0.0.1:8000/
@@ -468,35 +476,14 @@ Create a new file ``urls.py`` inside the ``myblog`` app package.
     .. code-block:: python
 
 
-        from django.conf.urls import patterns, url
+        from django.conf.urls import url
+        from myblog.views import stub_view
 
-        urlpatterns = patterns('myblog.views',
+        urlpatterns = [
             url(r'^$',
-                'stub_view',
+                stub_view,
                 name="blog_index"),
-        )
-
-
-.. nextslide:: A Word On Prefixes
-
-The ``patterns`` function takes a first argument called the *prefix*
-
-.. rst-class:: build
-.. container::
-
-    When it is not empty, it is added to any view names in ``url()`` calls in
-    the same ``patterns``.
-
-    In a root urlconf like the one in ``mysite``, this isn't too useful.
-
-    But in ``myblog.urls`` it lets us refer to views by simple function name.
-
-    No need to import every view.
-
-    Nor do we need to reference each by the app and module name where it
-    appears.
-
-    This is a convenience.
+        ]
 
 
 .. nextslide:: Include Blog Urls
@@ -511,11 +498,14 @@ urlconf
 
     .. code-block:: python
 
+        # add this new import
+        from django.conf.urls import include
 
-        urlpatterns = patterns('',
+        # then modify urlpatterns as follows:
+        urlpatterns = [
             url(r'^', include('myblog.urls')), #<- add this
             #... other included urls
-        )
+        ]
 
     Try reloading http://localhost:8000/
 
@@ -555,7 +545,7 @@ We've already got a good url for the list page: ``blog_index`` at '/'
     .. code-block:: python
 
         url(r'^posts/(\d+)/$',
-            'stub_view',
+            stub_view,
             name="blog_detail"),
 
     ``(\d+)`` captures one or more digits as the post_id.
@@ -605,16 +595,17 @@ Like Pyramid, Django uses Python regular expressions to build routes.
 .. code-block:: python
 
 
-    from django.conf.urls import patterns, url
+    from django.conf.urls import url
+    from myblog.views import stub_view
 
-    urlpatterns = patterns('myblog.views',
+    urlpatterns = [
         url(r'^$',
-            'stub_view',
+            stub_view,
             name="blog_index"),
         url(r'^posts/(?P<post_id>\d+)/$',
-            'stub_view',
+            stub_view,
             name="blog_detail"),
-    )
+    ]
 
 
 .. nextslide:: Testing Views
@@ -682,7 +673,9 @@ We'd like our list view to show our posts.
             # ...
             def test_list_only_published(self):
                 resp = self.client.get('/')
-                self.assertTrue("Recent Posts" in resp.content)
+                # the content of the rendered response is always a bytestring
+                resp_text = resp.content.decode(resp.charset)
+                self.assertTrue("Recent Posts" in resp_text)
                 for count in range(1, 11):
                     title = "Post %d Title" % count
                     if count < 6:
@@ -702,7 +695,7 @@ We'd like our list view to show our posts.
 
 .. code-block:: bash
 
-    (djangoenv)$ python manage.py test myblog
+    (djangoenv)$ ./manage.py test myblog
     Creating test database for alias 'default'...
     .F.
     ======================================================================
@@ -782,38 +775,50 @@ located).
 .. rst-class:: build
 .. container::
 
-    In that same file add a tuple bound to ``TEMPLATE_DIRS`` and add a path to
-    it:
+    In that same file, you'll find a list bound to the symbol ``TEMPLATES``.
+
+    That list contains one dict with an empty list at the key ``DIRS``. Update
+    that empty list as shown here:
 
     .. code-block:: python
+    
+        TEMPLATES = [
+            {
+                'BACKEND': 'django.template.backends.django.DjangoTemplates',
+                'DIRS': [os.path.join(BASE_DIR, 'mysite/templates')],
+                ...
+            },
+        ]
 
-        TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'mysite/templates'), )
+    This will ensure that Django will look in your ``mysite`` project folder
+    for a directory containing templates.
 
-    Then add a ``templates`` directory to your ``mysite`` project package
+.. nextslide::
 
-    Finally, in that directory add a new file ``base.html`` and populate it
-    with the following:
+The ``mysite`` project folder does not contain a ``templates`` directory, add one.
 
+.. rst-class:: build
+.. container::
 
-.. nextslide:: ``base.html``
+    Then, in that directory add a new file ``base.html`` and add the following:
 
-.. code-block:: jinja
+    .. code-block:: jinja
 
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <title>My Django Blog</title>
-      </head>
-      <body>
-        <div id="container">
-          <div id="content">
-          {% block content %}
-           [content will go here]
-          {% endblock %}
-          </div>
-        </div>
-      </body>
-    </html>
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <title>My Django Blog</title>
+          </head>
+          <body>
+            <div id="container">
+              <div id="content">
+              {% block content %}
+               [content will go here]
+              {% endblock %}
+              </div>
+            </div>
+          </body>
+        </html>
 
 
 Templates in Django
@@ -830,7 +835,7 @@ Before we move on, a quick word about Django templates.
 
     Django templates **do not** allow any python expressions.
 
-    https://docs.djangoproject.com/en/1.7/ref/templates/builtins/
+    https://docs.djangoproject.com/en/1.9/ref/templates/builtins/
 
 
 .. nextslide:: Blog Templates
@@ -854,11 +859,8 @@ Our view tries to load ``list.html``.
 
 .. code-block:: jinja
 
-    {% extends "base.html" %}
-
-    {% block content %}
+    {% extends "base.html" %}{% block content %}
       <h1>Recent Posts</h1>
-
       {% comment %} here is where the query happens {% endcomment %}
       {% for post in posts %}
       <div class="post">
@@ -893,8 +895,8 @@ Our view tries to load ``list.html``.
 
     Like Jinja2, django templates are rendered by passing in a *context*
 
-    Django's RequestContext provides common bits, similar to the global context
-    in Flask
+    Django's RequestContext provides common bits, similar to the context
+    provided automatically by Pyramid
 
     We add our posts to that context so they can be used by the template.
 
@@ -923,15 +925,19 @@ We need to fix the url for our blog index page
 
     .. code-block:: python
 
+        # import the new view
+        from myblog.views import list_view
+
+        # and then update the urlconf
         url(r'^$',
-            'list_view',
+            list_view,  #<-- Change this value from stub_view
             name="blog_index"),
 
     Then run your tests again:
 
     .. code-block:: bash
 
-        (djangoenv)$ python manage.py test myblog
+        (djangoenv)$ ./manage.py test myblog
         ...
         Ran 3 tests in 0.033s
 
@@ -952,12 +958,9 @@ This is a common pattern in Django views:
 .. rst-class:: build
 .. container::
 
-    So common in fact that Django provides two shortcuts for us to use:
+    So common in fact that Django provides a shortcut for us to use:
 
-    .. rst-class:: build
-
-    * ``render(request, template[, ctx][, ctx_instance])``
-    * ``render_to_response(template[, ctx][, ctx_instance])``
+    ``render(request, template[, ctx][, ctx_instance])``
 
 
 .. nextslide:: Shorten Our View
@@ -1034,7 +1037,7 @@ Add the following test to our ``FrontEndTestCase`` in ``myblog/tests.py``:
 
 .. code-block:: bash
 
-    (djangoenv)$ python manage.py test myblog
+    (djangoenv)$ ./manage.py test myblog
     Creating test database for alias 'default'...
     .F..
     ======================================================================
@@ -1063,6 +1066,13 @@ Now, add a new view to ``myblog/views.py``:
 
 
 .. nextslide:: Missing Content
+
+.. code-block:: python
+
+    try:
+        post = published.get(pk=post_id)
+    except Post.DoesNotExist:
+        raise Http404
 
 One of the features of the Django ORM is that all models raise a DoesNotExist
 exception if ``get`` returns nothing.
@@ -1137,15 +1147,18 @@ Again, we need to insert our new view into the existing ``myblog/urls.py`` in
 
 .. code-block:: python
 
+    # import the view
+    from myblog.views import detail_view
+
     url(r'^posts/(?P<post_id>\d+)/$',
-        'detail_view',
+        detail_view, #<-- Change this from stub_view
         name="blog_detail"),
 
 .. rst-class:: build small
 
 ::
 
-    (djangoenv)$ python manage.py test myblog
+    (djangoenv)$ ./manage.py test myblog
     ...
     Ran 4 tests in 0.077s
 
@@ -1214,12 +1227,14 @@ I've prepared a css file for us to use. You can find it in the class resources
 
     .. container::
 
-        Next, load the static files template tag into ``base.html`` (this must
-        be on the first line of the template):
+        Next, load the static files template tag into ``base.html`` (this
+        **must** be on the *first line* of the template):
 
         .. code-block:: jinja
 
             {% load staticfiles %}
+
+    .. container::
 
         Finally, add a link to the stylesheet using the special template tag:
 
@@ -1299,13 +1314,17 @@ Django also provides a reasonable set of views for login/logout.
 
         .. code-block:: python
 
+            # add an import at the top
+            from django.contrib.auth.views import login, logout
+
+            # and update the list of urlconfs
             url(r'^', include('myblog.urls')), #<- already there
             url(r'^login/$',
-                'django.contrib.auth.views.login',
+                login,
                 {'template_name': 'login.html'},
                 name="login"),
             url(r'^logout/$',
-                'django.contrib.auth.views.logout',
+                logout,
                 {'next_page': '/'},
                 name="logout"),
 
@@ -1460,14 +1479,14 @@ posts
        and ``Category`` models.
     3. And you'll need to create an `InlineModelAdmin`_ to represent Categories
        on the Post admin view.
-    4. Finally, you'll need to `suppress the display`_  of the 'posts' field on
-       your ``Category`` admin view.
+    4. Finally, you'll need to `exclude`_  the 'posts' field from the form in
+       your ``Category`` admin.
 
 
-.. _Django admin.: https://docs.djangoproject.com/en/1.6/ref/contrib/admin/
-.. _ModelAdmin: https://docs.djangoproject.com/en/1.6/ref/contrib/admin/#modeladmin-objects
-.. _InlineModelAdmin: https://docs.djangoproject.com/en/1.6/ref/contrib/admin/#inlinemodeladmin-objects
-.. _suppress the display: https://docs.djangoproject.com/en/1.6/ref/contrib/admin/#modeladmin-options
+.. _Django admin.: https://docs.djangoproject.com/en/1.9/ref/contrib/admin/
+.. _ModelAdmin: https://docs.djangoproject.com/en/1.9/ref/contrib/admin/#modeladmin-objects
+.. _InlineModelAdmin: https://docs.djangoproject.com/en/1.9/ref/contrib/admin/#inlinemodeladmin-objects
+.. _exclude: https://docs.djangoproject.com/en/1.9/ref/contrib/admin/#django.contrib.admin.ModelAdmin.exclude
 
 
 .. nextslide:: Pushing Further
@@ -1489,14 +1508,15 @@ code.
 
 .. rst-class:: build
 
-* Change the admin index to say 'Categories' instead of 'Categorys'.
+* Change the admin index to say 'Categories' instead of 'Categorys'. (hint, the
+  way to change this has nothing to do with the admin)
 * Add columns for the date fields to the list display of Posts.
 * Display the created and modified dates for your posts when viewing them in
   the admin.
 * Add a column to the list display of Posts that shows the author.  For more
   fun, make this a link that takes you to the admin page for that user.
 * For the biggest challenge, look into `admin actions`_ and add an action to
-  the Post admin that allows you to bulk publish posts from the Post list
+  the Post admin that allows you to publish posts in bulk from the Post list
   display
 
 .. _admin actions: https://docs.djangoproject.com/en/1.6/ref/contrib/admin/actions/

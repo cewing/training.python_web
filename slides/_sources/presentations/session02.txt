@@ -1,1576 +1,1672 @@
-.. slideconf::
-    :autoslides: True
+.. |br| raw:: html
+
+    <br />
 
 **********
 Session 02
 **********
 
-.. image:: /_static/lj_entry.png
-    :width: 65%
+.. figure:: /_static/protocol.png
     :align: center
+    :width: 40%
 
-Interacting with Data
-=====================
+    Web Protocols
 
-**Wherein we learn to display our data, and to create and edit it too!**
+The Languages Computers Speak
+=============================
+
+.. rst-class:: build left
+.. container::
+
+    Programming languages like Python are the languages we speak to computers.
+
+    *Protocols* are the languages that computers speak to each-other.
+
+    This sesson we'll look at a few of them and
+
+    .. rst-class:: build
+
+    * Learn what makes them similar
+    * Learn what makes them different
+    * Learn about Python's tools for speaking them
+    * Learn how to speak one (HTTP) ourselves
 
 
 But First
----------
+----------
 
-Last week we discussed the **model** part of the *MVC* application design
-pattern.
+.. rst-class:: large centered
+
+Questions from the Homework?
+
+
+.. nextslide::
+
+.. rst-class:: large centered
+
+Examples of an echo server using ``select``
+
+
+What is a Protocol?
+-------------------
+
+.. rst-class:: build large centered
+.. container::
+
+    **a set of rules or conventions**
+
+    **governing communications**
+
+
+.. nextslide:: Protocols IRL
+
+Life has lots of sets of rules for how to do things.
+
+.. rst-class:: build
+
+* What do you say when you get on the elevator?
+
+* What do you do on a first date?
+
+* What do you wear to a job interview?
+
+* What do (and don't) you talk about at a dinner party?
+
+* ...?
+
+
+.. nextslide:: Protocols IRL
+
+.. figure:: /_static/icup.png
+    :align: center
+    :width: 65%
+
+    http://blog.xkcd.com/2009/09/02/urinal-protocol-vulnerability/
+
+
+.. nextslide:: Protocols In Computers
+
+Digital life has lots of rules too:
+
+.. rst-class:: build
+
+* how to say hello
+
+* how to identify yourself
+
+* how to ask for information
+
+* how to provide answers
+
+* how to say goodbye
+
+
+Real Protocol Examples
+----------------------
+
+What does this look like in practice?
+
+.. rst-class:: build
+
+* SMTP (Simple Message Transfer Protocol) |br| 
+  http://tools.ietf.org/html/rfc5321#appendix-D
+
+* POP3 (Post Office Protocol) |br| 
+  http://www.faqs.org/docs/artu/ch05s03.html
+
+* IMAP (Internet Message Access Protocol) |br| 
+  http://www.faqs.org/docs/artu/ch05s03.html
+
+* HTTP (Hyper-Text Transfer Protocol) |br| 
+  http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol
+
+
+.. nextslide:: A Word on Typography
+
+Over the next few slides we'll be looking at server/client interactions.
 
 .. rst-class:: build
 .. container::
 
-    We set up a project using the `Pyramid`_ web framework and the `SQLAlchemy`_
-    library for persisting our data to a database.
+    Each interaction is line-based, each line represents one message.
 
-    We looked at how to define a simple model by investigating the demo model
-    created on our behalf.
+    Messages from the Server to the Client are prefaced with ``S (<--)``
 
-    And we went over, briefly, the way we can interact with this model at the
-    command line to make sure we've got it right.
+    Messages from the Client to the Server are prefaced with ``C (-->)``
 
-    Finally, we defined what attributes a learning journal entry would have,
-    and a pair of methods we think we will need to make the model complete.
+    **All** lines end with the character sequence ``<CRLF>`` (``\r\n``)
 
-.. _Pyramid: http://www.pylonsproject.org/projects/pyramid/about
-.. _SQLAlchemy: http://docs.sqlalchemy.org/en/rel_0_9/
 
-Our Data Model
---------------
+SMTP
+----
 
-Over the last week, your assignment was to create the new model.
+What does SMTP look like?
 
 .. rst-class:: build
 .. container::
 
-    Did you get that done?
+    SMTP (Say hello and identify yourself)::
 
-    If not, what stopped you?
+        S (<--): 220 foo.com Simple Mail Transfer Service Ready
+        C (-->): EHLO bar.com
+        S (<--): 250-foo.com greets bar.com
+        S (<--): 250-8BITMIME
+        S (<--): 250-SIZE
+        S (<--): 250-DSN
+        S (<--): 250 HELP
 
-    Let's take a few minutes here to answer questions about this task so you
-    are more comfortable.
 
-    Questions?
+.. nextslide::
 
-.. nextslide:: A Complete Example
+.. ifslides::
 
-I have added a new folder to our `class repository`_, ``resources``.
+    What does SMTP look like?
 
-.. _class repository: https://github.com/UWPCE-PythonCert/training.python_web/
+SMTP (Ask for information, provide answers)::
+
+    C (-->): MAIL FROM:<Smith@bar.com>
+    S (<--): 250 OK
+    C (-->): RCPT TO:<Jones@foo.com>
+    S (<--): 250 OK
+    C (-->): RCPT TO:<Green@foo.com>
+    S (<--): 550 No such user here
+    C (-->): DATA
+    S (<--): 354 Start mail input; end with <CRLF>.<CRLF>
+    C (-->): Blah blah blah...
+    C (-->): ...etc. etc. etc.
+    C (-->): .
+    S (<--): 250 OK
+
+.. nextslide::
+
+.. ifslides::
+
+    What does SMTP look like?
+
+SMTP (Say goodbye)::
+
+    C (-->): QUIT
+    S (<--): 221 foo.com Service closing transmission channel
+
+
+.. nextslide:: SMTP Characteristics
+
+.. rst-class:: build
+
+* Interaction consists of commands and replies
+* Each command or reply is *one line* terminated by <CRLF> |br|
+  (there are exceptions, see the ``250`` reply to ``EHLO`` above)
+* The exception is message payload, terminated by <CRLF>.<CRLF>
+* Each command has a *verb* and one or more *arguments*
+* Each reply has a formal *code* and an informal *explanation*
+
+
+POP3
+----
+
+What does POP3 look like?
 
 .. rst-class:: build
 .. container::
 
-    If you clone the repository to your local machine you can get to it.
+    POP3 (Say hello and identify yourself)::
 
-    You can also just browse the repository in github to view it.
+        C (-->): <client connects to service port 110>
+        S (<--): +OK POP3 server ready <1896.6971@mailgate.dobbs.org>
+        C (-->): USER bob
+        S (<--): +OK bob
+        C (-->): PASS redqueen
+        S (<--): +OK bob's maildrop has 2 messages (320 octets)
 
-    In this folder, I added a ``session02`` folder that contains resources for
-    today.
 
-    Among these resources is the completed ``models.py`` file with this new
-    model added.
+.. nextslide::
 
-    Let's review how it works.
+.. ifslides::
 
-.. nextslide:: Demo Interaction
+    What does POP3 look like?
 
-Another resource I've added is the ``ljshell.py`` script.
+POP3 (Ask for information, provide answers)::
+
+    C (-->): STAT
+    S (<--): +OK 2 320
+    C (-->): LIST
+    S (<--): +OK 1 messages (120 octets)
+    S (<--): 1 120
+    S (<--): .
+
+
+.. nextslide::
+
+.. ifslides::
+
+    What does POP3 look like?
+
+POP3 (Ask for information, provide answers)::
+
+    C (-->): RETR 1
+    S (<--): +OK 120 octets
+    S (<--): <server sends the text of message 1>
+    S (<--): .
+    C (-->): DELE 1
+    S (<--): +OK message 1 deleted
+
+
+.. nextslide::
+
+.. ifslides::
+
+    What does POP3 look like?
+
+POP3 (Say goodbye)::
+
+    C (-->): QUIT
+    S (<--): +OK dewey POP3 server signing off (maildrop empty)
+    C (-->): <client hangs up>
+
+
+.. nextslide:: POP3 Characteristics
 
 .. rst-class:: build
 .. container::
 
-    That script will allow you to interact with a db session just like I showed
-    in class last week:
+    .. rst-class:: build
 
-    .. code-block:: python
+    * Interaction consists of commands and replies
+    * Each command or reply is *one line* terminated by <CRLF>
+    * The exception is message payload, terminated by <CRLF>.<CRLF>
+    * Each command has a *verb* and one or more *arguments*
+    * Each reply has a formal *code* and an informal *explanation*
 
-        # the script
-        from pyramid.paster import get_appsettings, setup_logging
-        from sqlalchemy import engine_from_config
-        from sqlalchemy.orm import sessionmaker
+    The codes don't really look the same, though, do they?
 
-        config_uri = 'development.ini'
-        setup_logging(config_uri)
-        settings = get_appsettings(config_uri)
-        engine = engine_from_config(settings, 'sqlalchemy.')
-        Session = sessionmaker(bind=engine)
 
-    Just copy the file into your learning_journal Pyramid project folder (where
-    ``setup.py`` is)
+.. nextslide:: One Other Difference
 
-.. nextslide:: Using the ``ljshell.py`` script
-
-Here's a demo interaction using the script to set up a session maker
+The exception to the one-line-per-message rule is *payload*
 
 .. rst-class:: build
 .. container::
 
-    First ``cd`` to your project code, fire up your project virtualenv and
-    start python:
+    In both SMTP and POP3 this is terminated by <CRLF>.<CRLF>
 
-    .. code-block:: bash
+    In SMTP, the *client* has this ability
 
-        $ cd projects/learning-journal/learning_journal
-        $ source ../ljenv/bin/activate
-        (ljenv)$ python
-        >>>
+    But in POP3, it belongs to the *server*.
 
-    Then, you can import the ``Session`` symbol from ``ljshell`` and you're off
-    to the races:
+    .. rst-class:: large centered
 
-    .. code-block:: pycon
+        Why?
 
-        >>> from ljshell import Session
-        >>> from learning_journal.models import MyModel
-        >>> session = Session()
-        >>> session.query(MyModel).all()
-        [<learning_journal.models.MyModel object at 0x105849b90>]
+IMAP
+----
+
+What does IMAP look like?
+
+.. rst-class:: build
+.. container::
+
+    IMAP (Say hello and identify yourself)::
+
+        C (-->): <client connects to service port 143>
+        S (<--): * OK example.com IMAP4rev1 v12.264 server ready
+        C (-->): A0001 USER "frobozz" "xyzzy"
+        S (<--): * OK User frobozz authenticated
+
+
+.. nextslide::
+
+.. ifslides::
+
+    What does IMAP look like?
+
+IMAP (Ask for information, provide answers [connect to an inbox])::
+
+    C (-->): A0002 SELECT INBOX
+    S (<--): * 1 EXISTS
+    S (<--): * 1 RECENT
+    S (<--): * FLAGS (\Answered \Flagged \Deleted \Draft \Seen)
+    S (<--): * OK [UNSEEN 1] first unseen message in /var/spool/mail/esr
+    S (<--): A0002 OK [READ-WRITE] SELECT completed
+
+
+.. nextslide::
+
+.. ifslides::
+
+    What does IMAP look like?
+
+IMAP (Ask for information, provide answers [Get message sizes])::
+
+    C (-->): A0003 FETCH 1 RFC822.SIZE
+    S (<--): * 1 FETCH (RFC822.SIZE 2545)
+    S (<--): A0003 OK FETCH completed
+
+
+.. nextslide::
+
+.. ifslides::
+
+    What does IMAP look like?
+
+IMAP (Ask for information, provide answers [Get first message header])::
+
+    C (-->): A0004 FETCH 1 BODY[HEADER]
+    S (<--): * 1 FETCH (RFC822.HEADER {1425}
+    <server sends 1425 octets of message payload>
+    S (<--): )
+    S (<--): A0004 OK FETCH completed
+
+
+.. nextslide::
+
+.. ifslides::
+
+    What does IMAP look like?
+
+IMAP (Ask for information, provide answers [Get first message body])::
+
+    C (-->): A0005 FETCH 1 BODY[TEXT]
+    S (<--): * 1 FETCH (BODY[TEXT] {1120}
+    <server sends 1120 octets of message payload>
+    S (<--): )
+    S (<--): * 1 FETCH (FLAGS (\Recent \Seen))
+    S (<--): A0005 OK FETCH completed
+
+.. nextslide::
+
+.. ifslides::
+
+    What does IMAP look like?
+
+IMAP (Say goodbye)::
+
+    C (-->): A0006 LOGOUT
+    S (<--): * BYE example.com IMAP4rev1 server terminating connection
+    S (<--): A0006 OK LOGOUT completed
+    C (-->): <client hangs up>
+
+
+.. nextslide:: IMAP Characteristics
+
+.. rst-class:: build
+
+* Interaction consists of commands and replies
+* Each command or reply is *one line* terminated by <CRLF>
+* Each command has a *verb* and one or more *arguments*
+* Each reply has a formal *code* and an informal *explanation*
+
+
+.. nextslide:: IMAP Differences
+
+.. rst-class:: build
+.. container::
+
+    .. rst-class:: build
+
+    * Commands and replies are prefixed by 'sequence identifier'
+    * Payloads are prefixed by message size, rather than terminated by reserved
+      sequence
+
+    Compared with POP3, what do these differences suggest?
+
+
+Using IMAP in Python
+--------------------
+
+Let's try this out for ourselves!
+
+.. rst-class:: build
+.. container::
+
+    .. container::
+
+        Fire up your python interpreters and prepare to type.
+
+
+.. nextslide::
+
+Begin by importing the ``imaplib`` module from the Python Standard Library:
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: ipython
+
+        In [1]: import imaplib
+        In [2]: dir(imaplib)
+        Out[2]:
+        ['AllowedVersions',
+         'CRLF',
+         'Commands',
         ...
+         'timedelta',
+         'timezone']
+        In [3]: imaplib.Debug = 4
 
-    [demo]
+    Setting ``imap.Debug`` shows us what is sent and received
 
-The MVC Controller
-==================
+
+.. nextslide::
+
+I've prepared a server for us to use, but we'll need to set up a client to
+speak to it.
+
+.. rst-class:: build
+.. container::
+
+    Our server requires SSL (Secure Socket Layer) for connecting to IMAP
+    servers, so let's initialize an IMAP4_SSL client and authenticate:
+
+    .. code-block:: ipython
+
+        In [4]: conn = imaplib.IMAP4_SSL('mail.webfaction.com')
+          22:40.32 imaplib version 2.58
+          22:40.32 new IMAP4 connection, tag=b'IMKC'
+          22:40.38 < b'* OK [CAPABILITY IMAP4rev1 LITERAL+ SASL-IR LOGIN-REFERRALS ID ENABLE IDLE AUTH=PLAIN] Dovecot ready.'
+          22:40.38 > b'IMKC0 CAPABILITY'
+          22:40.45 < b'* CAPABILITY IMAP4rev1 LITERAL+ SASL-IR LOGIN-REFERRALS ID ENABLE IDLE AUTH=PLAIN'
+          22:40.45 < b'IMKC0 OK Capability completed.'
+          22:40.45 CAPABILITIES: ('IMAP4REV1', 'LITERAL+', 'SASL-IR', 'LOGIN-REFERRALS', 'ID', 'ENABLE', 'IDLE', 'AUTH=PLAIN')
+        In [5]: conn.login('crisewing_demobox', 's00p3rs3cr3t')
+          22:59.92 > b'IMKC1 LOGIN crisewing_demobox "s00p3rs3cr3t"'
+          23:01.79 < b'* CAPABILITY IMAP4rev1 SASL-IR SORT THREAD=REFERENCES MULTIAPPEND UNSELECT LITERAL+ IDLE CHILDREN NAMESPACE LOGIN-REFERRALS STARTTLS AUTH=PLAIN'
+          23:01.79 < b'IMKC1 OK Logged in.'
+        Out[5]: ('OK', [b'Logged in.'])
+
+.. nextslide::
+
+We can start by listing the mailboxes we have on the server:
+
+.. code-block:: ipython
+
+    In [6]: conn.list()
+      26:30.64 > b'IMKC2 LIST "" *'
+      26:30.72 < b'* LIST (\\HasNoChildren) "." "Trash"'
+      26:30.72 < b'* LIST (\\HasNoChildren) "." "Drafts"'
+      26:30.72 < b'* LIST (\\HasNoChildren) "." "Sent"'
+      26:30.72 < b'* LIST (\\HasNoChildren) "." "Junk"'
+      26:30.72 < b'* LIST (\\HasNoChildren) "." "INBOX"'
+      26:30.72 < b'IMKC2 OK List completed.'
+    Out[6]:
+    ('OK',
+     [b'(\\HasNoChildren) "." "Trash"',
+      b'(\\HasNoChildren) "." "Drafts"',
+      b'(\\HasNoChildren) "." "Sent"',
+      b'(\\HasNoChildren) "." "Junk"',
+      b'(\\HasNoChildren) "." "INBOX"'])
+
+
+.. nextslide::
+
+To interact with our email, we must select a mailbox from the list we received
+earlier:
+
+.. code-block:: ipython
+
+    In [7]: conn.select('INBOX')
+      27:20.96 > b'IMKC3 SELECT INBOX'
+      27:21.04 < b'* FLAGS (\\Answered \\Flagged \\Deleted \\Seen \\Draft)'
+      27:21.04 < b'* OK [PERMANENTFLAGS (\\Answered \\Flagged \\Deleted \\Seen \\Draft \\*)] Flags permitted.'
+      27:21.04 < b'* 1 EXISTS'
+      27:21.04 < b'* 0 RECENT'
+      27:21.04 < b'* OK [UNSEEN 1] First unseen.'
+      27:21.04 < b'* OK [UIDVALIDITY 1357449499] UIDs valid'
+      27:21.04 < b'* OK [UIDNEXT 24] Predicted next UID'
+      27:21.04 < b'IMKC3 OK [READ-WRITE] Select completed.'
+    Out[7]: ('OK', [b'1'])
+
+
+.. nextslide::
+
+We can search our selected mailbox for messages matching one or more criteria.
+
+.. rst-class:: build
+.. container::
+
+    The return value is a list of bytestrings containing the UIDs of messages
+    that match our search:
+
+    .. code-block:: ipython
+
+        In [8]: conn.search(None, '(FROM "cris")')
+          28:43.02 > b'IMKC4 SEARCH (FROM "cris")'
+          28:43.09 < b'* SEARCH 1'
+          28:43.09 < b'IMKC4 OK Search completed.'
+        Out[8]: ('OK', [b'1'])
+
+.. nextslide::
+
+Once we've found a message we want to look at, we can use the ``fetch``
+command to read it from the server.
+
+.. rst-class:: build
+.. container::
+
+    IMAP allows fetching each part of a message independently:
+
+    .. code-block:: ipython
+
+        In [9]: conn.fetch('1', 'BODY[HEADER]')
+          ...
+        Out[9]: ('OK', ...)
+
+        In [10]: conn.fetch('1', 'FLAGS')
+          ...
+        Out[10]: ('OK', [b'1 (FLAGS (\\Seen))'])
+
+        In [11]: conn.fetch('1', 'BODY[TEXT]')
+          ...
+        Out[11]: ('OK', ...)
+
+    What does the message say?
+
+.. nextslide:: Batteries Included
+
+Python even includes an *email* library that would allow us to interact with
+this message in an *OO* style.
+
+.. rst-class:: build
+
+.. container::
+
+    *Neat, Huh?*
+
+What Have We Learned?
+---------------------
+
+.. rst-class:: build
+.. container::
+
+    .. rst-class:: build
+
+    * Protocols are just a set of rules for how to communicate
+
+    * Protocols tell us how to parse and delimit messages
+
+    * Protocols tell us what messages are valid
+
+    * If we properly format request messages to a server, we can get response
+      messages
+
+    * Python supports a number of these protocols
+
+    * So we don't have to remember how to format the commands ourselves
+
+    But in every case we've seen, we could do the same thing with a socket and
+    some strings
+
+
+Break Time
+----------
+
+Let's take a few minutes here to clear our heads.
+
+.. rst-class:: build
+.. container::
+
+    When we return, we'll learn about the king of protocols,
+
+    .. rst-class:: large centered
+
+    HTTP
+
+
+HTTP
+====
 
 .. rst-class:: left
 .. container::
 
-    Let's go back to thinking for a bit about the *Model-View-Controller*
-    pattern.
-
-    .. figure:: http://upload.wikimedia.org/wikipedia/commons/4/40/MVC_passive_view.png
-        :align: center
-        :width: 25%
-
-        By Alan Evangelista (Own work) [CC0], via Wikimedia Commons
+    HTTP is no different
 
     .. rst-class:: build
     .. container::
 
-        We talked last week (and today) about the *model*
+        HTTP is also message-centered, with two-way communications:
 
-        Today, we'll dig into *controllers* and *views*
+        .. rst-class:: build
 
-        or as we will know them in Pyramid: *views* and *renderers*
+        * Requests (Asking for information)
+        * Responses (Providing answers)
 
 
-HTTP Request/Response
----------------------
+What does HTTP look like?
+-------------------------
 
-Internet software is driven by the HTTP Request/Response cycle.
+HTTP (Ask for information):
 
-.. rst-class:: build
-.. container::
+.. code-block:: http
 
-    A *client* (perhaps a user with a web browser) makes a **request**
+    GET /index.html HTTP/1.1<CRLF>
+    Host: www.example.com<CRLF>
+    <CRLF>
 
-    A *server* receives and handles that request and returns a **response**
+.. ifnotslides::
 
-    The *client* receives the response and views it, perhaps making a new
-    **request**
+    .. note:: the ``<CRLF>`` you see here is a visualization of the ``\r\n``
+              character sequence.
 
-    And around and around it goes.
+.. ifslides::
 
-.. nextslide:: URLs
+    **note**: the ``<CRLF>`` you see here is a visualization of the ``\r\n``
+    character sequence.
 
-An HTTP request arrives at a server through the magic of a **URL**
-
-.. code-block:: bash
-
-    http://uwpce-pythoncert.github.io/training.python_web/html/index.html
-
-.. rst-class:: build
-.. container::
-
-    Let's break that up into its constituent parts:
-
-    .. rst-class:: build
-
-    \http://:
-      This part is the *protocol*, it determines how the request will be sent
-
-    uwpce-pythoncert.github.io:
-      This is a *domain name*.  It's the human-facing address for a server
-      somewhere.
-
-    /training.python_web/html/index.html:
-      This part is the *path*.  It serves as a locator for a resource *on the
-      server*
-
-.. nextslide:: Paths
-
-In a static website (like our documentation) the *path* identifies a **physical
-location** in the server's filesystem.
-
-.. rst-class:: build
-.. container::
-
-    Some directory on the server is the *home* for the web process, and the
-    *path* is looked up there.
-
-    Whatever resource (a file, an image, whatever) is located there is returned
-    to the user as a response.
-
-    If the path leads to a location that doesn't exist, the server responds
-    with a **404 Not Found** error.
-
-    In the golden days of yore, this was the only way content was served via
-    HTTP.
-
-.. nextslide:: Paths in an MVC System
-
-In todays world we have dynamic systems, server-side web frameworks like
-Pyramid.
-
-.. rst-class:: build
-.. container::
-
-    The requests that you send to a server are handled by a software process
-    that assembles a response instead of looking up a physical location.
-
-    But we still have URLs, with *protocol*, *domain* and *path*.
-
-    What is the role for a path in a process that doesn't refer to a physical
-    file system?
-
-    Most web frameworks now call the *path* a **route**.
-
-    They provide a way of matching *routes* to the code that will be run to
-    handle requests.
-
-Routes in Pyramid
------------------
-
-In Pyramid, routes are handled as *configuration* and are set up in the *main*
-function in ``__init__.py``:
-
-.. code-block:: python
-
-    # learning_journal/__init__.py
-    def main(global_config, **settings):
-        # ...
-        config.add_route('home', '/')
-        # ...
-
-.. rst-class:: build
-.. container::
-
-    Our code template created a sample route for us, using the ``add_route``
-    method of the ``Configurator`` class.
-
-    The ``add_route`` method has two required arguments: a *name* and a
-    *pattern*
-
-    In our sample route, the *name* is ``'home'``
-
-    In our sample route, the *pattern* is ``'/'``
 
 .. nextslide::
 
-When a request comes in to a Pyramid application, the framework looks at all
-the *routes* that have been configured.
+HTTP (Provide answers):
+
+.. code-block:: http
+
+    HTTP/1.1 200 OK
+    Date: Mon, 23 May 2005 22:38:34 GMT
+    Server: Apache/1.3.3.7 (Unix) (Red-Hat/Linux)
+    Last-Modified: Wed, 08 Jan 2003 23:11:55 GMT
+    Etag: "3f80f-1b6-3e1cb03b"
+    Accept-Ranges:  none
+    Content-Length: 438
+    Connection: close
+    Content-Type: text/html; charset=UTF-8
+    <CRLF>
+    <!DOCTYPE html>\n<html>\n  <head>\n    <title>This is a .... </html>
+
+Pay particular attention to the ``<CRLF>`` on a line by itself.  
+
+
+.. nextslide:: HTTP Core Format
+
+In HTTP, both *request* and *response* share a common basic format:
+
+.. rst-class:: build
+
+* Line separators are <CRLF> (familiar, no?)
+* A required initial line (a command or a response code)
+* A (mostly) optional set of headers, one per line
+* A blank line
+* An optional body
+
+
+Implementing HTTP
+-----------------
+
+Let's investigate the HTTP protocol a bit in real life.
 
 .. rst-class:: build
 .. container::
 
-    One by one, in order, it tries to match the *path* of the incoming request
-    against the *pattern* of the route.
+    We'll do so by building a simplified HTTP server, one step at a time.
 
-    As soon as a *pattern* matches the *path* from the incoming request, that
-    route is used and no further matching is performed.
+    There is a copy of the echo server from last time in
+    ``resources/session02``. It's called ``http_server.py``.
 
-    If no route is found that matches, then the request will automatically get
-    a **404 Not Found** error response.
+    In a terminal, move into that directory. We'll be doing our work here for
+    the rest of the session
 
-    In our sample app, we have one sample *route* named ``'home'``, with a
-    pattern of ``/``.
 
-    This means that any request that comes in for ``/`` will be matched to this
-    route, and any other request will be **404**.
+.. nextslide:: TDD IRL (a quick aside)
 
-.. nextslide:: Routes as API
-
-In a very real sense, the *routes* defined in an application *are* the public
-API.
+Test Driven Development (TDD) is all the rage these days.
 
 .. rst-class:: build
 .. container::
 
-    Any route that is present represents something the user can do.
+    It means that before you write code, you first write tests demonstrating
+    what you want your code to do.
 
-    Any route that is not present is something the user cannot do.
+    When all your tests pass, you are finished. You did this for your last
+    assignment.
 
-    You can use the proper definition of routes to help conceptualize what your
-    app will do.
+    We'll be doing it again today.
 
-    What routes might we want for a learning journal application?
 
-    What will our application do?
+.. nextslide:: Run the Tests
 
-.. nextslide:: Defining our Routes
-
-Let's add routes for our application.
-
-.. rst-class:: build
-.. container::
-
-    Open ``learning_journal/__init__.py``.
-
-    For our list page, the existing ``'home'`` route will do fine, leave it.
-
-    Add the following two routes:
-
-    .. code-block:: python
-
-        config.add_route('home', '/') # already there
-        config.add_route('detail', '/journal/{id:\d+}')
-        config.add_route('action', '/journal/{action}')
-
-    The ``'detail'`` route will serve a single journal entry, identified by an
-    ``id``.
-
-    The ``action`` route will serve ``create`` and ``edit`` views, depending on
-    the ``action`` specified.
-
-    In both cases, we want to capture a portion of the matched path to use
-    information it provides.
-
-.. nextslide:: Matching an ID
-
-In a pattern, you can capture a ``path segment`` *replacement
-marker*, a valid Python symbol surrounded by curly braces:
+From inside ``resources/session02`` start a second python interpreter and run
+``$ python http_server.py``
 
 .. rst-class:: build
 .. container::
 
-    ::
+    In your first interpreter run the tests. You should see similar output:
 
-        /home/{foo}/
+    .. code-block:: bash
 
-    If you want to match a particular pattern, like digits only, add a
-    *regexp*::
+        $ python tests.py
+        [...]
+        Ran 10 tests in 0.054s
 
-        /journal/{id:\d+}
+        FAILED (failures=3, errors=7)
 
-    Matched path segments are captured in a ``matchdict``::
-
-        # pattern          # actual url   # matchdict
-        /journal/{id:\d+}  /journal/27    {'id': '27'}
-
-    The ``matchdict`` is made available as an attribute of the *request*
+    Let's take a few minutes here to look at these tests and understand them.
 
 
-.. nextslide:: Connecting Routes to Views
+.. nextslide:: Viewing an HTTP Request
 
-In Pyramid, a *route* is connected by configuration to a *view*.
+Our job is to make all those tests pass.
 
 .. rst-class:: build
 .. container::
 
-    In our app, a sample view has been created for us, in ``views.py``:
+    First, though, let's pretend this server really is a functional HTTP
+    server.
 
-    .. code-block:: python
+    This time, instead of using the echo client to make a connection to the
+    server, let's use a web browser!
 
-        @view_config(route_name='home', renderer='templates/mytemplate.pt')
-        def my_view(request):
-            # ...
+    Point your favorite browser at ``http://localhost:10000``
 
-    The order in which *routes* are configured *is important*, so that must be
-    done in ``__init__.py``.
 
-    The order in which views are connected to routes *is not important*, so the
-    *declarative* ``@view_config`` decorator can be used.
+.. nextslide:: A Bad Interaction
 
-    When ``config.scan`` is called, all files in our application are searched
-    for such *declarative configuration* and it is added.
-
-The Pyramid View
-----------------
-
-Let's imagine that a *request* has come to our application for the path
-``'/'``.
+First, look at the printed output from your echo server.
 
 .. rst-class:: build
 .. container::
 
-    The framework made a match of that path to a *route* with the pattern ``'/'``.
+    Second, note that your browser is still waiting to finish loading the page
 
-    Configuration connected that route to a *view* in our application.
+    Moreover, your server should also be hung, waiting for more from the
+    'client'
 
-    Now, the view that was connected will be *called*, which brings us to the
-    nature of *views*
+    This is because the server is waiting for the browser to respond
+
+    And at the same time, the browser is waiting for the server to indicate it
+    is done.
+
+    Our server does not yet speak the HTTP protocol, but the browser is
+    expecting it.
+
+.. nextslide:: Echoing A Request
+
+Kill your server with ``ctrl-c`` (the keyboard interrupt) and you should see
+some printed content in your browser:
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: http
+
+        GET / HTTP/1.1
+        Host: localhost:10000
+        User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:22.0) Gecko/20100101 Firefox/22.0
+        Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+        Accept-Language: en-US,en;q=0.5
+        Accept-Encoding: gzip, deflate
+        DNT: 1
+        Cookie: __utma=111872281.383966302.1364503233.1364503233.1364503233.1; __utmz=111872281.1364503233.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); csrftoken=uiqj579iGRbReBHmJQNTH8PFfAz2qRJS
+        Connection: keep-alive
+        Cache-Control: max-age=0
+
+    Your server is simply echoing what it receives, so this is an *HTTP
+    Request* as sent by your browser.
+
+.. nextslide:: HTTP Debugging
+
+
+When working on HTTP applications, it's nice to be able to see all this going back
+and forth.
+
+.. rst-class:: build
+.. container::
+
+    Good browsers support this with a set of developer tools built-in.
+
+    .. rst-class:: build
+
+    * firefox -> ctrl-shift-K or cmd-opt-K (os X)
+    * safari -> enable in preferences:advanced then cmd-opt-i
+    * chrome -> ctrl-shift-i or cmd-opt-i (os X)
+    * IE (7.0+) -> F12 or tools menu -> developer tools
+
+    The 'Net(work)' pane of these tools can show you both request and response,
+    headers and all. Very useful.
+
+
+.. nextslide:: Stop! Demo Time
+
+.. rst-class:: centered
+
+**Let's take a quick look**
+
+
+.. nextslide:: Other Debugging Options
+
+Sometimes you need or want to debug http requests that are not going through
+your browser.
+
+.. rst-class:: build
+.. container::
+
+    Or perhaps you need functionality that is not supported by in-browser tools
+    (request munging, header mangling, decryption of https request/responses)
+
+    Then it might be time for an HTTP debugging proxy:
+
+    .. rst-class:: build
+
+    * windows: http://www.fiddler2.com/fiddler2/
+    * win/osx/linux: http://www.charlesproxy.com/
+
+    We won't cover any of these tools here today.  But you can check them out
+    when you have the time.
+
+
+Step 1: Basic HTTP Protocol
+---------------------------
+
+In HTTP 1.0, the only required line in an HTTP request is this:
+
+.. code-block:: http
+
+    GET /path/to/index.html HTTP/1.0<CRLF>
+    <CRLF>
+
+.. rst-class:: build
+.. container::
+
+    As virtual hosting grew more common, that was not enough, so HTTP 1.1 adds
+    a single required *header*, **Host**:
+
+    .. code-block:: http
+    
+        GET /path/to/index.html HTTP/1.1<CRLF>
+        Host: www.mysite1.com:80<CRLF>
+        <CRLF>
+
+
+.. nextslide:: HTTP Responses
+
+In both HTTP 1.0 and 1.1, a proper response consists of an intial line,
+followed by optional headers, a single blank line, and then optionally a
+response body:
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: http
+    
+        HTTP/1.1 200 OK<CRLF>
+        Content-Type: text/plain<CRLF>
+        <CRLF>
+        this is a pretty minimal response
+
+    Let's update our server to return such a response.
+
+.. nextslide:: Returning a Canned HTTP Response
+
+Begin by implementing a new function in your ``http_server.py`` script called
+`response_ok`.
+
+.. rst-class:: build
+.. container::
+
+    It can be super-simple for now.  We'll improve it later.
+
+    .. container:: 
+
+        It needs to return our minimal response from above:
+
+        .. code-block:: http
+        
+            HTTP/1.1 200 OK<CRLF>
+            Content-Type: text/plain<CRLF>
+            <CRLF>
+            this is a pretty minimal response
+
+    **Remember, <CRLF> is a placeholder for the** ``\r\n`` **character sequence**
+
+
+.. nextslide:: My Solution
+
+.. code-block:: python
+
+    def response_ok():
+        """returns a basic HTTP response"""
+        resp = []
+        resp.append(b"HTTP/1.1 200 OK")
+        resp.append(b"Content-Type: text/plain")
+        resp.append(b"")
+        resp.append(b"this is a pretty minimal response")
+        return b"\r\n".join(resp)
+
+Did you remember that sockets only accept bytes?
+
+
+.. nextslide:: Run The Tests
+
+We've now implemented a function that is tested by our tests. Let's run them
+again:
+
+.. rst-class:: build
+.. container::
+
+    .. code-block:: bash
+
+        $ python tests.py
+        [...]
+        ----------------------------------------------------------------------
+        Ran 10 tests in 0.002s
+
+        FAILED (failures=3, errors=3)
+
+    Great!  We've now got 4 tests that pass.  Good work.
+
+.. nextslide:: Server Modifications
+
+Next, we need to rebuild the server loop from our echo server for it's new
+purpose:
+
+.. rst-class:: build
+.. container::
+
+    It should now wait for an incoming request to be *finished*, *then* send a
+    response back to the client.
+
+    The response it sends can be the result of calling our new ``response_ok``
+    function for now.
+
+    We could also bump up the ``recv`` buffer size to something more reasonable
+    for HTTP traffic, say 1024.
+
+.. nextslide:: My Solution
+
+.. code-block:: python
+
+    # ...
+    try:
+        while True:
+            print('waiting for a connection', file=log_buffer)
+            conn, addr = sock.accept()  # blocking
+            try:
+                print('connection - {0}:{1}'.format(*addr), file=log_buffer)
+                while True:
+                    data = conn.recv(1024)
+                    if len(data) < 1024:
+                        break
+                print('sending response', file=log_buffer)
+                response = response_ok()
+                conn.sendall(response)
+            finally:
+                conn.close()
+    # ...
+
+
+.. nextslide:: Run The Tests
+
+Once you've got that set, restart your server::
+
+    $ python http_server.py
+
+.. rst-class:: build
+.. container::
+
+    Then you can re-run your tests:
+
+    .. code-block:: bash
+
+        $ python tests.py
+        [...]
+        ----------------------------------------------------------------------
+        Ran 10 tests in 0.003s
+
+        FAILED (failures=2, errors=3)
+
+    Five tests now pass!
+
+Step 2: Handling HTTP Methods
+-----------------------------
+
+Every HTTP request **must** begin with a single line, broken by whitespace into
+three parts:
+
+.. code-block:: http
+
+    GET /path/to/index.html HTTP/1.1
+
+.. rst-class:: build
+.. container::
+
+    The three parts are the *method*, the *URI*, and the *protocol*
+
+    Let's look at each in turn.
+
+
+.. nextslide:: HTTP Methods
+
+**GET** ``/path/to/index.html HTTP/1.1``
+
+.. rst-class:: build
+
+* Every HTTP request must start with a *method*
+* There are four main HTTP methods:
+
+  .. rst-class:: build
+
+  * GET
+  * POST
+  * PUT
+  * DELETE
+
+* There are others, notably HEAD, but you won't see them too much
+
+
+.. nextslide:: HTTP Methods
+
+These four methods are mapped to the four basic steps (*CRUD*) of persistent
+storage:
+
+.. rst-class:: build
+
+* POST = Create
+* GET = Read
+* PUT = Update
+* DELETE = Delete
+
+
+.. nextslide:: Methods: Safe <--> Unsafe
+
+HTTP methods can be categorized as **safe** or **unsafe**, based on whether
+they might change something on the server:
+
+.. rst-class:: build
+.. container::
+
+    .. rst-class:: build
+
+    * Safe HTTP Methods
+    
+      * GET
+    
+    * Unsafe HTTP Methods
+    
+      * POST
+      * PUT
+      * DELETE
+
+    This is a *normative* distinction, which is to say **be careful**
+
+
+.. nextslide:: Methods: Idempotent <--> ???
+
+HTTP methods can be categorized as **idempotent**.
+
+.. rst-class:: build
+.. container::
+
+    This means that a given request will always have the same result:
+
+    .. rst-class:: build
+
+    * Idempotent HTTP Methods
+    
+      * GET
+      * PUT
+      * DELETE
+    
+    * Non-Idempotent HTTP Methods
+    
+      * POST
+
+    Again, *normative*. The developer is responsible for ensuring that it is true.
+
+
+.. nextslide:: HTTP Method Handling
+
+Let's keep things simple, our server will only respond to *GET* requests.
+
+.. rst-class:: build
+.. container::
+
+    We need to create a function that parses a request and determines if we can
+    respond to it: ``parse_request``.
+
+    If the request method is not *GET*, our method should raise an error
+
+    Remember, although a request is more than one line long, all we care about
+    here is the first line
+
+
+.. nextslide:: My Solution
+
+.. code-block:: python
+
+    def parse_request(request):
+        first_line = request.split("\r\n", 1)[0]
+        method, uri, protocol = first_line.split()
+        if method != "GET":
+            raise NotImplementedError("We only accept GET")
+        print('request is okay', file=sys.stderr)
+
+
+.. nextslide:: Update the Server
+
+We'll also need to update the server code. It should
+
+.. rst-class:: build
+
+* save the request as it comes in
+* check the request using our new function
+* send an OK response if things go well
+
+
+.. nextslide:: My Solution
+
+.. code-block:: python
+
+    # ...
+    conn, addr = sock.accept() # blocking
+    try:
+        print('connection - {0}:{1}'.format(*addr), file=log_buffer)
+        request = ""
+        while True:
+            data = conn.recv(1024)
+            request += data.decode('utf8')
+            if len(data) < 1024 or not data:
+                break
+
+        parse_request(request)
+        print('sending response', file=log_buffer)
+        response = response_ok()
+        conn.sendall(response)
+    finally:
+        conn.close()
+    # ...
+
+
+.. nextslide:: Run The Tests
+
+Quit and restart your server now that you've updated the code::
+
+    $ python http_server.py
+
+.. rst-class:: build
+.. container::
+
+    At this point, we should have seven tests passing:
+
+    .. code-block:: bash
+    
+        $ python tests.py
+        Ran 10 tests in 0.002s
+
+        FAILED (failures=1, errors=2)
+
+
+.. nextslide:: What About a Browser?
+
+Quit and restart your server, now that you've updated the code.
+
+.. rst-class:: build
+.. container::
+
+    Reload your browser.  It should work fine.
+
+    We can use the ``simple_client.py`` script in our resources to test our
+    error condition.  In a second terminal window run the script like so::
+
+        $ python simple_client.py "POST / HTTP/1.0\r\n\r\n"
+
+    You'll have to quit the client pretty quickly with ``ctrl-c``
+
+
+Step 3: Error Responses
+-----------------------
+
+Okay, so the outcome there was pretty ugly. The client went off the rails, and
+our server has terminated as well.
+
+.. rst-class:: build
+.. container::
 
     .. rst-class:: centered
 
-    --A Pyramid view is a *callable* that takes *request* as an argument--
+        **why?**
 
-    Remember what a *callable* is?
+    The HTTP protocol allows us to handle errors like this more gracefully.
 
-.. nextslide:: What the View Does
+    .. rst-class:: centered
 
-So, a *view* is a callable that takes the *request* as an argument.
+    **Enter the Response Code**
+
+
+.. nextslide:: HTTP Response Codes
+
+``HTTP/1.1`` **200 OK**
+
+All HTTP responses must include a **response code** indicating the outcome of
+the request.
 
 .. rst-class:: build
 .. container::
 
-    It can then use information from that request to build appropriate data,
-    perhaps using the application's *models*.
+    .. rst-class:: build
 
-    Then, it returns the data it assembled, passing it on to a `renderer`_.
+    * 1xx (HTTP 1.1 only) - Informational message
+    * 2xx - Success of some kind
+    * 3xx - Redirection of some kind
+    * 4xx - Client Error of some kind
+    * 5xx - Server Error of some kind
 
-    Which *renderer* to use is determined, again, by configuration:
-
-    .. code-block:: python
-
-        @view_config(route_name='home', renderer='templates/mytemplate.pt')
-        def my_view(request):
-            # ...
-
-    More about this in a moment.
-
-    The *view* stands at the intersection of *input data*, the application
-    *model* and *renderers* that offer rendering of the results.
-
-    It is the *Controller* in our MVC application.
-
-.. _renderer: http://docs.pylonsproject.org/projects/pyramid/en/1.5-branch/narr/renderers.html
+    The text bit makes the code more human-readable
 
 
-.. nextslide:: Adding Stub Views
+.. nextslide:: Common Response Codes
 
-Add temporary views to our application in ``views.py`` (and comment out the
-sample view):
+There are certain HTTP response codes you are likely to see (and use) most
+often:
+
+.. rst-class:: build
+.. container::
+
+    .. rst-class:: build
+
+    * ``200 OK`` - Everything is good
+    * ``301 Moved Permanently`` - You should update your link
+    * ``304 Not Modified`` - You should load this from cache
+    * ``404 Not Found`` - You've asked for something that doesn't exist
+    * ``500 Internal Server Error`` - Something bad happened
+
+    Do not be afraid to use other, less common codes in building good apps.
+    There are a lot of them for a reason.
+
+    See http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
+
+
+.. nextslide:: Handling our Error
+
+Luckily, there's an error code that is tailor-made for this situation.
+
+.. rst-class:: build
+.. container::
+
+    The client has made a request using a method we do not support
+
+    ``405 Method Not Allowed``
+
+    Let's add a new function that returns this error code. It should be called
+    ``response_method_not_allowed``
+
+    Remember, it must be a complete HTTP Response with the correct *code*
+
+
+.. nextslide:: My Solution
 
 .. code-block:: python
 
-    @view_config(route_name='home', renderer='string')
-    def index_page(request):
-        return 'list page'
+    def response_method_not_allowed():
+        """returns a 405 Method Not Allowed response"""
+        resp = []
+        resp.append("HTTP/1.1 405 Method Not Allowed")
+        resp.append("")
+        return "\r\n".join(resp)
 
-    @view_config(route_name='detail', renderer='string')
-    def view(request):
-        return 'detail page'
 
-    @view_config(route_name='action', match_param='action=create', renderer='string')
-    def create(request):
-        return 'create page'
+.. nextslide:: Server Updates
 
-    @view_config(route_name='action', match_param='action=edit', renderer='string')
-    def update(request):
-        return 'edit page'
+Again, we'll need to update the server to handle this error condition
+correctly.  It should
 
-.. nextslide:: Testing Our Views
+.. rst-class:: build
 
-Now we can verify that our view configuration has worked.
+* catch the exception raised by the ``parse_request`` function
+* create our new error response as a result
+* if no exception is raised, then create the OK response
+* return the generated response to the user
+
+.. nextslide:: My Solution
+
+.. code-block:: python
+
+    # ...
+    while True:
+        data = conn.recv(1024)
+        request += data.decode('utf8')
+        if len(data) < 1024:
+            break
+
+    try:
+        parse_request(request)
+    except NotImplementedError:
+        response = response_method_not_allowed()
+    else:
+        response = response_ok()
+
+    print('sending response', file=log_buffer)
+    conn.sendall(response.encode('utf8'))
+    # ...
+
+
+.. nextslide:: Run The Tests
+
+Start your server (or restart it if by some miracle it's still going).
 
 .. rst-class:: build
 .. container::
 
-    Make sure your virtualenv is properly activated, and start the web server:
+    Then run the tests again::
 
-    .. code-block:: bash
+        $ python tests.py
+        [...]
+        Ran 10 tests in 0.002s
 
-        (ljenv)$ pserve development.ini
-        Starting server in PID 84467.
-        serving on http://0.0.0.0:6543
+        OK
 
-    Then try viewing some of the expected application urls:
+    Wahoo! All our tests are passing. That means we are done writing code for
+    now.
 
-    .. rst-class:: build
 
-    * http://localhost:6543/
-    * http://localhost:6543/journal/1
-    * http://localhost:6543/journal/create
-    * http://localhost:6543/journal/edit
+Step 4: Serving Resources
+-------------------------
 
-    What happens if you visit a URL that *isn't* in our configuration?
-
-.. nextslide:: Interacting With the Model
-
-Now that we've got temporary views that work, we can fix them to get
-information from our database
+We've got a very simple server that accepts a request and sends a response.
+But what happens if we make a different request?
 
 .. rst-class:: build
 .. container::
 
-    We'll begin with the list view.
+    .. container::
+    
+        In your web browser, enter the following URL::
 
-    We need some code that will fetch all the journal entries we've written, in
-    reverse order, and hand that collection back for rendering.
+            http://localhost:10000/page
 
-    .. code-block:: python
-
-        from .models import (
-            DBSession,
-            MyModel,
-            Entry, # <- Add this import
-        )
-
-        # and update this view function
-        def index_page(request):
-            entries = Entry.all()
-            return {'entries': entries}
-
-.. nextslide:: Using the ``matchdict``
-
-Next, we want to write the view for a single entry.
-
-.. rst-class:: build
-.. container::
-
-    We'll need to use the ``id`` value our route captures into the
-    ``matchdict``.
-
-    Remember that the ``matchdict`` is an attribute of the request.
-
-    We'll get the ``id`` from there, and use it to get the correct entry.
-
-    .. code-block:: python
-
-        # add this import at the top
-        from pyramid.httpexceptions import HTTPNotFound
-
-        # and update this view function:
-        def view(request):
-            this_id = request.matchdict.get('id', -1)
-            entry = Entry.by_id(this_id)
-            if not entry:
-                return HTTPNotFound()
-            return {'entry': entry}
-
-.. nextslide:: Testing Our Views
-
-We can now verify that these views work correctly.
-
-.. rst-class:: build
-.. container::
-
-    Make sure your virtualenv is properly activated, and start the web server:
-
-    .. code-block:: bash
-
-        (ljenv)$ pserve development.ini
-        Starting server in PID 84467.
-        serving on http://0.0.0.0:6543
-
-    Then try viewing the list page and an entry page:
-
-    * http://localhost:6543
-    * http://localhost:6543/journal/1
-
-    What happens when you request an entry with an id that isn't in the
-    database?
-
-    * http://localhost:6543/journal/100
-
-The MVC View
-============
-
-.. rst-class:: left
-.. container::
-
-    Again, back to the *Model-View-Controller* pattern.
-
-    .. figure:: http://upload.wikimedia.org/wikipedia/commons/4/40/MVC_passive_view.png
-        :align: center
-        :width: 25%
-
-        By Alan Evangelista (Own work) [CC0], via Wikimedia Commons
-
-    .. rst-class:: build
     .. container::
 
-        We've built a *model* and we've created some *controllers* that use it.
+        What happened? What happens if you use this URL::
 
-        In Pyramid, we call *controllers* **views** and they are callables that
-        take *request* as an argument.
+            http://localhost:10000/section/page?
 
-        Let's turn to the last piece of the *MVC* patter, the *view*
 
-Presenting Data
----------------
+.. nextslide:: Determining a Resource
 
-The job of the *view* in the *MVC* pattern is to present data in a format that
-is readable to the user of the system.
+We expect different urls to result in different responses.
 
 .. rst-class:: build
 .. container::
 
-    There are many ways to present data.
+    Each separate *path* provided should map to a *resource*
 
-    Some are readable by humans (tables, charts, graphs, HTML pages, text
-    files).
+    But this isn't happening with our server, for obvious reasons.
 
-    Some are more for machines (xml files, csv, json).
+    It brings us back to the second element of that first line of an HTTP
+    request.
 
-    Which of these formats is the *right one* depends on your purpose.
+    .. rst-class:: centered
 
-    What is the purpose of our learning journal?
+    **The Return of the URI**
 
-Pyramid Renderers
------------------
 
-In Pyramid, the job of presenting data is performed by a *renderer*.
+.. nextslide:: HTTP Requests: URI
+
+``GET`` **/path/to/index.html** ``HTTP/1.1``
+
+.. rst-class:: build
+
+* Every HTTP request must include a **URI** used to determine the **resource** to
+  be returned
+
+* URI??
+  http://stackoverflow.com/questions/176264/whats-the-difference-between-a-uri-and-a-url/1984225#1984225
+
+* Resource?  Files (html, img, .js, .css), but also:
+
+  .. rst-class:: build
+
+  * Dynamic scripts
+  * Raw data
+  * API endpoints
+
+.. nextslide:: Parsing a Request
+
+Our ``parse_request`` method actually already finds the ``uri`` in the first
+line of a request
 
 .. rst-class:: build
 .. container::
 
-    So we can consider the Pyramid **renderer** to be the *view* in our *MVC*
-    app.
+    All we need to do is update the method so that it *returns* that uri
 
-    We've already seen how we can connect a *renderer* to a Pyramid *view* with
-    configuration.
+    Then we can use it.
 
-    In fact, we have already done so, using a built-in renderer called
-    ``'string'``.
-
-    This renderer converts the return value of its *view* to a string and sends
-    that back to the client as an HTTP response.
-
-    But the result isn't so nice looking.
-
-.. nextslide:: Template Renderers
-
-The `built-in renderers` (``'string'``, ``'json'``, ``'jsonp'``) in Pyramid are
-not the only ones available.
-
-.. _built-in renderers: http://docs.pylonsproject.org/projects/pyramid/en/1.5-branch/narr/renderers.html#built-in-renderers
-
-.. rst-class:: build
-.. container::
-
-    There are add-ons to Pyramid that support using various *template
-    languages* as renderers.
-
-    In fact, one of these was installed by default when you created this
-    project.
-
-.. nextslide:: Configuring a Template Renderer
+.. nextslide:: My Solution
 
 .. code-block:: python
 
-    # in setup.py
-    requires = [
-        # ...
-        'pyramid_chameleon',
-        # ...
-    ]
+    def parse_request(request):
+        first_line = request.split("\r\n", 1)[0]
+        method, uri, protocol = first_line.split()
+        if method != "GET":
+            raise NotImplementedError("We only accept GET")
+        print >>sys.stderr, 'request is okay'
+        # add the following line:
+        return uri
 
-    # in learning_journal/__init__.py
-    def main(global_config, **settings):
-        # ...
-        config.include('pyramid_chameleon')
+.. nextslide:: Pass It Along
 
-.. rst-class:: build
-.. container::
-
-    The `pyramid_chameleon` package supports using the `chameleon` template
-    language.
-
-    The language is quite nice and powerful, but not so easy to learn.
-
-    Let's use a different one, *jinja2*
-
-.. nextslide:: Changing Template Renderers
-
-Change ``pyramid_chameleon`` to ``pyramid_jinja2`` in both of these files:
-
-.. code-block:: python
-
-    # in setup.py
-    requires = [
-        # ...
-        'pyramid_jinja2',
-        # ...
-    ]
-
-    # in learning_journal/__init__.py
-    def main(global_config, **settings):
-        # ...
-        config.include('pyramid_jinja2')
-
-.. nextslide:: Picking up the Changes
-
-We've changed the dependencies for our Pyramid project.
+Now we can update our server code so that it uses the return value of
+``parse_request``.
 
 .. rst-class:: build
 .. container::
 
-    As a result, we will need to re-install it so the new dependencies are also
-    installed:
+    That's a pretty simple change:
 
-    .. code-block:: bash
+    .. code-block:: python
+    
+        try:
+            uri = parse_request(request)  # update this line
+        except NotImplementedError:
+            response = response_method_not_allowed()
+        else:
+            # and modify this block
+            try:
+                content, mime_type = resolve_uri(url)
+            except NameError:
+                response = response_not_found()
+            else:
+                response = response_ok(content, mime_type)
 
-        (ljenv)$ python setup.py develop
-        ...
-        Finished processing dependencies for learning-journal==0.0
-        (ljenv)$
+Homework
+--------
 
-    Now, we can use *Jinja2* templates in our project.
-
-    Let's learn a bit about how `Jinja2 templates`_ work.
-
-.. _Jinja2 templates: http://jinja.pocoo.org/docs/templates/
-
-Jinja2 Template Basics
-----------------------
-
-We'll start with the absolute basics.
+You may have noticed that we just added calls to functions that don't yet exist
 
 .. rst-class:: build
 .. container::
 
-    Fire up a Python interpreter, using your `ljenv` virtualenv:
+    It's a program that shows you what you want to do, but won't actually run.
 
-    .. code-block:: bash
+    For your homework this week you will create these functions, completing the
+    HTTP server.
 
-        (ljenv)$ python
-        >>>
+    Your starting point will be what we've made here in class.
 
-    Then import the ``Template`` class from the ``jinja2`` package:
+    I've added a directory to ``resources/session02`` called ``homework``.
+
+    In it, you'll find this ``http_server.py`` file we've just written in class.
+
+    That file also contains enough stub code for the missing functions to let
+    the server run.
+
+    And there are more tests for you to make pass!
+
+One Step At A Time
+------------------
+
+Take the following steps one at a time. Run the tests in
+``assignments/session02/homework`` between to ensure that you are getting it
+right.
+
+.. rst-class:: build
+
+* Complete the stub ``resolve_uri`` function so that it handles looking up
+  resources on disk using the URI returned by ``parse_request``.
+
+* Make sure that if the URI does not map to a file that exists, it raises an
+  appropriate error for our server to handle.
+
+* Complete the ``response_not_found`` function stub so that it returns a 404
+  response.
+
+* Update ``response_ok`` so that it uses the values returned by ``resolve_uri``
+  by the URI. (these have already been added to the function signature)
+
+* You'll plug those values into the response you generate in the way required
+  by the protocol
+
+
+HTTP Headers
+------------
+
+Along the way, you'll discover that simply returning the content of a file as
+an HTTP response body is insufficient. Different *types* of content need to
+be identified to your browser
+
+.. rst-class:: build
+.. container::
+
+    We can fix this by passing information about exactly what we are returning
+    as part of the response.
+
+    HTTP provides for this type of thing with the generic idea of *Headers*
+
+
+HTTP Headers
+------------
+
+Both requests and responses can contain **headers** of the form ``Name: Value``
+
+.. rst-class:: build
+.. container::
+
+    .. rst-class:: build
+
+    * HTTP 1.0 has 16 valid headers, 1.1 has 46
+    * Any number of spaces or tabs may separate the *name* from the *value*
+    * If a header line starts with spaces or tabs, it is considered part of the
+      value for the previous header
+    * Header *names* are **not** case-sensitive, but *values* may be
+
+    read more about HTTP headers: http://www.cs.tut.fi/~jkorpela/http.html
+
+
+Content-Type Header
+-------------------
+
+A very common header used in HTTP responses is ``Content-Type``. It tells the
+client what to expect.
+
+.. rst-class:: build
+.. container::
+
+    .. rst-class:: build
+
+    * uses **mime-type** (Multi-purpose Internet Mail Extensions)
+    * foo.jpeg - ``Content-Type: image/jpeg``
+    * foo.png - ``Content-Type: image/png``
+    * bar.txt - ``Content-Type: text/plain``
+    * baz.html - ``Content-Type: text/html``
+
+    There are *many* mime-type identifiers:
+    http://www.webmaster-toolkit.com/mime-types.shtml
+
+
+Mapping Mime-types
+------------------
+
+By mapping a given file to a mime-type, we can write a header.
+
+.. rst-class:: build
+.. container::
+
+    The standard lib module ``mimetypes`` does just this.
+
+    We can guess the mime-type of a file based on the filename or map a file
+    extension to a type:
 
     .. code-block:: pycon
 
-        >>> from jinja2 import Template
+        >>> import mimetypes
+        >>> mimetypes.guess_type('file.txt')
+        ('text/plain', None)
+        >>> mimetypes.types_map['.txt']
+        'text/plain'
 
-.. nextslide:: Templates are Strings
 
-A template is constructed with a simple string:
+Resolving a URI
+---------------
 
-.. code-block:: python
+Your ``resolve_uri`` function will need to accomplish the following tasks:
 
-    >>> t1 = Template("Hello {{ name }}, how are you?")
+.. rst-class:: build
+
+* It should take a URI as the sole argument
+
+* It should map the pathname represented by the URI to a filesystem location.
+
+* It should have a 'home directory', and look only in that location.
+
+* If the URI is a directory, it should return a plain-text listing of the
+  directory contents and the mimetype ``text/plain``.
+
+* If the URI is a file, it should return the contents of that file and its
+  correct mimetype.
+
+* If the URI does not map to a real location, it should raise an exception
+  that the server can catch to return a 404 response.
+
+
+Use Your Tests
+--------------
+
+One of the benefits of test-driven development is that the tests that are
+failing should tell you what code you need to write.
 
 .. rst-class:: build
 .. container::
 
-    Here, we've simply typed the string directly, but it is more common to
-    build a template from the contents of a *file*.
+    As you work your way through the steps outlined above, look at your tests.
+    Write code that makes them pass.
 
-    Notice that our string has some odd stuff in it: ``{{ name }}``.
+    If all the tests in ``assignments/session02/tests.py`` are passing, you've
+    completed the assignment.
 
-    This is called a placeholder and when the template is *rendered* it is
-    replaced.
 
-.. nextslide:: Rendering a Template
+Submitting Your Homework
+------------------------
 
-Call the ``render`` method, providing *context*:
-
-.. code-block:: python
-
-    >>> t1.render(name="Freddy")
-    u'Hello Freddy, how are you?'
-    >>> t1.render({'name': "Roberto"})
-    u'Hello Roberto, how are you?'
-    >>>
+To submit your homework:
 
 .. rst-class:: build
 .. container::
-
-    *Context* can either be keyword arguments, or a dictionary
-
-    Note the resemblance to something you've seen before:
-
-    .. code-block:: python
-    
-        >>> "This is {owner}'s string".format(owner="Cris")
-        'This is Cris's string'
-
-
-.. nextslide:: Dictionaries in Context
-
-Dictionaries passed in as part of the *context* can be addressed with *either*
-subscript or dotted notation:
-
-.. code-block:: python
-
-    >>> person = {'first_name': 'Frank',
-    ...           'last_name': 'Herbert'}
-    >>> t2 = Template("{{ person.last_name }}, {{ person['first_name'] }}")
-    >>> t2.render(person=person)
-    u'Herbert, Frank'
-
-.. rst-class:: build
-
-* Jinja2 will try the *correct* way first (attr for dotted, item for
-  subscript).
-* If nothing is found, it will try the opposite.
-* If nothing is found, it will return an *undefined* object.
-
-
-.. nextslide:: Objects in Context
-
-The exact same is true of objects passed in as part of *context*:
-
-.. rst-class:: build
-.. container::
-
-    .. code-block:: python
-
-        >>> t3 = Template("{{ obj.x }} + {{ obj['y'] }} = Fun!")
-        >>> class Game(object):
-        ...   x = 'babies'
-        ...   y = 'bubbles'
-        ...
-        >>> bathtime = Game()
-        >>> t3.render(obj=bathtime)
-        u'babies + bubbles = Fun!'
-
-    This means your templates can be a bit agnostic as to the nature of the
-    things in *context*
-
-.. nextslide:: Filtering values in Templates
-
-You can apply `filters`_ to the data passed in *context* with the pipe ('|')
-operator:
-
-.. _filters: http://jinja.pocoo.org/docs/dev/templates/#filters
-
-.. code-block:: python
-
-    t4 = Template("shouted: {{ phrase|upper }}")
-    >>> t4.render(phrase="this is very important")
-    u'shouted: THIS IS VERY IMPORTANT'
-
-.. rst-class:: build
-.. container::
-
-    You can also chain filters together:
-
-    .. code-block:: python
-
-        t5 = Template("confusing: {{ phrase|upper|reverse }}")
-        >>> t5.render(phrase="howdy doody")
-        u'confusing: YDOOD YDWOH'
-
-.. nextslide:: Control Flow
-
-Logical `control structures`_ are also available:
-
-.. _control structures: http://jinja.pocoo.org/docs/dev/templates/#list-of-control-structures
-
-.. rst-class:: build
-.. container::
-
-    .. code-block:: python
-
-        tmpl = """
-        ... {% for item in list %}{{ item }}, {% endfor %}
-        ... """
-        >>> t6 = Template(tmpl)
-        >>> t6.render(list=[1,2,3,4,5,6])
-        u'\n1, 2, 3, 4, 5, 6, '
-
-    Any control structure introduced in a template **must** be paired with an
-    explicit closing tag ({% for %}...{% endfor %})
-
-    Remember, although template tags like ``{% for %}`` or ``{% if %}`` look a
-    lot like Python, they are not.
-
-    The syntax is specific and must be followed correctly.
-
-.. nextslide:: Template Tests
-
-There are a number of specialized *tests* available for use with the
-``if...elif...else`` control structure:
-
-.. code-block:: python
-
-    >>> tmpl = """
-    ... {% if phrase is upper %}
-    ...   {{ phrase|lower }}
-    ... {% elif phrase is lower %}
-    ...   {{ phrase|upper }}
-    ... {% else %}{{ phrase }}{% endif %}"""
-    >>> t7 = Template(tmpl)
-    >>> t7.render(phrase="FOO")
-    u'\n\n  foo\n'
-    >>> t7.render(phrase="bar")
-    u'\n\n  BAR\n'
-    >>> t7.render(phrase="This should print as-is")
-    u'\nThis should print as-is'
-
-
-.. nextslide:: Basic Expressions
-
-Basic `Python-like expressions`_ are also supported:
-
-.. _Python-like expressions: http://jinja.pocoo.org/docs/dev/templates/#expressions
-
-.. code-block:: python
-
-    tmpl = """
-    ... {% set sum = 0 %}
-    ... {% for val in values %}
-    ... {{ val }}: {{ sum + val }}
-    ...   {% set sum = sum + val %}
-    ... {% endfor %}
-    ... """
-    >>> t8 = Template(tmpl)
-    >>> t8.render(values=range(1,11))
-    u'\n\n\n1: 1\n  \n\n2: 3\n  \n\n3: 6\n  \n\n4: 10\n
-      \n\n5: 15\n  \n\n6: 21\n  \n\n7: 28\n  \n\n8: 36\n
-      \n\n9: 45\n  \n\n10: 55\n  \n'
-
-
-Our Templates
--------------
-
-There's more that Jinja2 templates can do, but it will be easier to introduce
-you to that in the context of a working template.  So let's make some.
-
-.. nextslide:: Detail Template
-
-We have a Pyramid view that returns a single entry. Let's create a template to
-show it.
-
-.. rst-class:: build
-.. container::
-
-    In ``learning_journal/templates`` create a new file ``detail.jinja2``:
-
-    .. code-block:: jinja
-    
-        <article>
-          <h1>{{ entry.title }}</h1>
-          <hr/>
-          <p>{{ entry.body }}</p>
-          <hr/>
-          <p>Created <strong title="{{ entry.created }}">{{entry.created}}</strong></p>
-        </article>
-
-    Then wire it up to the detail view in ``views.py``:
-
-    .. code-block:: python
-    
-        # views.py
-        @view_config(route_name='detail', renderer='templates/detail.jinja2')
-        def view(request):
-            # ...
-
-.. nextslide:: Try It Out
-
-Now we should be able to see some rendered HTML for our journal entry details.
-
-.. rst-class:: build
-.. container::
-
-    Start up your server:
-
-    .. code-block:: bash
-
-        (ljenv)$ pserve development.ini
-        Starting server in PID 90536.
-        serving on http://0.0.0.0:6543
-
-    Then try viewing an individual journal entry
-
-    * http://localhost:6543/journal/1
-
-.. nextslide:: Listing Page
-
-The index page of our journal should show a list of journal entries, let's do
-that next.
-
-.. rst-class:: build
-.. container::
-
-    In ``learning_journal/templates`` create a new file ``list.jinja2``:
-
-    .. code-block:: jinja
-
-        {% if entries %}
-        <h2>Journal Entries</h2>
-        <ul>
-          {% for entry in entries %}
-            <li>
-            <a href="{{ request.route_url('detail', id=entry.id) }}">{{ entry.title }}</a>
-            </li>
-          {% endfor %}
-        </ul>
-        {% else %}
-        <p>This journal is empty</p>
-        {% endif %}
-
-.. nextslide::
-
-It's worth taking a look at a few specifics of this template.
-
-.. rst-class:: build
-.. container::
-
-    .. code-block:: jinja
-    
-        <a href="{{ request.route_url('detail', id=entry.id) }}">{{ entry.title }}</a>
-
-    Jinja2 templates are rendered with a *context*.
-
-    The return values of the Pyramid *view* for a template get included in that
-    context.
-
-    So does *request*, which is placed there by the framework.
-
-    Request has a method ``route_url`` that will create a URL for a named
-    route.
-
-    This allows you to include URLs in your template without needing to know
-    exactly what they will be.
-
-    This process is called *reversing*, since it's a bit like a reverse phone
-    book lookup.
-
-.. nextslide::
-
-Finally, you'll need to connect this new renderer to your listing view:
-
-.. code-block:: python
-
-    @view_config(route_name='home', renderer='templates/list.jinja2')
-    def index_page(request):
-        # ...
-
-.. nextslide:: Try It Out
-
-We can now see our list page too.  Let's try starting the server:
-
-.. rst-class:: build
-.. container::
-
-    .. code-block:: bash
-
-        (ljenv)$ pserve development.ini
-        Starting server in PID 90536.
-        serving on http://0.0.0.0:6543
-
-    Then try viewing the home page of your journal:
-
-    * http://localhost:6543/
-
-    Click on the link to an entry, it should work.
-
-.. nextslide:: Sharing Structure
-
-These views are reasonable, if quite plain.
-
-.. rst-class:: build
-.. container::
-
-    It'd be nice to put them into something that looks a bit more like a
-    website.
-
-    Jinja2 allows you to combine templates using something called
-    `template inheritance`_.
-
-    You can create a basic page structure, and then *inherit* that structure in
-    other templates.
-
-    In our class resources I've added a page template ``layout.jinja2``.  Copy
-    that page to your templates directory
-
-.. _template inheritance: http://jinja.pocoo.org/docs/dev/templates/#template-inheritance
-
-.. nextslide:: ``layout.jinja2``
-
-.. code-block:: jinja
-
-    <!DOCTYPE html>
-    <html lang="en">
-      <head>
-        <meta charset="utf-8">
-        <title>Python Learning Journal</title>
-        <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-      </head>
-      <body>
-        <header>
-          <nav><ul><li><a href="{{ request.route_url('home') }}">Home</a></li></ul></nav>
-        </header>
-        <main>
-          <h1>My Python Journal</h1>
-          <section id="content">{% block body %}{% endblock %}</section>
-        </main>
-        <footer><p>Created in the UW PCE Python Certificate Program</p></footer>
-      </body>
-    </html>
-
-.. nextslide:: Template Blocks
-
-The important part here is the ``{% block body %}{% endblock %}`` expression.
-
-.. rst-class:: build
-.. container::
-
-    This is a template **block** and it is a kind of placeholder.
-
-    Other templates can inherit from this one, and fill that block with
-    additional HTML.
-
-    Let's update our detail and list templates:
-
-    .. code-block:: jinja
-    
-        {% extends "layout.jinja2" %}
-        {% block body %}
-        <!-- everything else that was already there goes here -->
-        {% endblock %}
-
-.. nextslide:: Try It Out
-
-Let's try starting the server so we can see the result:
-
-.. rst-class:: build
-.. container::
-
-    .. code-block:: bash
-
-        (ljenv)$ pserve development.ini
-        Starting server in PID 90536.
-        serving on http://0.0.0.0:6543
-
-    Then try viewing the home page of your journal:
-
-    * http://localhost:6543/
-
-    Click on the link to an entry, it should work.
-
-    And now you have shared page structure that is in both.
-
-Static Assets
--------------
-
-Although we have a shared structure, it isn't particularly nice to look at.
-
-.. rst-class:: build
-.. container::
-
-    Aspects of how a website looks are controlled by CSS (*Cascading Style
-    Sheets*).
-
-    Stylesheets are one of what we generally speak of as *static assets*.
-
-    Other static assets include *images* that are part of the look and feel of
-    the site (logos, button images, etc) and the *JavaScript* files that add
-    client-side dynamic behavior to the site.
-
-.. nextslide:: Static Assets in Pyramid
-
-Serving static assets in Pyramid requires a *static view* to configuration.
-Luckily, ``pcreate`` already handled that for us:
-
-.. rst-class:: build
-.. container::
-
-    .. code-block:: python
-    
-        # in learning_journal/__init__.py
-        def main(global_config, **settings):
-            # ...
-            config.add_static_view('static', 'static', cache_max_age=3600)
-            # ...
-
-    The first argument to ``add_static_view`` is a *name* that will need to
-    appear in the path of URLs requesting assets.
-
-    The second argument is a *path* that is relative to the package being
-    configured.
-
-    Assets referenced by the *name* in a URL will be searched for in the
-    location defined by the *path*
-
-    Additional keyword arguments control other aspects of how the view works.
-
-.. nextslide:: Static Assets in Templates
-
-Once you have a static view configured, you can use assets in that location in
-templates.
-
-.. rst-class:: build
-.. container::
-
-    The *request* object in Pyramid provides a ``static_url`` method that
-    builds appropriate URLs
-
-    Add the following to our ``layout.jinja2`` template:
-
-    .. code-block:: jinja
-    
-        <head>
-          <!-- ... -->
-          <link href="{{ request.static_url('learning_journal:static/styles.css') }}" rel="stylesheet">
-        </head>
-
-    The one required argument to ``request.static_url`` is a *path* to an
-    asset.
-
-    Note that because any package *might* define a static view, we have to
-    specify which package we want to look in.
-
-    That's why we have ``learning_journal:static/styles.css`` in our call.
-
-.. nextslide:: Basic Styles
-
-I've created some very very basic styles for our learning journal.
-
-.. rst-class:: build
-.. container::
-
-    You can find them in ``resources/session02/styles.css``.  Go ahead and copy
-    that file.
-
-    Add it to ``learning_journal/static``.
-
-    Then restart your web server and see what a difference a little style
-    makes:
-
-    .. code-block:: bash
-
-        (ljenv)$ pserve development.ini
-        Starting server in PID 90536.
-        serving on http://0.0.0.0:6543
-
-.. nextslide:: The Outcome
-
-Your site should look something like this:
-
-.. figure:: /_static/learning_journal_styled.png
-    :align: center
-    :width: 75%
-
-    The learning journal with basic styles applied
-
-Getting Interactive
-===================
-
-.. rst-class:: left
-.. container::
-
-    We have a site that allows us to view a list of journal entries.
 
     .. rst-class:: build
-    .. container::
 
-        We can also view the details of a single entry.
+    * Do your work in the ``assignments/session02`` directory of **your fork** of
+      the class respository
 
-        But as yet, we don't really have any *interaction* in our site yet.
+    * When you have all tests passing, push your work to **your fork** in github.
 
-        We can't create new entries.
+    * Using the github web interface, send me a pull request.
 
-        Let's add that functionality next.
+    I will review your work when I receive your pull requests, make comments on
+    it there, and then close the pull request.
 
-User Input
-----------
 
-In HTML websites, the traditional way of getting input from users is via
-`HTML forms`_.
-
-.. rst-class:: build
-.. container::
-
-    Forms use *input elements* to allow users to enter data, pick from
-    drop-down lists, or choose items via checkbox or radio button.
-
-    It is possible to create plain HTML forms in templates and use them with
-    Pyramid.
-
-    It's a lot easier, however, to work with a *form library* to create forms,
-    render them in templates and interact with data sent by a client.
-
-    We'll be using a form library called `WTForms`_ in our project
-
-.. _HTML forms: https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Forms
-.. _WTForms: http://wtforms.readthedocs.org/en/latest/
-
-.. nextslide:: Installing WTForms
-
-The first step to working with this library is to install it.
-
-.. rst-class:: build
-.. container::
-
-    Start by makin the library as a *dependency* of our package by adding it to
-    the *requires* list in ``setup.py``:
-
-    .. code-block:: python
-
-        requires = [
-            # ...
-            'wtforms', # <- add this to the list
-        ]
-
-    Then, re-install our package to download and install the new dependency:
-
-    .. code-block:: bash
-
-        (ljenv)$ python setup.py develop
-        ...
-        Finished processing dependencies for learning-journal==0.0
-
-Using WTForms
--------------
-
-We'll want a form to allow a user to create a new Journal Entry.
-
-.. rst-class:: build
-.. container::
-
-    Add a new file called ``forms.py`` in our learning_journal package, next to
-    ``models.py``:
-
-    .. code-block:: python
-    
-        from wtforms import Form, TextField, TextAreaField, validators
-
-        strip_filter = lambda x: x.strip() if x else None
-
-        class EntryCreateForm(Form):
-            title = TextField(
-                'Entry title',
-                [validators.Length(min=1, max=255)],
-                filters=[strip_filter])
-            body = TextAreaField(
-                'Entry body',
-                [validators.Length(min=1)],
-                filters=[strip_filter])
-
-.. nextslide:: Using a Form in a View
-
-Next, we need to add a new view that uses this form to create a new entry.
-
-.. rst-class:: build
-.. container::
-
-    Add this to ``views.py``:
-
-    .. code-block:: python
-
-        # add these imports
-        from pyramid.httpexceptions import HTTPFound
-        from .forms import EntryCreateForm
-
-        # and update this view function
-        def create(request):
-            entry = Entry()
-            form = EntryCreateForm(request.POST)
-            if request.method == 'POST' and form.validate():
-                form.populate_obj(entry)
-                DBSession.add(entry)
-                return HTTPFound(location=request.route_url('home'))
-            return {'form': form, 'action': request.matchdict.get('action')}
-
-.. nextslide:: Testing the Route/View Connection
-
-We already have a route that connects here.  Let's test it.
-
-.. rst-class:: build
-.. container::
-
-    Start your server:
-
-    .. code-block:: bash
-
-        (ljenv)$ pserve development.ini
-        Starting server in PID 90536.
-        serving on http://0.0.0.0:6543
-
-    And then try connecting to the ``action`` route:
-
-    * http://localhost:6543/journal/create
-    
-    You should see something like this::
-
-        {'action': u'create', 'form': <learning_journal.forms.EntryCreateForm object at 0x10e7d6b90>}
-
-.. nextslide:: Rendering A Form
-
-Finally, we need to create a template that will render our form.
-
-.. rst-class:: build
-.. container::
-
-    Add a new template called ``edit.jinja2`` in
-    ``learning_journal/templates``:
-
-    .. code-block:: jinja
-
-        {% extends "templates/layout.jinja2" %}
-        {% block body %}
-        <form action="." method="POST">
-        {% for field in form %}
-          {% if field.errors %}
-            <ul>
-            {% for error in field.errors %}
-                <li>{{ error }}</li>
-            {% endfor %}
-            </ul>
-          {% endif %}
-            <p>{{ field.label }}: {{ field }}</p>
-        {% endfor %}
-            <p><input type="submit" name="submit" value="Submit" /></p>
-        </form>
-        {% endblock %}
-
-.. nextslide:: Connecting the Renderer
-
-You'll need to update the view configuration to use this new renderer.
-
-.. rst-class:: build
-.. container::
-
-    Update the configuration in ``learning_journal/views.py``:
-
-    .. code-block:: python
-    
-        @view_config(route_name='action', match_param='action=create',
-                     renderer='templates/edit.jinja2')
-        def create(request):
-            # ...
-
-    And then you should be able to start your server and test:
-
-    .. code-block:: bash
-
-        (ljenv)$ pserve development.ini
-        Starting server in PID 90536.
-        serving on http://0.0.0.0:6543
-
-    * http://localhost:6543/create
-
-.. nextslide:: Providing Access
-
-Great!  Now you can add new entries to your journal.
-
-.. rst-class:: build
-.. container::
-
-    But in order to do so, you have to hand-enter the url.
-
-    You should add a new link in the UI somewhere that helps you get there more
-    easily.
-
-    Add the following to ``list.jinja2``:
-
-    .. code-block:: jinja
-
-        {% extends "layout.jinja2" %}
-        {% block body %}
-        {% if entries %}
-        ...
-        {% else %}
-        ...
-        {% endif %}
-        <!-- Add This Link -->
-        <p><a href="{{ request.route_url('action', action='create') }}">New Entry</a></p>
-        {% endblock %}
-
-Homework
-========
-
-.. rst-class:: left
-.. container::
-
-    You have a website now that allows you to create, view and list journal
-    entries
-
-    .. rst-class:: build
-    .. container::
-
-        However, there are still a few flaws in this system.
-
-        You should be able to edit a journal entry that already exists, in case
-        you make a spelling error.
-
-        It would also be nice to see a prettier site.
-
-        Let's handle that for homework this week.
-
-Part 1: Add Editing
+A Few Steps Further
 -------------------
 
-For part one of your assignment, add editing of existing entries. You will need:
+If you are able to finish the above in less than 4-6 hours, consider taking on
+one or more of the following challenges:
 
-* A form that shows an existing entry (what is different about this form from
-  one for creating a new entry?)
-* A pyramid view that handles that form. It should:
+.. rst-class:: build
 
-  * Show the form with the requested entry when the page is first loaded
-  * Accept edits only on POST
-  * Update an existing entry with new data from the form
-  * Show the view of the entry after editing so that the user can see the edits
-    saved correctly
-  * Show errors from form validation, if any are present
-
-* A link somewhere that leads to the editing page for a single entry (probably
-  on the view page for a entry)
-
-You'll need to update a bit of configuration, but not much.  Use the create
-form we did here in class as an example.
-
-Part 2: Make it Yours
----------------------
-
-I've created for you a very bare-bones layout and stylesheet.
-
-You will certainly want to add a bit of your own style and panache.
-
-Spend a few hours this week playing with the styles and getting a site that
-looks more like you want it to look.
-
-The Mozilla Developer Network has `some excellent resources`_ for learning CSS.
-
-In particular, the `Getting Started with CSS`_ tutorial is a thorough
-introduction to the basics.
-
-You might also look at their `CSS 3 Demos`_ to help fire up your creative
-juices.
-
-Here are a few more resources:
-
-* `A List Apart <http://alistapart.com>`_ offers outstanding articles.  Their
-  `Topics list <http://alistapart.com/topics>`_ is worth a browse.
-* `Smashing Magazine <http://www.smashingmagazine.com>`_ is another excellent
-  resource for articles on design.
-
-.. _some excellent resources: https://developer.mozilla.org/en-US/docs/Web/CSS
-.. _Getting Started with CSS: https://developer.mozilla.org/en-US/docs/CSS/Getting_Started
-.. _CSS 3 Demos: https://developer.mozilla.org/en-US/demos/tag/tech:css3
-
-
-Part 3: User Model
-------------------
-
-As it stands, our journal accepts entries from anyone who comes by.
-
-Next week we will add security to allow only logged-in users to create and edit
-entries.
-
-To do so, we'll need a user model
-
-The model should have:
-
-* An ``id`` field that is a primary key
-* A ``username`` field that is unicode, no more than 255 characters, not
-  nullable, unique and indexed.
-* A ``password`` field that is unicode and not nullable
-
-In addition, the model should have a classmethod that retrieves a specific user
-when given a username.
-
-Part 4: Preparation for Deployment
-----------------------------------
-
-At the end of class next week we will be deploying our application to Heroku.
-
-You will need to get a free account.
-
-Once you have your free account set up and you have logged in, run through the
-`getting started with Python`_ tutorial.
-
-Be sure to at least complete the *set up* step. It will have you install the
-Heroku Toolbelt, which you will need to have ready in class.
-
-.. _getting started with Python: https://devcenter.heroku.com/articles/getting-started-with-python#introduction
-
+* Format directory listings as HTML, so you can link to files.
+* Add a GMT ``Date:`` header in the proper format (RFC-1123) to responses.
+  *hint: see email.utils.formatdate in the python standard library*
+* Add a ``Content-Length:`` header for ``OK`` responses that provides a
+  correct value.
+* Protect your server against errors by providing, and using, a function that
+  returns a ``500 Internal Server Error`` response.
+* Instead of returning the python script in ``webroot`` as plain text, execute
+  the file and return the results as HTML.

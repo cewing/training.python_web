@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Session 09 &mdash; Internet Programming with Python</title>
+    <title>Session 10 &mdash; Internet Programming with Python</title>
     
     <link rel="stylesheet" href="../_static/pyramid.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '2.0',
+        VERSION:     '3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -34,7 +34,7 @@
 <![endif]-->
 
   </head>
-  <body>
+  <body role="document">
 <div class="header">
   <div class="logo">
     <a href="../index.html">
@@ -43,7 +43,7 @@
   </div>
 </div>
 
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -55,21 +55,21 @@
         <li class="right" >
           <a href="session09.html" title="Session 09"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">UWPCE Python 200</a> &raquo;</li>
-          <li><a href="index.html" accesskey="U">Course Presentations</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">UWPCE Python 200</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Course Presentations</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
-  <div class="section" id="session-09">
-<h1>Session 09<a class="headerlink" href="#session-09" title="Permalink to this headline">¶</a></h1>
-<div class="figure align-center">
+  <div class="section" id="session-10">
+<h1>Session 10<a class="headerlink" href="#session-10" title="Permalink to this headline">¶</a></h1>
+<div class="figure align-center" id="id1">
 <a class="reference internal image-reference" href="../_images/django-pony.png"><img alt="../_images/django-pony.png" src="../_images/django-pony.png" style="width: 60%;" /></a>
-<p class="caption">image: <a class="reference external" href="http://djangopony.com/">http://djangopony.com/</a></p>
+<p class="caption"><span class="caption-text">image: <a class="reference external" href="http://djangopony.com/">http://djangopony.com/</a></span></p>
 </div>
 <div class="section" id="deploying-django">
 <h2>Deploying Django<a class="headerlink" href="#deploying-django" title="Permalink to this headline">¶</a></h2>
@@ -153,10 +153,10 @@ is <em>external</em> to the app itself, should be separated from the app.</p>
 <p>The link about contains much more effective explanations, read it.</p>
 <p>We&#8217;ve already done this to some degree with our Pyramid application, by
 putting some configuration values into <em>environment variables</em></p>
-<p><tt class="docutils literal"><span class="pre">dj-database-url</span></tt> allows us to do that with the configuration for our
+<p><code class="docutils literal"><span class="pre">dj-database-url</span></code> allows us to do that with the configuration for our
 database.</p>
 </div>
-<p>Open <tt class="docutils literal"><span class="pre">settings.py</span></tt> and replace the current DATABASES dictionary with this:</p>
+<p>Open <code class="docutils literal"><span class="pre">settings.py</span></code> and replace the current DATABASES dictionary with this:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">DATABASES</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="n">dj_database_url</span><span class="o">.</span><span class="n">config</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="s">&#39;sqlite:///&#39;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">BASE_DIR</span><span class="p">,</span> <span class="s">&#39;db.sqlite3&#39;</span><span class="p">)</span>
@@ -165,8 +165,8 @@ database.</p>
 </pre></div>
 </div>
 <div class="build container">
-<p>The default behavior of <tt class="docutils literal"><span class="pre">dj-database-url</span></tt> is to look for a
-<tt class="docutils literal"><span class="pre">DATABASE_URL</span></tt> variable in the environment.</p>
+<p>The default behavior of <code class="docutils literal"><span class="pre">dj-database-url</span></code> is to look for a
+<code class="docutils literal"><span class="pre">DATABASE_URL</span></code> variable in the environment.</p>
 <p>If it doesn&#8217;t find that, it uses the value you provide for <em>default</em>.</p>
 <p>It converts a <a class="reference external" href="https://github.com/kennethreitz/dj-database-url#url-schema">url-style</a> database connection string to the dictionary
 Django expects.</p>
@@ -175,7 +175,7 @@ Django expects.</p>
 <p>Another principle of the 12-factor philosophy is to keep the differences
 between production and development to a minimum.</p>
 <div class="build container">
-<p>Again, in our Pyramid app we handled this with a <tt class="docutils literal"><span class="pre">requirements.txt</span></tt> file.</p>
+<p>Again, in our Pyramid app we handled this with a <code class="docutils literal"><span class="pre">requirements.txt</span></code> file.</p>
 <p>Here we will do the same.</p>
 <p>At your command line, with the virtualenv active, run the following
 command:</p>
@@ -198,7 +198,7 @@ password.</p>
 <p>When the page loads, you are viewing the AWS Console.</p>
 <p>If you don&#8217;t see a big list of services in that first page, click on
 &#8216;Services&#8217; in the black header.</p>
-<p>From the list of services, click on <tt class="docutils literal"><span class="pre">EC2</span></tt>.</p>
+<p>From the list of services, click on <code class="docutils literal"><span class="pre">EC2</span></code>.</p>
 </div>
 <p>The page that loads is the management console for EC2 resources.  You used it
 to create your security group and key pair.</p>
@@ -236,7 +236,7 @@ access to your new machine.</p>
 <div class="build container">
 <p>Without this key pair, you have no way to access the server, and you must
 destroy it and create a new one.</p>
-<p>Select your <tt class="docutils literal"><span class="pre">pk-aws</span></tt> pair from the list of existing key pairs.</p>
+<p>Select your <code class="docutils literal"><span class="pre">pk-aws</span></code> pair from the list of existing key pairs.</p>
 <p>Then, check the box that indicates you have the private key and click
 &#8220;Launch Instance&#8221;.</p>
 <p>It will take a few minutes for the new machine to initialize and be ready.</p>
@@ -268,14 +268,14 @@ having the latest versions of any software you install:</p>
 <p>This software is responsible for receiving requests from clients&#8217; browsers.</p>
 <p>It will also handle serving static resources in order to relieve Django of
 that burden.</p>
-<p>If you are using <tt class="docutils literal"><span class="pre">https</span></tt>, it&#8217;s also a good place to handle terminating an
+<p>If you are using <code class="docutils literal"><span class="pre">https</span></code>, it&#8217;s also a good place to handle terminating an
 SSL connection.</p>
-<p>Begin by using the Ubuntu package manager to install <tt class="docutils literal"><span class="pre">nginx</span></tt>:</p>
+<p>Begin by using the Ubuntu package manager to install <code class="docutils literal"><span class="pre">nginx</span></code>:</p>
 <div class="highlight-bash"><div class="highlight"><pre>sudo apt-get install nginx
 </pre></div>
 </div>
 </div>
-<p>Like many other packages installed by <tt class="docutils literal"><span class="pre">apt-get</span></tt>, nginx is set up as a
+<p>Like many other packages installed by <code class="docutils literal"><span class="pre">apt-get</span></code>, nginx is set up as a
 <em>service</em></p>
 <p>You can check the status of the service:</p>
 <div class="highlight-bash"><div class="highlight"><pre>sudo service nginx status
@@ -286,7 +286,7 @@ SSL connection.</p>
 sudo service nginx start
 </pre></div>
 </div>
-<p>Default configuration for nginx lives in <tt class="docutils literal"><span class="pre">/etc/nginx</span></tt>.  Let&#8217;s look at three
+<p>Default configuration for nginx lives in <code class="docutils literal"><span class="pre">/etc/nginx</span></code>.  Let&#8217;s look at three
 files there in particular:</p>
 <ul class="simple">
 <li>/etc/nginx/nginx.conf (controls behavior of the whole server)</li>
@@ -306,7 +306,7 @@ files there in particular:</p>
 <h3>Deployment Layer 3: Database<a class="headerlink" href="#deployment-layer-3-database" title="Permalink to this headline">¶</a></h3>
 <p>In order to deploy our database, we&#8217;ll need to install some more software</p>
 <div class="build container">
-<p>Use <tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">istall</span></tt> to add each of the following packages:</p>
+<p>Use <code class="docutils literal"><span class="pre">apt-get</span> <span class="pre">istall</span></code> to add each of the following packages:</p>
 <ul class="simple">
 <li>build-essential</li>
 <li>python-dev</li>
@@ -326,7 +326,7 @@ files there in particular:</p>
 </div>
 <p>On the database details page, You have a bit of work to do.</p>
 <div class="build container">
-<p>First, select <tt class="docutils literal"><span class="pre">db.t2.micro</span></tt> as the instance type.</p>
+<p>First, select <code class="docutils literal"><span class="pre">db.t2.micro</span></code> as the instance type.</p>
 <p>Then, for multi-AZ deployment, select <strong>no</strong> (again)</p>
 <p>Finally, provide values for the last four inputs</p>
 <p>The database identifier must be unique to your account and region, use
@@ -353,14 +353,17 @@ EC2</p>
 </div>
 <div class="build container">
 <p>pip install the requirements for your app:</p>
-<blockquote>
-<div>cd djangoblog_uwpce
-pip install -r requirements.txt</div></blockquote>
+<div class="highlight-python"><div class="highlight"><pre>$ cd djangoblog_uwpce
+$ pip install -r requirements.txt
+</pre></div>
+</div>
+</div>
 <p>Finally, export a system environment variable called DATABASE_URL with the
 following format:</p>
 <div class="highlight-python"><div class="highlight"><pre>postgres://username:password@host:port/dbname
 </pre></div>
 </div>
+<div class="build container">
 <div class="highlight-bash"><div class="highlight"><pre><span class="nb">export </span><span class="nv">DATABASE_URL</span><span class="o">=</span>&lt;that string&gt;
 </pre></div>
 </div>
@@ -411,7 +414,7 @@ want a long-running process we can leave behind.</p>
 <div class="highlight-bash"><div class="highlight"><pre>pip install gunicorn
 </pre></div>
 </div>
-<p>Back on your own machine, create <tt class="docutils literal"><span class="pre">mysite/production.py</span></tt> and add the following
+<p>Back on your own machine, create <code class="docutils literal"><span class="pre">mysite/production.py</span></code> and add the following
 content:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">settings</span> <span class="kn">import</span> <span class="o">*</span>
 
@@ -445,14 +448,14 @@ content:</p>
 <p>Wahooo!</p>
 <p>But still not great, because nothing is monitoring this process.</p>
 <p>There&#8217;s no way to keep track of how it is doing.</p>
-<p>We can use a process manager to run the gunicorn command, and track the results.</p>
-<p>Kill the processes that spawned:</p>
+<p>We can do better.  First, let&#8217;s kill the processes that spawned:</p>
 <div class="highlight-python"><div class="highlight"><pre>killall gunicorn
 </pre></div>
 </div>
-<p>Using linux upstart is nice and easy.</p>
-<p>Put the following in <tt class="docutils literal"><span class="pre">/etc/init/djangoblog.conf</span></tt></p>
-<div class="highlight-upstart"><div class="highlight"><pre>description &quot;djangoblog&quot;
+<p>We can use a process manager to run the gunicorn command, and track the results.</p>
+<p>Using linux <a class="reference external" href="http://blog.terminal.com/getting-started-with-upstart/">upstart</a> is relatively simple.</p>
+<p>Put the following in <code class="docutils literal"><span class="pre">/etc/init/djangoblog.conf</span></code></p>
+<div class="highlight-cfg"><div class="highlight"><pre>description &quot;djangoblog&quot;
 
 start on (filesystem)
 stop on runlevel [016]
@@ -462,11 +465,28 @@ setuid nobody
 setgid nogroup
 chdir /home/ubuntu/djangoblog_uwpce
 env DJANGO_SETTINGS_MODULE=mysite.production
-env DATABASE_URL=postgres://awsuser:secret123@uwpcedb.c5zwspzpwwsq.us-west-2.rds.amazonaws.com:5432/djangoblog
+env DATABASE_URL=postgres://&lt;username&gt;:&lt;password&gt;@&lt;host&gt;:&lt;port&gt;/djangoblog
 exec gunicorn -b 127.0.0.1:8000 -w 4 mysite.wsgi
 </pre></div>
 </div>
+<p>Once you&#8217;ve completed that, you will find that you can use the Linux
+<code class="docutils literal"><span class="pre">service</span></code> command to control the gunicorn process.</p>
+<div class="build container">
+<p>Use the following commands:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ sudo service djangoblog status
+$ sudo service djangoblog start
+$ sudo service djangoblog stop
+$ sudo service djangoblog restart
+</pre></div>
+</div>
+<p>If you see an error message about an <code class="docutils literal"><span class="pre">unknown</span> <span class="pre">job</span></code> when you run one of those
+commands, it means you have an error in your configuration file.</p>
+<p>Find the error with this command:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ init-checkconf /etc/init/djangoblog.conf
+</pre></div>
+</div>
 <p>And that&#8217;s it!</p>
+</div>
 </div>
 </div>
 </div>
@@ -475,11 +495,11 @@ exec gunicorn -b 127.0.0.1:8000 -w 4 mysite.wsgi
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Session 09</a><ul>
+<li><a class="reference internal" href="#">Session 10</a><ul>
 <li><a class="reference internal" href="#deploying-django">Deploying Django</a><ul>
 <li><a class="reference internal" href="#choosing-a-deployment-strategy">Choosing a Deployment Strategy</a></li>
 <li><a class="reference internal" href="#preparing-for-aws-deployment">Preparing for AWS Deployment</a></li>
@@ -501,17 +521,19 @@ exec gunicorn -b 127.0.0.1:8000 -w 4 mysite.wsgi
   <h4>Next topic</h4>
   <p class="topless"><a href="../readings.html"
                         title="next chapter">Supplementary Course Readings</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="../_sources/presentations/session10.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/presentations/session10.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
   <h3>Slides</h3>
   <ul class="this-page-menu">
     <li><a href="../.././slides/presentations/session10.html"
            rel="nofollow">View as slides</a></li>
   </ul>
-<div id="searchbox" style="display: none">
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
       <input type="text" name="q" />
@@ -528,7 +550,7 @@ exec gunicorn -b 127.0.0.1:8000 -w 4 mysite.wsgi
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -540,13 +562,13 @@ exec gunicorn -b 127.0.0.1:8000 -w 4 mysite.wsgi
         <li class="right" >
           <a href="session09.html" title="Session 09"
              >previous</a> |</li>
-        <li><a href="../index.html">UWPCE Python 200</a> &raquo;</li>
-          <li><a href="index.html" >Course Presentations</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">UWPCE Python 200</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Course Presentations</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
-        &copy; Copyright 2012-2015, Cris Ewing.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2012-2016, Cris Ewing.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>

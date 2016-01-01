@@ -19,6 +19,7 @@ URL: https://code.google.com/p/io-2012-slides
   <!--This one seems to work all the time, but really small on ipad-->
   <!--<meta name="viewport" content="initial-scale=0.4">-->
   <meta name="apple-mobile-web-app-capable" content="yes">
+
   
   <link rel="stylesheet" media="all"
         href="../_static/theme/css/default.css">
@@ -38,7 +39,7 @@ URL: https://code.google.com/p/io-2012-slides
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '2.0',
+        VERSION:     '3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -71,1708 +72,2135 @@ URL: https://code.google.com/p/io-2012-slides
 </slide>
 
   
-    <slide class="level-1">
+    <slide class="title-slide segue nobackground level-1" id="session-02">
     <hgroup>
       <h1>Session 02</h1>
     </hgroup>
     <article class="">
-      <a class="reference internal image-reference" href="../_images/lj_entry.png"><img alt="../_images/lj_entry.png" class="align-center" src="../_images/lj_entry.png" style="width: 65%;" /></a>
+      <div class="figure align-center" id="id2">
+<a class="reference internal image-reference" href="../_images/protocol.png"><img alt="../_images/protocol.png" src="../_images/protocol.png" style="width: 40%;" /></a>
+<p class="caption"><span class="caption-text">Web Protocols</span></p>
+</div>
 
 
+
+<div class="slide-no">1</div>
 
 
     </article>
-  </slide>  <slide class="level-2">
+  </slide>  <slide class="level-2" id="the-languages-computers-speak">
     <hgroup>
-      <h2>Interacting with Data</h2>
+      <h2>The Languages Computers Speak</h2>
     </hgroup>
     <article class="">
-      <p><strong>Wherein we learn to display our data, and to create and edit it too!</strong></p>
+      <div class="build left container">
+<p>Programming languages like Python are the languages we speak to computers.</p>
+<p><em>Protocols</em> are the languages that computers speak to each-other.</p>
+<p>This sesson we'll look at a few of them and</p>
+<ul class="build simple">
+<li>Learn what makes them similar</li>
+<li>Learn what makes them different</li>
+<li>Learn about Python's tools for speaking them</li>
+<li>Learn how to speak one (HTTP) ourselves</li>
+</ul>
+</div>
 
 
+
+<div class="slide-no">2</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="but-first">
     <hgroup>
       <h3>But First</h3>
     </hgroup>
     <article class="">
-      <p>Last week we discussed the <strong>model</strong> part of the <em>MVC</em> application design
-pattern.</p>
-<div class="build container">
-<p>We set up a project using the <a class="reference external" href="http://www.pylonsproject.org/projects/pyramid/about">Pyramid</a> web framework and the <a class="reference external" href="http://docs.sqlalchemy.org/en/rel_0_9/">SQLAlchemy</a>
-library for persisting our data to a database.</p>
-<p>We looked at how to define a simple model by investigating the demo model
-created on our behalf.</p>
-<p>And we went over, briefly, the way we can interact with this model at the
-command line to make sure we've got it right.</p>
-<p>Finally, we defined what attributes a learning journal entry would have,
-and a pair of methods we think we will need to make the model complete.</p>
-</div>
+      <p class="large centered">Questions from the Homework?</p>
 
 
+
+<div class="slide-no">3</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id4">
     <hgroup>
-      <h3>Our Data Model</h3>
+      <h3>But First</h3>
     </hgroup>
     <article class="">
-      <p>Over the last week, your assignment was to create the new model.</p>
-<div class="build container">
-<p>Did you get that done?</p>
-<p>If not, what stopped you?</p>
-<p>Let's take a few minutes here to answer questions about this task so you
-are more comfortable.</p>
-<p>Questions?</p>
-</div>
+      <p class="large centered">Examples of an echo server using <code class="docutils literal"><span class="pre">select</span></code></p>
 
 
+
+<div class="slide-no">4</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="what-is-a-protocol">
     <hgroup>
-      <h3>A Complete Example</h3>
+      <h3>What is a Protocol?</h3>
     </hgroup>
     <article class="">
-      <p>I have added a new folder to our <a class="reference external" href="https://github.com/UWPCE-PythonCert/training.python_web/">class repository</a>, <tt class="docutils literal"><span class="pre">resources</span></tt>.</p>
-<div class="build container">
-<p>If you clone the repository to your local machine you can get to it.</p>
-<p>You can also just browse the repository in github to view it.</p>
-<p>In this folder, I added a <tt class="docutils literal"><span class="pre">session02</span></tt> folder that contains resources for
-today.</p>
-<p>Among these resources is the completed <tt class="docutils literal"><span class="pre">models.py</span></tt> file with this new
-model added.</p>
-<p>Let's review how it works.</p>
+      <div class="build large centered container">
+<p><strong>a set of rules or conventions</strong></p>
+<p><strong>governing communications</strong></p>
 </div>
 
 
+
+<div class="slide-no">5</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id5">
     <hgroup>
-      <h3>Demo Interaction</h3>
+      <h3>Protocols IRL</h3>
     </hgroup>
     <article class="">
-      <p>Another resource I've added is the <tt class="docutils literal"><span class="pre">ljshell.py</span></tt> script.</p>
-<div class="build container">
-<p>That script will allow you to interact with a db session just like I showed
-in class last week:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># the script</span>
-<span class="kn">from</span> <span class="nn">pyramid.paster</span> <span class="kn">import</span> <span class="n">get_appsettings</span><span class="p">,</span> <span class="n">setup_logging</span>
-<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">engine_from_config</span>
-<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">sessionmaker</span>
-
-<span class="n">config_uri</span> <span class="o">=</span> <span class="s">&#39;development.ini&#39;</span>
-<span class="n">setup_logging</span><span class="p">(</span><span class="n">config_uri</span><span class="p">)</span>
-<span class="n">settings</span> <span class="o">=</span> <span class="n">get_appsettings</span><span class="p">(</span><span class="n">config_uri</span><span class="p">)</span>
-<span class="n">engine</span> <span class="o">=</span> <span class="n">engine_from_config</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;sqlalchemy.&#39;</span><span class="p">)</span>
-<span class="n">Session</span> <span class="o">=</span> <span class="n">sessionmaker</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Just copy the file into your learning_journal Pyramid project folder (where
-<tt class="docutils literal"><span class="pre">setup.py</span></tt> is)</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Using the <tt class="docutils literal"><span class="pre">ljshell.py</span></tt> script</h3>
-    </hgroup>
-    <article class="">
-      <p>Here's a demo interaction using the script to set up a session maker</p>
-<div class="build container">
-<p>First <tt class="docutils literal"><span class="pre">cd</span></tt> to your project code, fire up your project virtualenv and
-start python:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span><span class="nb">cd </span>projects/learning-journal/learning_journal
-<span class="nv">$ </span><span class="nb">source</span> ../ljenv/bin/activate
-<span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>python
-&gt;&gt;&gt;
-</pre></div>
-</div>
-<p>Then, you can import the <tt class="docutils literal"><span class="pre">Session</span></tt> symbol from <tt class="docutils literal"><span class="pre">ljshell</span></tt> and you're off
-to the races:</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ljshell</span> <span class="kn">import</span> <span class="n">Session</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">learning_journal.models</span> <span class="kn">import</span> <span class="n">MyModel</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">MyModel</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-<span class="go">[&lt;learning_journal.models.MyModel object at 0x105849b90&gt;]</span>
-<span class="gp">...</span>
-</pre></div>
-</div>
-<p>[demo]</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-2">
-    <hgroup>
-      <h2>The MVC Controller</h2>
-    </hgroup>
-    <article class="">
-      <div class="left container">
-<p>Let's go back to thinking for a bit about the <em>Model-View-Controller</em>
-pattern.</p>
-<div class="figure align-center">
-<a class="reference internal image-reference" href="http://upload.wikimedia.org/wikipedia/commons/4/40/MVC_passive_view.png"><img alt="http://upload.wikimedia.org/wikipedia/commons/4/40/MVC_passive_view.png" src="http://upload.wikimedia.org/wikipedia/commons/4/40/MVC_passive_view.png" style="width: 25%;" /></a>
-<p class="caption">By Alan Evangelista (Own work) [CC0], via Wikimedia Commons</p>
-</div>
-<div class="build container">
-<p>We talked last week (and today) about the <em>model</em></p>
-<p>Today, we'll dig into <em>controllers</em> and <em>views</em></p>
-<p>or as we will know them in Pyramid: <em>views</em> and <em>renderers</em></p>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>HTTP Request/Response</h3>
-    </hgroup>
-    <article class="">
-      <p>Internet software is driven by the HTTP Request/Response cycle.</p>
-<div class="build container">
-<p>A <em>client</em> (perhaps a user with a web browser) makes a <strong>request</strong></p>
-<p>A <em>server</em> receives and handles that request and returns a <strong>response</strong></p>
-<p>The <em>client</em> receives the response and views it, perhaps making a new
-<strong>request</strong></p>
-<p>And around and around it goes.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>URLs</h3>
-    </hgroup>
-    <article class="">
-      <p>An HTTP request arrives at a server through the magic of a <strong>URL</strong></p>
-<div class="highlight-bash"><div class="highlight"><pre>http://uwpce-pythoncert.github.io/training.python_web/html/index.html
-</pre></div>
-</div>
-<div class="build container">
-<p>Let's break that up into its constituent parts:</p>
-<dl class="build docutils">
-<dt>http://:</dt>
-<dd>This part is the <em>protocol</em>, it determines how the request will be sent</dd>
-<dt>uwpce-pythoncert.github.io:</dt>
-<dd>This is a <em>domain name</em>.  It's the human-facing address for a server
-somewhere.</dd>
-<dt>/training.python_web/html/index.html:</dt>
-<dd>This part is the <em>path</em>.  It serves as a locator for a resource <em>on the
-server</em></dd>
-</dl>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Paths</h3>
-    </hgroup>
-    <article class="">
-      <p>In a static website (like our documentation) the <em>path</em> identifies a <strong>physical
-location</strong> in the server's filesystem.</p>
-<div class="build container">
-<p>Some directory on the server is the <em>home</em> for the web process, and the
-<em>path</em> is looked up there.</p>
-<p>Whatever resource (a file, an image, whatever) is located there is returned
-to the user as a response.</p>
-<p>If the path leads to a location that doesn't exist, the server responds
-with a <strong>404 Not Found</strong> error.</p>
-<p>In the golden days of yore, this was the only way content was served via
-HTTP.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Paths in an MVC System</h3>
-    </hgroup>
-    <article class="">
-      <p>In todays world we have dynamic systems, server-side web frameworks like
-Pyramid.</p>
-<div class="build container">
-<p>The requests that you send to a server are handled by a software process
-that assembles a response instead of looking up a physical location.</p>
-<p>But we still have URLs, with <em>protocol</em>, <em>domain</em> and <em>path</em>.</p>
-<p>What is the role for a path in a process that doesn't refer to a physical
-file system?</p>
-<p>Most web frameworks now call the <em>path</em> a <strong>route</strong>.</p>
-<p>They provide a way of matching <em>routes</em> to the code that will be run to
-handle requests.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Routes in Pyramid</h3>
-    </hgroup>
-    <article class="">
-      <p>In Pyramid, routes are handled as <em>configuration</em> and are set up in the <em>main</em>
-function in <tt class="docutils literal"><span class="pre">__init__.py</span></tt>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># learning_journal/__init__.py</span>
-<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">global_config</span><span class="p">,</span> <span class="o">**</span><span class="n">settings</span><span class="p">):</span>
-    <span class="c"># ...</span>
-    <span class="n">config</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s">&#39;home&#39;</span><span class="p">,</span> <span class="s">&#39;/&#39;</span><span class="p">)</span>
-    <span class="c"># ...</span>
-</pre></div>
-</div>
-<div class="build container">
-<p>Our code template created a sample route for us, using the <tt class="docutils literal"><span class="pre">add_route</span></tt>
-method of the <tt class="docutils literal"><span class="pre">Configurator</span></tt> class.</p>
-<p>The <tt class="docutils literal"><span class="pre">add_route</span></tt> method has two required arguments: a <em>name</em> and a
-<em>pattern</em></p>
-<p>In our sample route, the <em>name</em> is <tt class="docutils literal"><span class="pre">'home'</span></tt></p>
-<p>In our sample route, the <em>pattern</em> is <tt class="docutils literal"><span class="pre">'/'</span></tt></p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Routes in Pyramid</h3>
-    </hgroup>
-    <article class="">
-      <p>When a request comes in to a Pyramid application, the framework looks at all
-the <em>routes</em> that have been configured.</p>
-<div class="build container">
-<p>One by one, in order, it tries to match the <em>path</em> of the incoming request
-against the <em>pattern</em> of the route.</p>
-<p>As soon as a <em>pattern</em> matches the <em>path</em> from the incoming request, that
-route is used and no further matching is performed.</p>
-<p>If no route is found that matches, then the request will automatically get
-a <strong>404 Not Found</strong> error response.</p>
-<p>In our sample app, we have one sample <em>route</em> named <tt class="docutils literal"><span class="pre">'home'</span></tt>, with a
-pattern of <tt class="docutils literal"><span class="pre">/</span></tt>.</p>
-<p>This means that any request that comes in for <tt class="docutils literal"><span class="pre">/</span></tt> will be matched to this
-route, and any other request will be <strong>404</strong>.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Routes as API</h3>
-    </hgroup>
-    <article class="">
-      <p>In a very real sense, the <em>routes</em> defined in an application <em>are</em> the public
-API.</p>
-<div class="build container">
-<p>Any route that is present represents something the user can do.</p>
-<p>Any route that is not present is something the user cannot do.</p>
-<p>You can use the proper definition of routes to help conceptualize what your
-app will do.</p>
-<p>What routes might we want for a learning journal application?</p>
-<p>What will our application do?</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Defining our Routes</h3>
-    </hgroup>
-    <article class="">
-      <p>Let's add routes for our application.</p>
-<div class="build container">
-<p>Open <tt class="docutils literal"><span class="pre">learning_journal/__init__.py</span></tt>.</p>
-<p>For our list page, the existing <tt class="docutils literal"><span class="pre">'home'</span></tt> route will do fine, leave it.</p>
-<p>Add the following two routes:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">config</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s">&#39;home&#39;</span><span class="p">,</span> <span class="s">&#39;/&#39;</span><span class="p">)</span> <span class="c"># already there</span>
-<span class="n">config</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s">&#39;detail&#39;</span><span class="p">,</span> <span class="s">&#39;/journal/{id:\d+}&#39;</span><span class="p">)</span>
-<span class="n">config</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s">&#39;action&#39;</span><span class="p">,</span> <span class="s">&#39;/journal/{action}&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>The <tt class="docutils literal"><span class="pre">'detail'</span></tt> route will serve a single journal entry, identified by an
-<tt class="docutils literal"><span class="pre">id</span></tt>.</p>
-<p>The <tt class="docutils literal"><span class="pre">action</span></tt> route will serve <tt class="docutils literal"><span class="pre">create</span></tt> and <tt class="docutils literal"><span class="pre">edit</span></tt> views, depending on
-the <tt class="docutils literal"><span class="pre">action</span></tt> specified.</p>
-<p>In both cases, we want to capture a portion of the matched path to use
-information it provides.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Matching an ID</h3>
-    </hgroup>
-    <article class="">
-      <p>In a pattern, you can capture a <tt class="docutils literal"><span class="pre">path</span> <span class="pre">segment</span></tt> <em>replacement
-marker</em>, a valid Python symbol surrounded by curly braces:</p>
-<div class="build container">
-<div class="highlight-python"><div class="highlight"><pre>/home/{foo}/
-</pre></div>
-</div>
-<p>If you want to match a particular pattern, like digits only, add a
-<em>regexp</em>:</p>
-<div class="highlight-python"><div class="highlight"><pre>/journal/{id:\d+}
-</pre></div>
-</div>
-<p>Matched path segments are captured in a <tt class="docutils literal"><span class="pre">matchdict</span></tt>:</p>
-<div class="highlight-python"><div class="highlight"><pre># pattern          # actual url   # matchdict
-/journal/{id:\d+}  /journal/27    {&#39;id&#39;: &#39;27&#39;}
-</pre></div>
-</div>
-<p>The <tt class="docutils literal"><span class="pre">matchdict</span></tt> is made available as an attribute of the <em>request</em></p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Connecting Routes to Views</h3>
-    </hgroup>
-    <article class="">
-      <p>In Pyramid, a <em>route</em> is connected by configuration to a <em>view</em>.</p>
-<div class="build container">
-<p>In our app, a sample view has been created for us, in <tt class="docutils literal"><span class="pre">views.py</span></tt>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="s">&#39;home&#39;</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="s">&#39;templates/mytemplate.pt&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">my_view</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="c"># ...</span>
-</pre></div>
-</div>
-<p>The order in which <em>routes</em> are configured <em>is important</em>, so that must be
-done in <tt class="docutils literal"><span class="pre">__init__.py</span></tt>.</p>
-<p>The order in which views are connected to routes <em>is not important</em>, so the
-<em>declarative</em> <tt class="docutils literal"><span class="pre">&#64;view_config</span></tt> decorator can be used.</p>
-<p>When <tt class="docutils literal"><span class="pre">config.scan</span></tt> is called, all files in our application are searched
-for such <em>declarative configuration</em> and it is added.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>The Pyramid View</h3>
-    </hgroup>
-    <article class="">
-      <p>Let's imagine that a <em>request</em> has come to our application for the path
-<tt class="docutils literal"><span class="pre">'/'</span></tt>.</p>
-<div class="build container">
-<p>The framework made a match of that path to a <em>route</em> with the pattern <tt class="docutils literal"><span class="pre">'/'</span></tt>.</p>
-<p>Configuration connected that route to a <em>view</em> in our application.</p>
-<p>Now, the view that was connected will be <em>called</em>, which brings us to the
-nature of <em>views</em></p>
-<p class="centered">--A Pyramid view is a <em>callable</em> that takes <em>request</em> as an argument--</p>
-<p>Remember what a <em>callable</em> is?</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>What the View Does</h3>
-    </hgroup>
-    <article class="">
-      <p>So, a <em>view</em> is a callable that takes the <em>request</em> as an argument.</p>
-<div class="build container">
-<p>It can then use information from that request to build appropriate data,
-perhaps using the application's <em>models</em>.</p>
-<p>Then, it returns the data it assembled, passing it on to a <a class="reference external" href="http://docs.pylonsproject.org/projects/pyramid/en/1.5-branch/narr/renderers.html">renderer</a>.</p>
-<p>Which <em>renderer</em> to use is determined, again, by configuration:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="s">&#39;home&#39;</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="s">&#39;templates/mytemplate.pt&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">my_view</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="c"># ...</span>
-</pre></div>
-</div>
-<p>More about this in a moment.</p>
-<p>The <em>view</em> stands at the intersection of <em>input data</em>, the application
-<em>model</em> and <em>renderers</em> that offer rendering of the results.</p>
-<p>It is the <em>Controller</em> in our MVC application.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Adding Stub Views</h3>
-    </hgroup>
-    <article class="">
-      <p>Add temporary views to our application in <tt class="docutils literal"><span class="pre">views.py</span></tt> (and comment out the
-sample view):</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="s">&#39;home&#39;</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="s">&#39;string&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">index_page</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="k">return</span> <span class="s">&#39;list page&#39;</span>
-
-<span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="s">&#39;detail&#39;</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="s">&#39;string&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">view</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="k">return</span> <span class="s">&#39;detail page&#39;</span>
-
-<span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="s">&#39;action&#39;</span><span class="p">,</span> <span class="n">match_param</span><span class="o">=</span><span class="s">&#39;action=create&#39;</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="s">&#39;string&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="k">return</span> <span class="s">&#39;create page&#39;</span>
-
-<span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="s">&#39;action&#39;</span><span class="p">,</span> <span class="n">match_param</span><span class="o">=</span><span class="s">&#39;action=edit&#39;</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="s">&#39;string&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="k">return</span> <span class="s">&#39;edit page&#39;</span>
-</pre></div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Testing Our Views</h3>
-    </hgroup>
-    <article class="">
-      <p>Now we can verify that our view configuration has worked.</p>
-<div class="build container">
-<p>Make sure your virtualenv is properly activated, and start the web server:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>pserve development.ini
-Starting server in PID 84467.
-serving on http://0.0.0.0:6543
-</pre></div>
-</div>
-<p>Then try viewing some of the expected application urls:</p>
+      <p>Life has lots of sets of rules for how to do things.</p>
 <ul class="build simple">
-<li><a class="reference external" href="http://localhost:6543/">http://localhost:6543/</a></li>
-<li><a class="reference external" href="http://localhost:6543/journal/1">http://localhost:6543/journal/1</a></li>
-<li><a class="reference external" href="http://localhost:6543/journal/create">http://localhost:6543/journal/create</a></li>
-<li><a class="reference external" href="http://localhost:6543/journal/edit">http://localhost:6543/journal/edit</a></li>
+<li>What do you say when you get on the elevator?</li>
+<li>What do you do on a first date?</li>
+<li>What do you wear to a job interview?</li>
+<li>What do (and don't) you talk about at a dinner party?</li>
+<li>...?</li>
 </ul>
-<p>What happens if you visit a URL that <em>isn't</em> in our configuration?</p>
-</div>
 
 
 
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Interacting With the Model</h3>
-    </hgroup>
-    <article class="">
-      <p>Now that we've got temporary views that work, we can fix them to get
-information from our database</p>
-<div class="build container">
-<p>We'll begin with the list view.</p>
-<p>We need some code that will fetch all the journal entries we've written, in
-reverse order, and hand that collection back for rendering.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">DBSession</span><span class="p">,</span>
-    <span class="n">MyModel</span><span class="p">,</span>
-    <span class="n">Entry</span><span class="p">,</span> <span class="c"># &lt;- Add this import</span>
-<span class="p">)</span>
-
-<span class="c"># and update this view function</span>
-<span class="k">def</span> <span class="nf">index_page</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="n">entries</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s">&#39;entries&#39;</span><span class="p">:</span> <span class="n">entries</span><span class="p">}</span>
-</pre></div>
-</div>
-</div>
-
-
+<div class="slide-no">6</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id6">
     <hgroup>
-      <h3>Using the <tt class="docutils literal"><span class="pre">matchdict</span></tt></h3>
+      <h3>Protocols IRL</h3>
     </hgroup>
     <article class="">
-      <p>Next, we want to write the view for a single entry.</p>
-<div class="build container">
-<p>We'll need to use the <tt class="docutils literal"><span class="pre">id</span></tt> value our route captures into the
-<tt class="docutils literal"><span class="pre">matchdict</span></tt>.</p>
-<p>Remember that the <tt class="docutils literal"><span class="pre">matchdict</span></tt> is an attribute of the request.</p>
-<p>We'll get the <tt class="docutils literal"><span class="pre">id</span></tt> from there, and use it to get the correct entry.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># add this import at the top</span>
-<span class="kn">from</span> <span class="nn">pyramid.httpexceptions</span> <span class="kn">import</span> <span class="n">HTTPNotFound</span>
-
-<span class="c"># and update this view function:</span>
-<span class="k">def</span> <span class="nf">view</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="n">this_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">matchdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">by_id</span><span class="p">(</span><span class="n">this_id</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">entry</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">HTTPNotFound</span><span class="p">()</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s">&#39;entry&#39;</span><span class="p">:</span> <span class="n">entry</span><span class="p">}</span>
-</pre></div>
-</div>
+      <div class="figure align-center" id="id3">
+<a class="reference internal image-reference" href="../_images/icup.png"><img alt="../_images/icup.png" src="../_images/icup.png" style="width: 65%;" /></a>
+<p class="caption"><span class="caption-text"><a class="reference external" href="http://blog.xkcd.com/2009/09/02/urinal-protocol-vulnerability/">http://blog.xkcd.com/2009/09/02/urinal-protocol-vulnerability/</a></span></p>
 </div>
 
 
+
+<div class="slide-no">7</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id7">
     <hgroup>
-      <h3>Testing Our Views</h3>
+      <h3>Protocols In Computers</h3>
     </hgroup>
     <article class="">
-      <p>We can now verify that these views work correctly.</p>
-<div class="build container">
-<p>Make sure your virtualenv is properly activated, and start the web server:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>pserve development.ini
-Starting server in PID 84467.
-serving on http://0.0.0.0:6543
-</pre></div>
-</div>
-<p>Then try viewing the list page and an entry page:</p>
-<ul class="simple">
-<li><a class="reference external" href="http://localhost:6543">http://localhost:6543</a></li>
-<li><a class="reference external" href="http://localhost:6543/journal/1">http://localhost:6543/journal/1</a></li>
-</ul>
-<p>What happens when you request an entry with an id that isn't in the
-database?</p>
-<ul class="simple">
-<li><a class="reference external" href="http://localhost:6543/journal/100">http://localhost:6543/journal/100</a></li>
-</ul>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-2">
-    <hgroup>
-      <h2>The MVC View</h2>
-    </hgroup>
-    <article class="">
-      <div class="left container">
-<p>Again, back to the <em>Model-View-Controller</em> pattern.</p>
-<div class="figure align-center">
-<a class="reference internal image-reference" href="http://upload.wikimedia.org/wikipedia/commons/4/40/MVC_passive_view.png"><img alt="http://upload.wikimedia.org/wikipedia/commons/4/40/MVC_passive_view.png" src="http://upload.wikimedia.org/wikipedia/commons/4/40/MVC_passive_view.png" style="width: 25%;" /></a>
-<p class="caption">By Alan Evangelista (Own work) [CC0], via Wikimedia Commons</p>
-</div>
-<div class="build container">
-<p>We've built a <em>model</em> and we've created some <em>controllers</em> that use it.</p>
-<p>In Pyramid, we call <em>controllers</em> <strong>views</strong> and they are callables that
-take <em>request</em> as an argument.</p>
-<p>Let's turn to the last piece of the <em>MVC</em> patter, the <em>view</em></p>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Presenting Data</h3>
-    </hgroup>
-    <article class="">
-      <p>The job of the <em>view</em> in the <em>MVC</em> pattern is to present data in a format that
-is readable to the user of the system.</p>
-<div class="build container">
-<p>There are many ways to present data.</p>
-<p>Some are readable by humans (tables, charts, graphs, HTML pages, text
-files).</p>
-<p>Some are more for machines (xml files, csv, json).</p>
-<p>Which of these formats is the <em>right one</em> depends on your purpose.</p>
-<p>What is the purpose of our learning journal?</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Pyramid Renderers</h3>
-    </hgroup>
-    <article class="">
-      <p>In Pyramid, the job of presenting data is performed by a <em>renderer</em>.</p>
-<div class="build container">
-<p>So we can consider the Pyramid <strong>renderer</strong> to be the <em>view</em> in our <em>MVC</em>
-app.</p>
-<p>We've already seen how we can connect a <em>renderer</em> to a Pyramid <em>view</em> with
-configuration.</p>
-<p>In fact, we have already done so, using a built-in renderer called
-<tt class="docutils literal"><span class="pre">'string'</span></tt>.</p>
-<p>This renderer converts the return value of its <em>view</em> to a string and sends
-that back to the client as an HTTP response.</p>
-<p>But the result isn't so nice looking.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Template Renderers</h3>
-    </hgroup>
-    <article class="">
-      <p>The <cite>built-in renderers</cite> (<tt class="docutils literal"><span class="pre">'string'</span></tt>, <tt class="docutils literal"><span class="pre">'json'</span></tt>, <tt class="docutils literal"><span class="pre">'jsonp'</span></tt>) in Pyramid are
-not the only ones available.</p>
-<div class="build container">
-<p>There are add-ons to Pyramid that support using various <em>template
-languages</em> as renderers.</p>
-<p>In fact, one of these was installed by default when you created this
-project.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Configuring a Template Renderer</h3>
-    </hgroup>
-    <article class="">
-      <div class="highlight-python"><div class="highlight"><pre><span class="c"># in setup.py</span>
-<span class="n">requires</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="c"># ...</span>
-    <span class="s">&#39;pyramid_chameleon&#39;</span><span class="p">,</span>
-    <span class="c"># ...</span>
-<span class="p">]</span>
-
-<span class="c"># in learning_journal/__init__.py</span>
-<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">global_config</span><span class="p">,</span> <span class="o">**</span><span class="n">settings</span><span class="p">):</span>
-    <span class="c"># ...</span>
-    <span class="n">config</span><span class="o">.</span><span class="n">include</span><span class="p">(</span><span class="s">&#39;pyramid_chameleon&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="build container">
-<p>The <cite>pyramid_chameleon</cite> package supports using the <cite>chameleon</cite> template
-language.</p>
-<p>The language is quite nice and powerful, but not so easy to learn.</p>
-<p>Let's use a different one, <em>jinja2</em></p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Changing Template Renderers</h3>
-    </hgroup>
-    <article class="">
-      <p>Change <tt class="docutils literal"><span class="pre">pyramid_chameleon</span></tt> to <tt class="docutils literal"><span class="pre">pyramid_jinja2</span></tt> in both of these files:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># in setup.py</span>
-<span class="n">requires</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="c"># ...</span>
-    <span class="s">&#39;pyramid_jinja2&#39;</span><span class="p">,</span>
-    <span class="c"># ...</span>
-<span class="p">]</span>
-
-<span class="c"># in learning_journal/__init__.py</span>
-<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">global_config</span><span class="p">,</span> <span class="o">**</span><span class="n">settings</span><span class="p">):</span>
-    <span class="c"># ...</span>
-    <span class="n">config</span><span class="o">.</span><span class="n">include</span><span class="p">(</span><span class="s">&#39;pyramid_jinja2&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Picking up the Changes</h3>
-    </hgroup>
-    <article class="">
-      <p>We've changed the dependencies for our Pyramid project.</p>
-<div class="build container">
-<p>As a result, we will need to re-install it so the new dependencies are also
-installed:</p>
-<div class="highlight-bash"><div class="highlight"><pre>(ljenv)$ python setup.py develop
-...
-Finished processing dependencies for learning-journal==0.0
-(ljenv)$
-</pre></div>
-</div>
-<p>Now, we can use <em>Jinja2</em> templates in our project.</p>
-<p>Let's learn a bit about how <a class="reference external" href="http://jinja.pocoo.org/docs/templates/">Jinja2 templates</a> work.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Jinja2 Template Basics</h3>
-    </hgroup>
-    <article class="">
-      <p>We'll start with the absolute basics.</p>
-<div class="build container">
-<p>Fire up a Python interpreter, using your <cite>ljenv</cite> virtualenv:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>python
-&gt;&gt;&gt;
-</pre></div>
-</div>
-<p>Then import the <tt class="docutils literal"><span class="pre">Template</span></tt> class from the <tt class="docutils literal"><span class="pre">jinja2</span></tt> package:</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">jinja2</span> <span class="kn">import</span> <span class="n">Template</span>
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Templates are Strings</h3>
-    </hgroup>
-    <article class="">
-      <p>A template is constructed with a simple string:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">t1</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="s">&quot;Hello {{ name }}, how are you?&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="build container">
-<p>Here, we've simply typed the string directly, but it is more common to
-build a template from the contents of a <em>file</em>.</p>
-<p>Notice that our string has some odd stuff in it: <tt class="docutils literal"><span class="pre">{{</span> <span class="pre">name</span> <span class="pre">}}</span></tt>.</p>
-<p>This is called a placeholder and when the template is <em>rendered</em> it is
-replaced.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Rendering a Template</h3>
-    </hgroup>
-    <article class="">
-      <p>Call the <tt class="docutils literal"><span class="pre">render</span></tt> method, providing <em>context</em>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">t1</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Freddy&quot;</span><span class="p">)</span>
-<span class="go">u&#39;Hello Freddy, how are you?&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">t1</span><span class="o">.</span><span class="n">render</span><span class="p">({</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&quot;Roberto&quot;</span><span class="p">})</span>
-<span class="go">u&#39;Hello Roberto, how are you?&#39;</span>
-<span class="go">&gt;&gt;&gt;</span>
-</pre></div>
-</div>
-<div class="build container">
-<p><em>Context</em> can either be keyword arguments, or a dictionary</p>
-<p>Note the resemblance to something you've seen before:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="s">&quot;This is {owner}&#39;s string&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">owner</span><span class="o">=</span><span class="s">&quot;Cris&quot;</span><span class="p">)</span>
-<span class="go">&#39;This is Cris&#39;s string&#39;</span>
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Dictionaries in Context</h3>
-    </hgroup>
-    <article class="">
-      <p>Dictionaries passed in as part of the <em>context</em> can be addressed with <em>either</em>
-subscript or dotted notation:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">person</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;first_name&#39;</span><span class="p">:</span> <span class="s">&#39;Frank&#39;</span><span class="p">,</span>
-<span class="gp">... </span>          <span class="s">&#39;last_name&#39;</span><span class="p">:</span> <span class="s">&#39;Herbert&#39;</span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">t2</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="s">&quot;{{ person.last_name }}, {{ person[&#39;first_name&#39;] }}&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">t2</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">person</span><span class="o">=</span><span class="n">person</span><span class="p">)</span>
-<span class="go">u&#39;Herbert, Frank&#39;</span>
-</pre></div>
-</div>
+      <p>Digital life has lots of rules too:</p>
 <ul class="build simple">
-<li>Jinja2 will try the <em>correct</em> way first (attr for dotted, item for
-subscript).</li>
-<li>If nothing is found, it will try the opposite.</li>
-<li>If nothing is found, it will return an <em>undefined</em> object.</li>
+<li>how to say hello</li>
+<li>how to identify yourself</li>
+<li>how to ask for information</li>
+<li>how to provide answers</li>
+<li>how to say goodbye</li>
 </ul>
 
 
 
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Objects in Context</h3>
-    </hgroup>
-    <article class="">
-      <p>The exact same is true of objects passed in as part of <em>context</em>:</p>
-<div class="build container">
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">t3</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="s">&quot;{{ obj.x }} + {{ obj[&#39;y&#39;] }} = Fun!&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Game</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<span class="gp">... </span>  <span class="n">x</span> <span class="o">=</span> <span class="s">&#39;babies&#39;</span>
-<span class="gp">... </span>  <span class="n">y</span> <span class="o">=</span> <span class="s">&#39;bubbles&#39;</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bathtime</span> <span class="o">=</span> <span class="n">Game</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">t3</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">bathtime</span><span class="p">)</span>
-<span class="go">u&#39;babies + bubbles = Fun!&#39;</span>
-</pre></div>
-</div>
-<p>This means your templates can be a bit agnostic as to the nature of the
-things in <em>context</em></p>
-</div>
-
-
+<div class="slide-no">8</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="real-protocol-examples">
     <hgroup>
-      <h3>Filtering values in Templates</h3>
+      <h3>Real Protocol Examples</h3>
     </hgroup>
     <article class="">
-      <p>You can apply <a class="reference external" href="http://jinja.pocoo.org/docs/dev/templates/#filters">filters</a> to the data passed in <em>context</em> with the pipe ('|')
-operator:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">t4</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="s">&quot;shouted: {{ phrase|upper }}&quot;</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">t4</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">phrase</span><span class="o">=</span><span class="s">&quot;this is very important&quot;</span><span class="p">)</span>
-<span class="s">u&#39;shouted: THIS IS VERY IMPORTANT&#39;</span>
-</pre></div>
-</div>
-<div class="build container">
-<p>You can also chain filters together:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">t5</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="s">&quot;confusing: {{ phrase|upper|reverse }}&quot;</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">t5</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">phrase</span><span class="o">=</span><span class="s">&quot;howdy doody&quot;</span><span class="p">)</span>
-<span class="s">u&#39;confusing: YDOOD YDWOH&#39;</span>
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Control Flow</h3>
-    </hgroup>
-    <article class="">
-      <p>Logical <a class="reference external" href="http://jinja.pocoo.org/docs/dev/templates/#list-of-control-structures">control structures</a> are also available:</p>
-<div class="build container">
-<div class="highlight-python"><div class="highlight"><pre><span class="n">tmpl</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
-<span class="s">... {</span><span class="si">% f</span><span class="s">or item in list %}{{ item }}, {</span><span class="si">% e</span><span class="s">ndfor %}</span>
-<span class="s">... &quot;&quot;&quot;</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">t6</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">tmpl</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">t6</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="nb">list</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">])</span>
-<span class="s">u&#39;</span><span class="se">\n</span><span class="s">1, 2, 3, 4, 5, 6, &#39;</span>
-</pre></div>
-</div>
-<p>Any control structure introduced in a template <strong>must</strong> be paired with an
-explicit closing tag ({% for %}...{% endfor %})</p>
-<p>Remember, although template tags like <tt class="docutils literal"><span class="pre">{%</span> <span class="pre">for</span> <span class="pre">%}</span></tt> or <tt class="docutils literal"><span class="pre">{%</span> <span class="pre">if</span> <span class="pre">%}</span></tt> look a
-lot like Python, they are not.</p>
-<p>The syntax is specific and must be followed correctly.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Template Tests</h3>
-    </hgroup>
-    <article class="">
-      <p>There are a number of specialized <em>tests</em> available for use with the
-<tt class="docutils literal"><span class="pre">if...elif...else</span></tt> control structure:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">tmpl</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
-<span class="gp">... </span><span class="s">{</span><span class="si">% i</span><span class="s">f phrase is upper %}</span>
-<span class="gp">... </span><span class="s">  {{ phrase|lower }}</span>
-<span class="gp">... </span><span class="s">{</span><span class="si">% e</span><span class="s">lif phrase is lower %}</span>
-<span class="gp">... </span><span class="s">  {{ phrase|upper }}</span>
-<span class="gp">... </span><span class="s">{</span><span class="si">% e</span><span class="s">lse %}{{ phrase }}{</span><span class="si">% e</span><span class="s">ndif %}&quot;&quot;&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">t7</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">tmpl</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">t7</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">phrase</span><span class="o">=</span><span class="s">&quot;FOO&quot;</span><span class="p">)</span>
-<span class="go">u&#39;\n\n  foo\n&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">t7</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">phrase</span><span class="o">=</span><span class="s">&quot;bar&quot;</span><span class="p">)</span>
-<span class="go">u&#39;\n\n  BAR\n&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">t7</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">phrase</span><span class="o">=</span><span class="s">&quot;This should print as-is&quot;</span><span class="p">)</span>
-<span class="go">u&#39;\nThis should print as-is&#39;</span>
-</pre></div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Basic Expressions</h3>
-    </hgroup>
-    <article class="">
-      <p>Basic <a class="reference external" href="http://jinja.pocoo.org/docs/dev/templates/#expressions">Python-like expressions</a> are also supported:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">tmpl</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
-<span class="s">... {</span><span class="si">% s</span><span class="s">et sum = 0 %}</span>
-<span class="s">... {</span><span class="si">% f</span><span class="s">or val in values %}</span>
-<span class="s">... {{ val }}: {{ sum + val }}</span>
-<span class="s">...   {</span><span class="si">% s</span><span class="s">et sum = sum + val %}</span>
-<span class="s">... {</span><span class="si">% e</span><span class="s">ndfor %}</span>
-<span class="s">... &quot;&quot;&quot;</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">t8</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">tmpl</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">t8</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">11</span><span class="p">))</span>
-<span class="s">u&#39;</span><span class="se">\n\n\n</span><span class="s">1: 1</span><span class="se">\n</span><span class="s">  </span><span class="se">\n\n</span><span class="s">2: 3</span><span class="se">\n</span><span class="s">  </span><span class="se">\n\n</span><span class="s">3: 6</span><span class="se">\n</span><span class="s">  </span><span class="se">\n\n</span><span class="s">4: 10</span><span class="se">\n</span>
-  \<span class="n">n</span>\<span class="n">n5</span><span class="p">:</span> <span class="mi">15</span>\<span class="n">n</span>  \<span class="n">n</span>\<span class="n">n6</span><span class="p">:</span> <span class="mi">21</span>\<span class="n">n</span>  \<span class="n">n</span>\<span class="n">n7</span><span class="p">:</span> <span class="mi">28</span>\<span class="n">n</span>  \<span class="n">n</span>\<span class="n">n8</span><span class="p">:</span> <span class="mi">36</span>\<span class="n">n</span>
-  \<span class="n">n</span>\<span class="n">n9</span><span class="p">:</span> <span class="mi">45</span>\<span class="n">n</span>  \<span class="n">n</span>\<span class="n">n10</span><span class="p">:</span> <span class="mi">55</span>\<span class="n">n</span>  \<span class="n">n</span><span class="s">&#39;</span>
-</pre></div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Our Templates</h3>
-    </hgroup>
-    <article class="">
-      <p>There's more that Jinja2 templates can do, but it will be easier to introduce
-you to that in the context of a working template.  So let's make some.</p>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Detail Template</h3>
-    </hgroup>
-    <article class="">
-      <p>We have a Pyramid view that returns a single entry. Let's create a template to
-show it.</p>
-<div class="build container">
-<p>In <tt class="docutils literal"><span class="pre">learning_journal/templates</span></tt> create a new file <tt class="docutils literal"><span class="pre">detail.jinja2</span></tt>:</p>
-<div class="highlight-jinja"><div class="highlight"><pre><span class="x">&lt;article&gt;</span>
-<span class="x">  &lt;h1&gt;</span><span class="cp">{{</span> <span class="nv">entry.title</span> <span class="cp">}}</span><span class="x">&lt;/h1&gt;</span>
-<span class="x">  &lt;hr/&gt;</span>
-<span class="x">  &lt;p&gt;</span><span class="cp">{{</span> <span class="nv">entry.body</span> <span class="cp">}}</span><span class="x">&lt;/p&gt;</span>
-<span class="x">  &lt;hr/&gt;</span>
-<span class="x">  &lt;p&gt;Created &lt;strong title=&quot;</span><span class="cp">{{</span> <span class="nv">entry.created</span> <span class="cp">}}</span><span class="x">&quot;&gt;</span><span class="cp">{{</span><span class="nv">entry.created</span><span class="cp">}}</span><span class="x">&lt;/strong&gt;&lt;/p&gt;</span>
-<span class="x">&lt;/article&gt;</span>
-</pre></div>
-</div>
-<p>Then wire it up to the detail view in <tt class="docutils literal"><span class="pre">views.py</span></tt>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># views.py</span>
-<span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="s">&#39;detail&#39;</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="s">&#39;templates/detail.jinja2&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">view</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="c"># ...</span>
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Try It Out</h3>
-    </hgroup>
-    <article class="">
-      <p>Now we should be able to see some rendered HTML for our journal entry details.</p>
-<div class="build container">
-<p>Start up your server:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>pserve development.ini
-Starting server in PID 90536.
-serving on http://0.0.0.0:6543
-</pre></div>
-</div>
-<p>Then try viewing an individual journal entry</p>
-<ul class="simple">
-<li><a class="reference external" href="http://localhost:6543/journal/1">http://localhost:6543/journal/1</a></li>
+      <p>What does this look like in practice?</p>
+<ul class="build simple">
+<li>SMTP (Simple Message Transfer Protocol) <br />
+<a class="reference external" href="http://tools.ietf.org/html/rfc5321#appendix-D">http://tools.ietf.org/html/rfc5321#appendix-D</a></li>
+<li>POP3 (Post Office Protocol) <br />
+<a class="reference external" href="http://www.faqs.org/docs/artu/ch05s03.html">http://www.faqs.org/docs/artu/ch05s03.html</a></li>
+<li>IMAP (Internet Message Access Protocol) <br />
+<a class="reference external" href="http://www.faqs.org/docs/artu/ch05s03.html">http://www.faqs.org/docs/artu/ch05s03.html</a></li>
+<li>HTTP (Hyper-Text Transfer Protocol) <br />
+<a class="reference external" href="http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol">http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol</a></li>
 </ul>
-</div>
 
 
+
+<div class="slide-no">9</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id8">
     <hgroup>
-      <h3>Listing Page</h3>
+      <h3>A Word on Typography</h3>
     </hgroup>
     <article class="">
-      <p>The index page of our journal should show a list of journal entries, let's do
-that next.</p>
+      <p>Over the next few slides we'll be looking at server/client interactions.</p>
 <div class="build container">
-<p>In <tt class="docutils literal"><span class="pre">learning_journal/templates</span></tt> create a new file <tt class="docutils literal"><span class="pre">list.jinja2</span></tt>:</p>
-<div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{%</span> <span class="k">if</span> <span class="nv">entries</span> <span class="cp">%}</span><span class="x"></span>
-<span class="x">&lt;h2&gt;Journal Entries&lt;/h2&gt;</span>
-<span class="x">&lt;ul&gt;</span>
-<span class="x">  </span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">entry</span> <span class="k">in</span> <span class="nv">entries</span> <span class="cp">%}</span><span class="x"></span>
-<span class="x">    &lt;li&gt;</span>
-<span class="x">    &lt;a href=&quot;</span><span class="cp">{{</span> <span class="nv">request.route_url</span><span class="o">(</span><span class="s1">&#39;detail&#39;</span><span class="o">,</span> <span class="nv">id</span><span class="o">=</span><span class="nv">entry.id</span><span class="o">)</span> <span class="cp">}}</span><span class="x">&quot;&gt;</span><span class="cp">{{</span> <span class="nv">entry.title</span> <span class="cp">}}</span><span class="x">&lt;/a&gt;</span>
-<span class="x">    &lt;/li&gt;</span>
-<span class="x">  </span><span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span><span class="x"></span>
-<span class="x">&lt;/ul&gt;</span>
-<span class="cp">{%</span> <span class="k">else</span> <span class="cp">%}</span><span class="x"></span>
-<span class="x">&lt;p&gt;This journal is empty&lt;/p&gt;</span>
-<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
-</pre></div>
-</div>
+<p>Each interaction is line-based, each line represents one message.</p>
+<p>Messages from the Server to the Client are prefaced with <code class="docutils literal"><span class="pre">S</span> <span class="pre">(&lt;--)</span></code></p>
+<p>Messages from the Client to the Server are prefaced with <code class="docutils literal"><span class="pre">C</span> <span class="pre">(--&gt;)</span></code></p>
+<p><strong>All</strong> lines end with the character sequence <code class="docutils literal"><span class="pre">&lt;CRLF&gt;</span></code> (<code class="docutils literal"><span class="pre">\r\n</span></code>)</p>
 </div>
 
 
+
+<div class="slide-no">10</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="smtp">
     <hgroup>
-      <h3>Our Templates</h3>
+      <h3>SMTP</h3>
     </hgroup>
     <article class="">
-      <p>It's worth taking a look at a few specifics of this template.</p>
+      <p>What does SMTP look like?</p>
 <div class="build container">
-<div class="highlight-jinja"><div class="highlight"><pre><span class="x">&lt;a href=&quot;</span><span class="cp">{{</span> <span class="nv">request.route_url</span><span class="o">(</span><span class="s1">&#39;detail&#39;</span><span class="o">,</span> <span class="nv">id</span><span class="o">=</span><span class="nv">entry.id</span><span class="o">)</span> <span class="cp">}}</span><span class="x">&quot;&gt;</span><span class="cp">{{</span> <span class="nv">entry.title</span> <span class="cp">}}</span><span class="x">&lt;/a&gt;</span>
+<p>SMTP (Say hello and identify yourself):</p>
+<div class="highlight-python"><div class="highlight"><pre>S (&lt;--): 220 foo.com Simple Mail Transfer Service Ready
+C (--&gt;): EHLO bar.com
+S (&lt;--): 250-foo.com greets bar.com
+S (&lt;--): 250-8BITMIME
+S (&lt;--): 250-SIZE
+S (&lt;--): 250-DSN
+S (&lt;--): 250 HELP
 </pre></div>
 </div>
-<p>Jinja2 templates are rendered with a <em>context</em>.</p>
-<p>The return values of the Pyramid <em>view</em> for a template get included in that
-context.</p>
-<p>So does <em>request</em>, which is placed there by the framework.</p>
-<p>Request has a method <tt class="docutils literal"><span class="pre">route_url</span></tt> that will create a URL for a named
-route.</p>
-<p>This allows you to include URLs in your template without needing to know
-exactly what they will be.</p>
-<p>This process is called <em>reversing</em>, since it's a bit like a reverse phone
-book lookup.</p>
 </div>
 
 
+
+<div class="slide-no">11</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id9">
     <hgroup>
-      <h3>Our Templates</h3>
+      <h3>SMTP</h3>
     </hgroup>
     <article class="">
-      <p>Finally, you'll need to connect this new renderer to your listing view:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="s">&#39;home&#39;</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="s">&#39;templates/list.jinja2&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">index_page</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="c"># ...</span>
+      <p>What does SMTP look like?</p>
+<p>SMTP (Ask for information, provide answers):</p>
+<div class="highlight-python"><div class="highlight"><pre>C (--&gt;): MAIL FROM:&lt;Smith@bar.com&gt;
+S (&lt;--): 250 OK
+C (--&gt;): RCPT TO:&lt;Jones@foo.com&gt;
+S (&lt;--): 250 OK
+C (--&gt;): RCPT TO:&lt;Green@foo.com&gt;
+S (&lt;--): 550 No such user here
+C (--&gt;): DATA
+S (&lt;--): 354 Start mail input; end with &lt;CRLF&gt;.&lt;CRLF&gt;
+C (--&gt;): Blah blah blah...
+C (--&gt;): ...etc. etc. etc.
+C (--&gt;): .
+S (&lt;--): 250 OK
 </pre></div>
 </div>
 
 
+
+<div class="slide-no">12</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id10">
     <hgroup>
-      <h3>Try It Out</h3>
+      <h3>SMTP</h3>
     </hgroup>
     <article class="">
-      <p>We can now see our list page too.  Let's try starting the server:</p>
-<div class="build container">
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>pserve development.ini
-Starting server in PID 90536.
-serving on http://0.0.0.0:6543
+      <p>What does SMTP look like?</p>
+<p>SMTP (Say goodbye):</p>
+<div class="highlight-python"><div class="highlight"><pre>C (--&gt;): QUIT
+S (&lt;--): 221 foo.com Service closing transmission channel
 </pre></div>
 </div>
-<p>Then try viewing the home page of your journal:</p>
-<ul class="simple">
-<li><a class="reference external" href="http://localhost:6543/">http://localhost:6543/</a></li>
+
+
+
+<div class="slide-no">13</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id11">
+    <hgroup>
+      <h3>SMTP Characteristics</h3>
+    </hgroup>
+    <article class="">
+      <ul class="build simple">
+<li>Interaction consists of commands and replies</li>
+<li>Each command or reply is <em>one line</em> terminated by &lt;CRLF&gt; <br />
+(there are exceptions, see the <code class="docutils literal"><span class="pre">250</span></code> reply to <code class="docutils literal"><span class="pre">EHLO</span></code> above)</li>
+<li>The exception is message payload, terminated by &lt;CRLF&gt;.&lt;CRLF&gt;</li>
+<li>Each command has a <em>verb</em> and one or more <em>arguments</em></li>
+<li>Each reply has a formal <em>code</em> and an informal <em>explanation</em></li>
 </ul>
-<p>Click on the link to an entry, it should work.</p>
-</div>
 
 
+
+<div class="slide-no">14</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="pop3">
     <hgroup>
-      <h3>Sharing Structure</h3>
+      <h3>POP3</h3>
     </hgroup>
     <article class="">
-      <p>These views are reasonable, if quite plain.</p>
+      <p>What does POP3 look like?</p>
 <div class="build container">
-<p>It'd be nice to put them into something that looks a bit more like a
-website.</p>
-<p>Jinja2 allows you to combine templates using something called
-<a class="reference external" href="http://jinja.pocoo.org/docs/dev/templates/#template-inheritance">template inheritance</a>.</p>
-<p>You can create a basic page structure, and then <em>inherit</em> that structure in
-other templates.</p>
-<p>In our class resources I've added a page template <tt class="docutils literal"><span class="pre">layout.jinja2</span></tt>.  Copy
-that page to your templates directory</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3><tt class="docutils literal"><span class="pre">layout.jinja2</span></tt></h3>
-    </hgroup>
-    <article class="">
-      <div class="highlight-jinja"><div class="highlight"><pre><span class="x">&lt;!DOCTYPE html&gt;</span>
-<span class="x">&lt;html lang=&quot;en&quot;&gt;</span>
-<span class="x">  &lt;head&gt;</span>
-<span class="x">    &lt;meta charset=&quot;utf-8&quot;&gt;</span>
-<span class="x">    &lt;title&gt;Python Learning Journal&lt;/title&gt;</span>
-<span class="x">    &lt;!--[if lt IE 9]&gt;&lt;script src=&quot;http://html5shiv.googlecode.com/svn/trunk/html5.js&quot;&gt;&lt;/script&gt;&lt;![endif]--&gt;</span>
-<span class="x">  &lt;/head&gt;</span>
-<span class="x">  &lt;body&gt;</span>
-<span class="x">    &lt;header&gt;</span>
-<span class="x">      &lt;nav&gt;&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;</span><span class="cp">{{</span> <span class="nv">request.route_url</span><span class="o">(</span><span class="s1">&#39;home&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x">&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/nav&gt;</span>
-<span class="x">    &lt;/header&gt;</span>
-<span class="x">    &lt;main&gt;</span>
-<span class="x">      &lt;h1&gt;My Python Journal&lt;/h1&gt;</span>
-<span class="x">      &lt;section id=&quot;content&quot;&gt;</span><span class="cp">{%</span> <span class="k">block</span> <span class="nv">body</span> <span class="cp">%}{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x">&lt;/section&gt;</span>
-<span class="x">    &lt;/main&gt;</span>
-<span class="x">    &lt;footer&gt;&lt;p&gt;Created in the UW PCE Python Certificate Program&lt;/p&gt;&lt;/footer&gt;</span>
-<span class="x">  &lt;/body&gt;</span>
-<span class="x">&lt;/html&gt;</span>
-</pre></div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Template Blocks</h3>
-    </hgroup>
-    <article class="">
-      <p>The important part here is the <tt class="docutils literal"><span class="pre">{%</span> <span class="pre">block</span> <span class="pre">body</span> <span class="pre">%}{%</span> <span class="pre">endblock</span> <span class="pre">%}</span></tt> expression.</p>
-<div class="build container">
-<p>This is a template <strong>block</strong> and it is a kind of placeholder.</p>
-<p>Other templates can inherit from this one, and fill that block with
-additional HTML.</p>
-<p>Let's update our detail and list templates:</p>
-<div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{%</span> <span class="k">extends</span> <span class="s2">&quot;layout.jinja2&quot;</span> <span class="cp">%}</span><span class="x"></span>
-<span class="cp">{%</span> <span class="k">block</span> <span class="nv">body</span> <span class="cp">%}</span><span class="x"></span>
-<span class="x">&lt;!-- everything else that was already there goes here --&gt;</span>
-<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+<p>POP3 (Say hello and identify yourself):</p>
+<div class="highlight-python"><div class="highlight"><pre>C (--&gt;): &lt;client connects to service port 110&gt;
+S (&lt;--): +OK POP3 server ready &lt;1896.6971@mailgate.dobbs.org&gt;
+C (--&gt;): USER bob
+S (&lt;--): +OK bob
+C (--&gt;): PASS redqueen
+S (&lt;--): +OK bob&#39;s maildrop has 2 messages (320 octets)
 </pre></div>
 </div>
 </div>
 
 
 
+<div class="slide-no">15</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id12">
     <hgroup>
-      <h3>Try It Out</h3>
+      <h3>POP3</h3>
     </hgroup>
     <article class="">
-      <p>Let's try starting the server so we can see the result:</p>
-<div class="build container">
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>pserve development.ini
-Starting server in PID 90536.
-serving on http://0.0.0.0:6543
+      <p>What does POP3 look like?</p>
+<p>POP3 (Ask for information, provide answers):</p>
+<div class="highlight-python"><div class="highlight"><pre>C (--&gt;): STAT
+S (&lt;--): +OK 2 320
+C (--&gt;): LIST
+S (&lt;--): +OK 1 messages (120 octets)
+S (&lt;--): 1 120
+S (&lt;--): .
 </pre></div>
 </div>
-<p>Then try viewing the home page of your journal:</p>
-<ul class="simple">
-<li><a class="reference external" href="http://localhost:6543/">http://localhost:6543/</a></li>
+
+
+
+<div class="slide-no">16</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id13">
+    <hgroup>
+      <h3>POP3</h3>
+    </hgroup>
+    <article class="">
+      <p>What does POP3 look like?</p>
+<p>POP3 (Ask for information, provide answers):</p>
+<div class="highlight-python"><div class="highlight"><pre>C (--&gt;): RETR 1
+S (&lt;--): +OK 120 octets
+S (&lt;--): &lt;server sends the text of message 1&gt;
+S (&lt;--): .
+C (--&gt;): DELE 1
+S (&lt;--): +OK message 1 deleted
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">17</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id14">
+    <hgroup>
+      <h3>POP3</h3>
+    </hgroup>
+    <article class="">
+      <p>What does POP3 look like?</p>
+<p>POP3 (Say goodbye):</p>
+<div class="highlight-python"><div class="highlight"><pre>C (--&gt;): QUIT
+S (&lt;--): +OK dewey POP3 server signing off (maildrop empty)
+C (--&gt;): &lt;client hangs up&gt;
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">18</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id15">
+    <hgroup>
+      <h3>POP3 Characteristics</h3>
+    </hgroup>
+    <article class="">
+      <div class="build container">
+<ul class="build simple">
+<li>Interaction consists of commands and replies</li>
+<li>Each command or reply is <em>one line</em> terminated by &lt;CRLF&gt;</li>
+<li>The exception is message payload, terminated by &lt;CRLF&gt;.&lt;CRLF&gt;</li>
+<li>Each command has a <em>verb</em> and one or more <em>arguments</em></li>
+<li>Each reply has a formal <em>code</em> and an informal <em>explanation</em></li>
 </ul>
-<p>Click on the link to an entry, it should work.</p>
-<p>And now you have shared page structure that is in both.</p>
+<p>The codes don't really look the same, though, do they?</p>
 </div>
 
 
+
+<div class="slide-no">19</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id16">
     <hgroup>
-      <h3>Static Assets</h3>
+      <h3>One Other Difference</h3>
     </hgroup>
     <article class="">
-      <p>Although we have a shared structure, it isn't particularly nice to look at.</p>
+      <p>The exception to the one-line-per-message rule is <em>payload</em></p>
 <div class="build container">
-<p>Aspects of how a website looks are controlled by CSS (<em>Cascading Style
-Sheets</em>).</p>
-<p>Stylesheets are one of what we generally speak of as <em>static assets</em>.</p>
-<p>Other static assets include <em>images</em> that are part of the look and feel of
-the site (logos, button images, etc) and the <em>JavaScript</em> files that add
-client-side dynamic behavior to the site.</p>
+<p>In both SMTP and POP3 this is terminated by &lt;CRLF&gt;.&lt;CRLF&gt;</p>
+<p>In SMTP, the <em>client</em> has this ability</p>
+<p>But in POP3, it belongs to the <em>server</em>.</p>
+<p class="large centered">Why?</p>
 </div>
 
 
+
+<div class="slide-no">20</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="imap">
     <hgroup>
-      <h3>Static Assets in Pyramid</h3>
+      <h3>IMAP</h3>
     </hgroup>
     <article class="">
-      <p>Serving static assets in Pyramid requires a <em>static view</em> to configuration.
-Luckily, <tt class="docutils literal"><span class="pre">pcreate</span></tt> already handled that for us:</p>
+      <p>What does IMAP look like?</p>
 <div class="build container">
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># in learning_journal/__init__.py</span>
-<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">global_config</span><span class="p">,</span> <span class="o">**</span><span class="n">settings</span><span class="p">):</span>
-    <span class="c"># ...</span>
-    <span class="n">config</span><span class="o">.</span><span class="n">add_static_view</span><span class="p">(</span><span class="s">&#39;static&#39;</span><span class="p">,</span> <span class="s">&#39;static&#39;</span><span class="p">,</span> <span class="n">cache_max_age</span><span class="o">=</span><span class="mi">3600</span><span class="p">)</span>
-    <span class="c"># ...</span>
-</pre></div>
-</div>
-<p>The first argument to <tt class="docutils literal"><span class="pre">add_static_view</span></tt> is a <em>name</em> that will need to
-appear in the path of URLs requesting assets.</p>
-<p>The second argument is a <em>path</em> that is relative to the package being
-configured.</p>
-<p>Assets referenced by the <em>name</em> in a URL will be searched for in the
-location defined by the <em>path</em></p>
-<p>Additional keyword arguments control other aspects of how the view works.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Static Assets in Templates</h3>
-    </hgroup>
-    <article class="">
-      <p>Once you have a static view configured, you can use assets in that location in
-templates.</p>
-<div class="build container">
-<p>The <em>request</em> object in Pyramid provides a <tt class="docutils literal"><span class="pre">static_url</span></tt> method that
-builds appropriate URLs</p>
-<p>Add the following to our <tt class="docutils literal"><span class="pre">layout.jinja2</span></tt> template:</p>
-<div class="highlight-jinja"><div class="highlight"><pre><span class="x">&lt;head&gt;</span>
-<span class="x">  &lt;!-- ... --&gt;</span>
-<span class="x">  &lt;link href=&quot;</span><span class="cp">{{</span> <span class="nv">request.static_url</span><span class="o">(</span><span class="s1">&#39;learning_journal:static/styles.css&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x">&quot; rel=&quot;stylesheet&quot;&gt;</span>
-<span class="x">&lt;/head&gt;</span>
-</pre></div>
-</div>
-<p>The one required argument to <tt class="docutils literal"><span class="pre">request.static_url</span></tt> is a <em>path</em> to an
-asset.</p>
-<p>Note that because any package <em>might</em> define a static view, we have to
-specify which package we want to look in.</p>
-<p>That's why we have <tt class="docutils literal"><span class="pre">learning_journal:static/styles.css</span></tt> in our call.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Basic Styles</h3>
-    </hgroup>
-    <article class="">
-      <p>I've created some very very basic styles for our learning journal.</p>
-<div class="build container">
-<p>You can find them in <tt class="docutils literal"><span class="pre">resources/session02/styles.css</span></tt>.  Go ahead and copy
-that file.</p>
-<p>Add it to <tt class="docutils literal"><span class="pre">learning_journal/static</span></tt>.</p>
-<p>Then restart your web server and see what a difference a little style
-makes:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>pserve development.ini
-Starting server in PID 90536.
-serving on http://0.0.0.0:6543
+<p>IMAP (Say hello and identify yourself):</p>
+<div class="highlight-python"><div class="highlight"><pre>C (--&gt;): &lt;client connects to service port 143&gt;
+S (&lt;--): * OK example.com IMAP4rev1 v12.264 server ready
+C (--&gt;): A0001 USER &quot;frobozz&quot; &quot;xyzzy&quot;
+S (&lt;--): * OK User frobozz authenticated
 </pre></div>
 </div>
 </div>
 
 
 
+<div class="slide-no">21</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id17">
     <hgroup>
-      <h3>The Outcome</h3>
+      <h3>IMAP</h3>
     </hgroup>
     <article class="">
-      <p>Your site should look something like this:</p>
-<div class="figure align-center">
-<a class="reference internal image-reference" href="../_images/learning_journal_styled.png"><img alt="../_images/learning_journal_styled.png" src="../_images/learning_journal_styled.png" style="width: 75%;" /></a>
-<p class="caption">The learning journal with basic styles applied</p>
+      <p>What does IMAP look like?</p>
+<p>IMAP (Ask for information, provide answers [connect to an inbox]):</p>
+<div class="highlight-python"><div class="highlight"><pre>C (--&gt;): A0002 SELECT INBOX
+S (&lt;--): * 1 EXISTS
+S (&lt;--): * 1 RECENT
+S (&lt;--): * FLAGS (\Answered \Flagged \Deleted \Draft \Seen)
+S (&lt;--): * OK [UNSEEN 1] first unseen message in /var/spool/mail/esr
+S (&lt;--): A0002 OK [READ-WRITE] SELECT completed
+</pre></div>
 </div>
 
 
 
+<div class="slide-no">22</div>
+
 
     </article>
-  </slide>  <slide class="level-2">
+  </slide>  <slide class="level-3" id="id18">
     <hgroup>
-      <h2>Getting Interactive</h2>
+      <h3>IMAP</h3>
+    </hgroup>
+    <article class="">
+      <p>What does IMAP look like?</p>
+<p>IMAP (Ask for information, provide answers [Get message sizes]):</p>
+<div class="highlight-python"><div class="highlight"><pre>C (--&gt;): A0003 FETCH 1 RFC822.SIZE
+S (&lt;--): * 1 FETCH (RFC822.SIZE 2545)
+S (&lt;--): A0003 OK FETCH completed
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">23</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id19">
+    <hgroup>
+      <h3>IMAP</h3>
+    </hgroup>
+    <article class="">
+      <p>What does IMAP look like?</p>
+<p>IMAP (Ask for information, provide answers [Get first message header]):</p>
+<div class="highlight-python"><div class="highlight"><pre>C (--&gt;): A0004 FETCH 1 BODY[HEADER]
+S (&lt;--): * 1 FETCH (RFC822.HEADER {1425}
+&lt;server sends 1425 octets of message payload&gt;
+S (&lt;--): )
+S (&lt;--): A0004 OK FETCH completed
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">24</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id20">
+    <hgroup>
+      <h3>IMAP</h3>
+    </hgroup>
+    <article class="">
+      <p>What does IMAP look like?</p>
+<p>IMAP (Ask for information, provide answers [Get first message body]):</p>
+<div class="highlight-python"><div class="highlight"><pre>C (--&gt;): A0005 FETCH 1 BODY[TEXT]
+S (&lt;--): * 1 FETCH (BODY[TEXT] {1120}
+&lt;server sends 1120 octets of message payload&gt;
+S (&lt;--): )
+S (&lt;--): * 1 FETCH (FLAGS (\Recent \Seen))
+S (&lt;--): A0005 OK FETCH completed
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">25</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id21">
+    <hgroup>
+      <h3>IMAP</h3>
+    </hgroup>
+    <article class="">
+      <p>What does IMAP look like?</p>
+<p>IMAP (Say goodbye):</p>
+<div class="highlight-python"><div class="highlight"><pre>C (--&gt;): A0006 LOGOUT
+S (&lt;--): * BYE example.com IMAP4rev1 server terminating connection
+S (&lt;--): A0006 OK LOGOUT completed
+C (--&gt;): &lt;client hangs up&gt;
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">26</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id22">
+    <hgroup>
+      <h3>IMAP Characteristics</h3>
+    </hgroup>
+    <article class="">
+      <ul class="build simple">
+<li>Interaction consists of commands and replies</li>
+<li>Each command or reply is <em>one line</em> terminated by &lt;CRLF&gt;</li>
+<li>Each command has a <em>verb</em> and one or more <em>arguments</em></li>
+<li>Each reply has a formal <em>code</em> and an informal <em>explanation</em></li>
+</ul>
+
+
+
+<div class="slide-no">27</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id23">
+    <hgroup>
+      <h3>IMAP Differences</h3>
+    </hgroup>
+    <article class="">
+      <div class="build container">
+<ul class="build simple">
+<li>Commands and replies are prefixed by 'sequence identifier'</li>
+<li>Payloads are prefixed by message size, rather than terminated by reserved
+sequence</li>
+</ul>
+<p>Compared with POP3, what do these differences suggest?</p>
+</div>
+
+
+
+<div class="slide-no">28</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="using-imap-in-python">
+    <hgroup>
+      <h3>Using IMAP in Python</h3>
+    </hgroup>
+    <article class="">
+      <p>Let's try this out for ourselves!</p>
+<div class="build container">
+<div class="container">
+Fire up your python interpreters and prepare to type.</div>
+</div>
+
+
+
+<div class="slide-no">29</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id24">
+    <hgroup>
+      <h3>Using IMAP in Python</h3>
+    </hgroup>
+    <article class="">
+      <p>Begin by importing the <code class="docutils literal"><span class="pre">imaplib</span></code> module from the Python Standard Library:</p>
+<div class="build container">
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">imaplib</span>
+<span class="gp">In [2]: </span><span class="nb">dir</span><span class="p">(</span><span class="n">imaplib</span><span class="p">)</span>
+<span class="gh">Out[2]:</span>
+<span class="go">[&#39;AllowedVersions&#39;,</span>
+<span class="go"> &#39;CRLF&#39;,</span>
+<span class="go"> &#39;Commands&#39;,</span>
+<span class="go">...</span>
+<span class="go"> &#39;timedelta&#39;,</span>
+<span class="go"> &#39;timezone&#39;]</span>
+<span class="gp">In [3]: </span><span class="n">imaplib</span><span class="o">.</span><span class="n">Debug</span> <span class="o">=</span> <span class="mi">4</span>
+</pre></div>
+</div>
+<p>Setting <code class="docutils literal"><span class="pre">imap.Debug</span></code> shows us what is sent and received</p>
+</div>
+
+
+
+<div class="slide-no">30</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id25">
+    <hgroup>
+      <h3>Using IMAP in Python</h3>
+    </hgroup>
+    <article class="">
+      <p>I've prepared a server for us to use, but we'll need to set up a client to
+speak to it.</p>
+<div class="build container">
+<p>Our server requires SSL (Secure Socket Layer) for connecting to IMAP
+servers, so let's initialize an IMAP4_SSL client and authenticate:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [4]: </span><span class="n">conn</span> <span class="o">=</span> <span class="n">imaplib</span><span class="o">.</span><span class="n">IMAP4_SSL</span><span class="p">(</span><span class="s">&#39;mail.webfaction.com&#39;</span><span class="p">)</span>
+<span class="go">  22:40.32 imaplib version 2.58</span>
+<span class="go">  22:40.32 new IMAP4 connection, tag=b&#39;IMKC&#39;</span>
+<span class="go">  22:40.38 &lt; b&#39;* OK [CAPABILITY IMAP4rev1 LITERAL+ SASL-IR LOGIN-REFERRALS ID ENABLE IDLE AUTH=PLAIN] Dovecot ready.&#39;</span>
+<span class="go">  22:40.38 &gt; b&#39;IMKC0 CAPABILITY&#39;</span>
+<span class="go">  22:40.45 &lt; b&#39;* CAPABILITY IMAP4rev1 LITERAL+ SASL-IR LOGIN-REFERRALS ID ENABLE IDLE AUTH=PLAIN&#39;</span>
+<span class="go">  22:40.45 &lt; b&#39;IMKC0 OK Capability completed.&#39;</span>
+<span class="go">  22:40.45 CAPABILITIES: (&#39;IMAP4REV1&#39;, &#39;LITERAL+&#39;, &#39;SASL-IR&#39;, &#39;LOGIN-REFERRALS&#39;, &#39;ID&#39;, &#39;ENABLE&#39;, &#39;IDLE&#39;, &#39;AUTH=PLAIN&#39;)</span>
+<span class="gp">In [5]: </span><span class="n">conn</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="s">&#39;crisewing_demobox&#39;</span><span class="p">,</span> <span class="s">&#39;s00p3rs3cr3t&#39;</span><span class="p">)</span>
+<span class="go">  22:59.92 &gt; b&#39;IMKC1 LOGIN crisewing_demobox &quot;s00p3rs3cr3t&quot;&#39;</span>
+<span class="go">  23:01.79 &lt; b&#39;* CAPABILITY IMAP4rev1 SASL-IR SORT THREAD=REFERENCES MULTIAPPEND UNSELECT LITERAL+ IDLE CHILDREN NAMESPACE LOGIN-REFERRALS STARTTLS AUTH=PLAIN&#39;</span>
+<span class="go">  23:01.79 &lt; b&#39;IMKC1 OK Logged in.&#39;</span>
+<span class="gh">Out[5]: </span><span class="go">(&#39;OK&#39;, [b&#39;Logged in.&#39;])</span>
+</pre></div>
+</div>
+</div>
+
+
+
+<div class="slide-no">31</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id26">
+    <hgroup>
+      <h3>Using IMAP in Python</h3>
+    </hgroup>
+    <article class="">
+      <p>We can start by listing the mailboxes we have on the server:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [6]: </span><span class="n">conn</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
+<span class="go">  26:30.64 &gt; b&#39;IMKC2 LIST &quot;&quot; *&#39;</span>
+<span class="go">  26:30.72 &lt; b&#39;* LIST (\\HasNoChildren) &quot;.&quot; &quot;Trash&quot;&#39;</span>
+<span class="go">  26:30.72 &lt; b&#39;* LIST (\\HasNoChildren) &quot;.&quot; &quot;Drafts&quot;&#39;</span>
+<span class="go">  26:30.72 &lt; b&#39;* LIST (\\HasNoChildren) &quot;.&quot; &quot;Sent&quot;&#39;</span>
+<span class="go">  26:30.72 &lt; b&#39;* LIST (\\HasNoChildren) &quot;.&quot; &quot;Junk&quot;&#39;</span>
+<span class="go">  26:30.72 &lt; b&#39;* LIST (\\HasNoChildren) &quot;.&quot; &quot;INBOX&quot;&#39;</span>
+<span class="go">  26:30.72 &lt; b&#39;IMKC2 OK List completed.&#39;</span>
+<span class="gh">Out[6]:</span>
+<span class="go">(&#39;OK&#39;,</span>
+<span class="go"> [b&#39;(\\HasNoChildren) &quot;.&quot; &quot;Trash&quot;&#39;,</span>
+<span class="go">  b&#39;(\\HasNoChildren) &quot;.&quot; &quot;Drafts&quot;&#39;,</span>
+<span class="go">  b&#39;(\\HasNoChildren) &quot;.&quot; &quot;Sent&quot;&#39;,</span>
+<span class="go">  b&#39;(\\HasNoChildren) &quot;.&quot; &quot;Junk&quot;&#39;,</span>
+<span class="go">  b&#39;(\\HasNoChildren) &quot;.&quot; &quot;INBOX&quot;&#39;])</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">32</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id27">
+    <hgroup>
+      <h3>Using IMAP in Python</h3>
+    </hgroup>
+    <article class="">
+      <p>To interact with our email, we must select a mailbox from the list we received
+earlier:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [7]: </span><span class="n">conn</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s">&#39;INBOX&#39;</span><span class="p">)</span>
+<span class="go">  27:20.96 &gt; b&#39;IMKC3 SELECT INBOX&#39;</span>
+<span class="go">  27:21.04 &lt; b&#39;* FLAGS (\\Answered \\Flagged \\Deleted \\Seen \\Draft)&#39;</span>
+<span class="go">  27:21.04 &lt; b&#39;* OK [PERMANENTFLAGS (\\Answered \\Flagged \\Deleted \\Seen \\Draft \\*)] Flags permitted.&#39;</span>
+<span class="go">  27:21.04 &lt; b&#39;* 1 EXISTS&#39;</span>
+<span class="go">  27:21.04 &lt; b&#39;* 0 RECENT&#39;</span>
+<span class="go">  27:21.04 &lt; b&#39;* OK [UNSEEN 1] First unseen.&#39;</span>
+<span class="go">  27:21.04 &lt; b&#39;* OK [UIDVALIDITY 1357449499] UIDs valid&#39;</span>
+<span class="go">  27:21.04 &lt; b&#39;* OK [UIDNEXT 24] Predicted next UID&#39;</span>
+<span class="go">  27:21.04 &lt; b&#39;IMKC3 OK [READ-WRITE] Select completed.&#39;</span>
+<span class="gh">Out[7]: </span><span class="go">(&#39;OK&#39;, [b&#39;1&#39;])</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">33</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id28">
+    <hgroup>
+      <h3>Using IMAP in Python</h3>
+    </hgroup>
+    <article class="">
+      <p>We can search our selected mailbox for messages matching one or more criteria.</p>
+<div class="build container">
+<p>The return value is a list of bytestrings containing the UIDs of messages
+that match our search:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [8]: </span><span class="n">conn</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="s">&#39;(FROM &quot;cris&quot;)&#39;</span><span class="p">)</span>
+<span class="go">  28:43.02 &gt; b&#39;IMKC4 SEARCH (FROM &quot;cris&quot;)&#39;</span>
+<span class="go">  28:43.09 &lt; b&#39;* SEARCH 1&#39;</span>
+<span class="go">  28:43.09 &lt; b&#39;IMKC4 OK Search completed.&#39;</span>
+<span class="gh">Out[8]: </span><span class="go">(&#39;OK&#39;, [b&#39;1&#39;])</span>
+</pre></div>
+</div>
+</div>
+
+
+
+<div class="slide-no">34</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id29">
+    <hgroup>
+      <h3>Using IMAP in Python</h3>
+    </hgroup>
+    <article class="">
+      <p>Once we've found a message we want to look at, we can use the <code class="docutils literal"><span class="pre">fetch</span></code>
+command to read it from the server.</p>
+<div class="build container">
+<p>IMAP allows fetching each part of a message independently:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [9]: </span><span class="n">conn</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s">&#39;1&#39;</span><span class="p">,</span> <span class="s">&#39;BODY[HEADER]&#39;</span><span class="p">)</span>
+<span class="go">  ...</span>
+<span class="gh">Out[9]: </span><span class="go">(&#39;OK&#39;, ...)</span>
+
+<span class="gp">In [10]: </span><span class="n">conn</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s">&#39;1&#39;</span><span class="p">,</span> <span class="s">&#39;FLAGS&#39;</span><span class="p">)</span>
+<span class="go">  ...</span>
+<span class="gh">Out[10]: </span><span class="go">(&#39;OK&#39;, [b&#39;1 (FLAGS (\\Seen))&#39;])</span>
+
+<span class="gp">In [11]: </span><span class="n">conn</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s">&#39;1&#39;</span><span class="p">,</span> <span class="s">&#39;BODY[TEXT]&#39;</span><span class="p">)</span>
+<span class="go">  ...</span>
+<span class="gh">Out[11]: </span><span class="go">(&#39;OK&#39;, ...)</span>
+</pre></div>
+</div>
+<p>What does the message say?</p>
+</div>
+
+
+
+<div class="slide-no">35</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id30">
+    <hgroup>
+      <h3>Batteries Included</h3>
+    </hgroup>
+    <article class="">
+      <p>Python even includes an <em>email</em> library that would allow us to interact with
+this message in an <em>OO</em> style.</p>
+<div class="build container">
+<em>Neat, Huh?</em></div>
+
+
+
+<div class="slide-no">36</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="what-have-we-learned">
+    <hgroup>
+      <h3>What Have We Learned?</h3>
+    </hgroup>
+    <article class="">
+      <div class="build container">
+<ul class="build simple">
+<li>Protocols are just a set of rules for how to communicate</li>
+<li>Protocols tell us how to parse and delimit messages</li>
+<li>Protocols tell us what messages are valid</li>
+<li>If we properly format request messages to a server, we can get response
+messages</li>
+<li>Python supports a number of these protocols</li>
+<li>So we don't have to remember how to format the commands ourselves</li>
+</ul>
+<p>But in every case we've seen, we could do the same thing with a socket and
+some strings</p>
+</div>
+
+
+
+<div class="slide-no">37</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="break-time">
+    <hgroup>
+      <h3>Break Time</h3>
+    </hgroup>
+    <article class="">
+      <p>Let's take a few minutes here to clear our heads.</p>
+<div class="build container">
+<p>When we return, we'll learn about the king of protocols,</p>
+<p class="large centered">HTTP</p>
+</div>
+
+
+
+<div class="slide-no">38</div>
+
+
+    </article>
+  </slide>  <slide class="level-2" id="http">
+    <hgroup>
+      <h2>HTTP</h2>
     </hgroup>
     <article class="">
       <div class="left container">
-<p>We have a site that allows us to view a list of journal entries.</p>
+<p>HTTP is no different</p>
 <div class="build container">
-<p>We can also view the details of a single entry.</p>
-<p>But as yet, we don't really have any <em>interaction</em> in our site yet.</p>
-<p>We can't create new entries.</p>
-<p>Let's add that functionality next.</p>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>User Input</h3>
-    </hgroup>
-    <article class="">
-      <p>In HTML websites, the traditional way of getting input from users is via
-<a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Forms">HTML forms</a>.</p>
-<div class="build container">
-<p>Forms use <em>input elements</em> to allow users to enter data, pick from
-drop-down lists, or choose items via checkbox or radio button.</p>
-<p>It is possible to create plain HTML forms in templates and use them with
-Pyramid.</p>
-<p>It's a lot easier, however, to work with a <em>form library</em> to create forms,
-render them in templates and interact with data sent by a client.</p>
-<p>We'll be using a form library called <a class="reference external" href="http://wtforms.readthedocs.org/en/latest/">WTForms</a> in our project</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Installing WTForms</h3>
-    </hgroup>
-    <article class="">
-      <p>The first step to working with this library is to install it.</p>
-<div class="build container">
-<p>Start by makin the library as a <em>dependency</em> of our package by adding it to
-the <em>requires</em> list in <tt class="docutils literal"><span class="pre">setup.py</span></tt>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">requires</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="c"># ...</span>
-    <span class="s">&#39;wtforms&#39;</span><span class="p">,</span> <span class="c"># &lt;- add this to the list</span>
-<span class="p">]</span>
-</pre></div>
-</div>
-<p>Then, re-install our package to download and install the new dependency:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>python setup.py develop
-...
-Finished processing dependencies <span class="k">for </span>learning-journal<span class="o">==</span>0.0
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Using WTForms</h3>
-    </hgroup>
-    <article class="">
-      <p>We'll want a form to allow a user to create a new Journal Entry.</p>
-<div class="build container">
-<p>Add a new file called <tt class="docutils literal"><span class="pre">forms.py</span></tt> in our learning_journal package, next to
-<tt class="docutils literal"><span class="pre">models.py</span></tt>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">wtforms</span> <span class="kn">import</span> <span class="n">Form</span><span class="p">,</span> <span class="n">TextField</span><span class="p">,</span> <span class="n">TextAreaField</span><span class="p">,</span> <span class="n">validators</span>
-
-<span class="n">strip_filter</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">if</span> <span class="n">x</span> <span class="k">else</span> <span class="bp">None</span>
-
-<span class="k">class</span> <span class="nc">EntryCreateForm</span><span class="p">(</span><span class="n">Form</span><span class="p">):</span>
-    <span class="n">title</span> <span class="o">=</span> <span class="n">TextField</span><span class="p">(</span>
-        <span class="s">&#39;Entry title&#39;</span><span class="p">,</span>
-        <span class="p">[</span><span class="n">validators</span><span class="o">.</span><span class="n">Length</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">255</span><span class="p">)],</span>
-        <span class="n">filters</span><span class="o">=</span><span class="p">[</span><span class="n">strip_filter</span><span class="p">])</span>
-    <span class="n">body</span> <span class="o">=</span> <span class="n">TextAreaField</span><span class="p">(</span>
-        <span class="s">&#39;Entry body&#39;</span><span class="p">,</span>
-        <span class="p">[</span><span class="n">validators</span><span class="o">.</span><span class="n">Length</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">)],</span>
-        <span class="n">filters</span><span class="o">=</span><span class="p">[</span><span class="n">strip_filter</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Using a Form in a View</h3>
-    </hgroup>
-    <article class="">
-      <p>Next, we need to add a new view that uses this form to create a new entry.</p>
-<div class="build container">
-<p>Add this to <tt class="docutils literal"><span class="pre">views.py</span></tt>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># add these imports</span>
-<span class="kn">from</span> <span class="nn">pyramid.httpexceptions</span> <span class="kn">import</span> <span class="n">HTTPFound</span>
-<span class="kn">from</span> <span class="nn">.forms</span> <span class="kn">import</span> <span class="n">EntryCreateForm</span>
-
-<span class="c"># and update this view function</span>
-<span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="p">()</span>
-    <span class="n">form</span> <span class="o">=</span> <span class="n">EntryCreateForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&#39;POST&#39;</span> <span class="ow">and</span> <span class="n">form</span><span class="o">.</span><span class="n">validate</span><span class="p">():</span>
-        <span class="n">form</span><span class="o">.</span><span class="n">populate_obj</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
-        <span class="n">DBSession</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">HTTPFound</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">route_url</span><span class="p">(</span><span class="s">&#39;home&#39;</span><span class="p">))</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span> <span class="s">&#39;action&#39;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">matchdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;action&#39;</span><span class="p">)}</span>
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Testing the Route/View Connection</h3>
-    </hgroup>
-    <article class="">
-      <p>We already have a route that connects here.  Let's test it.</p>
-<div class="build container">
-<p>Start your server:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>pserve development.ini
-Starting server in PID 90536.
-serving on http://0.0.0.0:6543
-</pre></div>
-</div>
-<p>And then try connecting to the <tt class="docutils literal"><span class="pre">action</span></tt> route:</p>
-<ul class="simple">
-<li><a class="reference external" href="http://localhost:6543/journal/create">http://localhost:6543/journal/create</a></li>
-</ul>
-<p>You should see something like this:</p>
-<div class="highlight-python"><div class="highlight"><pre>{&#39;action&#39;: u&#39;create&#39;, &#39;form&#39;: &lt;learning_journal.forms.EntryCreateForm object at 0x10e7d6b90&gt;}
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Rendering A Form</h3>
-    </hgroup>
-    <article class="">
-      <p>Finally, we need to create a template that will render our form.</p>
-<div class="build container">
-<p>Add a new template called <tt class="docutils literal"><span class="pre">edit.jinja2</span></tt> in
-<tt class="docutils literal"><span class="pre">learning_journal/templates</span></tt>:</p>
-<div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{%</span> <span class="k">extends</span> <span class="s2">&quot;templates/layout.jinja2&quot;</span> <span class="cp">%}</span><span class="x"></span>
-<span class="cp">{%</span> <span class="k">block</span> <span class="nv">body</span> <span class="cp">%}</span><span class="x"></span>
-<span class="x">&lt;form action=&quot;.&quot; method=&quot;POST&quot;&gt;</span>
-<span class="cp">{%</span> <span class="k">for</span> <span class="nv">field</span> <span class="k">in</span> <span class="nv">form</span> <span class="cp">%}</span><span class="x"></span>
-<span class="x">  </span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">field.errors</span> <span class="cp">%}</span><span class="x"></span>
-<span class="x">    &lt;ul&gt;</span>
-<span class="x">    </span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">error</span> <span class="k">in</span> <span class="nv">field.errors</span> <span class="cp">%}</span><span class="x"></span>
-<span class="x">        &lt;li&gt;</span><span class="cp">{{</span> <span class="nv">error</span> <span class="cp">}}</span><span class="x">&lt;/li&gt;</span>
-<span class="x">    </span><span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span><span class="x"></span>
-<span class="x">    &lt;/ul&gt;</span>
-<span class="x">  </span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
-<span class="x">    &lt;p&gt;</span><span class="cp">{{</span> <span class="nv">field.label</span> <span class="cp">}}</span><span class="x">: </span><span class="cp">{{</span> <span class="nv">field</span> <span class="cp">}}</span><span class="x">&lt;/p&gt;</span>
-<span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span><span class="x"></span>
-<span class="x">    &lt;p&gt;&lt;input type=&quot;submit&quot; name=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&lt;/p&gt;</span>
-<span class="x">&lt;/form&gt;</span>
-<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Connecting the Renderer</h3>
-    </hgroup>
-    <article class="">
-      <p>You'll need to update the view configuration to use this new renderer.</p>
-<div class="build container">
-<p>Update the configuration in <tt class="docutils literal"><span class="pre">learning_journal/views.py</span></tt>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="s">&#39;action&#39;</span><span class="p">,</span> <span class="n">match_param</span><span class="o">=</span><span class="s">&#39;action=create&#39;</span><span class="p">,</span>
-             <span class="n">renderer</span><span class="o">=</span><span class="s">&#39;templates/edit.jinja2&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="c"># ...</span>
-</pre></div>
-</div>
-<p>And then you should be able to start your server and test:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>pserve development.ini
-Starting server in PID 90536.
-serving on http://0.0.0.0:6543
-</pre></div>
-</div>
-<ul class="simple">
-<li><a class="reference external" href="http://localhost:6543/create">http://localhost:6543/create</a></li>
+<p>HTTP is also message-centered, with two-way communications:</p>
+<ul class="build simple">
+<li>Requests (Asking for information)</li>
+<li>Responses (Providing answers)</li>
 </ul>
 </div>
+</div>
 
 
+
+<div class="slide-no">39</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="what-does-http-look-like">
     <hgroup>
-      <h3>Providing Access</h3>
+      <h3>What does HTTP look like?</h3>
     </hgroup>
     <article class="">
-      <p>Great!  Now you can add new entries to your journal.</p>
+      <p>HTTP (Ask for information):</p>
+<div class="highlight-http"><div class="highlight"><pre>GET /index.html HTTP/1.1&lt;CRLF&gt;
+Host: www.example.com&lt;CRLF&gt;
+&lt;CRLF&gt;
+</pre></div>
+</div>
+<p><strong>note</strong>: the <code class="docutils literal"><span class="pre">&lt;CRLF&gt;</span></code> you see here is a visualization of the <code class="docutils literal"><span class="pre">\r\n</span></code>
+character sequence.</p>
+
+
+
+<div class="slide-no">40</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id31">
+    <hgroup>
+      <h3>What does HTTP look like?</h3>
+    </hgroup>
+    <article class="">
+      <p>HTTP (Provide answers):</p>
+<div class="highlight-http"><div class="highlight"><pre>HTTP/1.1 200 OK
+Date: Mon, 23 May 2005 22:38:34 GMT
+Server: Apache/1.3.3.7 (Unix) (Red-Hat/Linux)
+Last-Modified: Wed, 08 Jan 2003 23:11:55 GMT
+Etag: &quot;3f80f-1b6-3e1cb03b&quot;
+Accept-Ranges:  none
+Content-Length: 438
+Connection: close
+Content-Type: text/html; charset=UTF-8
+&lt;CRLF&gt;
+&lt;!DOCTYPE html&gt;\n&lt;html&gt;\n  &lt;head&gt;\n    &lt;title&gt;This is a .... &lt;/html&gt;
+</pre></div>
+</div>
+<p>Pay particular attention to the <code class="docutils literal"><span class="pre">&lt;CRLF&gt;</span></code> on a line by itself.</p>
+
+
+
+<div class="slide-no">41</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id32">
+    <hgroup>
+      <h3>HTTP Core Format</h3>
+    </hgroup>
+    <article class="">
+      <p>In HTTP, both <em>request</em> and <em>response</em> share a common basic format:</p>
+<ul class="build simple">
+<li>Line separators are &lt;CRLF&gt; (familiar, no?)</li>
+<li>A required initial line (a command or a response code)</li>
+<li>A (mostly) optional set of headers, one per line</li>
+<li>A blank line</li>
+<li>An optional body</li>
+</ul>
+
+
+
+<div class="slide-no">42</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="implementing-http">
+    <hgroup>
+      <h3>Implementing HTTP</h3>
+    </hgroup>
+    <article class="">
+      <p>Let's investigate the HTTP protocol a bit in real life.</p>
 <div class="build container">
-<p>But in order to do so, you have to hand-enter the url.</p>
-<p>You should add a new link in the UI somewhere that helps you get there more
-easily.</p>
-<p>Add the following to <tt class="docutils literal"><span class="pre">list.jinja2</span></tt>:</p>
-<div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{%</span> <span class="k">extends</span> <span class="s2">&quot;layout.jinja2&quot;</span> <span class="cp">%}</span><span class="x"></span>
-<span class="cp">{%</span> <span class="k">block</span> <span class="nv">body</span> <span class="cp">%}</span><span class="x"></span>
-<span class="cp">{%</span> <span class="k">if</span> <span class="nv">entries</span> <span class="cp">%}</span><span class="x"></span>
-<span class="x">...</span>
-<span class="cp">{%</span> <span class="k">else</span> <span class="cp">%}</span><span class="x"></span>
-<span class="x">...</span>
-<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
-<span class="x">&lt;!-- Add This Link --&gt;</span>
-<span class="x">&lt;p&gt;&lt;a href=&quot;</span><span class="cp">{{</span> <span class="nv">request.route_url</span><span class="o">(</span><span class="s1">&#39;action&#39;</span><span class="o">,</span> <span class="nv">action</span><span class="o">=</span><span class="s1">&#39;create&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x">&quot;&gt;New Entry&lt;/a&gt;&lt;/p&gt;</span>
-<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+<p>We'll do so by building a simplified HTTP server, one step at a time.</p>
+<p>There is a copy of the echo server from last time in
+<code class="docutils literal"><span class="pre">resources/session02</span></code>. It's called <code class="docutils literal"><span class="pre">http_server.py</span></code>.</p>
+<p>In a terminal, move into that directory. We'll be doing our work here for
+the rest of the session</p>
+</div>
+
+
+
+<div class="slide-no">43</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id33">
+    <hgroup>
+      <h3>TDD IRL (a quick aside)</h3>
+    </hgroup>
+    <article class="">
+      <p>Test Driven Development (TDD) is all the rage these days.</p>
+<div class="build container">
+<p>It means that before you write code, you first write tests demonstrating
+what you want your code to do.</p>
+<p>When all your tests pass, you are finished. You did this for your last
+assignment.</p>
+<p>We'll be doing it again today.</p>
+</div>
+
+
+
+<div class="slide-no">44</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id34">
+    <hgroup>
+      <h3>Run the Tests</h3>
+    </hgroup>
+    <article class="">
+      <p>From inside <code class="docutils literal"><span class="pre">resources/session02</span></code> start a second python interpreter and run
+<code class="docutils literal"><span class="pre">$</span> <span class="pre">python</span> <span class="pre">http_server.py</span></code></p>
+<div class="build container">
+<p>In your first interpreter run the tests. You should see similar output:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python tests.py
+<span class="o">[</span>...<span class="o">]</span>
+Ran <span class="m">10</span> tests in 0.054s
+
+FAILED <span class="o">(</span><span class="nv">failures</span><span class="o">=</span>3, <span class="nv">errors</span><span class="o">=</span>7<span class="o">)</span>
+</pre></div>
+</div>
+<p>Let's take a few minutes here to look at these tests and understand them.</p>
+</div>
+
+
+
+<div class="slide-no">45</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id35">
+    <hgroup>
+      <h3>Viewing an HTTP Request</h3>
+    </hgroup>
+    <article class="">
+      <p>Our job is to make all those tests pass.</p>
+<div class="build container">
+<p>First, though, let's pretend this server really is a functional HTTP
+server.</p>
+<p>This time, instead of using the echo client to make a connection to the
+server, let's use a web browser!</p>
+<p>Point your favorite browser at <code class="docutils literal"><span class="pre">http://localhost:10000</span></code></p>
+</div>
+
+
+
+<div class="slide-no">46</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id36">
+    <hgroup>
+      <h3>A Bad Interaction</h3>
+    </hgroup>
+    <article class="">
+      <p>First, look at the printed output from your echo server.</p>
+<div class="build container">
+<p>Second, note that your browser is still waiting to finish loading the page</p>
+<p>Moreover, your server should also be hung, waiting for more from the
+'client'</p>
+<p>This is because the server is waiting for the browser to respond</p>
+<p>And at the same time, the browser is waiting for the server to indicate it
+is done.</p>
+<p>Our server does not yet speak the HTTP protocol, but the browser is
+expecting it.</p>
+</div>
+
+
+
+<div class="slide-no">47</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id37">
+    <hgroup>
+      <h3>Echoing A Request</h3>
+    </hgroup>
+    <article class="">
+      <p>Kill your server with <code class="docutils literal"><span class="pre">ctrl-c</span></code> (the keyboard interrupt) and you should see
+some printed content in your browser:</p>
+<div class="build container">
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">localhost:10000</span>
+<span class="na">User-Agent</span><span class="o">:</span> <span class="l">Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:22.0) Gecko/20100101 Firefox/22.0</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</span>
+<span class="na">Accept-Language</span><span class="o">:</span> <span class="l">en-US,en;q=0.5</span>
+<span class="na">Accept-Encoding</span><span class="o">:</span> <span class="l">gzip, deflate</span>
+<span class="na">DNT</span><span class="o">:</span> <span class="l">1</span>
+<span class="na">Cookie</span><span class="o">:</span> <span class="l">__utma=111872281.383966302.1364503233.1364503233.1364503233.1; __utmz=111872281.1364503233.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); csrftoken=uiqj579iGRbReBHmJQNTH8PFfAz2qRJS</span>
+<span class="na">Connection</span><span class="o">:</span> <span class="l">keep-alive</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">max-age=0</span>
+</pre></div>
+</div>
+<p>Your server is simply echoing what it receives, so this is an <em>HTTP
+Request</em> as sent by your browser.</p>
+</div>
+
+
+
+<div class="slide-no">48</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id38">
+    <hgroup>
+      <h3>HTTP Debugging</h3>
+    </hgroup>
+    <article class="">
+      <p>When working on HTTP applications, it's nice to be able to see all this going back
+and forth.</p>
+<div class="build container">
+<p>Good browsers support this with a set of developer tools built-in.</p>
+<ul class="build simple">
+<li>firefox -&gt; ctrl-shift-K or cmd-opt-K (os X)</li>
+<li>safari -&gt; enable in preferences:advanced then cmd-opt-i</li>
+<li>chrome -&gt; ctrl-shift-i or cmd-opt-i (os X)</li>
+<li>IE (7.0+) -&gt; F12 or tools menu -&gt; developer tools</li>
+</ul>
+<p>The 'Net(work)' pane of these tools can show you both request and response,
+headers and all. Very useful.</p>
+</div>
+
+
+
+<div class="slide-no">49</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id39">
+    <hgroup>
+      <h3>Stop! Demo Time</h3>
+    </hgroup>
+    <article class="">
+      <p class="centered"><strong>Let's take a quick look</strong></p>
+
+
+
+<div class="slide-no">50</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id40">
+    <hgroup>
+      <h3>Other Debugging Options</h3>
+    </hgroup>
+    <article class="">
+      <p>Sometimes you need or want to debug http requests that are not going through
+your browser.</p>
+<div class="build container">
+<p>Or perhaps you need functionality that is not supported by in-browser tools
+(request munging, header mangling, decryption of https request/responses)</p>
+<p>Then it might be time for an HTTP debugging proxy:</p>
+<ul class="build simple">
+<li>windows: <a class="reference external" href="http://www.fiddler2.com/fiddler2/">http://www.fiddler2.com/fiddler2/</a></li>
+<li>win/osx/linux: <a class="reference external" href="http://www.charlesproxy.com/">http://www.charlesproxy.com/</a></li>
+</ul>
+<p>We won't cover any of these tools here today.  But you can check them out
+when you have the time.</p>
+</div>
+
+
+
+<div class="slide-no">51</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="step-1-basic-http-protocol">
+    <hgroup>
+      <h3>Step 1: Basic HTTP Protocol</h3>
+    </hgroup>
+    <article class="">
+      <p>In HTTP 1.0, the only required line in an HTTP request is this:</p>
+<div class="highlight-http"><div class="highlight"><pre>GET /path/to/index.html HTTP/1.0&lt;CRLF&gt;
+&lt;CRLF&gt;
+</pre></div>
+</div>
+<div class="build container">
+<p>As virtual hosting grew more common, that was not enough, so HTTP 1.1 adds
+a single required <em>header</em>, <strong>Host</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre>GET /path/to/index.html HTTP/1.1&lt;CRLF&gt;
+Host: www.mysite1.com:80&lt;CRLF&gt;
+&lt;CRLF&gt;
 </pre></div>
 </div>
 </div>
 
 
 
+<div class="slide-no">52</div>
+
 
     </article>
-  </slide>  <slide class="level-2">
+  </slide>  <slide class="level-3" id="id41">
     <hgroup>
-      <h2>Homework</h2>
+      <h3>HTTP Responses</h3>
     </hgroup>
     <article class="">
-      <div class="left container">
-<p>You have a website now that allows you to create, view and list journal
-entries</p>
+      <p>In both HTTP 1.0 and 1.1, a proper response consists of an intial line,
+followed by optional headers, a single blank line, and then optionally a
+response body:</p>
 <div class="build container">
-<p>However, there are still a few flaws in this system.</p>
-<p>You should be able to edit a journal entry that already exists, in case
-you make a spelling error.</p>
-<p>It would also be nice to see a prettier site.</p>
-<p>Let's handle that for homework this week.</p>
+<div class="highlight-http"><div class="highlight"><pre>HTTP/1.1 200 OK&lt;CRLF&gt;
+Content-Type: text/plain&lt;CRLF&gt;
+&lt;CRLF&gt;
+this is a pretty minimal response
+</pre></div>
 </div>
+<p>Let's update our server to return such a response.</p>
 </div>
 
 
+
+<div class="slide-no">53</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id42">
     <hgroup>
-      <h3>Part 1: Add Editing</h3>
+      <h3>Returning a Canned HTTP Response</h3>
     </hgroup>
     <article class="">
-      <p>For part one of your assignment, add editing of existing entries. You will need:</p>
-<ul class="simple">
-<li>A form that shows an existing entry (what is different about this form from
-one for creating a new entry?)</li>
-<li>A pyramid view that handles that form. It should:<ul>
-<li>Show the form with the requested entry when the page is first loaded</li>
-<li>Accept edits only on POST</li>
-<li>Update an existing entry with new data from the form</li>
-<li>Show the view of the entry after editing so that the user can see the edits
-saved correctly</li>
-<li>Show errors from form validation, if any are present</li>
+      <p>Begin by implementing a new function in your <code class="docutils literal"><span class="pre">http_server.py</span></code> script called
+<cite>response_ok</cite>.</p>
+<div class="build container">
+<p>It can be super-simple for now.  We'll improve it later.</p>
+<div class="container">
+<p>It needs to return our minimal response from above:</p>
+<div class="highlight-http"><div class="highlight"><pre>HTTP/1.1 200 OK&lt;CRLF&gt;
+Content-Type: text/plain&lt;CRLF&gt;
+&lt;CRLF&gt;
+this is a pretty minimal response
+</pre></div>
+</div>
+</div>
+<p><strong>Remember, &lt;CRLF&gt; is a placeholder for the</strong> <code class="docutils literal"><span class="pre">\r\n</span></code> <strong>character sequence</strong></p>
+</div>
+
+
+
+<div class="slide-no">54</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id43">
+    <hgroup>
+      <h3>My Solution</h3>
+    </hgroup>
+    <article class="">
+      <div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">response_ok</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;returns a basic HTTP response&quot;&quot;&quot;</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">resp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b</span><span class="s">&quot;HTTP/1.1 200 OK&quot;</span><span class="p">)</span>
+    <span class="n">resp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b</span><span class="s">&quot;Content-Type: text/plain&quot;</span><span class="p">)</span>
+    <span class="n">resp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">resp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b</span><span class="s">&quot;this is a pretty minimal response&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">b</span><span class="s">&quot;</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Did you remember that sockets only accept bytes?</p>
+
+
+
+<div class="slide-no">55</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id44">
+    <hgroup>
+      <h3>Run The Tests</h3>
+    </hgroup>
+    <article class="">
+      <p>We've now implemented a function that is tested by our tests. Let's run them
+again:</p>
+<div class="build container">
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python tests.py
+<span class="o">[</span>...<span class="o">]</span>
+----------------------------------------------------------------------
+Ran <span class="m">10</span> tests in 0.002s
+
+FAILED <span class="o">(</span><span class="nv">failures</span><span class="o">=</span>3, <span class="nv">errors</span><span class="o">=</span>3<span class="o">)</span>
+</pre></div>
+</div>
+<p>Great!  We've now got 4 tests that pass.  Good work.</p>
+</div>
+
+
+
+<div class="slide-no">56</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id45">
+    <hgroup>
+      <h3>Server Modifications</h3>
+    </hgroup>
+    <article class="">
+      <p>Next, we need to rebuild the server loop from our echo server for it's new
+purpose:</p>
+<div class="build container">
+<p>It should now wait for an incoming request to be <em>finished</em>, <em>then</em> send a
+response back to the client.</p>
+<p>The response it sends can be the result of calling our new <code class="docutils literal"><span class="pre">response_ok</span></code>
+function for now.</p>
+<p>We could also bump up the <code class="docutils literal"><span class="pre">recv</span></code> buffer size to something more reasonable
+for HTTP traffic, say 1024.</p>
+</div>
+
+
+
+<div class="slide-no">57</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id46">
+    <hgroup>
+      <h3>My Solution</h3>
+    </hgroup>
+    <article class="">
+      <div class="highlight-python"><div class="highlight"><pre><span class="c"># ...</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;waiting for a connection&#39;</span><span class="p">,</span> <span class="nb">file</span><span class="o">=</span><span class="n">log_buffer</span><span class="p">)</span>
+        <span class="n">conn</span><span class="p">,</span> <span class="n">addr</span> <span class="o">=</span> <span class="n">sock</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>  <span class="c"># blocking</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&#39;connection - {0}:{1}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">addr</span><span class="p">),</span> <span class="nb">file</span><span class="o">=</span><span class="n">log_buffer</span><span class="p">)</span>
+            <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1024</span><span class="p">:</span>
+                    <span class="k">break</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&#39;sending response&#39;</span><span class="p">,</span> <span class="nb">file</span><span class="o">=</span><span class="n">log_buffer</span><span class="p">)</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">response_ok</span><span class="p">()</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="c"># ...</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">58</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id47">
+    <hgroup>
+      <h3>Run The Tests</h3>
+    </hgroup>
+    <article class="">
+      <p>Once you've got that set, restart your server:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ python http_server.py
+</pre></div>
+</div>
+<div class="build container">
+<p>Then you can re-run your tests:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python tests.py
+<span class="o">[</span>...<span class="o">]</span>
+----------------------------------------------------------------------
+Ran <span class="m">10</span> tests in 0.003s
+
+FAILED <span class="o">(</span><span class="nv">failures</span><span class="o">=</span>2, <span class="nv">errors</span><span class="o">=</span>3<span class="o">)</span>
+</pre></div>
+</div>
+<p>Five tests now pass!</p>
+</div>
+
+
+
+<div class="slide-no">59</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="step-2-handling-http-methods">
+    <hgroup>
+      <h3>Step 2: Handling HTTP Methods</h3>
+    </hgroup>
+    <article class="">
+      <p>Every HTTP request <strong>must</strong> begin with a single line, broken by whitespace into
+three parts:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/path/to/index.html</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+<div class="build container">
+<p>The three parts are the <em>method</em>, the <em>URI</em>, and the <em>protocol</em></p>
+<p>Let's look at each in turn.</p>
+</div>
+
+
+
+<div class="slide-no">60</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id48">
+    <hgroup>
+      <h3>HTTP Methods</h3>
+    </hgroup>
+    <article class="">
+      <p><strong>GET</strong> <code class="docutils literal"><span class="pre">/path/to/index.html</span> <span class="pre">HTTP/1.1</span></code></p>
+<ul class="build simple">
+<li>Every HTTP request must start with a <em>method</em></li>
+<li>There are four main HTTP methods:<ul class="build">
+<li>GET</li>
+<li>POST</li>
+<li>PUT</li>
+<li>DELETE</li>
 </ul>
 </li>
-<li>A link somewhere that leads to the editing page for a single entry (probably
-on the view page for a entry)</li>
-</ul>
-<p>You'll need to update a bit of configuration, but not much.  Use the create
-form we did here in class as an example.</p>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Part 2: Make it Yours</h3>
-    </hgroup>
-    <article class="">
-      <p>I've created for you a very bare-bones layout and stylesheet.</p>
-<p>You will certainly want to add a bit of your own style and panache.</p>
-<p>Spend a few hours this week playing with the styles and getting a site that
-looks more like you want it to look.</p>
-<p>The Mozilla Developer Network has <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/CSS">some excellent resources</a> for learning CSS.</p>
-<p>In particular, the <a class="reference external" href="https://developer.mozilla.org/en-US/docs/CSS/Getting_Started">Getting Started with CSS</a> tutorial is a thorough
-introduction to the basics.</p>
-<p>You might also look at their <a class="reference external" href="https://developer.mozilla.org/en-US/demos/tag/tech:css3">CSS 3 Demos</a> to help fire up your creative
-juices.</p>
-<p>Here are a few more resources:</p>
-<ul class="simple">
-<li><a class="reference external" href="http://alistapart.com">A List Apart</a> offers outstanding articles.  Their
-<a class="reference external" href="http://alistapart.com/topics">Topics list</a> is worth a browse.</li>
-<li><a class="reference external" href="http://www.smashingmagazine.com">Smashing Magazine</a> is another excellent
-resource for articles on design.</li>
+<li>There are others, notably HEAD, but you won't see them too much</li>
 </ul>
 
 
 
+<div class="slide-no">61</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id49">
     <hgroup>
-      <h3>Part 3: User Model</h3>
+      <h3>HTTP Methods</h3>
     </hgroup>
     <article class="">
-      <p>As it stands, our journal accepts entries from anyone who comes by.</p>
-<p>Next week we will add security to allow only logged-in users to create and edit
-entries.</p>
-<p>To do so, we'll need a user model</p>
-<p>The model should have:</p>
-<ul class="simple">
-<li>An <tt class="docutils literal"><span class="pre">id</span></tt> field that is a primary key</li>
-<li>A <tt class="docutils literal"><span class="pre">username</span></tt> field that is unicode, no more than 255 characters, not
-nullable, unique and indexed.</li>
-<li>A <tt class="docutils literal"><span class="pre">password</span></tt> field that is unicode and not nullable</li>
+      <p>These four methods are mapped to the four basic steps (<em>CRUD</em>) of persistent
+storage:</p>
+<ul class="build simple">
+<li>POST = Create</li>
+<li>GET = Read</li>
+<li>PUT = Update</li>
+<li>DELETE = Delete</li>
 </ul>
-<p>In addition, the model should have a classmethod that retrieves a specific user
-when given a username.</p>
 
 
+
+<div class="slide-no">62</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id50">
     <hgroup>
-      <h3>Part 4: Preparation for Deployment</h3>
+      <h3>Methods: Safe &lt;--&gt; Unsafe</h3>
     </hgroup>
     <article class="">
-      <p>At the end of class next week we will be deploying our application to Heroku.</p>
-<p>You will need to get a free account.</p>
-<p>Once you have your free account set up and you have logged in, run through the
-<a class="reference external" href="https://devcenter.heroku.com/articles/getting-started-with-python#introduction">getting started with Python</a> tutorial.</p>
-<p>Be sure to at least complete the <em>set up</em> step. It will have you install the
-Heroku Toolbelt, which you will need to have ready in class.</p>
+      <p>HTTP methods can be categorized as <strong>safe</strong> or <strong>unsafe</strong>, based on whether
+they might change something on the server:</p>
+<div class="build container">
+<ul class="build simple">
+<li>Safe HTTP Methods<ul>
+<li>GET</li>
+</ul>
+</li>
+<li>Unsafe HTTP Methods<ul>
+<li>POST</li>
+<li>PUT</li>
+<li>DELETE</li>
+</ul>
+</li>
+</ul>
+<p>This is a <em>normative</em> distinction, which is to say <strong>be careful</strong></p>
+</div>
 
 
+
+<div class="slide-no">63</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id51">
+    <hgroup>
+      <h3>Methods: Idempotent &lt;--&gt; ???</h3>
+    </hgroup>
+    <article class="">
+      <p>HTTP methods can be categorized as <strong>idempotent</strong>.</p>
+<div class="build container">
+<p>This means that a given request will always have the same result:</p>
+<ul class="build simple">
+<li>Idempotent HTTP Methods<ul>
+<li>GET</li>
+<li>PUT</li>
+<li>DELETE</li>
+</ul>
+</li>
+<li>Non-Idempotent HTTP Methods<ul>
+<li>POST</li>
+</ul>
+</li>
+</ul>
+<p>Again, <em>normative</em>. The developer is responsible for ensuring that it is true.</p>
+</div>
+
+
+
+<div class="slide-no">64</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id52">
+    <hgroup>
+      <h3>HTTP Method Handling</h3>
+    </hgroup>
+    <article class="">
+      <p>Let's keep things simple, our server will only respond to <em>GET</em> requests.</p>
+<div class="build container">
+<p>We need to create a function that parses a request and determines if we can
+respond to it: <code class="docutils literal"><span class="pre">parse_request</span></code>.</p>
+<p>If the request method is not <em>GET</em>, our method should raise an error</p>
+<p>Remember, although a request is more than one line long, all we care about
+here is the first line</p>
+</div>
+
+
+
+<div class="slide-no">65</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id53">
+    <hgroup>
+      <h3>My Solution</h3>
+    </hgroup>
+    <article class="">
+      <div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">parse_request</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">first_line</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">method</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">protocol</span> <span class="o">=</span> <span class="n">first_line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="o">!=</span> <span class="s">&quot;GET&quot;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s">&quot;We only accept GET&quot;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;request is okay&#39;</span><span class="p">,</span> <span class="nb">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">66</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id54">
+    <hgroup>
+      <h3>Update the Server</h3>
+    </hgroup>
+    <article class="">
+      <p>We'll also need to update the server code. It should</p>
+<ul class="build simple">
+<li>save the request as it comes in</li>
+<li>check the request using our new function</li>
+<li>send an OK response if things go well</li>
+</ul>
+
+
+
+<div class="slide-no">67</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id55">
+    <hgroup>
+      <h3>My Solution</h3>
+    </hgroup>
+    <article class="">
+      <div class="highlight-python"><div class="highlight"><pre><span class="c"># ...</span>
+<span class="n">conn</span><span class="p">,</span> <span class="n">addr</span> <span class="o">=</span> <span class="n">sock</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span> <span class="c"># blocking</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;connection - {0}:{1}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">addr</span><span class="p">),</span> <span class="nb">file</span><span class="o">=</span><span class="n">log_buffer</span><span class="p">)</span>
+    <span class="n">request</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+        <span class="n">request</span> <span class="o">+=</span> <span class="n">data</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1024</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="n">parse_request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;sending response&#39;</span><span class="p">,</span> <span class="nb">file</span><span class="o">=</span><span class="n">log_buffer</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">response_ok</span><span class="p">()</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="c"># ...</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">68</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id56">
+    <hgroup>
+      <h3>Run The Tests</h3>
+    </hgroup>
+    <article class="">
+      <p>Quit and restart your server now that you've updated the code:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ python http_server.py
+</pre></div>
+</div>
+<div class="build container">
+<p>At this point, we should have seven tests passing:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python tests.py
+Ran <span class="m">10</span> tests in 0.002s
+
+FAILED <span class="o">(</span><span class="nv">failures</span><span class="o">=</span>1, <span class="nv">errors</span><span class="o">=</span>2<span class="o">)</span>
+</pre></div>
+</div>
+</div>
+
+
+
+<div class="slide-no">69</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id57">
+    <hgroup>
+      <h3>What About a Browser?</h3>
+    </hgroup>
+    <article class="">
+      <p>Quit and restart your server, now that you've updated the code.</p>
+<div class="build container">
+<p>Reload your browser.  It should work fine.</p>
+<p>We can use the <code class="docutils literal"><span class="pre">simple_client.py</span></code> script in our resources to test our
+error condition.  In a second terminal window run the script like so:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ python simple_client.py &quot;POST / HTTP/1.0\r\n\r\n&quot;
+</pre></div>
+</div>
+<p>You'll have to quit the client pretty quickly with <code class="docutils literal"><span class="pre">ctrl-c</span></code></p>
+</div>
+
+
+
+<div class="slide-no">70</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="step-3-error-responses">
+    <hgroup>
+      <h3>Step 3: Error Responses</h3>
+    </hgroup>
+    <article class="">
+      <p>Okay, so the outcome there was pretty ugly. The client went off the rails, and
+our server has terminated as well.</p>
+<div class="build container">
+<p class="centered"><strong>why?</strong></p>
+<p>The HTTP protocol allows us to handle errors like this more gracefully.</p>
+<p class="centered"><strong>Enter the Response Code</strong></p>
+</div>
+
+
+
+<div class="slide-no">71</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id58">
+    <hgroup>
+      <h3>HTTP Response Codes</h3>
+    </hgroup>
+    <article class="">
+      <p><code class="docutils literal"><span class="pre">HTTP/1.1</span></code> <strong>200 OK</strong></p>
+<p>All HTTP responses must include a <strong>response code</strong> indicating the outcome of
+the request.</p>
+<div class="build container">
+<ul class="build simple">
+<li>1xx (HTTP 1.1 only) - Informational message</li>
+<li>2xx - Success of some kind</li>
+<li>3xx - Redirection of some kind</li>
+<li>4xx - Client Error of some kind</li>
+<li>5xx - Server Error of some kind</li>
+</ul>
+<p>The text bit makes the code more human-readable</p>
+</div>
+
+
+
+<div class="slide-no">72</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id59">
+    <hgroup>
+      <h3>Common Response Codes</h3>
+    </hgroup>
+    <article class="">
+      <p>There are certain HTTP response codes you are likely to see (and use) most
+often:</p>
+<div class="build container">
+<ul class="build simple">
+<li><code class="docutils literal"><span class="pre">200</span> <span class="pre">OK</span></code> - Everything is good</li>
+<li><code class="docutils literal"><span class="pre">301</span> <span class="pre">Moved</span> <span class="pre">Permanently</span></code> - You should update your link</li>
+<li><code class="docutils literal"><span class="pre">304</span> <span class="pre">Not</span> <span class="pre">Modified</span></code> - You should load this from cache</li>
+<li><code class="docutils literal"><span class="pre">404</span> <span class="pre">Not</span> <span class="pre">Found</span></code> - You've asked for something that doesn't exist</li>
+<li><code class="docutils literal"><span class="pre">500</span> <span class="pre">Internal</span> <span class="pre">Server</span> <span class="pre">Error</span></code> - Something bad happened</li>
+</ul>
+<p>Do not be afraid to use other, less common codes in building good apps.
+There are a lot of them for a reason.</p>
+<p>See <a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html">http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html</a></p>
+</div>
+
+
+
+<div class="slide-no">73</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id60">
+    <hgroup>
+      <h3>Handling our Error</h3>
+    </hgroup>
+    <article class="">
+      <p>Luckily, there's an error code that is tailor-made for this situation.</p>
+<div class="build container">
+<p>The client has made a request using a method we do not support</p>
+<p><code class="docutils literal"><span class="pre">405</span> <span class="pre">Method</span> <span class="pre">Not</span> <span class="pre">Allowed</span></code></p>
+<p>Let's add a new function that returns this error code. It should be called
+<code class="docutils literal"><span class="pre">response_method_not_allowed</span></code></p>
+<p>Remember, it must be a complete HTTP Response with the correct <em>code</em></p>
+</div>
+
+
+
+<div class="slide-no">74</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id61">
+    <hgroup>
+      <h3>My Solution</h3>
+    </hgroup>
+    <article class="">
+      <div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">response_method_not_allowed</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;returns a 405 Method Not Allowed response&quot;&quot;&quot;</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">resp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;HTTP/1.1 405 Method Not Allowed&quot;</span><span class="p">)</span>
+    <span class="n">resp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s">&quot;</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">75</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id62">
+    <hgroup>
+      <h3>Server Updates</h3>
+    </hgroup>
+    <article class="">
+      <p>Again, we'll need to update the server to handle this error condition
+correctly.  It should</p>
+<ul class="build simple">
+<li>catch the exception raised by the <code class="docutils literal"><span class="pre">parse_request</span></code> function</li>
+<li>create our new error response as a result</li>
+<li>if no exception is raised, then create the OK response</li>
+<li>return the generated response to the user</li>
+</ul>
+
+
+
+<div class="slide-no">76</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id63">
+    <hgroup>
+      <h3>My Solution</h3>
+    </hgroup>
+    <article class="">
+      <div class="highlight-python"><div class="highlight"><pre><span class="c"># ...</span>
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+    <span class="n">request</span> <span class="o">+=</span> <span class="n">data</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1024</span><span class="p">:</span>
+        <span class="k">break</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">parse_request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">:</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">response_method_not_allowed</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">response_ok</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">&#39;sending response&#39;</span><span class="p">,</span> <span class="nb">file</span><span class="o">=</span><span class="n">log_buffer</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">))</span>
+<span class="c"># ...</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">77</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id64">
+    <hgroup>
+      <h3>Run The Tests</h3>
+    </hgroup>
+    <article class="">
+      <p>Start your server (or restart it if by some miracle it's still going).</p>
+<div class="build container">
+<p>Then run the tests again:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ python tests.py
+[...]
+Ran 10 tests in 0.002s
+
+OK
+</pre></div>
+</div>
+<p>Wahoo! All our tests are passing. That means we are done writing code for
+now.</p>
+</div>
+
+
+
+<div class="slide-no">78</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="step-4-serving-resources">
+    <hgroup>
+      <h3>Step 4: Serving Resources</h3>
+    </hgroup>
+    <article class="">
+      <p>We've got a very simple server that accepts a request and sends a response.
+But what happens if we make a different request?</p>
+<div class="build container">
+<div class="container">
+<p>In your web browser, enter the following URL:</p>
+<div class="highlight-python"><div class="highlight"><pre>http://localhost:10000/page
+</pre></div>
+</div>
+</div>
+<div class="container">
+<p>What happened? What happens if you use this URL:</p>
+<div class="highlight-python"><div class="highlight"><pre>http://localhost:10000/section/page?
+</pre></div>
+</div>
+</div>
+</div>
+
+
+
+<div class="slide-no">79</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id65">
+    <hgroup>
+      <h3>Determining a Resource</h3>
+    </hgroup>
+    <article class="">
+      <p>We expect different urls to result in different responses.</p>
+<div class="build container">
+<p>Each separate <em>path</em> provided should map to a <em>resource</em></p>
+<p>But this isn't happening with our server, for obvious reasons.</p>
+<p>It brings us back to the second element of that first line of an HTTP
+request.</p>
+<p class="centered"><strong>The Return of the URI</strong></p>
+</div>
+
+
+
+<div class="slide-no">80</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id66">
+    <hgroup>
+      <h3>HTTP Requests: URI</h3>
+    </hgroup>
+    <article class="">
+      <p><code class="docutils literal"><span class="pre">GET</span></code> <strong>/path/to/index.html</strong> <code class="docutils literal"><span class="pre">HTTP/1.1</span></code></p>
+<ul class="build simple">
+<li>Every HTTP request must include a <strong>URI</strong> used to determine the <strong>resource</strong> to
+be returned</li>
+<li>URI??
+<a class="reference external" href="http://stackoverflow.com/questions/176264/whats-the-difference-between-a-uri-and-a-url/1984225#1984225">http://stackoverflow.com/questions/176264/whats-the-difference-between-a-uri-and-a-url/1984225#1984225</a></li>
+<li>Resource?  Files (html, img, .js, .css), but also:<ul class="build">
+<li>Dynamic scripts</li>
+<li>Raw data</li>
+<li>API endpoints</li>
+</ul>
+</li>
+</ul>
+
+
+
+<div class="slide-no">81</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id67">
+    <hgroup>
+      <h3>Parsing a Request</h3>
+    </hgroup>
+    <article class="">
+      <p>Our <code class="docutils literal"><span class="pre">parse_request</span></code> method actually already finds the <code class="docutils literal"><span class="pre">uri</span></code> in the first
+line of a request</p>
+<div class="build container">
+<p>All we need to do is update the method so that it <em>returns</em> that uri</p>
+<p>Then we can use it.</p>
+</div>
+
+
+
+<div class="slide-no">82</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id68">
+    <hgroup>
+      <h3>My Solution</h3>
+    </hgroup>
+    <article class="">
+      <div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">parse_request</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">first_line</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">method</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">protocol</span> <span class="o">=</span> <span class="n">first_line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="o">!=</span> <span class="s">&quot;GET&quot;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s">&quot;We only accept GET&quot;</span><span class="p">)</span>
+    <span class="k">print</span> <span class="o">&gt;&gt;</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&#39;request is okay&#39;</span>
+    <span class="c"># add the following line:</span>
+    <span class="k">return</span> <span class="n">uri</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">83</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id69">
+    <hgroup>
+      <h3>Pass It Along</h3>
+    </hgroup>
+    <article class="">
+      <p>Now we can update our server code so that it uses the return value of
+<code class="docutils literal"><span class="pre">parse_request</span></code>.</p>
+<div class="build container">
+<p>That's a pretty simple change:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">try</span><span class="p">:</span>
+    <span class="n">uri</span> <span class="o">=</span> <span class="n">parse_request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>  <span class="c"># update this line</span>
+<span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">:</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">response_method_not_allowed</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="c"># and modify this block</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">content</span><span class="p">,</span> <span class="n">mime_type</span> <span class="o">=</span> <span class="n">resolve_uri</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">response_not_found</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">response_ok</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">mime_type</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+
+
+<div class="slide-no">84</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="homework">
+    <hgroup>
+      <h3>Homework</h3>
+    </hgroup>
+    <article class="">
+      <p>You may have noticed that we just added calls to functions that don't yet exist</p>
+<div class="build container">
+<p>It's a program that shows you what you want to do, but won't actually run.</p>
+<p>For your homework this week you will create these functions, completing the
+HTTP server.</p>
+<p>Your starting point will be what we've made here in class.</p>
+<p>I've added a directory to <code class="docutils literal"><span class="pre">resources/session02</span></code> called <code class="docutils literal"><span class="pre">homework</span></code>.</p>
+<p>In it, you'll find this <code class="docutils literal"><span class="pre">http_server.py</span></code> file we've just written in class.</p>
+<p>That file also contains enough stub code for the missing functions to let
+the server run.</p>
+<p>And there are more tests for you to make pass!</p>
+</div>
+
+
+
+<div class="slide-no">85</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="one-step-at-a-time">
+    <hgroup>
+      <h3>One Step At A Time</h3>
+    </hgroup>
+    <article class="">
+      <p>Take the following steps one at a time. Run the tests in
+<code class="docutils literal"><span class="pre">assignments/session02/homework</span></code> between to ensure that you are getting it
+right.</p>
+<ul class="build simple">
+<li>Complete the stub <code class="docutils literal"><span class="pre">resolve_uri</span></code> function so that it handles looking up
+resources on disk using the URI returned by <code class="docutils literal"><span class="pre">parse_request</span></code>.</li>
+<li>Make sure that if the URI does not map to a file that exists, it raises an
+appropriate error for our server to handle.</li>
+<li>Complete the <code class="docutils literal"><span class="pre">response_not_found</span></code> function stub so that it returns a 404
+response.</li>
+<li>Update <code class="docutils literal"><span class="pre">response_ok</span></code> so that it uses the values returned by <code class="docutils literal"><span class="pre">resolve_uri</span></code>
+by the URI. (these have already been added to the function signature)</li>
+<li>You'll plug those values into the response you generate in the way required
+by the protocol</li>
+</ul>
+
+
+
+<div class="slide-no">86</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="http-headers">
+    <hgroup>
+      <h3>HTTP Headers</h3>
+    </hgroup>
+    <article class="">
+      <p>Along the way, you'll discover that simply returning the content of a file as
+an HTTP response body is insufficient. Different <em>types</em> of content need to
+be identified to your browser</p>
+<div class="build container">
+<p>We can fix this by passing information about exactly what we are returning
+as part of the response.</p>
+<p>HTTP provides for this type of thing with the generic idea of <em>Headers</em></p>
+</div>
+
+
+
+<div class="slide-no">87</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id1">
+    <hgroup>
+      <h3>HTTP Headers</h3>
+    </hgroup>
+    <article class="">
+      <p>Both requests and responses can contain <strong>headers</strong> of the form <code class="docutils literal"><span class="pre">Name:</span> <span class="pre">Value</span></code></p>
+<div class="build container">
+<ul class="build simple">
+<li>HTTP 1.0 has 16 valid headers, 1.1 has 46</li>
+<li>Any number of spaces or tabs may separate the <em>name</em> from the <em>value</em></li>
+<li>If a header line starts with spaces or tabs, it is considered part of the
+value for the previous header</li>
+<li>Header <em>names</em> are <strong>not</strong> case-sensitive, but <em>values</em> may be</li>
+</ul>
+<p>read more about HTTP headers: <a class="reference external" href="http://www.cs.tut.fi/~jkorpela/http.html">http://www.cs.tut.fi/~jkorpela/http.html</a></p>
+</div>
+
+
+
+<div class="slide-no">88</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="content-type-header">
+    <hgroup>
+      <h3>Content-Type Header</h3>
+    </hgroup>
+    <article class="">
+      <p>A very common header used in HTTP responses is <code class="docutils literal"><span class="pre">Content-Type</span></code>. It tells the
+client what to expect.</p>
+<div class="build container">
+<ul class="build simple">
+<li>uses <strong>mime-type</strong> (Multi-purpose Internet Mail Extensions)</li>
+<li>foo.jpeg - <code class="docutils literal"><span class="pre">Content-Type:</span> <span class="pre">image/jpeg</span></code></li>
+<li>foo.png - <code class="docutils literal"><span class="pre">Content-Type:</span> <span class="pre">image/png</span></code></li>
+<li>bar.txt - <code class="docutils literal"><span class="pre">Content-Type:</span> <span class="pre">text/plain</span></code></li>
+<li>baz.html - <code class="docutils literal"><span class="pre">Content-Type:</span> <span class="pre">text/html</span></code></li>
+</ul>
+<p>There are <em>many</em> mime-type identifiers:
+<a class="reference external" href="http://www.webmaster-toolkit.com/mime-types.shtml">http://www.webmaster-toolkit.com/mime-types.shtml</a></p>
+</div>
+
+
+
+<div class="slide-no">89</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="mapping-mime-types">
+    <hgroup>
+      <h3>Mapping Mime-types</h3>
+    </hgroup>
+    <article class="">
+      <p>By mapping a given file to a mime-type, we can write a header.</p>
+<div class="build container">
+<p>The standard lib module <code class="docutils literal"><span class="pre">mimetypes</span></code> does just this.</p>
+<p>We can guess the mime-type of a file based on the filename or map a file
+extension to a type:</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">mimetypes</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mimetypes</span><span class="o">.</span><span class="n">guess_type</span><span class="p">(</span><span class="s">&#39;file.txt&#39;</span><span class="p">)</span>
+<span class="go">(&#39;text/plain&#39;, None)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mimetypes</span><span class="o">.</span><span class="n">types_map</span><span class="p">[</span><span class="s">&#39;.txt&#39;</span><span class="p">]</span>
+<span class="go">&#39;text/plain&#39;</span>
+</pre></div>
+</div>
+</div>
+
+
+
+<div class="slide-no">90</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="resolving-a-uri">
+    <hgroup>
+      <h3>Resolving a URI</h3>
+    </hgroup>
+    <article class="">
+      <p>Your <code class="docutils literal"><span class="pre">resolve_uri</span></code> function will need to accomplish the following tasks:</p>
+<ul class="build simple">
+<li>It should take a URI as the sole argument</li>
+<li>It should map the pathname represented by the URI to a filesystem location.</li>
+<li>It should have a 'home directory', and look only in that location.</li>
+<li>If the URI is a directory, it should return a plain-text listing of the
+directory contents and the mimetype <code class="docutils literal"><span class="pre">text/plain</span></code>.</li>
+<li>If the URI is a file, it should return the contents of that file and its
+correct mimetype.</li>
+<li>If the URI does not map to a real location, it should raise an exception
+that the server can catch to return a 404 response.</li>
+</ul>
+
+
+
+<div class="slide-no">91</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="use-your-tests">
+    <hgroup>
+      <h3>Use Your Tests</h3>
+    </hgroup>
+    <article class="">
+      <p>One of the benefits of test-driven development is that the tests that are
+failing should tell you what code you need to write.</p>
+<div class="build container">
+<p>As you work your way through the steps outlined above, look at your tests.
+Write code that makes them pass.</p>
+<p>If all the tests in <code class="docutils literal"><span class="pre">assignments/session02/tests.py</span></code> are passing, you've
+completed the assignment.</p>
+</div>
+
+
+
+<div class="slide-no">92</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="submitting-your-homework">
+    <hgroup>
+      <h3>Submitting Your Homework</h3>
+    </hgroup>
+    <article class="">
+      <p>To submit your homework:</p>
+<div class="build container">
+<ul class="build simple">
+<li>Do your work in the <code class="docutils literal"><span class="pre">assignments/session02</span></code> directory of <strong>your fork</strong> of
+the class respository</li>
+<li>When you have all tests passing, push your work to <strong>your fork</strong> in github.</li>
+<li>Using the github web interface, send me a pull request.</li>
+</ul>
+<p>I will review your work when I receive your pull requests, make comments on
+it there, and then close the pull request.</p>
+</div>
+
+
+
+<div class="slide-no">93</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="a-few-steps-further">
+    <hgroup>
+      <h3>A Few Steps Further</h3>
+    </hgroup>
+    <article class="">
+      <p>If you are able to finish the above in less than 4-6 hours, consider taking on
+one or more of the following challenges:</p>
+<ul class="build simple">
+<li>Format directory listings as HTML, so you can link to files.</li>
+<li>Add a GMT <code class="docutils literal"><span class="pre">Date:</span></code> header in the proper format (RFC-1123) to responses.
+<em>hint: see email.utils.formatdate in the python standard library</em></li>
+<li>Add a <code class="docutils literal"><span class="pre">Content-Length:</span></code> header for <code class="docutils literal"><span class="pre">OK</span></code> responses that provides a
+correct value.</li>
+<li>Protect your server against errors by providing, and using, a function that
+returns a <code class="docutils literal"><span class="pre">500</span> <span class="pre">Internal</span> <span class="pre">Server</span> <span class="pre">Error</span></code> response.</li>
+<li>Instead of returning the python script in <code class="docutils literal"><span class="pre">webroot</span></code> as plain text, execute
+the file and return the results as HTML.</li>
+</ul>
+
+
+
+<div class="slide-no">94</div>
 
 
     </article>
@@ -1782,7 +2210,7 @@ Heroku Toolbelt, which you will need to have ready in class.</p>
     <slide class="thank-you-slide segue nobackground">
     <aside class="gdbar right"><img src="../_static/logo_UW.png"></aside>
     <article class="flexbox vleft auto-fadein">
-      <h2>&lt;Thank You!&gt;</h2>
+      <h2>Good Night!</h2>
       <p>&nbsp;</p>
     </article>
     <p class="auto-fadein" data-config-contact>

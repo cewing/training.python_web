@@ -19,6 +19,7 @@ URL: https://code.google.com/p/io-2012-slides
   <!--This one seems to work all the time, but really small on ipad-->
   <!--<meta name="viewport" content="initial-scale=0.4">-->
   <meta name="apple-mobile-web-app-capable" content="yes">
+
   
   <link rel="stylesheet" media="all"
         href="../_static/theme/css/default.css">
@@ -38,7 +39,7 @@ URL: https://code.google.com/p/io-2012-slides
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '2.0',
+        VERSION:     '3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -71,1939 +72,1773 @@ URL: https://code.google.com/p/io-2012-slides
 </slide>
 
   
-    <slide class="level-1">
+    <slide class="title-slide segue nobackground level-1" id="session-03">
     <hgroup>
       <h1>Session 03</h1>
     </hgroup>
     <article class="">
-      <div class="figure align-center">
-<a class="reference internal image-reference" href="../_images/no_entry.jpg"><img alt="../_images/no_entry.jpg" src="../_images/no_entry.jpg" style="width: 60%;" /></a>
-<p class="caption">By <a class="reference external" href="https://www.flickr.com/photos/75001512&#64;N00/2707796203">Joel Kramer via Flickr</a></p>
+      <div class="figure align-center" id="id2">
+<a class="reference internal image-reference" href="../_images/gateway.jpg"><img alt="../_images/gateway.jpg" src="../_images/gateway.jpg" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-text">The Wandering Angel <a class="reference external" href="http://www.flickr.com/photos/wandering_angel/1467802750/">http://www.flickr.com/photos/wandering_angel/1467802750/</a> - CC-BY</span></p>
 </div>
 
 
 
+<div class="slide-no">1</div>
+
 
     </article>
-  </slide>  <slide class="level-2">
+  </slide>  <slide class="level-2" id="cgi-wsgi-and-living-online">
     <hgroup>
-      <h2>Security And Deployment</h2>
+      <h2>CGI, WSGI and Living Online</h2>
     </hgroup>
     <article class="">
-      <div class="left container">
-<p>By the end of this session we'll have deployed our learning journal to a
-public server.</p>
-<p>So we will need to add a bit of security to it.</p>
-<p>We'll get started on that in a moment</p>
-</div>
+      <p>Wherein we discover the gateways to dynamic processes on a server.</p>
 
 
+
+<div class="slide-no">2</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="but-first">
     <hgroup>
       <h3>But First</h3>
     </hgroup>
     <article class="">
-      <p class="large center">Questions About the Homework?</p>
+      <p class="large centered">Homework Review and Questions</p>
 
 
 
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>A Working Edit Form</h3>
-    </hgroup>
-    <article class="">
-      <div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">EntryEditForm</span><span class="p">(</span><span class="n">EntryCreateForm</span><span class="p">):</span>
-    <span class="nb">id</span> <span class="o">=</span> <span class="n">HiddenField</span><span class="p">()</span>
-</pre></div>
-</div>
-<p><a class="reference external" href="https://github.com/cewing/training.python_web/blob/5e02f6f84322145433c515c191679ccf976dcae4/resources/session03/forms.py#L25">View the form online</a></p>
-
-
+<div class="slide-no">3</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="previously">
     <hgroup>
-      <h3>A Working Edit View</h3>
+      <h3>Previously</h3>
     </hgroup>
     <article class="">
-      <div class="highlight-python"><div class="highlight"><pre><span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="s">&#39;action&#39;</span><span class="p">,</span> <span class="n">match_param</span><span class="o">=</span><span class="s">&#39;action=edit&#39;</span><span class="p">,</span>
-             <span class="n">renderer</span><span class="o">=</span><span class="s">&#39;templates/edit.jinja2&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="nb">id</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-    <span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">by_id</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">entry</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">HTTPNotFound</span><span class="p">()</span>
-    <span class="n">form</span> <span class="o">=</span> <span class="n">EntryEditForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">entry</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&#39;POST&#39;</span> <span class="ow">and</span> <span class="n">form</span><span class="o">.</span><span class="n">validate</span><span class="p">():</span>
-        <span class="n">form</span><span class="o">.</span><span class="n">populate_obj</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">HTTPFound</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">route_url</span><span class="p">(</span><span class="s">&#39;detail&#39;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">entry</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span> <span class="s">&#39;action&#39;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">matchdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;action&#39;</span><span class="p">)}</span>
-</pre></div>
-</div>
-<p><a class="reference external" href="https://github.com/cewing/training.python_web/blob/5e02f6f84322145433c515c191679ccf976dcae4/resources/session03/views.py#L43">See this view online</a></p>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Linking to the Edit Form</h3>
-    </hgroup>
-    <article class="">
-      <div class="highlight-html+jinja"><div class="highlight"><pre>{% extends &quot;layout.jinja2&quot; %}
-{% block body %}
-&lt;article&gt;
-  &lt;!-- ... --&gt;
-&lt;/article&gt;
-&lt;p&gt;
-  &lt;a href=&quot;{{ request.route_url(&#39;home&#39;) }}&quot;&gt;Go Back&lt;/a&gt; ::
-  &lt;a href=&quot;{{ request.route_url(&#39;action&#39;, action=&#39;edit&#39;, _query=((&#39;id&#39;,entry.id),)) }}&quot;&gt;
-    Edit Entry&lt;/a&gt;
-&lt;/p&gt;
-{% endblock %}
-</pre></div>
-</div>
-<p><a class="reference external" href="https://github.com/cewing/training.python_web/blob/9e1c9db3a379d1d63371cffddaf8e63f862872c8/resources/session03/detail.jinja2#L12">View this template online</a></p>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>A Working User Model</h3>
-    </hgroup>
-    <article class="">
-      <div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
-    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s">&#39;users&#39;</span>
-    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Unicode</span><span class="p">(</span><span class="mi">255</span><span class="p">),</span> <span class="n">unique</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
-    <span class="n">password</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Unicode</span><span class="p">(</span><span class="mi">255</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
-
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">by_name</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">DBSession</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">cls</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
-</pre></div>
-</div>
-<p><a class="reference external" href="https://github.com/cewing/training.python_web/blob/5e02f6f84322145433c515c191679ccf976dcae4/resources/session03/models.py#L62">View this model online</a></p>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-2">
-    <hgroup>
-      <h2>Securing An Application</h2>
-    </hgroup>
-    <article class="">
-      <div class="left container">
-<p>We've got a solid start on our learning journal.</p>
-<div class="build container">
-<p>We can:</p>
-<ul class="build simple">
-<li>view a list of entries</li>
-<li>view a single entry</li>
-<li>create a new entry</li>
-<li>edit existing entries</li>
+      <ul class="build simple">
+<li>You've learned about passing messages back and forth with sockets</li>
+<li>You've created a simple HTTP server using sockets</li>
+<li>You may even have made your server <em>dynamic</em> by returning the output of a
+python script.</li>
 </ul>
-<p>But so can everyone who visits the journal.</p>
-<p>It's a recipe for <strong>TOTAL CHAOS</strong></p>
-<p>Let's lock it down a bit.</p>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>AuthN and AuthZ</h3>
-    </hgroup>
-    <article class="">
-      <p>There are two aspects to the process of access control online.</p>
 <div class="build container">
-<ul class="build simple">
-<li><strong>Authentication</strong>: Verification of the identity of a <em>principal</em></li>
-<li><strong>Authorization</strong>: Enumeration of the rights of that <em>principal</em> in a
-context.</li>
-</ul>
-<p>Think of them as <strong>Who Am I</strong> and <strong>What Can I Do</strong></p>
-<p>All systems with access control involve both of these aspects.</p>
-<p>But many systems wire them together as one.</p>
+<p>What if you want to pass information to that script?</p>
+<p>How can you give the script access to information about the HTTP request
+itself?</p>
 </div>
 
 
 
+<div class="slide-no">4</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="stepping-away-the-environment">
     <hgroup>
-      <h3>Pyramid Security</h3>
+      <h3>Stepping Away: The Environment</h3>
     </hgroup>
     <article class="">
-      <p>In Pyramid these two aspects are handled by separate configuration settings:</p>
+      <p>A computer has an <em>environment</em>:</p>
 <div class="build container">
-<ul class="build simple">
-<li><tt class="docutils literal"><span class="pre">config.set_authentication_policy(AuthnPolicy())</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">config.set_authorization_policy(AuthzPolicy())</span></tt></li>
-</ul>
-<p>If you set one, you must set the other.</p>
-<p>Pyramid comes with a few policy classes included.</p>
-<p>You can also roll your own, so long as they fulfill the requried interface.</p>
-<p>You can learn about the interfaces for <a class="reference external" href="http://docs.pylonsproject.org/docs/pyramid/en/latest/api/interfaces.html#pyramid.interfaces.IAuthenticationPolicy">authentication</a> and
-<a class="reference external" href="http://docs.pylonsproject.org/docs/pyramid/en/latest/api/interfaces.html#pyramid.interfaces.IAuthorizationPolicy">authorization</a> in the Pyramid documentation</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Our Journal Security</h3>
-    </hgroup>
-    <article class="">
-      <p>We'll be using two built-in policies today:</p>
-<div class="build container">
-<ul class="build simple">
-<li><tt class="docutils literal"><span class="pre">AuthTktAuthenticationPolicy</span></tt>: sets an expirable
-<a class="reference external" href="http://docs.pylonsproject.org/docs/pyramid/en/latest/api/authentication.html#pyramid.authentication.AuthTktAuthenticationPolicy">authentication ticket</a> cookie.</li>
-<li><tt class="docutils literal"><span class="pre">ACLAuthorizationPolicy</span></tt>: uses an <a class="reference external" href="http://docs.pylonsproject.org/docs/pyramid/en/latest/api/authorization.html#pyramid.authorization.ACLAuthorizationPolicy">Access Control List</a> to grant
-permissions to <em>principals</em></li>
-</ul>
-<p>Our access control system will have the following properties:</p>
-<ul class="build simple">
-<li>Everyone can view entries, and the list of all entries</li>
-<li>Users who log in may edit entries or create new ones</li>
-</ul>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Engaging Security</h3>
-    </hgroup>
-    <article class="">
-      <p>By default, Pyramid uses no security. We enable it through configuration.</p>
-<div class="build container">
-<p>Open <tt class="docutils literal"><span class="pre">learning_journal/__init__.py</span></tt> and update it as follows:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># add these imports</span>
-<span class="kn">from</span> <span class="nn">pyramid.authentication</span> <span class="kn">import</span> <span class="n">AuthTktAuthenticationPolicy</span>
-<span class="kn">from</span> <span class="nn">pyramid.authorization</span> <span class="kn">import</span> <span class="n">ACLAuthorizationPolicy</span>
-<span class="c"># and add this configuration:</span>
-<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">global_config</span><span class="p">,</span> <span class="o">**</span><span class="n">settings</span><span class="p">):</span>
-    <span class="c"># ...</span>
-    <span class="c"># update building the configurator to pass in our policies</span>
-    <span class="n">config</span> <span class="o">=</span> <span class="n">Configurator</span><span class="p">(</span>
-        <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
-        <span class="n">authentication_policy</span><span class="o">=</span><span class="n">AuthTktAuthenticationPolicy</span><span class="p">(</span><span class="s">&#39;somesecret&#39;</span><span class="p">),</span>
-        <span class="n">authorization_policy</span><span class="o">=</span><span class="n">ACLAuthorizationPolicy</span><span class="p">(),</span>
-        <span class="n">default_permission</span><span class="o">=</span><span class="s">&#39;view&#39;</span>
-    <span class="p">)</span>
-    <span class="c"># ...</span>
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Verify It Worked</h3>
-    </hgroup>
-    <article class="">
-      <p>We've now informed our application that we want to use security.</p>
-<div class="build container">
-<p>By default we require the 'view' permission to see anything.</p>
-<p>But we have yet to assign <em>any permissions to anyone</em> at all.</p>
-<p>Let's verify now that we are unable to see anything in the website.</p>
-<p>Start your application, and try to view any page (You should get a 403
-Forbidden error response):</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>pserve development.ini
-Starting server in PID 84467.
-serving on http://0.0.0.0:6543
-</pre></div>
-</div>
-<ul class="build simple">
-<li><a class="reference external" href="http://localhost:6543/">http://localhost:6543/</a></li>
-<li><a class="reference external" href="http://localhost:6543/journal/1">http://localhost:6543/journal/1</a></li>
-<li><a class="reference external" href="http://localhost:6543/journal/create">http://localhost:6543/journal/create</a></li>
-<li><a class="reference external" href="http://localhost:6543/journal/edit">http://localhost:6543/journal/edit</a></li>
-</ul>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Implementing Authz</h3>
-    </hgroup>
-    <article class="">
-      <p>Next we have to grant some permissions to principals.</p>
-<div class="build container">
-<p>Pyramid authorization relies on a concept it calls &quot;context&quot;.</p>
-<p>A <em>principal</em> can be granted rights in a particular <em>context</em></p>
-<p>Context can be made as specific as a single persistent object</p>
-<p>Or it can be generalized to a <em>route</em> or <em>view</em></p>
-<p>To have a context, we need a Python object called a <em>factory</em> that must
-have an <tt class="docutils literal"><span class="pre">__acl__</span></tt> special attribute.</p>
-<p>The framework will use this object to determine what permissions a
-<em>principal</em> has</p>
-<p>Let's create one</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Add <tt class="docutils literal"><span class="pre">security.py</span></tt></h3>
-    </hgroup>
-    <article class="">
-      <p>In the same folder where you have <tt class="docutils literal"><span class="pre">models.py</span></tt> and <tt class="docutils literal"><span class="pre">views.py</span></tt>, add a new
-file <tt class="docutils literal"><span class="pre">security.py</span></tt></p>
-<div class="build container">
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pyramid.security</span> <span class="kn">import</span> <span class="n">Allow</span><span class="p">,</span> <span class="n">Everyone</span><span class="p">,</span> <span class="n">Authenticated</span>
-
-<span class="k">class</span> <span class="nc">EntryFactory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="n">__acl__</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="p">(</span><span class="n">Allow</span><span class="p">,</span> <span class="n">Everyone</span><span class="p">,</span> <span class="s">&#39;view&#39;</span><span class="p">),</span>
-        <span class="p">(</span><span class="n">Allow</span><span class="p">,</span> <span class="n">Authenticated</span><span class="p">,</span> <span class="s">&#39;create&#39;</span><span class="p">),</span>
-        <span class="p">(</span><span class="n">Allow</span><span class="p">,</span> <span class="n">Authenticated</span><span class="p">,</span> <span class="s">&#39;edit&#39;</span><span class="p">),</span>
-    <span class="p">]</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
-        <span class="k">pass</span>
-</pre></div>
-</div>
-<p>The <tt class="docutils literal"><span class="pre">__acl__</span></tt> attribute of this object contains a list of <em>ACE</em>s</p>
-<p>An <em>ACE</em> combines an <em>action</em> (Allow, Deny), a <em>principal</em> and a <em>permission</em></p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Using Our Context Factory</h3>
-    </hgroup>
-    <article class="">
-      <p>Now that we have a factory that will provide context for permissions to work,
-we can tell our configuration to use it.</p>
-<div class="build container">
-<p>Open <tt class="docutils literal"><span class="pre">learning_journal/__init__.py</span></tt> and update the route configuration
-for our routes:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># add an import at the top:</span>
-<span class="kn">from</span> <span class="nn">.security</span> <span class="kn">import</span> <span class="n">EntryFactory</span>
-<span class="c"># update the route configurations:</span>
-<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">global_config</span><span class="p">,</span> <span class="o">**</span><span class="n">settings</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; This function returns a Pyramid WSGI application.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c"># ... Add the factory keyword argument to our route configurations:</span>
-    <span class="n">config</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s">&#39;home&#39;</span><span class="p">,</span> <span class="s">&#39;/&#39;</span><span class="p">,</span> <span class="n">factory</span><span class="o">=</span><span class="n">EntryFactory</span><span class="p">)</span>
-    <span class="n">config</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s">&#39;detail&#39;</span><span class="p">,</span> <span class="s">&#39;/journal/{id:\d+}&#39;</span><span class="p">,</span> <span class="n">factory</span><span class="o">=</span><span class="n">EntryFactory</span><span class="p">)</span>
-    <span class="n">config</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s">&#39;action&#39;</span><span class="p">,</span> <span class="s">&#39;/journal/{action}&#39;</span><span class="p">,</span> <span class="n">factory</span><span class="o">=</span><span class="n">EntryFactory</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>What We've Done</h3>
-    </hgroup>
-    <article class="">
-      <p>We've now told our application we want a principal to have the <em>view</em>
-permission by default.</p>
-<div class="build container">
-<p>And we've provided a factory to supply context and an ACL for each route.</p>
-<p>Check our ACL. Who can view the home page?  The detail page?  The action
-pages?</p>
-<p>Pyramid allows us to set a <em>default_permission</em> for <em>all views</em>.</p>
-<p>But view configuration allows us to require a different permission for <em>a view</em>.</p>
-<p>Let's make our action views require appropriate permissions next</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Requiring Permissions for a View</h3>
-    </hgroup>
-    <article class="">
-      <p>Open <tt class="docutils literal"><span class="pre">learning_journal/views.py</span></tt>, and edit the <tt class="docutils literal"><span class="pre">&#64;view_config</span></tt> for
-<tt class="docutils literal"><span class="pre">create</span></tt> and <tt class="docutils literal"><span class="pre">update</span></tt>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="s">&#39;action&#39;</span><span class="p">,</span> <span class="n">match_param</span><span class="o">=</span><span class="s">&#39;action=create&#39;</span><span class="p">,</span>
-             <span class="n">renderer</span><span class="o">=</span><span class="s">&#39;templates/edit.jinja2&#39;</span><span class="p">,</span>
-             <span class="n">permission</span><span class="o">=</span><span class="s">&#39;create&#39;</span><span class="p">)</span> <span class="c"># &lt;-- ADD THIS</span>
-<span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="c"># ...</span>
-
-<span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="s">&#39;action&#39;</span><span class="p">,</span> <span class="n">match_param</span><span class="o">=</span><span class="s">&#39;action=edit&#39;</span><span class="p">,</span>
-             <span class="n">renderer</span><span class="o">=</span><span class="s">&#39;templates/edit.jinja2&#39;</span><span class="p">,</span>
-             <span class="n">permission</span><span class="o">=</span><span class="s">&#39;edit&#39;</span><span class="p">)</span> <span class="c"># &lt;-- ADD THIS</span>
-<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="c"># ...</span>
-</pre></div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Verify It Worked</h3>
-    </hgroup>
-    <article class="">
-      <p>At this point, our &quot;action&quot; views should require permissions other than the
-default <tt class="docutils literal"><span class="pre">view</span></tt>.</p>
-<div class="build container">
-<p>Start your application and verify that it is true:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>pserve development.ini
-Starting server in PID 84467.
-serving on http://0.0.0.0:6543
-</pre></div>
-</div>
-<ul class="build simple">
-<li><a class="reference external" href="http://localhost:6543/">http://localhost:6543/</a></li>
-<li><a class="reference external" href="http://localhost:6543/journal/1">http://localhost:6543/journal/1</a></li>
-<li><a class="reference external" href="http://localhost:6543/journal/create">http://localhost:6543/journal/create</a></li>
-<li><a class="reference external" href="http://localhost:6543/journal/edit">http://localhost:6543/journal/edit</a></li>
-</ul>
-<p>You should get a <tt class="docutils literal"><span class="pre">403</span> <span class="pre">Forbidden</span></tt> for the action pages only.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Implement AuthN</h3>
-    </hgroup>
-    <article class="">
-      <p>Now that we have authorization implemented, we need to add authentication.</p>
-<div class="build container">
-<p>By providing the system with an <em>authenticated user</em>, our ACEs for
-<tt class="docutils literal"><span class="pre">Authenticated</span></tt> will apply.</p>
-<p>We'll need to have a way for a user to prove who they are to the
-satisfaction of the system.</p>
-<p>The most common way of handling this is through a <em>username</em> and
-<em>password</em>.</p>
-<p>A person provides both in an html form.</p>
-<p>When the form is submitted, the system seeks a user with that name, and
-compares the passwords.</p>
-<p>If there is no such user, or the password does not match, authentication
-fails.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>An Example</h3>
-    </hgroup>
-    <article class="">
-      <p>Let's imagine that Alice wants to authenticate with our website.</p>
-<div class="build container">
-<p>Her username is <tt class="docutils literal"><span class="pre">alice</span></tt> and her password is <tt class="docutils literal"><span class="pre">s3cr3t</span></tt>.</p>
-<p>She fills these out in a form on our website and submits the form.</p>
-<p>Our website looks for a <tt class="docutils literal"><span class="pre">User</span></tt> object in the database with the username
-<tt class="docutils literal"><span class="pre">alice</span></tt>.</p>
-<p>Let's imagine that there is one, so our site next compares the value she
-sent for her <em>password</em> to the value stored in the database.</p>
-<p>If her stored password is also <tt class="docutils literal"><span class="pre">s3cr3t</span></tt>, then she is who she says she is.</p>
-<p>All set, right?</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Encryption</h3>
-    </hgroup>
-    <article class="">
-      <p>The problem here is that the value we've stored for her password is in <tt class="docutils literal"><span class="pre">plain</span>
-<span class="pre">text</span></tt>.</p>
-<div class="build container">
-<p>This means that anyone could potentially steal our database and have access
-to all our users' passwords.</p>
-<p>Instead, we should <em>encrypt</em> her password with a strong one-way hash.</p>
-<p>Then we can store the hashed value.</p>
-<p>When she provides the plain text password to us, we <em>encrypt</em> it the same
-way, and compare the result to the stored value.</p>
-<p>If they match, then we know the value she provided is the same we used to
-create the stored hash.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Adding Encryption</h3>
-    </hgroup>
-    <article class="">
-      <p>Python provides a number of libraries for implementing strong encryption.</p>
-<div class="build container">
-<p>You should always use a well-known library for encryption.</p>
-<p>We'll use a good one called <a class="reference external" href="https://pypi.python.org/pypi/cryptacular/">Cryptacular</a>.</p>
-<p>This library provides a number of different algorithms and a <em>Manager</em> that
-implements a simple interface for each.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">cryptacular.bcrypt</span> <span class="kn">import</span> <span class="n">BCRYPTPasswordManager</span>
-<span class="n">manager</span> <span class="o">=</span> <span class="n">BCRYPTPasswordManager</span><span class="p">()</span>
-<span class="n">hashed</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;password&#39;</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">manager</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">hashed</span><span class="p">,</span> <span class="s">&#39;password&#39;</span><span class="p">):</span>
-    <span class="k">print</span> <span class="s">&quot;It matched&quot;</span>
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Install Cryptactular</h3>
-    </hgroup>
-    <article class="">
-      <p>To install a new package as a dependency, we add the package to our list in
-<tt class="docutils literal"><span class="pre">setup.py</span></tt>:</p>
-<div class="build container">
-<div class="highlight-python"><div class="highlight"><pre><span class="n">requires</span> <span class="o">=</span> <span class="p">[</span>
-  <span class="o">...</span>
-  <span class="s">&#39;wtforms&#39;</span><span class="p">,</span>
-  <span class="s">&#39;cryptacular&#39;</span><span class="p">,</span>
-<span class="p">]</span>
-</pre></div>
-</div>
-<p>Then, we re-install our package to pick up the new dependency:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>python setup.py develop
-</pre></div>
-</div>
-<p><em>note</em> if you have a c compiler installed but not the Python dev headers,
-this may not work.  Let me know if you get errors.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Comparing Passwords</h3>
-    </hgroup>
-    <article class="">
-      <p>The job of comparing passwords should belong to the <tt class="docutils literal"><span class="pre">User</span></tt> object.</p>
-<div class="build container">
-<p>Let's add an instance method that handles it for us.</p>
-<p>Open <tt class="docutils literal"><span class="pre">learning_journal/models.py</span></tt> and add the following to the <tt class="docutils literal"><span class="pre">User</span></tt>
-class:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># add this import at the top</span>
-<span class="c"># from cryptacular.pbkdf2 import PBKDF2PasswordManager as Manager</span>
-<span class="kn">from</span> <span class="nn">cryptacular.bcrypt</span> <span class="kn">import</span> <span class="n">BCRYPTPasswordManager</span> <span class="k">as</span> <span class="n">Manager</span>
-
-<span class="c"># add this method to the User class:</span>
-<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
-    <span class="c"># ...</span>
-    <span class="k">def</span> <span class="nf">verify_password</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
-        <span class="n">manager</span> <span class="o">=</span> <span class="n">Manager</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">manager</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Create a User</h3>
-    </hgroup>
-    <article class="">
-      <p>We'll also need to have a user for our system.</p>
-<div class="build container">
-<p>We can leverage the database initialization script to handle this.</p>
-<p>Open <tt class="docutils literal"><span class="pre">learning_journal/scripts/initialzedb.py</span></tt>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># add the import</span>
-<span class="c"># from cryptacular.pbkdf2 import PBKDF2PasswordManager as Manager</span>
-<span class="kn">from</span> <span class="nn">cryptacular.bcrypt</span> <span class="kn">import</span> <span class="n">BCRYPTPasswordManager</span> <span class="k">as</span> <span class="n">Manager</span>
-<span class="kn">from</span> <span class="nn">..models</span> <span class="kn">import</span> <span class="n">User</span>
-<span class="c"># and update the main function like so:</span>
-<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">):</span>
-    <span class="c"># ...</span>
-    <span class="k">with</span> <span class="n">transaction</span><span class="o">.</span><span class="n">manager</span><span class="p">:</span>
-        <span class="c"># replace the code to create a MyModel instance</span>
-        <span class="n">manager</span> <span class="o">=</span> <span class="n">Manager</span><span class="p">()</span>
-        <span class="n">password</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">u&#39;admin&#39;</span><span class="p">)</span>
-        <span class="n">admin</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">u&#39;admin&#39;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">)</span>
-        <span class="n">DBSession</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">admin</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Rebuild the Database:</h3>
-    </hgroup>
-    <article class="">
-      <p>In order to get our user created, we'll need to delete our database and
-re-build it.</p>
-<div class="build container">
-<p>Make sure you are in the folder where <tt class="docutils literal"><span class="pre">setup.py</span></tt> appears.</p>
-<p>Then remove the sqlite database:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>rm *.sqlite
-</pre></div>
-</div>
-<p>And re-initialize:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>initialize_learning_journal_db development.ini
+<p>in *nix, you can see this in a shell:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>printenv
+<span class="nv">TERM_PROGRAM</span><span class="o">=</span>iTerm.app
 ...
-2015-01-17 16:43:55,237 INFO  <span class="o">[</span>sqlalchemy.engine.base.Engine<span class="o">][</span>MainThread<span class="o">]</span>
-  INSERT INTO users <span class="o">(</span>name, password<span class="o">)</span> VALUES <span class="o">(</span>?, ?<span class="o">)</span>
-2015-01-17 16:43:55,237 INFO  <span class="o">[</span>sqlalchemy.engine.base.Engine<span class="o">][</span>MainThread<span class="o">]</span>
-  <span class="o">(</span>u<span class="s1">&#39;admin&#39;</span>, <span class="s1">&#39;$2a$10$4Z6RVNhTE21mPLJW5VeiVe0EG57gN/HOb7V7GUwIr4n1vE.wTTTzy&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>or in Windows at the command prompt:</p>
+<div class="highlight-posh"><div class="highlight"><pre>C:\&gt; set
+ALLUSERSPROFILE=C:\ProgramData
+...
+</pre></div>
+</div>
+<p>or in PowerShell:</p>
+<div class="highlight-posh"><div class="highlight"><pre>PS C:\&gt; Get-ChildItem Env:
+ALLUSERSPROFILE             C:\ProgramData
+...
 </pre></div>
 </div>
 </div>
 
 
 
+<div class="slide-no">5</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id3">
     <hgroup>
-      <h3>Providing Login UI</h3>
+      <h3>Setting The Environment</h3>
     </hgroup>
     <article class="">
-      <p>We now have a user in our database with a strongly encrypted password.</p>
+      <div class="build container">
+<p>In a <code class="docutils literal"><span class="pre">bash</span></code> shell we can do this:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span><span class="nb">export </span><span class="nv">VARIABLE</span><span class="o">=</span><span class="s1">&#39;some value&#39;</span>
+<span class="nv">$ </span><span class="nb">echo</span> <span class="nv">$VARIABLE</span>
+some value
+</pre></div>
+</div>
+<p>or at a Windows command prompt:</p>
+<div class="highlight-posh"><div class="highlight"><pre>C:\Users\Administrator\&gt; set VARIABLE=&#39;some value&#39;
+C:\Users\Administrator\&gt; echo %VARIABLE%
+&#39;some value&#39;
+</pre></div>
+</div>
+<p>or in PowerShell:</p>
+<div class="highlight-posh"><div class="highlight"><pre>PS C:\&gt; $env:VARIABLE = &quot;some value&quot;
+PS C:\&gt; Get-ChildItem Env:VARIABLE
+&#39;some value&#39;
+</pre></div>
+</div>
+</div>
+
+
+
+<div class="slide-no">6</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id4">
+    <hgroup>
+      <h3>Viewing the Results</h3>
+    </hgroup>
+    <article class="">
+      <p>These new values are now part of the <em>environment</em></p>
 <div class="build container">
-<p>We also have a method on our user model that will verify a supplied
-password against this encrypted version.</p>
-<p>We must now provide a view that lets us log in to our application.</p>
-<p>We start by adding a new <em>route</em> to our configuration in
-<tt class="docutils literal"><span class="pre">learning_journal/__init__.py</span></tt>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">config</span><span class="o">.</span><span class="n">add_rount</span><span class="p">(</span><span class="s">&#39;action&#39;</span> <span class="o">...</span><span class="p">)</span>
-<span class="c"># ADD THIS</span>
-<span class="n">config</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s">&#39;auth&#39;</span><span class="p">,</span> <span class="s">&#39;/sign/{action}&#39;</span><span class="p">,</span> <span class="n">factory</span><span class="o">=</span><span class="n">EntryFactory</span><span class="p">)</span>
+<p>*nix:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>printenv
+...
+<span class="nv">VARIABLE</span><span class="o">=</span>some value
+</pre></div>
+</div>
+<p>Windows:</p>
+<div class="highlight-posh"><div class="highlight"><pre>C:\&gt; set
+...
+VARIABLE=&#39;some value&#39;
+</pre></div>
+</div>
+<p>PowerShell:</p>
+<div class="highlight-posh"><div class="highlight"><pre>PS C:\&gt; Get-ChildItem Env:
+...
+VARIABLE                    &#39;some value&#39;
 </pre></div>
 </div>
 </div>
 
 
 
+<div class="slide-no">7</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id5">
     <hgroup>
-      <h3>A Login Form</h3>
+      <h3>Environment in Python</h3>
     </hgroup>
     <article class="">
-      <p>It would be nice to use the form library again to make a login form.</p>
+      <p>We can see this <em>environment</em> in Python, too:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ python
+</pre></div>
+</div>
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;VARIABLE&#39;</span><span class="p">]</span>
+<span class="go">some_value</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="go">[&#39;VERSIONER_PYTHON_PREFER_32_BIT&#39;, &#39;VARIABLE&#39;,</span>
+<span class="go"> &#39;LOGNAME&#39;, &#39;USER&#39;, &#39;PATH&#39;, ...]</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">8</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id6">
+    <hgroup>
+      <h3>Altering the Environment</h3>
+    </hgroup>
+    <article class="">
+      <p>You can alter os environment values while in Python:</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;VARIABLE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;new_value&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;VARIABLE&#39;</span><span class="p">]</span>
+<span class="go">new_value</span>
+</pre></div>
+</div>
 <div class="build container">
-<p>Open <tt class="docutils literal"><span class="pre">learning_journal/forms.py</span></tt> and add the following:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># add an import:</span>
-<span class="kn">from</span> <span class="nn">wtforms</span> <span class="kn">import</span> <span class="n">PasswordField</span>
-<span class="c"># and a new form class</span>
-<span class="k">class</span> <span class="nc">LoginForm</span><span class="p">(</span><span class="n">Form</span><span class="p">):</span>
-    <span class="n">username</span> <span class="o">=</span> <span class="n">TextField</span><span class="p">(</span>
-        <span class="s">&#39;Username&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">validators</span><span class="o">.</span><span class="n">Length</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">255</span><span class="p">)]</span>
-    <span class="p">)</span>
-    <span class="n">password</span> <span class="o">=</span> <span class="n">PasswordField</span><span class="p">(</span>
-        <span class="s">&#39;Password&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">validators</span><span class="o">.</span><span class="n">Length</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">255</span><span class="p">)]</span>
-    <span class="p">)</span>
+<p>But that doesn't change the original value, <em>outside</em> Python:</p>
+<div class="highlight-bash"><div class="highlight"><pre>&gt;&gt;&gt; ^D
+
+<span class="nv">$ </span><span class="nb">echo </span>this is the value: <span class="nv">$VARIABLE</span>
+this is the value: some_value
+&lt;OR&gt;
+C:<span class="se">\&gt;</span> <span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\&gt;</span> <span class="nb">echo</span> %VARIABLE%
+<span class="s1">&#39;some value&#39;</span>
 </pre></div>
 </div>
 </div>
 
 
 
+<div class="slide-no">9</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id7">
     <hgroup>
-      <h3>Login View in <tt class="docutils literal"><span class="pre">learning_journal/views.py</span></tt></h3>
+      <h3>Lessons Learned</h3>
     </hgroup>
     <article class="">
-      <div class="highlight-python"><div class="highlight"><pre><span class="c"># new imports:</span>
-<span class="kn">from</span> <span class="nn">pyramid.security</span> <span class="kn">import</span> <span class="n">forget</span><span class="p">,</span> <span class="n">remember</span>
-<span class="kn">from</span> <span class="nn">.forms</span> <span class="kn">import</span> <span class="n">LoginForm</span>
-<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">User</span>
-<span class="c"># and a new view</span>
-<span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="s">&#39;auth&#39;</span><span class="p">,</span> <span class="n">match_param</span><span class="o">=</span><span class="s">&#39;action=in&#39;</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="s">&#39;string&#39;</span><span class="p">,</span>
-     <span class="n">request_method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">sign_in</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="n">login_form</span> <span class="o">=</span> <span class="bp">None</span>
-    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&#39;POST&#39;</span><span class="p">:</span>
-        <span class="n">login_form</span> <span class="o">=</span> <span class="n">LoginForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">login_form</span> <span class="ow">and</span> <span class="n">login_form</span><span class="o">.</span><span class="n">validate</span><span class="p">():</span>
-        <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">by_name</span><span class="p">(</span><span class="n">login_form</span><span class="o">.</span><span class="n">username</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">user</span> <span class="ow">and</span> <span class="n">user</span><span class="o">.</span><span class="n">verify_password</span><span class="p">(</span><span class="n">login_form</span><span class="o">.</span><span class="n">password</span><span class="o">.</span><span class="n">data</span><span class="p">):</span>
-            <span class="n">headers</span> <span class="o">=</span> <span class="n">remember</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">headers</span> <span class="o">=</span> <span class="n">forget</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">headers</span> <span class="o">=</span> <span class="n">forget</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">HTTPFound</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">route_url</span><span class="p">(</span><span class="s">&#39;home&#39;</span><span class="p">),</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+      <div class="build container">
+<ul class="build simple">
+<li>Subprocesses inherit their environment from their Parent</li>
+<li>Parents do not see changes to environment in subprocesses</li>
+<li>In Python, you can actually set the environment for a subprocess explicitly</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">bufsize</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">executable</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">stdin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">preexec_fn</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">close_fds</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                 <span class="n">shell</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">cwd</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="c"># &lt;-------</span>
+                 <span class="n">universal_newlines</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">startupinfo</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">creationflags</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+
+
+<div class="slide-no">10</div>
+
+
+    </article>
+  </slide>  <slide class="level-2" id="cgi-the-web-environment">
+    <hgroup>
+      <h2>CGI - The Web Environment</h2>
+    </hgroup>
+    <article class="">
+      <p class="large centered">CGI is little more than a set of standard environmental variables</p>
+
+
+
+<div class="slide-no">11</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="what-is-cgi">
+    <hgroup>
+      <h3>What is CGI</h3>
+    </hgroup>
+    <article class="">
+      <p>First discussed in 1993, formalized in 1997, the current version (1.1) has
+been in place since 2004.</p>
+<p>From the preamble:</p>
+<div class="highlight-python"><div class="highlight"><pre>This memo provides information for the Internet community. It does not
+specify an Internet standard of any kind.
+
+-- RFC 3875 - CGI Version 1.1: http://tools.ietf.org/html/rfc3875
 </pre></div>
 </div>
 
 
 
+<div class="slide-no">12</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id8">
     <hgroup>
-      <h3>Where's the Renderer?</h3>
+      <h3>Meta-Variables</h3>
     </hgroup>
     <article class="">
-      <p>Notice that this view doesn't render anything. No matter what, you end up
-returning to the <tt class="docutils literal"><span class="pre">home</span></tt> route.</p>
+      <div class="highlight-python"><div class="highlight"><pre>4.  The CGI Request . . . . . . . . . . . . . . . . . . . . . . .  10
+    4.1. Request Meta-Variables . . . . . . . . . . . . . . . . .  10
+         4.1.1.  AUTH_TYPE. . . . . . . . . . . . . . . . . . . .  11
+         4.1.2.  CONTENT_LENGTH . . . . . . . . . . . . . . . . .  12
+         4.1.3.  CONTENT_TYPE . . . . . . . . . . . . . . . . . .  12
+         4.1.4.  GATEWAY_INTERFACE. . . . . . . . . . . . . . . .  13
+         4.1.5.  PATH_INFO. . . . . . . . . . . . . . . . . . . .  13
+         4.1.6.  PATH_TRANSLATED. . . . . . . . . . . . . . . . .  14
+         4.1.7.  QUERY_STRING . . . . . . . . . . . . . . . . . .  15
+         4.1.8.  REMOTE_ADDR. . . . . . . . . . . . . . . . . . .  15
+         4.1.9.  REMOTE_HOST. . . . . . . . . . . . . . . . . . .  16
+         4.1.10. REMOTE_IDENT . . . . . . . . . . . . . . . . . .  16
+         4.1.11. REMOTE_USER. . . . . . . . . . . . . . . . . . .  16
+         4.1.12. REQUEST_METHOD . . . . . . . . . . . . . . . . .  17
+         4.1.13. SCRIPT_NAME. . . . . . . . . . . . . . . . . . .  17
+         4.1.14. SERVER_NAME. . . . . . . . . . . . . . . . . . .  17
+         4.1.15. SERVER_PORT. . . . . . . . . . . . . . . . . . .  18
+         4.1.16. SERVER_PROTOCOL. . . . . . . . . . . . . . . . .  18
+         4.1.17. SERVER_SOFTWARE. . . . . . . . . . . . . . . . .  19
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">13</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="running-cgi">
+    <hgroup>
+      <h3>Running CGI</h3>
+    </hgroup>
+    <article class="">
+      <p>You have a couple of options:</p>
 <div class="build container">
-<p>We have to incorporate our login form somewhere.</p>
-<p>The home page seems like a good place.</p>
-<p>But we don't want to show it all the time.</p>
-<p>Only when we aren't logged in already.</p>
-<p>Let's give that a whirl.</p>
+<ul class="build simple">
+<li>Python Standard Library CGIHTTPServer</li>
+<li>Apache</li>
+<li>IIS (on Windows)</li>
+<li>Some other HTTP server that implements CGI (lighttpd, ...?)</li>
+</ul>
+<p>Let's keep it simple by using the Python module</p>
 </div>
 
 
+
+<div class="slide-no">14</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id9">
     <hgroup>
-      <h3>Updating <tt class="docutils literal"><span class="pre">index_page</span></tt></h3>
+      <h3>Preparations</h3>
     </hgroup>
     <article class="">
-      <p>Pyramid security provides a method that returns the id of the user who is
-logged in, if any.</p>
+      <p>In the class resources for this session, you'll find a directory named <code class="docutils literal"><span class="pre">cgi</span></code>.</p>
 <div class="build container">
-<p>We can use that to update our home page in <tt class="docutils literal"><span class="pre">learning_journal/views.py</span></tt>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># add an import:</span>
-<span class="kn">from</span> <span class="nn">pyramid.security</span> <span class="kn">import</span> <span class="n">authenticated_userid</span>
-
-<span class="c"># and update the index_page view:</span>
-<span class="nd">@view_config</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">index_page</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="c"># ... get all entries here</span>
-    <span class="n">form</span> <span class="o">=</span> <span class="bp">None</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">authenticated_userid</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-        <span class="n">form</span> <span class="o">=</span> <span class="n">LoginForm</span><span class="p">()</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s">&#39;entries&#39;</span><span class="p">:</span> <span class="n">entries</span><span class="p">,</span> <span class="s">&#39;login_form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">}</span>
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Update <tt class="docutils literal"><span class="pre">list.jinja2</span></tt></h3>
-    </hgroup>
-    <article class="">
-      <p>Now we have to update the template for the <tt class="docutils literal"><span class="pre">index_page</span></tt> to display the form, <em>if it is there</em></p>
-<div class="build container">
-<div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{%</span> <span class="k">block</span> <span class="nv">body</span> <span class="cp">%}</span><span class="x"></span>
-<span class="cp">{%</span> <span class="k">if</span> <span class="nv">login_form</span> <span class="cp">%}</span><span class="x"></span>
-<span class="x">&lt;aside&gt;&lt;form action=&quot;</span><span class="cp">{{</span> <span class="nv">request.route_url</span><span class="o">(</span><span class="s1">&#39;auth&#39;</span><span class="o">,</span> <span class="nv">action</span><span class="o">=</span><span class="s1">&#39;in&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x">&quot; method=&quot;POST&quot;&gt;</span>
-<span class="x">  </span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">field</span> <span class="k">in</span> <span class="nv">login_form</span> <span class="cp">%}</span><span class="x"></span>
-<span class="x">    </span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">field.errors</span> <span class="cp">%}</span><span class="x"></span>
-<span class="x">      &lt;ul&gt;</span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">error</span> <span class="k">in</span> <span class="nv">field.errors</span> <span class="cp">%}</span><span class="x"></span>
-<span class="x">        &lt;li&gt;</span><span class="cp">{{</span> <span class="nv">error</span> <span class="cp">}}</span><span class="x">&lt;/li&gt;</span>
-<span class="x">      </span><span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span><span class="x">&lt;/ul&gt;</span>
-<span class="x">    </span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
-<span class="x">      &lt;p&gt;</span><span class="cp">{{</span> <span class="nv">field.label</span> <span class="cp">}}</span><span class="x">: </span><span class="cp">{{</span> <span class="nv">field</span> <span class="cp">}}</span><span class="x">&lt;/p&gt;</span>
-<span class="x">  </span><span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span><span class="x"></span>
-<span class="x">  &lt;p&gt;&lt;input type=&quot;submit&quot; name=&quot;Log In&quot; value=&quot;Log In&quot;/&gt;&lt;/p&gt;</span>
-<span class="x">&lt;/form&gt;&lt;/aside&gt;</span>
-<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
-<span class="cp">{%</span> <span class="k">if</span> <span class="nv">entries</span> <span class="cp">%}</span><span class="x"></span>
-<span class="x">...</span>
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Try It Out</h3>
-    </hgroup>
-    <article class="">
-      <p>We should be ready at this point.</p>
-<div class="build container">
-<p>Fire up your application and see it in action:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>pserve development.ini
-Starting server in PID 84467.
-serving on http://0.0.0.0:6543
-</pre></div>
-</div>
-<p>Load the home page and see your login form:</p>
-<ul class="simple">
-<li><a class="reference external" href="http://localhost:6543/">http://localhost:6543/</a></li>
+<p>Make a copy of that folder in your class working directory.</p>
+<p>Windows Users, you may have to edit the first line of
+<code class="docutils literal"><span class="pre">cgi/cgi-bin/cgi_1.py</span></code> to point to your python executable.</p>
+<ul class="build simple">
+<li>Open <em>two</em> terminal windows in this <code class="docutils literal"><span class="pre">cgi</span></code> directory</li>
+<li>In the first terminal, run <code class="docutils literal"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">http.server</span> <span class="pre">--cgi</span></code></li>
+<li>Open a web browser and load <code class="docutils literal"><span class="pre">http://localhost:8000/</span></code></li>
+<li>Click on <em>CGI Test 1</em></li>
 </ul>
 </div>
 
 
 
+<div class="slide-no">15</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id10">
+    <hgroup>
+      <h3>Did that work?</h3>
+    </hgroup>
+    <article class="">
+      <ul class="build simple">
+<li>Your browser might show a 404 or 403 error</li>
+<li>If you see something like that, check the permissions for <code class="docutils literal"><span class="pre">cgi-bin</span></code> <em>and</em>
+<code class="docutils literal"><span class="pre">cgi_1.py</span></code></li>
+<li>The file must be executable, the <code class="docutils literal"><span class="pre">cgi-bin</span></code> directory needs to be readable
+<em>and</em> executable.</li>
+</ul>
+<div class="build container">
+<p>Remember that you can use the bash <code class="docutils literal"><span class="pre">chmod</span></code> command to change permissions
+in *nix: <code class="docutils literal"><span class="pre">chmod</span> <span class="pre">a+x</span> <span class="pre">cgi-bin/cgi_1.py</span></code></p>
+<p>Windows users, use the 'properties' context menu to get to permissions,
+just grant 'full'</p>
+</div>
+
+
+
+<div class="slide-no">16</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id11">
+    <hgroup>
+      <h3>Break It</h3>
+    </hgroup>
+    <article class="">
+      <p>Problems with permissions can lead to failure. So can scripting errors</p>
+<div class="build container">
+<ul class="build simple">
+<li>Open <code class="docutils literal"><span class="pre">cgi/cgi-bin/cgi_1.py</span></code> in an editor</li>
+<li>Before where it says <code class="docutils literal"><span class="pre">cgi.test()</span></code>, add a single line:</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="mi">1</span> <span class="o">/</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>Reload your browser, what happens now?</p>
+</div>
+
+
+
+<div class="slide-no">17</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id12">
+    <hgroup>
+      <h3>Errors in CGI</h3>
+    </hgroup>
+    <article class="">
+      <p>CGI is famously difficult to debug.  There are reasons for this:</p>
+<ul class="build simple">
+<li>CGI is designed to provide access to runnable processes to <em>the internet</em></li>
+<li>The internet is a wretched hive of scum and villainy</li>
+<li>Revealing error conditions can expose data that could be exploited</li>
+</ul>
+
+
+
+<div class="slide-no">18</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id13">
+    <hgroup>
+      <h3>Viewing Errors in Python CGI</h3>
+    </hgroup>
+    <article class="">
+      <p>Back in your editor, add the following lines, just below <code class="docutils literal"><span class="pre">import</span> <span class="pre">cgi</span></code>:</p>
+<div class="build container">
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">cgitb</span>
+<span class="n">cgitb</span><span class="o">.</span><span class="n">enable</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Now, reload again.</p>
+</div>
+
+
+
+<div class="slide-no">19</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id14">
+    <hgroup>
+      <h3>cgitb Output</h3>
+    </hgroup>
+    <article class="">
+      <div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/cgitb_output.png"><img alt="../_images/cgitb_output.png" src="../_images/cgitb_output.png" style="width: 100%;" /></a>
+</div>
+
+
+
+<div class="slide-no">20</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id15">
+    <hgroup>
+      <h3>Repair the Error</h3>
+    </hgroup>
+    <article class="">
+      <p>Let's fix the error from our traceback.  Edit your <code class="docutils literal"><span class="pre">cgi_1.py</span></code> file to match:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
+<span class="kn">import</span> <span class="nn">cgi</span>
+<span class="kn">import</span> <span class="nn">cgitb</span>
+
+<span class="n">cgitb</span><span class="o">.</span><span class="n">enable</span><span class="p">()</span>
+
+<span class="n">cgi</span><span class="o">.</span><span class="n">test</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="build container">
+<p>Notice the first line of that script: <code class="docutils literal"><span class="pre">#!/usr/bin/env</span> <span class="pre">python</span></code>.</p>
+<p>This is called a <em>shebang</em> (short for hash-bang)</p>
+<p>It tells the system what executable program to use when running the script.</p>
+</div>
+
+
+
+<div class="slide-no">21</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="cgi-process-execution">
+    <hgroup>
+      <h3>CGI Process Execution</h3>
+    </hgroup>
+    <article class="">
+      <p>Servers like <code class="docutils literal"><span class="pre">http.server</span> <span class="pre">--cgi</span></code> run CGI scripts as a system user called
+<code class="docutils literal"><span class="pre">nobody</span></code>.</p>
+<div class="build container">
+<p>This is just like you calling:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ ./cgi_bin/cgi_1.py
+</pre></div>
+</div>
+<p>In fact try that now in your second terminal (use the real path), what do
+you get?</p>
+<p>Windows folks, you may need <code class="docutils literal"><span class="pre">C:\&gt;python</span> <span class="pre">cgi-bin/cgi_1.py</span></code></p>
+<p>Notice what is missing?</p>
+</div>
+
+
+
+<div class="slide-no">22</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id16">
+    <hgroup>
+      <h3>CGI Process Execution</h3>
+    </hgroup>
+    <article class="">
+      <p>There are a couple of important facts about CGI that derive from this:</p>
+<ul class="build simple">
+<li>The script <strong>must</strong> include a <em>shebang</em> so that the system knows how to run
+it.</li>
+<li>The script <strong>must</strong> be executable.</li>
+<li>The <em>executable</em> named in the <em>shebang</em> will be called as the <em>nobody</em> user.</li>
+<li>This is a security feature to prevent CGI scripts from running as a user
+with any privileges.</li>
+<li>This means that the <em>executable</em> from the script <em>shebang</em> must be one that
+<em>anyone</em> can run.</li>
+</ul>
+
+
+
+<div class="slide-no">23</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id17">
+    <hgroup>
+      <h3>The CGI Environment</h3>
+    </hgroup>
+    <article class="">
+      <p>CGI is largely a set of agreed-upon environmental variables.</p>
+<div class="build container">
+<p>We've seen how environmental variables are found in python in
+<code class="docutils literal"><span class="pre">os.environ</span></code></p>
+<p>We've also seen that at least some of the variables in CGI are <strong>not</strong> part
+of the system environment.</p>
+<p>Where do they come from?</p>
+</div>
+
+
+
+<div class="slide-no">24</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id18">
+    <hgroup>
+      <h3>CGI Servers</h3>
+    </hgroup>
+    <article class="">
+      <p>Let's find 'em.  In a terminal fire up python:</p>
+<div class="build container">
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [1]: </span><span class="kn">from</span> <span class="nn">http</span> <span class="kn">import</span> <span class="n">server</span>
+<span class="gp">In [2]: </span><span class="n">server</span><span class="o">.</span><span class="n">__file__</span>
+<span class="gh">Out[2]: </span><span class="go">&#39;/Users/cewing/pythons/parts/opt/lib/python3.5/http/server.py&#39;</span>
+<span class="gp">In [3]: </span><span class="o">!</span>subl <span class="s1">&#39;/Users/cewing/pythons/parts/opt/lib/python3.5/http/server.py&#39;</span>
+</pre></div>
+</div>
+<p>If you don't have the <code class="docutils literal"><span class="pre">subl</span></code> command, or another one that starts your
+editor, copy this path and open it in your text editor.</p>
+</div>
+
+
+
+<div class="slide-no">25</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id19">
+    <hgroup>
+      <h3>Environmental Set Up</h3>
+    </hgroup>
+    <article class="">
+      <p>From <code class="docutils literal"><span class="pre">http/server.py</span></code>, in the <code class="docutils literal"><span class="pre">CGIHTTPRequestHandler</span></code> class, in the
+<code class="docutils literal"><span class="pre">run_cgi</span></code> method:</p>
+<div class="tiny highlight-python"><div class="highlight"><pre><span class="n">env</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">)</span>
+<span class="n">env</span><span class="p">[</span><span class="s">&#39;SERVER_SOFTWARE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">version_string</span><span class="p">()</span>
+<span class="n">env</span><span class="p">[</span><span class="s">&#39;SERVER_NAME&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">server_name</span>
+<span class="n">env</span><span class="p">[</span><span class="s">&#39;GATEWAY_INTERFACE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;CGI/1.1&#39;</span>
+<span class="o">...</span>
+<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">have_fork</span><span class="p">:</span>
+    <span class="c"># Unix -- fork as we should</span>
+    <span class="o">...</span>
+    <span class="n">pid</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fork</span><span class="p">()</span>
+    <span class="o">...</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="o">...</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">execve</span><span class="p">(</span><span class="n">scriptfile</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">env</span><span class="p">)</span>
+    <span class="o">...</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="c"># Non-Unix -- use subprocess</span>
+    <span class="kn">import</span> <span class="nn">subprocess</span>
+    <span class="o">...</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">cmdline</span><span class="p">,</span>
+                         <span class="o">...</span>
+                         <span class="n">env</span> <span class="o">=</span> <span class="n">env</span>
+                         <span class="p">)</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">26</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id20">
+    <hgroup>
+      <h3>CGI Scripts</h3>
+    </hgroup>
+    <article class="">
+      <p>And that's it, the big secret. The server takes care of setting up the
+environment so it has what is needed.</p>
+<div class="build container">
+<p>Now, in reverse. How does the information that a script creates end up in
+your browser?</p>
+<p>A CGI Script must print its results to stdout.</p>
+<p>Use the same method as above to import and open the source file for the
+<code class="docutils literal"><span class="pre">cgi</span></code> module. Note what <code class="docutils literal"><span class="pre">test</span></code> does for an example of this.</p>
+<div class="tiny highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">environ</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">):</span>
+    <span class="o">...</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Content-type: text/html&quot;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">FieldStorage</span><span class="p">()</span>   <span class="c"># Replace with other classes to test those</span>
+        <span class="n">print_directory</span><span class="p">()</span>
+        <span class="n">print_arguments</span><span class="p">()</span>
+        <span class="n">print_form</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
+        <span class="o">...</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">print_exception</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+
+
+
+<div class="slide-no">27</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id21">
+    <hgroup>
+      <h3>Recap</h3>
+    </hgroup>
+    <article class="">
+      <p>What the Server Does:</p>
+<ul class="build simple">
+<li>parses the request</li>
+<li>sets up the environment, including HTTP and SERVER variables</li>
+<li>sends a <code class="docutils literal"><span class="pre">HTTP/1.1</span> <span class="pre">200</span> <span class="pre">OK\r\n</span></code> first line to the client</li>
+<li>figures out if the URI points to a CGI script and runs it</li>
+<li>appends what comes from the script on stdout and sends that back</li>
+</ul>
+<p>What the Script Does:</p>
+<ul class="build simple">
+<li>names appropriate <em>executable</em> in the <em>shebang</em> line</li>
+<li>uses os.environ to read information from the HTTP request</li>
+<li>builds <em>any and all</em> extra <strong>HTTP Headers</strong> <br />
+(Content-type:, Content-length:, ...)</li>
+<li>prints the headers, empty line and script output (body) to stdout</li>
+</ul>
+
+
+
+<div class="slide-no">28</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="in-class-exercise-i">
+    <hgroup>
+      <h3>In-Class Exercise I</h3>
+    </hgroup>
+    <article class="">
+      <p>You've seen the output from the <code class="docutils literal"><span class="pre">cgi.test()</span></code> method from the <code class="docutils literal"><span class="pre">cgi</span></code> module.
+Let's make our own version of this.</p>
+<div class="build container">
+<ul class="build simple">
+<li>In the directory <code class="docutils literal"><span class="pre">cgi-bin</span></code> you will find the file <code class="docutils literal"><span class="pre">cgi_2.py</span></code>.</li>
+<li>Open that file in your editor.</li>
+<li>The script contains some html with text containing placeholders.</li>
+<li>You should use Python and the CGI environment to fill the the blanks.</li>
+<li>You can view the results of your work by loading
+<code class="docutils literal"><span class="pre">http://localhost:8000/</span></code> and clicking on <em>Exercise One</em></li>
+</ul>
+<p><strong>GO</strong></p>
+</div>
+
+
+
+<div class="slide-no">29</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="getting-data-from-users">
+    <hgroup>
+      <h3>Getting Data from Users</h3>
+    </hgroup>
+    <article class="">
+      <p>All this is well and good, but where's the <em>dynamic</em> stuff?</p>
+<div class="build container">
+<p>It'd be nice if a user could pass form data to our script for it to use.</p>
+<p>In HTTP, data is often passed to the server as a part of a URL called the
+<em>query string</em></p>
+<p>The URL query string is formatted as <code class="docutils literal"><span class="pre">name=value</span></code> pairs, separated by the
+ampersand (<code class="docutils literal"><span class="pre">&amp;</span></code>) character</p>
+<p>The entire query string is separated from other parts of the URL by a
+question mark:</p>
+<div class="highlight-python"><div class="highlight"><pre>http://localhost:8000/cgi_bin/somescript.py?a=23&amp;b=46&amp;b=92
+</pre></div>
+</div>
+</div>
+
+
+
+<div class="slide-no">30</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id22">
+    <hgroup>
+      <h3>The Query String in CGI</h3>
+    </hgroup>
+    <article class="">
+      <p>In the <code class="docutils literal"><span class="pre">cgi</span></code> module, we get access to the query string with the
+<code class="docutils literal"><span class="pre">FieldStorage</span></code> class:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">cgi</span>
+
+<span class="n">form</span> <span class="o">=</span> <span class="n">cgi</span><span class="o">.</span><span class="n">FieldStorage</span><span class="p">()</span>
+<span class="n">stringval</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">getvalue</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+<span class="n">listval</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">getlist</span><span class="p">(</span><span class="s">&#39;b&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="build simple">
+<li>The values in the <code class="docutils literal"><span class="pre">FieldStorage</span></code> are <em>always</em> strings</li>
+<li><code class="docutils literal"><span class="pre">getvalue</span></code> allows you to return a default, in case the field isn't present</li>
+<li><code class="docutils literal"><span class="pre">getlist</span></code> always returns a list: empty, one-valued, or as many values as
+are present</li>
+</ul>
+
+
+
+<div class="slide-no">31</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="in-class-exercise-ii">
+    <hgroup>
+      <h3>In-Class Exercise II</h3>
+    </hgroup>
+    <article class="">
+      <p>Let's create a dynamic adding machine.</p>
+<ul class="build simple">
+<li>In the <code class="docutils literal"><span class="pre">cgi-bin</span></code> directory you'll find <code class="docutils literal"><span class="pre">cgi_sums.py</span></code>.</li>
+<li>In the <code class="docutils literal"><span class="pre">index.html</span></code> file in the <code class="docutils literal"><span class="pre">cgi</span></code> directory, the third link leads to
+this file.</li>
+<li>You will use the structure of that link, and what you learned just now about
+<code class="docutils literal"><span class="pre">cgi.FieldStorage</span></code>.</li>
+<li>Complete the cgi script in <code class="docutils literal"><span class="pre">cgi_sums.py</span></code> so that the result of adding all
+operands sent via the url query is returned.</li>
+<li>Return the results as plain text, with the appropriate <code class="docutils literal"><span class="pre">Content-Type</span></code>
+header.</li>
+</ul>
+
+
+
+<div class="slide-no">32</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id23">
+    <hgroup>
+      <h3>My Solution</h3>
+    </hgroup>
+    <article class="">
+      <div class="build highlight-python"><div class="highlight"><pre><span class="n">form</span> <span class="o">=</span> <span class="n">cgi</span><span class="o">.</span><span class="n">FieldStorage</span><span class="p">()</span>
+<span class="n">operands</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">getlist</span><span class="p">(</span><span class="s">&#39;operand&#39;</span><span class="p">)</span>
+<span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;your total is {total}&quot;</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">operands</span><span class="p">))</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="n">total</span><span class="p">)</span>
+<span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;Unable to calculate a sum, please provide integer operands&quot;</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;Content-Type: text/plain&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;Content-Length: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">msg</span><span class="p">))</span>
+<span class="k">print</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">33</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id24">
     <hgroup>
       <h3>Break Time</h3>
     </hgroup>
     <article class="">
-      <p>That's enough for now.  We have a working application.</p>
-<p>When we return, we'll deploy it.</p>
+      <p class="centered">Let's take a break here, before continuing</p>
 
 
+
+<div class="slide-no">34</div>
 
 
     </article>
-  </slide>  <slide class="level-2">
+  </slide>  <slide class="level-2" id="wsgi">
     <hgroup>
-      <h2>Deploying An Application</h2>
+      <h2>WSGI</h2>
     </hgroup>
     <article class="">
-      <div class="left container">
-<p>Now that we have a working application, our next step is to deploy it.</p>
+      <p class="center large">The Web Server Gateway Interface</p>
+
+
+
+<div class="slide-no">35</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="cgi-problems">
+    <hgroup>
+      <h3>CGI Problems</h3>
+    </hgroup>
+    <article class="">
+      <p>CGI is great, but there are problems:</p>
 <div class="build container">
-<p>This will allow us to interact with the application in a live setting.</p>
-<p>We will be able to see the application from any computer, and can share
-it with friends and family.</p>
-<p>To do this, we'll be using one of the most popular platforms for
-deploying web applications today, <a class="reference external" href="http://heroku.com">Heroku</a>.</p>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Heroku</h3>
-    </hgroup>
-    <article class="">
-      <div class="figure align-center">
-<a class="reference internal image-reference" href="../_images/heroku-logo.png"><img alt="../_images/heroku-logo.png" src="../_images/heroku-logo.png" style="width: 40%;" /></a>
-</div>
-<div class="build container">
-<p>Heroku provides all the infrastructure needed to run many types of
-applications.</p>
-<p>It also provides <a class="reference external" href="https://addons.heroku.com">add-on services</a> that support everything from analytics
-to payment processing.</p>
-<p>Elaborate applications deployed on Heroku can be quite expensive.</p>
-<p>But for simple applications like our learning journal, the price is just
-right: <strong>free</strong></p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>How Heroku Works</h3>
-    </hgroup>
-    <article class="">
-      <p>Heroku is predicated on interaction with a git repository.</p>
-<div class="build container">
-<p>You initialize a new Heroku app in a repository on your machine.</p>
-<p>This adds Heroku as a <em>remote</em> to your repository.</p>
-<p>When you are ready to deploy your application, you <tt class="docutils literal"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">heroku</span>
-<span class="pre">master</span></tt>.</p>
-<p>Adding a few special files to your repository allows Heroku to tell what
-kind of application you are creating.</p>
-<p>It responds to your push by running an appropriate build process and then
-starting your app with a command you provide.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Preparing to Run Your App</h3>
-    </hgroup>
-    <article class="">
-      <p>In order for Heroku to deploy your application, it has to have a command it can
-run from a standard shell.</p>
-<div class="build container">
-<p>We could use the <tt class="docutils literal"><span class="pre">pserve</span></tt> command we've been using locally, but the
-server it uses is designed for development.</p>
-<p>It's not really suitable for a public deployment.</p>
-<p>Instead we'll use a more robust, production-ready server that came as one
-of our dependencies: <a class="reference external" href="http://waitress.readthedocs.org/en/latest/">waitress</a>.</p>
-<p>We'll start by creating a python file that can be executed to start the
-<tt class="docutils literal"><span class="pre">waitress</span></tt> server.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Creating <tt class="docutils literal"><span class="pre">runapp.py</span></tt></h3>
-    </hgroup>
-    <article class="">
-      <p>At the very top level of your application project, in the same folder where you
-find <tt class="docutils literal"><span class="pre">setup.py</span></tt>, create a new file: <tt class="docutils literal"><span class="pre">runapp.py</span></tt></p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">paste.deploy</span> <span class="kn">import</span> <span class="n">loadapp</span>
-<span class="kn">from</span> <span class="nn">waitress</span> <span class="kn">import</span> <span class="n">serve</span>
-
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">port</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;PORT&quot;</span><span class="p">,</span> <span class="mi">5000</span><span class="p">))</span>
-    <span class="n">app</span> <span class="o">=</span> <span class="n">loadapp</span><span class="p">(</span><span class="s">&#39;config:production.ini&#39;</span><span class="p">,</span> <span class="n">relative_to</span><span class="o">=</span><span class="s">&#39;.&#39;</span><span class="p">)</span>
-
-    <span class="n">serve</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s">&#39;0.0.0.0&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="build container">
-<p>Once this exists, you can try running your app with it:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>python runapp.py
-serving on http://0.0.0.0:5000
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Running Via Shell</h3>
-    </hgroup>
-    <article class="">
-      <p>This would be enough, but we also want to <em>install</em> our application as a Python
-package.</p>
-<div class="build container">
-<p>This will ensure that the dependencies for the application are installed.</p>
-<p>Add a new file called simply <tt class="docutils literal"><span class="pre">run</span></tt> in the same folder:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="c">#!/bin/bash</span>
-python setup.py develop
-python runapp.py
-</pre></div>
-</div>
-<p>The first line of this file will install our application and its
-dependencies.</p>
-<p>The second line will execute the server script.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Build the Database</h3>
-    </hgroup>
-    <article class="">
-      <p>We'll need to do the same thing for initializing the database.</p>
-<div class="build container">
-<p>Create another new file called <tt class="docutils literal"><span class="pre">build_db</span></tt> in the same folder:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="c">#!/bin/bash</span>
-python setup.py develop
-initialize_learning_journal_db production.ini
-</pre></div>
-</div>
-<p>Now, add <tt class="docutils literal"><span class="pre">run</span></tt>, <tt class="docutils literal"><span class="pre">build_db</span></tt> and <tt class="docutils literal"><span class="pre">runapp.py</span></tt> to your repository and
-commit the changes.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Make it Executable</h3>
-    </hgroup>
-    <article class="">
-      <p>For Heroku to use them, <tt class="docutils literal"><span class="pre">run</span></tt> and <tt class="docutils literal"><span class="pre">build_db</span></tt> must be <em>executable</em></p>
-<div class="build container">
-<p>For OSX and Linux users this is easy (do the same for <tt class="docutils literal"><span class="pre">run</span></tt> and
-<tt class="docutils literal"><span class="pre">build_db</span></tt>):</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>chmod 755 run
-</pre></div>
-</div>
-<p>Windows users, if you have <tt class="docutils literal"><span class="pre">git-bash</span></tt>, you can do the same</p>
-<p>For the rest of you, try this (for both <tt class="docutils literal"><span class="pre">run</span></tt> and <tt class="docutils literal"><span class="pre">build_db</span></tt>):</p>
-<div class="highlight-posh"><div class="highlight"><pre>C:\views\myproject&gt;git ls-tree HEAD
-...
-100644 blob 55c0287d4ef21f15b97eb1f107451b88b479bffe    run
-C:\views\myproject&gt;git update-index --chmod=+x run
-C:\views\myproject&gt;git ls-tree HEAD
-100755 blob 3689ebe2a18a1c8ec858cf531d8c0ec34c8405b4    run
-</pre></div>
-</div>
-<p>Commit your changes to git to make them permanent.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Procfile</h3>
-    </hgroup>
-    <article class="">
-      <p>Next, we have to inform Heroku that we will be using this script to run our
-application online</p>
-<div class="build container">
-<p>Heroku uses a special file called <tt class="docutils literal"><span class="pre">Procfile</span></tt> to do this.</p>
-<p>Add that file now, in the same directory.</p>
-<div class="highlight-bash"><div class="highlight"><pre>web: ./run
-</pre></div>
-</div>
-<p>This file tells Heroku that we have one <tt class="docutils literal"><span class="pre">web</span></tt> process to run, and that it
-is the <tt class="docutils literal"><span class="pre">run</span></tt> script located right here.</p>
-<p>Providing the <tt class="docutils literal"><span class="pre">./</span></tt> at the start of the file name allows the shell to
-execute scripts that are not on the system PATH.</p>
-<p>Add this new file to your repository and commit it.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Set Up a Heroku App</h3>
-    </hgroup>
-    <article class="">
-      <p>The next step is to create a new app with heroku.</p>
-<div class="build container">
-<p>You installed the Heroku toolbelt prior to class.</p>
-<p>The toolbelt provides a command to create a new app.</p>
-<p>From the root of your project (where the <tt class="docutils literal"><span class="pre">setup.py</span></tt> file is) run:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>heroku create
-Creating rocky-atoll-9934... <span class="k">done</span>, stack is cedar-14
-https://rocky-atoll-9934.herokuapp.com/ | https://git.heroku.com/rocky-atoll-9934.git
-Git remote heroku added
-</pre></div>
-</div>
-<p>Note that a new <em>remote</em> called <tt class="docutils literal"><span class="pre">heroku</span></tt> has been added:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>git remote -v
-heroku  https://git.heroku.com/rocky-atoll-9934.git <span class="o">(</span>fetch<span class="o">)</span>
-heroku  https://git.heroku.com/rocky-atoll-9934.git <span class="o">(</span>push<span class="o">)</span>
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Adding PostgreSQL</h3>
-    </hgroup>
-    <article class="">
-      <p>Your application will require a database, but <tt class="docutils literal"><span class="pre">sqlite</span></tt> is not really
-appropriate for production.</p>
-<div class="build container">
-<p>For the deployed app, you'll use <a class="reference external" href="http://www.postgresql.org">PostgreSQL</a>, the best open-source
-database.</p>
-<p>Heroku <a class="reference external" href="https://www.heroku.com/postgres">provides an add-on</a> that supports PostgreSQL, and you'll need to
-set it up.</p>
-<p>Again, use the Heroku Toolbelt:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>heroku addons:add heroku-postgresql:dev
-Adding heroku-postgresql:dev on rocky-atoll-9934... <span class="k">done</span>, v4 <span class="o">(</span>free<span class="o">)</span>
-Attached as HEROKU_POSTGRESQL_MAROON_URL
-Database has been created and is available
- ! This database is empty. If upgrading, you can transfer
- ! data from another database with pgbackups:restore.
-Use <span class="sb">`</span>heroku addons:docs heroku-postgresql<span class="sb">`</span> to view documentation.
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>PostgreSQL Settings</h3>
-    </hgroup>
-    <article class="">
-      <p>You can get information about the status of your PostgreSQL service with the
-toolbelt:</p>
-<div class="build container">
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>heroku <span class="nv">pg</span>
-<span class="o">===</span> HEROKU_POSTGRESQL_MAROON_URL <span class="o">(</span>DATABASE_URL<span class="o">)</span>
-Plan:        Dev
-...
-Data Size:   6.4 MB
-Tables:      0
-Rows:        0/10000 <span class="o">(</span>In compliance<span class="o">)</span>
-</pre></div>
-</div>
-<p>And there is also information about the configuration for the database (and
-your app):</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>heroku <span class="nv">config</span>
-<span class="o">===</span> rocky-atoll-9934 Config Vars
-DATABASE_URL:                 postgres://&lt;username&gt;:&lt;password&gt;@&lt;domain&gt;:&lt;port&gt;/&lt;database-name&gt;
-HEROKU_POSTGRESQL_MAROON_URL: postgres://&lt;username&gt;:&lt;password&gt;@&lt;domain&gt;:&lt;port&gt;/&lt;database-name&gt;
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Configuration for Heroku</h3>
-    </hgroup>
-    <article class="">
-      <p>Notice that the configuration for our application on Heroku provides a specific
-database URL.</p>
-<div class="build container">
-<p>We could copy this value and paste it into our <tt class="docutils literal"><span class="pre">production.ini</span></tt>
-configuration file.</p>
-<p>But if we do that, then we will be storing that value in GitHub, where
-anyone at all can see it.</p>
-<p>That's not particularly secure.</p>
-<p>Luckily, Heroku provides configuration like the database URL in
-<em>environment variables</em> that we can read in Python.</p>
-<p>In fact, we've already done this with our <tt class="docutils literal"><span class="pre">runapp.py</span></tt> script:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">port</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;PORT&quot;</span><span class="p">,</span> <span class="mi">5000</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Adjusting Our DB Configuration</h3>
-    </hgroup>
-    <article class="">
-      <p>The Python standard library provides <tt class="docutils literal"><span class="pre">os.environ</span></tt> to allow access to
-<em>environment variables</em> from Python code.</p>
-<div class="build container">
-<p>This attribute is a dictionary keyed by the name of the variable.</p>
-<p>We can use it to gain access to configuration provided by Heroku.</p>
-<p>Update <tt class="docutils literal"><span class="pre">learning_journal/__init__.py</span></tt> like so:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># import the os module:</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="c"># then look up the value we need for the database url</span>
-<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">global_config</span><span class="p">,</span> <span class="o">**</span><span class="n">settings</span><span class="p">):</span>
-    <span class="c"># ...</span>
-    <span class="k">if</span> <span class="s">&#39;DATABASE_URL&#39;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
-        <span class="n">settings</span><span class="p">[</span><span class="s">&#39;sqlalchemy.url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;DATABASE_URL&#39;</span><span class="p">]</span>
-    <span class="n">engine</span> <span class="o">=</span> <span class="n">engine_from_config</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;sqlalchemy.&#39;</span><span class="p">)</span>
-    <span class="c"># ...</span>
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Adjust <tt class="docutils literal"><span class="pre">initializedb.py</span></tt></h3>
-    </hgroup>
-    <article class="">
-      <p>We'll need to make the same changes to
-<tt class="docutils literal"><span class="pre">learning_journal/scripts/initializedb.py</span></tt>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">):</span>
-    <span class="c"># ...</span>
-    <span class="n">settings</span> <span class="o">=</span> <span class="n">get_appsettings</span><span class="p">(</span><span class="n">config_uri</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
-    <span class="k">if</span> <span class="s">&#39;DATABASE_URL&#39;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
-        <span class="n">settings</span><span class="p">[</span><span class="s">&#39;sqlalchemy.url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;DATABASE_URL&#39;</span><span class="p">]</span>
-    <span class="n">engine</span> <span class="o">=</span> <span class="n">engine_from_config</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;sqlalchemy.&#39;</span><span class="p">)</span>
-    <span class="c"># ...</span>
-</pre></div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Additional Security</h3>
-    </hgroup>
-    <article class="">
-      <p>This mechanism allows us to defer other sensitive values such as the password
-for our initial user:</p>
-<div class="build container">
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># in learning_journal/scripts/initializedb.py</span>
-<span class="k">with</span> <span class="n">transaction</span><span class="o">.</span><span class="n">manager</span><span class="p">:</span>
-    <span class="n">manager</span> <span class="o">=</span> <span class="n">Manager</span>
-    <span class="n">password</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;ADMIN_PASSWORD&#39;</span><span class="p">,</span> <span class="s">u&#39;admin&#39;</span><span class="p">)</span>
-    <span class="n">password</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">password</span><span class="p">)</span>
-    <span class="n">admin</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">u&#39;admin&#39;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>And for the secret value for our AuthTktAuthenticationPolicy</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># in learning_journal/__init__.py</span>
-<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">global_config</span><span class="p">,</span> <span class="o">**</span><span class="n">settings</span><span class="p">):</span>
-    <span class="c"># ...</span>
-    <span class="n">secret</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;AUTH_SECRET&#39;</span><span class="p">,</span> <span class="s">&#39;somesecret&#39;</span><span class="p">)</span>
-    <span class="o">...</span>
-    <span class="n">authentication_policy</span><span class="o">=</span><span class="n">AuthTktAuthenticationPolicy</span><span class="p">(</span><span class="n">secret</span><span class="p">)</span>
-    <span class="c"># ...</span>
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Heroku Config</h3>
-    </hgroup>
-    <article class="">
-      <p>We will now be looking for three values from the OS environment:</p>
 <ul class="build simple">
-<li>DATABASE_URL</li>
-<li>ADMIN_PASSWORD</li>
-<li>AUTH_SECRET</li>
+<li>Code is executed <em>in a new process</em></li>
+<li><strong>Every</strong> call to a CGI script starts a new process on the server</li>
+<li>Starting a new process is expensive in terms of server resources</li>
+<li><em>Especially for interpreted languages like Python</em></li>
 </ul>
-<div class="build container">
-<p>The <tt class="docutils literal"><span class="pre">DATABASE_URL</span></tt> value is set for us by the PosgreSQL add-on.</p>
-<p>But the other two are not.  We must set them ourselves using <tt class="docutils literal"><span class="pre">heroku</span>
-<span class="pre">config:set</span></tt>:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>heroku config:set <span class="nv">ADMIN_PASSWORD</span><span class="o">=</span>&lt;your password&gt;
-...
-<span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>heroku config:set <span class="nv">AUTH_SECRET</span><span class="o">=</span>&lt;a long random string&gt;
-...
-</pre></div>
-</div>
+<p>How do we overcome this problem?</p>
 </div>
 
 
+
+<div class="slide-no">36</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id25">
     <hgroup>
-      <h3>Checking Configuration</h3>
+      <h3>Alternatives to CGI</h3>
     </hgroup>
     <article class="">
-      <p>You can see the values that you have set at any time using <tt class="docutils literal"><span class="pre">heroku</span> <span class="pre">config</span></tt>:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>heroku <span class="nv">config</span>
-<span class="o">===</span> rocky-atoll-9934 Config Vars
-ADMIN_PASSWORD:               &lt;your password&gt;
-AUTH_SECRET:                  &lt;your auth secret value&gt;
-DATABASE_URL:                 &lt;your db URL&gt;
-HEROKU_POSTGRESQL_MAROON_URL: &lt;your db URL&gt;
-</pre></div>
-</div>
+      <p>The most popular approach is to have a long-running process <em>inside</em> the
+server that handles CGI scripts.</p>
 <div class="build container">
-<p>These values are sent and received using secure transport.</p>
-<p>You do not need to worry about them being intercepted.</p>
-<p>This mechanism allows you to place important configuration values outside
-the code for your application.</p>
+<p>FastCGI and SCGI are existing implementations of CGI in this fashion.</p>
+<p>The PHP scripting language works in much the same way.</p>
+<p>The Apache module <strong>mod_python</strong> offers a similar capability for Python
+code.</p>
+<ul class="build simple">
+<li>Each of these options has a specific API</li>
+<li>None are compatible with each-other</li>
+<li>Code written for one is <strong>not portable</strong> to another</li>
+</ul>
+<p>This makes it much more difficult to <em>share resources</em></p>
 </div>
 
 
+
+<div class="slide-no">37</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="a-solution">
     <hgroup>
-      <h3>Requirements for Heroku</h3>
+      <h3>A Solution</h3>
     </hgroup>
     <article class="">
-      <p>We've been handling our application's dependencies by adding them to
-<tt class="docutils literal"><span class="pre">setup.py</span></tt>.</p>
+      <p>Enter WSGI, the Web Server Gateway Interface.</p>
 <div class="build container">
-<p>But there is a new dependency we've added that is only needed for Heroku.</p>
-<p>Because we are using a PostgreSQL database, we need to install the
-<tt class="docutils literal"><span class="pre">psycopg2</span></tt> package, which handles communicating with the database.</p>
-<p>We don't want to install this locally, though, where we use sqlite.</p>
-<p>Heroku supports using a file called <tt class="docutils literal"><span class="pre">requirements.txt</span></tt> to set
-dependencies.</p>
-<p>Create that file now, in the same folder as <tt class="docutils literal"><span class="pre">setup.py</span></tt> and add:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">psycopg2</span><span class="o">==</span>2.5.4
-</pre></div>
-</div>
-<p>Add that file to your repository and commit the change.</p>
+<p>Other alternatives are specific implementations of the CGI standard.</p>
+<p>WSGI is itself a new standard, not an implementation.</p>
+<p>WSGI is generalized to describe a set of interactions.</p>
+<p>Developers can write WSGI-capable apps and deploy them on any WSGI server.</p>
+<p>Read the original WSGI spec: <a class="reference external" href="http://www.python.org/dev/peps/pep-0333">http://www.python.org/dev/peps/pep-0333</a></p>
+<p>There is also an update for Python 3: <br /> <a class="reference external" href="https://www.python.org/dev/peps/pep-3333">https://www.python.org/dev/peps/pep-3333</a></p>
 </div>
 
 
+
+<div class="slide-no">38</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="apps-and-servers">
     <hgroup>
-      <h3>Deployment</h3>
+      <h3>Apps and Servers</h3>
     </hgroup>
     <article class="">
-      <p>We are now ready to deploy our application.</p>
+      <p>WSGI consists of two parts, a <em>server</em> and an <em>application</em>.</p>
 <div class="build container">
-<p>All we need to do is push our repository to the <tt class="docutils literal"><span class="pre">heroku</span></tt> master:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>git push heroku master
-...
-remote: Building <span class="nb">source</span>:
-remote:
-remote: -----&gt; Python app detected
-...
-remote: Verifying deploy... <span class="k">done</span>.
-To https://git.heroku.com/rocky-atoll-9934.git
-   b59b7c3..54f7e4d  master -&gt; master
-</pre></div>
+<div class="container">
+<p>A WSGI Server must:</p>
+<ul class="build simple">
+<li>set up an environment, much like the one in CGI</li>
+<li>provide a method <code class="docutils literal"><span class="pre">start_response(status,</span> <span class="pre">headers,</span> <span class="pre">exc_info=None)</span></code></li>
+<li>build a response body by calling an <em>application</em>, passing
+<code class="docutils literal"><span class="pre">environment</span></code> and <code class="docutils literal"><span class="pre">start_response</span></code> as args</li>
+<li>return a response with the status, headers and body</li>
+</ul>
+</div>
+<div class="container">
+<p>A WSGI Appliction must:</p>
+<ul class="build simple">
+<li>Be a callable (function, method, class)</li>
+<li>Take an environment and a <code class="docutils literal"><span class="pre">start_response</span></code> callable as arguments</li>
+<li>Call the <code class="docutils literal"><span class="pre">start_response</span></code> method.</li>
+<li>Return an <em>iterable</em> of 0 or more strings, which are treated as the
+body of the response.</li>
+</ul>
 </div>
 </div>
 
 
+
+<div class="slide-no">39</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id26">
     <hgroup>
-      <h3>Using <tt class="docutils literal"><span class="pre">heroku</span> <span class="pre">run</span></tt></h3>
+      <h3>Simplified WSGI Server</h3>
     </hgroup>
     <article class="">
-      <p>You can use the <tt class="docutils literal"><span class="pre">run</span></tt> command to execute arbitrary commands in the Heroku
-environment.</p>
-<div class="build container">
-<p>You can use this to initialize the database, using the shell script you
-created earlier:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>heroku run ./build_db
-...
+      <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">some_application</span> <span class="kn">import</span> <span class="n">simple_app</span>
+
+<span class="k">def</span> <span class="nf">build_env</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="c"># put together some environment info from the reqeuest</span>
+    <span class="k">return</span> <span class="n">env</span>
+
+<span class="k">def</span> <span class="nf">handle_request</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">app</span><span class="p">):</span>
+    <span class="n">environ</span> <span class="o">=</span> <span class="n">build_env</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="n">iterable</span> <span class="o">=</span> <span class="n">app</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">iterable</span><span class="p">:</span>
+        <span class="c"># send data to client here</span>
+
+<span class="k">def</span> <span class="nf">start_response</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">headers</span><span class="p">):</span>
+    <span class="c"># start an HTTP response, sending status and headers</span>
+
+<span class="c"># listen for HTTP requests and pass on to handle_request()</span>
+<span class="n">serve</span><span class="p">(</span><span class="n">simple_app</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>This will install our application and then run the database initialization
-script.</p>
-</div>
 
 
+
+<div class="slide-no">40</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id27">
     <hgroup>
-      <h3>Test Your Results</h3>
+      <h3>Simple WSGI Application</h3>
     </hgroup>
     <article class="">
-      <p>At this point, you should be ready to view your application online.</p>
-<div class="build container">
-<p>Use the <tt class="docutils literal"><span class="pre">open</span></tt> command from heroku to open your website in a browser:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>heroku open
+      <p>Where the simplified server above is <strong>not</strong> functional, this <em>is</em> a complete
+app:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">)</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="s">&quot;200 OK&quot;</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="s">&quot;Hello World</span><span class="se">\n</span><span class="s">&quot;</span>
+    <span class="n">response_headers</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&#39;Content-type&#39;</span><span class="p">,</span> <span class="s">&#39;text/plain&#39;</span><span class="p">),</span>
+                        <span class="p">(</span><span class="s">&#39;Content-length&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">body</span><span class="p">))]</span>
+    <span class="n">start_response</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">response_headers</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">body</span><span class="p">]</span>
 </pre></div>
-</div>
-<p>If you don't see your application, check to see if it is running:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>heroku <span class="nv">ps</span>
-<span class="o">===</span> web <span class="o">(</span>1X<span class="o">)</span>: <span class="sb">`</span>./run<span class="sb">`</span>
-web.1: up 2015/01/18 16:44:37 <span class="o">(</span>~ 31m ago<span class="o">)</span>
-</pre></div>
-</div>
-<p>If you get no results, use the <tt class="docutils literal"><span class="pre">scale</span></tt> command to try turning on a web
-<em>dyno</em>:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>heroku scale <span class="nv">web</span><span class="o">=</span>1
-Scaling dynos... <span class="k">done</span>, now running web at 1:1X.
-</pre></div>
-</div>
 </div>
 
 
+
+<div class="slide-no">41</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id28">
     <hgroup>
-      <h3>A Word About Scaling</h3>
+      <h3>WSGI Middleware</h3>
     </hgroup>
     <article class="">
-      <p>Heroku pricing is dependent on the number of <em>dynos</em> you are running.</p>
+      <p>A third part of the puzzle is something called WSGI <em>middleware</em></p>
 <div class="build container">
-<p>So long as you only run one dyno per application, you will remain in the
-free tier.</p>
-<p>Scaling above one dyno will begin to incur costs.</p>
-<p>Pay attention to the number of dynos you have running.</p>
+<ul class="build simple">
+<li>Middleware implements both the <em>server</em> and <em>application</em> interfaces</li>
+<li>Middleware acts as a server when viewed from an application</li>
+<li>Middleware acts as an application when viewed from a server</li>
+</ul>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/wsgi_middleware_onion.png"><img alt="../_images/wsgi_middleware_onion.png" src="../_images/wsgi_middleware_onion.png" style="width: 38%;" /></a>
+</div>
 </div>
 
 
 
+<div class="slide-no">42</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id29">
     <hgroup>
-      <h3>Troubleshooting</h3>
+      <h3>WSGI Data Flow</h3>
     </hgroup>
     <article class="">
-      <p>Troubleshooting problems with Heroku deployment can be challenging.</p>
-<div class="build container">
-<p>Your most powerful tool is the <tt class="docutils literal"><span class="pre">logs</span></tt> command:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>heroku logs
-...
-2015-01-19T01:17:59.443720+00:00 app<span class="o">[</span>web.1<span class="o">]</span>: serving on http://0.0.0.0:53843
-2015-01-19T01:17:59.505003+00:00 heroku<span class="o">[</span>web.1<span class="o">]</span>: State changed from starting to update
+      <div class="build container">
+<div class="container">
+<p>WSGI Servers:</p>
+<p class="large centered"><strong>HTTP &lt;---&gt; WSGI</strong></p>
+</div>
+<div class="container">
+<p>WSGI Applications:</p>
+<p class="large centered"><strong>WSGI &lt;---&gt; app code</strong></p>
+</div>
+</div>
+
+
+
+<div class="slide-no">43</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id30">
+    <hgroup>
+      <h3>The WSGI Stack</h3>
+    </hgroup>
+    <article class="">
+      <p>The WSGI <em>Stack</em> can thus be expressed like so:</p>
+<p class="build large centered"><strong>HTTP &lt;---&gt; WSGI &lt;---&gt; app code</strong></p>
+
+
+
+<div class="slide-no">44</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id31">
+    <hgroup>
+      <h3>Using wsgiref</h3>
+    </hgroup>
+    <article class="">
+      <p>The Python standard lib provides a reference implementation of WSGI:</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/wsgiref_flow.png"><img alt="../_images/wsgiref_flow.png" src="../_images/wsgiref_flow.png" style="width: 80%;" /></a>
+</div>
+
+
+
+<div class="slide-no">45</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id32">
+    <hgroup>
+      <h3>Apache mod_wsgi</h3>
+    </hgroup>
+    <article class="">
+      <p>You can also deploy with Apache as your HTTP server, using <strong>mod_wsgi</strong>:</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/mod_wsgi_flow.png"><img alt="../_images/mod_wsgi_flow.png" src="../_images/mod_wsgi_flow.png" style="width: 80%;" /></a>
+</div>
+
+
+
+<div class="slide-no">46</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id33">
+    <hgroup>
+      <h3>Proxied WSGI Servers</h3>
+    </hgroup>
+    <article class="">
+      <p>Finally, it is also common to see WSGI apps deployed via a proxied WSGI
+server:</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/proxy_wsgi.png"><img alt="../_images/proxy_wsgi.png" src="../_images/proxy_wsgi.png" style="width: 80%;" /></a>
+</div>
+
+
+
+<div class="slide-no">47</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="the-wsgi-environment">
+    <hgroup>
+      <h3>The WSGI Environment</h3>
+    </hgroup>
+    <article class="">
+      <dl class="docutils">
+<dt>REQUEST_METHOD:</dt>
+<dd>The HTTP request method, such as &quot;GET&quot; or &quot;POST&quot;. This cannot ever be an
+empty string, and so is always required.</dd>
+<dt>SCRIPT_NAME:</dt>
+<dd>The initial portion of the request URL's &quot;path&quot; that corresponds to the
+application object, so that the application knows its virtual &quot;location&quot;.
+This may be an empty string, if the application corresponds to the &quot;root&quot; of
+the server.</dd>
+<dt>PATH_INFO:</dt>
+<dd>The remainder of the request URL's &quot;path&quot;, designating the virtual
+&quot;location&quot; of the request's target within the application. This may be an
+empty string, if the request URL targets the application root and does not
+have a trailing slash.</dd>
+<dt>QUERY_STRING:</dt>
+<dd>The portion of the request URL that follows the &quot;?&quot;, if any. May be empty or
+absent.</dd>
+<dt>CONTENT_TYPE:</dt>
+<dd>The contents of any Content-Type fields in the HTTP request. May be empty or
+absent.</dd>
+</dl>
+
+
+
+<div class="slide-no">48</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id34">
+    <hgroup>
+      <h3>The WSGI Environment</h3>
+    </hgroup>
+    <article class="">
+      <dl class="docutils">
+<dt>CONTENT_LENGTH:</dt>
+<dd>The contents of any Content-Length fields in the HTTP request. May be empty
+or absent.</dd>
+<dt>SERVER_NAME, SERVER_PORT:</dt>
+<dd>When combined with SCRIPT_NAME and PATH_INFO, these variables can be used to
+complete the URL. Note, however, that HTTP_HOST, if present, should be used
+in preference to SERVER_NAME for reconstructing the request URL. See the URL
+Reconstruction section below for more detail. SERVER_NAME and SERVER_PORT
+can never be empty strings, and so are always required.</dd>
+<dt>SERVER_PROTOCOL:</dt>
+<dd>The version of the protocol the client used to send the request. Typically
+this will be something like &quot;HTTP/1.0&quot; or &quot;HTTP/1.1&quot; and may be used by the
+application to determine how to treat any HTTP request headers. (This
+variable should probably be called REQUEST_PROTOCOL, since it denotes the
+protocol used in the request, and is not necessarily the protocol that will
+be used in the server's response. However, for compatibility with CGI we
+have to keep the existing name.)</dd>
+</dl>
+
+
+
+<div class="slide-no">49</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id35">
+    <hgroup>
+      <h3>The WSGI Environment</h3>
+    </hgroup>
+    <article class="">
+      <dl class="docutils">
+<dt>HTTP_ Variables:</dt>
+<dd>Variables corresponding to the client-supplied HTTP request headers (i.e.,
+variables whose names begin with &quot;HTTP_&quot;). The presence or absence of these
+variables should correspond with the presence or absence of the appropriate
+HTTP header in the request.</dd>
+</dl>
+<p class="build large centered"><strong>Seem Familiar?</strong></p>
+
+
+
+<div class="slide-no">50</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="in-class-exercise-iii">
+    <hgroup>
+      <h3>In-Class Exercise III</h3>
+    </hgroup>
+    <article class="">
+      <p>Let's start simply.  We'll begin by repeating our first CGI exercise in WSGI</p>
+<ul class="build simple">
+<li>Find the <code class="docutils literal"><span class="pre">wsgi</span></code> directory in the class resources. Copy it to your working
+directory.</li>
+<li>Open the file <code class="docutils literal"><span class="pre">wsgi_1.py</span></code> in your text editor.</li>
+<li>We will fill in the missing values using Python and the wsgi <code class="docutils literal"><span class="pre">environ</span></code>,
+just as we use <code class="docutils literal"><span class="pre">os.environ</span></code> in cgi</li>
+</ul>
+<p class="build centered"><strong>But First</strong></p>
+
+
+
+<div class="slide-no">51</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id36">
+    <hgroup>
+      <h3>Orientation</h3>
+    </hgroup>
+    <article class="">
+      <div class="highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">wsgiref.simple_server</span> <span class="kn">import</span> <span class="n">make_server</span>
+    <span class="n">srv</span> <span class="o">=</span> <span class="n">make_server</span><span class="p">(</span><span class="s">&#39;localhost&#39;</span><span class="p">,</span> <span class="mi">8080</span><span class="p">,</span> <span class="n">application</span><span class="p">)</span>
+    <span class="n">srv</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>This command will print the last 50 or so lines of logging from your
-application.</p>
-<p>You can use the <tt class="docutils literal"><span class="pre">-t</span></tt> flag to <em>tail</em> the logs.</p>
-<p>This will continually update log entries to your terminal as you interact
-with the application.</p>
+<div class="build container">
+<p>Note that we pass our <code class="docutils literal"><span class="pre">application</span></code> function to the server factory</p>
+<p>We don't have to write a server, <code class="docutils literal"><span class="pre">wsgiref</span></code> does that for us.</p>
+<p>In fact, you should <em>never</em> have to write a WSGI server.</p>
 </div>
 
 
 
+<div class="slide-no">52</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id37">
     <hgroup>
-      <h3>Revel In Your Glory</h3>
+      <h3>Orientation</h3>
     </hgroup>
     <article class="">
-      <p>Try logging in to your application with the password you set up in Heroku
-configuration.</p>
+      <div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">):</span>
+    <span class="n">response_body</span> <span class="o">=</span> <span class="n">body</span> <span class="o">%</span> <span class="p">(</span>
+         <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;SERVER_NAME&#39;</span><span class="p">,</span> <span class="s">&#39;Unset&#39;</span><span class="p">),</span> <span class="c"># server name</span>
+            <span class="o">...</span>
+         <span class="p">)</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="s">&#39;200 OK&#39;</span>
+    <span class="n">response_headers</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&#39;Content-Type&#39;</span><span class="p">,</span> <span class="s">&#39;text/html&#39;</span><span class="p">),</span>
+                        <span class="p">(</span><span class="s">&#39;Content-Length&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">response_body</span><span class="p">)))]</span>
+    <span class="n">start_response</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">response_headers</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">response_body</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">)]</span>
+</pre></div>
+</div>
 <div class="build container">
-<p>Once you are logged in, try adding an entry or two.</p>
-<p>You are now off to the races!</p>
-<p class="center"><strong>Congratulations</strong></p>
+<p>We do not define <code class="docutils literal"><span class="pre">start_response</span></code>, the application does that.</p>
+<p>We <em>are</em> responsible for determining the HTTP status.</p>
+<p>And the content we hand back <em>must</em> be <code class="docutils literal"><span class="pre">bytes</span></code>, not unicode.</p>
 </div>
 
 
 
+<div class="slide-no">53</div>
+
 
     </article>
-  </slide>  <slide class="level-2">
+  </slide>  <slide class="level-3" id="id38">
     <hgroup>
-      <h2>Adding Polish</h2>
+      <h3>Running a WSGI Script</h3>
+    </hgroup>
+    <article class="">
+      <p>You can run this script with python:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ python wsgi_1.py
+</pre></div>
+</div>
+<div class="build container">
+<p>This will start a wsgi server. What host and port will it use?</p>
+<p>Point your browser at <code class="docutils literal"><span class="pre">http://localhost:8080/</span></code>. Did it work?</p>
+<p>Go ahead and fill in the missing bits. Use the <code class="docutils literal"><span class="pre">environ</span></code> passed into
+<code class="docutils literal"><span class="pre">application</span></code></p>
+</div>
+
+
+
+<div class="slide-no">54</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id39">
+    <hgroup>
+      <h3>Some Tips</h3>
+    </hgroup>
+    <article class="">
+      <p>WSGI is a long-running process.</p>
+<div class="build container">
+<p>The file you are editing is <em>not</em> reloaded after you edit it.</p>
+<p>You'll need to quit and re-run the script between edits.</p>
+<p>Notice the use of <code class="docutils literal"><span class="pre">pprint.pprint</span></code>, check your terminal for useful output.</p>
+</div>
+
+
+
+<div class="slide-no">55</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="a-wsgi-application">
+    <hgroup>
+      <h3>A WSGI Application</h3>
+    </hgroup>
+    <article class="">
+      <p>So now we've learned a bit about the WSGI specification and how a WSGI
+application can get data that comes in via an HTTP request.</p>
+<div class="build container">
+<p>Let's create a multi-page wsgi application.</p>
+<p>It will serve a small database of python books.</p>
+<p>The database (with a very simple api) can be found in <code class="docutils literal"><span class="pre">wsgi/bookdb.py</span></code></p>
+<ul class="build simple">
+<li>We'll need a listing page that shows the titles of all the books</li>
+<li>Each title will link to a details page for that book</li>
+<li>The details page for each book will display all the information and have
+a link back to the list</li>
+</ul>
+</div>
+
+
+
+<div class="slide-no">56</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id40">
+    <hgroup>
+      <h3>Some Questions to Ponder</h3>
+    </hgroup>
+    <article class="">
+      <p>When viewing our first wsgi app, do we see the name of the wsgi application
+script anywhere in the URL?</p>
+<div class="build container">
+<p>In our wsgi application script, how many applications did we actually have?</p>
+<p>How are we going to serve different types of information out of a single
+application?</p>
+</div>
+
+
+
+<div class="slide-no">57</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id41">
+    <hgroup>
+      <h3>Dispatch</h3>
+    </hgroup>
+    <article class="">
+      <p>We have to write an app that will map our incoming request path to some code
+that can handle that request.</p>
+<div class="build container">
+<p>This process is called <code class="docutils literal"><span class="pre">dispatch</span></code>. There are many possible approaches.</p>
+<p>Let's begin by designing this piece of our app.</p>
+<p>Open <code class="docutils literal"><span class="pre">bookapp.py</span></code> from the <code class="docutils literal"><span class="pre">wsgi</span></code> folder.  We'll do our work here.</p>
+</div>
+
+
+
+<div class="slide-no">58</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id42">
+    <hgroup>
+      <h3>PATH</h3>
+    </hgroup>
+    <article class="">
+      <p>The wsgi environment gives us access to <em>PATH_INFO</em>.</p>
+<div class="build container">
+<p>This value is the URI from the client's HTTP request.</p>
+<p>We can design the URLs that our app will use to assist us in routing.</p>
+<p>Let's declare that any request for <code class="docutils literal"><span class="pre">/</span></code> will map to the list page.</p>
+<div class="container">
+<p>We can also say that the URL for a book will look like this:</p>
+<div class="highlight-python"><div class="highlight"><pre>http://localhost:8080/book/&lt;identifier&gt;
+</pre></div>
+</div>
+</div>
+</div>
+
+
+
+<div class="slide-no">59</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="writing-resolve-path">
+    <hgroup>
+      <h3>Writing <code class="docutils literal"><span class="pre">resolve_path</span></code></h3>
+    </hgroup>
+    <article class="">
+      <p>Let's write a function, called <code class="docutils literal"><span class="pre">resolve_path</span></code> in our application file.</p>
+<ul class="build simple">
+<li>It should take the <em>PATH_INFO</em> value from environ as an argument.</li>
+<li>It should return the function that will be called.</li>
+<li>It should also return any arguments needed to call that function.</li>
+<li>This implies of course that the arguments should be part of the PATH</li>
+</ul>
+
+
+
+<div class="slide-no">60</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id43">
+    <hgroup>
+      <h3>My Solution</h3>
+    </hgroup>
+    <article class="">
+      <div class="build highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">resolve_path</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="n">urls</span> <span class="o">=</span> <span class="p">[(</span><span class="s">r&#39;^$&#39;</span><span class="p">,</span> <span class="n">books</span><span class="p">),</span>
+            <span class="p">(</span><span class="s">r&#39;^book/(id[\d]+)$&#39;</span><span class="p">,</span> <span class="n">book</span><span class="p">)]</span>
+    <span class="n">matchpath</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">regexp</span><span class="p">,</span> <span class="n">func</span> <span class="ow">in</span> <span class="n">urls</span><span class="p">:</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">regexp</span><span class="p">,</span> <span class="n">matchpath</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">match</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groups</span><span class="p">([])</span>
+        <span class="k">return</span> <span class="n">func</span><span class="p">,</span> <span class="n">args</span>
+    <span class="c"># we get here if no url matches</span>
+    <span class="k">raise</span> <span class="ne">NameError</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">61</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id44">
+    <hgroup>
+      <h3>Application Updates</h3>
+    </hgroup>
+    <article class="">
+      <p>We need to hook our new dispatch function into the application.</p>
+<ul class="build simple">
+<li>The path should be extracted from <code class="docutils literal"><span class="pre">environ</span></code>.</li>
+<li>The dispatch function should be used to get a function and arguments</li>
+<li>The body to return should come from calling that function with those
+arguments</li>
+<li>If an error is raised by calling the function, an appropriate response
+should be returned</li>
+<li>If the router raises a NameError, the application should return a 404
+response</li>
+</ul>
+
+
+
+<div class="slide-no">62</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id45">
+    <hgroup>
+      <h3>My Solution</h3>
+    </hgroup>
+    <article class="">
+      <div class="build highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">):</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&quot;Content-type&quot;</span><span class="p">,</span> <span class="s">&quot;text/html&quot;</span><span class="p">)]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;PATH_INFO&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NameError</span>
+        <span class="n">func</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">resolve_path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">body</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="s">&quot;200 OK&quot;</span>
+    <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="s">&quot;404 Not Found&quot;</span>
+        <span class="n">body</span> <span class="o">=</span> <span class="s">&quot;&lt;h1&gt;Not Found&lt;/h1&gt;&quot;</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="s">&quot;500 Internal Server Error&quot;</span>
+        <span class="n">body</span> <span class="o">=</span> <span class="s">&quot;&lt;h1&gt;Internal Server Error&lt;/h1&gt;&quot;</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">headers</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s">&#39;Content-length&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">body</span><span class="p">))))</span>
+        <span class="n">start_response</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">body</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">)]</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">63</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="test-your-work">
+    <hgroup>
+      <h3>Test Your Work</h3>
+    </hgroup>
+    <article class="">
+      <p>Once you've got your script settled, run it:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ python bookapp.py
+</pre></div>
+</div>
+<div class="build container">
+<p>Then point your browser at <code class="docutils literal"><span class="pre">http://localhost:8080/</span></code></p>
+<ul class="build simple">
+<li><code class="docutils literal"><span class="pre">http://localhost/book/id3</span></code></li>
+<li><code class="docutils literal"><span class="pre">http://localhost/book/id73/</span></code></li>
+<li><code class="docutils literal"><span class="pre">http://localhost/sponge/damp</span></code></li>
+</ul>
+<p>Did that all work as you would have expected?</p>
+</div>
+
+
+
+<div class="slide-no">64</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="building-the-book-list">
+    <hgroup>
+      <h3>Building the Book List</h3>
+    </hgroup>
+    <article class="">
+      <p>The function <code class="docutils literal"><span class="pre">books</span></code> should return an html list of book titles where each
+title is a link to the detail page for that book</p>
+<ul class="build simple">
+<li>You'll need all the ids and titles from the book database.</li>
+<li>You'll need to build a list in HTML using this information</li>
+<li>Each list item should have the book title as a link</li>
+<li>The href for the link should be of the form <code class="docutils literal"><span class="pre">/book/&lt;id&gt;</span></code></li>
+</ul>
+
+
+
+<div class="slide-no">65</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id46">
+    <hgroup>
+      <h3>My Solution</h3>
+    </hgroup>
+    <article class="">
+      <div class="build highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">books</span><span class="p">():</span>
+    <span class="n">all_books</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="n">titles</span><span class="p">()</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;&lt;h1&gt;My Bookshelf&lt;/h1&gt;&#39;</span><span class="p">,</span> <span class="s">&#39;&lt;ul&gt;&#39;</span><span class="p">]</span>
+    <span class="n">item_template</span> <span class="o">=</span> <span class="s">&#39;&lt;li&gt;&lt;a href=&quot;/book/{id}&quot;&gt;{title}&lt;/a&gt;&lt;/li&gt;&#39;</span>
+    <span class="k">for</span> <span class="n">book</span> <span class="ow">in</span> <span class="n">all_books</span><span class="p">:</span>
+        <span class="n">body</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">book</span><span class="p">))</span>
+    <span class="n">body</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;&lt;/ul&gt;&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">66</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id1">
+    <hgroup>
+      <h3>Test Your Work</h3>
+    </hgroup>
+    <article class="">
+      <p>Quit and then restart your application script:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ python bookapp.py
+</pre></div>
+</div>
+<div class="build container">
+<div class="container">
+<p>Then reload the root of your application:</p>
+<div class="highlight-python"><div class="highlight"><pre>http://localhost:8080/
+</pre></div>
+</div>
+</div>
+<p>You should see a nice list of the books in the database. Do you?</p>
+<p>Click on a link to view the detail page. Does it load without error?</p>
+</div>
+
+
+
+<div class="slide-no">67</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="showing-details">
+    <hgroup>
+      <h3>Showing Details</h3>
+    </hgroup>
+    <article class="">
+      <p>The next step of course is to polish up those detail pages.</p>
+<div class="build container">
+<ul class="build simple">
+<li>You'll need to retrieve a single book from the database</li>
+<li>You'll need to format the details about that book and return them as HTML</li>
+<li>You'll need to guard against ids that do not map to books</li>
+</ul>
+<p>In this last case, what's the right HTTP response code to send?</p>
+</div>
+
+
+
+<div class="slide-no">68</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id47">
+    <hgroup>
+      <h3>My Solution</h3>
+    </hgroup>
+    <article class="">
+      <div class="build highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">book</span><span class="p">(</span><span class="n">book_id</span><span class="p">):</span>
+    <span class="n">page</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">&lt;h1&gt;{title}&lt;/h1&gt;</span>
+<span class="s">&lt;table&gt;</span>
+<span class="s">    &lt;tr&gt;&lt;th&gt;Author&lt;/th&gt;&lt;td&gt;{author}&lt;/td&gt;&lt;/tr&gt;</span>
+<span class="s">    &lt;tr&gt;&lt;th&gt;Publisher&lt;/th&gt;&lt;td&gt;{publisher}&lt;/td&gt;&lt;/tr&gt;</span>
+<span class="s">    &lt;tr&gt;&lt;th&gt;ISBN&lt;/th&gt;&lt;td&gt;{isbn}&lt;/td&gt;&lt;/tr&gt;</span>
+<span class="s">&lt;/table&gt;</span>
+<span class="s">&lt;a href=&quot;/&quot;&gt;Back to the list&lt;/a&gt;</span>
+<span class="s">&quot;&quot;&quot;</span>
+    <span class="n">book</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="n">title_info</span><span class="p">(</span><span class="n">book_id</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">book</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NameError</span>
+    <span class="k">return</span> <span class="n">page</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">book</span><span class="p">)</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">69</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id48">
+    <hgroup>
+      <h3>Revel in Your Success</h3>
+    </hgroup>
+    <article class="">
+      <p>Quit and restart your script one more time</p>
+<div class="build container">
+<p>Then poke around at your application and see the good you've made</p>
+<p>And your application is portable and sharable</p>
+<p>It should run equally well under any <a class="reference external" href="http://wsgi.readthedocs.org/en/latest/servers.html">wsgi server</a></p>
+</div>
+
+
+
+<div class="slide-no">70</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id49">
+    <hgroup>
+      <h3>A Few Steps Further</h3>
+    </hgroup>
+    <article class="">
+      <p>Next steps for an app like this might be:</p>
+<ul class="simple">
+<li>Create a shared full page template and incorporate it into your app</li>
+<li>Improve the error handling by emitting error codes other than 404 and 500</li>
+<li>Swap out the basic backend here with a different one, maybe a Web Service?</li>
+<li>Think about ways to make the application less tightly coupled to the pages
+it serves</li>
+</ul>
+
+
+
+<div class="slide-no">71</div>
+
+
+    </article>
+  </slide>  <slide class="level-2" id="homework">
+    <hgroup>
+      <h2>Homework</h2>
     </hgroup>
     <article class="">
       <div class="left container">
-<p>So we have now deployed a running application.</p>
+<p>For your homework this week, you'll be creating a wsgi application of your
+own.</p>
 <div class="build container">
-<p>But there are a number of things we can do to make the application
-better.</p>
-<p>Let's start by adding a way to log out.</p>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Adding Logout</h3>
-    </hgroup>
-    <article class="">
-      <p>Our <tt class="docutils literal"><span class="pre">login</span></tt> view is already set up to work for logout.</p>
-<div class="build container">
-<p>What is the logical path taken if that view is accessed via <tt class="docutils literal"><span class="pre">GET</span></tt>?</p>
-<p>All we need to do is add a view_config that allows that.</p>
-<p>Open <tt class="docutils literal"><span class="pre">learning_journal/views.py</span></tt> and make these changes:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="s">&#39;auth&#39;</span><span class="p">,</span> <span class="n">match_param</span><span class="o">=</span><span class="s">&#39;action=in&#39;</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="s">&#39;string&#39;</span><span class="p">,</span>
-         <span class="n">request_method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">)</span> <span class="c"># &lt;-- THIS IS ALREADY THERE</span>
-<span class="c"># ADD THE FOLLOWING LINE</span>
-<span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="s">&#39;auth&#39;</span><span class="p">,</span> <span class="n">match_param</span><span class="o">=</span><span class="s">&#39;action=out&#39;</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="s">&#39;string&#39;</span><span class="p">)</span>
-<span class="c"># UPDATE THE VIEW FUNCTION NAME</span>
-<span class="k">def</span> <span class="nf">sign_in_out</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="c"># ...</span>
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Re-Deploy</h3>
-    </hgroup>
-    <article class="">
-      <p>The chief advantage of Heroku is that we can re-deploy with a single command.</p>
-<div class="build container">
-<p>Add and commit your changes to git.</p>
-<p>Then re-deploy by pushing to the <tt class="docutils literal"><span class="pre">heroku</span> <span class="pre">master</span></tt>:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>git push heroku master
-</pre></div>
-</div>
-<p>Once that completes, you should be able to reload your application in the
-browser.</p>
-<p>Visit the following URL path to test log out:</p>
-<ul class="simple">
-<li>/sign/out</li>
+<p>You'll create an online calculator that can perform several operations</p>
+<p>You'll need to support:</p>
+<ul class="build simple">
+<li>Addition</li>
+<li>Subtraction</li>
+<li>Multiplication</li>
+<li>Division</li>
 </ul>
+<div class="container">
+<p>Your users should be able to send appropriate requests and get back
+proper responses:</p>
+<div class="highlight-python"><div class="highlight"><pre>http://localhost:8080/multiply/3/5  =&gt; 15
+http://localhost:8080/add/23/42     =&gt; 65
+http://localhost:8080/divide/6/0    =&gt; HTTP &quot;400 Bad Request&quot;
+</pre></div>
+</div>
+</div>
+</div>
 </div>
 
 
+
+<div class="slide-no">72</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-2" id="id50">
     <hgroup>
-      <h3>Hide UI for Anonymous</h3>
+      <h2>Submitting Your Homework</h2>
     </hgroup>
     <article class="">
-      <p>Another improvement we can make is to hide UI that is not available for users
-who are not logged in.</p>
+      <div class="left container">
+<p>To submit your homework:</p>
+<ul class="build simple">
+<li>Create a new github repository.  Call it <code class="docutils literal"><span class="pre">wsgi-calc</span></code>.</li>
+<li>Add a python script to it called <code class="docutils literal"><span class="pre">calculator.py</span></code>.</li>
+<li>Your script should be runnable using <code class="docutils literal"><span class="pre">$</span> <span class="pre">python</span> <span class="pre">calculator.py</span></code></li>
+<li>When the script is running, I should be able to view your application in
+my browser.</li>
+<li>I should be able to see a home page that explains how to perform
+calculations.</li>
+</ul>
 <div class="build container">
-<p>The first step is to update our <tt class="docutils literal"><span class="pre">detail</span></tt> view to tell us if someone is
-logged in:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># learning_journal/views.py</span>
-<span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="s">&#39;detail&#39;</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="s">&#39;templates/detail.jinja2&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">view</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="c"># ...</span>
-    <span class="n">logged_in</span> <span class="o">=</span> <span class="n">authenticated_userid</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s">&#39;entry&#39;</span><span class="p">:</span> <span class="n">entry</span><span class="p">,</span> <span class="s">&#39;logged_in&#39;</span><span class="p">:</span> <span class="n">logged_in</span><span class="p">}</span>
-</pre></div>
+<p>Your repository should include a README.md file.</p>
+<p>Include all instructions I need to successfully run and view your
+script.</p>
+<p>When you are done, send Maria and I an email with a link to your
+repository.</p>
 </div>
-<p>The <tt class="docutils literal"><span class="pre">authenticated_userid</span></tt> function returns the id of the logged in user,
-if there is one, and <tt class="docutils literal"><span class="pre">None</span></tt> if there is not.</p>
-<p>We can use that.</p>
 </div>
 
 
+
+<div class="slide-no">73</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="one-last-task">
     <hgroup>
-      <h3>Hide &quot;Create Entry&quot; UI</h3>
+      <h3>One Last Task</h3>
     </hgroup>
     <article class="">
-      <p>First we can hide the UI for creating a new entry:</p>
+      <p>Next week we will be installing Python packages that are not part of the
+standard library.</p>
 <div class="build container">
-<p>Edit <tt class="docutils literal"><span class="pre">templates/list.jinja2</span></tt>:</p>
-<div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{%</span> <span class="k">extends</span> <span class="s2">&quot;layout.jinja2&quot;</span> <span class="cp">%}</span><span class="x"></span>
-<span class="cp">{%</span> <span class="k">block</span> <span class="nv">body</span> <span class="cp">%}</span><span class="x"></span>
-<span class="x">&lt;!-- ... ADD THE IF TAGS BELOW --&gt;</span>
-<span class="cp">{%</span> <span class="k">if</span> <span class="k">not</span> <span class="nv">login_form</span> <span class="cp">%}</span><span class="x"></span>
-<span class="x">&lt;p&gt;&lt;a href=&quot;</span><span class="cp">{{</span> <span class="nv">request.route_url</span><span class="o">(</span><span class="s1">&#39;action&#39;</span><span class="o">,</span> <span class="nv">action</span><span class="o">=</span><span class="s1">&#39;create&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x">&quot;&gt;New Entry&lt;/a&gt;&lt;/p&gt;</span>
-<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
-<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
-</pre></div>
-</div>
-<p>This relies on the fact that the login form will only be present if there
-is <strong>not</strong> an authenticated user.</p>
+<p>This is a common occurence in web development.  But it can be hazardous.</p>
+<p>In order to practice safe development I am going to ask you to read and
+follow through a <a class="reference external" href="../../html/presentations/venv_intro.html">brief tutorial</a> I've created on the subject.</p>
+<p>If you have any trouble, or if things do not work the way they are supposed
+to, please reach out.  We will need this to be working next week.</p>
 </div>
 
 
+
+<div class="slide-no">74</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="wrap-up">
     <hgroup>
-      <h3>Hide &quot;Edit Entry&quot; UI</h3>
+      <h3>Wrap-Up</h3>
     </hgroup>
     <article class="">
-      <p>Next, we can hide the UI for editing an existing entry:</p>
-<div class="build container">
-<p>Edit <tt class="docutils literal"><span class="pre">templates/detail.jinja2</span></tt>:</p>
-<div class="highlight-jinja"><div class="highlight"><pre>{% extends &quot;layout.jinja2&quot; %}
-{% block body %}
-&lt;!-- ... WRAP THE EDIT LINK --&gt;
-&lt;p&gt;
-  &lt;a href=&quot;{{ request.route_url(&#39;home&#39;) }}&quot;&gt;Go Back&lt;/a&gt;
-  {% if logged_in %}
-  ::
-  &lt;a href=&quot;{{ request.route_url(&#39;action&#39;, action=&#39;edit&#39;, _query=((&#39;id&#39;,entry.id),)) }}&quot;&gt;
-    Edit Entry&lt;/a&gt;
-  {% endif %}
-&lt;/p&gt;
-{% endblock %}
+      <p>For educational purposes, you might wish to take a look at the source code for
+the <code class="docutils literal"><span class="pre">wsgiref</span></code> module. It's the canonical example of a simple wsgi server</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">wsgiref</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wsgiref</span><span class="o">.</span><span class="n">__file__</span>
+<span class="go">&#39;/full/path/to/your/copy/of/wsgiref.py&#39;</span>
+<span class="gp">...</span>
 </pre></div>
 </div>
-</div>
+<p class="build centered"><strong>See you Next Time</strong></p>
 
 
 
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Format Entries</h3>
-    </hgroup>
-    <article class="">
-      <p>It would be nice if our journal entries could have HTML formatting.</p>
-<div class="build container">
-<p>We could write HTML by hand in the body field, but that'd be a pain.</p>
-<p>Instead, let's allow ourselves to write entries <a class="reference external" href="http://daringfireball.net/projects/markdown/syntax">in Markdown</a>, a popular
-markup syntax used by GitHub and many other websites.</p>
-<p>Python provides several libraries that implement markdown formatting.</p>
-<p>They will take text that contains markdown formatting and convert it to
-HTML.</p>
-<p>Let's use one.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Adding the Dependency</h3>
-    </hgroup>
-    <article class="">
-      <p>The first step, is to pick a package and add it to our dependencies.</p>
-<div class="build container">
-<p>My recommendation is the <a class="reference external" href="https://pythonhosted.org/Markdown/">markdown</a> python library.</p>
-<p>Open <tt class="docutils literal"><span class="pre">setup.py</span></tt> and add the package to the <tt class="docutils literal"><span class="pre">requires</span></tt> list:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">requires</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="c"># ...</span>
-    <span class="s">&#39;cryptacular&#39;</span><span class="p">,</span>
-    <span class="s">&#39;markdown&#39;</span><span class="p">,</span> <span class="c"># &lt;-- ADD THIS</span>
-    <span class="p">]</span>
-</pre></div>
-</div>
-<p>We'll test this locally first, so go ahead and re-install your app:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>python setup.py develop
-...
-Finished processing dependencies <span class="k">for </span>learning-journal<span class="o">==</span>0.0
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Jinja2 Filters</h3>
-    </hgroup>
-    <article class="">
-      <p>We've seen before how Jinja2 provides a number of filters for values when
-rendering templates.</p>
-<div class="build container">
-<p>A nice feature of the templating language is that it also allows you to
-<a class="reference external" href="http://jinja.pocoo.org/docs/dev/api/#custom-filters">create your own filters</a>.</p>
-<p>Remember the template syntax for a filter:</p>
-<div class="highlight-jinja"><div class="highlight"><pre>{{ value|filter(arg1, ..., argN) }}
-</pre></div>
-</div>
-<p>A filter is simply a function that takes the value to the left of the <tt class="docutils literal"><span class="pre">|</span></tt>
-character as a first argument, and any supplied arguments as the second and
-beyond:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">arg1</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="n">argN</span><span class="p">):</span>
-    <span class="c"># do something to value here</span>
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Our Markdown Filter</h3>
-    </hgroup>
-    <article class="">
-      <p>Creating a <tt class="docutils literal"><span class="pre">markdown</span></tt> filter will allow us to convert plain text stored in
-the database to HTML at template rendering time.</p>
-<div class="build container">
-<p>Open <tt class="docutils literal"><span class="pre">learning_journal/views.py</span></tt> and add the following:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># add two imports:</span>
-<span class="kn">from</span> <span class="nn">jinja2</span> <span class="kn">import</span> <span class="n">Markup</span>
-<span class="kn">import</span> <span class="nn">markdown</span>
-<span class="c"># and a function</span>
-<span class="k">def</span> <span class="nf">render_markdown</span><span class="p">(</span><span class="n">content</span><span class="p">):</span>
-    <span class="n">output</span> <span class="o">=</span> <span class="n">Markup</span><span class="p">(</span><span class="n">markdown</span><span class="o">.</span><span class="n">markdown</span><span class="p">(</span><span class="n">content</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">output</span>
-</pre></div>
-</div>
-<p>The <tt class="docutils literal"><span class="pre">Markup</span></tt> class from jinja2 marks a string with HTML tags as &quot;safe&quot;.</p>
-<p>This prevents the tags from being <em>escaped</em> when they are rendered into a
-page.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Register the Filter</h3>
-    </hgroup>
-    <article class="">
-      <p>In order for <tt class="docutils literal"><span class="pre">Jinja2</span></tt> to be aware that our filter exists, we need to register
-it.</p>
-<div class="build container">
-<p>In Pyramid, we do this in configuration.</p>
-<p>Open <tt class="docutils literal"><span class="pre">development.ini</span></tt> and edit it as follows:</p>
-<div class="highlight-ini"><div class="highlight"><pre>[app:main]
-...
-jinja2.filters =
-    markdown = learning_journal.views.render_markdown
-</pre></div>
-</div>
-<p>This informs the main app that we wish to register a jinja2 filter.</p>
-<p>We will call it <tt class="docutils literal"><span class="pre">markdown</span></tt> and it will be embodied by the function we
-just wrote.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Use Your Filter</h3>
-    </hgroup>
-    <article class="">
-      <p>To see the results of our work, we'll need to use the filter in a template
-somewhere.</p>
-<div class="build container">
-<p>I suggest using it in the <tt class="docutils literal"><span class="pre">learning_journal/templates/detail.jinja2</span></tt>
-template:</p>
-<div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{%</span> <span class="k">extends</span> <span class="s2">&quot;layout.jinja2&quot;</span> <span class="cp">%}</span><span class="x"></span>
-<span class="cp">{%</span> <span class="k">block</span> <span class="nv">body</span> <span class="cp">%}</span><span class="x"></span>
-<span class="x">&lt;article&gt;</span>
-<span class="x">  &lt;!-- EDIT THIS LINE --&gt;</span>
-<span class="x">  &lt;p&gt;</span><span class="cp">{{</span> <span class="nv">entry.body</span><span class="o">|</span><span class="nf">markdown</span> <span class="cp">}}</span><span class="x">&lt;/p&gt;</span>
-<span class="x">  &lt;!-- --&gt;</span>
-<span class="x">&lt;/article&gt;</span>
-<span class="x">&lt;p&gt;</span>
-<span class="x">&lt;!-- --&gt;</span>
-<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Test Your Results</h3>
-    </hgroup>
-    <article class="">
-      <p>Start up your application, and create an entry using valid markdown formatting:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>pserve development.ini
-Starting server in PID 84331.
-serving on http://0.0.0.0:6543
-</pre></div>
-</div>
-<div class="build container">
-<p>Once you save your entry, you should be able to see it with actual
-formatting: headers, bulleted lists, links, and so on.</p>
-<p>That makes quite a difference.</p>
-<p>Go ahead and add the same filter registration to <tt class="docutils literal"><span class="pre">production.ini</span></tt></p>
-<p>Then commit your changes and redeploy:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>git push heroku master
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Syntax Highlighting</h3>
-    </hgroup>
-    <article class="">
-      <p>The purpose of this journal is to allow you to write entries about the things
-you learn in this class and elsewhere.</p>
-<div class="build container">
-<p>Markdown formatting allows for &quot;preformatted&quot; blocks of text like code
-samples.</p>
-<p>But there is nothing in markdown that handles <em>colorizing</em> code.</p>
-<p>Luckily, the markdown package allows for extensions, and one of these
-supports <a class="reference external" href="https://pythonhosted.org/Markdown/extensions/code_hilite.html">colorization</a>.</p>
-<p>It requires the <a class="reference external" href="http://pygments.org">pygments</a> library</p>
-<p>Let's set this up next.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Install the Dependency</h3>
-    </hgroup>
-    <article class="">
-      <p>Again, we need to install our new dependency first.</p>
-<div class="build container">
-<p>Add the following to <tt class="docutils literal"><span class="pre">requires</span></tt> in <tt class="docutils literal"><span class="pre">setup.py</span></tt>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">requires</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="c"># ...</span>
-    <span class="s">&#39;markdown&#39;</span><span class="p">,</span>
-    <span class="s">&#39;pygments&#39;</span><span class="p">,</span> <span class="c"># &lt;-- ADD THIS LINE</span>
-    <span class="p">]</span>
-</pre></div>
-</div>
-<p>Then re-install your app to pick up the software:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>python setup.py develop
-...
-Finished processing dependencies <span class="k">for </span>learning-journal<span class="o">==</span>0.0
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Add to Our Filter</h3>
-    </hgroup>
-    <article class="">
-      <p>The next step is to extend our markdown filter in <tt class="docutils literal"><span class="pre">learning_journal/views.py</span></tt>
-with this feature.</p>
-<div class="build container">
-<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">render_markdown</span><span class="p">(</span><span class="n">content</span><span class="p">):</span>
-    <span class="n">output</span> <span class="o">=</span> <span class="n">Markup</span><span class="p">(</span>
-        <span class="n">markdown</span><span class="o">.</span><span class="n">markdown</span><span class="p">(</span>
-            <span class="n">content</span><span class="p">,</span>
-            <span class="n">extensions</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;codehilite(pygments_style=colorful)&#39;</span><span class="p">,</span> <span class="s">&#39;fenced_code&#39;</span><span class="p">]</span>
-        <span class="p">)</span>
-    <span class="p">)</span>
-    <span class="k">return</span> <span class="n">output</span>
-</pre></div>
-</div>
-<p>Now, you'll be able to make highlighted code blocks just like in GitHub:</p>
-<div class="highlight-text"><div class="highlight"><pre>```python
-def foo(x, y):
-    return x**y
-```
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Add CSS</h3>
-    </hgroup>
-    <article class="">
-      <p>Code highlighting works by putting HTML <tt class="docutils literal"><span class="pre">&lt;span&gt;</span></tt> tags with special CSS
-classes around bits of your code.</p>
-<div class="build container">
-<p>We need to generate and add the css to support this.</p>
-<p>You can use the <tt class="docutils literal"><span class="pre">pygmentize</span></tt> command from pygments to
-<a class="reference external" href="http://pygments.org/docs/cmdline/#generating-styles">generate the css</a>.</p>
-<p>Make sure you are in the directory with <tt class="docutils literal"><span class="pre">setup.py</span></tt> when you run this:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>pygmentize -f html -S colorful -a .codehilite <span class="se">\</span>
-     &gt;&gt; learning_journal/static/styles.css
-</pre></div>
-</div>
-<p>The styles will be printed to standard out.</p>
-<p>The <tt class="docutils literal"><span class="pre">&gt;&gt;</span></tt> shell operator <em>appends</em> the output to the file named.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Try It Out</h3>
-    </hgroup>
-    <article class="">
-      <p>Go ahead and restart your application and see the difference a little style
-makes:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>pserve development.ini
-Starting server in PID 84331.
-serving on http://0.0.0.0:6543
-</pre></div>
-</div>
-<div class="build container">
-<p>Try writing an entry with a little Python code in it.</p>
-<p>Python is not the only language available.</p>
-<p>Any syntax covered by <a class="reference external" href="http://pygments.org/docs/lexers/">pygments lexers</a> is available, just use the
-<em>shortname</em> from a lexer to get that type of style highlighting.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Deploy Your Changes</h3>
-    </hgroup>
-    <article class="">
-      <p>When you've got this working as you wish, go ahead and deploy it.</p>
-<div class="build container">
-<p>Add and commit all the changes you've made.</p>
-<p>Then push your results to the <tt class="docutils literal"><span class="pre">heroku</span> <span class="pre">master</span></tt>:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>git push heroku master
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Wrap Up</h3>
-    </hgroup>
-    <article class="">
-      <p>And that's probably enough for now.</p>
-<div class="build container">
-<p>There's no homework for you this week.</p>
-<p>You've worked hard enough.</p>
-<p>Take the week to review what we've done and make sure you have a solid
-understanding of it.</p>
-<p>If you wish, play with HTML and CSS to make your journal more personalized.</p>
-<p>Next session we'll dive down deep and begin to learn about the technology
-that lies beneath everything we've just built.</p>
-<p class="centered"><strong>See You Then</strong></p>
-</div>
-
-
+<div class="slide-no">75</div>
 
 
     </article>
@@ -2013,7 +1848,7 @@ that lies beneath everything we've just built.</p>
     <slide class="thank-you-slide segue nobackground">
     <aside class="gdbar right"><img src="../_static/logo_UW.png"></aside>
     <article class="flexbox vleft auto-fadein">
-      <h2>&lt;Thank You!&gt;</h2>
+      <h2>Good Night!</h2>
       <p>&nbsp;</p>
     </article>
     <p class="auto-fadein" data-config-contact>

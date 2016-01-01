@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '2.0',
+        VERSION:     '3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -34,7 +34,7 @@
 <![endif]-->
 
   </head>
-  <body>
+  <body role="document">
 <div class="header">
   <div class="logo">
     <a href="../index.html">
@@ -43,7 +43,7 @@
   </div>
 </div>
 
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -55,813 +55,1262 @@
         <li class="right" >
           <a href="session03.html" title="Session 03"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">UWPCE Python 200</a> &raquo;</li>
-          <li><a href="index.html" accesskey="U">Course Presentations</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">UWPCE Python 200</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Course Presentations</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="session-04">
 <h1>Session 04<a class="headerlink" href="#session-04" title="Permalink to this headline">¶</a></h1>
-<div class="figure align-center">
-<a class="reference internal image-reference" href="../_images/python.png"><img alt="../_images/python.png" src="../_images/python.png" style="width: 33%;" /></a>
-<p class="caption">Networking and Sockets</p>
+<div class="figure align-center" id="id3">
+<a class="reference internal image-reference" href="../_images/granny_mashup.png"><img alt="../_images/granny_mashup.png" src="../_images/granny_mashup.png" style="width: 70%;" /></a>
+<p class="caption"><span class="caption-text">Paul Downey <a class="reference external" href="http://www.flickr.com/photos/psd/492139935/">http://www.flickr.com/photos/psd/492139935/</a> - CC-BY</span></p>
 </div>
-<div class="section" id="computer-communications">
-<h2>Computer Communications<a class="headerlink" href="#computer-communications" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="scraping-apis-and-mashups">
+<h2>Scraping, APIs and Mashups<a class="headerlink" href="#scraping-apis-and-mashups" title="Permalink to this headline">¶</a></h2>
+<p>Wherein we learn how to make order from the chaos of the wild internet.</p>
+<div class="section" id="a-dilemma">
+<h3>A Dilemma<a class="headerlink" href="#a-dilemma" title="Permalink to this headline">¶</a></h3>
+<p>The internet makes a vast quantity of data available.</p>
+<div class="build container">
+<p>But not always in the form or combination you want.</p>
+<p>It would be nice to be able to combine data from different sources to
+create <em>meaning</em>.</p>
+</div>
+</div>
+<div class="section" id="the-big-question">
+<h3>The Big Question<a class="headerlink" href="#the-big-question" title="Permalink to this headline">¶</a></h3>
+<p class="large centered">But How?</p>
+</div>
+<div class="section" id="the-big-answer">
+<h3>The Big Answer<a class="headerlink" href="#the-big-answer" title="Permalink to this headline">¶</a></h3>
+<p class="large centered">Mashups</p>
+</div>
+<div class="section" id="mashups">
+<h3>Mashups<a class="headerlink" href="#mashups" title="Permalink to this headline">¶</a></h3>
+<p>A mashup is:</p>
+<div class="highlight-python"><div class="highlight"><pre>a web page, or web application, that uses and combines data, presentation
+or functionality from two or more sources to create new services.
+
+-- wikipedia (http://en.wikipedia.org/wiki/Mashup_(web_application_hybrid))
+</pre></div>
+</div>
+</div>
+<div class="section" id="data-sources">
+<h3>Data Sources<a class="headerlink" href="#data-sources" title="Permalink to this headline">¶</a></h3>
+<p>The key to mashups is the idea of data sources.</p>
+<div class="build container">
+<p>These come in many flavors:</p>
+<ul class="build simple">
+<li>Simple websites with data in HTML</li>
+<li>Web services providing structured data</li>
+<li>Web services providing tranformative service (geocoding)</li>
+<li>Web services providing presentation (mapping)</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="web-scraping">
+<h2>Web Scraping<a class="headerlink" href="#web-scraping" title="Permalink to this headline">¶</a></h2>
 <div class="left container">
-<p>We&#8217;ve spent the first few weeks of this course building and deploying a
-simple web application.</p>
+<p>It would be nice if all online data were available in well-structured formats.</p>
 <div class="build container">
-<p>now it&#8217;s time to step back and look at the technologies underlying the
-work we&#8217;ve done.</p>
-<p>We&#8217;ll begin by discussing the basics of networking computers.</p>
-<p>You&#8217;ll learn a bit here about how computers talk to each other across a
-distance.</p>
+<p>The reality is that much data is available only in HTML.</p>
+<p>Still we can get at it, with some effort.</p>
+<p>By scraping the data from the web pages.</p>
 </div>
 </div>
-<div class="section" id="tcp-ip">
-<h3>TCP/IP<a class="headerlink" href="#tcp-ip" title="Permalink to this headline">¶</a></h3>
-<div class="figure align-left">
-<img alt="../_images/network_topology.png" src="../_images/network_topology.png" />
-<p class="caption"><a class="reference external" href="http://en.wikipedia.org/wiki/Internet_Protocol_Suite">http://en.wikipedia.org/wiki/Internet_Protocol_Suite</a></p>
+<div class="section" id="html">
+<h3>HTML<a class="headerlink" href="#html" title="Permalink to this headline">¶</a></h3>
+<p>Ideally, it looks like this:</p>
+<div class="highlight-html"><div class="highlight"><pre><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;p&gt;</span>A nice clean paragraph<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p&gt;</span>And another nice clean paragraph<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</pre></div>
 </div>
-<ul class="build simple">
-<li>processes can communicate</li>
-<li>inside one machine</li>
-<li>between two machines</li>
-<li>among many machines</li>
-</ul>
-<div class="figure align-left">
-<a class="reference internal image-reference" href="../_images/data_in_tcpip_stack.png"><img alt="../_images/data_in_tcpip_stack.png" src="../_images/data_in_tcpip_stack.png" style="width: 100%;" /></a>
-<p class="caption"><a class="reference external" href="http://en.wikipedia.org/wiki/Internet_Protocol_Suite">http://en.wikipedia.org/wiki/Internet_Protocol_Suite</a></p>
+<p>But in real life, it&#8217;s more often like this:</p>
+<div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;html&gt;</span>
+ <span class="nt">&lt;form&gt;</span>
+  <span class="nt">&lt;table&gt;</span>
+   <span class="nt">&lt;td&gt;&lt;input</span> <span class="na">name=</span><span class="s">&quot;input1&quot;</span><span class="nt">&gt;</span>Row 1 cell 1
+   <span class="nt">&lt;tr&gt;&lt;td&gt;</span>Row 2 cell 1
+  <span class="nt">&lt;/form&gt;</span>
+  <span class="nt">&lt;td&gt;</span>Row 2 cell 2<span class="nt">&lt;br&gt;</span>This<span class="nt">&lt;/br&gt;</span> sure is a long cell
+ <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</pre></div>
 </div>
-<ul class="build simple">
-<li>Process divided into &#8216;layers&#8217;</li>
-<li>&#8216;Layers&#8217; are mostly arbitrary</li>
-<li>Different descriptions have different layers</li>
-<li>Most common is the &#8216;TCP/IP Stack&#8217;</li>
-</ul>
+<div class="figure align-center" id="id4">
+<a class="reference internal image-reference" href="../_images/scream.jpg"><img alt="../_images/scream.jpg" src="../_images/scream.jpg" style="width: 32%;" /></a>
+<p class="caption"><span class="caption-text">Photo by Matthew via Flickr (<a class="reference external" href="http://www.flickr.com/photos/purplemattfish/3918004964/">http://www.flickr.com/photos/purplemattfish/3918004964/</a>) - CC-BY-NC-ND</span></p>
 </div>
-<div class="section" id="the-tcp-ip-stack-link">
-<h3>The TCP/IP Stack - Link<a class="headerlink" href="#the-tcp-ip-stack-link" title="Permalink to this headline">¶</a></h3>
-<p>The bottom layer is the &#8216;Link Layer&#8217;</p>
-<ul class="build simple">
-<li>Deals with the physical connections between machines, &#8216;the wire&#8217;</li>
-<li>Packages data for physical transport</li>
-<li>Executes transmission over a physical medium<ul class="build">
-<li>what that medium is is arbitrary</li>
-</ul>
-</li>
-<li>Implemented in the Network Interface Card(s) (NIC) in your computer</li>
-</ul>
+<p class="large centered">&#8220;Be strict in what you send and tolerant in what you receive&#8221;</p>
 </div>
-<div class="section" id="the-tcp-ip-stack-internet">
-<h3>The TCP/IP Stack - Internet<a class="headerlink" href="#the-tcp-ip-stack-internet" title="Permalink to this headline">¶</a></h3>
-<p>Moving up, we have the &#8216;Internet Layer&#8217;</p>
-<ul class="build simple">
-<li>Deals with addressing and routing<ul class="build">
-<li>Where are we going and how do we get there?</li>
-</ul>
-</li>
-<li>Agnostic as to physical medium (IP over Avian Carrier - IPoAC)</li>
-<li>Makes no promises of reliability</li>
-<li>Two addressing systems<ul class="build">
-<li>IPv4 (current, limited &#8216;192.168.1.100&#8217;)</li>
-<li>IPv6 (future, 3.4 x 10^38 addresses, &#8216;2001:0db8:85a3:0042:0000:8a2e:0370:7334&#8217;)</li>
-</ul>
-</li>
-</ul>
-<p class="large center">That&#8217;s 4.3 x 10^28 addresses <em>per person alive today</em></p>
-</div>
-<div class="section" id="the-tcp-ip-stack-transport">
-<h3>The TCP/IP Stack - Transport<a class="headerlink" href="#the-tcp-ip-stack-transport" title="Permalink to this headline">¶</a></h3>
-<p>Next up is the &#8216;Transport Layer&#8217;</p>
-<ul class="build simple">
-<li>Deals with transmission and reception of data<ul>
-<li>error correction, flow control, congestion management</li>
-</ul>
-</li>
-<li>Common protocols include TCP &amp; UDP<ul>
-<li>TCP: Tranmission Control Protocol</li>
-<li>UDP: User Datagram Protocol</li>
-</ul>
-</li>
-<li>Not all Transport Protocols are &#8216;reliable&#8217;<ul class="build">
-<li>TCP ensures that dropped packets are resent</li>
-<li>UDP makes no such assurance</li>
-<li>Reliability is slow and expensive</li>
-</ul>
-</li>
-</ul>
-<p>The &#8216;Transport Layer&#8217; also establishes the concept of a <strong>port</strong></p>
+<div class="section" id="taming-the-mess">
+<h3>Taming the Mess<a class="headerlink" href="#taming-the-mess" title="Permalink to this headline">¶</a></h3>
+<p>Luckily, there are tools to help with this.</p>
 <div class="build container">
-<ul class="build simple">
-<li>IP Addresses designate a specific <em>machine</em> on the network</li>
-<li>A <strong>port</strong> provides addressing for individual <em>applications</em> in a single
-host</li>
-<li>192.168.1.100:80  (the <em>:80</em> part is the <strong>port</strong>)</li>
-<li>[2001:db8:85a3:8d3:1319:8a2e:370:7348]:443 (<em>:443</em> is the <strong>port</strong>)</li>
-</ul>
-<p>This means that you don&#8217;t have to worry about information intended for your
-web browser being accidentally read by your email client.</p>
+<p>In python there are several candidates, but I like <code class="docutils literal"><span class="pre">BeautifulSoup</span></code>.</p>
+<p>BeautifulSoup is a great tool, but it&#8217;s not in the Standard Library.</p>
+<p>We&#8217;ll need to install it.</p>
+<p>Create a virtualenv to do so:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>pyvenv soupenv
+...
+<span class="nv">$ </span><span class="nb">source </span>soupenv/bin/activate
+</pre></div>
 </div>
-<p>There are certain <strong>ports</strong> which are commonly understood to belong to given
-applications or protocols:</p>
-<div class="build container">
+<p>(remember, for Windows users that should be <code class="docutils literal"><span class="pre">soupenv/Scripts/activate.bat</span></code>)</p>
+</div>
+<p>Once the virtualenv is activated, you can simply use pip or easy_install to
+install the libraries you want:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>soupenv<span class="o">)</span><span class="nv">$ </span>pip install beautifulsoup4
+</pre></div>
+</div>
+<p>BeautifulSoup is built to use the Python HTMLParser.</p>
 <ul class="build simple">
-<li>80/443 - HTTP/HTTPS</li>
-<li>20 - FTP</li>
-<li>22 - SSH</li>
-<li>23 - Telnet</li>
-<li>25 - SMTP</li>
+<li>Batteries Included.  It&#8217;s already there</li>
+<li>It&#8217;s not great, especially before Python 2.7.3</li>
+</ul>
+<div class="build container">
+<p>BeautifulSoup also supports using other parsers.</p>
+<p>There are two good choices: <code class="docutils literal"><span class="pre">lxml</span></code> and <code class="docutils literal"><span class="pre">html5lib</span></code>.</p>
+<p><code class="docutils literal"><span class="pre">lxml</span></code> is better, but much harder to install.  Let&#8217;s use <code class="docutils literal"><span class="pre">html5lib</span></code>.</p>
+</div>
+<p>Again, this is pretty simple:</p>
+<div class="highlight-python"><div class="highlight"><pre>(soupenv)$ pip install html5lib
+</pre></div>
+</div>
+<div class="build container">
+<p>Once installed, BeautifulSoup will choose it automatically.</p>
+<p>BeautifulSoup will choose the &#8220;best&#8221; available.</p>
+<p>You can specify the parser if you need to for some reason.</p>
+<p>In fact, in recent versions of BeautifulSoup, you&#8217;ll be warned if you don&#8217;t
+(though you can ignore the warning).</p>
+</div>
+<p>Python provides tools for opening urls and communicating with servers. It&#8217;s
+spread across the <code class="docutils literal"><span class="pre">urllib</span></code> and <code class="docutils literal"><span class="pre">urllib2</span></code> packages.</p>
+<div class="build container">
+<p>These packages have pretty unintuitive APIs.</p>
+<p>The <code class="docutils literal"><span class="pre">requests</span></code> library is becoming the de-facto standard for this type of
+work.  Let&#8217;s install it too.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>soupenv<span class="o">)</span><span class="nv">$ </span>pip install requests
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="our-class-mashup">
+<h3>Our Class Mashup<a class="headerlink" href="#our-class-mashup" title="Permalink to this headline">¶</a></h3>
+<p>We&#8217;re going to explore some tools for making a mashup today</p>
+<div class="build container">
+<p>We&#8217;ll be starting by scraping restaurant health code data for
+a given ZIP code</p>
+<p>Then, we&#8217;ll look up the geographic location of those zipcodes using Google</p>
+<p>Finally, we&#8217;ll display the results of our work on a map</p>
+<p>Start by opening a new file in your editor: <code class="docutils literal"><span class="pre">mashup.py</span></code>.</p>
+</div>
+<p>The source for the data we&#8217;ll be displaying is a search tool provided by King
+County.</p>
+<div class="build container">
+<p>It&#8217;s supposed to have a web service, but the service is broken.</p>
+<p>Luckily, the HTML search works just fine.</p>
+<p>Open <a class="reference external" href="http://info.kingcounty.gov/health/ehs/foodsafety/inspections/search.aspx">the search form</a> in your browser.</p>
+<p>Fill in a ZIP code (perhaps 98101).</p>
+<p>Add a start and end date (perhaps about 1 or 2 years apart).</p>
+<p>Submit the form, and take a look at what you get.</p>
+</div>
+<p>Next we want to automate the process.</p>
+<div class="build container">
+<p>Copy the domain and path of the url into your new <code class="docutils literal"><span class="pre">mashup.py</span></code> file like
+so:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">INSPECTION_DOMAIN</span> <span class="o">=</span> <span class="s">&quot;http://info.kingcounty.gov&quot;</span>
+<span class="n">INSPECTION_PATH</span> <span class="o">=</span> <span class="s">&quot;/health/ehs/foodsafety/inspections/Results.aspx&quot;</span>
+</pre></div>
+</div>
+</div>
+<p>Next, copy the query parameters from the URL and convert them to a dictionary:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">INSPECTION_PARAMS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;Output&#39;</span><span class="p">:</span> <span class="s">&#39;W&#39;</span><span class="p">,</span>
+    <span class="s">&#39;Business_Name&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+    <span class="s">&#39;Business_Address&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+    <span class="s">&#39;Longitude&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+    <span class="s">&#39;Latitude&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+    <span class="s">&#39;City&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+    <span class="s">&#39;Zip_Code&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+    <span class="s">&#39;Inspection_Type&#39;</span><span class="p">:</span> <span class="s">&#39;All&#39;</span><span class="p">,</span>
+    <span class="s">&#39;Inspection_Start&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+    <span class="s">&#39;Inspection_End&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+    <span class="s">&#39;Inspection_Closed_Business&#39;</span><span class="p">:</span> <span class="s">&#39;A&#39;</span><span class="p">,</span>
+    <span class="s">&#39;Violation_Points&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+    <span class="s">&#39;Violation_Red_Points&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+    <span class="s">&#39;Violation_Descr&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+    <span class="s">&#39;Fuzzy_Search&#39;</span><span class="p">:</span> <span class="s">&#39;N&#39;</span><span class="p">,</span>
+    <span class="s">&#39;Sort&#39;</span><span class="p">:</span> <span class="s">&#39;H&#39;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="fetching-search-results">
+<h3>Fetching Search Results<a class="headerlink" href="#fetching-search-results" title="Permalink to this headline">¶</a></h3>
+<p>Next we&#8217;ll use the <code class="docutils literal"><span class="pre">requests</span></code> library to write a function to fetch these
+results on demand.</p>
+<div class="build container">
+<p>In <code class="docutils literal"><span class="pre">requests</span></code>, each HTTP method has a module-level function:</p>
+<ul class="build simple">
+<li><code class="docutils literal"><span class="pre">GET</span></code> == <code class="docutils literal"><span class="pre">requests.get(url,</span> <span class="pre">**kwargs)</span></code></li>
+<li><code class="docutils literal"><span class="pre">POST</span></code> == <code class="docutils literal"><span class="pre">requests.post(url,</span> <span class="pre">**kwargs)</span></code></li>
 <li>...</li>
 </ul>
-<p>These ports are often referred to as <strong>well-known ports</strong></p>
-<p class="small">(see <a class="reference external" href="http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers">http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers</a>)</p>
-</div>
-<p>Ports are grouped into a few different classes</p>
+<p><code class="docutils literal"><span class="pre">kwargs</span></code> represent other parts of an HTTP request:</p>
 <ul class="build simple">
-<li>Ports numbered 0 - 1023 are <em>reserved</em></li>
-<li>Ports numbered 1024 - 65535 are <em>open</em></li>
-<li>Ports numbered 1024 - 49151 may be <em>registered</em></li>
-<li>Ports numbered 49152 - 65535 are called <em>ephemeral</em></li>
+<li><code class="docutils literal"><span class="pre">params</span></code>: a dict of url parameters (?foo=bar&amp;baz=bim)</li>
+<li><code class="docutils literal"><span class="pre">headers</span></code>: a dict of headers to send with the request</li>
+<li><code class="docutils literal"><span class="pre">data</span></code>: the body of the request, if any (form data for POST goes here)</li>
+<li>...</li>
 </ul>
 </div>
-<div class="section" id="the-tcp-ip-stack-application">
-<h3>The TCP/IP Stack - Application<a class="headerlink" href="#the-tcp-ip-stack-application" title="Permalink to this headline">¶</a></h3>
-<p>The topmost layer is the &#8216;Application Layer&#8217;</p>
+<p>The return value from one of these functions is a <code class="docutils literal"><span class="pre">response</span></code> object which
+provides:</p>
 <div class="build container">
 <ul class="build simple">
-<li>Deals directly with data produced or consumed by an application</li>
-<li>Reads or writes data using a set of understood, well-defined <strong>protocols</strong><ul>
-<li>HTTP, SMTP, FTP etc.</li>
+<li><code class="docutils literal"><span class="pre">response.status_code</span></code>: see the HTTP Status Code returned</li>
+<li><code class="docutils literal"><span class="pre">response.ok</span></code>: True if <code class="docutils literal"><span class="pre">response.status_code</span></code> is not an error</li>
+<li><code class="docutils literal"><span class="pre">response.raise_for_status()</span></code>: call to raise a python error if it is</li>
+<li><code class="docutils literal"><span class="pre">response.headers</span></code>: The headers sent from the server</li>
+<li><code class="docutils literal"><span class="pre">response.text</span></code>: Body of the response, decoded to unicode</li>
+<li><code class="docutils literal"><span class="pre">response.encoding</span></code>: The encoding used to decode</li>
+<li><code class="docutils literal"><span class="pre">response.content</span></code>: The original encoded response body as bytes</li>
 </ul>
-</li>
-<li>Does not know (or need to know) about lower layer functionality<ul>
-<li>The exception to this rule is <strong>endpoint</strong> data (or IP:Port)</li>
-</ul>
-</li>
-</ul>
-<p class="centered"><strong>this is where we live and work</strong></p>
+<p><code class="docutils literal"><span class="pre">requests</span> <span class="pre">documentation</span></code>: <a class="reference external" href="http://docs.python-requests.org/en/latest/">http://docs.python-requests.org/en/latest/</a></p>
 </div>
-</div>
-<div class="section" id="sockets">
-<h3>Sockets<a class="headerlink" href="#sockets" title="Permalink to this headline">¶</a></h3>
-<p>Think back for a second to what we just finished discussing, the TCP/IP stack.</p>
+<p>We&#8217;ll start by writing a function <code class="docutils literal"><span class="pre">get_inspection_page</span></code></p>
 <div class="build container">
 <ul class="build simple">
-<li>The <em>Internet</em> layer gives us an <strong>IP Address</strong></li>
-<li>The <em>Transport</em> layer establishes the idea of a <strong>port</strong>.</li>
-<li>The <em>Application</em> layer doesn&#8217;t care about what happens below...</li>
-<li><em>Except for</em> <strong>endpoint data</strong> (IP:Port)</li>
+<li>It will accept keyword arguments for each of the possible query values</li>
+<li>It will build a dictionary of request query parameters from incoming
+keywords</li>
+<li>It will make a request to the inspection service search page using this
+query</li>
+<li>It will return the encoded content and the encoding used as a tuple</li>
 </ul>
-<p>A <strong>Socket</strong> is the software representation of that endpoint.</p>
-<p>Opening a <strong>socket</strong> creates a kind of transceiver that can send and/or
-receive <em>bytes</em> at a given IP address and Port.</p>
+<p>Try writing this function. Put it in <code class="docutils literal"><span class="pre">mashup.py</span></code></p>
 </div>
 </div>
-<div class="section" id="sockets-in-python">
-<h3>Sockets in Python<a class="headerlink" href="#sockets-in-python" title="Permalink to this headline">¶</a></h3>
-<p>Python provides a standard library module which provides socket functionality.
-It is called <strong>socket</strong>.</p>
+<div class="section" id="my-solution">
+<h3>My Solution<a class="headerlink" href="#my-solution" title="Permalink to this headline">¶</a></h3>
+<p>Here&#8217;s the one I created:</p>
+<div class="build highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="k">def</span> <span class="nf">get_inspection_page</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">INSPECTION_DOMAIN</span> <span class="o">+</span> <span class="n">INSPECTION_PATH</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">INSPECTION_PARAMS</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">INSPECTION_PARAMS</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+    <span class="n">resp</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">text</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="parse-the-results">
+<h3>Parse the Results<a class="headerlink" href="#parse-the-results" title="Permalink to this headline">¶</a></h3>
+<p>Next, we&#8217;ll need to parse the results we get when we call that function</p>
+<p>But before we start, a word about parsing HTML with BeautifulSoup</p>
+<p>The BeautifulSoup object can be instantiated with a string or a file-like
+object as the sole argument:</p>
 <div class="build container">
-<p>The library is really just a very thin wrapper around the system
-implementation of <em>BSD Sockets</em></p>
-<p>Let&#8217;s spend a few minutes getting to know this module.</p>
-<p>We&#8217;re going to do this next part together, so open up a terminal and start
-a python interpreter</p>
-</div>
-<p>The Python sockets library allows us to find out what port a <em>service</em> uses:</p>
-<div class="build container">
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">socket</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">socket</span><span class="o">.</span><span class="n">getservbyname</span><span class="p">(</span><span class="s">&#39;ssh&#39;</span><span class="p">)</span>
-<span class="go">22</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+<span class="n">parsed</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="s">&#39;&lt;h1&gt;Some HTML&lt;/h1&gt;&#39;</span><span class="p">)</span>
+
+<span class="n">fh</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;a_page.html&#39;</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">parsed</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
+
+<span class="n">page</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="s">&#39;http://site.com/page.html&#39;</span><span class="p">)</span>
+<span class="n">parsed</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>You can also do a <em>reverse lookup</em>, finding what service uses a given <em>port</em>:</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">socket</span><span class="o">.</span><span class="n">getservbyport</span><span class="p">(</span><span class="mi">80</span><span class="p">)</span>
-<span class="go">&#39;http&#39;</span>
-</pre></div>
+<p>You might want to open the documentation as reference
+(<a class="reference external" href="http://www.crummy.com/software/BeautifulSoup/bs4/doc">http://www.crummy.com/software/BeautifulSoup/bs4/doc</a>)</p>
 </div>
 </div>
-<p>The sockets library also provides tools for finding out information about
-<em>hosts</em>. For example, you can find out about the hostname and IP address of
-the machine you are currently using:</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">socket</span><span class="o">.</span><span class="n">gethostname</span><span class="p">()</span>
-<span class="go">&#39;heffalump.local&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">socket</span><span class="o">.</span><span class="n">gethostbyname</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">gethostname</span><span class="p">())</span>
-<span class="go">&#39;10.211.55.2&#39;</span>
-</pre></div>
-</div>
-<p>You can also find out about machines that are located elsewhere, assuming you
-know their hostname. For example:</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">socket</span><span class="o">.</span><span class="n">gethostbyname</span><span class="p">(</span><span class="s">&#39;google.com&#39;</span><span class="p">)</span>
-<span class="go">&#39;173.194.33.4&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">socket</span><span class="o">.</span><span class="n">gethostbyname</span><span class="p">(</span><span class="s">&#39;uw.edu&#39;</span><span class="p">)</span>
-<span class="go">&#39;128.95.155.135&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">socket</span><span class="o">.</span><span class="n">gethostbyname</span><span class="p">(</span><span class="s">&#39;crisewing.com&#39;</span><span class="p">)</span>
-<span class="go">&#39;108.59.11.99&#39;</span>
-</pre></div>
-</div>
-<p>The <tt class="docutils literal"><span class="pre">gethostbyname_ex</span></tt> method of the <tt class="docutils literal"><span class="pre">socket</span></tt> library provides more
-information about the machines we are exploring:</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">socket</span><span class="o">.</span><span class="n">gethostbyname_ex</span><span class="p">(</span><span class="s">&#39;google.com&#39;</span><span class="p">)</span>
-<span class="go">(&#39;google.com&#39;, [], [&#39;173.194.33.9&#39;, &#39;173.194.33.14&#39;,</span>
-<span class="go">                    ...</span>
-<span class="go">                    &#39;173.194.33.6&#39;, &#39;173.194.33.7&#39;,</span>
-<span class="go">                    &#39;173.194.33.8&#39;])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">socket</span><span class="o">.</span><span class="n">gethostbyname_ex</span><span class="p">(</span><span class="s">&#39;crisewing.com&#39;</span><span class="p">)</span>
-<span class="go">(&#39;crisewing.com&#39;, [], [&#39;108.59.11.99&#39;])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">socket</span><span class="o">.</span><span class="n">gethostbyname_ex</span><span class="p">(</span><span class="s">&#39;www.rad.washington.edu&#39;</span><span class="p">)</span>
-<span class="go">(&#39;elladan.rad.washington.edu&#39;, # &lt;- canonical hostname</span>
-<span class="go"> [&#39;www.rad.washington.edu&#39;], # &lt;- any machine aliases</span>
-<span class="go"> [&#39;128.95.247.84&#39;]) # &lt;- all active IP addresses</span>
-</pre></div>
-</div>
-<p>To create a socket, you use the <strong>socket</strong> method of the <tt class="docutils literal"><span class="pre">socket</span></tt> library.
-It takes up to three optional positional arguments (here we use none to get
-the default behavior):</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">foo</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">foo</span>
-<span class="go">&lt;socket._socketobject object at 0x10046cec0&gt;</span>
-</pre></div>
-</div>
-<p>A socket has some properties that are immediately important to us. These
-include the <em>family</em>, <em>type</em> and <em>protocol</em> of the socket:</p>
-<div class="build container">
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">foo</span><span class="o">.</span><span class="n">family</span>
-<span class="go">2</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">foo</span><span class="o">.</span><span class="n">type</span>
-<span class="go">1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">foo</span><span class="o">.</span><span class="n">proto</span>
-<span class="go">0</span>
-</pre></div>
-</div>
-<p>You might notice that the values for these properties are integers.  In
-fact, these integers are <strong>constants</strong> defined in the socket library.</p>
-</div>
-<p>Let&#8217;s define a method in place to help us see these constants. It will take a
-single argument, the shared prefix for a defined set of constants:</p>
-<div class="build container">
-<p>(you can also find this in <tt class="docutils literal"><span class="pre">resources/session04/socket_tools.py</span></tt>)</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">get_constants</span><span class="p">(</span><span class="n">prefix</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="sd">&quot;&quot;&quot;mapping of socket module constants to their names.&quot;&quot;&quot;</span>
-<span class="gp">... </span>    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">socket</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="n">n</span><span class="p">)</span>
-<span class="gp">... </span>        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">socket</span><span class="p">)</span>
-<span class="gp">... </span>        <span class="k">if</span> <span class="n">n</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="p">)</span>
-<span class="gp">...</span>
-<span class="go">&gt;&gt;&gt;</span>
+<div class="section" id="id1">
+<h3>My Solution<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Take a shot at writing this new function in <code class="docutils literal"><span class="pre">mashup.py</span></code></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># add this import at the top</span>
+<span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+<span class="c"># then add this function lower down</span>
+<span class="k">def</span> <span class="nf">parse_source</span><span class="p">(</span><span class="n">html</span><span class="p">):</span>
+    <span class="n">parsed</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">parsed</span>
 </pre></div>
 </div>
 </div>
+<div class="section" id="put-it-together">
+<h3>Put It Together<a class="headerlink" href="#put-it-together" title="Permalink to this headline">¶</a></h3>
+<p>We&#8217;ll need to make our script do something when run.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="c"># do something</span>
+</pre></div>
 </div>
-<div class="section" id="socket-families">
-<h3>Socket Families<a class="headerlink" href="#socket-families" title="Permalink to this headline">¶</a></h3>
-<p>Think back a moment to our discussion of the <em>Internet</em> layer of the TCP/IP
-stack.  There were a couple of different types of IP addresses:</p>
 <div class="build container">
 <ul class="build simple">
-<li>IPv4 (&#8216;192.168.1.100&#8217;)</li>
-<li>IPv6 (&#8216;2001:0db8:85a3:0042:0000:8a2e:0370:7334&#8217;)</li>
+<li>Fetch a search results page</li>
+<li>Parse the resulting HTML</li>
+<li>For now, print out the results so we can see what we get</li>
 </ul>
-<p>The <strong>family</strong> of a socket corresponds to the <em>addressing system</em> it uses
-for connecting.</p>
-</div>
-<p>Families defined in the <tt class="docutils literal"><span class="pre">socket</span></tt> library are prefixed by <tt class="docutils literal"><span class="pre">AF_</span></tt>:</p>
-<div class="build container">
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">families</span> <span class="o">=</span> <span class="n">get_constants</span><span class="p">(</span><span class="s">&#39;AF_&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">families</span>
-<span class="go">{0: &#39;AF_UNSPEC&#39;, 1: &#39;AF_UNIX&#39;, 2: &#39;AF_INET&#39;,</span>
-<span class="go"> 11: &#39;AF_SNA&#39;, 12: &#39;AF_DECnet&#39;, 16: &#39;AF_APPLETALK&#39;,</span>
-<span class="go"> 17: &#39;AF_ROUTE&#39;, 23: &#39;AF_IPX&#39;, 30: &#39;AF_INET6&#39;}</span>
+<div class="container">
+<p>Use the <code class="docutils literal"><span class="pre">prettify</span></code> method on a BeautifulSoup object:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">print</span><span class="p">(</span><span class="n">parsed</span><span class="o">.</span><span class="n">prettify</span><span class="p">())</span>
 </pre></div>
 </div>
-<p><em>Your results may vary</em></p>
-<p>Of all of these, the ones we care most about are <tt class="docutils literal"><span class="pre">2</span></tt> (IPv4) and <tt class="docutils literal"><span class="pre">30</span></tt>
-(IPv6).</p>
 </div>
-<p>When you are on a machine with an operating system that is Unix-like, you will
-find another generally useful socket family: <tt class="docutils literal"><span class="pre">AF_UNIX</span></tt>, or Unix Domain
-Sockets. Sockets in this family:</p>
+</div>
+</div>
+<div class="section" id="id2">
+<h3>My Solution<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Try to come up with the proper code on your own.  Add it to <code class="docutils literal"><span class="pre">mashup.py</span></code></p>
+<div class="build highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">use_params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">&#39;Inspection_Start&#39;</span><span class="p">:</span> <span class="s">&#39;2/1/2013&#39;</span><span class="p">,</span>
+        <span class="s">&#39;Inspection_End&#39;</span><span class="p">:</span> <span class="s">&#39;2/1/2015&#39;</span><span class="p">,</span>
+        <span class="s">&#39;Zip_Code&#39;</span><span class="p">:</span> <span class="s">&#39;98101&#39;</span>
+    <span class="p">}</span>
+    <span class="n">html</span> <span class="o">=</span> <span class="n">get_inspection_page</span><span class="p">(</span><span class="o">**</span><span class="n">use_params</span><span class="p">)</span>
+    <span class="n">parsed</span> <span class="o">=</span> <span class="n">parse_source</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">parsed</span><span class="o">.</span><span class="n">prettify</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>Assuming your virtualenv is still active, you should be able to execute the
+script.</p>
+<div class="build container">
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>soupenv<span class="o">)</span><span class="nv">$ </span>python mashup.py
+...
+   &lt;script <span class="nv">src</span><span class="o">=</span><span class="s2">&quot;http://www.kingcounty.gov/kcscripts/kcPageAnalytics.js&quot;</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;text/javascript&quot;</span>&gt;
+   &lt;/script&gt;
+   &lt;script <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;text/javascript&quot;</span>&gt;
+     //&lt;!<span class="o">[</span>CDATA<span class="o">[</span>
+     var <span class="nv">usasearch_config</span> <span class="o">=</span> <span class="o">{</span> siteHandle:<span class="s2">&quot;kingcounty&quot;</span> <span class="o">}</span><span class="p">;</span>
+     var <span class="nv">script</span> <span class="o">=</span> document.createElement<span class="o">(</span><span class="s2">&quot;script&quot;</span><span class="o">)</span><span class="p">;</span>
+     script.type <span class="o">=</span> <span class="s2">&quot;text/javascript&quot;</span><span class="p">;</span>
+     script.src <span class="o">=</span> <span class="s2">&quot;http://search.usa.gov/javascripts/remote.loader.js&quot;</span><span class="p">;</span>
+     document.getElementsByTagName<span class="o">(</span><span class="s2">&quot;head&quot;</span><span class="o">)[</span>0<span class="o">]</span>.appendChild<span class="o">(</span>script<span class="o">)</span><span class="p">;</span>
+     //<span class="o">]]</span>&gt;
+   &lt;/script&gt;
+  &lt;/form&gt;
+ &lt;/body&gt;
+&lt;/html&gt;
+</pre></div>
+</div>
+<p>This script is available as <code class="docutils literal"><span class="pre">resources/session04/mashup_1.py</span></code></p>
+</div>
+<p>Now, let&#8217;s re-run the script, saving the output to a file so we can use it
+later:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ python mashup.py &gt; inspection_page.html
+</pre></div>
+</div>
+<div class="build container">
+<p>Then add a quick function to our script that will use these saved results:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">load_inspection_page</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="n">file_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">file_path</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Finally, bolt that in to your script to use it:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># COMMENT OUT THIS LINE AND REPLACE IT</span>
+<span class="c"># html = get_inspection_page(**use_params)</span>
+<span class="n">html</span> <span class="o">=</span> <span class="n">load_inspection_page</span><span class="p">(</span><span class="s">&#39;inspection_page.html&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="extracting-data">
+<h3>Extracting Data<a class="headerlink" href="#extracting-data" title="Permalink to this headline">¶</a></h3>
+<p>Next we find the bits of this pile of HTML that matter to us.</p>
+<div class="build container">
+<p>Open the page you just wrote to disk in your web browser and open the
+developer tools to inspect the page source.</p>
+<p>You&#8217;ll want to start by finding the element in the page that contains all
+our search results.</p>
+<p>Look at the source and identify the single element we are looking for.</p>
+</div>
+<p>Having found it visually, we can now search for it automatically. In
+BeautifulSoup:</p>
+<div class="build container">
 <ul class="build simple">
-<li>connect processes <strong>on the same machine</strong></li>
-<li>are generally a bit slower than IPC connnections</li>
-<li>have the benefit of allowing the same API for programs that might run on one
-machine __or__ across the network</li>
-<li>use an &#8216;address&#8217; that looks like a pathname (&#8216;/tmp/foo.sock&#8217;)</li>
+<li>All HTML elements (including the parsed document itself) are <code class="docutils literal"><span class="pre">tags</span></code></li>
+<li>A <code class="docutils literal"><span class="pre">tag</span></code> can be searched using its <code class="docutils literal"><span class="pre">find</span></code> or <code class="docutils literal"><span class="pre">find_all</span></code> methods</li>
+<li>This searches the descendents of the tag on which it is called.</li>
+<li>It takes arguments which act as <em>filters</em> on the search results</li>
 </ul>
-<p>What is the <em>default</em> family for the socket we created just a moment ago?</p>
-<div class="build container">
-<p>(remember we bound the socket to the symbol <tt class="docutils literal"><span class="pre">foo</span></tt>)</p>
-<p>How did you figure this out?</p>
-</div>
-</div>
-<div class="section" id="socket-types">
-<h3>Socket Types<a class="headerlink" href="#socket-types" title="Permalink to this headline">¶</a></h3>
-<p>The socket <em>type</em> determines the semantics of socket communications.</p>
-<div class="build container">
-<p>Look up socket type constants with the <tt class="docutils literal"><span class="pre">SOCK_</span></tt> prefix:</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">types</span> <span class="o">=</span> <span class="n">get_constants</span><span class="p">(</span><span class="s">&#39;SOCK_&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">types</span>
-<span class="go">{1: &#39;SOCK_STREAM&#39;, 2: &#39;SOCK_DGRAM&#39;,</span>
-<span class="go"> ...}</span>
+<div class="container">
+<p>like so:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">tag</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">attrs</span><span class="p">,</span> <span class="n">recursive</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="n">tag</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">attrs</span><span class="p">,</span> <span class="n">recursive</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">limit</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The most common are <tt class="docutils literal"><span class="pre">1</span></tt> (Stream communication (TCP)) and <tt class="docutils literal"><span class="pre">2</span></tt> (Datagram
-communication (UDP)).</p>
 </div>
-<p>What is the <em>default</em> type for our generic socket, <tt class="docutils literal"><span class="pre">foo</span></tt>?</p>
 </div>
-<div class="section" id="socket-protocols">
-<h3>Socket Protocols<a class="headerlink" href="#socket-protocols" title="Permalink to this headline">¶</a></h3>
-<p>A socket also has a designated <em>protocol</em>. The constants for these are
-prefixed by <tt class="docutils literal"><span class="pre">IPPROTO_</span></tt>:</p>
+<p>The <code class="docutils literal"><span class="pre">find</span></code> method allows us to pass <em>kwargs</em>.</p>
 <div class="build container">
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">protocols</span> <span class="o">=</span> <span class="n">get_constants</span><span class="p">(</span><span class="s">&#39;IPPROTO_&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">protocols</span>
-<span class="go">{0: &#39;IPPROTO_IP&#39;, 1: &#39;IPPROTO_ICMP&#39;,</span>
-<span class="go"> ...,</span>
-<span class="go"> 255: &#39;IPPROTO_RAW&#39;}</span>
+<p>Keywords that are not among the named parameters will be considered an HTML
+attribute.</p>
+<p>We can use this to find the column that holds our search results:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">content_col</span> <span class="o">=</span> <span class="n">parsed</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;td&#39;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s">&quot;contentcol&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The choice of which protocol to use for a socket is determined by the
-<em>internet layer</em> protocol you intend to use. <tt class="docutils literal"><span class="pre">TCP</span></tt>? <tt class="docutils literal"><span class="pre">UDP</span></tt>? <tt class="docutils literal"><span class="pre">ICMP</span></tt>?
-<tt class="docutils literal"><span class="pre">IGMP</span></tt>?</p>
+<p>Add that line to our mashup script and try it out:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#...</span>
+<span class="n">parsed</span> <span class="o">=</span> <span class="n">parse_source</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+<span class="n">content_col</span> <span class="o">=</span> <span class="n">parsed</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;td&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s">&quot;contentcol&quot;</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">content_col</span><span class="o">.</span><span class="n">prettify</span><span class="p">()</span>
+</pre></div>
 </div>
-<p>What is the <em>default</em> protocol used by our generic socket, <tt class="docutils literal"><span class="pre">foo</span></tt>?</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>soupenv<span class="o">)</span><span class="nv">$ </span>python mashup.py
+&lt;td <span class="nv">id</span><span class="o">=</span><span class="s2">&quot;contentcol&quot;</span>&gt;
+    ...
+&lt;/td&gt;
+</pre></div>
 </div>
-<div class="section" id="customizing-sockets">
-<h3>Customizing Sockets<a class="headerlink" href="#customizing-sockets" title="Permalink to this headline">¶</a></h3>
-<p>These three properties of a socket correspond to the three positional
-arguments you may pass to the socket constructor.</p>
+</div>
+<p>The next job is to find the inspection data we can see when we click on the
+restaurant names in our page.</p>
 <div class="build container">
-<p>Using them allows you to create sockets with specific communications
-profiles:</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bar</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span>
-<span class="gp">... </span>                    <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_DGRAM</span><span class="p">,</span>
-<span class="gp">... </span>                    <span class="n">socket</span><span class="o">.</span><span class="n">IPPROTO_UDP</span><span class="p">)</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bar</span>
-<span class="go">&lt;socket._socketobject object at 0x1005b8b40&gt;</span>
+<p>Do you notice a pattern in how that data is structured?</p>
+<p>For each restaurant in our results, there are <em>two</em> <code class="docutils literal"><span class="pre">&lt;div&gt;</span></code> tags.</p>
+<p>The first contains the content you see at first, the second the content
+that displays when we click.</p>
+<p>What can you see that identifies these items?</p>
+<p><code class="docutils literal"><span class="pre">&lt;div</span> <span class="pre">id=&quot;PR0084952&quot;...&gt;</span></code> and <code class="docutils literal"><span class="pre">&lt;div</span> <span class="pre">id=&quot;PR0084952~&quot;...&gt;</span></code></p>
+<p>Each pair shares an ID, and the stuff we want is in the second one</p>
+<p>Each number is different for each restaurant</p>
+<p>We can use a regular expression to help us here.</p>
+</div>
+<p>Let&#8217;s write a function in <code class="docutils literal"><span class="pre">mashup.py</span></code> that will find all the divs in our
+column with the right kind of id:</p>
+<div class="build container">
+<ul class="build simple">
+<li>It should match <code class="docutils literal"><span class="pre">&lt;div&gt;</span></code> tags only</li>
+<li>It should match ids that start with <code class="docutils literal"><span class="pre">PR</span></code></li>
+<li>It should match ids that contain some number of <em>digits</em> after that</li>
+<li>It should match ids that end with a <em>tilde</em> (<code class="docutils literal"><span class="pre">~</span></code>) character</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># add an import up top</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="c"># and add this function</span>
+<span class="k">def</span> <span class="nf">restaurant_data_generator</span><span class="p">(</span><span class="n">html</span><span class="p">):</span>
+    <span class="n">id_finder</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&#39;PR[\d]+~&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">html</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">&#39;div&#39;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">id_finder</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Let&#8217;s add that step to the <em>main</em> block at the bottom of <code class="docutils literal"><span class="pre">mashup.py</span></code> (only
+print the first of the many divs that match):</p>
+<div class="build container">
+<div class="highlight-python"><div class="highlight"><pre><span class="n">html</span><span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="n">load_inspection_page</span><span class="p">(</span><span class="s">&#39;inspection_page.html&#39;</span><span class="p">)</span>
+<span class="n">parsed</span> <span class="o">=</span> <span class="n">parse_source</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="n">encoding</span><span class="p">)</span>
+<span class="n">content_col</span> <span class="o">=</span> <span class="n">parsed</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;td&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s">&quot;contentcol&quot;</span><span class="p">)</span>
+<span class="n">data_list</span> <span class="o">=</span> <span class="n">restaurant_data_generator</span><span class="p">(</span><span class="n">content_col</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">data_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">prettify</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Finally, test it out:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>soupenv<span class="o">)</span><span class="nv">$ </span>python mashup.py
+&lt;div <span class="nv">id</span><span class="o">=</span><span class="s2">&quot;PR0001203~&quot;</span> <span class="nv">name</span><span class="o">=</span><span class="s2">&quot;PR0001203~&quot;</span> <span class="nv">onclick</span><span class="o">=</span><span class="s2">&quot;toggleShow(this.id);&quot;</span>...&gt;
+ &lt;table <span class="nv">style</span><span class="o">=</span><span class="s2">&quot;width: 635px;&quot;</span>&gt;
+ ...
+ &lt;/table&gt;
+&lt;/div&gt;
+</pre></div>
+</div>
+<p>This code is available as <code class="docutils literal"><span class="pre">/resources/session04/mashup_2.py</span></code></p>
+</div>
+</div>
+<div class="section" id="parsing-restaurant-data">
+<h3>Parsing Restaurant Data<a class="headerlink" href="#parsing-restaurant-data" title="Permalink to this headline">¶</a></h3>
+<p>Now that we have the records we want, we need to parse them. We want to preserve:</p>
+<div class="build container">
+<p>We&#8217;ll start by parsing out the information about the restaurant themselves:</p>
+<ul class="build simple">
+<li>Name</li>
+<li>Address</li>
+<li>Location</li>
+<li>...</li>
+</ul>
+<p>How is this information contained in our records?</p>
+</div>
+<p>Each record consists of a table with a series of <em>rows</em> (<code class="docutils literal"><span class="pre">&lt;tr&gt;</span></code>).</p>
+<div class="build container">
+<p>The rows we want at this time all have two <em>cells</em> inside them.</p>
+<p>The first contains the <em>label</em> of the data, the second contains the <em>value</em></p>
+<p>We&#8217;ll need a function in <code class="docutils literal"><span class="pre">mashup.py</span></code> that:</p>
+<ul class="build simple">
+<li>takes an HTML element as an argument</li>
+<li>verifies that it is a <code class="docutils literal"><span class="pre">&lt;tr&gt;</span></code> element</li>
+<li>verifies that it has two immediate children that are <code class="docutils literal"><span class="pre">&lt;td&gt;</span></code> elements</li>
+</ul>
+<p>My solution:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">has_two_tds</span><span class="p">(</span><span class="n">elem</span><span class="p">):</span>
+    <span class="n">is_tr</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;tr&#39;</span>
+    <span class="n">td_children</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">&#39;td&#39;</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">has_two</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">td_children</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="n">is_tr</span> <span class="ow">and</span> <span class="n">has_two</span>
+</pre></div>
+</div>
+</div>
+<p>Let&#8217;s try this out in an interpreter:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [1]: </span><span class="kn">from</span> <span class="nn">mashup_3</span> <span class="kn">import</span> <span class="n">load_inspection_page</span><span class="p">,</span> <span class="n">parse_source</span><span class="p">,</span>
+<span class="go">        restaurant_data_generator, has_two_tds</span>
+<span class="gp">In [2]: </span><span class="n">html</span> <span class="o">=</span> <span class="n">load_inspection_page</span><span class="p">(</span><span class="s">&#39;inspection_page.html&#39;</span><span class="p">)</span>
+<span class="gp">In [3]: </span><span class="n">parsed</span> <span class="o">=</span> <span class="n">parse_source</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+<span class="go">...</span>
+<span class="gp">In [4]: </span><span class="n">content_col</span> <span class="o">=</span> <span class="n">parsed</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;td&#39;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s">&#39;contentcol&#39;</span><span class="p">)</span>
+<span class="gp">In [5]: </span><span class="n">records</span> <span class="o">=</span> <span class="n">restaurant_data_generator</span><span class="p">(</span><span class="n">content_col</span><span class="p">)</span>
+<span class="gp">In [6]: </span><span class="n">rec</span> <span class="o">=</span> <span class="n">records</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>We&#8217;d like to find all table rows in that div that contain <em>two</em> cells</p>
+<div class="build container">
+<p>The table rows are all contained in a <code class="docutils literal"><span class="pre">&lt;tbody&gt;</span></code> tag.</p>
+<p>We only want the ones at the top of that tag (ones nested more deeply
+contain other data)</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [13]: </span><span class="n">data_rows</span> <span class="o">=</span> <span class="n">rec</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;tbody&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">has_two_tds</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="gp">In [14]: </span><span class="nb">len</span><span class="p">(</span><span class="n">data_rows</span><span class="p">)</span>
+<span class="gh">Out[14]: </span><span class="go">7</span>
+<span class="gp">In [15]: </span><span class="k">print</span><span class="p">(</span><span class="n">data_rows</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">prettify</span><span class="p">())</span>
+<span class="go">&lt;tr&gt;</span>
+<span class="go"> &lt;td class=&quot;promptTextBox&quot; style=&quot;width: 125px; font-weight: bold&quot;&gt;</span>
+<span class="go">  - Business Name</span>
+<span class="go"> &lt;/td&gt;</span>
+<span class="go"> &lt;td class=&quot;promptTextBox&quot; style=&quot;width: 520px; font-weight: bold&quot;&gt;</span>
+<span class="go">  SPICE ORIENT</span>
+<span class="go"> &lt;/td&gt;</span>
+<span class="go">&lt;/tr&gt;</span>
+</pre></div>
+</div>
+</div>
+<p>Now we have a list of the rows that contain our data.</p>
+<div class="build container">
+<p>Next we have to collect the data they contain</p>
+<p>The <em>label/value</em> structure of this data should suggest the right container
+to store the information.</p>
+<p>Let&#8217;s start by trying to get at the first label</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [18]: </span><span class="n">row1</span> <span class="o">=</span> <span class="n">data_rows</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">In [19]: </span><span class="n">cells</span> <span class="o">=</span> <span class="n">row1</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">&#39;td&#39;</span><span class="p">)</span>
+<span class="gp">In [20]: </span><span class="n">cell1</span> <span class="o">=</span> <span class="n">cells</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">In [21]: </span><span class="n">cell1</span><span class="o">.</span><span class="n">text</span>
+<span class="gh">Out[21]: </span><span class="go">&#39;\n            - Business Name\n           &#39;</span>
+</pre></div>
+</div>
+<p>That works well enough, but all that extra stuff is nasty</p>
+<p>We need a method to clean up the text we get from these cells</p>
+<p>It should strip extra whitespace, and characters like <code class="docutils literal"><span class="pre">-</span></code> and <code class="docutils literal"><span class="pre">:</span></code> we
+don&#8217;t want.</p>
+</div>
+<p>Try writing such a function for yourself now in <code class="docutils literal"><span class="pre">mashup.py</span></code></p>
+<div class="build container">
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">clean_data</span><span class="p">(</span><span class="n">td</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">td</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s">&quot; </span><span class="se">\n</span><span class="s">:-&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Add it to your interpreter and test it out:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [25]: </span><span class="k">def</span> <span class="nf">clean_data</span><span class="p">(</span><span class="n">td</span><span class="p">):</span>
+<span class="gp">   ....: </span>    <span class="k">return</span> <span class="n">td</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s">&quot; </span><span class="se">\n</span><span class="s">:-&quot;</span><span class="p">)</span>
+<span class="gp">   ....:</span>
+<span class="gp">In [26]: </span><span class="n">clean_data</span><span class="p">(</span><span class="n">cell1</span><span class="p">)</span>
+<span class="gh">Out[26]: </span><span class="go">&#39;Business Name&#39;</span>
+<span class="gp">In [27]:</span>
+</pre></div>
+</div>
+<p>Ahhh, much better</p>
+</div>
+<p>So we can get a list of the rows that contain label/value pairs.</p>
+<div class="build container">
+<p>And we can extract clean values from the cells in these rows</p>
+<p>Now we need a function in <code class="docutils literal"><span class="pre">mashup.py</span></code> that will iterate through the rows
+we find and build a dictionary of the pairs.</p>
+<p>We have to be cautious because some rows don&#8217;t have a label.</p>
+<p>The values in these rows should go with the label from the previous row.</p>
+</div>
+<p>Here&#8217;s the version I came up with:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">extract_restaurant_metadata</span><span class="p">(</span><span class="n">elem</span><span class="p">):</span>
+    <span class="n">restaurant_data_rows</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;tbody&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span>
+        <span class="n">has_two_tds</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="bp">False</span>
+    <span class="p">)</span>
+    <span class="n">rdata</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">current_label</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+    <span class="k">for</span> <span class="n">data_row</span> <span class="ow">in</span> <span class="n">restaurant_data_rows</span><span class="p">:</span>
+        <span class="n">key_cell</span><span class="p">,</span> <span class="n">val_cell</span> <span class="o">=</span> <span class="n">data_row</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">&#39;td&#39;</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        <span class="n">new_label</span> <span class="o">=</span> <span class="n">clean_data</span><span class="p">(</span><span class="n">key_cell</span><span class="p">)</span>
+        <span class="n">current_label</span> <span class="o">=</span> <span class="n">new_label</span> <span class="k">if</span> <span class="n">new_label</span> <span class="k">else</span> <span class="n">current_label</span>
+        <span class="n">rdata</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">current_label</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">clean_data</span><span class="p">(</span><span class="n">val_cell</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">rdata</span>
+</pre></div>
+</div>
+<p>Add it to our script:</p>
+<div class="build container">
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># ...</span>
+<span class="n">data_list</span> <span class="o">=</span> <span class="n">restaurant_data_generator</span><span class="p">(</span><span class="n">content_col</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">data_div</span> <span class="ow">in</span> <span class="n">data_list</span><span class="p">:</span>
+    <span class="n">metadata</span> <span class="o">=</span> <span class="n">extract_restaurant_metadata</span><span class="p">(</span><span class="n">data_div</span><span class="p">)</span>
+    <span class="k">print</span> <span class="n">metadata</span>
+</pre></div>
+</div>
+<p>And then try it out:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>soupenv<span class="o">)</span><span class="nv">$ </span>python mashup.py
+...
+<span class="o">{</span>u<span class="s1">&#39;Business Category&#39;</span>: <span class="o">[</span>u<span class="s1">&#39;Seating 0-12 - Risk Category III&#39;</span><span class="o">]</span>,
+ u<span class="s1">&#39;Longitude&#39;</span>: <span class="o">[</span>u<span class="s1">&#39;122.3401786000&#39;</span><span class="o">]</span>, u<span class="s1">&#39;Phone&#39;</span>: <span class="o">[</span>u<span class="s1">&#39;(206) 501-9554&#39;</span><span class="o">]</span>,
+ u<span class="s1">&#39;Business Name&#39;</span>: <span class="o">[</span>u<span class="s2">&quot;ZACCAGNI&#39;S&quot;</span><span class="o">]</span>, u<span class="s1">&#39;Address&#39;</span>: <span class="o">[</span>u<span class="s1">&#39;97B PIKE ST&#39;</span>, u<span class="s1">&#39;SEATTLE, WA 98101&#39;</span><span class="o">]</span>,
+ u<span class="s1">&#39;Latitude&#39;</span>: <span class="o">[</span>u<span class="s1">&#39;47.6086651300&#39;</span><span class="o">]}</span>
+</pre></div>
+</div>
+<p>This script is available as <code class="docutils literal"><span class="pre">resources/session04/mashup_3.py</span></code></p>
+</div>
+</div>
+<div class="section" id="extracting-inspection-data">
+<h3>Extracting Inspection Data<a class="headerlink" href="#extracting-inspection-data" title="Permalink to this headline">¶</a></h3>
+<p>The final step is to extract the inspection data for each restaurant.</p>
+<div class="build container">
+<p>We want to capture only the score from each inspection, details we can
+leave behind.</p>
+<p>We&#8217;d like to calculate the average score for all known inspections.</p>
+<p>We&#8217;d also like to know how many inspections there were in total.</p>
+<p>Finally, we&#8217;d like to preserve the highest score of all inspections for a
+restaurant.</p>
+<p>We&#8217;ll add this information to our metadata about the restaurant.</p>
+</div>
+<p>Let&#8217;s start by getting our bearings. Return to viewing the
+<code class="docutils literal"><span class="pre">inspection_page.html</span></code> you saved in a browser.</p>
+<div class="build container">
+<p>Find a restaurant that has had an inspection or two.</p>
+<p>What can you say about the HTML that contains the scores for these
+inspections?</p>
+<p>I notice four characteristics that let us isolate the information we want:</p>
+<ul class="build simple">
+<li>Inspection data is containd in <code class="docutils literal"><span class="pre">&lt;tr&gt;</span></code> elements</li>
+<li>Rows with inspection data in them have four <code class="docutils literal"><span class="pre">&lt;td&gt;</span></code> children</li>
+<li>The text in the first cell contains the word &#8220;inspection&#8221;</li>
+<li>But the text does not <em>start</em> with the word &#8220;inspection&#8221;</li>
+</ul>
+<p>Let&#8217;s try to write a filter function like the one above that will catch
+these rows for us.</p>
+</div>
+<p>Add this new function <code class="docutils literal"><span class="pre">is_inspection_data_row</span></code> to <code class="docutils literal"><span class="pre">mashup.py</span></code></p>
+<div class="build highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">is_inspection_data_row</span><span class="p">(</span><span class="n">elem</span><span class="p">):</span>
+    <span class="n">is_tr</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;tr&#39;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_tr</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span>
+    <span class="n">td_children</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">&#39;td&#39;</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">has_four</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">td_children</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span>
+    <span class="n">this_text</span> <span class="o">=</span> <span class="n">clean_data</span><span class="p">(</span><span class="n">td_children</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">contains_word</span> <span class="o">=</span> <span class="s">&#39;inspection&#39;</span> <span class="ow">in</span> <span class="n">this_text</span>
+    <span class="n">does_not_start</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">this_text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;inspection&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">is_tr</span> <span class="ow">and</span> <span class="n">has_four</span> <span class="ow">and</span> <span class="n">contains_word</span> <span class="ow">and</span> <span class="n">does_not_start</span>
+</pre></div>
+</div>
+<p>We can test this function by adding it into our script:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">data_div</span> <span class="ow">in</span> <span class="n">data_list</span><span class="p">:</span>
+    <span class="n">metadata</span> <span class="o">=</span> <span class="n">extract_restaurant_metadata</span><span class="p">(</span><span class="n">data_div</span><span class="p">)</span>
+    <span class="c"># UPDATE THIS BELOW HERE</span>
+    <span class="n">inspection_rows</span> <span class="o">=</span> <span class="n">data_div</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">is_inspection_data_row</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">inspection_rows</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;*&#39;</span><span class="o">*</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="build container">
+<p>And try running the script in your terminal:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>soupenv<span class="o">)</span><span class="nv">$ </span>python mashup.py
+<span class="o">{</span>u<span class="s1">&#39;Business Category&#39;</span>: <span class="o">[</span>u<span class="s1">&#39;Seating 0-12 - Risk Category III&#39;</span><span class="o">]</span>,
+ u<span class="s1">&#39;Longitude&#39;</span>: <span class="o">[</span>u<span class="s1">&#39;122.3401786000&#39;</span><span class="o">]</span>, u<span class="s1">&#39;Phone&#39;</span>: <span class="o">[</span>u<span class="s1">&#39;(206) 501-9554&#39;</span><span class="o">]</span>,
+ u<span class="s1">&#39;Business Name&#39;</span>: <span class="o">[</span>u<span class="s2">&quot;ZACCAGNI&#39;S&quot;</span><span class="o">]</span>, u<span class="s1">&#39;Address&#39;</span>: <span class="o">[</span>u<span class="s1">&#39;97B PIKE ST&#39;</span>, u<span class="s1">&#39;SEATTLE, WA 98101&#39;</span><span class="o">]</span>,
+ u<span class="s1">&#39;Latitude&#39;</span>: <span class="o">[</span>u<span class="s1">&#39;47.6086651300&#39;</span><span class="o">]}</span>
+0
+**********
+</pre></div>
+</div>
+</div>
+<p>Now we can isolate a list of the rows that contain inspection data.</p>
+<div class="build container">
+<p>Next we need to calculate the average score, total number and highest score
+for each restaurant.</p>
+<p>Let&#8217;s add a function to <code class="docutils literal"><span class="pre">mashup.py</span></code> that will:</p>
+<ul class="build simple">
+<li>Take a div containing a restaurant record</li>
+<li>Extract the rows containing inspection data</li>
+<li>Keep track of the highest score recorded</li>
+<li>Sum the total of all inspections</li>
+<li>Count the number of inspections made</li>
+<li>Calculate the average score for inspections</li>
+<li>Return the three calculated values in a dictionary</li>
+</ul>
+</div>
+<p>Try writing this routine yourself.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">get_score_data</span><span class="p">(</span><span class="n">elem</span><span class="p">):</span>
+    <span class="n">inspection_rows</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">is_inspection_data_row</span><span class="p">)</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">inspection_rows</span><span class="p">)</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="n">high_score</span> <span class="o">=</span> <span class="n">average</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">inspection_rows</span><span class="p">:</span>
+        <span class="n">strval</span> <span class="o">=</span> <span class="n">clean_data</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">&#39;td&#39;</span><span class="p">)[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">intval</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">strval</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+            <span class="n">samples</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">total</span> <span class="o">+=</span> <span class="n">intval</span>
+            <span class="n">high_score</span> <span class="o">=</span> <span class="n">intval</span> <span class="k">if</span> <span class="n">intval</span> <span class="o">&gt;</span> <span class="n">high_score</span> <span class="k">else</span> <span class="n">high_score</span>
+    <span class="k">if</span> <span class="n">samples</span><span class="p">:</span>
+        <span class="n">average</span> <span class="o">=</span> <span class="n">total</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s">&#39;Average Score&#39;</span><span class="p">:</span> <span class="n">average</span><span class="p">,</span> <span class="s">&#39;High Score&#39;</span><span class="p">:</span> <span class="n">high_score</span><span class="p">,</span>
+            <span class="s">&#39;Total Inspections&#39;</span><span class="p">:</span> <span class="n">samples</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>We can now incorporate this new routine into our <code class="docutils literal"><span class="pre">mashup</span></code> script.</p>
+<div class="build container">
+<p>We&#8217;ll want to add the data it produces to the metadata we&#8217;ve already
+extracted.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">data_div</span> <span class="ow">in</span> <span class="n">data_list</span><span class="p">:</span>
+    <span class="n">metadata</span> <span class="o">=</span> <span class="n">extract_restaurant_metadata</span><span class="p">(</span><span class="n">data_div</span><span class="p">)</span>
+    <span class="n">inspection_data</span> <span class="o">=</span> <span class="n">get_score_data</span><span class="p">(</span><span class="n">data_div</span><span class="p">)</span>
+    <span class="n">metadata</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">inspection_data</span><span class="p">)</span>
+    <span class="k">print</span> <span class="n">metadata</span>
+</pre></div>
+</div>
+<p>And test it out at the command line:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>soupenv<span class="o">)</span><span class="nv">$ </span>python mashup.py
+...
+<span class="o">{</span>u<span class="s1">&#39;Business Category&#39;</span>: <span class="o">[</span>u<span class="s1">&#39;Seating 0-12 - Risk Category III&#39;</span><span class="o">]</span>,
+ u<span class="s1">&#39;Longitude&#39;</span>: <span class="o">[</span>u<span class="s1">&#39;122.3401786000&#39;</span><span class="o">]</span>, u<span class="s1">&#39;High Score&#39;</span>: 0,
+ u<span class="s1">&#39;Phone&#39;</span>: <span class="o">[</span>u<span class="s1">&#39;(206) 501-9554&#39;</span><span class="o">]</span>, u<span class="s1">&#39;Business Name&#39;</span>: <span class="o">[</span>u<span class="s2">&quot;ZACCAGNI&#39;S&quot;</span><span class="o">]</span>,
+ u<span class="s1">&#39;Total Inspections&#39;</span>: 0, u<span class="s1">&#39;Address&#39;</span>: <span class="o">[</span>u<span class="s1">&#39;97B PIKE ST&#39;</span>, u<span class="s1">&#39;SEATTLE, WA 98101&#39;</span><span class="o">]</span>,
+ u<span class="s1">&#39;Latitude&#39;</span>: <span class="o">[</span>u<span class="s1">&#39;47.6086651300&#39;</span><span class="o">]</span>, u<span class="s1">&#39;Average Score&#39;</span>: 0<span class="o">}</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="break-time">
 <h3>Break Time<a class="headerlink" href="#break-time" title="Permalink to this headline">¶</a></h3>
-<p>So far we have:</p>
-<div class="build container">
-<ul class="build simple">
-<li>learned about the &#8220;layers&#8221; of the TCP/IP Stack</li>
-<li>discussed <em>families</em>, <em>types</em> and <em>protocols</em> in sockets</li>
-<li>learned how to create sockets with a specific communications profile.</li>
-</ul>
-<p>When we return we&#8217;ll learn how to find the communcations profiles of remote
-sockets, how to connect to them, and how to send and receive messages.</p>
-<p>Take a few minutes now to clear your head (do not quit your python
-interpreter).</p>
+<p>Once you have this working, take a break.</p>
+<p>When we return, we&#8217;ll try a saner approach to getting data from online</p>
 </div>
 </div>
-<div class="section" id="address-information">
-<h3>Address Information<a class="headerlink" href="#address-information" title="Permalink to this headline">¶</a></h3>
-<p>When you are creating a socket to communicate with a remote service, the
-remote socket will have a specific communications profile.</p>
-<div class="build container">
-<p>The local socket you create must match that communications profile.</p>
-<p>How can you determine the <em>correct</em> values to use?</p>
-<p class="centered"><strong>You ask.</strong></p>
-</div>
-<p>The function <tt class="docutils literal"><span class="pre">socket.getaddrinfo</span></tt> provides information about available
-connections on a given host.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">socket</span><span class="o">.</span><span class="n">getaddrinfo</span><span class="p">(</span><span class="s">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="mi">80</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="build container">
-<p>This provides all you need to make a proper connection to a socket on a
-remote host. The value returned is a tuple of:</p>
-<ul class="build simple">
-<li>socket family</li>
-<li>socket type</li>
-<li>socket protocol</li>
-<li>canonical name (usually empty, unless requested by flag)</li>
-<li>socket address (tuple of IP and Port)</li>
-</ul>
-</div>
-<p>Again, let&#8217;s create a utility method in-place so we can see this in action:</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">get_address_info</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="k">for</span> <span class="n">response</span> <span class="ow">in</span> <span class="n">socket</span><span class="o">.</span><span class="n">getaddrinfo</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">):</span>
-<span class="gp">... </span>        <span class="n">fam</span><span class="p">,</span> <span class="n">typ</span><span class="p">,</span> <span class="n">pro</span><span class="p">,</span> <span class="n">nam</span><span class="p">,</span> <span class="n">add</span> <span class="o">=</span> <span class="n">response</span>
-<span class="gp">... </span>        <span class="k">print</span> <span class="s">&#39;family: &#39;</span><span class="p">,</span> <span class="n">families</span><span class="p">[</span><span class="n">fam</span><span class="p">]</span>
-<span class="gp">... </span>        <span class="k">print</span> <span class="s">&#39;type: &#39;</span><span class="p">,</span> <span class="n">types</span><span class="p">[</span><span class="n">typ</span><span class="p">]</span>
-<span class="gp">... </span>        <span class="k">print</span> <span class="s">&#39;protocol: &#39;</span><span class="p">,</span> <span class="n">protocols</span><span class="p">[</span><span class="n">pro</span><span class="p">]</span>
-<span class="gp">... </span>        <span class="k">print</span> <span class="s">&#39;canonical name: &#39;</span><span class="p">,</span> <span class="n">nam</span>
-<span class="gp">... </span>        <span class="k">print</span> <span class="s">&#39;socket address: &#39;</span><span class="p">,</span> <span class="n">add</span>
-<span class="gp">... </span>        <span class="k">print</span>
-<span class="gp">...</span>
-<span class="go">&gt;&gt;&gt;</span>
-</pre></div>
-</div>
-<p>(you can also find this in <tt class="docutils literal"><span class="pre">resources/session01/session1.py</span></tt>)</p>
-<p>Now, ask your own machine what possible connections are available for &#8216;http&#8217;:</p>
-<div class="build container">
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">get_address_info</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">gethostname</span><span class="p">(),</span> <span class="s">&#39;http&#39;</span><span class="p">)</span>
-<span class="go">family:  AF_INET</span>
-<span class="go">type:  SOCK_DGRAM</span>
-<span class="go">protocol:  IPPROTO_UDP</span>
-<span class="go">canonical name:</span>
-<span class="go">socket address:  (&#39;10.211.55.2&#39;, 80)</span>
-
-<span class="go">family:  AF_INET</span>
-<span class="gp">...</span>
-<span class="go">&gt;&gt;&gt;</span>
-</pre></div>
-</div>
-<p>What answers do you get?</p>
-</div>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">get_address_info</span><span class="p">(</span><span class="s">&#39;crisewing.com&#39;</span><span class="p">,</span> <span class="s">&#39;http&#39;</span><span class="p">)</span>
-<span class="go">family:  AF_INET</span>
-<span class="go">type:  SOCK_DGRAM</span>
-<span class="gp">...</span>
-
-<span class="go">family:  AF_INET</span>
-<span class="go">type:  SOCK_STREAM</span>
-<span class="gp">...</span>
-<span class="go">&gt;&gt;&gt;</span>
-</pre></div>
-</div>
-<div class="build container">
-Try a few other servers you know about.</div>
-</div>
-</div>
-<div class="section" id="client-side">
-<h2>Client Side<a class="headerlink" href="#client-side" title="Permalink to this headline">¶</a></h2>
-<div class="build container">
-<p class="large">Let&#8217;s put this to use</p>
-<p>We&#8217;ll communicate with a remote server as a <em>client</em></p>
-</div>
-<div class="section" id="construct-a-socket">
-<h3>Construct a Socket<a class="headerlink" href="#construct-a-socket" title="Permalink to this headline">¶</a></h3>
-<p>We&#8217;ve already made a socket <tt class="docutils literal"><span class="pre">foo</span></tt> using the generic constructor without any
-arguments.  We can make a better one now by using real address information from
-a real server online [<strong>do not type this yet</strong>]:</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">streams</span> <span class="o">=</span> <span class="p">[</span><span class="n">info</span>
-<span class="gp">... </span>    <span class="k">for</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">socket</span><span class="o">.</span><span class="n">getaddrinfo</span><span class="p">(</span><span class="s">&#39;crisewing.com&#39;</span><span class="p">,</span> <span class="s">&#39;http&#39;</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="k">if</span> <span class="n">info</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">streams</span>
-<span class="go">[(2, 1, 6, &#39;&#39;, (&#39;108.59.11.99&#39;, 80))]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="n">streams</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cewing_socket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="o">*</span><span class="n">info</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="connecting-a-socket">
-<h3>Connecting a Socket<a class="headerlink" href="#connecting-a-socket" title="Permalink to this headline">¶</a></h3>
-<p>Once the socket is constructed with the appropriate <em>family</em>, <em>type</em> and
-<em>protocol</em>, we can connect it to the address of our remote server:</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">cewing_socket</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-<span class="go">&gt;&gt;&gt;</span>
-</pre></div>
-</div>
-<ul class="build simple">
-<li>a successful connection returns <tt class="docutils literal"><span class="pre">None</span></tt></li>
-<li>a failed connection raises an error</li>
-<li>you can use the <em>type</em> of error returned to tell why the connection failed.</li>
-</ul>
-</div>
-<div class="section" id="sending-a-message">
-<h3>Sending a Message<a class="headerlink" href="#sending-a-message" title="Permalink to this headline">¶</a></h3>
-<p>Send a message to the server on the other end of our connection (we&#8217;ll
-learn in session 2 about the message we are sending):</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;GET / HTTP/1.1</span><span class="se">\r\n</span><span class="s">&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">msg</span> <span class="o">+=</span> <span class="s">&quot;Host: crisewing.com</span><span class="se">\r\n\r\n</span><span class="s">&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cewing_socket</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-</pre></div>
-</div>
-<ul class="build small simple">
-<li>the transmission continues until all data is sent or an error occurs</li>
-<li>success returns <tt class="docutils literal"><span class="pre">None</span></tt></li>
-<li>failure to send raises an error</li>
-<li>you can use the type of error to figure out why the transmission failed</li>
-<li>if an error occurs you <strong>cannot</strong> know how much, if any, of your data was
-sent</li>
-</ul>
-</div>
-<div class="section" id="receiving-a-reply">
-<h3>Receiving a Reply<a class="headerlink" href="#receiving-a-reply" title="Permalink to this headline">¶</a></h3>
-<p>Whatever reply we get is received by the socket we created. We can read it
-back out (again, <strong>do not type this yet</strong>):</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">cewing_socket</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">4096</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span>
-<span class="go">&#39;HTTP/1.1 200 OK\r\nDate: Thu, 03 Jan 2013 05:56:53</span>
-<span class="gp">...</span>
-</pre></div>
-</div>
-<ul class="build simple">
-<li>The sole required argument is <tt class="docutils literal"><span class="pre">buffer_size</span></tt> (an integer). It should be a
-power of 2 and smallish (~4096)</li>
-<li>It returns a byte string of <tt class="docutils literal"><span class="pre">buffer_size</span></tt> (or smaller if less data was
-received)</li>
-<li>If the response is longer than <tt class="docutils literal"><span class="pre">buffer</span> <span class="pre">size</span></tt>, you can call the method
-repeatedly. The last bunch will be less than <tt class="docutils literal"><span class="pre">buffer</span> <span class="pre">size</span></tt>.</li>
-</ul>
-</div>
-<div class="section" id="cleaning-up">
-<h3>Cleaning Up<a class="headerlink" href="#cleaning-up" title="Permalink to this headline">¶</a></h3>
-<p>When you are finished with a connection, you should always close it:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">cewing_socket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="putting-it-all-together">
-<h3>Putting it all together<a class="headerlink" href="#putting-it-all-together" title="Permalink to this headline">¶</a></h3>
-<p>First, connect and send a message:</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">streams</span> <span class="o">=</span> <span class="p">[</span><span class="n">info</span>
-<span class="gp">... </span>    <span class="k">for</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">socket</span><span class="o">.</span><span class="n">getaddrinfo</span><span class="p">(</span><span class="s">&#39;crisewing.com&#39;</span><span class="p">,</span> <span class="s">&#39;http&#39;</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="k">if</span> <span class="n">info</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="n">streams</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cewing_socket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="o">*</span><span class="n">info</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cewing_socket</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;GET / HTTP/1.1</span><span class="se">\r\n</span><span class="s">&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">msg</span> <span class="o">+=</span> <span class="s">&quot;Host: crisewing.com</span><span class="se">\r\n\r\n</span><span class="s">&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cewing_socket</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Then, receive a reply, iterating until it is complete:</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">buffsize</span> <span class="o">=</span> <span class="mi">4096</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">done</span> <span class="o">=</span> <span class="bp">False</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">msg_part</span> <span class="o">=</span> <span class="n">cewing_socket</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="n">buffsize</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">msg_part</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">buffsize</span><span class="p">:</span>
-<span class="gp">... </span>        <span class="n">done</span> <span class="o">=</span> <span class="bp">True</span>
-<span class="gp">... </span>        <span class="n">cewing_socket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-<span class="gp">... </span>    <span class="n">response</span> <span class="o">+=</span> <span class="n">msg_part</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
-<span class="go">19427</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="server-side">
-<h2>Server Side<a class="headerlink" href="#server-side" title="Permalink to this headline">¶</a></h2>
-<div class="build container">
-<p class="large">What about the other half of the equation?</p>
-<p>Let&#8217;s build a server and see how that part works.</p>
-</div>
-<div class="section" id="id1">
-<h3>Construct a Socket<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
-<p><strong>For the moment, stop typing this into your interpreter.</strong></p>
-<div class="build container">
-<p>Again, we begin by constructing a socket. Since we are actually the server
-this time, we get to choose family, type and protocol:</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">server_socket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">socket</span><span class="o">.</span><span class="n">IPPROTO_TCP</span><span class="p">)</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">server_socket</span>
-<span class="go">&lt;socket._socketobject object at 0x100563c90&gt;</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="bind-the-socket">
-<h3>Bind the Socket<a class="headerlink" href="#bind-the-socket" title="Permalink to this headline">¶</a></h3>
-<p>Our server socket needs to be <strong>bound</strong> to an address. This is the IP Address
-and Port to which clients must connect:</p>
-<div class="build container">
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">address</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="mi">50000</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">server_socket</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Terminology Note</strong>: In a server/client relationship, the server <em>binds</em>
-to an address and port. The client <em>connects</em></p>
-</div>
-</div>
-<div class="section" id="listen-for-connections">
-<h3>Listen for Connections<a class="headerlink" href="#listen-for-connections" title="Permalink to this headline">¶</a></h3>
-<p>Once our socket is bound to an address, we can listen for attempted
-connections:</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">server_socket</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-</pre></div>
-</div>
-<ul class="build simple">
-<li>The argument to <tt class="docutils literal"><span class="pre">listen</span></tt> is the <em>backlog</em></li>
-<li>The <em>backlog</em> is the <strong>maximum</strong> number of connection requests that the
-socket will queue</li>
-<li>Once the limit is reached, the socket refuses new connections.</li>
-</ul>
-</div>
-<div class="section" id="accept-incoming-messages">
-<h3>Accept Incoming Messages<a class="headerlink" href="#accept-incoming-messages" title="Permalink to this headline">¶</a></h3>
-<p>When a socket is listening, it can receive incoming connection requests:</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span><span class="p">,</span> <span class="n">client_address</span> <span class="o">=</span> <span class="n">server_socket</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
-<span class="gp">... </span><span class="c"># this blocks until a client connects</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
-</pre></div>
-</div>
-<ul class="build simple">
-<li>The <tt class="docutils literal"><span class="pre">connection</span></tt> returned by a call to <tt class="docutils literal"><span class="pre">accept</span></tt> is a <strong>new socket</strong>.
-This new socket is used to communicate with the client</li>
-<li>The <tt class="docutils literal"><span class="pre">client_address</span></tt> is a two-tuple of IP Address and Port for the client
-socket</li>
-<li>When a connection request is &#8216;accepted&#8217;, it is removed from the backlog
-queue.</li>
-</ul>
-</div>
-<div class="section" id="send-a-reply">
-<h3>Send a Reply<a class="headerlink" href="#send-a-reply" title="Permalink to this headline">¶</a></h3>
-<p>The same socket that received a message from the client may be used to return
-a reply:</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="s">&quot;message received&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="clean-up">
-<h3>Clean Up<a class="headerlink" href="#clean-up" title="Permalink to this headline">¶</a></h3>
-<p>Once a transaction between the client and server is complete, the
-<tt class="docutils literal"><span class="pre">connection</span></tt> socket should be closed:</p>
-<div class="build container">
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>Note that the <tt class="docutils literal"><span class="pre">server_socket</span></tt> is <em>never</em> closed as long as the server
-continues to run.</p>
-</div>
-</div>
-</div>
-<div class="section" id="getting-the-flow">
-<h2>Getting the Flow<a class="headerlink" href="#getting-the-flow" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="another-approach">
+<h2>Another Approach<a class="headerlink" href="#another-approach" title="Permalink to this headline">¶</a></h2>
 <div class="left container">
-<p>The flow of this interaction can be a bit confusing.  Let&#8217;s see it in
-action step-by-step.</p>
+<p>Scraping web pages is tedious and inherently brittle</p>
+<div class="build container">
+<p>The owner of the website updates their layout, your code breaks</p>
+<p>But there is another way to get information from the web in a more normalized
+fashion</p>
+<p class="centered"><strong>Web Services</strong></p>
+</div>
+</div>
+<div class="section" id="web-services">
+<h3>Web Services<a class="headerlink" href="#web-services" title="Permalink to this headline">¶</a></h3>
+<p>&#8220;a software system designed to support interoperable machine-to-machine
+interaction over a network&#8221; - W3C</p>
+<ul class="build simple">
+<li>provides a defined set of calls</li>
+<li>returns structured data</li>
+</ul>
+<p>RSS is one of the earliest forms of Web Services</p>
+<div class="build container">
+<p>A single web-based <em>endpoint</em> provides a dynamically updated listing of
+content</p>
+<p>Implemented in pure HTTP.  Returns XML</p>
+<p><strong>Atom</strong> is a competing, but similar standard</p>
+<p>There&#8217;s a solid Python library for consuming RSS: <a class="reference external" href="https://pythonhosted.org/feedparser/">feedparser</a>.</p>
+</div>
+<p>XML-RPC extended the essentially static nature of RSS by allowing users to call
+procedures and pass arguments.</p>
+<div class="build container">
+<ul class="build simple">
+<li>Calls are made via HTTP GET, by passing an XML document</li>
+<li>Returns from a call are sent to the client in XML</li>
+</ul>
+<p>In python, you can access XML-RPC services using <a class="reference external" href="https://docs.python.org/2/library/xmlrpclib.html">xmlrpclib</a> from the
+standard library</p>
+</div>
+<p>SOAP extends XML-RPC in a couple of useful ways:</p>
+<ul class="build simple">
+<li>It uses Web Services Description Language (WSDL) to provide meta-data about
+an entire service in a machine-readable format (Automatic introspection)</li>
+<li>It establishes a method for extending available data types using XML
+namespaces</li>
+</ul>
+<div class="build container">
+<p>There is no standard library module that supports SOAP directly.</p>
+<ul class="build simple">
+<li>The best-known and best-supported module available is <strong>Suds</strong></li>
+<li>The homepage is <a class="reference external" href="https://fedorahosted.org/suds/">https://fedorahosted.org/suds/</a></li>
+<li>It can be installed using <code class="docutils literal"><span class="pre">easy_install</span></code> or <code class="docutils literal"><span class="pre">pip</span> <span class="pre">install</span></code></li>
+<li>But it hasn&#8217;t been updated since Sept. 2010.</li>
+</ul>
+<p>So we&#8217;re going to move on</p>
+</div>
+<p>XML is a pretty inefficient medium for transmitting data.  There&#8217;s a lot of
+extra characters transmitted that lack any meaning.</p>
+<p class="build large centered"><strong>Let&#8217;s Use JSON</strong></p>
+</div>
+<div class="section" id="json">
+<h3>JSON<a class="headerlink" href="#json" title="Permalink to this headline">¶</a></h3>
+<p>JavaScript Object Notation:</p>
+<div class="build container">
+<ul class="build simple">
+<li>a lightweight data-interchange format</li>
+<li>easy for humans to read and write</li>
+<li>easy for machines to parse and generate</li>
+</ul>
+<p>Based on Two Structures:</p>
+<ul class="simple">
+<li>object: <code class="docutils literal"><span class="pre">{</span> <span class="pre">string:</span> <span class="pre">value,</span> <span class="pre">...}</span></code></li>
+<li>array: <code class="docutils literal"><span class="pre">[value,</span> <span class="pre">value,</span> <span class="pre">]</span></code></li>
+</ul>
+<p class="centered">pythonic, no?</p>
+</div>
+<p>JSON provides a few basic data types (see <a class="reference external" href="http://json.org/">http://json.org/</a>):</p>
+<div class="build container">
+<ul class="build simple">
+<li>string: unicode, anything but &#8221;, \ and control characters</li>
+<li>number: any number, but json does not use octal or hexadecimal</li>
+<li>object, array (we&#8217;ve seen these above)</li>
+<li>true</li>
+<li>false</li>
+<li>null</li>
+</ul>
+<p class="centered"><strong>No date type? OMGWTF??!!1!1</strong></p>
+</div>
+<p>You have two options:</p>
 <div class="build container">
 <div class="container">
-Open a second python interpreter and place it next to your first so
-you can see both of them at the same time.</div>
+<p>Option 1 - Unix Epoch Time (number):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">time</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="go">1358212616.7691269</span>
+</pre></div>
 </div>
 </div>
-<div class="section" id="create-a-server">
-<h3>Create a Server<a class="headerlink" href="#create-a-server" title="Permalink to this headline">¶</a></h3>
-<p>In your first python interpreter, create a server socket and prepare it for
-connections:</p>
+<div class="container">
+<p>Option 2 - ISO 8661 (string):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+<span class="go">&#39;2013-01-14T17:18:10.727240&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="json-in-python">
+<h3>JSON in Python<a class="headerlink" href="#json-in-python" title="Permalink to this headline">¶</a></h3>
+<p>You can encode python to json, and decode json back to python:</p>
 <div class="build container">
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">server_socket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">socket</span><span class="o">.</span><span class="n">IPPROTO_IP</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">server_socket</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="s">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="mi">50000</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">server_socket</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">conn</span><span class="p">,</span> <span class="n">addr</span> <span class="o">=</span> <span class="n">server_socket</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">json</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="s">&#39;[1, 2, 3]&#39;</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">orig</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;foo&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="s">&#39;bar&#39;</span><span class="p">:</span> <span class="s">&#39;my resumé&#39;</span><span class="p">,</span> <span class="s">&#39;baz&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="n">encoded</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">orig</span><span class="p">)</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="n">encoded</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="s">&#39;{&quot;foo&quot;: [1, 2, 3], &quot;bar&quot;: &quot;my resum</span><span class="se">\\</span><span class="s">u00e9&quot;, &quot;baz&quot;: true}&#39;</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">7</span><span class="p">]:</span> <span class="n">decoded</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">encoded</span><span class="p">)</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">8</span><span class="p">]:</span> <span class="n">decoded</span> <span class="o">==</span> <span class="n">orig</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">8</span><span class="p">]:</span> <span class="bp">True</span>
 </pre></div>
 </div>
-<p>At this point, you should <strong>not</strong> get back a prompt. The server socket is
-waiting for a connection to be made.</p>
+<p>Customizing the encoder or decoder class allows for specialized serializations</p>
 </div>
-</div>
-<div class="section" id="create-a-client">
-<h3>Create a Client<a class="headerlink" href="#create-a-client" title="Permalink to this headline">¶</a></h3>
-<p>In your second interpreter, create a client socket and prepare to send a
-message:</p>
+<p>the json module also supports reading and writing to <em>file-like objects</em> via
+<code class="docutils literal"><span class="pre">json.dump(fp)</span></code> and <code class="docutils literal"><span class="pre">json.load(fp)</span></code> (note the missing &#8216;s&#8217;)</p>
 <div class="build container">
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">socket</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client_socket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">socket</span><span class="o">.</span><span class="n">IPPROTO_IP</span><span class="p">)</span>
-</pre></div>
+<p>Remember duck-typing. Anything with a <code class="docutils literal"><span class="pre">.write</span></code> and a <code class="docutils literal"><span class="pre">.read</span></code> method is
+<em>file-like</em></p>
+<p>This usage can be much more memory-friendly with large files/sources</p>
 </div>
-<p>Before connecting, keep your eye on the server interpreter:</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">client_socket</span><span class="o">.</span><span class="n">connect</span><span class="p">((</span><span class="s">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="mi">50000</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="send-a-message-client-server">
-<h3>Send a Message Client-&gt;Server<a class="headerlink" href="#send-a-message-client-server" title="Permalink to this headline">¶</a></h3>
-<p>As soon as you made the connection above, you should have seen the prompt
-return in your server interpreter. The <tt class="docutils literal"><span class="pre">accept</span></tt> method finally returned a
-new connection socket.</p>
+<p>SOAP was invented in part to provide completely machine-readable
+interoperability.</p>
 <div class="build container">
-<p>When you&#8217;re ready, type the following in the <em>client</em> interpreter:</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">client_socket</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="s">&quot;Hey, can you hear me?&quot;</span><span class="p">)</span>
-</pre></div>
+<p><em>Does that really work in real life?</em></p>
+<p class="centered">Hardly ever</p>
+<p>Another reason was to provide extensibility via custom types</p>
+<p><em>Does that really work in real life?</em></p>
+<p class="centered">Hardly ever</p>
 </div>
-</div>
-</div>
-<div class="section" id="receive-and-respond">
-<h3>Receive and Respond<a class="headerlink" href="#receive-and-respond" title="Permalink to this headline">¶</a></h3>
-<p>Back in your server interpreter, go ahead and receive the message from your
-client:</p>
+<p>So, if neither of these goals is really achieved by using SOAP, why pay all
+the overhead required to use the protocol?</p>
 <div class="build container">
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">conn</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>
-<span class="go">&#39;Hey, can you hear me?&#39;</span>
-</pre></div>
-</div>
-<p>Send a message back, and then close up your connection:</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">conn</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="s">&quot;Yes, I hear you.&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</pre></div>
+<p>Is there another way we could consider approaching the problem?</p>
+<p class="centered"><strong>Enter REST</strong></p>
 </div>
 </div>
-</div>
-<div class="section" id="finish-up">
-<h3>Finish Up<a class="headerlink" href="#finish-up" title="Permalink to this headline">¶</a></h3>
-<p>Back in your client interpreter, take a look at the response to your message,
-then be sure to close your client socket too:</p>
+<div class="section" id="rest">
+<h3>REST<a class="headerlink" href="#rest" title="Permalink to this headline">¶</a></h3>
+<p class="centered"><strong>Representational State Transfer</strong></p>
 <div class="build container">
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">client_socket</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>
-<span class="go">&#39;Yes, I hear you.&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client_socket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<ul class="build simple">
+<li>Originally described by Roy T. Fielding (worth reading)</li>
+<li>Use HTTP for what it can do</li>
+<li>Read more in <a class="reference external" href="http://www.crummy.com/writing/RESTful-Web-Services/">RESTful Web Services</a>*</li>
+</ul>
+<p>* Seriously. Buy it and read it</p>
+</div>
+<p>The XML-RCP/SOAP way:</p>
+<ul class="build simple">
+<li>POST /getComment HTTP/1.1</li>
+<li>POST /getComments HTTP/1.1</li>
+<li>POST /addComment HTTP/1.1</li>
+<li>POST /editComment HTTP/1.1</li>
+<li>POST /deleteComment HTTP/1.1</li>
+</ul>
+<div class="build container">
+<p>The RESTful way:</p>
+<ul class="build simple">
+<li>GET /comment/&lt;id&gt; HTTP/1.1</li>
+<li>GET /comment HTTP/1.1</li>
+<li>POST /comment HTTP/1.1</li>
+<li>PUT /comment/&lt;id&gt; HTTP/1.1</li>
+<li>DELETE /comment/&lt;id&gt; HTTP/1.1</li>
+</ul>
+</div>
+<p>REST is a <strong>Resource Oriented Architecture</strong></p>
+<div class="build container">
+<p>The URL represents the <em>resource</em> we are working with</p>
+<p>The HTTP Method indicates the <code class="docutils literal"><span class="pre">action</span></code> to be taken</p>
+<p>The HTTP Code returned tells us the <code class="docutils literal"><span class="pre">result</span></code> (whether success or failure)</p>
+</div>
+<div class="build container">
+<p>POST /comment HTTP/1.1  (creating a new comment):</p>
+<ul class="build simple">
+<li>Success: <code class="docutils literal"><span class="pre">HTTP/1.1</span> <span class="pre">201</span> <span class="pre">Created</span></code></li>
+<li>Failure (unauthorized): <code class="docutils literal"><span class="pre">HTTP/1.1</span> <span class="pre">401</span> <span class="pre">Unauthorized</span></code></li>
+<li>Failure (NotImplemented): <code class="docutils literal"><span class="pre">HTTP/1.1</span> <span class="pre">405</span> <span class="pre">Not</span> <span class="pre">Allowed</span></code></li>
+<li>Failure (ValueError): <code class="docutils literal"><span class="pre">HTTP/1.1</span> <span class="pre">406</span> <span class="pre">Not</span> <span class="pre">Acceptable</span></code></li>
+</ul>
+<p>PUT /comment/&lt;id&gt; HTTP/1.1 (edit comment):</p>
+<ul class="build simple">
+<li>Success: <code class="docutils literal"><span class="pre">HTTP/1.1</span> <span class="pre">200</span> <span class="pre">OK</span></code></li>
+<li>Failure: <code class="docutils literal"><span class="pre">HTTP/1.1</span> <span class="pre">409</span> <span class="pre">Conflict</span></code></li>
+</ul>
+<p>DELETE /comment/&lt;id&gt; HTTP/1.1 (delete comment):</p>
+<ul class="build simple">
+<li>Success: <code class="docutils literal"><span class="pre">HTTP/1.1</span> <span class="pre">204</span> <span class="pre">No</span> <span class="pre">Content</span></code></li>
+</ul>
+</div>
+</div>
+<div class="section" id="playing-with-rest">
+<h3>Playing With REST<a class="headerlink" href="#playing-with-rest" title="Permalink to this headline">¶</a></h3>
+<p>Let&#8217;s take a moment to play with REST.</p>
+<div class="build container">
+<p>We&#8217;ll use a common, public API provided by Google.</p>
+<p class="centered"><strong>Geocoding</strong></p>
+</div>
+<p><a class="reference external" href="https://developers.google.com/maps/documentation/geocoding">https://developers.google.com/maps/documentation/geocoding</a></p>
+<div class="build container">
+<p>Open a python interpreter using our virtualenv:</p>
+<div class="highlight-python"><div class="highlight"><pre>(soupenv)$ python
 </pre></div>
 </div>
-<p>And now that we&#8217;re done, we can close up the server too (back in the server
-interpreter):</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">server_socket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="gp">In [2]: </span><span class="kn">import</span> <span class="nn">json</span>
+<span class="gp">In [3]: </span><span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="gp">In [4]: </span><span class="n">url</span> <span class="o">=</span> <span class="s">&#39;http://maps.googleapis.com/maps/api/geocode/json&#39;</span>
+<span class="gp">In [5]: </span><span class="n">addr</span> <span class="o">=</span> <span class="s">&#39;1325 4th Ave, Seattle, 98101&#39;</span>
+<span class="gp">In [6]: </span><span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;address&#39;</span><span class="p">:</span> <span class="n">addr</span><span class="p">,</span> <span class="s">&#39;sensor&#39;</span><span class="p">:</span> <span class="s">&#39;false&#39;</span><span class="p">}</span>
+<span class="gp">In [7]: </span><span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">parameters</span><span class="p">)</span>
+<span class="gp">In [8]: </span><span class="n">data</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-<p class="large center">You&#8217;ve run your first client-server interaction</p>
+<p>You can do the same thing in reverse, supply latitude and longitude and get
+back address information:</p>
+<div class="build container">
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [15]: </span><span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;status&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;OK&#39;</span><span class="p">:</span>
+<span class="gp">   ....: </span>    <span class="n">pprint</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;results&#39;</span><span class="p">])</span>
+<span class="gp">   ....:</span>
+<span class="go">[{&#39;address_components&#39;: [{&#39;long_name&#39;: &#39;1325&#39;,</span>
+<span class="go">                          &#39;short_name&#39;: &#39;1325&#39;,</span>
+<span class="go">  ...</span>
+<span class="go">  &#39;types&#39;: [&#39;street_address&#39;]}]</span>
+</pre></div>
+</div>
+<p>Notice that there may be a number of results returned, ordered from most
+specific to least.</p>
+</div>
+</div>
+<div class="section" id="mashing-it-up">
+<h3>Mashing It Up<a class="headerlink" href="#mashing-it-up" title="Permalink to this headline">¶</a></h3>
+<p>Google&#8217;s geocoding data is quite nice.</p>
+<div class="build container">
+<p>But it&#8217;s not in a format we can use directly to create a map</p>
+<p>For that we need <cite>geojson</cite></p>
+<p>Moreover, formatting the data for all those requests is going to get
+tedious.</p>
+<p>Luckily, people create <em>wrappers</em> for popular REST apis like google&#8217;s
+geocoding service.</p>
+<p>Once such wrapper is <a class="reference external" href="http://geocoder.readthedocs.org/en/latest/">geocoder</a>, which provides not only google&#8217;s service,
+but many others under a single umbrella.</p>
+</div>
+<p>Install geocoder into your <code class="docutils literal"><span class="pre">soupenv</span></code> so that it&#8217;s available to use:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>soupenv<span class="o">)</span><span class="nv">$ </span>pip install geocoder
+</pre></div>
+</div>
+<div class="build container">
+<p>Our final step for tonight will be to geocode the results we have scraped
+from the inspection site.</p>
+<p>We&#8217;ll then convert that to <code class="docutils literal"><span class="pre">geojson</span></code>, insert our own properties and map
+the results.</p>
+<p>Let&#8217;s begin by converting our script so that what we have so far is
+contained in a generator function</p>
+<p>We&#8217;ll eventually sort our results and generate the top 10 or so for
+geocoding.</p>
+<p>Open up <code class="docutils literal"><span class="pre">mashup.py</span></code> and copy everthing in the <code class="docutils literal"><span class="pre">main</span></code> block.</p>
+</div>
+<p>Add a new function <code class="docutils literal"><span class="pre">result_generator</span></code> to the <code class="docutils literal"><span class="pre">mashup.py</span></code> script. Paste the
+code you copied from the <code class="docutils literal"><span class="pre">main</span></code> block and then update it a bit:</p>
+<div class="build highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">result_generator</span><span class="p">(</span><span class="n">count</span><span class="p">):</span>
+    <span class="n">use_params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">&#39;Inspection_Start&#39;</span><span class="p">:</span> <span class="s">&#39;2/1/2013&#39;</span><span class="p">,</span>
+        <span class="s">&#39;Inspection_End&#39;</span><span class="p">:</span> <span class="s">&#39;2/1/2015&#39;</span><span class="p">,</span>
+        <span class="s">&#39;Zip_Code&#39;</span><span class="p">:</span> <span class="s">&#39;98101&#39;</span>
+    <span class="p">}</span>
+    <span class="c"># html, encoding = get_inspection_page(**use_params)</span>
+    <span class="n">html</span><span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="n">load_inspection_page</span><span class="p">(</span><span class="s">&#39;inspection_page.html&#39;</span><span class="p">)</span>
+    <span class="n">parsed</span> <span class="o">=</span> <span class="n">parse_source</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="n">encoding</span><span class="p">)</span>
+    <span class="n">content_col</span> <span class="o">=</span> <span class="n">parsed</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;td&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s">&quot;contentcol&quot;</span><span class="p">)</span>
+    <span class="n">data_list</span> <span class="o">=</span> <span class="n">restaurant_data_generator</span><span class="p">(</span><span class="n">content_col</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">data_div</span> <span class="ow">in</span> <span class="n">data_list</span><span class="p">[:</span><span class="n">count</span><span class="p">]:</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">extract_restaurant_metadata</span><span class="p">(</span><span class="n">data_div</span><span class="p">)</span>
+        <span class="n">inspection_data</span> <span class="o">=</span> <span class="n">get_score_data</span><span class="p">(</span><span class="n">data_div</span><span class="p">)</span>
+        <span class="n">metadata</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">inspection_data</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="n">metadata</span>
+</pre></div>
+</div>
+<p>Update the <code class="docutils literal"><span class="pre">main</span></code> block of your <code class="docutils literal"><span class="pre">mashup.py</span></code> script to use the new function:</p>
+<div class="build container">
+<div class="highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">result_generator</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="k">print</span> <span class="n">result</span>
+</pre></div>
+</div>
+<p>Then run your script and verify that the only thing that has changed is the
+number of results that print.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>soupenv<span class="o">)</span><span class="nv">$ </span>python mashup.py
+<span class="c"># you should see 10 dictionaries print here.</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="add-geocoding">
+<h3>Add Geocoding<a class="headerlink" href="#add-geocoding" title="Permalink to this headline">¶</a></h3>
+<p>The API for geocoding with <code class="docutils literal"><span class="pre">geocoder</span></code> is the same for all providers.</p>
+<div class="build container">
+<p>You give an address, it returns geocoded data.</p>
+<p>You provide latitude and longitude, it provides address data</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [1]: </span><span class="n">response</span> <span class="o">=</span> <span class="n">geocoder</span><span class="o">.</span><span class="n">google</span><span class="p">(</span><span class="o">&lt;</span><span class="n">address</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="gp">In [2]: </span><span class="n">response</span><span class="o">.</span><span class="n">json</span>
+<span class="gh">Out[2]: </span><span class="go"># json result data</span>
+<span class="gp">In [3]: </span><span class="n">response</span><span class="o">.</span><span class="n">geojson</span>
+<span class="gh">Out[3]: </span><span class="go"># geojson result data</span>
+</pre></div>
+</div>
+</div>
+<p>Let&#8217;s add a new function <code class="docutils literal"><span class="pre">get_geojson</span></code> to <code class="docutils literal"><span class="pre">mashup.py</span></code></p>
+<div class="build container">
+<p>It will</p>
+<ul class="build simple">
+<li>Take a result from our search as it&#8217;s input</li>
+<li>Get geocoding data from google using the address of the restaurant</li>
+<li>Return the geojson representation of that data</li>
+</ul>
+<p>Try to write this function on your own</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">get_geojson</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+    <span class="n">address</span> <span class="o">=</span> <span class="s">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;Address&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">address</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span>
+    <span class="n">geocoded</span> <span class="o">=</span> <span class="n">geocoder</span><span class="o">.</span><span class="n">google</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">geocoded</span><span class="o">.</span><span class="n">geojson</span>
+</pre></div>
+</div>
+</div>
+<p>Next, update our <code class="docutils literal"><span class="pre">main</span></code> block to get the geojson for each result and print
+it:</p>
+<div class="build container">
+<div class="highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">result_generator</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="n">geojson</span> <span class="o">=</span> <span class="n">get_geojson</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="k">print</span> <span class="n">geojson</span>
+</pre></div>
+</div>
+<p>Then test your results by running your script:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>soupenv<span class="o">)</span><span class="nv">$ </span>python mashup.py
+<span class="o">{</span><span class="s1">&#39;geometry&#39;</span>: <span class="o">{</span><span class="s1">&#39;type&#39;</span>: <span class="s1">&#39;Point&#39;</span>, <span class="s1">&#39;coordinates&#39;</span>: <span class="o">[</span>-122.3393005, 47.6134378<span class="o">]}</span>,
+ <span class="s1">&#39;type&#39;</span>: <span class="s1">&#39;Feature&#39;</span>, <span class="s1">&#39;properties&#39;</span>: <span class="o">{</span><span class="s1">&#39;neighborhood&#39;</span>: <span class="s1">&#39;Belltown&#39;</span>,
+ <span class="s1">&#39;encoding&#39;</span>: <span class="s1">&#39;utf-8&#39;</span>, <span class="s1">&#39;county&#39;</span>: <span class="s1">&#39;King County&#39;</span>, <span class="s1">&#39;city_long&#39;</span>: <span class="s1">&#39;Seattle&#39;</span>,
+ <span class="s1">&#39;lng&#39;</span>: -122.3393005, <span class="s1">&#39;quality&#39;</span>: u<span class="s1">&#39;street_address&#39;</span>, <span class="s1">&#39;city&#39;</span>: <span class="s1">&#39;Seattle&#39;</span>,
+ <span class="s1">&#39;confidence&#39;</span>: 9, <span class="s1">&#39;state&#39;</span>: <span class="s1">&#39;WA&#39;</span>, <span class="s1">&#39;location&#39;</span>: u<span class="s1">&#39;1933 5TH AVE SEATTLE, WA 98101&#39;</span>,
+ <span class="s1">&#39;provider&#39;</span>: <span class="s1">&#39;google&#39;</span>, <span class="s1">&#39;housenumber&#39;</span>: <span class="s1">&#39;1933&#39;</span>, <span class="s1">&#39;accuracy&#39;</span>: <span class="s1">&#39;ROOFTOP&#39;</span>,
+ <span class="s1">&#39;status&#39;</span>: <span class="s1">&#39;OK&#39;</span>, <span class="s1">&#39;state_long&#39;</span>: <span class="s1">&#39;Washington&#39;</span>,
+ <span class="s1">&#39;address&#39;</span>: <span class="s1">&#39;1933 5th Avenue, Seattle, WA 98101, USA&#39;</span>, <span class="s1">&#39;lat&#39;</span>: 47.6134378,
+ <span class="s1">&#39;postal&#39;</span>: <span class="s1">&#39;98101&#39;</span>, <span class="s1">&#39;ok&#39;</span>: True, <span class="s1">&#39;road_long&#39;</span>: <span class="s1">&#39;5th Avenue&#39;</span>, <span class="s1">&#39;country&#39;</span>: <span class="s1">&#39;US&#39;</span>,
+ <span class="s1">&#39;country_long&#39;</span>: <span class="s1">&#39;United States&#39;</span>, <span class="s1">&#39;street&#39;</span>: <span class="s1">&#39;5th Ave&#39;</span><span class="o">}</span>,
+ <span class="s1">&#39;bbox&#39;</span>: <span class="o">[</span>-122.3406494802915, 47.6120888197085, -122.3379515197085, 47.6147867802915<span class="o">]}</span>
+</pre></div>
+</div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">properties</span></code> of our geojson records are filled with data we don&#8217;t really
+care about.</p>
+<div class="build container">
+<p>Let&#8217;s replace that information with some of the metadata from our
+inspection results.</p>
+<p>We&#8217;ll update our <code class="docutils literal"><span class="pre">get_geojson</span></code> function so that it:</p>
+<ul class="build simple">
+<li>Builds a dictionary containing only the values we want from our
+inspection record.</li>
+<li>Converts list values to strings (geojson requires this)</li>
+<li>Replaces the &#8216;properties&#8217; of our geojson with this new data</li>
+<li>Returns the modified geojson record</li>
+</ul>
+</div>
+<p>See if you can make the updates on your own.</p>
+<div class="build highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">get_geojson</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+    <span class="c"># ...</span>
+    <span class="n">geocoded</span> <span class="o">=</span> <span class="n">geocoder</span><span class="o">.</span><span class="n">google</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
+    <span class="n">geojson</span> <span class="o">=</span> <span class="n">geocoded</span><span class="o">.</span><span class="n">geojson</span>
+    <span class="n">inspection_data</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">use_keys</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s">&#39;Business Name&#39;</span><span class="p">,</span> <span class="s">&#39;Average Score&#39;</span><span class="p">,</span> <span class="s">&#39;Total Inspections&#39;</span><span class="p">,</span> <span class="s">&#39;High Score&#39;</span>
+    <span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">use_keys</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="s">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+        <span class="n">inspection_data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+    <span class="n">geojson</span><span class="p">[</span><span class="s">&#39;properties&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">inspection_data</span>
+    <span class="k">return</span> <span class="n">geojson</span>
+</pre></div>
+</div>
+<p>We are now generating a series of <code class="docutils literal"><span class="pre">geojson</span></code> <em>Feature</em> objects.</p>
+<div class="build container">
+<p>To map these objects, we&#8217;ll need to create a file which contains a
+<code class="docutils literal"><span class="pre">geojson</span></code> <em>FeatureCollection</em>.</p>
+<p>The structure of such a collection looks like this:</p>
+<div class="highlight-json"><div class="highlight"><pre>{&#39;type&#39;: &#39;FeatureCollection&#39;, &#39;features&#39;: [...]}
+</pre></div>
+</div>
+<p>Let&#8217;s update our <code class="docutils literal"><span class="pre">main</span></code> function to append each feature to such a
+structure.</p>
+<p>Then we can dump the structure as <code class="docutils literal"><span class="pre">json</span></code> to a file.</p>
+</div>
+<p>In <code class="docutils literal"><span class="pre">mashup.py</span></code> update the <code class="docutils literal"><span class="pre">main</span></code> block like so:</p>
+<div class="build container">
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># add an import at the top:</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">total_result</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;FeatureCollection&#39;</span><span class="p">,</span> <span class="s">&#39;features&#39;</span><span class="p">:</span> <span class="p">[]}</span>
+    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">result_generator</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="n">geojson</span> <span class="o">=</span> <span class="n">get_geojson</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">total_result</span><span class="p">[</span><span class="s">&#39;features&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">geojson</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;my_map.json&#39;</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">total_result</span><span class="p">,</span> <span class="n">fh</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>When you run the script nothing will print, but the new file will appear.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>soupenv<span class="o">)</span><span class="nv">$ </span>python mashup.py
+</pre></div>
+</div>
+<p>This script is available as <code class="docutils literal"><span class="pre">resources/session04/mashup_5.py</span></code></p>
+</div>
+</div>
+<div class="section" id="display-the-results">
+<h3>Display the Results<a class="headerlink" href="#display-the-results" title="Permalink to this headline">¶</a></h3>
+<p>Once the new file is written you are ready to display your results.</p>
+<div class="build container">
+<p>Open your web browser and go to <a class="reference external" href="http://geojson.io">http://geojson.io</a></p>
+<p>Then drag and drop the new file you wrote onto the map you see there.</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/geojson-io.png"><img alt="../_images/geojson-io.png" src="../_images/geojson-io.png" style="width: 75%;" /></a>
+</div>
+</div>
+</div>
+<div class="section" id="wrap-up">
+<h3>Wrap Up<a class="headerlink" href="#wrap-up" title="Permalink to this headline">¶</a></h3>
+<p>We&#8217;ve built a simple mashup combining data from different sources.</p>
+<div class="build container">
+<p>We scraped health inspection data from the King County government site.</p>
+<p>We geocoded that data.</p>
+<p>And we&#8217;ve displayed the results on a map.</p>
+<p>What other sources of data might we choose to combine?</p>
+<p>Check out <a class="reference external" href="http://www.programmableweb.com/apis/directory">programmable web</a>
+to see some of the possibilities</p>
+</div>
 </div>
 </div>
 <div class="section" id="homework">
 <h2>Homework<a class="headerlink" href="#homework" title="Permalink to this headline">¶</a></h2>
 <div class="left container">
-<p>Your homework assignment for this week is to take what you&#8217;ve learned here
-and build a simple &#8220;echo&#8221; server.</p>
+<p>For your homework this week, you&#8217;ll be polishing this mashup.</p>
 <div class="build container">
-<p>The server should automatically return to any client that connects <em>exactly</em>
-what it receives (it should <strong>echo</strong> all messages).</p>
-<p>You will also write a python script that, when run, will send a message to the
-server and receive the reply, printing it to <tt class="docutils literal"><span class="pre">stdout</span></tt>.</p>
-<p>Finally, you&#8217;ll do all of this so that it can be tested.</p>
-</div>
-</div>
-<div class="section" id="your-task">
-<h3>Your Task<a class="headerlink" href="#your-task" title="Permalink to this headline">¶</a></h3>
-<p>In our class repository, there is a folder <tt class="docutils literal"><span class="pre">resources/session04</span></tt>.</p>
-<div class="build container">
-<p>Inside that folder, you should find:</p>
-<ul class="build simple">
-<li>A file <tt class="docutils literal"><span class="pre">tasks.txt</span></tt> that contains these instructions</li>
-<li>A skeleton for your server in <tt class="docutils literal"><span class="pre">echo_server.py</span></tt></li>
-<li>A skeleton for your client script in <tt class="docutils literal"><span class="pre">echo_client.py</span></tt></li>
-<li>Some simple tests in <tt class="docutils literal"><span class="pre">tests.py</span></tt></li>
-</ul>
-<p>Your task is to make the tests pass.</p>
-</div>
-</div>
-<div class="section" id="running-the-tests">
-<h3>Running the Tests<a class="headerlink" href="#running-the-tests" title="Permalink to this headline">¶</a></h3>
-<p>To run the tests, you&#8217;ll have to set the server running in one terminal:</p>
-<div class="build container">
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python echo_server.py
+<p>Begin by sorting the results of our search by the average score (can
+you do this and still use a generator for getting the geojson?).</p>
+<p>Then, update your script to allow the user to choose how to sort, by
+average, high score or most inspections:</p>
+<div class="highlight-python"><div class="highlight"><pre>(soupenv)$ python mashup.py highscore
 </pre></div>
 </div>
-<p>Then, in a second terminal, you will execute the tests:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python tests.py
+<p>Next, allow the user to choose how many results to map:</p>
+<div class="highlight-python"><div class="highlight"><pre>(soupenv)$ python mashup.py highscore 25
 </pre></div>
 </div>
-<p>You should see output like this:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">[</span>...<span class="o">]</span>
-FAILED <span class="o">(</span><span class="nv">failures</span><span class="o">=</span>2<span class="o">)</span>
+<p>Or allow them to reverse the results, showing the lowest scores first:</p>
+<div class="highlight-python"><div class="highlight"><pre>(soupenv)$ python mashup.py highscore 25 reverse
 </pre></div>
 </div>
+<p>If you&#8217;re feeling particularly adventurous, see if you can use the
+<a class="reference external" href="https://docs.python.org/2/library/argparse.html#module-argparse">argparse</a> module from the standard library to handle command line
+arguments</p>
 </div>
 </div>
-<div class="section" id="submitting-your-homework">
-<h3>Submitting Your Homework<a class="headerlink" href="#submitting-your-homework" title="Permalink to this headline">¶</a></h3>
-<p>To submit your homework:</p>
+<div class="section" id="more-fun">
+<h3>More Fun<a class="headerlink" href="#more-fun" title="Permalink to this headline">¶</a></h3>
+<p>Next, try adding a bit of information to your map by setting the
+<code class="docutils literal"><span class="pre">marker-color</span></code> property. This will display a marker with the provided
+css-style color (<code class="docutils literal"><span class="pre">#FF0000</span></code>)</p>
 <div class="build container">
-<ul class="build simple">
-<li>Create a new repository in GitHub.  Call it <tt class="docutils literal"><span class="pre">echo_sockets</span></tt>.</li>
-<li>Put the <tt class="docutils literal"><span class="pre">echo_server.py</span></tt>, <tt class="docutils literal"><span class="pre">echo_client.py</span></tt> and <tt class="docutils literal"><span class="pre">tests.py</span></tt> files in
-this repository.</li>
-<li>Send Maria and I an email with a link to your repository when you are
-done.</li>
-</ul>
-<p>We will clone your repository and run the tests as described above.</p>
-<p>And we&#8217;ll make comments inline on your repository.</p>
+<p>See if you can make the color change according to the values used for the
+sorting of the list.  Either vary the intensity of the color, or the hue.</p>
+<p>Finally, if you are feeling particularly frisky, you can update your script
+to automatically open a browser window with your map loaded on
+<em>geojson.io</em>.</p>
+<p>To do this, you&#8217;ll want to read about the <a class="reference external" href="https://docs.python.org/3/library/webbrowser.html">webbrowser</a> module from the
+standard library.</p>
+<p>In addition, you&#8217;ll want to read up on using the URL parameters API for
+<em>geojson.io</em>.  Click on the <strong>help</strong> tab in the sidebar to view the
+information.</p>
+<p>You will also need to learn about how to properly quote special characters
+for a URL, using the <a class="reference external" href="https://docs.python.org/3/library/urllib.parse.html#urllib.parse.quote">urllib.parse</a> <code class="docutils literal"><span class="pre">quote</span></code> function.</p>
 </div>
 </div>
-<div class="section" id="going-further">
-<h3>Going Further<a class="headerlink" href="#going-further" title="Permalink to this headline">¶</a></h3>
-<p>In <tt class="docutils literal"><span class="pre">assignments/session01/tasks.txt</span></tt> you&#8217;ll find a few extra problems to try.</p>
-<div class="build container">
-<p>If you finish the first part of the homework in less than 3-4 hours give
-one or more of these a whirl.</p>
-<p>They are not required, but if you include solutions in your repository,
-we&#8217;ll review your work.</p>
-</div>
+<div class="section" id="submitting-your-work">
+<h3>Submitting Your Work<a class="headerlink" href="#submitting-your-work" title="Permalink to this headline">¶</a></h3>
+<p>Create a github repository to contain your mashup work. Start by populating it
+with the script as we finished it today (mashup_5.py).</p>
+<p>As you implement the above features, commit early and commit often.</p>
+<p>When you&#8217;re ready for us to look it over, email a link to your repository to
+Maria and I.</p>
 </div>
 </div>
 </div>
@@ -870,58 +1319,50 @@ we&#8217;ll review your work.</p>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Session 04</a><ul>
-<li><a class="reference internal" href="#computer-communications">Computer Communications</a><ul>
-<li><a class="reference internal" href="#tcp-ip">TCP/IP</a></li>
-<li><a class="reference internal" href="#the-tcp-ip-stack-link">The TCP/IP Stack - Link</a></li>
-<li><a class="reference internal" href="#the-tcp-ip-stack-internet">The TCP/IP Stack - Internet</a></li>
-<li><a class="reference internal" href="#the-tcp-ip-stack-transport">The TCP/IP Stack - Transport</a></li>
-<li><a class="reference internal" href="#the-tcp-ip-stack-application">The TCP/IP Stack - Application</a></li>
-<li><a class="reference internal" href="#sockets">Sockets</a></li>
-<li><a class="reference internal" href="#sockets-in-python">Sockets in Python</a></li>
-<li><a class="reference internal" href="#socket-families">Socket Families</a></li>
-<li><a class="reference internal" href="#socket-types">Socket Types</a></li>
-<li><a class="reference internal" href="#socket-protocols">Socket Protocols</a></li>
-<li><a class="reference internal" href="#customizing-sockets">Customizing Sockets</a></li>
+<li><a class="reference internal" href="#scraping-apis-and-mashups">Scraping, APIs and Mashups</a><ul>
+<li><a class="reference internal" href="#a-dilemma">A Dilemma</a></li>
+<li><a class="reference internal" href="#the-big-question">The Big Question</a></li>
+<li><a class="reference internal" href="#the-big-answer">The Big Answer</a></li>
+<li><a class="reference internal" href="#mashups">Mashups</a></li>
+<li><a class="reference internal" href="#data-sources">Data Sources</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#web-scraping">Web Scraping</a><ul>
+<li><a class="reference internal" href="#html">HTML</a></li>
+<li><a class="reference internal" href="#taming-the-mess">Taming the Mess</a></li>
+<li><a class="reference internal" href="#our-class-mashup">Our Class Mashup</a></li>
+<li><a class="reference internal" href="#fetching-search-results">Fetching Search Results</a></li>
+<li><a class="reference internal" href="#my-solution">My Solution</a></li>
+<li><a class="reference internal" href="#parse-the-results">Parse the Results</a></li>
+<li><a class="reference internal" href="#id1">My Solution</a></li>
+<li><a class="reference internal" href="#put-it-together">Put It Together</a></li>
+<li><a class="reference internal" href="#id2">My Solution</a></li>
+<li><a class="reference internal" href="#extracting-data">Extracting Data</a></li>
+<li><a class="reference internal" href="#parsing-restaurant-data">Parsing Restaurant Data</a></li>
+<li><a class="reference internal" href="#extracting-inspection-data">Extracting Inspection Data</a></li>
 <li><a class="reference internal" href="#break-time">Break Time</a></li>
-<li><a class="reference internal" href="#address-information">Address Information</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#client-side">Client Side</a><ul>
-<li><a class="reference internal" href="#construct-a-socket">Construct a Socket</a></li>
-<li><a class="reference internal" href="#connecting-a-socket">Connecting a Socket</a></li>
-<li><a class="reference internal" href="#sending-a-message">Sending a Message</a></li>
-<li><a class="reference internal" href="#receiving-a-reply">Receiving a Reply</a></li>
-<li><a class="reference internal" href="#cleaning-up">Cleaning Up</a></li>
-<li><a class="reference internal" href="#putting-it-all-together">Putting it all together</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#server-side">Server Side</a><ul>
-<li><a class="reference internal" href="#id1">Construct a Socket</a></li>
-<li><a class="reference internal" href="#bind-the-socket">Bind the Socket</a></li>
-<li><a class="reference internal" href="#listen-for-connections">Listen for Connections</a></li>
-<li><a class="reference internal" href="#accept-incoming-messages">Accept Incoming Messages</a></li>
-<li><a class="reference internal" href="#send-a-reply">Send a Reply</a></li>
-<li><a class="reference internal" href="#clean-up">Clean Up</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#getting-the-flow">Getting the Flow</a><ul>
-<li><a class="reference internal" href="#create-a-server">Create a Server</a></li>
-<li><a class="reference internal" href="#create-a-client">Create a Client</a></li>
-<li><a class="reference internal" href="#send-a-message-client-server">Send a Message Client-&gt;Server</a></li>
-<li><a class="reference internal" href="#receive-and-respond">Receive and Respond</a></li>
-<li><a class="reference internal" href="#finish-up">Finish Up</a></li>
+<li><a class="reference internal" href="#another-approach">Another Approach</a><ul>
+<li><a class="reference internal" href="#web-services">Web Services</a></li>
+<li><a class="reference internal" href="#json">JSON</a></li>
+<li><a class="reference internal" href="#json-in-python">JSON in Python</a></li>
+<li><a class="reference internal" href="#rest">REST</a></li>
+<li><a class="reference internal" href="#playing-with-rest">Playing With REST</a></li>
+<li><a class="reference internal" href="#mashing-it-up">Mashing It Up</a></li>
+<li><a class="reference internal" href="#add-geocoding">Add Geocoding</a></li>
+<li><a class="reference internal" href="#display-the-results">Display the Results</a></li>
+<li><a class="reference internal" href="#wrap-up">Wrap Up</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#homework">Homework</a><ul>
-<li><a class="reference internal" href="#your-task">Your Task</a></li>
-<li><a class="reference internal" href="#running-the-tests">Running the Tests</a></li>
-<li><a class="reference internal" href="#submitting-your-homework">Submitting Your Homework</a></li>
-<li><a class="reference internal" href="#going-further">Going Further</a></li>
+<li><a class="reference internal" href="#more-fun">More Fun</a></li>
+<li><a class="reference internal" href="#submitting-your-work">Submitting Your Work</a></li>
 </ul>
 </li>
 </ul>
@@ -934,17 +1375,19 @@ we&#8217;ll review your work.</p>
   <h4>Next topic</h4>
   <p class="topless"><a href="session05.html"
                         title="next chapter">Session 05</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="../_sources/presentations/session04.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/presentations/session04.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
   <h3>Slides</h3>
   <ul class="this-page-menu">
     <li><a href="../.././slides/presentations/session04.html"
            rel="nofollow">View as slides</a></li>
   </ul>
-<div id="searchbox" style="display: none">
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
       <input type="text" name="q" />
@@ -961,7 +1404,7 @@ we&#8217;ll review your work.</p>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -973,13 +1416,13 @@ we&#8217;ll review your work.</p>
         <li class="right" >
           <a href="session03.html" title="Session 03"
              >previous</a> |</li>
-        <li><a href="../index.html">UWPCE Python 200</a> &raquo;</li>
-          <li><a href="index.html" >Course Presentations</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">UWPCE Python 200</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Course Presentations</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
-        &copy; Copyright 2012-2015, Cris Ewing.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2012-2016, Cris Ewing.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>

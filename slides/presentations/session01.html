@@ -19,6 +19,7 @@ URL: https://code.google.com/p/io-2012-slides
   <!--This one seems to work all the time, but really small on ipad-->
   <!--<meta name="viewport" content="initial-scale=0.4">-->
   <meta name="apple-mobile-web-app-capable" content="yes">
+
   
   <link rel="stylesheet" media="all"
         href="../_static/theme/css/default.css">
@@ -38,7 +39,7 @@ URL: https://code.google.com/p/io-2012-slides
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '2.0',
+        VERSION:     '3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -71,30 +72,36 @@ URL: https://code.google.com/p/io-2012-slides
 </slide>
 
   
-    <slide class="level-1">
+    <slide class="title-slide segue nobackground level-1" id="session-01">
     <hgroup>
       <h1>Session 01</h1>
     </hgroup>
     <article class="">
-      <a class="reference internal image-reference" href="../_images/python.png"><img alt="../_images/python.png" class="align-center" src="../_images/python.png" style="width: 43%;" /></a>
+      <div class="figure align-center" id="id2">
+<a class="reference internal image-reference" href="../_images/python.png"><img alt="../_images/python.png" src="../_images/python.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-text"><strong>Networking and Sockets</strong></span></p>
+</div>
 
 
+
+<div class="slide-no">1</div>
 
 
     </article>
-  </slide>  <slide class="level-2">
+  </slide>  <slide class="level-2" id="computer-communications">
     <hgroup>
-      <h2>Introductions</h2>
+      <h2>Computer Communications</h2>
     </hgroup>
     <article class="">
-      <p class="large centered">Wherin we learn about the Model View Controller approach to app design and
-explore data persistence in Python.</p>
+      <p class="large centered">Wherein we learn about how computers speak to each-other over a network.</p>
 
 
+
+<div class="slide-no">2</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="but-first">
     <hgroup>
       <h3>But First</h3>
     </hgroup>
@@ -115,9 +122,11 @@ explore data persistence in Python.</p>
 
 
 
+<div class="slide-no">3</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id5">
     <hgroup>
       <h3>But First</h3>
     </hgroup>
@@ -128,9 +137,11 @@ explore data persistence in Python.</p>
 
 
 
+<div class="slide-no">4</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id6">
     <hgroup>
       <h3>But First</h3>
     </hgroup>
@@ -149,9 +160,11 @@ explore data persistence in Python.</p>
 
 
 
+<div class="slide-no">5</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id7">
     <hgroup>
       <h3>But First</h3>
     </hgroup>
@@ -172,9 +185,11 @@ explore data persistence in Python.</p>
 
 
 
+<div class="slide-no">6</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id8">
     <hgroup>
       <h3>But First</h3>
     </hgroup>
@@ -183,1875 +198,1472 @@ explore data persistence in Python.</p>
 
 
 
-
-    </article>
-  </slide>  <slide class="level-2">
-    <hgroup>
-      <h2>Working with Virtualenv</h2>
-    </hgroup>
-    <article class="">
-      <div class="large line-block">
-<div class="line">For every</div>
-<div class="line">add-on package installed</div>
-<div class="line">in a system Python,</div>
-<div class="line">the gods kill a kitten</div>
-<div class="line"><br /></div>
-<div class="line">- me</div>
-</div>
-
-
+<div class="slide-no">7</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="tcp-ip">
     <hgroup>
-      <h3>Why Virtualenv?</h3>
+      <h3>TCP/IP</h3>
     </hgroup>
     <article class="">
-      <ul class="build simple">
-<li>You will need to install packages that aren't in the Python standard
-Library</li>
-<li>You often need to install <em>different</em> versions of the <em>same</em> library for
-different projects</li>
-<li>Conflicts arising from having the wrong version of a dependency installed can
-cause long-term nightmares</li>
-<li>Use <a class="reference external" href="http://www.virtualenv.org/">virtualenv</a> ...</li>
-<li><strong>Always</strong></li>
-</ul>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Installing Virtualenv</h3>
-    </hgroup>
-    <article class="">
-      <p>The best way is to install directly in your system Python (one exception to the
-rule).</p>
-<div class="build container">
-<p>To do so you will have to have <a class="reference external" href="https://pip.pypa.io/en/latest/index.html">pip</a> installed.</p>
-<p>Try the following command:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>which pip
-/usr/local/bin/pip
-</pre></div>
+      <div class="figure align-left" id="id3">
+<img alt="../_images/network_topology.png" src="../_images/network_topology.png" />
+<p class="caption"><span class="caption-text"><a class="reference external" href="http://en.wikipedia.org/wiki/Internet_Protocol_Suite">http://en.wikipedia.org/wiki/Internet_Protocol_Suite</a></span></p>
 </div>
-<p>If the <tt class="docutils literal"><span class="pre">which</span></tt> command returns no value for you, then <tt class="docutils literal"><span class="pre">pip</span></tt> is not
-installed in your system. To fix this, follow <a class="reference external" href="https://pip.pypa.io/en/latest/installing.html">the instructions here</a>.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Installing Virtualenv</h3>
-    </hgroup>
-    <article class="">
-      <p>Once you have <tt class="docutils literal"><span class="pre">pip</span></tt> installed in your system, you can use it to install
-<a class="reference external" href="http://www.virtualenv.org/">virtualenv</a>.</p>
-<div class="build container">
-<p>Because you are installing it into your system python, you will most likely
-need <tt class="docutils literal"><span class="pre">superuser</span></tt> privileges to do so:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>sudo pip install virtualenv
-Downloading/unpacking virtualenv
-  Downloading virtualenv-1.11.2-py2.py3-none-any.whl <span class="o">(</span>2.8MB<span class="o">)</span>: 2.8MB downloaded
-Installing collected packages: virtualenv
-Successfully installed virtualenv
-Cleaning up...
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Installing Virtualenv</h3>
-    </hgroup>
-    <article class="">
-      <p>Great.  Once that's done, you should find that you have a <tt class="docutils literal"><span class="pre">virtualenv</span></tt>
-command available to you from your shell:</p>
-<div class="highlight-bash"><div class="highlight"><pre>$ virtualenv --help
-Usage: virtualenv [OPTIONS] DEST_DIR
-
-Options:
-  --version             show program&#39;s version number and exit
-  -h, --help            ...
-</pre></div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Using Virtuelenv</h3>
-    </hgroup>
-    <article class="">
-      <p>Creating a new virtualenv is very very simple:</p>
-<div class="build container">
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>virtualenv <span class="o">[</span>options<span class="o">]</span> &lt;ENV&gt;
-</pre></div>
-</div>
-<p><tt class="docutils literal"><span class="pre">&lt;ENV&gt;</span></tt> is just the name of the environment you want to create.</p>
-<p>It's arbitrary, so name them to be easily remembered.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Using Virtuelenv</h3>
-    </hgroup>
-    <article class="">
-      <p>Let's make one for demonstration purposes:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>virtualenv demoenv
-New python executable in demoenv/bin/python
-Installing setuptools, pip...done.
-</pre></div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>What Happened?</h3>
-    </hgroup>
-    <article class="">
-      <p>When you ran that command, a couple of things took place:</p>
 <ul class="build simple">
-<li>A new directory with your requested name was created</li>
-<li>A new Python executable was created in &lt;ENV&gt;/bin (&lt;ENV&gt;/Scripts on Windows)</li>
-<li>The new Python was cloned from your system Python (where virtualenv was
-installed)</li>
-<li>The new Python was isolated from any libraries installed in the old Python</li>
-<li>Setuptools was installed so you have <tt class="docutils literal"><span class="pre">easy_install</span></tt> for this new python</li>
-<li>Pip was installed so you have <tt class="docutils literal"><span class="pre">pip</span></tt> for this new python</li>
+<li>processes can communicate</li>
+<li>inside one machine</li>
+<li>between two machines</li>
+<li>among many machines</li>
 </ul>
 
 
 
+<div class="slide-no">8</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id9">
     <hgroup>
-      <h3>Activation</h3>
+      <h3>TCP/IP</h3>
     </hgroup>
     <article class="">
-      <p>Every virtualenv you create contains an executable Python command.</p>
+      <div class="figure align-left" id="id4">
+<a class="reference internal image-reference" href="../_images/data_in_tcpip_stack.png"><img alt="../_images/data_in_tcpip_stack.png" src="../_images/data_in_tcpip_stack.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-text"><a class="reference external" href="http://en.wikipedia.org/wiki/Internet_Protocol_Suite">http://en.wikipedia.org/wiki/Internet_Protocol_Suite</a></span></p>
+</div>
+<ul class="build simple">
+<li>Process divided into 'layers'</li>
+<li>'Layers' are mostly arbitrary</li>
+<li>Different descriptions have different layers</li>
+<li>Most common is the 'TCP/IP Stack'</li>
+</ul>
+
+
+
+<div class="slide-no">9</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="the-tcp-ip-stack-link">
+    <hgroup>
+      <h3>The TCP/IP Stack - Link</h3>
+    </hgroup>
+    <article class="">
+      <p>The bottom layer is the 'Link Layer'</p>
+<ul class="build simple">
+<li>Deals with the physical connections between machines, 'the wire'</li>
+<li>Packages data for physical transport</li>
+<li>Executes transmission over a physical medium<ul class="build">
+<li>what that medium is is arbitrary</li>
+</ul>
+</li>
+<li>Implemented in the Network Interface Card(s) (NIC) in your computer</li>
+</ul>
+
+
+
+<div class="slide-no">10</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="the-tcp-ip-stack-internet">
+    <hgroup>
+      <h3>The TCP/IP Stack - Internet</h3>
+    </hgroup>
+    <article class="">
+      <p>Moving up, we have the 'Internet Layer'</p>
+<ul class="build simple">
+<li>Deals with addressing and routing<ul class="build">
+<li>Where are we going and how do we get there?</li>
+</ul>
+</li>
+<li>Agnostic as to physical medium (IP over Avian Carrier - IPoAC)</li>
+<li>Makes no promises of reliability</li>
+<li>Two addressing systems<ul class="build">
+<li>IPv4 (current, limited '192.168.1.100')</li>
+<li>IPv6 (future, 3.4 x 10^38 addresses, '2001:0db8:85a3:0042:0000:8a2e:0370:7334')</li>
+</ul>
+</li>
+</ul>
+
+
+
+<div class="slide-no">11</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id10">
+    <hgroup>
+      <h3>The TCP/IP Stack - Internet</h3>
+    </hgroup>
+    <article class="">
+      <p class="large center">That's 4.3 x 10^28 addresses <em>per person alive today</em></p>
+
+
+
+<div class="slide-no">12</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="the-tcp-ip-stack-transport">
+    <hgroup>
+      <h3>The TCP/IP Stack - Transport</h3>
+    </hgroup>
+    <article class="">
+      <p>Next up is the 'Transport Layer'</p>
+<ul class="build simple">
+<li>Deals with transmission and reception of data<ul>
+<li>error correction, flow control, congestion management</li>
+</ul>
+</li>
+<li>Common protocols include TCP &amp; UDP<ul>
+<li>TCP: Tranmission Control Protocol</li>
+<li>UDP: User Datagram Protocol</li>
+</ul>
+</li>
+<li>Not all Transport Protocols are 'reliable'<ul class="build">
+<li>TCP ensures that dropped packets are resent</li>
+<li>UDP makes no such assurance</li>
+<li>Reliability is slow and expensive</li>
+</ul>
+</li>
+</ul>
+
+
+
+<div class="slide-no">13</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id11">
+    <hgroup>
+      <h3>The TCP/IP Stack - Transport</h3>
+    </hgroup>
+    <article class="">
+      <p>The 'Transport Layer' also establishes the concept of a <strong>port</strong></p>
 <div class="build container">
-<p>If you do a quick check to see which Python executable is found by your
-terminal, you'll see that it is not the one:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>which python
-/usr/bin/python
-</pre></div>
-</div>
-<p>You can execute the new Python by explicitly pointing to it:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>./demoenv/bin/python -V
-Python 2.7.5
-</pre></div>
-</div>
+<ul class="build simple">
+<li>IP Addresses designate a specific <em>machine</em> on the network</li>
+<li>A <strong>port</strong> provides addressing for individual <em>applications</em> in a single
+host</li>
+<li>192.168.1.100:80  (the <em>:80</em> part is the <strong>port</strong>)</li>
+<li>[2001:db8:85a3:8d3:1319:8a2e:370:7348]:443 (<em>:443</em> is the <strong>port</strong>)</li>
+</ul>
+<p>This means that you don't have to worry about information intended for your
+web browser being accidentally read by your email client.</p>
 </div>
 
 
+
+<div class="slide-no">14</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id12">
     <hgroup>
-      <h3>Activation</h3>
+      <h3>The TCP/IP Stack - Transport</h3>
     </hgroup>
     <article class="">
-      <p>But that's tedious and hard to remember.</p>
+      <p>There are certain <strong>ports</strong> which are commonly understood to belong to given
+applications or protocols:</p>
 <div class="build container">
-<p>Instead, <tt class="docutils literal"><span class="pre">activate</span></tt> your virtualenv using the <tt class="docutils literal"><span class="pre">source</span></tt> shell command:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span><span class="nb">source </span>demoenv/bin/activate
-<span class="o">(</span>demoenv<span class="o">)</span><span class="nv">$ </span>which python
-/Users/cewing/demoenv/bin/python
-</pre></div>
-</div>
-<p>Notice that when a virtualenv is <em>active</em> you can see it in your command
-prompt.</p>
-<p>So long as the virtualenv is <em>active</em> the <tt class="docutils literal"><span class="pre">python</span></tt> executable that will
-be used will be the new one in your <tt class="docutils literal"><span class="pre">demoenv</span></tt>.</p>
+<ul class="build simple">
+<li>80/443 - HTTP/HTTPS</li>
+<li>20 - FTP</li>
+<li>22 - SSH</li>
+<li>23 - Telnet</li>
+<li>25 - SMTP</li>
+<li>...</li>
+</ul>
+<p>These ports are often referred to as <strong>well-known ports</strong></p>
+<p class="small">(see <a class="reference external" href="http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers">http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers</a>)</p>
 </div>
 
 
+
+<div class="slide-no">15</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id13">
     <hgroup>
-      <h3>Installing Packages</h3>
+      <h3>The TCP/IP Stack - Transport</h3>
     </hgroup>
     <article class="">
-      <p>Since <tt class="docutils literal"><span class="pre">pip</span></tt> is also installed, the <tt class="docutils literal"><span class="pre">pip</span></tt> that is used to install new
-software will also be the one in <tt class="docutils literal"><span class="pre">demoenv</span></tt>.</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>demoenv<span class="o">)</span><span class="nv">$ </span>which pip
-/Users/cewing/demoenv/bin/pip
-</pre></div>
-</div>
+      <p>Ports are grouped into a few different classes</p>
+<ul class="build simple">
+<li>Ports numbered 0 - 1023 are <em>reserved</em></li>
+<li>Ports numbered 1024 - 65535 are <em>open</em></li>
+<li>Ports numbered 1024 - 49151 may be <em>registered</em></li>
+<li>Ports numbered 49152 - 65535 are called <em>ephemeral</em></li>
+</ul>
+
+
+
+<div class="slide-no">16</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="the-tcp-ip-stack-application">
+    <hgroup>
+      <h3>The TCP/IP Stack - Application</h3>
+    </hgroup>
+    <article class="">
+      <p>The topmost layer is the 'Application Layer'</p>
 <div class="build container">
-<p>This means that using these tools to install packages will install them
-<em>into your virtual environment only</em></p>
-<p>The are not installed into the system Python.</p>
-<p>Let's see this in action.</p>
+<ul class="build simple">
+<li>Deals directly with data produced or consumed by an application</li>
+<li>Reads or writes data using a set of understood, well-defined <strong>protocols</strong><ul>
+<li>HTTP, SMTP, FTP etc.</li>
+</ul>
+</li>
+<li>Does not know (or need to know) about lower layer functionality<ul>
+<li>The exception to this rule is <strong>endpoint</strong> data (or IP:Port)</li>
+</ul>
+</li>
+</ul>
+<p class="centered"><strong>this is where we live and work</strong></p>
 </div>
 
 
 
+<div class="slide-no">17</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="sockets">
     <hgroup>
-      <h3>Installing Packages</h3>
+      <h3>Sockets</h3>
     </hgroup>
     <article class="">
-      <p>We'll install a package called <tt class="docutils literal"><span class="pre">docutils</span></tt></p>
+      <p>Think back for a second to what we just finished discussing, the TCP/IP stack.</p>
 <div class="build container">
-<p>It provides tools for creating documentation using ReStructuredText</p>
-<p>Install it using pip (while your virtualenv is active):</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>demoenv<span class="o">)</span><span class="nv">$ </span>pip install docutils
-Downloading/unpacking docutils
-  Downloading docutils-0.11.tar.gz <span class="o">(</span>1.6MB<span class="o">)</span>: 1.6MB downloaded
-  Running setup.py <span class="o">(</span>path:/Users/cewing/demoenv/build/docutils/setup.py<span class="o">)</span> egg_info <span class="k">for </span>package docutils
-    ...
-    changing mode of /Users/cewing/demoenv/bin/rst2xml.py to 755
-    changing mode of /Users/cewing/demoenv/bin/rstpep2html.py to 755
-Successfully installed docutils
-Cleaning up...
+<ul class="build simple">
+<li>The <em>Internet</em> layer gives us an <strong>IP Address</strong></li>
+<li>The <em>Transport</em> layer establishes the idea of a <strong>port</strong>.</li>
+<li>The <em>Application</em> layer doesn't care about what happens below...</li>
+<li><em>Except for</em> <strong>endpoint data</strong> (IP:Port)</li>
+</ul>
+<p>A <strong>Socket</strong> is the software representation of that endpoint.</p>
+<p>Opening a <strong>socket</strong> creates a kind of transceiver that can send and/or
+receive <em>bytes</em> at a given IP address and Port.</p>
+</div>
+
+
+
+<div class="slide-no">18</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="sockets-in-python">
+    <hgroup>
+      <h3>Sockets in Python</h3>
+    </hgroup>
+    <article class="">
+      <p>Python provides a standard library module which provides socket functionality.
+It is called <strong>socket</strong>.</p>
+<div class="build container">
+<p>The library is really just a very thin wrapper around the system
+implementation of <em>BSD Sockets</em></p>
+<p>Let's spend a few minutes getting to know this module.</p>
+<p>We're going to do this next part together, so open up a terminal and start
+an iPython interpreter</p>
+</div>
+
+
+
+<div class="slide-no">19</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id14">
+    <hgroup>
+      <h3>Sockets in Python</h3>
+    </hgroup>
+    <article class="">
+      <p>The Python sockets library allows us to find out what port a <em>service</em> uses:</p>
+<div class="build container">
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">socket</span>
+
+<span class="gp">In [2]: </span><span class="n">socket</span><span class="o">.</span><span class="n">getservbyname</span><span class="p">(</span><span class="s">&#39;ssh&#39;</span><span class="p">)</span>
+<span class="gh">Out[2]: </span><span class="go">22</span>
+</pre></div>
+</div>
+<p>You can also do a <em>reverse lookup</em>, finding what service uses a given <em>port</em>:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [3]: </span><span class="n">socket</span><span class="o">.</span><span class="n">getservbyport</span><span class="p">(</span><span class="mi">80</span><span class="p">)</span>
+<span class="gh">Out[3]: </span><span class="go">&#39;http&#39;</span>
 </pre></div>
 </div>
 </div>
 
 
 
+<div class="slide-no">20</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id15">
     <hgroup>
-      <h3>Installing Packages</h3>
+      <h3>Sockets in Python</h3>
     </hgroup>
     <article class="">
-      <p>And now, when we fire up our Python interpreter, the docutils package is
-available to us:</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="go">(demoenv)$ python</span>
-<span class="go">Python 2.7.5 (default, Aug 25 2013, 00:04:04)</span>
-<span class="go">[GCC 4.2.1 Compatible Apple LLVM 5.0 (clang-500.0.68)] on darwin</span>
-<span class="go">Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">docutils</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">docutils</span><span class="o">.</span><span class="n">__path__</span>
-<span class="go">[&#39;/Users/cewing/demoenv/lib/python2.7/site-packages/docutils&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="o">^</span><span class="n">d</span>
-<span class="go">(demoenv)$</span>
+      <p>The sockets library also provides tools for finding out information about
+<em>hosts</em>. For example, you can find out about the hostname and IP address of
+the machine you are currently using:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [4]: </span><span class="n">socket</span><span class="o">.</span><span class="n">gethostname</span><span class="p">()</span>
+<span class="gh">Out[4]: </span><span class="go">&#39;Banks&#39;</span>
+
+<span class="gp">In [5]: </span><span class="n">socket</span><span class="o">.</span><span class="n">gethostbyname</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">gethostname</span><span class="p">())</span>
+<span class="gh">Out[5]: </span><span class="go">&#39;127.0.0.1&#39;</span>
 </pre></div>
 </div>
 
 
 
+<div class="slide-no">21</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id16">
     <hgroup>
-      <h3>Side Effects</h3>
+      <h3>Sockets in Python</h3>
     </hgroup>
     <article class="">
-      <p>Like some other Python libraries, the <tt class="docutils literal"><span class="pre">docutils</span></tt> package provides a number of
-executable scripts when it is installed.</p>
-<div class="build container">
-<p>You can see these in the <tt class="docutils literal"><span class="pre">bin</span></tt> directory inside your virtualenv:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>demoenv<span class="o">)</span><span class="nv">$ </span>ls ./demoenv/bin
-...
-python
-rst2html.py
-rst2latex.py
-...
+      <p>You can also find out about machines that are located elsewhere, assuming you
+know their hostname. For example:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [6]: </span><span class="n">socket</span><span class="o">.</span><span class="n">gethostbyname</span><span class="p">(</span><span class="s">&#39;google.com&#39;</span><span class="p">)</span>
+<span class="gh">Out[6]: </span><span class="go">&#39;173.194.33.100&#39;</span>
+
+<span class="gp">In [7]: </span><span class="n">socket</span><span class="o">.</span><span class="n">gethostbyname</span><span class="p">(</span><span class="s">&#39;uw.edu&#39;</span><span class="p">)</span>
+<span class="gh">Out[7]: </span><span class="go">&#39;128.95.155.134&#39;</span>
+
+<span class="gp">In [8]: </span><span class="n">socket</span><span class="o">.</span><span class="n">gethostbyname</span><span class="p">(</span><span class="s">&#39;crisewing.com&#39;</span><span class="p">)</span>
+<span class="gh">Out[8]: </span><span class="go">&#39;108.168.213.86&#39;</span>
 </pre></div>
 </div>
-<p>These scripts are set up to execute using the Python with which they were
-built.</p>
-<p>Running these scripts will use the Python executable in your virtualenv,
-<em>even if that virtualenv is not active</em>!</p>
-</div>
 
 
+
+<div class="slide-no">22</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id17">
     <hgroup>
-      <h3>Deactivation</h3>
+      <h3>Sockets in Python</h3>
     </hgroup>
     <article class="">
-      <p>So you've got a virtual environment created and activated so you can work with
-it.</p>
-<div class="build container">
-<p>Eventually you'll need to stop working with this <tt class="docutils literal"><span class="pre">virtualenv</span></tt> and switch
-to another</p>
-<p>It's a good idea to keep a separate <tt class="docutils literal"><span class="pre">virtualenv</span></tt> for every project you
-work on.</p>
-<p>When a <tt class="docutils literal"><span class="pre">virtualenv</span></tt> is active, all you have to do is use the
-<tt class="docutils literal"><span class="pre">deactivate</span></tt> command:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>demoenv<span class="o">)</span><span class="nv">$ </span>deactivate
-<span class="nv">$ </span>which python
-/usr/bin/python
+      <p>The <code class="docutils literal"><span class="pre">gethostbyname_ex</span></code> method of the <code class="docutils literal"><span class="pre">socket</span></code> library provides more
+information about the machines we are exploring:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [9]: </span><span class="n">socket</span><span class="o">.</span><span class="n">gethostbyname_ex</span><span class="p">(</span><span class="s">&#39;crisewing.com&#39;</span><span class="p">)</span>
+<span class="gh">Out[9]: </span><span class="go">(&#39;crisewing.com&#39;, [], [&#39;108.168.213.86&#39;])</span>
+
+<span class="gp">In [10]: </span><span class="n">socket</span><span class="o">.</span><span class="n">gethostbyname_ex</span><span class="p">(</span><span class="s">&#39;google.com&#39;</span><span class="p">)</span>
+<span class="gh">Out[10]:</span>
+<span class="go">(&#39;google.com&#39;,</span>
+<span class="go"> [],</span>
+<span class="go"> [&#39;173.194.33.100&#39;, &#39;173.194.33.103&#39;,</span>
+<span class="go">  ...</span>
+<span class="go">  &#39;173.194.33.97&#39;, &#39;173.194.33.104&#39;])</span>
 </pre></div>
 </div>
-<p>Note that your shell prompt returns to normal, and now the executable
-Python found when you check <tt class="docutils literal"><span class="pre">python</span></tt> is the system one again.</p>
-</div>
 
 
 
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Cleaning Up</h3>
-    </hgroup>
-    <article class="">
-      <p>The final advantage that <tt class="docutils literal"><span class="pre">virtualenv</span></tt> offers you as a developer is
-the ability to easily remove a batch of installed Python software from your
-system.</p>
-<div class="build container">
-<p>Consider a situation where you installed a library that breaks your Python
-(it happens)</p>
-<p>If you are working in your system Python, you now have to figure out what
-that package installed</p>
-<p>You have to figure out where it is</p>
-<p>And you have to go clean it out manually.</p>
-<p>With <tt class="docutils literal"><span class="pre">virtualenv</span></tt> you simply remove the directory <tt class="docutils literal"><span class="pre">virtualenv</span></tt> created
-when you started out.</p>
-</div>
-
-
+<div class="slide-no">23</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id18">
     <hgroup>
-      <h3>Cleaning Up</h3>
+      <h3>Sockets in Python</h3>
     </hgroup>
     <article class="">
-      <p>Let's do that with our <tt class="docutils literal"><span class="pre">demoenv</span></tt>:</p>
-<div class="build container">
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>rm -rf demoenv
+      <p>To create a socket, you use the <strong>socket</strong> method of the <code class="docutils literal"><span class="pre">socket</span></code> library.
+It takes up to three optional positional arguments (here we use none to get
+the default behavior):</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [11]: </span><span class="n">foo</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">()</span>
+
+<span class="gp">In [12]: </span><span class="n">foo</span>
+<span class="gh">Out[12]: </span><span class="go">&lt;socket.socket fd=10, family=AddressFamily.AF_INET,</span>
+<span class="go">          type=SocketKind.SOCK_STREAM, proto=0, laddr=(&#39;0.0.0.0&#39;, 0)&gt;</span>
 </pre></div>
 </div>
-<p>And that's it.</p>
-<p>The entire environment and all the packages you installed into it are now
-gone.</p>
-<p>There are no traces left to pollute your world.</p>
+
+
+
+<div class="slide-no">24</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id19">
+    <hgroup>
+      <h3>Sockets in Python</h3>
+    </hgroup>
+    <article class="">
+      <p>A socket has some properties that are immediately important to us. These
+include the <em>family</em>, <em>type</em> and <em>protocol</em> of the socket:</p>
+<div class="build container">
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [13]: </span><span class="n">foo</span><span class="o">.</span><span class="n">family</span>
+<span class="gh">Out[13]: </span><span class="go">&lt;AddressFamily.AF_INET: 2&gt;</span>
+
+<span class="gp">In [14]: </span><span class="n">foo</span><span class="o">.</span><span class="n">type</span>
+<span class="gh">Out[14]: </span><span class="go">&lt;SocketKind.SOCK_STREAM: 1&gt;</span>
+
+<span class="gp">In [15]: </span><span class="n">foo</span><span class="o">.</span><span class="n">proto</span>
+<span class="gh">Out[15]: </span><span class="go">0</span>
+</pre></div>
+</div>
+<p>You might notice that the values for these properties are integers.  In
+fact, these integers are <strong>constants</strong> defined in the socket library.</p>
 </div>
 
 
 
+<div class="slide-no">25</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id20">
+    <hgroup>
+      <h3>A quick utility method</h3>
+    </hgroup>
+    <article class="">
+      <p>Let's define a method in place to help us see these constants. It will take a
+single argument, the shared prefix for a defined set of constants:</p>
+<div class="build container">
+<p>(you can also find this in <code class="docutils literal"><span class="pre">resources/session01/socket_tools.py</span></code>)</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [37]: </span><span class="k">def</span> <span class="nf">get_constants</span><span class="p">(</span><span class="n">prefix</span><span class="p">):</span>
+<span class="gp">   ....: </span>    <span class="sd">&quot;&quot;&quot;mapping of socket module constants to their names&quot;&quot;&quot;</span>
+<span class="gp">   ....: </span>    <span class="k">return</span> <span class="p">{</span><span class="nb">getattr</span><span class="p">(</span><span class="n">socket</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span> <span class="n">n</span>
+<span class="gp">   ....: </span>            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">socket</span><span class="p">)</span>
+<span class="gp">   ....: </span>            <span class="k">if</span> <span class="n">n</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span>
+<span class="gp">   ....: </span>    <span class="p">}</span>
+<span class="gp">   ....:</span>
+</pre></div>
+</div>
+</div>
+
+
+
+<div class="slide-no">26</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="socket-families">
+    <hgroup>
+      <h3>Socket Families</h3>
+    </hgroup>
+    <article class="">
+      <p>Think back a moment to our discussion of the <em>Internet</em> layer of the TCP/IP
+stack.  There were a couple of different types of IP addresses:</p>
+<div class="build container">
+<ul class="build simple">
+<li>IPv4 ('192.168.1.100')</li>
+<li>IPv6 ('2001:0db8:85a3:0042:0000:8a2e:0370:7334')</li>
+</ul>
+<p>The <strong>family</strong> of a socket corresponds to the <em>addressing system</em> it uses
+for connecting.</p>
+</div>
+
+
+
+<div class="slide-no">27</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id21">
+    <hgroup>
+      <h3>Socket Families</h3>
+    </hgroup>
+    <article class="">
+      <p>Families defined in the <code class="docutils literal"><span class="pre">socket</span></code> library are prefixed by <code class="docutils literal"><span class="pre">AF_</span></code>:</p>
+<div class="build container">
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [39]: </span><span class="n">families</span> <span class="o">=</span> <span class="n">get_constants</span><span class="p">(</span><span class="s">&#39;AF_&#39;</span><span class="p">)</span>
+
+<span class="gp">In [40]: </span><span class="n">families</span>
+<span class="gh">Out[40]:</span>
+<span class="go">{&lt;AddressFamily.AF_UNSPEC: 0&gt;: &#39;AF_UNSPEC&#39;,</span>
+<span class="go"> &lt;AddressFamily.AF_UNIX: 1&gt;: &#39;AF_UNIX&#39;,</span>
+<span class="go"> &lt;AddressFamily.AF_INET: 2&gt;: &#39;AF_INET&#39;,</span>
+<span class="go"> ...</span>
+<span class="go"> &lt;AddressFamily.AF_INET6: 30&gt;: &#39;AF_INET6&#39;,</span>
+<span class="go"> &lt;AddressFamily.AF_SYSTEM: 32&gt;: &#39;AF_SYSTEM&#39;}</span>
+</pre></div>
+</div>
+<p><em>Your results may vary</em></p>
+<p>Of all of these, the ones we care most about are <code class="docutils literal"><span class="pre">2</span></code> (IPv4) and <code class="docutils literal"><span class="pre">30</span></code>
+(IPv6).</p>
+</div>
+
+
+
+<div class="slide-no">28</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id22">
+    <hgroup>
+      <h3>Unix Domain Sockets</h3>
+    </hgroup>
+    <article class="">
+      <p>When you are on a machine with an operating system that is Unix-like, you will
+find another generally useful socket family: <code class="docutils literal"><span class="pre">AF_UNIX</span></code>, or Unix Domain
+Sockets. Sockets in this family:</p>
+<ul class="build simple">
+<li>connect processes <strong>on the same machine</strong></li>
+<li>are generally a bit slower than IPC connnections</li>
+<li>have the benefit of allowing the same API for programs that might run on one
+machine __or__ across the network</li>
+<li>use an 'address' that looks like a pathname ('/tmp/foo.sock')</li>
+</ul>
+
+
+
+<div class="slide-no">29</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id23">
+    <hgroup>
+      <h3>Test your skills</h3>
+    </hgroup>
+    <article class="">
+      <p>What is the <em>default</em> family for the socket we created just a moment ago?</p>
+<div class="build container">
+<p>(remember we bound the socket to the symbol <code class="docutils literal"><span class="pre">foo</span></code>)</p>
+<p>How did you figure this out?</p>
+</div>
+
+
+
+<div class="slide-no">30</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="socket-types">
+    <hgroup>
+      <h3>Socket Types</h3>
+    </hgroup>
+    <article class="">
+      <p>The socket <em>type</em> determines the semantics of socket communications.</p>
+<div class="build container">
+<p>Look up socket type constants with the <code class="docutils literal"><span class="pre">SOCK_</span></code> prefix:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [42]: </span><span class="n">types</span> <span class="o">=</span> <span class="n">get_constants</span><span class="p">(</span><span class="s">&#39;SOCK_&#39;</span><span class="p">)</span>
+
+<span class="gp">In [43]: </span><span class="n">types</span>
+<span class="gh">Out[43]:</span>
+<span class="go">{&lt;SocketKind.SOCK_STREAM: 1&gt;: &#39;SOCK_STREAM&#39;,</span>
+<span class="go"> &lt;SocketKind.SOCK_DGRAM: 2&gt;: &#39;SOCK_DGRAM&#39;,</span>
+<span class="go"> &lt;SocketKind.SOCK_RAW: 3&gt;: &#39;SOCK_RAW&#39;,</span>
+<span class="go"> &lt;SocketKind.SOCK_RDM: 4&gt;: &#39;SOCK_RDM&#39;,</span>
+<span class="go"> &lt;SocketKind.SOCK_SEQPACKET: 5&gt;: &#39;SOCK_SEQPACKET&#39;}</span>
+</pre></div>
+</div>
+<p>The most common are <code class="docutils literal"><span class="pre">1</span></code> (Stream communication (TCP)) and <code class="docutils literal"><span class="pre">2</span></code> (Datagram
+communication (UDP)).</p>
+</div>
+
+
+
+<div class="slide-no">31</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id24">
+    <hgroup>
+      <h3>Test your skills</h3>
+    </hgroup>
+    <article class="">
+      <p>What is the <em>default</em> type for our generic socket, <code class="docutils literal"><span class="pre">foo</span></code>?</p>
+
+
+
+<div class="slide-no">32</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="socket-protocols">
+    <hgroup>
+      <h3>Socket Protocols</h3>
+    </hgroup>
+    <article class="">
+      <p>A socket also has a designated <em>protocol</em>. The constants for these are
+prefixed by <code class="docutils literal"><span class="pre">IPPROTO_</span></code>:</p>
+<div class="build container">
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [45]: </span><span class="n">protocols</span> <span class="o">=</span> <span class="n">get_constants</span><span class="p">(</span><span class="s">&#39;IPPROTO_&#39;</span><span class="p">)</span>
+
+<span class="gp">In [46]: </span><span class="n">protocols</span>
+<span class="gh">Out[46]:</span>
+<span class="go">{0: &#39;IPPROTO_IP&#39;,</span>
+<span class="go"> ...</span>
+<span class="go"> 6: &#39;IPPROTO_TCP&#39;,</span>
+<span class="go"> ...</span>
+<span class="go"> 17: &#39;IPPROTO_UDP&#39;,</span>
+<span class="go"> ...}</span>
+</pre></div>
+</div>
+<p>The choice of which protocol to use for a socket is determined by the
+<em>internet layer</em> protocol you intend to use. <code class="docutils literal"><span class="pre">TCP</span></code>? <code class="docutils literal"><span class="pre">UDP</span></code>? <code class="docutils literal"><span class="pre">ICMP</span></code>?
+<code class="docutils literal"><span class="pre">IGMP</span></code>?</p>
+</div>
+
+
+
+<div class="slide-no">33</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id25">
+    <hgroup>
+      <h3>Test your skills</h3>
+    </hgroup>
+    <article class="">
+      <p>What is the <em>default</em> protocol used by our generic socket, <code class="docutils literal"><span class="pre">foo</span></code>?</p>
+
+
+
+<div class="slide-no">34</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="customizing-sockets">
+    <hgroup>
+      <h3>Customizing Sockets</h3>
+    </hgroup>
+    <article class="">
+      <p>These three properties of a socket correspond to the three positional
+arguments you may pass to the socket constructor.</p>
+<div class="build container">
+<p>Using them allows you to create sockets with specific communications
+profiles:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [3]: </span><span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span>
+<span class="gp">   ...: </span>              <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_DGRAM</span><span class="p">,</span>
+<span class="gp">   ...: </span>              <span class="n">socket</span><span class="o">.</span><span class="n">IPPROTO_UDP</span><span class="p">)</span>
+<span class="gh">Out[3]: </span><span class="go">&lt;socket.socket fd=7,</span>
+<span class="go">            family=AddressFamily.AF_INET,</span>
+<span class="go">            type=SocketKind.SOCK_DGRAM,</span>
+<span class="go">            proto=17,</span>
+<span class="go">            laddr=(&#39;0.0.0.0&#39;, 0)&gt;</span>
+</pre></div>
+</div>
+</div>
+
+
+
+<div class="slide-no">35</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="break-time">
     <hgroup>
       <h3>Break Time</h3>
     </hgroup>
     <article class="">
-      <p>Let's take a moment to rest up and absorb what we've learned.</p>
-<p>When we return, we'll begin talking about a particular approach to thinking
-about application design:</p>
-<p class="centered"><strong>Model View Controller</strong></p>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-2">
-    <hgroup>
-      <h2>MVC Applications</h2>
-    </hgroup>
-    <article class="">
-      <div class="figure align-center">
-<a class="reference internal image-reference" href="http://upload.wikimedia.org/wikipedia/commons/4/40/MVC_passive_view.png"><img alt="http://upload.wikimedia.org/wikipedia/commons/4/40/MVC_passive_view.png" src="http://upload.wikimedia.org/wikipedia/commons/4/40/MVC_passive_view.png" style="width: 50%;" /></a>
-<p class="caption">By Alan Evangelista (Own work) [CC0], via Wikimedia Commons</p>
+      <p>So far we have:</p>
+<div class="build container">
+<ul class="build simple">
+<li>learned about the &quot;layers&quot; of the TCP/IP Stack</li>
+<li>discussed <em>families</em>, <em>types</em> and <em>protocols</em> in sockets</li>
+<li>learned how to create sockets with a specific communications profile.</li>
+</ul>
+<p>When we return we'll learn how to find the communcations profiles of remote
+sockets, how to connect to them, and how to send and receive messages.</p>
+<p>Take a few minutes now to clear your head (do not quit your python
+interpreter).</p>
 </div>
 
 
 
+<div class="slide-no">36</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="address-information">
     <hgroup>
-      <h3>Separation of Concerns</h3>
+      <h3>Address Information</h3>
+    </hgroup>
+    <article class="">
+      <p>When you are creating a socket to communicate with a remote service, the
+remote socket will have a specific communications profile.</p>
+<div class="build container">
+<p>The local socket you create must match that communications profile.</p>
+<p>How can you determine the <em>correct</em> values to use?</p>
+<p class="centered"><strong>You ask.</strong></p>
+</div>
+
+
+
+<div class="slide-no">37</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id26">
+    <hgroup>
+      <h3>Address Information</h3>
+    </hgroup>
+    <article class="">
+      <p>The function <code class="docutils literal"><span class="pre">socket.getaddrinfo</span></code> provides information about available
+connections on a given host.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">socket</span><span class="o">.</span><span class="n">getaddrinfo</span><span class="p">(</span><span class="s">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="mi">80</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="build container">
+<p>This provides all you need to make a proper connection to a socket on a
+remote host. The value returned is a tuple of:</p>
+<ul class="build simple">
+<li>socket family</li>
+<li>socket type</li>
+<li>socket protocol</li>
+<li>canonical name (usually empty, unless requested by flag)</li>
+<li>socket address (tuple of IP and Port)</li>
+</ul>
+</div>
+
+
+
+<div class="slide-no">38</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id27">
+    <hgroup>
+      <h3>A quick utility method</h3>
+    </hgroup>
+    <article class="">
+      <p>Again, let's create a utility method in-place so we can see this in action:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [10]: </span><span class="k">def</span> <span class="nf">get_address_info</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">):</span>
+<span class="gp">   ....: </span>    <span class="k">for</span> <span class="n">response</span> <span class="ow">in</span> <span class="n">socket</span><span class="o">.</span><span class="n">getaddrinfo</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">):</span>
+<span class="gp">   ....: </span>        <span class="n">fam</span><span class="p">,</span> <span class="n">typ</span><span class="p">,</span> <span class="n">pro</span><span class="p">,</span> <span class="n">nam</span><span class="p">,</span> <span class="n">add</span> <span class="o">=</span> <span class="n">response</span>
+<span class="gp">   ....: </span>        <span class="k">print</span><span class="p">(</span><span class="s">&#39;family: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">families</span><span class="p">[</span><span class="n">fam</span><span class="p">]))</span>
+<span class="gp">   ....: </span>        <span class="k">print</span><span class="p">(</span><span class="s">&#39;type: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">types</span><span class="p">[</span><span class="n">typ</span><span class="p">]))</span>
+<span class="gp">   ....: </span>        <span class="k">print</span><span class="p">(</span><span class="s">&#39;protocol: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">protocols</span><span class="p">[</span><span class="n">pro</span><span class="p">]))</span>
+<span class="gp">   ....: </span>        <span class="k">print</span><span class="p">(</span><span class="s">&#39;canonical name: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nam</span><span class="p">))</span>
+<span class="gp">   ....: </span>        <span class="k">print</span><span class="p">(</span><span class="s">&#39;socket address: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">add</span><span class="p">))</span>
+<span class="gp">   ....: </span>        <span class="k">print</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+<span class="gp">   ....:</span>
+</pre></div>
+</div>
+<p>(you can also find this in <code class="docutils literal"><span class="pre">resources/session01/socket_tools.py</span></code>)</p>
+
+
+
+<div class="slide-no">39</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id28">
+    <hgroup>
+      <h3>On Your Own Machine</h3>
+    </hgroup>
+    <article class="">
+      <p>Now, ask your own machine what possible connections are available for 'http':</p>
+<div class="build container">
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [11]: </span><span class="n">get_address_info</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">gethostname</span><span class="p">(),</span> <span class="s">&#39;http&#39;</span><span class="p">)</span>
+<span class="go">family: AF_INET</span>
+<span class="go">type: SOCK_DGRAM</span>
+<span class="go">protocol: IPPROTO_UDP</span>
+<span class="go">canonical name:</span>
+<span class="go">socket address: (&#39;127.0.0.1&#39;, 80)</span>
+
+<span class="go">family: AF_INET</span>
+<span class="go">type: SOCK_STREAM</span>
+<span class="go">protocol: IPPROTO_TCP</span>
+<span class="go">canonical name:</span>
+<span class="go">socket address: (&#39;127.0.0.1&#39;, 80)</span>
+</pre></div>
+</div>
+<p>What answers do you get?</p>
+</div>
+
+
+
+<div class="slide-no">40</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id29">
+    <hgroup>
+      <h3>On the Internet</h3>
+    </hgroup>
+    <article class="">
+      <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [12]: </span><span class="n">get_address_info</span><span class="p">(</span><span class="s">&#39;crisewing.com&#39;</span><span class="p">,</span> <span class="s">&#39;http&#39;</span><span class="p">)</span>
+<span class="go">family: AF_INET</span>
+<span class="go">type: SOCK_DGRAM</span>
+<span class="go">protocol: IPPROTO_UDP</span>
+<span class="go">canonical name:</span>
+<span class="go">socket address: (&#39;108.168.213.86&#39;, 80)</span>
+
+<span class="go">family: AF_INET</span>
+<span class="go">type: SOCK_STREAM</span>
+<span class="go">protocol: IPPROTO_TCP</span>
+<span class="go">canonical name:</span>
+<span class="go">socket address: (&#39;108.168.213.86&#39;, 80)</span>
+</pre></div>
+</div>
+<div class="build container">
+Try a few other servers you know about.</div>
+
+
+
+<div class="slide-no">41</div>
+
+
+    </article>
+  </slide>  <slide class="level-2" id="client-side">
+    <hgroup>
+      <h2>Client Side</h2>
     </hgroup>
     <article class="">
       <div class="build container">
-<p>In the first part of this course, you were introduced to the concept of
-<em>Object Oriented Programming</em></p>
-<p>OOP was <a class="reference external" href="http://en.wikipedia.org/wiki/Object-oriented_programming#History">first formalized</a> in the 1970s in <em>Smalltalk</em>, invented by Alan
-Kay at <em>Xerox PARC</em></p>
-<p><em>Smalltalk</em> was also the first language which utilized the
-<a class="reference external" href="http://en.wikipedia.org/wiki/Model–view–controller">Model View Controller</a> design pattern.</p>
-<p>This pattern (like all <a class="reference external" href="http://en.wikipedia.org/wiki/Software_design_pattern">design patterns</a>) seeks to provide a way of
-thinking that helps to make software design easier.</p>
-<p>In this case, the goal is to help clarify the high-level <em>separation of
-concerns</em> in a system.</p>
+<p class="large">Let's put this to use</p>
+<p>We'll communicate with a remote server as a <em>client</em></p>
 </div>
 
 
 
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Three Components</h3>
-    </hgroup>
-    <article class="">
-      <p>The pattern divides the elements of a system into three parts:</p>
-<dl class="build docutils">
-<dt>Model:</dt>
-<dd>This component represents the <em>data</em> that comprises the system, and the
-<em>logic</em> used to manipulate that data.</dd>
-<dt>View:</dt>
-<dd><p class="first">This component can be any <em>representation</em> of the data to the outside world:
-a chart, diagram, table, user interface, etc.</p>
-<p class="last">It also includes representations of the <em>actions</em> available in the system.</p>
-</dd>
-<dt>Controller:</dt>
-<dd><p class="first">This component coordinates the Model and the View in a system.</p>
-<p>It accepts input from a user and channels that input into the Model.</p>
-<p class="last">It accepts information about the current state of the Model and transmits
-that information to the View.</p>
-</dd>
-</dl>
-
-
+<div class="slide-no">42</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="construct-a-socket">
     <hgroup>
-      <h3>On the Web</h3>
+      <h3>Construct a Socket</h3>
     </hgroup>
     <article class="">
-      <p>This pattern has proven useful for thinking about the applications we build for
-the web.</p>
+      <p>We've already made a socket <code class="docutils literal"><span class="pre">foo</span></code> using the generic constructor without any
+arguments.  We can make a better one now by using real address information from
+a real server online [<strong>do not type this yet</strong>]:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [13]: </span><span class="n">streams</span> <span class="o">=</span> <span class="p">[</span><span class="n">info</span>
+<span class="gp">   ....: </span>    <span class="k">for</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">socket</span><span class="o">.</span><span class="n">getaddrinfo</span><span class="p">(</span><span class="s">&#39;crisewing.com&#39;</span><span class="p">,</span> <span class="s">&#39;http&#39;</span><span class="p">)</span>
+<span class="gp">   ....: </span>    <span class="k">if</span> <span class="n">info</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">]</span>
+<span class="gp">   ....:</span>
+<span class="gp">In [14]: </span><span class="n">streams</span>
+<span class="gh">Out[14]:</span>
+<span class="go">[(&lt;AddressFamily.AF_INET: 2&gt;,</span>
+<span class="go">  &lt;SocketKind.SOCK_STREAM: 1&gt;,</span>
+<span class="go">  6,</span>
+<span class="go">  &#39;&#39;,</span>
+<span class="go">  (&#39;108.168.213.86&#39;, 80))]</span>
+<span class="gp">In [15]: </span><span class="n">info</span> <span class="o">=</span> <span class="n">streams</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">In [16]: </span><span class="n">cewing_socket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="o">*</span><span class="n">info</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">43</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="connecting-a-socket">
+    <hgroup>
+      <h3>Connecting a Socket</h3>
+    </hgroup>
+    <article class="">
+      <p>Once the socket is constructed with the appropriate <em>family</em>, <em>type</em> and
+<em>protocol</em>, we can connect it to the address of our remote server:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [18]: </span><span class="n">cewing_socket</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+<ul class="build simple">
+<li>a successful connection returns <code class="docutils literal"><span class="pre">None</span></code></li>
+<li>a failed connection raises an error</li>
+<li>you can use the <em>type</em> of error returned to tell why the connection failed.</li>
+</ul>
+
+
+
+<div class="slide-no">44</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="sending-a-message">
+    <hgroup>
+      <h3>Sending a Message</h3>
+    </hgroup>
+    <article class="">
+      <p>Send a message to the server on the other end of our connection (we'll
+learn in session 2 about the message we are sending):</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [19]: </span><span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;GET / HTTP/1.1</span><span class="se">\r\n</span><span class="s">&quot;</span>
+<span class="gp">In [20]: </span><span class="n">msg</span> <span class="o">+=</span> <span class="s">&quot;Host: crisewing.com</span><span class="se">\r\n\r\n</span><span class="s">&quot;</span>
+<span class="gp">In [21]: </span><span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span>
+<span class="gp">In [22]: </span><span class="n">msg</span>
+<span class="gh">Out[22]: </span><span class="go">b&#39;GET / HTTP/1.1\r\nHost: crisewing.com\r\n\r\n&#39;</span>
+<span class="gp">In [23]: </span><span class="n">cewing_socket</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="build small simple">
+<li>the transmission continues until all data is sent or an error occurs</li>
+<li>success returns <code class="docutils literal"><span class="pre">None</span></code></li>
+<li>failure to send raises an error</li>
+<li>the type of error can tell you why the transmission failed</li>
+<li>but you <strong>cannot</strong> know how much, if any, of your data was sent</li>
+</ul>
+
+
+
+<div class="slide-no">45</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="messages-are-bytes">
+    <hgroup>
+      <h3>Messages Are Bytes</h3>
+    </hgroup>
+    <article class="">
+      <p>One detail from the previous code should stand out:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [21]: </span><span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span>
+<span class="gp">In [22]: </span><span class="n">msg</span>
+<span class="gh">Out[22]: </span><span class="go">b&#39;GET / HTTP/1.1\r\nHost: crisewing.com\r\n\r\n&#39;</span>
+</pre></div>
+</div>
+<p>You can <strong>only</strong> send bytes through a socket, <strong>never</strong> unicode</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [35]: </span><span class="n">cewing_socket</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">))</span>
+<span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">TypeError</span><span class="g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="nn">&lt;ipython-input-35-8178ec7f234d&gt;</span> in <span class="ni">&lt;module&gt;</span><span class="nt">()</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">cewing_socket</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">))</span>
+
+<span class="ne">TypeError</span>: &#39;str&#39; does not support the buffer interface
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">46</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="receiving-a-reply">
+    <hgroup>
+      <h3>Receiving a Reply</h3>
+    </hgroup>
+    <article class="">
+      <p>Whatever reply we get is received by the socket we created. We can read it
+back out (again, <strong>do not type this yet</strong>):</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [24]: </span><span class="n">response</span> <span class="o">=</span> <span class="n">cewing_socket</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">4096</span><span class="p">)</span>
+<span class="gp">In [25]: </span><span class="n">response</span><span class="p">[:</span><span class="mi">60</span><span class="p">]</span>
+<span class="gh">Out[25]: </span><span class="go">b&#39;HTTP/1.1 200 OK\r\nServer: nginx\r\nDate: Sun, 20 Sep 2015 03:38&#39;</span>
+</pre></div>
+</div>
+<ul class="build simple">
+<li>The sole required argument is <code class="docutils literal"><span class="pre">buffer_size</span></code> (an integer). It should be a
+power of 2 and smallish (~4096)</li>
+<li>It returns a byte string of <code class="docutils literal"><span class="pre">buffer_size</span></code> (or smaller if less data was
+received)</li>
+<li>If the response is longer than <code class="docutils literal"><span class="pre">buffer</span> <span class="pre">size</span></code>, you can call the method
+repeatedly. The last bunch will be less than <code class="docutils literal"><span class="pre">buffer</span> <span class="pre">size</span></code>.</li>
+</ul>
+
+
+
+<div class="slide-no">47</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="cleaning-up">
+    <hgroup>
+      <h3>Cleaning Up</h3>
+    </hgroup>
+    <article class="">
+      <p>When you are finished with a connection, you should always close it:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">cewing_socket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">48</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="putting-it-all-together">
+    <hgroup>
+      <h3>Putting it all together</h3>
+    </hgroup>
+    <article class="">
+      <p>First, connect and send a message:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [55]: </span><span class="n">info</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">getaddrinfo</span><span class="p">(</span><span class="s">&#39;crisewing.com&#39;</span><span class="p">,</span> <span class="s">&#39;http&#39;</span><span class="p">)</span>
+<span class="gp">In [56]: </span><span class="n">streams</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">info</span> <span class="k">if</span> <span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">]</span>
+<span class="gp">In [57]: </span><span class="n">sock_info</span> <span class="o">=</span> <span class="n">streams</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">In [58]: </span><span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;GET / HTTP/1.1</span><span class="se">\r\n</span><span class="s">&quot;</span>
+<span class="gp">In [59]: </span><span class="n">msg</span> <span class="o">+=</span> <span class="s">&quot;Host: crisewing.com</span><span class="se">\r\n\r\n</span><span class="s">&quot;</span>
+<span class="gp">In [60]: </span><span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span>
+<span class="gp">In [61]: </span><span class="n">cewing_socket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="o">*</span><span class="n">sock_info</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+<span class="gp">In [62]: </span><span class="n">cewing_socket</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">sock_info</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="gp">In [63]: </span><span class="n">cewing_socket</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">49</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id30">
+    <hgroup>
+      <h3>Putting it all together</h3>
+    </hgroup>
+    <article class="">
+      <p>Then, receive a reply, iterating until it is complete:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [65]: </span><span class="n">buffsize</span> <span class="o">=</span> <span class="mi">4096</span>
+<span class="gp">In [66]: </span><span class="n">response</span> <span class="o">=</span> <span class="n">b</span><span class="s">&#39;&#39;</span>
+<span class="gp">In [67]: </span><span class="n">done</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="gp">In [68]: </span><span class="k">while</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
+<span class="gp">   ....: </span>    <span class="n">msg_part</span> <span class="o">=</span> <span class="n">cewing_socket</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="n">buffsize</span><span class="p">)</span>
+<span class="gp">   ....: </span>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">msg_part</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">buffsize</span><span class="p">:</span>
+<span class="gp">   ....: </span>        <span class="n">done</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="gp">   ....: </span>        <span class="n">cewing_socket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="gp">   ....: </span>    <span class="n">response</span> <span class="o">+=</span> <span class="n">msg_part</span>
+<span class="gp">   ....:</span>
+<span class="gp">In [69]: </span><span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+<span class="gh">Out[69]: </span><span class="go">19464</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">50</div>
+
+
+    </article>
+  </slide>  <slide class="level-2" id="server-side">
+    <hgroup>
+      <h2>Server Side</h2>
+    </hgroup>
+    <article class="">
+      <div class="build container">
+<p class="large">What about the other half of the equation?</p>
+<p>Let's build a server and see how that part works.</p>
+</div>
+
+
+
+<div class="slide-no">51</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id1">
+    <hgroup>
+      <h3>Construct a Socket</h3>
+    </hgroup>
+    <article class="">
+      <p><strong>For the moment, stop typing this into your interpreter.</strong></p>
 <div class="build container">
-<p>A web browser provides a convenient container for <em>views</em> of data.</p>
-<p>These <em>views</em> are created by <em>controller</em> software hosted on a server.</p>
-<p>This <em>controller</em> software accepts input from users via <em>HTTP requests</em>,
-channeling it into a <em>data model</em> usually stored in some database.</p>
-<p>The <em>controller</em> returns information about the state of the <em>data model</em> to
-the user via <em>HTTP responses</em></p>
+<p>Again, we begin by constructing a socket. Since we are actually the server
+this time, we get to choose family, type and protocol:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [70]: </span><span class="n">server_socket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span>
+<span class="gp">   ....: </span>    <span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span>
+<span class="gp">   ....: </span>    <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">,</span>
+<span class="gp">   ....: </span>    <span class="n">socket</span><span class="o">.</span><span class="n">IPPROTO_TCP</span><span class="p">)</span>
+
+<span class="gp">In [71]: </span><span class="n">server_socket</span>
+<span class="gh">Out[71]: </span><span class="go">&lt;socket.socket fd=12, family=AddressFamily.AF_INET,</span>
+<span class="go">            type=SocketKind.SOCK_STREAM, proto=6, laddr=(&#39;0.0.0.0&#39;, 0)&gt;</span>
+</pre></div>
+</div>
 </div>
 
 
 
+<div class="slide-no">52</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="bind-the-socket">
     <hgroup>
-      <h3>On the Web</h3>
+      <h3>Bind the Socket</h3>
     </hgroup>
     <article class="">
-      <p>This approach is so common, that it has been formalized into any number of <em>web
-frameworks</em></p>
+      <p>Our server socket needs to be <strong>bound</strong> to an address. This is the IP Address
+and Port to which clients must connect:</p>
 <div class="build container">
-<p><em>Web frameworks</em> abstract away the specifics of the <em>HTTP request/response
-cycle</em>, leaving simple MVC components for the developer to use.</p>
-<p><em>Web frameworks</em> exist in nearly all modern languages.</p>
-<p>Python has scores of them.</p>
-<p>Over the weeks to come, we'll learn about two of them, <a class="reference external" href="http://www.pylonsproject.org/projects/pyramid/about">Pyramid</a> and
-<a class="reference external" href="https://www.djangoproject.com/">Django</a>.</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [72]: </span><span class="n">address</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="mi">50000</span><span class="p">)</span>
+<span class="gp">In [73]: </span><span class="n">server_socket</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Terminology Note</strong>: In a server/client relationship, the server <em>binds</em>
+to an address and port. The client <em>connects</em></p>
 </div>
 
 
 
+<div class="slide-no">53</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="listen-for-connections">
     <hgroup>
-      <h3>A Word About Terminology</h3>
+      <h3>Listen for Connections</h3>
     </hgroup>
     <article class="">
-      <p>Although the MVC pattern is a useful abstraction, there are a few differences
-in how things are named in Python web frameworks</p>
-<div class="build centered container">
-<p>model &lt;--&gt; model</p>
-<p>controller &lt;--&gt; view</p>
-<p>view &lt;--&gt; template (or even HTTP response)</p>
-<p class="left">For more on this difference, you can <a class="reference external" href="http://docs.pylonsproject.org/projects/pyramid/en/latest/designdefense.html#pyramid-gets-its-terminology-wrong-mvc">read this</a> from the Pyramid design
-documentation.</p>
+      <p>Once our socket is bound to an address, we can listen for attempted
+connections:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [74]: </span><span class="n">server_socket</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="build simple">
+<li>The argument to <code class="docutils literal"><span class="pre">listen</span></code> is the <em>backlog</em></li>
+<li>The <em>backlog</em> is the <strong>maximum</strong> number of connection requests that the
+socket will queue</li>
+<li>Once the limit is reached, the socket refuses new connections.</li>
+</ul>
+
+
+
+<div class="slide-no">54</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="accept-a-connection">
+    <hgroup>
+      <h3>Accept A Connection</h3>
+    </hgroup>
+    <article class="">
+      <p>When a socket is listening, it can receive incoming connection requests:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [75]: </span><span class="n">connection</span><span class="p">,</span> <span class="n">client_address</span> <span class="o">=</span> <span class="n">server_socket</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+</pre></div>
+</div>
+<ul class="build simple">
+<li>The call to <code class="docutils literal"><span class="pre">socket.accept()</span></code> is a <em>blocking</em> call.  It will not return
+values until a client <em>connects</em></li>
+<li>The <code class="docutils literal"><span class="pre">connection</span></code> returned by a call to <code class="docutils literal"><span class="pre">accept</span></code> is a <strong>new socket</strong>.
+This new socket is used to communicate with the client</li>
+<li>The <code class="docutils literal"><span class="pre">client_address</span></code> is a two-tuple of IP Address and Port for the client
+socket</li>
+<li>When a connection request is 'accepted', it is removed from the backlog
+queue.</li>
+</ul>
+
+
+
+<div class="slide-no">55</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="communicate">
+    <hgroup>
+      <h3>Communicate</h3>
+    </hgroup>
+    <article class="">
+      <p>The <code class="docutils literal"><span class="pre">connection</span></code> socket can now be used to receive messages from the client
+which made the connection:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [76]: </span><span class="n">connection</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="n">buffsize</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>It may also be used to return a reply:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [77]: </span><span class="n">connection</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="s">&quot;message received&quot;</span><span class="p">)</span>
+</pre></div>
 </div>
 
 
 
-
-    </article>
-  </slide>  <slide class="level-2">
-    <hgroup>
-      <h2>Our First Application</h2>
-    </hgroup>
-    <article class="">
-      <p class="left">But enough abstract blabbering.</p>
-<div class="build left container">
-<p>There's no better way to make concepts like these concrete than to build
-something using them.</p>
-<p>Let's make an application!</p>
-<p>We're going to build a Learning Journal.</p>
-<p>When we're done, you'll have a live, online application you can use to keep
-note of the things you are learning about Python development.</p>
-<p>We'll use one of our Python web framework to do this: <a class="reference external" href="http://www.pylonsproject.org/projects/pyramid/about">Pyramid</a></p>
-</div>
-
-
+<div class="slide-no">56</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="clean-up">
     <hgroup>
-      <h3>Pyramid</h3>
+      <h3>Clean Up</h3>
     </hgroup>
     <article class="">
-      <p>First published in 2010, <a class="reference external" href="http://www.pylonsproject.org/projects/pyramid/about">Pyramid</a> is a powerful, flexible web framework.</p>
+      <p>Once a transaction between the client and server is complete, the
+<code class="docutils literal"><span class="pre">connection</span></code> socket should be closed:</p>
 <div class="build container">
-<p>You can create compelling one-page applications, much like in
-microframeworks like Flask</p>
-<p>You can also create powerful, scalable applications using the full
-power of Python</p>
-<p>Created by the combined powers of the teams behind Pylons and Zope</p>
-<p>It represents the first true second-generation web framework in
-existence.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Starting the Project</h3>
-    </hgroup>
-    <article class="">
-      <p>The first step is to prepare for the project.</p>
-<div class="build container">
-<p>Begin by creating a location where you'll do your work.</p>
-<p>I generally put all my work in a folder called <tt class="docutils literal"><span class="pre">projects</span></tt> in my home
-directory:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span><span class="nb">cd</span>
-<span class="nv">$ </span>mkdir projects
-<span class="nv">$ </span><span class="nb">cd </span>projects
-<span class="nv">$ </span>mkdir learning-journal
-<span class="nv">$ </span><span class="nb">cd </span>learning-journal
-<span class="nv">$ </span><span class="nb">pwd</span>
-/Users/cewing/project/learning-journal
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [78]: </span><span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
+<p>At this point, the <code class="docutils literal"><span class="pre">server_socket</span></code> can again accept a new client
+connection.</p>
+<p>Note that the <code class="docutils literal"><span class="pre">server_socket</span></code> is <em>never</em> closed as long as the server
+continues to run.</p>
 </div>
 
 
+
+<div class="slide-no">57</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-2" id="getting-the-flow">
     <hgroup>
-      <h3>Creating an Environment</h3>
-    </hgroup>
-    <article class="">
-      <p>We continue our preparations by creating a virtualenv we will use for it.</p>
-<div class="build container">
-<p>Again, this will help us to keep our work here isolated from anything else
-we do.</p>
-<p>Remember how to make a new virtualenv?</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>virtualenv ljenv
-New python executable in ljenv/bin/python
-Installing setuptools, pip...done.
-</pre></div>
-</div>
-<p>And then, how to activate it?</p>
-<div class="highlight-bash"><div class="highlight"><pre>$ source ljenv/bin/activate
-(ljenv)$
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Installing Pyramid</h3>
-    </hgroup>
-    <article class="">
-      <p>Next, we install the Pyramid web framework into our new virtualenv.</p>
-<div class="build container">
-<p>We can do this with the <tt class="docutils literal"><span class="pre">pip</span></tt> in our active <tt class="docutils literal"><span class="pre">ljenv</span></tt>:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>pip install pyramid
-Collecting pyramid
-  Downloading pyramid-1.5.2-py2.py3-none-any.whl <span class="o">(</span>545kB<span class="o">)</span>
-    100% |################################| 548kB 172kB/s
-...
-Successfully installed PasteDeploy-1.5.2 WebOb-1.4
-pyramid-1.5.2 repoze.lru-0.6 translationstring-1.3
-venusian-1.0 zope.deprecation-4.1.1 zope.interface-4.1.2
-</pre></div>
-</div>
-<p>Once that is complete, we are ready to create a <em>scaffold</em> for our project.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Working with Pyramid</h3>
-    </hgroup>
-    <article class="">
-      <p>Many web frameworks require at least a bit of <em>boilerplate</em> code to get
-started.</p>
-<div class="build container">
-<p>Pyramid does not.</p>
-<p>However, our application will require a database and handling that does
-require some.</p>
-<p>Pyramid provides a system for creating boilerplate called <tt class="docutils literal"><span class="pre">pcreate</span></tt>.</p>
-<p>You use it to generate the skeleton for a project based on some pattern:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>pcreate -s alchemy learning_journal
-Creating directory /Users/cewing/projects/learning-journal/learning_journal
-...
-Welcome to Pyramid.  Sorry <span class="k">for </span>the convenience.
-<span class="o">===============================================================================</span>
-</pre></div>
-</div>
-<p>Let's take a quick look at what that did</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>What You Get</h3>
-    </hgroup>
-    <article class="">
-      <div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>tree learning_journal/
-learning_journal/
-...
-├── development.ini
-├── learning_journal
-│   ├── __init__.py
-│   ├── models.py
-│   ├── scripts
-│   │   ├── __init__.py
-│   │   └── initializedb.py
-│   ├── static
-...
-│   ├── templates
-│   │   └── mytemplate.pt
-│   ├── tests.py
-│   └── views.py
-├── production.ini
-└── setup.py
-</pre></div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Saving Your Work</h3>
-    </hgroup>
-    <article class="">
-      <p>You've now created something worth saving.</p>
-<div class="build container">
-<p>Start by initializing a new git repository in the <cite>learning_journal</cite> folder
-you just created:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span><span class="nb">cd </span>learning_journal
-<span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>git init
-Initialized empty Git repository in
- /Users/cewing/projects/learning-journal/learning_journal/.git/
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Saving Your Work</h3>
-    </hgroup>
-    <article class="">
-      <p>Check <tt class="docutils literal"><span class="pre">git</span> <span class="pre">status</span></tt> to see where things stand:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>git status
-On branch master
-
-Initial commit
-
-Untracked files:
-  <span class="o">(</span>use <span class="s2">&quot;git add &lt;file&gt;...&quot;</span> to include in what will be committed<span class="o">)</span>
-
-    CHANGES.txt
-    MANIFEST.in
-    README.txt
-    development.ini
-    learning_journal/
-    production.ini
-    setup.py
-</pre></div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Add the Project Code</h3>
-    </hgroup>
-    <article class="">
-      <p>Add your work to this new repository:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>git add .
-<span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>git status
-...
-Changes to be committed:
-  <span class="o">(</span>use <span class="s2">&quot;git rm --cached &lt;file&gt;...&quot;</span> to unstage<span class="o">)</span>
-
-    new file:   CHANGES.txt
-    new file:   MANIFEST.in
-    ...
-    new file:   production.ini
-    new file:   setup.py
-</pre></div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Ignore Irrelevant Files</h3>
-    </hgroup>
-    <article class="">
-      <p>Python creates <tt class="docutils literal"><span class="pre">.pyc</span></tt> files when it executes your code.</p>
-<div class="build container">
-<p>There are many other files you don't want or need in your repository</p>
-<p>You can ignore this in <tt class="docutils literal"><span class="pre">git</span></tt> with the <tt class="docutils literal"><span class="pre">.gitignore</span></tt> file.</p>
-<p>Create one now, in this same directory, and add the following basic lines:</p>
-<div class="highlight-python"><div class="highlight"><pre>*.pyc
-.DS_Store
-</pre></div>
-</div>
-<p>Finally, add this new file to your repository, too.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Make It Permanent</h3>
-    </hgroup>
-    <article class="">
-      <p>To preserve all these changes, you'll need to commit what you've done:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>git commit -m <span class="s2">&quot;initial commit of the Pyramid learning journal&quot;</span>
-</pre></div>
-</div>
-<div class="build container">
-<p>This will make a first commit here in this local repository.</p>
-<p>For homework, you'll put this into GitHub, but this is enough for now.</p>
-<p>Let's move on to learning about what we've built so far.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Project Structure</h3>
-    </hgroup>
-    <article class="">
-      <p>When you ran the <tt class="docutils literal"><span class="pre">pcreate</span></tt> command, a new folder was created:
-<tt class="docutils literal"><span class="pre">learning_journal</span></tt>.</p>
-<div class="build container">
-<p>This folder contains your <em>project</em>.</p>
-<p>At the top level, you have <em>configuration</em> (.ini files)</p>
-<p>You also have a file called <tt class="docutils literal"><span class="pre">setup.py</span></tt></p>
-<p>This file turns this collection of Python code and configuration into an
-<em>installable Python distribution</em></p>
-<p>Let's take a moment to look over the code in that file</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3><tt class="docutils literal"><span class="pre">setup.py</span></tt></h3>
-    </hgroup>
-    <article class="">
-      <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">find_packages</span>
-<span class="o">...</span>
-<span class="n">requires</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s">&#39;pyramid&#39;</span><span class="p">,</span>
-    <span class="o">...</span> <span class="c"># packages on which this software depends (dependencies)</span>
-    <span class="p">]</span>
-<span class="n">setup</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;learning_journal&#39;</span><span class="p">,</span>
-      <span class="n">version</span><span class="o">=</span><span class="s">&#39;0.0&#39;</span><span class="p">,</span>
-      <span class="o">...</span> <span class="c"># package metadata (used by PyPI)</span>
-      <span class="n">install_requires</span><span class="o">=</span><span class="n">requires</span><span class="p">,</span>
-      <span class="c"># Entry points are ways that we can run our code once installed</span>
-      <span class="n">entry_points</span><span class="o">=</span><span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
-<span class="s">      [paste.app_factory]</span>
-<span class="s">      main = learning_journal:main</span>
-<span class="s">      [console_scripts]</span>
-<span class="s">      initialize_learning_journal_db = learning_journal.scripts.initializedb:main</span>
-<span class="s">      &quot;&quot;&quot;</span><span class="p">,</span>
-      <span class="p">)</span>
-</pre></div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Pyramid is Python</h3>
-    </hgroup>
-    <article class="">
-      <p>In the <tt class="docutils literal"><span class="pre">__init__.py</span></tt> file of your app <em>package</em>, you'll find a <tt class="docutils literal"><span class="pre">main</span></tt>
-function:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">global_config</span><span class="p">,</span> <span class="o">**</span><span class="n">settings</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; This function returns a Pyramid WSGI application.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">engine</span> <span class="o">=</span> <span class="n">engine_from_config</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;sqlalchemy.&#39;</span><span class="p">)</span>
-    <span class="n">DBSession</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
-    <span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">bind</span> <span class="o">=</span> <span class="n">engine</span>
-    <span class="n">config</span> <span class="o">=</span> <span class="n">Configurator</span><span class="p">(</span><span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">)</span>
-    <span class="n">config</span><span class="o">.</span><span class="n">include</span><span class="p">(</span><span class="s">&#39;pyramid_chameleon&#39;</span><span class="p">)</span>
-    <span class="n">config</span><span class="o">.</span><span class="n">add_static_view</span><span class="p">(</span><span class="s">&#39;static&#39;</span><span class="p">,</span> <span class="s">&#39;static&#39;</span><span class="p">,</span> <span class="n">cache_max_age</span><span class="o">=</span><span class="mi">3600</span><span class="p">)</span>
-    <span class="n">config</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s">&#39;home&#39;</span><span class="p">,</span> <span class="s">&#39;/&#39;</span><span class="p">)</span>
-    <span class="n">config</span><span class="o">.</span><span class="n">scan</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">config</span><span class="o">.</span><span class="n">make_wsgi_app</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>Let's take a closer look at this, line by line.</p>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>System Configuration</h3>
-    </hgroup>
-    <article class="">
-      <div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">global_config</span><span class="p">,</span> <span class="o">**</span><span class="n">settings</span><span class="p">):</span>
-</pre></div>
-</div>
-<p>Configuration is passed in to an application after being read from the
-<tt class="docutils literal"><span class="pre">.ini</span></tt> file we saw above.</p>
-<div class="build container">
-<p>These files contain sections (<tt class="docutils literal"><span class="pre">[app:main]</span></tt>) containing <tt class="docutils literal"><span class="pre">name</span> <span class="pre">=</span> <span class="pre">value</span></tt>
-pairs of <em>configuration data</em></p>
-<p>This data is parsed with the Python
-<a class="reference external" href="http://docs.python.org/2/library/configparser.html">ConfigParser</a> module.</p>
-<p>The result is a dict of values:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span><span class="s">&#39;app:main&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;pyramid.reload_templates&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="o">...</span><span class="p">},</span> <span class="o">...</span><span class="p">}</span>
-</pre></div>
-</div>
-<p>The default section of the file is passed in as <tt class="docutils literal"><span class="pre">global_config</span></tt>, the
-section for <em>this app</em> as <tt class="docutils literal"><span class="pre">settings</span></tt>.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Database Configuration</h3>
-    </hgroup>
-    <article class="">
-      <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">engine_from_config</span>
-<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">DBSession</span><span class="p">,</span> <span class="n">Base</span>
-<span class="o">...</span>
-<span class="n">engine</span> <span class="o">=</span> <span class="n">engine_from_config</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;sqlalchemy.&#39;</span><span class="p">)</span>
-<span class="n">DBSession</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
-<span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">bind</span> <span class="o">=</span> <span class="n">engine</span>
-</pre></div>
-</div>
-<p>We will use a package called <tt class="docutils literal"><span class="pre">SQLAlchemy</span></tt> to interact with our database.</p>
-<div class="build container">
-<p>Our connection is set up using settings read from the <tt class="docutils literal"><span class="pre">.ini</span></tt> file.</p>
-<p>Can you find the settings for the database?</p>
-<p>The <tt class="docutils literal"><span class="pre">DBSession</span></tt> ensures that each <em>database transaction</em> is tied to HTTP
-requests.</p>
-<p>The <tt class="docutils literal"><span class="pre">Base</span></tt> provides a parent class that will hook our <em>models</em> to the
-database.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>App Configuration</h3>
-    </hgroup>
-    <article class="">
-      <div class="highlight-python"><div class="highlight"><pre><span class="n">config</span> <span class="o">=</span> <span class="n">Configurator</span><span class="p">(</span><span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">)</span>
-<span class="n">config</span><span class="o">.</span><span class="n">include</span><span class="p">(</span><span class="s">&#39;pyramid_chameleon&#39;</span><span class="p">)</span>
-<span class="n">config</span><span class="o">.</span><span class="n">add_static_view</span><span class="p">(</span><span class="s">&#39;static&#39;</span><span class="p">,</span> <span class="s">&#39;static&#39;</span><span class="p">,</span> <span class="n">cache_max_age</span><span class="o">=</span><span class="mi">3600</span><span class="p">)</span>
-<span class="n">config</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s">&#39;home&#39;</span><span class="p">,</span> <span class="s">&#39;/&#39;</span><span class="p">)</span>
-<span class="n">config</span><span class="o">.</span><span class="n">scan</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>Pyramid controlls application-level configuration using a <tt class="docutils literal"><span class="pre">Configurator</span></tt> class.</p>
-<div class="build container">
-<p>It uses app-specific settings passed in from the <tt class="docutils literal"><span class="pre">.ini</span></tt> file</p>
-<p>We can also <tt class="docutils literal"><span class="pre">include</span></tt> configuration from other add-on packages</p>
-<p>Additionally, we can configure <em>routes</em> and <em>views</em> needed to connect our
-application to the outside world here (more on this next week).</p>
-<p>Finally, the <tt class="docutils literal"><span class="pre">Configurator</span></tt> instance performs a <tt class="docutils literal"><span class="pre">scan</span></tt> to ensure there
-are no problems with what we've created.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>A Last Word on Configuration</h3>
-    </hgroup>
-    <article class="">
-      <p>We will return to the configuration of our application repeatedly over the next
-sessions.</p>
-<div class="build container">
-<p>Pyramid configuration is powerful and flexible.</p>
-<p>We'll use a few of its features</p>
-<p>But there's a lot more you could (and should) learn.</p>
-<p>Read about it in the <a class="reference external" href="http://docs.pylonsproject.org/projects/pyramid/en/latest/api/config.html">configuration chapter</a> of the Pyramid documentation.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Break Time</h3>
-    </hgroup>
-    <article class="">
-      <p>Let's take a moment to rest up and absorb what we've learned.</p>
-<p>When we return, we'll see how we can create <em>models</em> that will embody the data
-for our Learning Journal application.</p>
-<p class="centered"><strong>Pyramid Models</strong></p>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-2">
-    <hgroup>
-      <h2>Models in Pyramid</h2>
+      <h2>Getting the Flow</h2>
     </hgroup>
     <article class="">
       <div class="left container">
-<p>The central component of MVC, the model, captures the behavior of the
-application in terms of its problem domain, independent of the user
-interface. The model directly manages the data, logic and rules of the
-application</p>
-<p>-- from the Wikipedia article on <a class="reference external" href="http://en.wikipedia.org/wiki/Model–view–controller">Model-view-controller</a></p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Models and ORMs</h3>
-    </hgroup>
-    <article class="">
-      <p>In an MVC application, we define the <em>problem domain</em> by creating one or more
-<em>Models</em>.</p>
-<div class="build container">
-<p>These capture relevant details about the information we want to preserve
-and how we want to interact with it.</p>
-<p>In Python-based MVC applications, these <em>Models</em> are implemented as Python
-classes.</p>
-<p>The individual bits of data we want to know about are <em>attributes</em> of our
-classes.</p>
-<p>The actions we want to take using that data are <em>methods</em> of our classes.</p>
-<p>Together, we can refer to this as the <em>API</em> of our system.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Persistence</h3>
-    </hgroup>
-    <article class="">
-      <p>It's all well and good to have a set of Python classes that represent your
-system.</p>
-<div class="build container">
-<p>But what happens when you want to <em>save</em> information.</p>
-<p>What happens to a instance of a Python class when you quit the interprer?</p>
-<p>When your script stops running?</p>
-<p>The code in a website runs when an HTTP request comes in from a client.</p>
-<p>It stops running when an HTTP response goes back out to the client.</p>
-<p>So what happens to the data in your system in-between these moments?</p>
-<p>The data must be <em>persisted</em></p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Alternatives</h3>
-    </hgroup>
-    <article class="">
-      <p>In the last class from part one of this series, you explored a number of
-alternatives for persistence</p>
-<ul class="build simple">
-<li>Python Literals</li>
-<li>Pickle/Shelf</li>
-<li>Interchange Files (CSV, XML, INI)</li>
-<li>Object Stores (ZODB, Durus)</li>
-<li>NoSQL Databases (MongoDB, CouchDB)</li>
-<li>SQL Databases (sqlite, MySQL, PostgreSQL, Oracle, SQLServer)</li>
-</ul>
-<div class="build container">
-<p>Any of these might be useful for certain types of applications.</p>
-<p>On the web, you tend to see two used the most:</p>
-<ul class="build simple">
-<li>NoSQL</li>
-<li>SQL</li>
-</ul>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Choosing One</h3>
-    </hgroup>
-    <article class="">
-      <p>How do you choose one over the other?</p>
-<div class="build container">
-<p>In general, the telling factor is going to be how you intend to use your
-data.</p>
-<p>In systems where the dominant feature is viewing/interacting with
-individual objects, a NoSQL storage solution might be the best way to go.</p>
-<p>In systems with objects that are related to eachother, SQL-based Relational
-Databases are a better choice.</p>
-<p>Our system is more like this latter type (trust me on that one for now).</p>
-<p>We'll be using SQL (sqlite to start with).</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Objects and Tables</h3>
-    </hgroup>
-    <article class="">
-      <p>So we have a system where our data is captured in Python <em>objects</em></p>
-<div class="build container">
-<p>And a storage system where our data must be rendered as database <em>tables</em></p>
-<p>Python provides a specification for interacting directly with databases:
-<a class="reference external" href="https://www.python.org/dev/peps/pep-0249/">dbapi2</a></p>
-<p>And there are multiple Python packages that implement this specification
-for various databases:</p>
-<ul class="build simple">
-<li>sqlite3</li>
-<li>python-mysql</li>
-<li>psycopg2</li>
-<li>...</li>
-</ul>
-<p>With these, you can write SQL to save your Python objects into your
-database.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>ORMs</h3>
-    </hgroup>
-    <article class="">
-      <p>But that's a pain.</p>
-<div class="build container">
-<p>SQL, while not impossible, is yet another language to learn.</p>
-<p>And there is a viable alternative in using an <em>Object Relational Manager</em>
-(ORM)</p>
-<p>An ORM provides a layer of <em>abstraction</em> between you and SQL</p>
-<p>You instantiate Python objects and set attributes on them</p>
-<p>The ORM handles converting data from these objects into SQL statements (and
-back)</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>SQLAlchemy</h3>
-    </hgroup>
-    <article class="">
-      <p>In our project we will be using the <a class="reference external" href="http://docs.sqlalchemy.org/en/rel_0_9/">SQLAlchemy</a> ORM.</p>
-<div class="build container">
-<p>You can find SQLAlchemy among the packages in <tt class="docutils literal"><span class="pre">requires</span></tt> in <tt class="docutils literal"><span class="pre">setup.py</span></tt>
-in our new <tt class="docutils literal"><span class="pre">learning_journal</span></tt> package.</p>
-<p>However, we don't yet have that code installed.</p>
-<p>To do so, we will need to &quot;install&quot; our own package</p>
-<p>Make sure your <tt class="docutils literal"><span class="pre">ljenv</span></tt> virtualenv is active and then type the following:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>python setup.py develop
-running develop
-running egg_info
-creating learning_journal.egg-info
-...
-Finished processing dependencies <span class="k">for </span>learning-journal<span class="o">==</span>0.0
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>SQLAlchemy</h3>
-    </hgroup>
-    <article class="">
-      <p>Once that is complete, all the <em>dependencies</em> listed in our <tt class="docutils literal"><span class="pre">setup.py</span></tt> will
-be installed.</p>
-<div class="build container">
-<p>You can also install the package using <tt class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">install</span></tt></p>
-<p>But using <tt class="docutils literal"><span class="pre">develop</span></tt> allows us to continue developing our package without
-needing to re-install it every time we change something.</p>
-<p>It is very similar to using the <tt class="docutils literal"><span class="pre">-e</span></tt> option to <tt class="docutils literal"><span class="pre">pip</span></tt></p>
-<p>Now, we'll only need to re-run this command if we change <tt class="docutils literal"><span class="pre">setup.py</span></tt>
-itself.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>SQLAlchemy</h3>
-    </hgroup>
-    <article class="">
-      <p>We also need to adjust our <tt class="docutils literal"><span class="pre">.gitignore</span></tt> file:</p>
-<div class="build highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>git status
-...
-Untracked files:
-  <span class="o">(</span>use <span class="s2">&quot;git add &lt;file&gt;...&quot;</span> to include in what will be committed<span class="o">)</span>
-
-    learning_journal.egg-info/
-</pre></div>
-</div>
-<div class="build container">
-<p>The <tt class="docutils literal"><span class="pre">egg-info</span></tt> directory that was just created is an artifact of
-installing a Python egg.</p>
-<p>It should never be committed to a repository.</p>
-<p>Let's add <tt class="docutils literal"><span class="pre">*.egg-info</span></tt> to our <tt class="docutils literal"><span class="pre">.gitignore</span></tt> file and then commit that
-change</p>
-<p>Remember how?</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Our First Model</h3>
-    </hgroup>
-    <article class="">
-      <p>Our project skeleton contains up a first, basic model created for us:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># in models.py</span>
-<span class="n">Base</span> <span class="o">=</span> <span class="n">declarative_base</span><span class="p">()</span>
-
-<span class="k">class</span> <span class="nc">MyModel</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
-    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s">&#39;models&#39;</span>
-    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Text</span><span class="p">)</span>
-    <span class="n">value</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">)</span>
-<span class="n">Index</span><span class="p">(</span><span class="s">&#39;my_index&#39;</span><span class="p">,</span> <span class="n">MyModel</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">mysql_length</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="build container">
-<p>Our class inherits from <tt class="docutils literal"><span class="pre">Base</span></tt></p>
-<p>We ran into <tt class="docutils literal"><span class="pre">Base</span></tt> earlier when discussing configuration.</p>
-<p>We were binding it to the database we wanted to use (the <tt class="docutils literal"><span class="pre">engine</span></tt>)</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3><tt class="docutils literal"><span class="pre">Base</span></tt></h3>
-    </hgroup>
-    <article class="">
-      <p>Any class we create that inherits from this <tt class="docutils literal"><span class="pre">Base</span></tt> becomes a <em>model</em></p>
-<div class="build container">
-<p>It will be connected through the ORM to a table in our database.</p>
-<p>The name of the table is determined by the <tt class="docutils literal"><span class="pre">__tablename__</span></tt> special
-attribute.</p>
-<p>Other aspects of table configuration can also be controlled through special
-attributes</p>
-<p>Instances of the class, once saved, will become rows in the table.</p>
-<p>Attributes of the model that are instances of <tt class="docutils literal"><span class="pre">Column</span></tt> will become
-columns in the table.</p>
-<p>You can learn much more in the <a class="reference external" href="http://docs.sqlalchemy.org/en/rel_0_9/orm/extensions/declarative/">Declarative</a> chapter of the SQLAlchemy docs</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Columns</h3>
-    </hgroup>
-    <article class="">
-      <p>Each attribute of your model that will be persisted must be an instance of
-<a class="reference external" href="http://docs.sqlalchemy.org/en/rel_0_9/core/metadata.html#sqlalchemy.schema.Column">Column</a>.</p>
-<div class="build container">
-<p>Each instance requires <em>at least</em> a specific <a class="reference external" href="http://docs.sqlalchemy.org/en/rel_0_9/core/types.html">data type</a> (such as
-Integer).</p>
-<p>Additionally, you can control other aspects of the column such as it being
-a primary key.</p>
-<p>In the <em>declarative</em> style we are using, the name of the column in the
-database will default to the attribute name you assigned.</p>
-<p>If you wish, you may provide a name specifically.  It must be the first
-argument and must be a string.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Creating The Database</h3>
-    </hgroup>
-    <article class="">
-      <p>We have a <em>model</em> which allows us to persist Python objects to an SQL database.</p>
-<div class="build container">
-<p>But we're still missing one ingredient here.</p>
-<p>We need to create our database, or there will be nowhere for our data to
-go.</p>
-<p>Luckily, our <tt class="docutils literal"><span class="pre">pcreate</span></tt> scaffold also gave us a convenient way to handle
-this:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># in setup.py</span>
-<span class="n">entry_points</span><span class="o">=</span><span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
-<span class="s">[paste.app_factory]</span>
-<span class="s">main = learning_journal:main</span>
-<span class="s">[console_scripts]</span>
-<span class="s">initialize_learning_journal_db = learning_journal.scripts.initializedb:main</span>
-<span class="s">&quot;&quot;&quot;</span><span class="p">,</span>
-</pre></div>
-</div>
-<p>The <tt class="docutils literal"><span class="pre">console_script</span></tt> set up as an entry point will help us.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3><tt class="docutils literal"><span class="pre">initialize_learning_journal_db</span></tt></h3>
-    </hgroup>
-    <article class="">
-      <p>Let's look at that code for a moment.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># in scripts/intitalizedb.py</span>
-<span class="kn">from</span> <span class="nn">..models</span> <span class="kn">import</span> <span class="n">DBSession</span><span class="p">,</span> <span class="n">MyModel</span><span class="p">,</span> <span class="n">Base</span>
-<span class="c"># ...</span>
-<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">):</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="n">usage</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
-    <span class="n">config_uri</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">options</span> <span class="o">=</span> <span class="n">parse_vars</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span>
-    <span class="n">setup_logging</span><span class="p">(</span><span class="n">config_uri</span><span class="p">)</span>
-    <span class="n">settings</span> <span class="o">=</span> <span class="n">get_appsettings</span><span class="p">(</span><span class="n">config_uri</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
-    <span class="n">engine</span> <span class="o">=</span> <span class="n">engine_from_config</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;sqlalchemy.&#39;</span><span class="p">)</span>
-    <span class="n">DBSession</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
-    <span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
-    <span class="k">with</span> <span class="n">transaction</span><span class="o">.</span><span class="n">manager</span><span class="p">:</span>
-        <span class="n">model</span> <span class="o">=</span> <span class="n">MyModel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;one&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">DBSession</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
-</pre></div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Console Scripts</h3>
-    </hgroup>
-    <article class="">
-      <p>By connecting this function as a <tt class="docutils literal"><span class="pre">console</span> <span class="pre">script</span></tt>, our Python package makes
-this command available to us.</p>
-<div class="build container">
-<p>When we exectute <tt class="docutils literal"><span class="pre">initialize_learning_journal_db</span></tt> at the command line, we
-will be running this function.</p>
-<p>Let's try it out.</p>
-<p>We'll need to provide a configuration file name, let's use
-<tt class="docutils literal"><span class="pre">development.ini</span></tt>:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>initialize_learning_journal_db development.ini
-2015-01-05 18:59:55,426 INFO  <span class="o">[</span>sqlalchemy.engine.base.Engine<span class="o">][</span>MainThread<span class="o">]</span> SELECT CAST<span class="o">(</span><span class="s1">&#39;test plain returns&#39;</span> AS VARCHAR<span class="o">(</span>60<span class="o">))</span> AS anon_1
-...
-2015-01-05 18:59:55,434 INFO  <span class="o">[</span>sqlalchemy.engine.base.Engine<span class="o">][</span>MainThread<span class="o">]</span> COMMIT
-</pre></div>
-</div>
-<p>The <tt class="docutils literal"><span class="pre">[loggers]</span></tt> configuration in our <tt class="docutils literal"><span class="pre">.ini</span></tt> file sends a stream of
-INFO-level logging to sys.stdout as the console script runs.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>A Bit More Cleanup</h3>
-    </hgroup>
-    <article class="">
-      <p>So what was the outcome of running that script?</p>
-<div class="build container">
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>ls
-...
-learning_journal.sqlite
-...
-</pre></div>
-</div>
-<p>We've now created an sqlite database.</p>
-<p>You'll need to add <tt class="docutils literal"><span class="pre">*.sqlite</span></tt> to <tt class="docutils literal"><span class="pre">.gitignore</span></tt> so you don't add that
-file to your repository.</p>
-<p>Once you've done so, commit the change to your repository</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Interacting with SQLA Models</h3>
-    </hgroup>
-    <article class="">
-      <p>It's pretty easy to play with your models from in an interpreter.</p>
-<div class="build container">
-<p>Let's try that out and see what we have.  Start up an interpreter:</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="s">&#39;development.ini&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyramid.paster</span> <span class="kn">import</span> <span class="n">get_appsettings</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">settings</span> <span class="o">=</span> <span class="n">get_appsettings</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">engine_from_config</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">engine</span> <span class="o">=</span> <span class="n">engine_from_config</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;sqlalchemy.&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">sessionmaker</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">Session</span> <span class="o">=</span> <span class="n">sessionmaker</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">learning_journal.models</span> <span class="kn">import</span> <span class="n">MyModel</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">MyModel</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-<span class="go">[&lt;learning_journal.models.MyModel object at 0x10b075ed0&gt;]</span>
-</pre></div>
-</div>
-<p>We are basically stealing the important bits from <tt class="docutils literal"><span class="pre">initializedb.py</span></tt></p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Basic Interactions</h3>
-    </hgroup>
-    <article class="">
-      <p>Any interaction with the database requires a <tt class="docutils literal"><span class="pre">session</span></tt>.</p>
-<div class="build container">
-<p>This object represents the connection to the database.</p>
-<p>All database queries are phrased as methods of the session.</p>
-<div class="container">
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">MyModel</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
-<span class="go">&lt;class &#39;sqlalchemy.orm.query.Query&#39;&gt;</span>
-</pre></div>
-</div>
-<p>The <tt class="docutils literal"><span class="pre">query</span></tt> method of the session object returns a <tt class="docutils literal"><span class="pre">Query</span></tt> object</p>
-</div>
-<p>Arguments to the <tt class="docutils literal"><span class="pre">query</span></tt> method can be a <em>model</em> class or <em>columns</em> from
-a model class.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Queries are Iterators</h3>
-    </hgroup>
-    <article class="">
-      <p>You can iterate over a query object.  The result depends on the args you
-passed.</p>
-<div class="build container">
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">q1</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">MyModel</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">q1</span><span class="p">:</span>
-<span class="gp">... </span>  <span class="k">print</span> <span class="n">row</span>
-<span class="gp">... </span>  <span class="nb">type</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
-<span class="gp">...</span>
-<span class="go">&lt;learning_journal.models.MyModel object at 0x1103d9f10&gt;</span>
-<span class="go">&lt;class &#39;learning_journal.models.MyModel&#39;&gt;</span>
-</pre></div>
-</div>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">q2</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">MyModel</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">MyModel</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">MyModel</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">q2</span><span class="p">:</span>
-<span class="gp">... </span>  <span class="k">print</span> <span class="n">name</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-<span class="gp">... </span>  <span class="k">print</span> <span class="nb">id</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
-<span class="gp">... </span>  <span class="k">print</span> <span class="n">val</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
-<span class="gp">...</span>
-<span class="go">one &lt;type &#39;unicode&#39;&gt;</span>
-<span class="go">1 &lt;type &#39;int&#39;&gt;</span>
-<span class="go">1 &lt;type &#39;int&#39;&gt;</span>
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Queries have SQL</h3>
-    </hgroup>
-    <article class="">
-      <p>You can view the SQL that your query will use:</p>
-<div class="build container">
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">q1</span><span class="p">)</span>
-<span class="go">&#39;SELECT models.id AS models_id, models.name AS models_name, models.value AS models_value \nFROM models&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">q2</span><span class="p">)</span>
-<span class="go">&#39;SELECT models.name AS models_name, models.id AS models_id, models.value AS models_value \nFROM models&#39;</span>
-</pre></div>
-</div>
-<p>You can use this to check that the query the ORM is constructing looks like
-you expect.</p>
-<p>It can be helpful in debugging.</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Methods of the Query Object</h3>
-    </hgroup>
-    <article class="">
-      <p>The methods of the <tt class="docutils literal"><span class="pre">Query</span></tt> object fall into two rough categories</p>
-<div class="build container">
-<ol class="build arabic simple">
-<li>Methods that return a new <tt class="docutils literal"><span class="pre">Query</span></tt> object</li>
-<li>Methods that return <em>scalar</em> values or <em>model</em> instances</li>
-</ol>
-<p>Let's start by looking quickly at a few methods from the second category</p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3><tt class="docutils literal"><span class="pre">query.get()</span></tt></h3>
-    </hgroup>
-    <article class="">
-      <p>A good example of this category of methods is <tt class="docutils literal"><span class="pre">get</span></tt>, which returns one
-instance only.</p>
-<div class="build container">
-<p>It takes a primary key as an argument:</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">MyModel</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="go">&lt;learning_journal.models.MyModel object at 0x1103d9f10&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">MyModel</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-</pre></div>
-</div>
-<p>If no item with that primary key is present, then the method returns
-<tt class="docutils literal"><span class="pre">None</span></tt></p>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3><tt class="docutils literal"><span class="pre">query.all()</span></tt></h3>
-    </hgroup>
-    <article class="">
-      <p>Another example is one we've already seen.</p>
-<div class="build container">
-<p><tt class="docutils literal"><span class="pre">query.all()</span></tt> returns a list of all rows returned by the database:</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">q1</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-<span class="go">[&lt;learning_journal.models.MyModel object at 0x1103d9f10&gt;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">q1</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
-<span class="go">&lt;type &#39;list&#39;&gt;</span>
-</pre></div>
-</div>
-<p><tt class="docutils literal"><span class="pre">query.count()</span></tt> returns the number of rows that would have been returned
-by the query:</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">q1</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
-<span class="go">1</span>
-</pre></div>
-</div>
-</div>
-
-
-
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Creating New Objects</h3>
-    </hgroup>
-    <article class="">
-      <p>Before getting into the other category, let's learn how to create new objects.</p>
+<p>The flow of this interaction can be a bit confusing.  Let's see it in
+action step-by-step.</p>
 <div class="build container">
 <div class="container">
-<p>We can create new instances of our <em>model</em> just like normal Python
-objects:</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">new_model</span> <span class="o">=</span> <span class="n">MyModel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;fred&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">new_model</span>
-<span class="go">&lt;learning_journal.models.MyModel object at 0x1103e38d0&gt;</span>
-</pre></div>
-</div>
-</div>
-<div class="container">
-<p>In this state, the instance is <em>ephemeral</em>, our <tt class="docutils literal"><span class="pre">session</span></tt> knows
-nothing about it:</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">session</span><span class="o">.</span><span class="n">new</span>
-<span class="go">IdentitySet([])</span>
-</pre></div>
-</div>
+Open a second iPython interpreter and place it next to your first so
+you can see both of them at the same time.</div>
 </div>
 </div>
 
 
+
+<div class="slide-no">58</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="create-a-server">
     <hgroup>
-      <h3>Adding Objects to the Session</h3>
+      <h3>Create a Server</h3>
     </hgroup>
     <article class="">
-      <p>For the database to know about our new object, we must <tt class="docutils literal"><span class="pre">add</span></tt> it to the
-session:</p>
+      <p>In your first python interpreter, create a server socket and prepare it for
+connections:</p>
 <div class="build container">
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">new_model</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">session</span><span class="o">.</span><span class="n">new</span>
-<span class="go">IdentitySet([&lt;learning_journal.models.MyModel object at 0x1103e38d0&gt;])</span>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [81]: </span><span class="n">server_socket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span>
+<span class="gp">   ....: </span>    <span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span>
+<span class="gp">   ....: </span>    <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">,</span>
+<span class="gp">   ....: </span>    <span class="n">socket</span><span class="o">.</span><span class="n">IPPROTO_IP</span><span class="p">)</span>
+<span class="gp">In [82]: </span><span class="n">server_socket</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="s">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="mi">50000</span><span class="p">))</span>
+<span class="gp">In [83]: </span><span class="n">server_socket</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">In [84]: </span><span class="n">conn</span><span class="p">,</span> <span class="n">addr</span> <span class="o">=</span> <span class="n">server_socket</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>We can even bulk-add new objects:</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">new</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="p">[(</span><span class="s">&#39;bob&#39;</span><span class="p">,</span> <span class="mi">34</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;tom&#39;</span><span class="p">,</span> <span class="mi">13</span><span class="p">)]:</span>
-<span class="gp">... </span>  <span class="n">new</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">MyModel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">val</span><span class="p">))</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">session</span><span class="o">.</span><span class="n">add_all</span><span class="p">(</span><span class="n">new</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">session</span><span class="o">.</span><span class="n">new</span>
-<span class="go">IdentitySet([&lt;learning_journal.models.MyModel object at 0x1103e3f50&gt;,</span>
-<span class="go">             &lt;learning_journal.models.MyModel object at 0x1103e38d0&gt;,</span>
-<span class="go">             &lt;learning_journal.models.MyModel object at 0x1103e3fd0&gt;])</span>
-</pre></div>
-</div>
+<p>At this point, you should <strong>not</strong> get back a prompt. The server socket is
+waiting for a connection to be made.</p>
 </div>
 
 
+
+<div class="slide-no">59</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="create-a-client">
     <hgroup>
-      <h3>Committing Changes</h3>
+      <h3>Create a Client</h3>
     </hgroup>
     <article class="">
-      <p>Up until now, the changes you've made are not permanent.</p>
+      <p>In your second interpreter, create a client socket and prepare to send a
+message:</p>
 <div class="build container">
-<p>In order for these new objects to be saved to the database, the session
-must be <tt class="docutils literal"><span class="pre">committed</span></tt>:</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">other_session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">other_session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">MyModel</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
-<span class="go">1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">other_session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">MyModel</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">socket</span>
+<span class="gp">In [2]: </span><span class="n">client_socket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span>
+<span class="gp">   ...: </span>    <span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span>
+<span class="gp">   ...: </span>    <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">,</span>
+<span class="gp">   ...: </span>    <span class="n">socket</span><span class="o">.</span><span class="n">IPPROTO_IP</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>When you are using a <tt class="docutils literal"><span class="pre">scoped_session</span></tt> in Pyramid, this action is
-automatically handled for you.</p>
-<p>The session that is bound to a particular HTTP request is committed when a
-response is sent back.</p>
+<p>Before connecting, keep your eye on the server interpreter:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [3]: </span><span class="n">client_socket</span><span class="o">.</span><span class="n">connect</span><span class="p">((</span><span class="s">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="mi">50000</span><span class="p">))</span>
+</pre></div>
+</div>
 </div>
 
 
+
+<div class="slide-no">60</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="send-a-message-client-server">
     <hgroup>
-      <h3>Altering Objects</h3>
+      <h3>Send a Message Client-&gt;Server</h3>
     </hgroup>
     <article class="">
-      <p>You can edit objects that are already part of a session, or that are fetched by
-a query.</p>
+      <p>As soon as you made the connection above, you should have seen the prompt
+return in your server interpreter. The <code class="docutils literal"><span class="pre">accept</span></code> method finally returned a
+new connection socket.</p>
 <div class="build container">
-<p>Simply change the values of a persisted attribute, the session will know
-it's been updated:</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">new_model</span>
-<span class="go">&lt;learning_journal.models.MyModel object at 0x1103e38d0&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">new_model</span><span class="o">.</span><span class="n">name</span>
-<span class="go">u&#39;fred&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">new_model</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#39;larry&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">session</span><span class="o">.</span><span class="n">dirty</span>
-<span class="go">IdentitySet([&lt;learning_journal.models.MyModel object at 0x1103e38d0&gt;])</span>
-</pre></div>
-</div>
-<p>Commit the session to persist the changes:</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<p>When you're ready, type the following in the <em>client</em> interpreter:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [4]: </span><span class="n">client_socket</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="s">&#39;Hey, can you hear me?&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 
 
+
+<div class="slide-no">61</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="receive-and-respond">
     <hgroup>
-      <h3>Methods Returning Queries</h3>
+      <h3>Receive and Respond</h3>
     </hgroup>
     <article class="">
-      <p>Returning to queries, the second category is typified by the <tt class="docutils literal"><span class="pre">filter</span></tt> method</p>
+      <p>Back in your server interpreter, go ahead and receive the message from your
+client:</p>
 <div class="build container">
-<p>This method allows you to reduce the number of results, based on criteria:</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">MyModel</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">MyModel</span><span class="o">.</span><span class="n">value</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">):</span>
-<span class="gp">... </span>  <span class="k">print</span> <span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">value</span>
-<span class="gp">...</span>
-<span class="go">one 1</span>
-<span class="go">larry 3</span>
-<span class="go">tom 13</span>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [87]: </span><span class="n">msg</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">4096</span><span class="p">)</span>
+<span class="gp">In [88]: </span><span class="n">msg</span>
+<span class="gh">Out[88]: </span><span class="go">b&#39;Hey, can you hear me?&#39;</span>
+</pre></div>
+</div>
+<p>Send a message back, and then close up your connection:</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [89]: </span><span class="n">conn</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="s">&#39;Yes, I can hear you.&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">))</span>
+<span class="gp">In [90]: </span><span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 
 
 
+<div class="slide-no">62</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="finish-up">
     <hgroup>
-      <h3><tt class="docutils literal"><span class="pre">order_by</span></tt></h3>
+      <h3>Finish Up</h3>
     </hgroup>
     <article class="">
-      <p>Another typical method in this category is <tt class="docutils literal"><span class="pre">order_by</span></tt>:</p>
+      <p>Back in your client interpreter, take a look at the response to your message,
+then be sure to close your client socket too:</p>
 <div class="build container">
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">MyModel</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">MyModel</span><span class="o">.</span><span class="n">value</span><span class="p">):</span>
-<span class="gp">... </span>  <span class="k">print</span> <span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">value</span>
-<span class="gp">...</span>
-<span class="go">one 1</span>
-<span class="go">larry 3</span>
-<span class="go">tom 13</span>
-<span class="go">bob 34</span>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [5]: </span><span class="n">from_server</span> <span class="o">=</span> <span class="n">client_socket</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">4096</span><span class="p">)</span>
+<span class="gp">In [6]: </span><span class="n">from_server</span>
+<span class="gh">Out[6]: </span><span class="go">b&#39;Yes, I can hear you.&#39;</span>
+<span class="gp">In [7]: </span><span class="n">client_socket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">MyModel</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">MyModel</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
-<span class="gp">... </span>  <span class="k">print</span> <span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">value</span>
-<span class="gp">...</span>
-<span class="go">bob 34</span>
-<span class="go">larry 3</span>
-<span class="go">one 1</span>
-<span class="go">tom 13</span>
+<p>And now that we're done, we can close up the server socket too (back in the
+server interpreter):</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [91]: </span><span class="n">server_socket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 
 
+
+<div class="slide-no">63</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="id31">
     <hgroup>
-      <h3>Method Chaining</h3>
+      <h3>Congratulations!</h3>
     </hgroup>
     <article class="">
-      <p>Since methods in this category return <tt class="docutils literal"><span class="pre">Query</span></tt> objects, they can be safely
-<em>chained</em> to build more complex queries:</p>
-<div class="build container">
-<div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">q1</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">MyModel</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">MyModel</span><span class="o">.</span><span class="n">value</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">q1</span> <span class="o">=</span> <span class="n">q1</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">MyModel</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">q1</span><span class="p">:</span>
-<span class="gp">... </span>  <span class="k">print</span> <span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">value</span>
-<span class="gp">...</span>
-<span class="go">larry 3</span>
-<span class="go">one 1</span>
-<span class="go">tom 13</span>
-</pre></div>
-</div>
-<p>Note that you can do this inline as well
-(<tt class="docutils literal"><span class="pre">s.query(Model).filter().order_by()</span></tt>)</p>
-<p>Also note that when using chained queries like this, no query is actually
-sent to the database until you require a result.</p>
-</div>
+      <p class="large center">You've run your first client-server interaction</p>
 
 
+
+<div class="slide-no">64</div>
 
 
     </article>
-  </slide>  <slide class="level-2">
+  </slide>  <slide class="level-2" id="homework">
     <hgroup>
       <h2>Homework</h2>
     </hgroup>
     <article class="">
-      <p class="left">Okay, that's enough for the moment.</p>
-<div class="build left container">
-<p>You've learned quite a bit about how <em>models</em> work in SQLAlchemy</p>
-<p>It's time to put that knowledge to good use.</p>
-<p>For the first part of your assignment this week you will begin to define
-the data model for our learning journal application.</p>
-<p>I'll provide a specification, you define the model required to do the job.</p>
-<p>I'll also ask you to define a few methods to complete the first part of our
-API.</p>
+      <div class="left container">
+<p>Your homework assignment for this week is to take what you've learned here
+and build a simple &quot;echo&quot; server.</p>
+<div class="build container">
+<p>The server should automatically return to any client that connects <em>exactly</em>
+what it receives (it should <strong>echo</strong> all messages).</p>
+<p>You will also write a python script that, when run, will send a message to the
+server and receive the reply, printing it to <code class="docutils literal"><span class="pre">stdout</span></code>.</p>
+<p>Finally, you'll do all of this so that it can be tested.</p>
+</div>
 </div>
 
 
 
+<div class="slide-no">65</div>
+
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="your-task">
     <hgroup>
-      <h3>The Model</h3>
+      <h3>Your Task</h3>
     </hgroup>
     <article class="">
-      <p>Our model will be called an <tt class="docutils literal"><span class="pre">Entry</span></tt>. Here's what you need to know:</p>
-<ul class="simple">
-<li>It should be stored in a database table called <tt class="docutils literal"><span class="pre">entries</span></tt></li>
-<li>It should have a primary key field called <tt class="docutils literal"><span class="pre">id</span></tt></li>
-<li>It should have a <tt class="docutils literal"><span class="pre">title</span></tt> field which accepts unicode text up to 255 characters in length</li>
-<li>The <tt class="docutils literal"><span class="pre">title</span></tt> should be unique and it should be impossible to save an
-<tt class="docutils literal"><span class="pre">entry</span></tt> without a <tt class="docutils literal"><span class="pre">title</span></tt>.</li>
-<li>It should have a <tt class="docutils literal"><span class="pre">body</span></tt> field which accepts unicode text of any length
-(including none)</li>
-<li>It should have a <tt class="docutils literal"><span class="pre">created</span></tt> field which stores the date and time the object
-was created.</li>
-<li>It should have an <tt class="docutils literal"><span class="pre">edited</span></tt> field which stores the date and time the object
-was last edited.</li>
-<li>Both the <tt class="docutils literal"><span class="pre">created</span></tt> and <tt class="docutils literal"><span class="pre">edited</span></tt> field should default to <tt class="docutils literal"><span class="pre">now</span></tt> if not
-provided when a new instance is constructed.</li>
-<li>The <tt class="docutils literal"><span class="pre">entry</span></tt> class should support a classmethod <tt class="docutils literal"><span class="pre">all</span></tt> that returns all the
-entries in the database, ordered so that the most recent entry is first.</li>
-<li>The <tt class="docutils literal"><span class="pre">entry</span></tt> class should support a classmethod <tt class="docutils literal"><span class="pre">by_id</span></tt> that returns a
-single entry, given an <tt class="docutils literal"><span class="pre">id</span></tt>.</li>
+      <p>In our class repository, there is a folder <code class="docutils literal"><span class="pre">resources/session01</span></code>.</p>
+<div class="build container">
+<p>Inside that folder, you should find:</p>
+<ul class="build simple">
+<li>A file <code class="docutils literal"><span class="pre">tasks.txt</span></code> that contains these instructions</li>
+<li>A skeleton for your server in <code class="docutils literal"><span class="pre">echo_server.py</span></code></li>
+<li>A skeleton for your client script in <code class="docutils literal"><span class="pre">echo_client.py</span></code></li>
+<li>Some simple tests in <code class="docutils literal"><span class="pre">tests.py</span></code></li>
 </ul>
+<p>Your task is to make the tests pass.</p>
+</div>
 
 
 
-
-    </article>
-  </slide>  <slide class="level-3">
-    <hgroup>
-      <h3>Words of Advice</h3>
-    </hgroup>
-    <article class="">
-      <p>Use the documentation linked in this presentation to assist you.  SQLAlchemy
-has fantastic documentation, but it can be a bit overwhelming.  Everything you
-require for this assignment is on one or more of the pages linked above.</p>
-<p>As you define this new model for our application, make frequent commits to your
-github repository. Remember to write meaningful commit messages.</p>
-<p>Don't be afraid to start up a Python interpreter and play with your model. Try
-things out. Learn how this all works by making mistakes.</p>
-<p>Errors at the SQL level can sometimes leave your session unusable. To restore
-it, use the <tt class="docutils literal"><span class="pre">session.rollback()</span></tt> method.  You'll lose uncommitted changes,
-but you'll gain a session that can be used again.</p>
-
-
+<div class="slide-no">66</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="running-the-tests">
     <hgroup>
-      <h3>Submitting Your Work</h3>
+      <h3>Running the Tests</h3>
     </hgroup>
     <article class="">
-      <p>I want to be able to review your code (and you want to be able to share it).</p>
-<p>To submit this assignment, you'll need to add this learning_journal repository
-to GitHub.</p>
-<p>On the GitHub website you can create a new repository.  Set it up to be
-completely empty. Name it <tt class="docutils literal"><span class="pre">learning_journal</span></tt> and give it any description you
-like.</p>
-<p>When you've created an empty repository in GitHub, you should see a set of
-directions for connecting it to a repository that you've already built. Follow
-those instructions to connect your emtpy GitHub repository as the <tt class="docutils literal"><span class="pre">origin</span></tt>
-remote to your <tt class="docutils literal"><span class="pre">learning_journal</span></tt> repository on your machine.</p>
-<p>Finally, push your <tt class="docutils literal"><span class="pre">master</span></tt> branch to your new <tt class="docutils literal"><span class="pre">origin</span></tt> remote on GitHub.</p>
-<p>When you are done, send me an email with the URL for your new repository.</p>
+      <p>To run the tests, you'll have to set the server running in one terminal:</p>
+<div class="build container">
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python echo_server.py
+</pre></div>
+</div>
+<p>Then, in a second terminal, you will execute the tests:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python tests.py
+</pre></div>
+</div>
+<p>You should see output like this:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">[</span>...<span class="o">]</span>
+FAILED <span class="o">(</span><span class="nv">failures</span><span class="o">=</span>2<span class="o">)</span>
+</pre></div>
+</div>
+</div>
 
 
+
+<div class="slide-no">67</div>
 
 
     </article>
-  </slide>  <slide class="level-3">
+  </slide>  <slide class="level-3" id="submitting-your-homework">
     <hgroup>
-      <h3>The Model</h3>
+      <h3>Submitting Your Homework</h3>
     </hgroup>
     <article class="">
-      <p><strong>Our work next week will assume that you have completed this assignment</strong></p>
-<p>Do not delay working on this until the last moment.</p>
-<p>Do not skip this assignment.</p>
-<p>Do ask questions frequently via email (use the <a class="reference external" href="https://groups.google.com/forum/#!forum/programming-in-python">class google group</a>).</p>
-<p>See you next week!</p>
+      <p>To submit your homework:</p>
+<div class="build container">
+<ul class="build simple">
+<li>Create a new repository in GitHub.  Call it <code class="docutils literal"><span class="pre">echo_sockets</span></code>.</li>
+<li>Put the <code class="docutils literal"><span class="pre">echo_server.py</span></code>, <code class="docutils literal"><span class="pre">echo_client.py</span></code> and <code class="docutils literal"><span class="pre">tests.py</span></code> files in
+this repository.</li>
+<li>Send us an email with a link to your repository when you are
+done.</li>
+</ul>
+<p>We will clone your repository and run the tests as described above.</p>
+<p>And we'll make comments inline on your repository.</p>
+</div>
 
 
+
+<div class="slide-no">68</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="going-further">
+    <hgroup>
+      <h3>Going Further</h3>
+    </hgroup>
+    <article class="">
+      <p>In <code class="docutils literal"><span class="pre">assignments/session01/tasks.txt</span></code> you'll find a few extra problems to try.</p>
+<div class="build container">
+<p>If you finish the first part of the homework in less than 3-4 hours give
+one or more of these a whirl.</p>
+<p>They are not required, but if you include solutions in your repository,
+we'll review your work.</p>
+</div>
+
+
+
+<div class="slide-no">69</div>
 
 
     </article>
@@ -2061,7 +1673,7 @@ remote to your <tt class="docutils literal"><span class="pre">learning_journal</
     <slide class="thank-you-slide segue nobackground">
     <aside class="gdbar right"><img src="../_static/logo_UW.png"></aside>
     <article class="flexbox vleft auto-fadein">
-      <h2>&lt;Thank You!&gt;</h2>
+      <h2>Good Night!</h2>
       <p>&nbsp;</p>
     </article>
     <p class="auto-fadein" data-config-contact>

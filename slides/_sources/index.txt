@@ -14,7 +14,10 @@ Internet Programming with Python
 .. slide:: Internet Programming with Python
     :level: 1
 
-    This document contains no slides.
+    .. rst-class:: large center
+    .. container::
+    
+        No Content
 
 .. sidebar:: In This Class
 
@@ -27,27 +30,27 @@ Internet Programming with Python
 
 Winter Term, 2015 (10 sessions)
 
-Tuesdays, 6-9 pm, January 6 - March 10
+Tuesdays, 6-9 pm, January 5 - March 8
 
 
 Overview
 ========
 
-This course emphasizes network-based programming and Web
-applications, how they work and how to program them in Python. Explore the
-underlying principles and their expression in the Python libraries. Learn
-contrasting approaches in creating applications: programming with the
-low-level libraries versus using highly integrated frameworks
+This course emphasizes network-based programming and Web applications, how they
+work and how to program them in Python. Explore the underlying principles and
+their expression in the Python libraries. Learn contrasting approaches in
+creating applications: programming with the low-level libraries versus using
+highly integrated frameworks
 
 
 Prerequisites
 =============
 
-To attend this course you should have a working knowledge of the basic
-syntax and structures of the Python programming language. You will also need
-to be comfortable working at the command line to navigate a file system,
-create and delete files, and execute commands. Finally, you should have some
-basic knowledge of HTML.
+To attend this course you should have a working knowledge of the basic syntax
+and structures of the Python programming language. You will also need to be
+comfortable working at the command line to navigate a file system, create and
+delete files, and execute commands. Finally, you should have some basic
+knowledge of HTML.
 
 
 Requirements
@@ -57,14 +60,15 @@ This workshop does not provide a computer laboratory. You will have to have a
 portable computer in order to participate. Network access is provided, but you
 will need to know how to operate the network settings for your computer.
 
-Your computer must have Python version 2.6 or 2.7 installed. No additional
+Your computer must have Python version 3.4 or later installed. No additional
 libraries will be required, but we will be installing some as the workshop
 progresses.
 
-You will want to familiarize yourself with `virtualenv
-<http://www.virtualenv.org/en/latest/>`_.  We will use it extensively in class
-in order to keep our development environments clean and separate.
+To keep clean and isolated development environments, we will make use in class
+of the `venv`_ module, a standard library module used to create and maintain
+lightweight sandbox environments.
 
+.. _venv: https://docs.python.org/3/library/venv.html
 
 What to Expect
 ==============
@@ -96,20 +100,24 @@ frameworks covered as well as the choices and compromises that shape them.
 References
 ==========
 
-`Python 2 Documentation <http://docs.python.org/2/>`_: Complete
+`Python 3 Documentation <https://docs.python.org/3/>`_: Complete
 documentation of the language.
 
-`Python 2.7 Quick Reference <http://rgruet.free.fr/PQR27/PQR2.7.html>`_:
-Dense and complete. Good for jogging your memory, but don't start here.
+`Python 3 Language Reference <https://docs.python.org/3/reference/>`_: Terse
+and complete reference to the language structures of Python 3.
 
-`Python Standard Library - Internet Protocols and Support
-<http://docs.python.org/2/library/internet.html>`_: All the supported internet
-protocols as implemented in Python.
+Python Standard Library -
+`Internet Protocols and Support <https://docs.python.org/3/library/internet.html>`_:
+All the supported internet protocols as implemented in Python.
 
-`Python Module of the Week <http://pymotw.com/2/>`_: A fantastic reference for
-any module in python. Examples and usage are provided throughout.
+Python Module of the Week (`py2`_, `py3`_): A fantastic reference for many
+modules in Python 2 and 3. Examples and usage are provided throughout. Don't be
+shy about trying the Python 2 docs in Python 3, often they will work still.
 
-`Lecture Presentations <presentations/index.html>`_: Slides from the workshop
+.. _py2: https://pymotw.com/2/contents.html
+.. _py3: https://pymotw.com/3/
+
+`Lecture Presentations <presentations/index.html>`_: Slides from the course
 presentations.
 
 

@@ -18,73 +18,7 @@ increase both the depth and breadth of your knowledge.
 The readings are organized like the class, by session and topic.
 
 
-Session 1 - MVC Applications and Data Persistence
--------------------------------------------------
-
-As we'll be learning about Pyramid over the first three sessions, please take
-some time to read and digest some of the `copious documentation`_ for thie
-powerful framework.
-
-In particular, to cover the topics we address in this session you'll want to
-read the following:
-
-* `Pyramid Configuration
-  <http://docs.pylonsproject.org/projects/pyramid/en/latest/api/config.html>`_
-* `Defending Pyramid's Design
-  <http://docs.pylonsproject.org/projects/pyramid/en/latest/designdefense.html>`_
-
-.. _copious documentation: http://docs.pylonsproject.org/projects/pyramid/en/latest/index.html
-
-You may also wish to read a bit about `SQLAlchemy`_.  In particular you may
-want to work through the `Object Relational Tutorial`_ to get a more complete
-understanding of how the SQLAlchemy ORM works.
-
-.. _SQLAlchemy: http://docs.sqlalchemy.org/en/rel_0_9/
-.. _Object Relational Tutorial: http://docs.sqlalchemy.org/en/rel_0_9/orm/tutorial.html
-
-
-Session 2 - Pyramid Views, Renderers and Forms
-----------------------------------------------
-
-This week we'll be focusing on the connection of an HTTP request to the code
-that handles that request using `URL Dispatch`_.  Quite a lot is possible with
-the Pyramid route system.  You may wish to read a bit more about it in one of
-the following documentation sections:
-
-* `Route Pattern Syntax
-  <http://docs.pylonsproject.org/docs/pyramid/en/latest/narr/urldispatch.html#route-pattern-syntax>`_
-  discusses the syntax for pattern matching and extraction in Pyramid routes.
-
-In Pyramid, the code that handles requests is called `a view`_.
-
-A view passes data to `a renderer`_, which is responsible for turning the data
-into a response to send back.
-
-Getting information from a client to the server is generally handled by
-`HTML forms`_. Working with forms in a framework like Pyramid can be
-facilitated by using a *form library* like `WTForms`_.
-
-.. _URL Dispatch: http://docs.pylonsproject.org/docs/pyramid/en/latest/narr/urldispatch.html
-.. _a view: http://docs.pylonsproject.org/projects/pyramid/en/1.5-branch/narr/views.html
-.. _a renderer: http://docs.pylonsproject.org/projects/pyramid/en/1.5-branch/narr/renderers.html
-.. _HTML forms: https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Forms
-.. _WTForms: http://wtforms.readthedocs.org/en/latest/
-
-For layout and design, CSS will be your tool of choice. There is no better tool
-for learning CSS than trying things out, but you need a good reference to get
-started. You can learn a great deal from the `Mozilla Developer Network`_ CSS
-pages.  I also find `A List Apart`_ and `Smashing Magazine`_ to be fantastic
-resources.
-
-.. _Smashing Magazine: http://www.smashingmagazine.com
-.. _A List Apart: http://alistapart.com
-.. _Mozilla Developer Network: https://developer.mozilla.org/en-US/docs/Web/CSS
-
-
-Sesstion 3 - Pyramid Authentication and Deployment
---------------------------------------------------
-
-Session 4 - TCP/IP and Sockets
+Session 1 - TCP/IP and Sockets
 ------------------------------
 
 * `Wikipedia - Internet Protocol Suite
@@ -129,7 +63,7 @@ networked computing in mind:
 * `ZeroMQ Guide, Chapter 1 <http://zguide.zeromq.org/py:all#Chapter-Basics>`_
 
 
-Session 5 - Web Protocols
+Session 2 - Web Protocols
 -------------------------
 
 * `Python Standard Library Internet Protocols
@@ -167,7 +101,7 @@ remain unchanged) over time, skim these specifications for HTTP and SMTP:
 * `RFC 5321 - SMTP (latest) <http://tools.ietf.org/html/rfc5321>`_
 
 
-Session 6 - CGI and WSGI
+Session 3 - CGI and WSGI
 ------------------------
 
 * `CGI tutorial`_ - Read the following sections: Hello World, Debugging, Form.
@@ -200,7 +134,7 @@ more minimal and may be easier to comprehend off the bat.
 .. _Getting Started with WSGI: http://lucumr.pocoo.org/2007/5/21/getting-started-with-wsgi/
 
 
-Session 7 - APIs and Mashups
+Session 4 - APIs and Mashups
 ----------------------------
 
 * `Introduction to HTML (from the Mozilla Developer Network)
@@ -245,6 +179,75 @@ both from the side of production and consumption:
 .. _restkit: https://github.com/benoitc/restkit/
 
 
+Session 5 - MVC Applications and Data Persistence
+-------------------------------------------------
+
+As we'll be learning about Pyramid over the next three sessions, please take
+some time to read and digest some of the `copious documentation`_ for thie
+powerful framework.
+
+In particular, to cover the topics we address in this session you'll want to
+read the following:
+
+* `Pyramid Configuration
+  <http://docs.pylonsproject.org/projects/pyramid/en/latest/api/config.html>`_
+* `Defending Pyramid's Design
+  <http://docs.pylonsproject.org/projects/pyramid/en/latest/designdefense.html>`_
+
+.. _copious documentation: http://docs.pylonsproject.org/projects/pyramid/en/latest/index.html
+
+You may also wish to read a bit about `SQLAlchemy`_.  In particular you may
+want to work through the `Object Relational Tutorial`_ to get a more complete
+understanding of how the SQLAlchemy ORM works.
+
+.. _SQLAlchemy: http://docs.sqlalchemy.org/en/rel_0_9/
+.. _Object Relational Tutorial: http://docs.sqlalchemy.org/en/rel_0_9/orm/tutorial.html
+
+
+Session 6 - Pyramid Views, Renderers and Forms
+----------------------------------------------
+
+This week we'll be focusing on the connection of an HTTP request to the code
+that handles that request using `URL Dispatch`_.  Quite a lot is possible with
+the Pyramid route system.  You may wish to read a bit more about it in one of
+the following documentation sections:
+
+* `Route Pattern Syntax
+  <http://docs.pylonsproject.org/docs/pyramid/en/latest/narr/urldispatch.html#route-pattern-syntax>`_
+  discusses the syntax for pattern matching and extraction in Pyramid routes.
+
+In Pyramid, the code that handles requests is called `a view`_.
+
+A view passes data to `a renderer`_, which is responsible for turning the data
+into a response to send back.
+
+Getting information from a client to the server is generally handled by
+`HTML forms`_. Working with forms in a framework like Pyramid can be
+facilitated by using a *form library* like `WTForms`_.
+
+.. _URL Dispatch: http://docs.pylonsproject.org/docs/pyramid/en/latest/narr/urldispatch.html
+.. _a view: http://docs.pylonsproject.org/projects/pyramid/en/1.5-branch/narr/views.html
+.. _a renderer: http://docs.pylonsproject.org/projects/pyramid/en/1.5-branch/narr/renderers.html
+.. _HTML forms: https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Forms
+.. _WTForms: http://wtforms.readthedocs.org/en/latest/
+
+For layout and design, CSS will be your tool of choice. There is no better tool
+for learning CSS than trying things out, but you need a good reference to get
+started. You can learn a great deal from the `Mozilla Developer Network`_ CSS
+pages.  I also find `A List Apart`_ and `Smashing Magazine`_ to be fantastic
+resources.
+
+.. _Smashing Magazine: http://www.smashingmagazine.com
+.. _A List Apart: http://alistapart.com
+.. _Mozilla Developer Network: https://developer.mozilla.org/en-US/docs/Web/CSS
+
+
+Sesstion 7 - Pyramid Authentication and Deployment
+--------------------------------------------------
+
+There are no special readings associated with this week.
+
+
 Sessions 8, 9, & 10 - Django
 ----------------------------
 
@@ -253,23 +256,23 @@ Django documentation is excellent and thorough. As a start, take a look at
 these sections:
 
 * `Django at a Glance
-  <https://docs.djangoproject.com/en/1.7/intro/overview/>`_ - introduction to
+  <https://docs.djangoproject.com/en/1.9/intro/overview/>`_ - introduction to
   the concepts and execution of Django
 
 * `Quick Install Guide
-  <https://docs.djangoproject.com/en/1.7/intro/install/>`_ - lightweight
+  <https://docs.djangoproject.com/en/1.9/intro/install/>`_ - lightweight
   instructions on installing Django. Use Python 2.7.
 
-* `Django Tutorial <https://docs.djangoproject.com/en/1.7/intro/tutorial01/>`_
+* `Django Tutorial <https://docs.djangoproject.com/en/1.9/intro/tutorial01/>`_
   - The tutorial covers many of the same concepts we will in class. Go over it
   to re-enforce the lessons you learn
 
-* `Using Django <https://docs.djangoproject.com/en/1.7/topics/>`_ - far more
+* `Using Django <https://docs.djangoproject.com/en/1.9/topics/>`_ - far more
   in-depth information about core topics in Django. In particular, the
   installation instructions here can be helpful when you run into trouble.
 
 Bookmark the `Django Documentation homepage
-<https://docs.djangoproject.com/en/1.7/>`_. It really is "everything you need
+<https://docs.djangoproject.com/en/1.9/>`_. It really is "everything you need
 to know about Django"
 
 When you have some time, read `Django Design Philosophies
