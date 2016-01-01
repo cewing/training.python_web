@@ -37,7 +37,7 @@ Questions About the Homework?
     class EntryEditForm(EntryCreateForm):
         id = HiddenField()
 
-`View the form online <https://github.com/cewing/training.python_web/blob/5e02f6f84322145433c515c191679ccf976dcae4/resources/session03/forms.py#L25>`_
+`View the form online <https://github.com/cewing/training.python_web/blob/807a49f20fea1e7e7393347c82df47eff83f3210/resources/session07/forms.py#L25>`_
 
 .. nextslide:: A Working Edit View
 
@@ -56,7 +56,7 @@ Questions About the Homework?
             return HTTPFound(location=request.route_url('detail', id=entry.id))
         return {'form': form, 'action': request.matchdict.get('action')}
 
-`See this view online <https://github.com/cewing/training.python_web/blob/5e02f6f84322145433c515c191679ccf976dcae4/resources/session03/views.py#L43>`_
+`See this view online <https://github.com/cewing/training.python_web/blob/807a49f20fea1e7e7393347c82df47eff83f3210/resources/session07/views.py#L43>`_
 
 .. nextslide:: Linking to the Edit Form
 
@@ -75,7 +75,7 @@ Questions About the Homework?
     {% endblock %}
 
 
-`View this template online <https://github.com/cewing/training.python_web/blob/9e1c9db3a379d1d63371cffddaf8e63f862872c8/resources/session03/detail.jinja2#L12>`_
+`View this template online <https://github.com/cewing/training.python_web/blob/807a49f20fea1e7e7393347c82df47eff83f3210/resources/session07/detail.jinja2#L12>`_
 
 .. nextslide:: A Working User Model
 
@@ -91,7 +91,7 @@ Questions About the Homework?
         def by_name(cls, name):
             return DBSession.query(cls).filter(cls.name == name).first()
 
-`View this model online <https://github.com/cewing/training.python_web/blob/5e02f6f84322145433c515c191679ccf976dcae4/resources/session03/models.py#L62>`_
+`View this model online <https://github.com/cewing/training.python_web/blob/807a49f20fea1e7e7393347c82df47eff83f3210/resources/session07/models.py#L62>`_
 
 Securing An Application
 =======================
