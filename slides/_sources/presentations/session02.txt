@@ -1467,28 +1467,34 @@ Now we can update our server code so that it uses the return value of
                 response = response_ok(content, mime_type)
 
 Homework
---------
+========
 
-You may have noticed that we just added calls to functions that don't yet exist
-
-.. rst-class:: build
+.. rst-class:: left
 .. container::
 
-    It's a program that shows you what you want to do, but won't actually run.
+    You may have noticed that we just added calls to functions that don't yet
+    exist
 
-    For your homework this week you will create these functions, completing the
-    HTTP server.
+    .. rst-class:: build
+    .. container::
 
-    Your starting point will be what we've made here in class.
+        It's a program that shows you what you want to do, but won't actually
+        run.
 
-    I've added a directory to ``resources/session02`` called ``homework``.
+        For your homework this week you will create these functions, completing
+        the HTTP server.
 
-    In it, you'll find this ``http_server.py`` file we've just written in class.
+        Your starting point will be what we've made here in class.
 
-    That file also contains enough stub code for the missing functions to let
-    the server run.
+        I've added a directory to ``resources/session02`` called ``homework``.
 
-    And there are more tests for you to make pass!
+        In it, you'll find this ``http_server.py`` file we've just written in
+        class.
+
+        That file also contains enough stub code for the missing functions to
+        let the server run.
+
+        And there are more tests for you to make pass!
 
 One Step At A Time
 ------------------
