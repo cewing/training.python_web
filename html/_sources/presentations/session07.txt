@@ -1859,28 +1859,31 @@ When you've got this working as you wish, go ahead and deploy it.
     
         (ljenv)$ git push heroku master
 
-Wrap Up
--------
+Homework
+========
 
-And that's probably enough for now.
-
-.. rst-class:: build
+.. rst-class:: left
 .. container::
 
-    There's no homework for you to submit this week. You've worked hard enough.
+    That's just about enough for now.
 
-    Take the week to review what we've done and make sure you have a solid
-    understanding of it.
+    .. rst-class:: build
+    .. container::
 
-    If you wish, play with HTML and CSS to make your journal more personalized.
+        There's no homework for you to submit this week. You've worked hard enough.
 
-    In preparation for our work with Django next week, I'd like you to get
-    started a bit ahead of time.
+        Take the week to review what we've done and make sure you have a solid
+        understanding of it.
 
-    Please read and follow along with this `basic intro to Django`_.
+        If you wish, play with HTML and CSS to make your journal more personalized.
 
-    .. rst-class:: centered
+        However, in preparation for our work with Django next week, I'd like you to
+        get started a bit ahead of time.
 
-    **See You Then**
+        Please read and follow along with this `basic intro to Django`_.
+
+        .. rst-class:: centered
+
+        **See You Then**
 
 .. _basic intro to Django: django_intro.html
