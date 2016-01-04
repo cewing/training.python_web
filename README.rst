@@ -10,35 +10,78 @@ This package provides the source for all lecture materials used for the
 `Internet Programming in Python`_ section of the `Certificate in Python
 Programming`_ offered by the `University of Washington Professional &
 Continuing Education`_ program. This version of the documentation is used for
-the Winter 2015 instance of the course, Taught by `Cris Ewing`_
+the Winter 2016 instance of the course, Taught by `Cris Ewing`_
 
-.. _Internet Programming in Python: http://www.pce.uw.edu/courses/internet-programming-python/downtown-seattle-winter-2015/
+.. _Internet Programming in Python: http://www.pce.uw.edu/courses/internet-programming-python/downtown-seattle-winter-2016/
 .. _Certificate in Python Programming: http://www.pce.uw.edu/certificates/python-programming.html
 .. _University of Washington Professional & Continuing Education: http://www.pce.uw.edu/
 .. _Cris Ewing: http://www.linkedin.com/profile/view?id=19741495
 
+This course is taught using Python 3.
+
+This documentation builds both an HTML version of the course lectures (for the
+students) and a set of slides (for the instructor).  It uses the Python-based
+documentation tool `Sphinx`_ and the `hieroglyph`_ sphinx extension. Shell
+examples use `iPython` and tests are written for `pytest`. The build
+environment is managed using `virtualenv` and `pip`
+
+.. _iPython: http://ipython.org/
+.. _Sphinx: http://sphinx-doc.org/
+.. _hieroglyph: http://docs.hieroglyph.io/en/latest/
+.. _pytest: http://pytest.org/latest/
+.. _virtualenv: https://virtualenv.pypa.io/en/latest/
+.. _pip: https://pip.pypa.io/en/stable
+
 Building The Documentation
 --------------------------
 
-This documentation is built using docutils and Sphinx. The package uses
-`zc.buildout` to manage setup and dependencies. This package uses the version
-2 `bootstrap.py` script. This version of the script will attempt to use
-setuptools 0.7 or better. If you have an earlier version of setuptools
-installed, please upgrade prior to bootstrapping this buildout.
+To build the documentation locally, begin by cloning the project to your
+machine:
 
-After cloning this package from the repository, do the following::
+.. code-block:: bash
 
-  $ cd training.python_web  # the location of your local copy
-  $ python bootstrap.py  # must be Python 2.6 or 2.7
-  $ bin/buildout
-  $ bin/sphinx   # to build the main documentation and course outline
-  $ bin/build_s5   # to build the class session presentations
+    $ git clone https://github.com/cewing/training.python_web.git
 
-At the end of a successful build, you will find a ``build/html`` directory,
-containing the completed documentation and presentations.
+Change directories into the repository, then create a virtualenv using Python
+3:
 
-.. _zc.buildout: https://pypi.python.org/pypi/zc.buildout/
-.. _bootstrap.py: http://downloads.buildout.org/2/bootstrap.py
+.. code-block:: bash
+
+    $ cd training.python_web
+    $ virtualenv --python /path/to/bin/python3.5 .
+    Running virtualenv with interpreter /path/to/bin/python3.5
+    New python executable in training.python_web/bin/python3.5
+    Also creating executable in training.python_web/bin/python
+    Installing setuptools, pip...done.
+
+Install the requirements for the documentation using pip:
+
+.. code-block:: bash
+
+    $ bin/pip install -r requirements.pip
+    ...
+
+    Successfully installed Babel-2.0 Jinja2-2.8 MarkupSafe-0.23 Pygments-2.0.2 Sphinx-1.3.1 alabaster-0.7.6 appnope-0.1.0 decorator-4.0.2 docutils-0.12 gnureadline-6.3.3 hieroglyph-0.7.1 ipython-4.0.0 ipython-genutils-0.1.0 path.py-8.1 pexpect-3.3 pickleshare-0.5 py-1.4.30 pytest-2.7.2 pytz-2015.4 simplegeneric-0.8.1 six-1.9.0 snowballstemmer-1.2.0 sphinx-rtd-theme-0.1.8 traitlets-4.0.0
+
+Once that has successfully completed, you should be able to build both the html
+documentation and the slides using the included Makefile.
+
+.. code-block:: bash
+
+    $ make html
+    ...
+
+    Build finished. The HTML pages are in build/html.
+
+    (webdocs)$ make slides
+    ...
+
+    Build finished. The HTML slides are in build/slides.
+
+.. note:: If you prefer to build your virtualenvs in other ways, you will need
+          to adjust the `BINDIR` variable in `Makefile` to fit your reality.
+
+
 
 Reading The Documentation
 -------------------------

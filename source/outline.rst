@@ -15,78 +15,10 @@ prompt. Each session has associated assignments which you will complete
 between sessions.
 
 
-Session 1 - MVC Applications and Data Persistence
--------------------------------------------------
-
-In this session we will begin by introducing the idea of an MVC (*Model View
-Controller*) application.  We'll discuss this popular application design
-pattern and talk about the ways in which it does and does not apply to the
-world of web applications.
-
-We'll get started with our first application, a learning journal written in the
-lignt but powerful *Pyramid* web framework. We'll set up a development
-environment and install the framework and dependencies. We'll create our first
-*models* and experiment with persisting data to a database.
-
-References
-**********
-
-
-Preparation for Session 2
-*************************
-
-In preparation for session 2, please read the following materials:
-
-* `Jinja2 Template Tutorial
-  <presentations/template_tutorial-plain.html>`_
-* `HTML5 Site Layout Tutorial
-  <http://www.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/>`_
-
-Session 2 - Pyramid Views, Renderers and Forms
-----------------------------------------------
-
-In this session we extend our understanding of the MVC design pattern by
-learning how Pyramid implements the *view* and *controller* aspects.
-
-Pyramid *views* represent the *controller* part of the MVC pattern, and we'll
-create a number of them. We'll also learn how Pyramid uses *routes* to properly
-connect the *path* requested by a client to the *views* run by a server.
-
-We'll meet with Pyramid's *renderers*, the *view* in MVC.  We'll start by using
-a built-in renderer that simply turns view data into strings sent back to the
-client as plain text responses.  We'll then install a template-based renderer
-and use the *jinja2* template language to create visible HTML pages the brower
-can load to show our learning journal entries.
-
-Prepraration for Session 3
-**************************
-
-In preparation for session 3, please read up on getting started with `Heroku
-and Python`_.  We'll be deploying our learning journal to Heroku by the end of
-that session.
-
-.. _Heroku and Python: https://devcenter.heroku.com/articles/getting-started-with-python#introduction
-
-Sesstion 3 - Pyramid Authentication and Deployment
---------------------------------------------------
-
-In this session we will learn the basic elements of access control:
-authentication and authorization. We'll learn how Pyramid implements these two
-aspects of security, and will implement a basic security policy for our
-learning journal.
-
-Once complete, we will deploy our application to Heroku.  We'll make a few
-changes to how our app is configured to fit with the Heroku model and will be
-able to see our application in action by the end of the session.
-
-Time permitting, we will enhance our application with a few special features
-such as Markdown formatting, and code highlighting. A list of potential future
-enhancements will give you plenty to think about for the rest of the week.
-
-Session 4 - TCP/IP and Sockets
+Session 1 - TCP/IP and Sockets
 ------------------------------
 
-We will continue with a disucssion of the fundamental concepts and structures
+We will begin with a disucssion of the fundamental concepts and structures
 that underly the internet and networked computing. We'll learn about the
 TCP/IP stack (Internet Protocol Suite) and gain some insights into how that
 model manifests in real life. We will then dive into sockets and learn how to
@@ -105,7 +37,7 @@ References
 * `Python Module of the Week - socket <http://pymotw.com/2/socket/>`_
 
 
-Session 5 - Web Protocols
+Session 2 - Web Protocols
 -------------------------
 
 Protocols are the languages of the Internet. They govern how machines speak to
@@ -134,7 +66,7 @@ clear and concise and have some great code examples.
 
 .. _Internet Protocols and Support: http://pymotw.com/2/internet_protocols.html
 
-Session 6 - CGI and WSGI
+Session 3 - CGI and WSGI
 ------------------------
 
 In this class we will explore ways of moving data from HTTP requests into the
@@ -149,7 +81,7 @@ CGI, and look at the ways in which it differs. We'll create a simple interaction
 using WSGI and see what benefits and drawbacks it confers.
 
 
-Session 7 - APIs and Mashups
+Session 4 - APIs and Mashups
 ----------------------------
 
 The internet is a treasure trove of information. But meaning can be hard to
@@ -177,6 +109,75 @@ References
 * `htmlparser <http://docs.python.org/2/library/htmlparser.html>`_
 * `xmlrpclib <http://docs.python.org/2/library/xmlrpclib.html>`_
 * `DocXMLRPCServer <http://docs.python.org/2/library/docxmlrpcserver.html>`_
+
+
+Session 5 - MVC Applications and Data Persistence
+-------------------------------------------------
+
+In this session we will begin by introducing the idea of an MVC (*Model View
+Controller*) application.  We'll discuss this popular application design
+pattern and talk about the ways in which it does and does not apply to the
+world of web applications.
+
+We'll get started with our first application, a learning journal written in the
+lignt but powerful *Pyramid* web framework. We'll set up a development
+environment and install the framework and dependencies. We'll create our first
+*models* and experiment with persisting data to a database.
+
+References
+**********
+
+
+Preparation for Session 6
+*************************
+
+In preparation for session 6, please read the following materials:
+
+* `Jinja2 Template Tutorial
+  <presentations/template_tutorial-plain.html>`_
+* `HTML5 Site Layout Tutorial
+  <http://www.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/>`_
+
+Session 6 - Pyramid Views, Renderers and Forms
+----------------------------------------------
+
+In this session we extend our understanding of the MVC design pattern by
+learning how Pyramid implements the *view* and *controller* aspects.
+
+Pyramid *views* represent the *controller* part of the MVC pattern, and we'll
+create a number of them. We'll also learn how Pyramid uses *routes* to properly
+connect the *path* requested by a client to the *views* run by a server.
+
+We'll meet with Pyramid's *renderers*, the *view* in MVC.  We'll start by using
+a built-in renderer that simply turns view data into strings sent back to the
+client as plain text responses.  We'll then install a template-based renderer
+and use the *jinja2* template language to create visible HTML pages the brower
+can load to show our learning journal entries.
+
+Prepraration for Session 7
+**************************
+
+In preparation for session 7, please read up on getting started with `Heroku
+and Python`_.  We'll be deploying our learning journal to Heroku by the end of
+that session.
+
+.. _Heroku and Python: https://devcenter.heroku.com/articles/getting-started-with-python#introduction
+
+Sesstion 7 - Pyramid Authentication and Deployment
+--------------------------------------------------
+
+In this session we will learn the basic elements of access control:
+authentication and authorization. We'll learn how Pyramid implements these two
+aspects of security, and will implement a basic security policy for our
+learning journal.
+
+Once complete, we will deploy our application to Heroku.  We'll make a few
+changes to how our app is configured to fit with the Heroku model and will be
+able to see our application in action by the end of the session.
+
+Time permitting, we will enhance our application with a few special features
+such as Markdown formatting, and code highlighting. A list of potential future
+enhancements will give you plenty to think about for the rest of the week.
 
 
 Preparation for Session 8
