@@ -1285,7 +1285,7 @@ To submit your homework:
 Going Further
 -------------
 
-In ``assignments/session01/tasks.txt`` you'll find a few extra problems to try.
+In ``resources/session01/tasks.txt`` you'll find a few extra problems to try.
 
 .. rst-class:: build
 .. container::

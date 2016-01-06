@@ -18,4 +18,4 @@ def get_address_info(host, port):
         print('protocol: {}'.format(protocols[pro]))
         print('canonical name: {}'.format(nam))
         print('socket address: {}'.format(add))
-        print
+        print()

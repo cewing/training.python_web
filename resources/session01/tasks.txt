@@ -48,6 +48,6 @@ Challenging:
   our echo server to handle more than one incoming connection in "parallel".
 
   Read the documentation about the `select` module
-  (http://docs.python.org/2/library/select.html) and attempt to write a second
+  (http://docs.python.org/3/library/select.html) and attempt to write a second
   version of the echo server that can handle multiple client connections in
   "parallel".  You do not need to invoke threading of any kind to do this.
