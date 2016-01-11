@@ -1194,19 +1194,21 @@ Quit and restart your server now that you've updated the code::
 
 .. nextslide:: What About a Browser?
 
-Quit and restart your server, now that you've updated the code.
+The server quit during the tests, but an HTTP request from the browser should
+work fine now.
 
 .. rst-class:: build
 .. container::
 
-    Reload your browser.  It should work fine.
+    Restart the server and reload your browser.  You should see your OK
+    response.
 
     We can use the ``simple_client.py`` script in our resources to test our
     error condition.  In a second terminal window run the script like so::
 
         $ python simple_client.py "POST / HTTP/1.0\r\n\r\n"
 
-    You'll have to quit the client pretty quickly with ``ctrl-c``
+    This should cause the server to crash.
 
 
 Step 3: Error Responses
@@ -1296,9 +1298,9 @@ Luckily, there's an error code that is tailor-made for this situation.
     def response_method_not_allowed():
         """returns a 405 Method Not Allowed response"""
         resp = []
-        resp.append("HTTP/1.1 405 Method Not Allowed")
-        resp.append("")
-        return "\r\n".join(resp)
+        resp.append(b"HTTP/1.1 405 Method Not Allowed")
+        resp.append(b"")
+        return b"\r\n".join(resp)
 
 
 .. nextslide:: Server Updates
