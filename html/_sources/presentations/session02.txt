@@ -108,16 +108,16 @@ What does this look like in practice?
 
 .. rst-class:: build
 
-* SMTP (Simple Message Transfer Protocol) |br| 
+* SMTP (Simple Message Transfer Protocol) |br|
   http://tools.ietf.org/html/rfc5321#appendix-D
 
-* POP3 (Post Office Protocol) |br| 
+* POP3 (Post Office Protocol) |br|
   http://www.faqs.org/docs/artu/ch05s03.html
 
-* IMAP (Internet Message Access Protocol) |br| 
+* IMAP (Internet Message Access Protocol) |br|
   http://www.faqs.org/docs/artu/ch05s03.html
 
-* HTTP (Hyper-Text Transfer Protocol) |br| 
+* HTTP (Hyper-Text Transfer Protocol) |br|
   http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol
 
 
@@ -670,7 +670,7 @@ HTTP (Provide answers):
     <CRLF>
     <!DOCTYPE html>\n<html>\n  <head>\n    <title>This is a .... </html>
 
-Pay particular attention to the ``<CRLF>`` on a line by itself.  
+Pay particular attention to the ``<CRLF>`` on a line by itself.
 
 
 .. nextslide:: HTTP Core Format
@@ -868,7 +868,7 @@ In HTTP 1.0, the only required line in an HTTP request is this:
     a single required *header*, **Host**:
 
     .. code-block:: http
-    
+
         GET /path/to/index.html HTTP/1.1<CRLF>
         Host: www.mysite1.com:80<CRLF>
         <CRLF>
@@ -884,7 +884,7 @@ response body:
 .. container::
 
     .. code-block:: http
-    
+
         HTTP/1.1 200 OK<CRLF>
         Content-Type: text/plain<CRLF>
         <CRLF>
@@ -902,12 +902,12 @@ Begin by implementing a new function in your ``http_server.py`` script called
 
     It can be super-simple for now.  We'll improve it later.
 
-    .. container:: 
+    .. container::
 
         It needs to return our minimal response from above:
 
         .. code-block:: http
-        
+
             HTTP/1.1 200 OK<CRLF>
             Content-Type: text/plain<CRLF>
             <CRLF>
@@ -1074,11 +1074,11 @@ they might change something on the server:
     .. rst-class:: build
 
     * Safe HTTP Methods
-    
+
       * GET
-    
+
     * Unsafe HTTP Methods
-    
+
       * POST
       * PUT
       * DELETE
@@ -1098,13 +1098,13 @@ HTTP methods can be categorized as **idempotent**.
     .. rst-class:: build
 
     * Idempotent HTTP Methods
-    
+
       * GET
       * PUT
       * DELETE
-    
+
     * Non-Idempotent HTTP Methods
-    
+
       * POST
 
     Again, *normative*. The developer is responsible for ensuring that it is true.
@@ -1185,7 +1185,7 @@ Quit and restart your server now that you've updated the code::
     At this point, we should have seven tests passing:
 
     .. code-block:: bash
-    
+
         $ python tests.py
         Ran 10 tests in 0.002s
 
@@ -1194,19 +1194,21 @@ Quit and restart your server now that you've updated the code::
 
 .. nextslide:: What About a Browser?
 
-Quit and restart your server, now that you've updated the code.
+The server quit during the tests, but an HTTP request from the browser should
+work fine now.
 
 .. rst-class:: build
 .. container::
 
-    Reload your browser.  It should work fine.
+    Restart the server and reload your browser.  You should see your OK
+    response.
 
     We can use the ``simple_client.py`` script in our resources to test our
     error condition.  In a second terminal window run the script like so::
 
         $ python simple_client.py "POST / HTTP/1.0\r\n\r\n"
 
-    You'll have to quit the client pretty quickly with ``ctrl-c``
+    This should cause the server to crash.
 
 
 Step 3: Error Responses
@@ -1296,9 +1298,9 @@ Luckily, there's an error code that is tailor-made for this situation.
     def response_method_not_allowed():
         """returns a 405 Method Not Allowed response"""
         resp = []
-        resp.append("HTTP/1.1 405 Method Not Allowed")
-        resp.append("")
-        return "\r\n".join(resp)
+        resp.append(b"HTTP/1.1 405 Method Not Allowed")
+        resp.append(b"")
+        return b"\r\n".join(resp)
 
 
 .. nextslide:: Server Updates
@@ -1365,7 +1367,7 @@ But what happens if we make a different request?
 .. container::
 
     .. container::
-    
+
         In your web browser, enter the following URL::
 
             http://localhost:10000/page
@@ -1452,7 +1454,7 @@ Now we can update our server code so that it uses the return value of
     That's a pretty simple change:
 
     .. code-block:: python
-    
+
         try:
             uri = parse_request(request)  # update this line
         except NotImplementedError:

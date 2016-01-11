@@ -1621,15 +1621,17 @@ FAILED <span class="o">(</span><span class="nv">failures</span><span class="o">=
       <h3>What About a Browser?</h3>
     </hgroup>
     <article class="">
-      <p>Quit and restart your server, now that you've updated the code.</p>
+      <p>The server quit during the tests, but an HTTP request from the browser should
+work fine now.</p>
 <div class="build container">
-<p>Reload your browser.  It should work fine.</p>
+<p>Restart the server and reload your browser.  You should see your OK
+response.</p>
 <p>We can use the <code class="docutils literal"><span class="pre">simple_client.py</span></code> script in our resources to test our
 error condition.  In a second terminal window run the script like so:</p>
 <div class="highlight-python"><div class="highlight"><pre>$ python simple_client.py &quot;POST / HTTP/1.0\r\n\r\n&quot;
 </pre></div>
 </div>
-<p>You'll have to quit the client pretty quickly with <code class="docutils literal"><span class="pre">ctrl-c</span></code></p>
+<p>This should cause the server to crash.</p>
 </div>
 
 
@@ -1736,9 +1738,9 @@ There are a lot of them for a reason.</p>
       <div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">response_method_not_allowed</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;returns a 405 Method Not Allowed response&quot;&quot;&quot;</span>
     <span class="n">resp</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">resp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;HTTP/1.1 405 Method Not Allowed&quot;</span><span class="p">)</span>
-    <span class="n">resp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="s">&quot;</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+    <span class="n">resp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b</span><span class="s">&quot;HTTP/1.1 405 Method Not Allowed&quot;</span><span class="p">)</span>
+    <span class="n">resp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">b</span><span class="s">&quot;</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
 </pre></div>
 </div>
 
