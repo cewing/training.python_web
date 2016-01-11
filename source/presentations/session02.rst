@@ -108,16 +108,16 @@ What does this look like in practice?
 
 .. rst-class:: build
 
-* SMTP (Simple Message Transfer Protocol) |br| 
+* SMTP (Simple Message Transfer Protocol) |br|
   http://tools.ietf.org/html/rfc5321#appendix-D
 
-* POP3 (Post Office Protocol) |br| 
+* POP3 (Post Office Protocol) |br|
   http://www.faqs.org/docs/artu/ch05s03.html
 
-* IMAP (Internet Message Access Protocol) |br| 
+* IMAP (Internet Message Access Protocol) |br|
   http://www.faqs.org/docs/artu/ch05s03.html
 
-* HTTP (Hyper-Text Transfer Protocol) |br| 
+* HTTP (Hyper-Text Transfer Protocol) |br|
   http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol
 
 
@@ -670,7 +670,7 @@ HTTP (Provide answers):
     <CRLF>
     <!DOCTYPE html>\n<html>\n  <head>\n    <title>This is a .... </html>
 
-Pay particular attention to the ``<CRLF>`` on a line by itself.  
+Pay particular attention to the ``<CRLF>`` on a line by itself.
 
 
 .. nextslide:: HTTP Core Format
@@ -868,7 +868,7 @@ In HTTP 1.0, the only required line in an HTTP request is this:
     a single required *header*, **Host**:
 
     .. code-block:: http
-    
+
         GET /path/to/index.html HTTP/1.1<CRLF>
         Host: www.mysite1.com:80<CRLF>
         <CRLF>
@@ -884,7 +884,7 @@ response body:
 .. container::
 
     .. code-block:: http
-    
+
         HTTP/1.1 200 OK<CRLF>
         Content-Type: text/plain<CRLF>
         <CRLF>
@@ -902,12 +902,12 @@ Begin by implementing a new function in your ``http_server.py`` script called
 
     It can be super-simple for now.  We'll improve it later.
 
-    .. container:: 
+    .. container::
 
         It needs to return our minimal response from above:
 
         .. code-block:: http
-        
+
             HTTP/1.1 200 OK<CRLF>
             Content-Type: text/plain<CRLF>
             <CRLF>
@@ -1074,11 +1074,11 @@ they might change something on the server:
     .. rst-class:: build
 
     * Safe HTTP Methods
-    
+
       * GET
-    
+
     * Unsafe HTTP Methods
-    
+
       * POST
       * PUT
       * DELETE
@@ -1098,13 +1098,13 @@ HTTP methods can be categorized as **idempotent**.
     .. rst-class:: build
 
     * Idempotent HTTP Methods
-    
+
       * GET
       * PUT
       * DELETE
-    
+
     * Non-Idempotent HTTP Methods
-    
+
       * POST
 
     Again, *normative*. The developer is responsible for ensuring that it is true.
@@ -1185,7 +1185,7 @@ Quit and restart your server now that you've updated the code::
     At this point, we should have seven tests passing:
 
     .. code-block:: bash
-    
+
         $ python tests.py
         Ran 10 tests in 0.002s
 
@@ -1365,7 +1365,7 @@ But what happens if we make a different request?
 .. container::
 
     .. container::
-    
+
         In your web browser, enter the following URL::
 
             http://localhost:10000/page
@@ -1452,7 +1452,7 @@ Now we can update our server code so that it uses the return value of
     That's a pretty simple change:
 
     .. code-block:: python
-    
+
         try:
             uri = parse_request(request)  # update this line
         except NotImplementedError:
