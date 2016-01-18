@@ -10,7 +10,7 @@ def client(msg, log_buffer=sys.stderr):
     print('connecting to {0} port {1}'.format(*server_address), file=log_buffer)
     # TODO: connect your socket to the server here.
 
-    # you can use this as a place to accumulate the entire message echoed back
+    # you can use this variable to accumulate the entire message received back
     # from the server
     received_message = ''
 
@@ -34,8 +34,8 @@ def client(msg, log_buffer=sys.stderr):
         #       the server you will want to close your client socket.
         print('closing socket', file=log_buffer)
 
-        # TODO: when all is said and done, you should return the reply you got
-        # from the server as the value of this function.
+        # TODO: when all is said and done, you should return the entire reply
+        # you received from the server as the return value of this function.
 
 
 if __name__ == '__main__':
