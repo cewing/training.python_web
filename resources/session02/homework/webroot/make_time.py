@@ -17,9 +17,6 @@ html = """
 <p> %s <p>
 </body>
 </http>
-"""% time_str
+""" % time_str
 
-print html
-
-
-
+print(html)
