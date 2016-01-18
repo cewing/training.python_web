@@ -21,6 +21,6 @@ var SLIDE_CONFIG = {
   },
 
   // Author information
-  presenters: [{"name": "Cris Ewing", "www": "http://crisewing.com", "twitter": "@crisewing", "company": "Cris Ewing, Developer LLC", "github": "http://github.com/cewing"}]
+  presenters: [{"www": "http://crisewing.com", "twitter": "@crisewing", "company": "Cris Ewing, Developer LLC", "github": "http://github.com/cewing", "name": "Cris Ewing"}]
   
 };

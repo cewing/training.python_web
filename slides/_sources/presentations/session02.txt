@@ -1334,7 +1334,7 @@ correctly.  It should
         response = response_ok()
 
     print('sending response', file=log_buffer)
-    conn.sendall(response.encode('utf8'))
+    conn.sendall(response)
     # ...
 
 
@@ -1576,7 +1576,7 @@ client what to expect.
     * baz.html - ``Content-Type: text/html``
 
     There are *many* mime-type identifiers:
-    http://www.webmaster-toolkit.com/mime-types.shtml
+    http://www.freeformatter.com/mime-types-list.html
 
 
 Mapping Mime-types
