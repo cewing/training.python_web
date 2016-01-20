@@ -1,41 +1,16 @@
-<!--
-Google IO 2012/2013 HTML5 Slide Template
-
-Authors: Eric Bidelman <ebidel@gmail.com>
-         Luke Mahé <lukem@google.com>
-
-URL: https://code.google.com/p/io-2012-slides
---><!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 
-<html>
-<head>
-  <title>Session 10 &mdash; Internet Programming with Python</title>
-  <meta charset="utf-8">
-  
-  <meta http-equiv="X-UA-Compatible" content="chrome=1">
-  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
-  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-  <!--This one seems to work all the time, but really small on ipad-->
-  <!--<meta name="viewport" content="initial-scale=0.4">-->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-
-  
-  <link rel="stylesheet" media="all"
-        href="../_static/theme/css/default.css">
-  <link rel="stylesheet" media="all"
-        href="../_static/theme/css/hieroglyph.css">
-  <link rel="stylesheet" media="only screen and (max-device-width: 480px)"
-        href="../_static/theme/css/phone.css">
-
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <link rel="stylesheet" href="../_static/custom.css"
-          type="text/css" />
+    <title>Session 10 &mdash; Internet Programming with Python</title>
     
-
+    <link rel="stylesheet" href="../_static/pyramid.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
-  
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
@@ -45,78 +20,73 @@ URL: https://code.google.com/p/io-2012-slides
         HAS_SOURCE:  true
       };
     </script>
-
-    <script data-main="../_static/js/slides"
-            src="../_static/js/require-1.0.8.min.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    
     <link rel="top" title="Internet Programming with Python" href="../index.html" />
     <link rel="up" title="Course Presentations" href="index.html" />
     <link rel="next" title="Supplementary Course Readings" href="../readings.html" />
-    <link rel="prev" title="Session 09" href="session09.html" /> 
-</head>
-<body style="opacity: 0">
+    <link rel="prev" title="Session 09" href="session09.html" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
 
-<slides class="layout-widescreen">
+  </head>
+  <body role="document">
+<div class="header">
+  <div class="logo">
+    <a href="../index.html">
+      <img class="logo" src="../_static/logo_UW.png" alt="Logo"/>
+    </a>
+  </div>
+</div>
 
-  <slide class="title-slide segue nobackground">
-  <aside class="gdbar"><img src="../_static/logo_UW.png"></aside>
-  <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
-  <hgroup class="auto-fadein">
-    <h1 data-config-title><!-- populated from slide_config.json --></h1>
-    <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
-    <p data-config-presenter><!-- populated from slide_config.json --></p>
-  </hgroup>
-</slide>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../readings.html" title="Supplementary Course Readings"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="session09.html" title="Session 09"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">UWPCE Python 200</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Course Presentations</a> &raquo;</li> 
+      </ul>
+    </div>  
 
-  
-    <slide class="title-slide segue nobackground level-1" id="session-10">
-    <hgroup>
-      <h1>Session 10</h1>
-    </hgroup>
-    <article class="">
-      <div class="figure align-center" id="id1">
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="session-10">
+<h1>Session 10<a class="headerlink" href="#session-10" title="Permalink to this headline">¶</a></h1>
+<div class="figure align-center" id="id1">
 <a class="reference internal image-reference" href="../_images/django-pony.png"><img alt="../_images/django-pony.png" src="../_images/django-pony.png" style="width: 60%;" /></a>
 <p class="caption"><span class="caption-text">image: <a class="reference external" href="http://djangopony.com/">http://djangopony.com/</a></span></p>
 </div>
-
-
-
-<div class="slide-no">1</div>
-
-
-    </article>
-  </slide>  <slide class="level-2" id="deploying-django">
-    <hgroup>
-      <h2>Deploying Django</h2>
-    </hgroup>
-    <article class="">
-      <div class="left container">
-<p>Over the last two sessions you've built and extended a simple Django
+<div class="section" id="deploying-django">
+<h2>Deploying Django<a class="headerlink" href="#deploying-django" title="Permalink to this headline">¶</a></h2>
+<div class="left container">
+<p>Over the last two sessions you&#8217;ve built and extended a simple Django
 application.</p>
 <div class="build container">
 <p>Now it is time to deploy that application to a server so the world can
 see it.</p>
 <p>Previously, we used Heroku to deploy a simple Pyramid application.</p>
-<p>We could do the same with Django, but we won't.</p>
-<p>Instead, we'll deploy to <strong>A</strong>mazon <strong>W</strong>eb <strong>S</strong>ervices (AWS)</p>
+<p>We could do the same with Django, but we won&#8217;t.</p>
+<p>Instead, we&#8217;ll deploy to <strong>A</strong>mazon <strong>W</strong>eb <strong>S</strong>ervices (AWS)</p>
 </div>
 </div>
-
-
-
-<div class="slide-no">2</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="choosing-a-deployment-strategy">
-    <hgroup>
-      <h3>Choosing a Deployment Strategy</h3>
-    </hgroup>
-    <article class="">
-      <p>There are many many different ways to deploy a web application.</p>
+<div class="section" id="choosing-a-deployment-strategy">
+<h3>Choosing a Deployment Strategy<a class="headerlink" href="#choosing-a-deployment-strategy" title="Permalink to this headline">¶</a></h3>
+<p>There are many many different ways to deploy a web application.</p>
 <div class="build container">
 <p>And there are many many services offering platforms for deployment.</p>
 <p>How do you choose the right one for you?</p>
@@ -127,19 +97,7 @@ see it.</p>
 <li>With great power comes great responsibility.</li>
 </ul>
 </div>
-
-
-
-<div class="slide-no">3</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id2">
-    <hgroup>
-      <h3>Choosing a Deployment Strategy</h3>
-    </hgroup>
-    <article class="">
-      <p>In choosing a service and a strategy, you'll want to ask yourself a few
+<p>In choosing a service and a strategy, you&#8217;ll want to ask yourself a few
 questions:</p>
 <div class="build container">
 <ul class="build simple">
@@ -153,66 +111,33 @@ together?</li>
 <p>The answers to these questions will help to determine the correct choice
 for you.</p>
 </div>
-
-
-
-<div class="slide-no">4</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id3">
-    <hgroup>
-      <h3>Our Choice for Today</h3>
-    </hgroup>
-    <article class="">
-      <p>We are going to ignore all these questions, and simply ask one question.</p>
+<p>We are going to ignore all these questions, and simply ask one question.</p>
 <div class="build container">
 <p>Which service will allow us to set up each layer in a full web application
 stack so that we can learn how the stack works from front to back?</p>
 <p>The simplest answer to that question is <strong>AWS</strong>.</p>
-<p>Therefore, that's the service we will use today.</p>
+<p>Therefore, that&#8217;s the service we will use today.</p>
 </div>
-
-
-
-<div class="slide-no">5</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="preparing-for-aws-deployment">
-    <hgroup>
-      <h3>Preparing for AWS Deployment</h3>
-    </hgroup>
-    <article class="">
-      <p>You've started out this week by signing up for AWS.</p>
+</div>
+<div class="section" id="preparing-for-aws-deployment">
+<h3>Preparing for AWS Deployment<a class="headerlink" href="#preparing-for-aws-deployment" title="Permalink to this headline">¶</a></h3>
+<p>You&#8217;ve started out this week by signing up for AWS.</p>
 <div class="build container">
-<p>You've created a security group and a key pair to help with accessing any
+<p>You&#8217;ve created a security group and a key pair to help with accessing any
 servers we create.</p>
-<p>You've also set up an IAM user and configured security credentials for that
+<p>You&#8217;ve also set up an IAM user and configured security credentials for that
 user.</p>
-<p>If we were to be automating our work today, we'd use those credentials to
+<p>If we were to be automating our work today, we&#8217;d use those credentials to
 allow the <a class="reference external" href="https://boto.readthedocs.org/">boto</a> library to connect to AWS as that IAM user.</p>
 <p>Then you could <a class="reference external" href="http://codefellows.github.io/python-dev-accelerator/lectures/day11/boto.html">create or destroy resources</a> using that library.</p>
 <p>Issues surrounding using that library on Windows prevent us from trying
 that path tonight.</p>
 </div>
-
-
-
-<div class="slide-no">6</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id4">
-    <hgroup>
-      <h3>Preparing for AWS Deployment</h3>
-    </hgroup>
-    <article class="">
-      <p>Instead we'll be making a manual deployment using AWS.</p>
+<p>Instead we&#8217;ll be making a manual deployment using AWS.</p>
 <div class="build container">
 <p>This is always the first step to automation anyway, so this is an important
 first step.</p>
-<p>We'll begin by converting some aspects of our application to better provide
+<p>We&#8217;ll begin by converting some aspects of our application to better provide
 for security</p>
 <p>In preparation for that we will need to add a new package to our django
 virtual environment.</p>
@@ -220,42 +145,18 @@ virtual environment.</p>
 </pre></div>
 </div>
 </div>
-
-
-
-<div class="slide-no">7</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id5">
-    <hgroup>
-      <h3>12-Factor</h3>
-    </hgroup>
-    <article class="">
-      <p>This new package is an attempt to help Django get in line with a principle
+<p>This new package is an attempt to help Django get in line with a principle
 called <a class="reference external" href="http://12factor.net/">12-factor</a>.</p>
 <div class="build container">
 <p>The basic idea is that any data that your app uses for configuration that
 is <em>external</em> to the app itself, should be separated from the app.</p>
 <p>The link about contains much more effective explanations, read it.</p>
-<p>We've already done this to some degree with our Pyramid application, by
+<p>We&#8217;ve already done this to some degree with our Pyramid application, by
 putting some configuration values into <em>environment variables</em></p>
 <p><code class="docutils literal"><span class="pre">dj-database-url</span></code> allows us to do that with the configuration for our
 database.</p>
 </div>
-
-
-
-<div class="slide-no">8</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id6">
-    <hgroup>
-      <h3>Updating Settings</h3>
-    </hgroup>
-    <article class="">
-      <p>Open <code class="docutils literal"><span class="pre">settings.py</span></code> and replace the current DATABASES dictionary with this:</p>
+<p>Open <code class="docutils literal"><span class="pre">settings.py</span></code> and replace the current DATABASES dictionary with this:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">DATABASES</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="n">dj_database_url</span><span class="o">.</span><span class="n">config</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="s">&#39;sqlite:///&#39;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">BASE_DIR</span><span class="p">,</span> <span class="s">&#39;db.sqlite3&#39;</span><span class="p">)</span>
@@ -266,24 +167,12 @@ database.</p>
 <div class="build container">
 <p>The default behavior of <code class="docutils literal"><span class="pre">dj-database-url</span></code> is to look for a
 <code class="docutils literal"><span class="pre">DATABASE_URL</span></code> variable in the environment.</p>
-<p>If it doesn't find that, it uses the value you provide for <em>default</em>.</p>
+<p>If it doesn&#8217;t find that, it uses the value you provide for <em>default</em>.</p>
 <p>It converts a <a class="reference external" href="https://github.com/kennethreitz/dj-database-url#url-schema">url-style</a> database connection string to the dictionary
 Django expects.</p>
-<p>Here, we've set the default to be the same as what we had previously.</p>
+<p>Here, we&#8217;ve set the default to be the same as what we had previously.</p>
 </div>
-
-
-
-<div class="slide-no">9</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id7">
-    <hgroup>
-      <h3>Repeatable Envs</h3>
-    </hgroup>
-    <article class="">
-      <p>Another principle of the 12-factor philosophy is to keep the differences
+<p>Another principle of the 12-factor philosophy is to keep the differences
 between production and development to a minimum.</p>
 <div class="build container">
 <p>Again, in our Pyramid app we handled this with a <code class="docutils literal"><span class="pre">requirements.txt</span></code> file.</p>
@@ -294,134 +183,68 @@ command:</p>
 </pre></div>
 </div>
 <p>Then, add that file to your repository and commit the changes.</p>
-<p>At this point, we're about ready to begin working directly with AWS</p>
+<p>At this point, we&#8217;re about ready to begin working directly with AWS</p>
 </div>
-
-
-
-<div class="slide-no">10</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="setting-up-an-ec2-instance">
-    <hgroup>
-      <h3>Setting up An EC2 Instance</h3>
-    </hgroup>
-    <article class="">
-      <p>Our first step is to create an EC2 (Elastic Compute Cloud) instance for our
+</div>
+<div class="section" id="setting-up-an-ec2-instance">
+<h3>Setting up An EC2 Instance<a class="headerlink" href="#setting-up-an-ec2-instance" title="Permalink to this headline">¶</a></h3>
+<p>Our first step is to create an EC2 (Elastic Compute Cloud) instance for our
 application.</p>
 <div class="build container">
 <p>Begin by opening the AWS homepage (<a class="reference external" href="http://aws.amazon.com">http://aws.amazon.com</a>)</p>
-<p>Then click on the big yellow &quot;Sign in to the Console&quot; button</p>
-<p>Fill in your email, check &quot;I am a returning user...&quot; and supply your
+<p>Then click on the big yellow &#8220;Sign in to the Console&#8221; button</p>
+<p>Fill in your email, check &#8220;I am a returning user...&#8221; and supply your
 password.</p>
 <p>When the page loads, you are viewing the AWS Console.</p>
-<p>If you don't see a big list of services in that first page, click on
-'Services' in the black header.</p>
+<p>If you don&#8217;t see a big list of services in that first page, click on
+&#8216;Services&#8217; in the black header.</p>
 <p>From the list of services, click on <code class="docutils literal"><span class="pre">EC2</span></code>.</p>
 </div>
-
-
-
-<div class="slide-no">11</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id8">
-    <hgroup>
-      <h3>Setting up An EC2 Instance</h3>
-    </hgroup>
-    <article class="">
-      <p>The page that loads is the management console for EC2 resources.  You used it
+<p>The page that loads is the management console for EC2 resources.  You used it
 to create your security group and key pair.</p>
 <div class="build container">
-<p>Click the large blue &quot;Launch Instance&quot; button to start a new instance.</p>
+<p>Click the large blue &#8220;Launch Instance&#8221; button to start a new instance.</p>
 <p>You should see a list of types of operating system listed.</p>
-<p>If you don't click on <em>quick start</em> at the left.</p>
-<p>In the list, find &quot;Ubuntu Server 14.04 LTS&quot;.</p>
-<p>Click on 'Select' to begin building an instance using that operating
+<p>If you don&#8217;t click on <em>quick start</em> at the left.</p>
+<p>In the list, find &#8220;Ubuntu Server 14.04 LTS&#8221;.</p>
+<p>Click on &#8216;Select&#8217; to begin building an instance using that operating
 system.</p>
 </div>
-
-
-
-<div class="slide-no">12</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id9">
-    <hgroup>
-      <h3>Setting up An EC2 Instance</h3>
-    </hgroup>
-    <article class="">
-      <p>The next page of the launch wizard allows you to choose how much CPU power and
+<p>The next page of the launch wizard allows you to choose how much CPU power and
 RAM your machine will have.</p>
 <div class="build container">
 <p>There are only two types of instance that are in the free tier, and one is
 now deprecated.</p>
 <p>Select the <em>t2.micro</em> instance by clicking the checkbox to the left of that
 row (it may already be selected for you).</p>
-<p>Below the table of instance types, find and click on &quot;Next: configure
-instance details&quot;</p>
+<p>Below the table of instance types, find and click on &#8220;Next: configure
+instance details&#8221;</p>
 </div>
-
-
-
-<div class="slide-no">13</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id10">
-    <hgroup>
-      <h3>Setting up An EC2 Instance</h3>
-    </hgroup>
-    <article class="">
-      <p>Click through the next two steps until you reach &quot;Configure Security Group&quot;</p>
+<p>Click through the next two steps until you reach &#8220;Configure Security Group&#8221;</p>
 <div class="build container">
-<p>Here, click the &quot;select an existing security group&quot; button, and pick your
+<p>Here, click the &#8220;select an existing security group&#8221; button, and pick your
 ssh-access group.</p>
 <p>This group acts as a control for a <em>firewall</em> which restricts network
 access to your new instance.</p>
-<p>You've configured that firewall to allow any machine to talk to your
+<p>You&#8217;ve configured that firewall to allow any machine to talk to your
 instance, but only on port 22 (SSH).</p>
-<p>Finish by clicking &quot;Review and Launch&quot;</p>
-<p>Then click on &quot;Launch&quot; to start the instance.</p>
+<p>Finish by clicking &#8220;Review and Launch&#8221;</p>
+<p>Then click on &#8220;Launch&#8221; to start the instance.</p>
 </div>
-
-
-
-<div class="slide-no">14</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id11">
-    <hgroup>
-      <h3>Setting up An EC2 Instance</h3>
-    </hgroup>
-    <article class="">
-      <p>When you click &quot;Launch&quot; you are required to choose a key pair to control ssh
+<p>When you click &#8220;Launch&#8221; you are required to choose a key pair to control ssh
 access to your new machine.</p>
 <div class="build container">
 <p>Without this key pair, you have no way to access the server, and you must
 destroy it and create a new one.</p>
 <p>Select your <code class="docutils literal"><span class="pre">pk-aws</span></code> pair from the list of existing key pairs.</p>
 <p>Then, check the box that indicates you have the private key and click
-&quot;Launch Instance&quot;.</p>
+&#8220;Launch Instance&#8221;.</p>
 <p>It will take a few minutes for the new machine to initialize and be ready.</p>
 </div>
-
-
-
-<div class="slide-no">15</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="accessing-your-instance">
-    <hgroup>
-      <h3>Accessing Your Instance</h3>
-    </hgroup>
-    <article class="">
-      <p>Once the machine indicates it is &quot;running&quot; you are ready to access that
+</div>
+<div class="section" id="accessing-your-instance">
+<h3>Accessing Your Instance<a class="headerlink" href="#accessing-your-instance" title="Permalink to this headline">¶</a></h3>
+<p>Once the machine indicates it is &#8220;running&#8221; you are ready to access that
 machine.</p>
 <div class="build container">
 <p>ssh into that machine:</p>
@@ -431,49 +254,28 @@ machine.</p>
 <p>You will need to indicate that you trust this connection.</p>
 <p>You are now logged in to the server as the default user.</p>
 <p>AWS sets this user up with the ability to run commands using <em>sudo</em></p>
-<p>You'll begin by updating the OS package manager so you are ensured of
+<p>You&#8217;ll begin by updating the OS package manager so you are ensured of
 having the latest versions of any software you install:</p>
 <div class="highlight-bash"><div class="highlight"><pre>sudo apt-get update
 </pre></div>
 </div>
 </div>
-
-
-
-<div class="slide-no">16</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="deployment-layer-1-web-server">
-    <hgroup>
-      <h3>Deployment Layer 1: Web Server</h3>
-    </hgroup>
-    <article class="">
-      <p>In our deployment stack, the frontmost facing layer is the Web Server.</p>
+</div>
+<div class="section" id="deployment-layer-1-web-server">
+<h3>Deployment Layer 1: Web Server<a class="headerlink" href="#deployment-layer-1-web-server" title="Permalink to this headline">¶</a></h3>
+<p>In our deployment stack, the frontmost facing layer is the Web Server.</p>
 <div class="build container">
-<p>This software is responsible for receiving requests from clients' browsers.</p>
+<p>This software is responsible for receiving requests from clients&#8217; browsers.</p>
 <p>It will also handle serving static resources in order to relieve Django of
 that burden.</p>
-<p>If you are using <code class="docutils literal"><span class="pre">https</span></code>, it's also a good place to handle terminating an
+<p>If you are using <code class="docutils literal"><span class="pre">https</span></code>, it&#8217;s also a good place to handle terminating an
 SSL connection.</p>
 <p>Begin by using the Ubuntu package manager to install <code class="docutils literal"><span class="pre">nginx</span></code>:</p>
 <div class="highlight-bash"><div class="highlight"><pre>sudo apt-get install nginx
 </pre></div>
 </div>
 </div>
-
-
-
-<div class="slide-no">17</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id12">
-    <hgroup>
-      <h3>Controlling <code class="docutils literal"><span class="pre">nginx</span></code></h3>
-    </hgroup>
-    <article class="">
-      <p>Like many other packages installed by <code class="docutils literal"><span class="pre">apt-get</span></code>, nginx is set up as a
+<p>Like many other packages installed by <code class="docutils literal"><span class="pre">apt-get</span></code>, nginx is set up as a
 <em>service</em></p>
 <p>You can check the status of the service:</p>
 <div class="highlight-bash"><div class="highlight"><pre>sudo service nginx status
@@ -484,38 +286,14 @@ SSL connection.</p>
 sudo service nginx start
 </pre></div>
 </div>
-
-
-
-<div class="slide-no">18</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id13">
-    <hgroup>
-      <h3>Configuring Nginx</h3>
-    </hgroup>
-    <article class="">
-      <p>Default configuration for nginx lives in <code class="docutils literal"><span class="pre">/etc/nginx</span></code>.  Let's look at three
+<p>Default configuration for nginx lives in <code class="docutils literal"><span class="pre">/etc/nginx</span></code>.  Let&#8217;s look at three
 files there in particular:</p>
 <ul class="simple">
 <li>/etc/nginx/nginx.conf (controls behavior of the whole server)</li>
-<li>/etc/nginx/sites-available/default (controls a single 'site')</li>
-<li>/etc/nginx/sites-enabled/default (activates a single 'site')</li>
+<li>/etc/nginx/sites-available/default (controls a single &#8216;site&#8217;)</li>
+<li>/etc/nginx/sites-enabled/default (activates a single &#8216;site&#8217;)</li>
 </ul>
-
-
-
-<div class="slide-no">19</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id14">
-    <hgroup>
-      <h3>Check Your results</h3>
-    </hgroup>
-    <article class="">
-      <p>Check your results by loading your public DNS name in a browser</p>
+<p>Check your results by loading your public DNS name in a browser</p>
 <div class="build container">
 <p>you should see this, do you?</p>
 <div class="figure align-center">
@@ -523,19 +301,10 @@ files there in particular:</p>
 </div>
 <p>Add port 80 to your security group.  Then reload.</p>
 </div>
-
-
-
-<div class="slide-no">20</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="deployment-layer-3-database">
-    <hgroup>
-      <h3>Deployment Layer 3: Database</h3>
-    </hgroup>
-    <article class="">
-      <p>In order to deploy our database, we'll need to install some more software</p>
+</div>
+<div class="section" id="deployment-layer-3-database">
+<h3>Deployment Layer 3: Database<a class="headerlink" href="#deployment-layer-3-database" title="Permalink to this headline">¶</a></h3>
+<p>In order to deploy our database, we&#8217;ll need to install some more software</p>
 <div class="build container">
 <p>Use <code class="docutils literal"><span class="pre">apt-get</span> <span class="pre">istall</span></code> to add each of the following packages:</p>
 <ul class="simple">
@@ -547,83 +316,38 @@ files there in particular:</p>
 <li>git</li>
 </ul>
 </div>
-
-
-
-<div class="slide-no">21</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id15">
-    <hgroup>
-      <h3>RDS</h3>
-    </hgroup>
-    <article class="">
-      <p>You <em>can</em> set up postgres directly on the machine you just built, but that's no fun.</p>
+<p>You <em>can</em> set up postgres directly on the machine you just built, but that&#8217;s no fun.</p>
 <div class="build container">
-<p>Let's use RDS, the AWS service for providing databases.</p>
-<p>From 'services' in the header, select RDS.</p>
-<p>In the page that appears, click on 'Launch a DB Instance'</p>
+<p>Let&#8217;s use RDS, the AWS service for providing databases.</p>
+<p>From &#8216;services&#8217; in the header, select RDS.</p>
+<p>In the page that appears, click on &#8216;Launch a DB Instance&#8217;</p>
 <p>From the selection of database types, choose PostgreSQL.</p>
-<p>Click <strong>no</strong> to indicate that you don't need a multi-AZ database.</p>
+<p>Click <strong>no</strong> to indicate that you don&#8217;t need a multi-AZ database.</p>
 </div>
-
-
-
-<div class="slide-no">22</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id16">
-    <hgroup>
-      <h3>Deployment Layer 3: Database</h3>
-    </hgroup>
-    <article class="">
-      <p>On the database details page, You have a bit of work to do.</p>
+<p>On the database details page, You have a bit of work to do.</p>
 <div class="build container">
 <p>First, select <code class="docutils literal"><span class="pre">db.t2.micro</span></code> as the instance type.</p>
 <p>Then, for multi-AZ deployment, select <strong>no</strong> (again)</p>
 <p>Finally, provide values for the last four inputs</p>
 <p>The database identifier must be unique to your account and region, use
-&quot;uwpce&quot;.</p>
-<p>For the master username, use &quot;awsuser&quot;</p>
+&#8220;uwpce&#8221;.</p>
+<p>For the master username, use &#8220;awsuser&#8221;</p>
 <p>Provide a password and repeat it to prove you can</p>
 </div>
-
-
-
-<div class="slide-no">23</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id17">
-    <hgroup>
-      <h3>Deployment Layer 3: Database</h3>
-    </hgroup>
-    <article class="">
-      <p>For Advanced Settings, make sure your DB is in the same availability zone as
+<p>For Advanced Settings, make sure your DB is in the same availability zone as
 your EC2 instance.</p>
 <div class="build container">
 <p>Also ensure that you select the same security group you used for your EC2
 instance from the list of VPC security groups.</p>
-<p>Enter a database name, use &quot;djangodb&quot;</p>
-<p>Finally, click &quot;Launch DB Instance&quot;</p>
-<p>While the database launches, let's return to setting up our application on
+<p>Enter a database name, use &#8220;djangodb&#8221;</p>
+<p>Finally, click &#8220;Launch DB Instance&#8221;</p>
+<p>While the database launches, let&#8217;s return to setting up our application on
 EC2</p>
 </div>
-
-
-
-<div class="slide-no">24</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="deployment-layer-2-application">
-    <hgroup>
-      <h3>Deployment Layer 2: Application</h3>
-    </hgroup>
-    <article class="">
-      <p>Back on the EC2 instance, in your ssh terminal, clone your django application:</p>
+</div>
+<div class="section" id="deployment-layer-2-application">
+<h3>Deployment Layer 2: Application<a class="headerlink" href="#deployment-layer-2-application" title="Permalink to this headline">¶</a></h3>
+<p>Back on the EC2 instance, in your ssh terminal, clone your django application:</p>
 <div class="highlight-bash"><div class="highlight"><pre>git clone &lt;your-app-repo-url&gt;
 </pre></div>
 </div>
@@ -634,19 +358,7 @@ $ pip install -r requirements.txt
 </pre></div>
 </div>
 </div>
-
-
-
-<div class="slide-no">25</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id18">
-    <hgroup>
-      <h3>Deployment Layer 2: Application</h3>
-    </hgroup>
-    <article class="">
-      <p>Finally, export a system environment variable called DATABASE_URL with the
+<p>Finally, export a system environment variable called DATABASE_URL with the
 following format:</p>
 <div class="highlight-python"><div class="highlight"><pre>postgres://username:password@host:port/dbname
 </pre></div>
@@ -661,19 +373,7 @@ following format:</p>
 </div>
 <p>Work through any issues in getting that to work</p>
 </div>
-
-
-
-<div class="slide-no">26</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id19">
-    <hgroup>
-      <h3>Wiring It Up</h3>
-    </hgroup>
-    <article class="">
-      <p>Once working, we can point nginx at the instance:</p>
+<p>Once working, we can point nginx at the instance:</p>
 <div class="build container">
 <div class="highlight-bash"><div class="highlight"><pre>sudo mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
 sudo vi /etc/nginx/sites-available/default
@@ -695,19 +395,7 @@ sudo vi /etc/nginx/sites-available/default
 </pre></div>
 </div>
 </div>
-
-
-
-<div class="slide-no">27</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id20">
-    <hgroup>
-      <h3>Deployment Layer 2: Application</h3>
-    </hgroup>
-    <article class="">
-      <p>Save that file and restart nginx:</p>
+<p>Save that file and restart nginx:</p>
 <div class="highlight-bash"><div class="highlight"><pre>sudo service nginx restart
 </pre></div>
 </div>
@@ -719,19 +407,10 @@ error</p>
 </div>
 <p>This works, but as soon as you exit your ssh terminal, django will quit.  We
 want a long-running process we can leave behind.</p>
-
-
-
-<div class="slide-no">28</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="deployment-layer-4-permanence">
-    <hgroup>
-      <h3>Deployment Layer 4: Permanence</h3>
-    </hgroup>
-    <article class="">
-      <p>Install gunicorn on the server</p>
+</div>
+<div class="section" id="deployment-layer-4-permanence">
+<h3>Deployment Layer 4: Permanence<a class="headerlink" href="#deployment-layer-4-permanence" title="Permalink to this headline">¶</a></h3>
+<p>Install gunicorn on the server</p>
 <div class="highlight-bash"><div class="highlight"><pre>pip install gunicorn
 </pre></div>
 </div>
@@ -747,19 +426,7 @@ content:</p>
 </div>
 <p>Add the file to your repository and commit your changes.</p>
 <p>Then pull the changes back on your EC2 instance</p>
-
-
-
-<div class="slide-no">29</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id21">
-    <hgroup>
-      <h3>Configuration Changes for Nginx</h3>
-    </hgroup>
-    <article class="">
-      <p>Update nginx config (/etc/nginx/sites-available/default) to serve static files:</p>
+<p>Update nginx config (/etc/nginx/sites-available/default) to serve static files:</p>
 <div class="highlight-nginx"><div class="highlight"><pre><span class="k">server</span> <span class="p">{</span>
     <span class="c1"># ...</span>
 
@@ -770,19 +437,7 @@ content:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-
-
-
-<div class="slide-no">30</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id22">
-    <hgroup>
-      <h3>Running with Gunicorn</h3>
-    </hgroup>
-    <article class="">
-      <p>Then set an environment variable to point at production settings:</p>
+<p>Then set an environment variable to point at production settings:</p>
 <div class="highlight-python"><div class="highlight"><pre>export DJANGO_SETTINGS_MODULE=mysite.production
 </pre></div>
 </div>
@@ -792,24 +447,12 @@ content:</p>
 </div>
 <p>Wahooo!</p>
 <p>But still not great, because nothing is monitoring this process.</p>
-<p>There's no way to keep track of how it is doing.</p>
-<p>We can do better.  First, let's kill the processes that spawned:</p>
+<p>There&#8217;s no way to keep track of how it is doing.</p>
+<p>We can do better.  First, let&#8217;s kill the processes that spawned:</p>
 <div class="highlight-python"><div class="highlight"><pre>killall gunicorn
 </pre></div>
 </div>
-
-
-
-<div class="slide-no">31</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id23">
-    <hgroup>
-      <h3>Managing Gunicorn</h3>
-    </hgroup>
-    <article class="">
-      <p>We can use a process manager to run the gunicorn command, and track the results.</p>
+<p>We can use a process manager to run the gunicorn command, and track the results.</p>
 <p>Using linux <a class="reference external" href="http://blog.terminal.com/getting-started-with-upstart/">upstart</a> is relatively simple.</p>
 <p>Put the following in <code class="docutils literal"><span class="pre">/etc/init/djangoblog.conf</span></code></p>
 <div class="highlight-cfg"><div class="highlight"><pre>description &quot;djangoblog&quot;
@@ -826,19 +469,7 @@ env DATABASE_URL=postgres://&lt;username&gt;:&lt;password&gt;@&lt;host&gt;:&lt;p
 exec gunicorn -b 127.0.0.1:8000 -w 4 mysite.wsgi
 </pre></div>
 </div>
-
-
-
-<div class="slide-no">32</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id24">
-    <hgroup>
-      <h3>Using Upstart</h3>
-    </hgroup>
-    <article class="">
-      <p>Once you've completed that, you will find that you can use the Linux
+<p>Once you&#8217;ve completed that, you will find that you can use the Linux
 <code class="docutils literal"><span class="pre">service</span></code> command to control the gunicorn process.</p>
 <div class="build container">
 <p>Use the following commands:</p>
@@ -854,36 +485,90 @@ commands, it means you have an error in your configuration file.</p>
 <div class="highlight-python"><div class="highlight"><pre>$ init-checkconf /etc/init/djangoblog.conf
 </pre></div>
 </div>
-<p>And that's it!</p>
+<p>And that&#8217;s it!</p>
+</div>
+</div>
+</div>
 </div>
 
 
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Session 10</a><ul>
+<li><a class="reference internal" href="#deploying-django">Deploying Django</a><ul>
+<li><a class="reference internal" href="#choosing-a-deployment-strategy">Choosing a Deployment Strategy</a></li>
+<li><a class="reference internal" href="#preparing-for-aws-deployment">Preparing for AWS Deployment</a></li>
+<li><a class="reference internal" href="#setting-up-an-ec2-instance">Setting up An EC2 Instance</a></li>
+<li><a class="reference internal" href="#accessing-your-instance">Accessing Your Instance</a></li>
+<li><a class="reference internal" href="#deployment-layer-1-web-server">Deployment Layer 1: Web Server</a></li>
+<li><a class="reference internal" href="#deployment-layer-3-database">Deployment Layer 3: Database</a></li>
+<li><a class="reference internal" href="#deployment-layer-2-application">Deployment Layer 2: Application</a></li>
+<li><a class="reference internal" href="#deployment-layer-4-permanence">Deployment Layer 4: Permanence</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 
-<div class="slide-no">33</div>
-
-
-    </article>
-  </slide>
-
-
-    <slide class="thank-you-slide segue nobackground">
-    <aside class="gdbar right"><img src="../_static/logo_UW.png"></aside>
-    <article class="flexbox vleft auto-fadein">
-      <h2>Good Night!</h2>
-      <p>&nbsp;</p>
-    </article>
-    <p class="auto-fadein" data-config-contact>
-      <!-- populated from slide_config.json -->
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="session09.html"
+                        title="previous chapter">Session 09</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../readings.html"
+                        title="next chapter">Supplementary Course Readings</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/presentations/session10.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+  <h3>Slides</h3>
+  <ul class="this-page-menu">
+    <li><a href="../.././slides/presentations/session10.html"
+           rel="nofollow">View as slides</a></li>
+  </ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
     </p>
-  </slide>
-
-  <slide class="backdrop"></slide>
-
-</slides>
-
-<!--[if IE]>
-  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
-  <script>CFInstall.check({mode: 'overlay'});</script>
-<![endif]-->
-</body>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../readings.html" title="Supplementary Course Readings"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="session09.html" title="Session 09"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">UWPCE Python 200</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Course Presentations</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2012-2016, Cris Ewing.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
 </html>

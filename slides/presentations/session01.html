@@ -1,41 +1,16 @@
-<!--
-Google IO 2012/2013 HTML5 Slide Template
-
-Authors: Eric Bidelman <ebidel@gmail.com>
-         Luke Mahé <lukem@google.com>
-
-URL: https://code.google.com/p/io-2012-slides
---><!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 
-<html>
-<head>
-  <title>Session 01 &mdash; Internet Programming with Python</title>
-  <meta charset="utf-8">
-  
-  <meta http-equiv="X-UA-Compatible" content="chrome=1">
-  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
-  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-  <!--This one seems to work all the time, but really small on ipad-->
-  <!--<meta name="viewport" content="initial-scale=0.4">-->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-
-  
-  <link rel="stylesheet" media="all"
-        href="../_static/theme/css/default.css">
-  <link rel="stylesheet" media="all"
-        href="../_static/theme/css/hieroglyph.css">
-  <link rel="stylesheet" media="only screen and (max-device-width: 480px)"
-        href="../_static/theme/css/phone.css">
-
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <link rel="stylesheet" href="../_static/custom.css"
-          type="text/css" />
+    <title>Session 01 &mdash; Internet Programming with Python</title>
     
-
+    <link rel="stylesheet" href="../_static/pyramid.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
-  
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
@@ -45,68 +20,63 @@ URL: https://code.google.com/p/io-2012-slides
         HAS_SOURCE:  true
       };
     </script>
-
-    <script data-main="../_static/js/slides"
-            src="../_static/js/require-1.0.8.min.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    
     <link rel="top" title="Internet Programming with Python" href="../index.html" />
     <link rel="up" title="Course Presentations" href="index.html" />
     <link rel="next" title="Session 02" href="session02.html" />
-    <link rel="prev" title="Course Presentations" href="index.html" /> 
-</head>
-<body style="opacity: 0">
+    <link rel="prev" title="Course Presentations" href="index.html" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
 
-<slides class="layout-widescreen">
+  </head>
+  <body role="document">
+<div class="header">
+  <div class="logo">
+    <a href="../index.html">
+      <img class="logo" src="../_static/logo_UW.png" alt="Logo"/>
+    </a>
+  </div>
+</div>
 
-  <slide class="title-slide segue nobackground">
-  <aside class="gdbar"><img src="../_static/logo_UW.png"></aside>
-  <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
-  <hgroup class="auto-fadein">
-    <h1 data-config-title><!-- populated from slide_config.json --></h1>
-    <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
-    <p data-config-presenter><!-- populated from slide_config.json --></p>
-  </hgroup>
-</slide>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="session02.html" title="Session 02"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Course Presentations"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">UWPCE Python 200</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Course Presentations</a> &raquo;</li> 
+      </ul>
+    </div>  
 
-  
-    <slide class="title-slide segue nobackground level-1" id="session-01">
-    <hgroup>
-      <h1>Session 01</h1>
-    </hgroup>
-    <article class="">
-      <div class="figure align-center" id="id2">
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="session-01">
+<h1>Session 01<a class="headerlink" href="#session-01" title="Permalink to this headline">¶</a></h1>
+<div class="figure align-center" id="id2">
 <a class="reference internal image-reference" href="../_images/python.png"><img alt="../_images/python.png" src="../_images/python.png" style="width: 50%;" /></a>
 <p class="caption"><span class="caption-text"><strong>Networking and Sockets</strong></span></p>
 </div>
-
-
-
-<div class="slide-no">1</div>
-
-
-    </article>
-  </slide>  <slide class="level-2" id="computer-communications">
-    <hgroup>
-      <h2>Computer Communications</h2>
-    </hgroup>
-    <article class="">
-      <p class="large centered">Wherein we learn about how computers speak to each-other over a network.</p>
-
-
-
-<div class="slide-no">2</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="but-first">
-    <hgroup>
-      <h3>But First</h3>
-    </hgroup>
-    <article class="">
-      <div class="left container">
+<div class="section" id="computer-communications">
+<h2>Computer Communications<a class="headerlink" href="#computer-communications" title="Permalink to this headline">¶</a></h2>
+<p class="large centered">Wherein we learn about how computers speak to each-other over a network.</p>
+<div class="section" id="but-first">
+<h3>But First<a class="headerlink" href="#but-first" title="Permalink to this headline">¶</a></h3>
+<div class="left container">
 <p>Class presentations are available online for your use</p>
 <p class="small"><a class="reference external" href="https://github.com/UWPCE-PythonCert/training.python_web">https://github.com/UWPCE-PythonCert/training.python_web</a></p>
 <div class="build container">
@@ -119,95 +89,38 @@ URL: https://code.google.com/p/io-2012-slides
 <p>Find mistakes? See improvements? Make a pull request.</p>
 </div>
 </div>
-
-
-
-<div class="slide-no">3</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id5">
-    <hgroup>
-      <h3>But First</h3>
-    </hgroup>
-    <article class="">
-      <p>The rendered documentation is available as well:</p>
+<p>The rendered documentation is available as well:</p>
 <p><a class="reference external" href="http://uwpce-pythoncert.github.io">http://uwpce-pythoncert.github.io</a></p>
 <p>Please check frequently. I will update with great regularity</p>
-
-
-
-<div class="slide-no">4</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id6">
-    <hgroup>
-      <h3>But First</h3>
-    </hgroup>
-    <article class="">
-      <p><strong>Classroom Protocol</strong></p>
+<p><strong>Classroom Protocol</strong></p>
 <div class="build container">
 <p>Questions to ask:</p>
 <ul class="build simple">
 <li>What did you just say?</li>
 <li>Please explain what we just did again?</li>
 <li>How did that work?</li>
-<li>Why didn't that work for me?</li>
+<li>Why didn&#8217;t that work for me?</li>
 <li>Is that a typo?</li>
 </ul>
 </div>
-
-
-
-<div class="slide-no">5</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id7">
-    <hgroup>
-      <h3>But First</h3>
-    </hgroup>
-    <article class="">
-      <p><strong>Classroom Protocol</strong></p>
+<p><strong>Classroom Protocol</strong></p>
 <div class="build container">
 <p>Questions <strong>not</strong> to ask:</p>
 <ul class="build simple">
 <li><strong>Hypotheticals</strong>: What happens if I do X?</li>
 <li><strong>Research</strong>: Can Python do Y?</li>
 <li><strong>Syllabus</strong>: Are we going to cover Z in class?</li>
-<li><strong>Marketing questions</strong>: please just don't.</li>
+<li><strong>Marketing questions</strong>: please just don&#8217;t.</li>
 <li><strong>Performance questions</strong>: Is Python fast enough?</li>
-<li><strong>Unpythonic</strong>: Why doesn't Python do it some other way?</li>
+<li><strong>Unpythonic</strong>: Why doesn&#8217;t Python do it some other way?</li>
 <li><strong>Show off</strong>: Look what I just did!</li>
 </ul>
 </div>
-
-
-
-<div class="slide-no">6</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id8">
-    <hgroup>
-      <h3>But First</h3>
-    </hgroup>
-    <article class="">
-      <p class="large center">Introductions</p>
-
-
-
-<div class="slide-no">7</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="tcp-ip">
-    <hgroup>
-      <h3>TCP/IP</h3>
-    </hgroup>
-    <article class="">
-      <div class="figure align-left" id="id3">
+<p class="large center">Introductions</p>
+</div>
+<div class="section" id="tcp-ip">
+<h3>TCP/IP<a class="headerlink" href="#tcp-ip" title="Permalink to this headline">¶</a></h3>
+<div class="figure align-left" id="id3">
 <img alt="../_images/network_topology.png" src="../_images/network_topology.png" />
 <p class="caption"><span class="caption-text"><a class="reference external" href="http://en.wikipedia.org/wiki/Internet_Protocol_Suite">http://en.wikipedia.org/wiki/Internet_Protocol_Suite</a></span></p>
 </div>
@@ -217,43 +130,22 @@ URL: https://code.google.com/p/io-2012-slides
 <li>between two machines</li>
 <li>among many machines</li>
 </ul>
-
-
-
-<div class="slide-no">8</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id9">
-    <hgroup>
-      <h3>TCP/IP</h3>
-    </hgroup>
-    <article class="">
-      <div class="figure align-left" id="id4">
+<div class="figure align-left" id="id4">
 <a class="reference internal image-reference" href="../_images/data_in_tcpip_stack.png"><img alt="../_images/data_in_tcpip_stack.png" src="../_images/data_in_tcpip_stack.png" style="width: 100%;" /></a>
 <p class="caption"><span class="caption-text"><a class="reference external" href="http://en.wikipedia.org/wiki/Internet_Protocol_Suite">http://en.wikipedia.org/wiki/Internet_Protocol_Suite</a></span></p>
 </div>
 <ul class="build simple">
-<li>Process divided into 'layers'</li>
-<li>'Layers' are mostly arbitrary</li>
+<li>Process divided into &#8216;layers&#8217;</li>
+<li>&#8216;Layers&#8217; are mostly arbitrary</li>
 <li>Different descriptions have different layers</li>
-<li>Most common is the 'TCP/IP Stack'</li>
+<li>Most common is the &#8216;TCP/IP Stack&#8217;</li>
 </ul>
-
-
-
-<div class="slide-no">9</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="the-tcp-ip-stack-link">
-    <hgroup>
-      <h3>The TCP/IP Stack - Link</h3>
-    </hgroup>
-    <article class="">
-      <p>The bottom layer is the 'Link Layer'</p>
+</div>
+<div class="section" id="the-tcp-ip-stack-link">
+<h3>The TCP/IP Stack - Link<a class="headerlink" href="#the-tcp-ip-stack-link" title="Permalink to this headline">¶</a></h3>
+<p>The bottom layer is the &#8216;Link Layer&#8217;</p>
 <ul class="build simple">
-<li>Deals with the physical connections between machines, 'the wire'</li>
+<li>Deals with the physical connections between machines, &#8216;the wire&#8217;</li>
 <li>Packages data for physical transport</li>
 <li>Executes transmission over a physical medium<ul class="build">
 <li>what that medium is is arbitrary</li>
@@ -261,19 +153,10 @@ URL: https://code.google.com/p/io-2012-slides
 </li>
 <li>Implemented in the Network Interface Card(s) (NIC) in your computer</li>
 </ul>
-
-
-
-<div class="slide-no">10</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="the-tcp-ip-stack-internet">
-    <hgroup>
-      <h3>The TCP/IP Stack - Internet</h3>
-    </hgroup>
-    <article class="">
-      <p>Moving up, we have the 'Internet Layer'</p>
+</div>
+<div class="section" id="the-tcp-ip-stack-internet">
+<h3>The TCP/IP Stack - Internet<a class="headerlink" href="#the-tcp-ip-stack-internet" title="Permalink to this headline">¶</a></h3>
+<p>Moving up, we have the &#8216;Internet Layer&#8217;</p>
 <ul class="build simple">
 <li>Deals with addressing and routing<ul class="build">
 <li>Where are we going and how do we get there?</li>
@@ -282,37 +165,16 @@ URL: https://code.google.com/p/io-2012-slides
 <li>Agnostic as to physical medium (IP over Avian Carrier - IPoAC)</li>
 <li>Makes no promises of reliability</li>
 <li>Two addressing systems<ul class="build">
-<li>IPv4 (current, limited '192.168.1.100')</li>
-<li>IPv6 (future, 3.4 x 10^38 addresses, '2001:0db8:85a3:0042:0000:8a2e:0370:7334')</li>
+<li>IPv4 (current, limited &#8216;192.168.1.100&#8217;)</li>
+<li>IPv6 (future, 3.4 x 10^38 addresses, &#8216;2001:0db8:85a3:0042:0000:8a2e:0370:7334&#8217;)</li>
 </ul>
 </li>
 </ul>
-
-
-
-<div class="slide-no">11</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id10">
-    <hgroup>
-      <h3>The TCP/IP Stack - Internet</h3>
-    </hgroup>
-    <article class="">
-      <p class="large center">That's 4.3 x 10^28 addresses <em>per person alive today</em></p>
-
-
-
-<div class="slide-no">12</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="the-tcp-ip-stack-transport">
-    <hgroup>
-      <h3>The TCP/IP Stack - Transport</h3>
-    </hgroup>
-    <article class="">
-      <p>Next up is the 'Transport Layer'</p>
+<p class="large center">That&#8217;s 4.3 x 10^28 addresses <em>per person alive today</em></p>
+</div>
+<div class="section" id="the-tcp-ip-stack-transport">
+<h3>The TCP/IP Stack - Transport<a class="headerlink" href="#the-tcp-ip-stack-transport" title="Permalink to this headline">¶</a></h3>
+<p>Next up is the &#8216;Transport Layer&#8217;</p>
 <ul class="build simple">
 <li>Deals with transmission and reception of data<ul>
 <li>error correction, flow control, congestion management</li>
@@ -323,26 +185,14 @@ URL: https://code.google.com/p/io-2012-slides
 <li>UDP: User Datagram Protocol</li>
 </ul>
 </li>
-<li>Not all Transport Protocols are 'reliable'<ul class="build">
+<li>Not all Transport Protocols are &#8216;reliable&#8217;<ul class="build">
 <li>TCP ensures that dropped packets are resent</li>
 <li>UDP makes no such assurance</li>
 <li>Reliability is slow and expensive</li>
 </ul>
 </li>
 </ul>
-
-
-
-<div class="slide-no">13</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id11">
-    <hgroup>
-      <h3>The TCP/IP Stack - Transport</h3>
-    </hgroup>
-    <article class="">
-      <p>The 'Transport Layer' also establishes the concept of a <strong>port</strong></p>
+<p>The &#8216;Transport Layer&#8217; also establishes the concept of a <strong>port</strong></p>
 <div class="build container">
 <ul class="build simple">
 <li>IP Addresses designate a specific <em>machine</em> on the network</li>
@@ -351,22 +201,10 @@ host</li>
 <li>192.168.1.100:80  (the <em>:80</em> part is the <strong>port</strong>)</li>
 <li>[2001:db8:85a3:8d3:1319:8a2e:370:7348]:443 (<em>:443</em> is the <strong>port</strong>)</li>
 </ul>
-<p>This means that you don't have to worry about information intended for your
+<p>This means that you don&#8217;t have to worry about information intended for your
 web browser being accidentally read by your email client.</p>
 </div>
-
-
-
-<div class="slide-no">14</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id12">
-    <hgroup>
-      <h3>The TCP/IP Stack - Transport</h3>
-    </hgroup>
-    <article class="">
-      <p>There are certain <strong>ports</strong> which are commonly understood to belong to given
+<p>There are certain <strong>ports</strong> which are commonly understood to belong to given
 applications or protocols:</p>
 <div class="build container">
 <ul class="build simple">
@@ -380,38 +218,17 @@ applications or protocols:</p>
 <p>These ports are often referred to as <strong>well-known ports</strong></p>
 <p class="small">(see <a class="reference external" href="http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers">http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers</a>)</p>
 </div>
-
-
-
-<div class="slide-no">15</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id13">
-    <hgroup>
-      <h3>The TCP/IP Stack - Transport</h3>
-    </hgroup>
-    <article class="">
-      <p>Ports are grouped into a few different classes</p>
+<p>Ports are grouped into a few different classes</p>
 <ul class="build simple">
 <li>Ports numbered 0 - 1023 are <em>reserved</em></li>
 <li>Ports numbered 1024 - 65535 are <em>open</em></li>
 <li>Ports numbered 1024 - 49151 may be <em>registered</em></li>
 <li>Ports numbered 49152 - 65535 are called <em>ephemeral</em></li>
 </ul>
-
-
-
-<div class="slide-no">16</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="the-tcp-ip-stack-application">
-    <hgroup>
-      <h3>The TCP/IP Stack - Application</h3>
-    </hgroup>
-    <article class="">
-      <p>The topmost layer is the 'Application Layer'</p>
+</div>
+<div class="section" id="the-tcp-ip-stack-application">
+<h3>The TCP/IP Stack - Application<a class="headerlink" href="#the-tcp-ip-stack-application" title="Permalink to this headline">¶</a></h3>
+<p>The topmost layer is the &#8216;Application Layer&#8217;</p>
 <div class="build container">
 <ul class="build simple">
 <li>Deals directly with data produced or consumed by an application</li>
@@ -426,64 +243,34 @@ applications or protocols:</p>
 </ul>
 <p class="centered"><strong>this is where we live and work</strong></p>
 </div>
-
-
-
-<div class="slide-no">17</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="sockets">
-    <hgroup>
-      <h3>Sockets</h3>
-    </hgroup>
-    <article class="">
-      <p>Think back for a second to what we just finished discussing, the TCP/IP stack.</p>
+</div>
+<div class="section" id="sockets">
+<h3>Sockets<a class="headerlink" href="#sockets" title="Permalink to this headline">¶</a></h3>
+<p>Think back for a second to what we just finished discussing, the TCP/IP stack.</p>
 <div class="build container">
 <ul class="build simple">
 <li>The <em>Internet</em> layer gives us an <strong>IP Address</strong></li>
 <li>The <em>Transport</em> layer establishes the idea of a <strong>port</strong>.</li>
-<li>The <em>Application</em> layer doesn't care about what happens below...</li>
+<li>The <em>Application</em> layer doesn&#8217;t care about what happens below...</li>
 <li><em>Except for</em> <strong>endpoint data</strong> (IP:Port)</li>
 </ul>
 <p>A <strong>Socket</strong> is the software representation of that endpoint.</p>
 <p>Opening a <strong>socket</strong> creates a kind of transceiver that can send and/or
 receive <em>bytes</em> at a given IP address and Port.</p>
 </div>
-
-
-
-<div class="slide-no">18</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="sockets-in-python">
-    <hgroup>
-      <h3>Sockets in Python</h3>
-    </hgroup>
-    <article class="">
-      <p>Python provides a standard library module which provides socket functionality.
+</div>
+<div class="section" id="sockets-in-python">
+<h3>Sockets in Python<a class="headerlink" href="#sockets-in-python" title="Permalink to this headline">¶</a></h3>
+<p>Python provides a standard library module which provides socket functionality.
 It is called <strong>socket</strong>.</p>
 <div class="build container">
 <p>The library is really just a very thin wrapper around the system
 implementation of <em>BSD Sockets</em></p>
-<p>Let's spend a few minutes getting to know this module.</p>
-<p>We're going to do this next part together, so open up a terminal and start
+<p>Let&#8217;s spend a few minutes getting to know this module.</p>
+<p>We&#8217;re going to do this next part together, so open up a terminal and start
 an iPython interpreter</p>
 </div>
-
-
-
-<div class="slide-no">19</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id14">
-    <hgroup>
-      <h3>Sockets in Python</h3>
-    </hgroup>
-    <article class="">
-      <p>The Python sockets library allows us to find out what port a <em>service</em> uses:</p>
+<p>The Python sockets library allows us to find out what port a <em>service</em> uses:</p>
 <div class="build container">
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">socket</span>
 
@@ -497,19 +284,7 @@ an iPython interpreter</p>
 </pre></div>
 </div>
 </div>
-
-
-
-<div class="slide-no">20</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id15">
-    <hgroup>
-      <h3>Sockets in Python</h3>
-    </hgroup>
-    <article class="">
-      <p>The sockets library also provides tools for finding out information about
+<p>The sockets library also provides tools for finding out information about
 <em>hosts</em>. For example, you can find out about the hostname and IP address of
 the machine you are currently using:</p>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [4]: </span><span class="n">socket</span><span class="o">.</span><span class="n">gethostname</span><span class="p">()</span>
@@ -519,19 +294,7 @@ the machine you are currently using:</p>
 <span class="gh">Out[5]: </span><span class="go">&#39;127.0.0.1&#39;</span>
 </pre></div>
 </div>
-
-
-
-<div class="slide-no">21</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id16">
-    <hgroup>
-      <h3>Sockets in Python</h3>
-    </hgroup>
-    <article class="">
-      <p>You can also find out about machines that are located elsewhere, assuming you
+<p>You can also find out about machines that are located elsewhere, assuming you
 know their hostname. For example:</p>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [6]: </span><span class="n">socket</span><span class="o">.</span><span class="n">gethostbyname</span><span class="p">(</span><span class="s">&#39;google.com&#39;</span><span class="p">)</span>
 <span class="gh">Out[6]: </span><span class="go">&#39;173.194.33.100&#39;</span>
@@ -543,19 +306,7 @@ know their hostname. For example:</p>
 <span class="gh">Out[8]: </span><span class="go">&#39;108.168.213.86&#39;</span>
 </pre></div>
 </div>
-
-
-
-<div class="slide-no">22</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id17">
-    <hgroup>
-      <h3>Sockets in Python</h3>
-    </hgroup>
-    <article class="">
-      <p>The <code class="docutils literal"><span class="pre">gethostbyname_ex</span></code> method of the <code class="docutils literal"><span class="pre">socket</span></code> library provides more
+<p>The <code class="docutils literal"><span class="pre">gethostbyname_ex</span></code> method of the <code class="docutils literal"><span class="pre">socket</span></code> library provides more
 information about the machines we are exploring:</p>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [9]: </span><span class="n">socket</span><span class="o">.</span><span class="n">gethostbyname_ex</span><span class="p">(</span><span class="s">&#39;crisewing.com&#39;</span><span class="p">)</span>
 <span class="gh">Out[9]: </span><span class="go">(&#39;crisewing.com&#39;, [], [&#39;108.168.213.86&#39;])</span>
@@ -569,19 +320,7 @@ information about the machines we are exploring:</p>
 <span class="go">  &#39;173.194.33.97&#39;, &#39;173.194.33.104&#39;])</span>
 </pre></div>
 </div>
-
-
-
-<div class="slide-no">23</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id18">
-    <hgroup>
-      <h3>Sockets in Python</h3>
-    </hgroup>
-    <article class="">
-      <p>To create a socket, you use the <strong>socket</strong> method of the <code class="docutils literal"><span class="pre">socket</span></code> library.
+<p>To create a socket, you use the <strong>socket</strong> method of the <code class="docutils literal"><span class="pre">socket</span></code> library.
 It takes up to three optional positional arguments (here we use none to get
 the default behavior):</p>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [11]: </span><span class="n">foo</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">()</span>
@@ -591,19 +330,7 @@ the default behavior):</p>
 <span class="go">          type=SocketKind.SOCK_STREAM, proto=0, laddr=(&#39;0.0.0.0&#39;, 0)&gt;</span>
 </pre></div>
 </div>
-
-
-
-<div class="slide-no">24</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id19">
-    <hgroup>
-      <h3>Sockets in Python</h3>
-    </hgroup>
-    <article class="">
-      <p>A socket has some properties that are immediately important to us. These
+<p>A socket has some properties that are immediately important to us. These
 include the <em>family</em>, <em>type</em> and <em>protocol</em> of the socket:</p>
 <div class="build container">
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [13]: </span><span class="n">foo</span><span class="o">.</span><span class="n">family</span>
@@ -619,19 +346,7 @@ include the <em>family</em>, <em>type</em> and <em>protocol</em> of the socket:<
 <p>You might notice that the values for these properties are integers.  In
 fact, these integers are <strong>constants</strong> defined in the socket library.</p>
 </div>
-
-
-
-<div class="slide-no">25</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id20">
-    <hgroup>
-      <h3>A quick utility method</h3>
-    </hgroup>
-    <article class="">
-      <p>Let's define a method in place to help us see these constants. It will take a
+<p>Let&#8217;s define a method in place to help us see these constants. It will take a
 single argument, the shared prefix for a defined set of constants:</p>
 <div class="build container">
 <p>(you can also find this in <code class="docutils literal"><span class="pre">resources/session01/socket_tools.py</span></code>)</p>
@@ -645,41 +360,20 @@ single argument, the shared prefix for a defined set of constants:</p>
 </pre></div>
 </div>
 </div>
-
-
-
-<div class="slide-no">26</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="socket-families">
-    <hgroup>
-      <h3>Socket Families</h3>
-    </hgroup>
-    <article class="">
-      <p>Think back a moment to our discussion of the <em>Internet</em> layer of the TCP/IP
+</div>
+<div class="section" id="socket-families">
+<h3>Socket Families<a class="headerlink" href="#socket-families" title="Permalink to this headline">¶</a></h3>
+<p>Think back a moment to our discussion of the <em>Internet</em> layer of the TCP/IP
 stack.  There were a couple of different types of IP addresses:</p>
 <div class="build container">
 <ul class="build simple">
-<li>IPv4 ('192.168.1.100')</li>
-<li>IPv6 ('2001:0db8:85a3:0042:0000:8a2e:0370:7334')</li>
+<li>IPv4 (&#8216;192.168.1.100&#8217;)</li>
+<li>IPv6 (&#8216;2001:0db8:85a3:0042:0000:8a2e:0370:7334&#8217;)</li>
 </ul>
 <p>The <strong>family</strong> of a socket corresponds to the <em>addressing system</em> it uses
 for connecting.</p>
 </div>
-
-
-
-<div class="slide-no">27</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id21">
-    <hgroup>
-      <h3>Socket Families</h3>
-    </hgroup>
-    <article class="">
-      <p>Families defined in the <code class="docutils literal"><span class="pre">socket</span></code> library are prefixed by <code class="docutils literal"><span class="pre">AF_</span></code>:</p>
+<p>Families defined in the <code class="docutils literal"><span class="pre">socket</span></code> library are prefixed by <code class="docutils literal"><span class="pre">AF_</span></code>:</p>
 <div class="build container">
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [39]: </span><span class="n">families</span> <span class="o">=</span> <span class="n">get_constants</span><span class="p">(</span><span class="s">&#39;AF_&#39;</span><span class="p">)</span>
 
@@ -697,19 +391,7 @@ for connecting.</p>
 <p>Of all of these, the ones we care most about are <code class="docutils literal"><span class="pre">2</span></code> (IPv4) and <code class="docutils literal"><span class="pre">30</span></code>
 (IPv6).</p>
 </div>
-
-
-
-<div class="slide-no">28</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id22">
-    <hgroup>
-      <h3>Unix Domain Sockets</h3>
-    </hgroup>
-    <article class="">
-      <p>When you are on a machine with an operating system that is Unix-like, you will
+<p>When you are on a machine with an operating system that is Unix-like, you will
 find another generally useful socket family: <code class="docutils literal"><span class="pre">AF_UNIX</span></code>, or Unix Domain
 Sockets. Sockets in this family:</p>
 <ul class="build simple">
@@ -717,38 +399,17 @@ Sockets. Sockets in this family:</p>
 <li>are generally a bit slower than IPC connnections</li>
 <li>have the benefit of allowing the same API for programs that might run on one
 machine __or__ across the network</li>
-<li>use an 'address' that looks like a pathname ('/tmp/foo.sock')</li>
+<li>use an &#8216;address&#8217; that looks like a pathname (&#8216;/tmp/foo.sock&#8217;)</li>
 </ul>
-
-
-
-<div class="slide-no">29</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id23">
-    <hgroup>
-      <h3>Test your skills</h3>
-    </hgroup>
-    <article class="">
-      <p>What is the <em>default</em> family for the socket we created just a moment ago?</p>
+<p>What is the <em>default</em> family for the socket we created just a moment ago?</p>
 <div class="build container">
 <p>(remember we bound the socket to the symbol <code class="docutils literal"><span class="pre">foo</span></code>)</p>
 <p>How did you figure this out?</p>
 </div>
-
-
-
-<div class="slide-no">30</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="socket-types">
-    <hgroup>
-      <h3>Socket Types</h3>
-    </hgroup>
-    <article class="">
-      <p>The socket <em>type</em> determines the semantics of socket communications.</p>
+</div>
+<div class="section" id="socket-types">
+<h3>Socket Types<a class="headerlink" href="#socket-types" title="Permalink to this headline">¶</a></h3>
+<p>The socket <em>type</em> determines the semantics of socket communications.</p>
 <div class="build container">
 <p>Look up socket type constants with the <code class="docutils literal"><span class="pre">SOCK_</span></code> prefix:</p>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [42]: </span><span class="n">types</span> <span class="o">=</span> <span class="n">get_constants</span><span class="p">(</span><span class="s">&#39;SOCK_&#39;</span><span class="p">)</span>
@@ -765,32 +426,11 @@ machine __or__ across the network</li>
 <p>The most common are <code class="docutils literal"><span class="pre">1</span></code> (Stream communication (TCP)) and <code class="docutils literal"><span class="pre">2</span></code> (Datagram
 communication (UDP)).</p>
 </div>
-
-
-
-<div class="slide-no">31</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id24">
-    <hgroup>
-      <h3>Test your skills</h3>
-    </hgroup>
-    <article class="">
-      <p>What is the <em>default</em> type for our generic socket, <code class="docutils literal"><span class="pre">foo</span></code>?</p>
-
-
-
-<div class="slide-no">32</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="socket-protocols">
-    <hgroup>
-      <h3>Socket Protocols</h3>
-    </hgroup>
-    <article class="">
-      <p>A socket also has a designated <em>protocol</em>. The constants for these are
+<p>What is the <em>default</em> type for our generic socket, <code class="docutils literal"><span class="pre">foo</span></code>?</p>
+</div>
+<div class="section" id="socket-protocols">
+<h3>Socket Protocols<a class="headerlink" href="#socket-protocols" title="Permalink to this headline">¶</a></h3>
+<p>A socket also has a designated <em>protocol</em>. The constants for these are
 prefixed by <code class="docutils literal"><span class="pre">IPPROTO_</span></code>:</p>
 <div class="build container">
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [45]: </span><span class="n">protocols</span> <span class="o">=</span> <span class="n">get_constants</span><span class="p">(</span><span class="s">&#39;IPPROTO_&#39;</span><span class="p">)</span>
@@ -809,32 +449,11 @@ prefixed by <code class="docutils literal"><span class="pre">IPPROTO_</span></co
 <em>internet layer</em> protocol you intend to use. <code class="docutils literal"><span class="pre">TCP</span></code>? <code class="docutils literal"><span class="pre">UDP</span></code>? <code class="docutils literal"><span class="pre">ICMP</span></code>?
 <code class="docutils literal"><span class="pre">IGMP</span></code>?</p>
 </div>
-
-
-
-<div class="slide-no">33</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id25">
-    <hgroup>
-      <h3>Test your skills</h3>
-    </hgroup>
-    <article class="">
-      <p>What is the <em>default</em> protocol used by our generic socket, <code class="docutils literal"><span class="pre">foo</span></code>?</p>
-
-
-
-<div class="slide-no">34</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="customizing-sockets">
-    <hgroup>
-      <h3>Customizing Sockets</h3>
-    </hgroup>
-    <article class="">
-      <p>These three properties of a socket correspond to the three positional
+<p>What is the <em>default</em> protocol used by our generic socket, <code class="docutils literal"><span class="pre">foo</span></code>?</p>
+</div>
+<div class="section" id="customizing-sockets">
+<h3>Customizing Sockets<a class="headerlink" href="#customizing-sockets" title="Permalink to this headline">¶</a></h3>
+<p>These three properties of a socket correspond to the three positional
 arguments you may pass to the socket constructor.</p>
 <div class="build container">
 <p>Using them allows you to create sockets with specific communications
@@ -850,62 +469,32 @@ profiles:</p>
 </pre></div>
 </div>
 </div>
-
-
-
-<div class="slide-no">35</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="break-time">
-    <hgroup>
-      <h3>Break Time</h3>
-    </hgroup>
-    <article class="">
-      <p>So far we have:</p>
+</div>
+<div class="section" id="break-time">
+<h3>Break Time<a class="headerlink" href="#break-time" title="Permalink to this headline">¶</a></h3>
+<p>So far we have:</p>
 <div class="build container">
 <ul class="build simple">
-<li>learned about the &quot;layers&quot; of the TCP/IP Stack</li>
+<li>learned about the &#8220;layers&#8221; of the TCP/IP Stack</li>
 <li>discussed <em>families</em>, <em>types</em> and <em>protocols</em> in sockets</li>
 <li>learned how to create sockets with a specific communications profile.</li>
 </ul>
-<p>When we return we'll learn how to find the communcations profiles of remote
+<p>When we return we&#8217;ll learn how to find the communcations profiles of remote
 sockets, how to connect to them, and how to send and receive messages.</p>
 <p>Take a few minutes now to clear your head (do not quit your python
 interpreter).</p>
 </div>
-
-
-
-<div class="slide-no">36</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="address-information">
-    <hgroup>
-      <h3>Address Information</h3>
-    </hgroup>
-    <article class="">
-      <p>When you are creating a socket to communicate with a remote service, the
+</div>
+<div class="section" id="address-information">
+<h3>Address Information<a class="headerlink" href="#address-information" title="Permalink to this headline">¶</a></h3>
+<p>When you are creating a socket to communicate with a remote service, the
 remote socket will have a specific communications profile.</p>
 <div class="build container">
 <p>The local socket you create must match that communications profile.</p>
 <p>How can you determine the <em>correct</em> values to use?</p>
 <p class="centered"><strong>You ask.</strong></p>
 </div>
-
-
-
-<div class="slide-no">37</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id26">
-    <hgroup>
-      <h3>Address Information</h3>
-    </hgroup>
-    <article class="">
-      <p>The function <code class="docutils literal"><span class="pre">socket.getaddrinfo</span></code> provides information about available
+<p>The function <code class="docutils literal"><span class="pre">socket.getaddrinfo</span></code> provides information about available
 connections on a given host.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">socket</span><span class="o">.</span><span class="n">getaddrinfo</span><span class="p">(</span><span class="s">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="mi">80</span><span class="p">)</span>
 </pre></div>
@@ -921,19 +510,7 @@ remote host. The value returned is a tuple of:</p>
 <li>socket address (tuple of IP and Port)</li>
 </ul>
 </div>
-
-
-
-<div class="slide-no">38</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id27">
-    <hgroup>
-      <h3>A quick utility method</h3>
-    </hgroup>
-    <article class="">
-      <p>Again, let's create a utility method in-place so we can see this in action:</p>
+<p>Again, let&#8217;s create a utility method in-place so we can see this in action:</p>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [10]: </span><span class="k">def</span> <span class="nf">get_address_info</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">):</span>
 <span class="gp">   ....: </span>    <span class="k">for</span> <span class="n">response</span> <span class="ow">in</span> <span class="n">socket</span><span class="o">.</span><span class="n">getaddrinfo</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">):</span>
 <span class="gp">   ....: </span>        <span class="n">fam</span><span class="p">,</span> <span class="n">typ</span><span class="p">,</span> <span class="n">pro</span><span class="p">,</span> <span class="n">nam</span><span class="p">,</span> <span class="n">add</span> <span class="o">=</span> <span class="n">response</span>
@@ -947,19 +524,7 @@ remote host. The value returned is a tuple of:</p>
 </pre></div>
 </div>
 <p>(you can also find this in <code class="docutils literal"><span class="pre">resources/session01/socket_tools.py</span></code>)</p>
-
-
-
-<div class="slide-no">39</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id28">
-    <hgroup>
-      <h3>On Your Own Machine</h3>
-    </hgroup>
-    <article class="">
-      <p>Now, ask your own machine what possible connections are available for 'http':</p>
+<p>Now, ask your own machine what possible connections are available for &#8216;http&#8217;:</p>
 <div class="build container">
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [11]: </span><span class="n">get_address_info</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">gethostname</span><span class="p">(),</span> <span class="s">&#39;http&#39;</span><span class="p">)</span>
 <span class="go">family: AF_INET</span>
@@ -977,19 +542,7 @@ remote host. The value returned is a tuple of:</p>
 </div>
 <p>What answers do you get?</p>
 </div>
-
-
-
-<div class="slide-no">40</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id29">
-    <hgroup>
-      <h3>On the Internet</h3>
-    </hgroup>
-    <article class="">
-      <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [12]: </span><span class="n">get_address_info</span><span class="p">(</span><span class="s">&#39;crisewing.com&#39;</span><span class="p">,</span> <span class="s">&#39;http&#39;</span><span class="p">)</span>
+<div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [12]: </span><span class="n">get_address_info</span><span class="p">(</span><span class="s">&#39;crisewing.com&#39;</span><span class="p">,</span> <span class="s">&#39;http&#39;</span><span class="p">)</span>
 <span class="go">family: AF_INET</span>
 <span class="go">type: SOCK_DGRAM</span>
 <span class="go">protocol: IPPROTO_UDP</span>
@@ -1005,35 +558,17 @@ remote host. The value returned is a tuple of:</p>
 </div>
 <div class="build container">
 Try a few other servers you know about.</div>
-
-
-
-<div class="slide-no">41</div>
-
-
-    </article>
-  </slide>  <slide class="level-2" id="client-side">
-    <hgroup>
-      <h2>Client Side</h2>
-    </hgroup>
-    <article class="">
-      <div class="build container">
-<p class="large">Let's put this to use</p>
-<p>We'll communicate with a remote server as a <em>client</em></p>
 </div>
-
-
-
-<div class="slide-no">42</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="construct-a-socket">
-    <hgroup>
-      <h3>Construct a Socket</h3>
-    </hgroup>
-    <article class="">
-      <p>We've already made a socket <code class="docutils literal"><span class="pre">foo</span></code> using the generic constructor without any
+</div>
+<div class="section" id="client-side">
+<h2>Client Side<a class="headerlink" href="#client-side" title="Permalink to this headline">¶</a></h2>
+<div class="build container">
+<p class="large">Let&#8217;s put this to use</p>
+<p>We&#8217;ll communicate with a remote server as a <em>client</em></p>
+</div>
+<div class="section" id="construct-a-socket">
+<h3>Construct a Socket<a class="headerlink" href="#construct-a-socket" title="Permalink to this headline">¶</a></h3>
+<p>We&#8217;ve already made a socket <code class="docutils literal"><span class="pre">foo</span></code> using the generic constructor without any
 arguments.  We can make a better one now by using real address information from
 a real server online [<strong>do not type this yet</strong>]:</p>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [13]: </span><span class="n">streams</span> <span class="o">=</span> <span class="p">[</span><span class="n">info</span>
@@ -1051,19 +586,10 @@ a real server online [<strong>do not type this yet</strong>]:</p>
 <span class="gp">In [16]: </span><span class="n">cewing_socket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="o">*</span><span class="n">info</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
 </pre></div>
 </div>
-
-
-
-<div class="slide-no">43</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="connecting-a-socket">
-    <hgroup>
-      <h3>Connecting a Socket</h3>
-    </hgroup>
-    <article class="">
-      <p>Once the socket is constructed with the appropriate <em>family</em>, <em>type</em> and
+</div>
+<div class="section" id="connecting-a-socket">
+<h3>Connecting a Socket<a class="headerlink" href="#connecting-a-socket" title="Permalink to this headline">¶</a></h3>
+<p>Once the socket is constructed with the appropriate <em>family</em>, <em>type</em> and
 <em>protocol</em>, we can connect it to the address of our remote server:</p>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [18]: </span><span class="n">cewing_socket</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 </pre></div>
@@ -1073,19 +599,10 @@ a real server online [<strong>do not type this yet</strong>]:</p>
 <li>a failed connection raises an error</li>
 <li>you can use the <em>type</em> of error returned to tell why the connection failed.</li>
 </ul>
-
-
-
-<div class="slide-no">44</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="sending-a-message">
-    <hgroup>
-      <h3>Sending a Message</h3>
-    </hgroup>
-    <article class="">
-      <p>Send a message to the server on the other end of our connection (we'll
+</div>
+<div class="section" id="sending-a-message">
+<h3>Sending a Message<a class="headerlink" href="#sending-a-message" title="Permalink to this headline">¶</a></h3>
+<p>Send a message to the server on the other end of our connection (we&#8217;ll
 learn in session 2 about the message we are sending):</p>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [19]: </span><span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;GET / HTTP/1.1</span><span class="se">\r\n</span><span class="s">&quot;</span>
 <span class="gp">In [20]: </span><span class="n">msg</span> <span class="o">+=</span> <span class="s">&quot;Host: crisewing.com</span><span class="se">\r\n\r\n</span><span class="s">&quot;</span>
@@ -1102,19 +619,10 @@ learn in session 2 about the message we are sending):</p>
 <li>the type of error can tell you why the transmission failed</li>
 <li>but you <strong>cannot</strong> know how much, if any, of your data was sent</li>
 </ul>
-
-
-
-<div class="slide-no">45</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="messages-are-bytes">
-    <hgroup>
-      <h3>Messages Are Bytes</h3>
-    </hgroup>
-    <article class="">
-      <p>One detail from the previous code should stand out:</p>
+</div>
+<div class="section" id="messages-are-bytes">
+<h3>Messages Are Bytes<a class="headerlink" href="#messages-are-bytes" title="Permalink to this headline">¶</a></h3>
+<p>One detail from the previous code should stand out:</p>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [21]: </span><span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span>
 <span class="gp">In [22]: </span><span class="n">msg</span>
 <span class="gh">Out[22]: </span><span class="go">b&#39;GET / HTTP/1.1\r\nHost: crisewing.com\r\n\r\n&#39;</span>
@@ -1130,19 +638,10 @@ learn in session 2 about the message we are sending):</p>
 <span class="ne">TypeError</span>: &#39;str&#39; does not support the buffer interface
 </pre></div>
 </div>
-
-
-
-<div class="slide-no">46</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="receiving-a-reply">
-    <hgroup>
-      <h3>Receiving a Reply</h3>
-    </hgroup>
-    <article class="">
-      <p>Whatever reply we get is received by the socket we created. We can read it
+</div>
+<div class="section" id="receiving-a-reply">
+<h3>Receiving a Reply<a class="headerlink" href="#receiving-a-reply" title="Permalink to this headline">¶</a></h3>
+<p>Whatever reply we get is received by the socket we created. We can read it
 back out (again, <strong>do not type this yet</strong>):</p>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [24]: </span><span class="n">response</span> <span class="o">=</span> <span class="n">cewing_socket</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">4096</span><span class="p">)</span>
 <span class="gp">In [25]: </span><span class="n">response</span><span class="p">[:</span><span class="mi">60</span><span class="p">]</span>
@@ -1157,35 +656,17 @@ received)</li>
 <li>If the response is longer than <code class="docutils literal"><span class="pre">buffer</span> <span class="pre">size</span></code>, you can call the method
 repeatedly. The last bunch will be less than <code class="docutils literal"><span class="pre">buffer</span> <span class="pre">size</span></code>.</li>
 </ul>
-
-
-
-<div class="slide-no">47</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="cleaning-up">
-    <hgroup>
-      <h3>Cleaning Up</h3>
-    </hgroup>
-    <article class="">
-      <p>When you are finished with a connection, you should always close it:</p>
+</div>
+<div class="section" id="cleaning-up">
+<h3>Cleaning Up<a class="headerlink" href="#cleaning-up" title="Permalink to this headline">¶</a></h3>
+<p>When you are finished with a connection, you should always close it:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">cewing_socket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
-
-
-
-<div class="slide-no">48</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="putting-it-all-together">
-    <hgroup>
-      <h3>Putting it all together</h3>
-    </hgroup>
-    <article class="">
-      <p>First, connect and send a message:</p>
+</div>
+<div class="section" id="putting-it-all-together">
+<h3>Putting it all together<a class="headerlink" href="#putting-it-all-together" title="Permalink to this headline">¶</a></h3>
+<p>First, connect and send a message:</p>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [55]: </span><span class="n">info</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">getaddrinfo</span><span class="p">(</span><span class="s">&#39;crisewing.com&#39;</span><span class="p">,</span> <span class="s">&#39;http&#39;</span><span class="p">)</span>
 <span class="gp">In [56]: </span><span class="n">streams</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">info</span> <span class="k">if</span> <span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">]</span>
 <span class="gp">In [57]: </span><span class="n">sock_info</span> <span class="o">=</span> <span class="n">streams</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -1197,19 +678,7 @@ repeatedly. The last bunch will be less than <code class="docutils literal"><spa
 <span class="gp">In [63]: </span><span class="n">cewing_socket</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 </pre></div>
 </div>
-
-
-
-<div class="slide-no">49</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id30">
-    <hgroup>
-      <h3>Putting it all together</h3>
-    </hgroup>
-    <article class="">
-      <p>Then, receive a reply, iterating until it is complete:</p>
+<p>Then, receive a reply, iterating until it is complete:</p>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [65]: </span><span class="n">buffsize</span> <span class="o">=</span> <span class="mi">4096</span>
 <span class="gp">In [66]: </span><span class="n">response</span> <span class="o">=</span> <span class="n">b</span><span class="s">&#39;&#39;</span>
 <span class="gp">In [67]: </span><span class="n">done</span> <span class="o">=</span> <span class="bp">False</span>
@@ -1224,35 +693,17 @@ repeatedly. The last bunch will be less than <code class="docutils literal"><spa
 <span class="gh">Out[69]: </span><span class="go">19464</span>
 </pre></div>
 </div>
-
-
-
-<div class="slide-no">50</div>
-
-
-    </article>
-  </slide>  <slide class="level-2" id="server-side">
-    <hgroup>
-      <h2>Server Side</h2>
-    </hgroup>
-    <article class="">
-      <div class="build container">
-<p class="large">What about the other half of the equation?</p>
-<p>Let's build a server and see how that part works.</p>
 </div>
-
-
-
-<div class="slide-no">51</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id1">
-    <hgroup>
-      <h3>Construct a Socket</h3>
-    </hgroup>
-    <article class="">
-      <p><strong>For the moment, stop typing this into your interpreter.</strong></p>
+</div>
+<div class="section" id="server-side">
+<h2>Server Side<a class="headerlink" href="#server-side" title="Permalink to this headline">¶</a></h2>
+<div class="build container">
+<p class="large">What about the other half of the equation?</p>
+<p>Let&#8217;s build a server and see how that part works.</p>
+</div>
+<div class="section" id="id1">
+<h3>Construct a Socket<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p><strong>For the moment, stop typing this into your interpreter.</strong></p>
 <div class="build container">
 <p>Again, we begin by constructing a socket. Since we are actually the server
 this time, we get to choose family, type and protocol:</p>
@@ -1267,19 +718,10 @@ this time, we get to choose family, type and protocol:</p>
 </pre></div>
 </div>
 </div>
-
-
-
-<div class="slide-no">52</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="bind-the-socket">
-    <hgroup>
-      <h3>Bind the Socket</h3>
-    </hgroup>
-    <article class="">
-      <p>Our server socket needs to be <strong>bound</strong> to an address. This is the IP Address
+</div>
+<div class="section" id="bind-the-socket">
+<h3>Bind the Socket<a class="headerlink" href="#bind-the-socket" title="Permalink to this headline">¶</a></h3>
+<p>Our server socket needs to be <strong>bound</strong> to an address. This is the IP Address
 and Port to which clients must connect:</p>
 <div class="build container">
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [72]: </span><span class="n">address</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="mi">50000</span><span class="p">)</span>
@@ -1289,19 +731,10 @@ and Port to which clients must connect:</p>
 <p><strong>Terminology Note</strong>: In a server/client relationship, the server <em>binds</em>
 to an address and port. The client <em>connects</em></p>
 </div>
-
-
-
-<div class="slide-no">53</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="listen-for-connections">
-    <hgroup>
-      <h3>Listen for Connections</h3>
-    </hgroup>
-    <article class="">
-      <p>Once our socket is bound to an address, we can listen for attempted
+</div>
+<div class="section" id="listen-for-connections">
+<h3>Listen for Connections<a class="headerlink" href="#listen-for-connections" title="Permalink to this headline">¶</a></h3>
+<p>Once our socket is bound to an address, we can listen for attempted
 connections:</p>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [74]: </span><span class="n">server_socket</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
@@ -1312,19 +745,10 @@ connections:</p>
 socket will queue</li>
 <li>Once the limit is reached, the socket refuses new connections.</li>
 </ul>
-
-
-
-<div class="slide-no">54</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="accept-a-connection">
-    <hgroup>
-      <h3>Accept A Connection</h3>
-    </hgroup>
-    <article class="">
-      <p>When a socket is listening, it can receive incoming connection requests:</p>
+</div>
+<div class="section" id="accept-a-connection">
+<h3>Accept A Connection<a class="headerlink" href="#accept-a-connection" title="Permalink to this headline">¶</a></h3>
+<p>When a socket is listening, it can receive incoming connection requests:</p>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [75]: </span><span class="n">connection</span><span class="p">,</span> <span class="n">client_address</span> <span class="o">=</span> <span class="n">server_socket</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1335,22 +759,13 @@ values until a client <em>connects</em></li>
 This new socket is used to communicate with the client</li>
 <li>The <code class="docutils literal"><span class="pre">client_address</span></code> is a two-tuple of IP Address and Port for the client
 socket</li>
-<li>When a connection request is 'accepted', it is removed from the backlog
+<li>When a connection request is &#8216;accepted&#8217;, it is removed from the backlog
 queue.</li>
 </ul>
-
-
-
-<div class="slide-no">55</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="communicate">
-    <hgroup>
-      <h3>Communicate</h3>
-    </hgroup>
-    <article class="">
-      <p>The <code class="docutils literal"><span class="pre">connection</span></code> socket can now be used to receive messages from the client
+</div>
+<div class="section" id="communicate">
+<h3>Communicate<a class="headerlink" href="#communicate" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal"><span class="pre">connection</span></code> socket can now be used to receive messages from the client
 which made the connection:</p>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [76]: </span><span class="n">connection</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="n">buffsize</span><span class="p">)</span>
 </pre></div>
@@ -1359,19 +774,10 @@ which made the connection:</p>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [77]: </span><span class="n">connection</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="s">&quot;message received&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-
-
-
-<div class="slide-no">56</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="clean-up">
-    <hgroup>
-      <h3>Clean Up</h3>
-    </hgroup>
-    <article class="">
-      <p>Once a transaction between the client and server is complete, the
+</div>
+<div class="section" id="clean-up">
+<h3>Clean Up<a class="headerlink" href="#clean-up" title="Permalink to this headline">¶</a></h3>
+<p>Once a transaction between the client and server is complete, the
 <code class="docutils literal"><span class="pre">connection</span></code> socket should be closed:</p>
 <div class="build container">
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [78]: </span><span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -1382,20 +788,12 @@ connection.</p>
 <p>Note that the <code class="docutils literal"><span class="pre">server_socket</span></code> is <em>never</em> closed as long as the server
 continues to run.</p>
 </div>
-
-
-
-<div class="slide-no">57</div>
-
-
-    </article>
-  </slide>  <slide class="level-2" id="getting-the-flow">
-    <hgroup>
-      <h2>Getting the Flow</h2>
-    </hgroup>
-    <article class="">
-      <div class="left container">
-<p>The flow of this interaction can be a bit confusing.  Let's see it in
+</div>
+</div>
+<div class="section" id="getting-the-flow">
+<h2>Getting the Flow<a class="headerlink" href="#getting-the-flow" title="Permalink to this headline">¶</a></h2>
+<div class="left container">
+<p>The flow of this interaction can be a bit confusing.  Let&#8217;s see it in
 action step-by-step.</p>
 <div class="build container">
 <div class="container">
@@ -1403,19 +801,9 @@ Open a second iPython interpreter and place it next to your first so
 you can see both of them at the same time.</div>
 </div>
 </div>
-
-
-
-<div class="slide-no">58</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="create-a-server">
-    <hgroup>
-      <h3>Create a Server</h3>
-    </hgroup>
-    <article class="">
-      <p>In your first python interpreter, create a server socket and prepare it for
+<div class="section" id="create-a-server">
+<h3>Create a Server<a class="headerlink" href="#create-a-server" title="Permalink to this headline">¶</a></h3>
+<p>In your first python interpreter, create a server socket and prepare it for
 connections:</p>
 <div class="build container">
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [81]: </span><span class="n">server_socket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span>
@@ -1430,19 +818,10 @@ connections:</p>
 <p>At this point, you should <strong>not</strong> get back a prompt. The server socket is
 waiting for a connection to be made.</p>
 </div>
-
-
-
-<div class="slide-no">59</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="create-a-client">
-    <hgroup>
-      <h3>Create a Client</h3>
-    </hgroup>
-    <article class="">
-      <p>In your second interpreter, create a client socket and prepare to send a
+</div>
+<div class="section" id="create-a-client">
+<h3>Create a Client<a class="headerlink" href="#create-a-client" title="Permalink to this headline">¶</a></h3>
+<p>In your second interpreter, create a client socket and prepare to send a
 message:</p>
 <div class="build container">
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">socket</span>
@@ -1457,40 +836,22 @@ message:</p>
 </pre></div>
 </div>
 </div>
-
-
-
-<div class="slide-no">60</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="send-a-message-client-server">
-    <hgroup>
-      <h3>Send a Message Client-&gt;Server</h3>
-    </hgroup>
-    <article class="">
-      <p>As soon as you made the connection above, you should have seen the prompt
+</div>
+<div class="section" id="send-a-message-client-server">
+<h3>Send a Message Client-&gt;Server<a class="headerlink" href="#send-a-message-client-server" title="Permalink to this headline">¶</a></h3>
+<p>As soon as you made the connection above, you should have seen the prompt
 return in your server interpreter. The <code class="docutils literal"><span class="pre">accept</span></code> method finally returned a
 new connection socket.</p>
 <div class="build container">
-<p>When you're ready, type the following in the <em>client</em> interpreter:</p>
+<p>When you&#8217;re ready, type the following in the <em>client</em> interpreter:</p>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [4]: </span><span class="n">client_socket</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="s">&#39;Hey, can you hear me?&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
-
-
-
-<div class="slide-no">61</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="receive-and-respond">
-    <hgroup>
-      <h3>Receive and Respond</h3>
-    </hgroup>
-    <article class="">
-      <p>Back in your server interpreter, go ahead and receive the message from your
+</div>
+<div class="section" id="receive-and-respond">
+<h3>Receive and Respond<a class="headerlink" href="#receive-and-respond" title="Permalink to this headline">¶</a></h3>
+<p>Back in your server interpreter, go ahead and receive the message from your
 client:</p>
 <div class="build container">
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [87]: </span><span class="n">msg</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">4096</span><span class="p">)</span>
@@ -1504,19 +865,10 @@ client:</p>
 </pre></div>
 </div>
 </div>
-
-
-
-<div class="slide-no">62</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="finish-up">
-    <hgroup>
-      <h3>Finish Up</h3>
-    </hgroup>
-    <article class="">
-      <p>Back in your client interpreter, take a look at the response to your message,
+</div>
+<div class="section" id="finish-up">
+<h3>Finish Up<a class="headerlink" href="#finish-up" title="Permalink to this headline">¶</a></h3>
+<p>Back in your client interpreter, take a look at the response to your message,
 then be sure to close your client socket too:</p>
 <div class="build container">
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [5]: </span><span class="n">from_server</span> <span class="o">=</span> <span class="n">client_socket</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">4096</span><span class="p">)</span>
@@ -1525,61 +877,31 @@ then be sure to close your client socket too:</p>
 <span class="gp">In [7]: </span><span class="n">client_socket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>And now that we're done, we can close up the server socket too (back in the
+<p>And now that we&#8217;re done, we can close up the server socket too (back in the
 server interpreter):</p>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [91]: </span><span class="n">server_socket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-
-
-
-<div class="slide-no">63</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="id31">
-    <hgroup>
-      <h3>Congratulations!</h3>
-    </hgroup>
-    <article class="">
-      <p class="large center">You've run your first client-server interaction</p>
-
-
-
-<div class="slide-no">64</div>
-
-
-    </article>
-  </slide>  <slide class="level-2" id="homework">
-    <hgroup>
-      <h2>Homework</h2>
-    </hgroup>
-    <article class="">
-      <div class="left container">
-<p>Your homework assignment for this week is to take what you've learned here
-and build a simple &quot;echo&quot; server.</p>
+<p class="large center">You&#8217;ve run your first client-server interaction</p>
+</div>
+</div>
+<div class="section" id="homework">
+<h2>Homework<a class="headerlink" href="#homework" title="Permalink to this headline">¶</a></h2>
+<div class="left container">
+<p>Your homework assignment for this week is to take what you&#8217;ve learned here
+and build a simple &#8220;echo&#8221; server.</p>
 <div class="build container">
 <p>The server should automatically return to any client that connects <em>exactly</em>
 what it receives (it should <strong>echo</strong> all messages).</p>
 <p>You will also write a python script that, when run, will send a message to the
 server and receive the reply, printing it to <code class="docutils literal"><span class="pre">stdout</span></code>.</p>
-<p>Finally, you'll do all of this so that it can be tested.</p>
+<p>Finally, you&#8217;ll do all of this so that it can be tested.</p>
 </div>
 </div>
-
-
-
-<div class="slide-no">65</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="your-task">
-    <hgroup>
-      <h3>Your Task</h3>
-    </hgroup>
-    <article class="">
-      <p>In our class repository, there is a folder <code class="docutils literal"><span class="pre">resources/session01</span></code>.</p>
+<div class="section" id="your-task">
+<h3>Your Task<a class="headerlink" href="#your-task" title="Permalink to this headline">¶</a></h3>
+<p>In our class repository, there is a folder <code class="docutils literal"><span class="pre">resources/session01</span></code>.</p>
 <div class="build container">
 <p>Inside that folder, you should find:</p>
 <ul class="build simple">
@@ -1590,19 +912,10 @@ server and receive the reply, printing it to <code class="docutils literal"><spa
 </ul>
 <p>Your task is to make the tests pass.</p>
 </div>
-
-
-
-<div class="slide-no">66</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="running-the-tests">
-    <hgroup>
-      <h3>Running the Tests</h3>
-    </hgroup>
-    <article class="">
-      <p>To run the tests, you'll have to set the server running in one terminal:</p>
+</div>
+<div class="section" id="running-the-tests">
+<h3>Running the Tests<a class="headerlink" href="#running-the-tests" title="Permalink to this headline">¶</a></h3>
+<p>To run the tests, you&#8217;ll have to set the server running in one terminal:</p>
 <div class="build container">
 <div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python echo_server.py
 </pre></div>
@@ -1617,19 +930,10 @@ FAILED <span class="o">(</span><span class="nv">failures</span><span class="o">=
 </pre></div>
 </div>
 </div>
-
-
-
-<div class="slide-no">67</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="submitting-your-homework">
-    <hgroup>
-      <h3>Submitting Your Homework</h3>
-    </hgroup>
-    <article class="">
-      <p>To submit your homework:</p>
+</div>
+<div class="section" id="submitting-your-homework">
+<h3>Submitting Your Homework<a class="headerlink" href="#submitting-your-homework" title="Permalink to this headline">¶</a></h3>
+<p>To submit your homework:</p>
 <div class="build container">
 <ul class="build simple">
 <li>Create a new repository in GitHub.  Call it <code class="docutils literal"><span class="pre">echo_sockets</span></code>.</li>
@@ -1639,55 +943,140 @@ this repository.</li>
 done.</li>
 </ul>
 <p>We will clone your repository and run the tests as described above.</p>
-<p>And we'll make comments inline on your repository.</p>
+<p>And we&#8217;ll make comments inline on your repository.</p>
 </div>
-
-
-
-<div class="slide-no">68</div>
-
-
-    </article>
-  </slide>  <slide class="level-3" id="going-further">
-    <hgroup>
-      <h3>Going Further</h3>
-    </hgroup>
-    <article class="">
-      <p>In <code class="docutils literal"><span class="pre">resources/session01/tasks.txt</span></code> you'll find a few extra problems to try.</p>
+</div>
+<div class="section" id="going-further">
+<h3>Going Further<a class="headerlink" href="#going-further" title="Permalink to this headline">¶</a></h3>
+<p>In <code class="docutils literal"><span class="pre">resources/session01/tasks.txt</span></code> you&#8217;ll find a few extra problems to try.</p>
 <div class="build container">
 <p>If you finish the first part of the homework in less than 3-4 hours give
 one or more of these a whirl.</p>
 <p>They are not required, but if you include solutions in your repository,
-we'll review your work.</p>
+we&#8217;ll review your work.</p>
+</div>
+</div>
+</div>
 </div>
 
 
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Session 01</a><ul>
+<li><a class="reference internal" href="#computer-communications">Computer Communications</a><ul>
+<li><a class="reference internal" href="#but-first">But First</a></li>
+<li><a class="reference internal" href="#tcp-ip">TCP/IP</a></li>
+<li><a class="reference internal" href="#the-tcp-ip-stack-link">The TCP/IP Stack - Link</a></li>
+<li><a class="reference internal" href="#the-tcp-ip-stack-internet">The TCP/IP Stack - Internet</a></li>
+<li><a class="reference internal" href="#the-tcp-ip-stack-transport">The TCP/IP Stack - Transport</a></li>
+<li><a class="reference internal" href="#the-tcp-ip-stack-application">The TCP/IP Stack - Application</a></li>
+<li><a class="reference internal" href="#sockets">Sockets</a></li>
+<li><a class="reference internal" href="#sockets-in-python">Sockets in Python</a></li>
+<li><a class="reference internal" href="#socket-families">Socket Families</a></li>
+<li><a class="reference internal" href="#socket-types">Socket Types</a></li>
+<li><a class="reference internal" href="#socket-protocols">Socket Protocols</a></li>
+<li><a class="reference internal" href="#customizing-sockets">Customizing Sockets</a></li>
+<li><a class="reference internal" href="#break-time">Break Time</a></li>
+<li><a class="reference internal" href="#address-information">Address Information</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#client-side">Client Side</a><ul>
+<li><a class="reference internal" href="#construct-a-socket">Construct a Socket</a></li>
+<li><a class="reference internal" href="#connecting-a-socket">Connecting a Socket</a></li>
+<li><a class="reference internal" href="#sending-a-message">Sending a Message</a></li>
+<li><a class="reference internal" href="#messages-are-bytes">Messages Are Bytes</a></li>
+<li><a class="reference internal" href="#receiving-a-reply">Receiving a Reply</a></li>
+<li><a class="reference internal" href="#cleaning-up">Cleaning Up</a></li>
+<li><a class="reference internal" href="#putting-it-all-together">Putting it all together</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#server-side">Server Side</a><ul>
+<li><a class="reference internal" href="#id1">Construct a Socket</a></li>
+<li><a class="reference internal" href="#bind-the-socket">Bind the Socket</a></li>
+<li><a class="reference internal" href="#listen-for-connections">Listen for Connections</a></li>
+<li><a class="reference internal" href="#accept-a-connection">Accept A Connection</a></li>
+<li><a class="reference internal" href="#communicate">Communicate</a></li>
+<li><a class="reference internal" href="#clean-up">Clean Up</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#getting-the-flow">Getting the Flow</a><ul>
+<li><a class="reference internal" href="#create-a-server">Create a Server</a></li>
+<li><a class="reference internal" href="#create-a-client">Create a Client</a></li>
+<li><a class="reference internal" href="#send-a-message-client-server">Send a Message Client-&gt;Server</a></li>
+<li><a class="reference internal" href="#receive-and-respond">Receive and Respond</a></li>
+<li><a class="reference internal" href="#finish-up">Finish Up</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#homework">Homework</a><ul>
+<li><a class="reference internal" href="#your-task">Your Task</a></li>
+<li><a class="reference internal" href="#running-the-tests">Running the Tests</a></li>
+<li><a class="reference internal" href="#submitting-your-homework">Submitting Your Homework</a></li>
+<li><a class="reference internal" href="#going-further">Going Further</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 
-<div class="slide-no">69</div>
-
-
-    </article>
-  </slide>
-
-
-    <slide class="thank-you-slide segue nobackground">
-    <aside class="gdbar right"><img src="../_static/logo_UW.png"></aside>
-    <article class="flexbox vleft auto-fadein">
-      <h2>Good Night!</h2>
-      <p>&nbsp;</p>
-    </article>
-    <p class="auto-fadein" data-config-contact>
-      <!-- populated from slide_config.json -->
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Course Presentations</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="session02.html"
+                        title="next chapter">Session 02</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/presentations/session01.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+  <h3>Slides</h3>
+  <ul class="this-page-menu">
+    <li><a href="../.././slides/presentations/session01.html"
+           rel="nofollow">View as slides</a></li>
+  </ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
     </p>
-  </slide>
-
-  <slide class="backdrop"></slide>
-
-</slides>
-
-<!--[if IE]>
-  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
-  <script>CFInstall.check({mode: 'overlay'});</script>
-<![endif]-->
-</body>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="session02.html" title="Session 02"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Course Presentations"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">UWPCE Python 200</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Course Presentations</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2012-2016, Cris Ewing.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
 </html>
