@@ -161,16 +161,16 @@ VARIABLE                    &#39;some value&#39;
 </pre></div>
 </div>
 <div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;VARIABLE&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;VARIABLE&#39;</span><span class="p">])</span>
 <span class="go">some_value</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 <span class="go">[&#39;VERSIONER_PYTHON_PREFER_32_BIT&#39;, &#39;VARIABLE&#39;,</span>
 <span class="go"> &#39;LOGNAME&#39;, &#39;USER&#39;, &#39;PATH&#39;, ...]</span>
 </pre></div>
 </div>
 <p>You can alter os environment values while in Python:</p>
 <div class="highlight-pycon"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;VARIABLE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;new_value&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;VARIABLE&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;VARIABLE&#39;</span><span class="p">])</span>
 <span class="go">new_value</span>
 </pre></div>
 </div>
