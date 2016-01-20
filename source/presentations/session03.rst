@@ -149,9 +149,9 @@ We can see this *environment* in Python, too::
 .. code-block:: pycon
 
     >>> import os
-    >>> print os.environ['VARIABLE']
+    >>> print(os.environ['VARIABLE'])
     some_value
-    >>> print os.environ.keys()
+    >>> print(os.environ.keys())
     ['VERSIONER_PYTHON_PREFER_32_BIT', 'VARIABLE',
      'LOGNAME', 'USER', 'PATH', ...]
 
@@ -163,7 +163,7 @@ You can alter os environment values while in Python:
 .. code-block:: pycon
 
     >>> os.environ['VARIABLE'] = 'new_value'
-    >>> print os.environ['VARIABLE']
+    >>> print(os.environ['VARIABLE'])
     new_value
 
 .. rst-class:: build
