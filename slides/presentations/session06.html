@@ -1,16 +1,41 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+Google IO 2012/2013 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahé <lukem@google.com>
+
+URL: https://code.google.com/p/io-2012-slides
+--><!DOCTYPE html>
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<html>
+<head>
+  <title>Session 06 &mdash; Internet Programming with Python</title>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  
+  <link rel="stylesheet" media="all"
+        href="../_static/theme/css/default.css">
+  <link rel="stylesheet" media="all"
+        href="../_static/theme/css/hieroglyph.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)"
+        href="../_static/theme/css/phone.css">
+
     
-    <title>Session 06 &mdash; Internet Programming with Python</title>
+    <link rel="stylesheet" href="../_static/custom.css"
+          type="text/css" />
     
-    <link rel="stylesheet" href="../_static/pyramid.css" type="text/css" />
+
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
@@ -20,60 +45,65 @@
         HAS_SOURCE:  true
       };
     </script>
+
+    <script data-main="../_static/js/slides"
+            src="../_static/js/require-1.0.8.min.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    
     <link rel="top" title="Internet Programming with Python" href="../index.html" />
     <link rel="up" title="Course Presentations" href="index.html" />
     <link rel="next" title="Session 07" href="session07.html" />
-    <link rel="prev" title="Session 05" href="session05.html" />
-<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
-<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
-<!--[if lte IE 6]>
-<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
-<![endif]-->
+    <link rel="prev" title="Session 05" href="session05.html" /> 
+</head>
+<body style="opacity: 0">
 
-  </head>
-  <body role="document">
-<div class="header">
-  <div class="logo">
-    <a href="../index.html">
-      <img class="logo" src="../_static/logo_UW.png" alt="Logo"/>
-    </a>
-  </div>
-</div>
+<slides class="layout-widescreen">
 
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="session07.html" title="Session 07"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="session05.html" title="Session 05"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">UWPCE Python 200</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Course Presentations</a> &raquo;</li> 
-      </ul>
-    </div>  
+  <slide class="title-slide segue nobackground">
+  <aside class="gdbar"><img src="../_static/logo_UW.png"></aside>
+  <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+  <hgroup class="auto-fadein">
+    <h1 data-config-title><!-- populated from slide_config.json --></h1>
+    <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+    <p data-config-presenter><!-- populated from slide_config.json --></p>
+  </hgroup>
+</slide>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <div class="section" id="session-06">
-<h1>Session 06<a class="headerlink" href="#session-06" title="Permalink to this headline">¶</a></h1>
-<a class="reference internal image-reference" href="../_images/lj_entry.png"><img alt="../_images/lj_entry.png" class="align-center" src="../_images/lj_entry.png" style="width: 65%;" /></a>
-<div class="section" id="interacting-with-data">
-<h2>Interacting with Data<a class="headerlink" href="#interacting-with-data" title="Permalink to this headline">¶</a></h2>
-<p><strong>Wherein we learn to display our data, and to create and edit it too!</strong></p>
-<div class="section" id="but-first">
-<h3>But First<a class="headerlink" href="#but-first" title="Permalink to this headline">¶</a></h3>
-<p>Last week we discussed the <strong>model</strong> part of the <em>MVC</em> application design
+  
+    <slide class="title-slide segue nobackground level-1" id="session-06">
+    <hgroup>
+      <h1>Session 06</h1>
+    </hgroup>
+    <article class="">
+      <a class="reference internal image-reference" href="../_images/lj_entry.png"><img alt="../_images/lj_entry.png" class="align-center" src="../_images/lj_entry.png" style="width: 65%;" /></a>
+
+
+
+<div class="slide-no">1</div>
+
+
+    </article>
+  </slide>  <slide class="level-2" id="interacting-with-data">
+    <hgroup>
+      <h2>Interacting with Data</h2>
+    </hgroup>
+    <article class="">
+      <p><strong>Wherein we learn to display our data, and to create and edit it too!</strong></p>
+
+
+
+<div class="slide-no">2</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="but-first">
+    <hgroup>
+      <h3>But First</h3>
+    </hgroup>
+    <article class="">
+      <p>Last week we discussed the <strong>model</strong> part of the <em>MVC</em> application design
 pattern.</p>
 <div class="build container">
 <p>We set up a project using the <a class="reference external" href="http://www.pylonsproject.org/projects/pyramid/about">Pyramid</a> web framework and the <a class="reference external" href="http://docs.sqlalchemy.org/en/rel_0_9/">SQLAlchemy</a>
@@ -81,25 +111,58 @@ library for persisting our data to a database.</p>
 <p>We looked at how to define a simple model by investigating the demo model
 created on our behalf.</p>
 <p>And we went over, briefly, the way we can interact with this model at the
-command line to make sure we&#8217;ve got it right.</p>
+command line to make sure we've got it right.</p>
 <p>Finally, we defined what attributes a learning journal entry would have,
 and a pair of methods we think we will need to make the model complete.</p>
 </div>
-</div>
-<div class="section" id="our-data-model">
-<h3>Our Data Model<a class="headerlink" href="#our-data-model" title="Permalink to this headline">¶</a></h3>
-<p>Over the last week, your assignment was to create the new model.</p>
+
+
+
+<div class="slide-no">3</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="our-data-model">
+    <hgroup>
+      <h3>Our Data Model</h3>
+    </hgroup>
+    <article class="">
+      <p>Over the last week, your assignment was to create the new model.</p>
 <div class="build container">
 <p>Did you get that done?</p>
 <p>If not, what stopped you?</p>
-<p>Let&#8217;s take a few minutes here to answer questions about this task so you
+<p>Let's take a few minutes here to answer questions about this task so you
 are more comfortable.</p>
 <p>Questions?</p>
 </div>
-<p>I&#8217;ve added a working <code class="docutils literal"><span class="pre">models.py</span></code> file to our <a href="#id4"><span class="problematic" id="id5">`class repository`_</span></a> in the
+
+
+
+<div class="slide-no">4</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id4">
+    <hgroup>
+      <h3>A Complete Example</h3>
+    </hgroup>
+    <article class="">
+      <p>I've added a working <code class="docutils literal"><span class="pre">models.py</span></code> file to our <a href="#id54"><span class="problematic" id="id55">`class repository`_</span></a> in the
 <code class="docutils literal"><span class="pre">resources/session06/</span></code> folder.</p>
-<p>Let&#8217;s review how it works.</p>
-<p>I&#8217;ve also made a few small changes to make the <code class="docutils literal"><span class="pre">pshell</span></code> command a bit more
+<p>Let's review how it works.</p>
+
+
+
+<div class="slide-no">5</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id5">
+    <hgroup>
+      <h3>Demo Interaction</h3>
+    </hgroup>
+    <article class="">
+      <p>I've also made a few small changes to make the <code class="docutils literal"><span class="pre">pshell</span></code> command a bit more
 helpful.</p>
 <div class="build container">
 <p>In <code class="docutils literal"><span class="pre">learning_journal/__init__.py</span></code> I added the following function:</p>
@@ -117,7 +180,19 @@ helpful.</p>
 </pre></div>
 </div>
 </div>
-<p>Here&#8217;s a demo interaction using <code class="docutils literal"><span class="pre">pshell</span></code> with these new features:</p>
+
+
+
+<div class="slide-no">6</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id6">
+    <hgroup>
+      <h3>Using the new <code class="docutils literal"><span class="pre">pshell</span></code></h3>
+    </hgroup>
+    <article class="">
+      <p>Here's a demo interaction using <code class="docutils literal"><span class="pre">pshell</span></code> with these new features:</p>
 <div class="build container">
 <p>First <code class="docutils literal"><span class="pre">cd</span></code> to your project code, fire up your project virtualenv and
 start python:</p>
@@ -138,12 +213,20 @@ In <span class="o">[</span>1<span class="o">]</span>: <span class="nv">session</
 </div>
 <p>[demo]</p>
 </div>
-</div>
-</div>
-<div class="section" id="the-mvc-controller">
-<h2>The MVC Controller<a class="headerlink" href="#the-mvc-controller" title="Permalink to this headline">¶</a></h2>
-<div class="left container">
-<p>Let&#8217;s go back to thinking for a bit about the <em>Model-View-Controller</em>
+
+
+
+<div class="slide-no">7</div>
+
+
+    </article>
+  </slide>  <slide class="level-2" id="the-mvc-controller">
+    <hgroup>
+      <h2>The MVC Controller</h2>
+    </hgroup>
+    <article class="">
+      <div class="left container">
+<p>Let's go back to thinking for a bit about the <em>Model-View-Controller</em>
 pattern.</p>
 <div class="figure align-center" id="id1">
 <a class="reference internal image-reference" href="http://upload.wikimedia.org/wikipedia/commons/4/40/MVC_passive_view.png"><img alt="http://upload.wikimedia.org/wikipedia/commons/4/40/MVC_passive_view.png" src="http://upload.wikimedia.org/wikipedia/commons/4/40/MVC_passive_view.png" style="width: 25%;" /></a>
@@ -151,13 +234,23 @@ pattern.</p>
 </div>
 <div class="build container">
 <p>We talked last week (and today) about the <em>model</em></p>
-<p>Today, we&#8217;ll dig into <em>controllers</em> and <em>views</em></p>
+<p>Today, we'll dig into <em>controllers</em> and <em>views</em></p>
 <p>or as we will know them in Pyramid: <em>views</em> and <em>renderers</em></p>
 </div>
 </div>
-<div class="section" id="http-request-response">
-<h3>HTTP Request/Response<a class="headerlink" href="#http-request-response" title="Permalink to this headline">¶</a></h3>
-<p>Internet software is driven by the HTTP Request/Response cycle.</p>
+
+
+
+<div class="slide-no">8</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="http-request-response">
+    <hgroup>
+      <h3>HTTP Request/Response</h3>
+    </hgroup>
+    <article class="">
+      <p>Internet software is driven by the HTTP Request/Response cycle.</p>
 <div class="build container">
 <p>A <em>client</em> (perhaps a user with a web browser) makes a <strong>request</strong></p>
 <p>A <em>server</em> receives and handles that request and returns a <strong>response</strong></p>
@@ -165,51 +258,96 @@ pattern.</p>
 <strong>request</strong></p>
 <p>And around and around it goes.</p>
 </div>
-<p>An HTTP request arrives at a server through the magic of a <strong>URL</strong></p>
+
+
+
+<div class="slide-no">9</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id7">
+    <hgroup>
+      <h3>URLs</h3>
+    </hgroup>
+    <article class="">
+      <p>An HTTP request arrives at a server through the magic of a <strong>URL</strong></p>
 <div class="highlight-bash"><div class="highlight"><pre>http://uwpce-pythoncert.github.io/training.python_web/html/index.html
 </pre></div>
 </div>
 <div class="build container">
-<p>Let&#8217;s break that up into its constituent parts:</p>
+<p>Let's break that up into its constituent parts:</p>
 <dl class="build docutils">
 <dt>http://:</dt>
 <dd>This part is the <em>protocol</em>, it determines how the request will be sent</dd>
 <dt>uwpce-pythoncert.github.io:</dt>
-<dd>This is a <em>domain name</em>.  It&#8217;s the human-facing address for a server
+<dd>This is a <em>domain name</em>.  It's the human-facing address for a server
 somewhere.</dd>
 <dt>/training.python_web/html/index.html:</dt>
 <dd>This part is the <em>path</em>.  It serves as a locator for a resource <em>on the
 server</em></dd>
 </dl>
 </div>
-<p>In a static website (like our documentation) the <em>path</em> identifies a <strong>physical
-location</strong> in the server&#8217;s filesystem.</p>
+
+
+
+<div class="slide-no">10</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id8">
+    <hgroup>
+      <h3>Paths</h3>
+    </hgroup>
+    <article class="">
+      <p>In a static website (like our documentation) the <em>path</em> identifies a <strong>physical
+location</strong> in the server's filesystem.</p>
 <div class="build container">
 <p>Some directory on the server is the <em>home</em> for the web process, and the
 <em>path</em> is looked up there.</p>
 <p>Whatever resource (a file, an image, whatever) is located there is returned
 to the user as a response.</p>
-<p>If the path leads to a location that doesn&#8217;t exist, the server responds
+<p>If the path leads to a location that doesn't exist, the server responds
 with a <strong>404 Not Found</strong> error.</p>
 <p>In the golden days of yore, this was the only way content was served via
 HTTP.</p>
 </div>
-<p>In todays world we have dynamic systems, server-side web frameworks like
+
+
+
+<div class="slide-no">11</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id9">
+    <hgroup>
+      <h3>Paths in an MVC System</h3>
+    </hgroup>
+    <article class="">
+      <p>In todays world we have dynamic systems, server-side web frameworks like
 Pyramid.</p>
 <div class="build container">
 <p>The requests that you send to a server are handled by a software process
 that assembles a response instead of looking up a physical location.</p>
 <p>But we still have URLs, with <em>protocol</em>, <em>domain</em> and <em>path</em>.</p>
-<p>What is the role for a path in a process that doesn&#8217;t refer to a physical
+<p>What is the role for a path in a process that doesn't refer to a physical
 file system?</p>
 <p>Most web frameworks now call the <em>path</em> a <strong>route</strong>.</p>
 <p>They provide a way of matching <em>routes</em> to the code that will be run to
 handle requests.</p>
 </div>
-</div>
-<div class="section" id="routes-in-pyramid">
-<h3>Routes in Pyramid<a class="headerlink" href="#routes-in-pyramid" title="Permalink to this headline">¶</a></h3>
-<p>In Pyramid, routes are handled as <em>configuration</em> and are set up in the <em>main</em>
+
+
+
+<div class="slide-no">12</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="routes-in-pyramid">
+    <hgroup>
+      <h3>Routes in Pyramid</h3>
+    </hgroup>
+    <article class="">
+      <p>In Pyramid, routes are handled as <em>configuration</em> and are set up in the <em>main</em>
 function in <code class="docutils literal"><span class="pre">__init__.py</span></code>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c"># learning_journal/__init__.py</span>
 <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">global_config</span><span class="p">,</span> <span class="o">**</span><span class="n">settings</span><span class="p">):</span>
@@ -226,7 +364,19 @@ method of the <code class="docutils literal"><span class="pre">Configurator</spa
 <p>In our sample route, the <em>name</em> is <code class="docutils literal"><span class="pre">'home'</span></code></p>
 <p>In our sample route, the <em>pattern</em> is <code class="docutils literal"><span class="pre">'/'</span></code></p>
 </div>
-<p>When a request comes in to a Pyramid application, the framework looks at all
+
+
+
+<div class="slide-no">13</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id10">
+    <hgroup>
+      <h3>Routes in Pyramid</h3>
+    </hgroup>
+    <article class="">
+      <p>When a request comes in to a Pyramid application, the framework looks at all
 the <em>routes</em> that have been configured.</p>
 <div class="build container">
 <p>One by one, in order, it tries to match the <em>path</em> of the incoming request
@@ -240,7 +390,19 @@ pattern of <code class="docutils literal"><span class="pre">/</span></code>.</p>
 <p>This means that any request that comes in for <code class="docutils literal"><span class="pre">/</span></code> will be matched to this
 route, and any other request will be <strong>404</strong>.</p>
 </div>
-<p>In a very real sense, the <em>routes</em> defined in an application <em>are</em> the public
+
+
+
+<div class="slide-no">14</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id11">
+    <hgroup>
+      <h3>Routes as API</h3>
+    </hgroup>
+    <article class="">
+      <p>In a very real sense, the <em>routes</em> defined in an application <em>are</em> the public
 API.</p>
 <div class="build container">
 <p>Any route that is present represents something the user can do.</p>
@@ -250,7 +412,19 @@ app will do.</p>
 <p>What routes might we want for a learning journal application?</p>
 <p>What will our application do?</p>
 </div>
-<p>Let&#8217;s add routes for our application.</p>
+
+
+
+<div class="slide-no">15</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id12">
+    <hgroup>
+      <h3>Defining our Routes</h3>
+    </hgroup>
+    <article class="">
+      <p>Let's add routes for our application.</p>
 <div class="build container">
 <p>Open <code class="docutils literal"><span class="pre">learning_journal/__init__.py</span></code>.</p>
 <p>For our list page, the existing <code class="docutils literal"><span class="pre">'home'</span></code> route will do fine, leave it.</p>
@@ -267,7 +441,19 @@ the <code class="docutils literal"><span class="pre">action</span></code> specif
 <p>In both cases, we want to capture a portion of the matched path to use
 information it provides.</p>
 </div>
-<p>In a pattern, you can capture a <code class="docutils literal"><span class="pre">path</span> <span class="pre">segment</span></code> <em>replacement
+
+
+
+<div class="slide-no">16</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id13">
+    <hgroup>
+      <h3>Matching an ID</h3>
+    </hgroup>
+    <article class="">
+      <p>In a pattern, you can capture a <code class="docutils literal"><span class="pre">path</span> <span class="pre">segment</span></code> <em>replacement
 marker</em>, a valid Python symbol surrounded by curly braces:</p>
 <div class="build container">
 <div class="highlight-python"><div class="highlight"><pre>/home/{foo}/
@@ -286,7 +472,19 @@ marker</em>, a valid Python symbol surrounded by curly braces:</p>
 <p>The <code class="docutils literal"><span class="pre">matchdict</span></code> is made available as an attribute of the <em>request object</em></p>
 <p>(more on that soon)</p>
 </div>
-<p>In Pyramid, a <em>route</em> is connected by configuration to a <em>view</em>.</p>
+
+
+
+<div class="slide-no">17</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id14">
+    <hgroup>
+      <h3>Connecting Routes to Views</h3>
+    </hgroup>
+    <article class="">
+      <p>In Pyramid, a <em>route</em> is connected by configuration to a <em>view</em>.</p>
 <div class="build container">
 <p>In our app, a sample view has been created for us, in <code class="docutils literal"><span class="pre">views.py</span></code>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="s">&#39;home&#39;</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="s">&#39;templates/mytemplate.pt&#39;</span><span class="p">)</span>
@@ -301,23 +499,44 @@ done in <code class="docutils literal"><span class="pre">__init__.py</span></cod
 <p>When <code class="docutils literal"><span class="pre">config.scan</span></code> is called, all files in our application are searched
 for such <em>declarative configuration</em> and it is added.</p>
 </div>
-</div>
-<div class="section" id="the-pyramid-view">
-<h3>The Pyramid View<a class="headerlink" href="#the-pyramid-view" title="Permalink to this headline">¶</a></h3>
-<p>Let&#8217;s imagine that a <em>request</em> has come to our application for the path
+
+
+
+<div class="slide-no">18</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="the-pyramid-view">
+    <hgroup>
+      <h3>The Pyramid View</h3>
+    </hgroup>
+    <article class="">
+      <p>Let's imagine that a <em>request</em> has come to our application for the path
 <code class="docutils literal"><span class="pre">'/'</span></code>.</p>
 <div class="build container">
 <p>The framework made a match of that path to a <em>route</em> with the pattern <code class="docutils literal"><span class="pre">'/'</span></code>.</p>
 <p>Configuration connected that route to a <em>view</em> in our application.</p>
 <p>Now, the view that was connected will be <em>called</em>, which brings us to the
 nature of <em>views</em></p>
-<p class="centered">&#8211;A Pyramid view is a <em>callable</em> that takes <em>request</em> as an argument&#8211;</p>
+<p class="centered">--A Pyramid view is a <em>callable</em> that takes <em>request</em> as an argument--</p>
 <p>Remember what a <em>callable</em> is?</p>
 </div>
-<p>So, a <em>view</em> is a callable that takes the <em>request</em> as an argument.</p>
+
+
+
+<div class="slide-no">19</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id15">
+    <hgroup>
+      <h3>What the View Does</h3>
+    </hgroup>
+    <article class="">
+      <p>So, a <em>view</em> is a callable that takes the <em>request</em> as an argument.</p>
 <div class="build container">
 <p>It can then use information from that request to build appropriate data,
-perhaps using the application&#8217;s <em>models</em>.</p>
+perhaps using the application's <em>models</em>.</p>
 <p>Then, it returns the data it assembled, passing it on to a <a class="reference external" href="http://docs.pylonsproject.org/projects/pyramid/en/1.5-branch/narr/renderers.html">renderer</a>.</p>
 <p>Which <em>renderer</em> to use is determined, again, by configuration:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="s">&#39;home&#39;</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="s">&#39;templates/mytemplate.pt&#39;</span><span class="p">)</span>
@@ -330,7 +549,19 @@ perhaps using the application&#8217;s <em>models</em>.</p>
 <em>model</em> and <em>renderers</em> that offer rendering of the results.</p>
 <p>It is the <em>Controller</em> in our MVC application.</p>
 </div>
-<p>Add temporary views to our application in <code class="docutils literal"><span class="pre">views.py</span></code> (and comment out the
+
+
+
+<div class="slide-no">20</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id16">
+    <hgroup>
+      <h3>Adding Stub Views</h3>
+    </hgroup>
+    <article class="">
+      <p>Add temporary views to our application in <code class="docutils literal"><span class="pre">views.py</span></code> (and comment out the
 sample view):</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="s">&#39;home&#39;</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="s">&#39;string&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">index_page</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
@@ -349,7 +580,19 @@ sample view):</p>
     <span class="k">return</span> <span class="s">&#39;edit page&#39;</span>
 </pre></div>
 </div>
-<p>Now we can verify that our view configuration has worked.</p>
+
+
+
+<div class="slide-no">21</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id17">
+    <hgroup>
+      <h3>Testing Our Views</h3>
+    </hgroup>
+    <article class="">
+      <p>Now we can verify that our view configuration has worked.</p>
 <div class="build container">
 <p>Make sure your virtualenv is properly activated, and start the web server:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>pserve development.ini
@@ -364,13 +607,25 @@ serving on http://0.0.0.0:6543
 <li><a class="reference external" href="http://localhost:6543/journal/create">http://localhost:6543/journal/create</a></li>
 <li><a class="reference external" href="http://localhost:6543/journal/edit">http://localhost:6543/journal/edit</a></li>
 </ul>
-<p>What happens if you visit a URL that <em>isn&#8217;t</em> in our configuration?</p>
+<p>What happens if you visit a URL that <em>isn't</em> in our configuration?</p>
 </div>
-<p>Now that we&#8217;ve got temporary views that work, we can fix them to get
+
+
+
+<div class="slide-no">22</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id18">
+    <hgroup>
+      <h3>Interacting With the Model</h3>
+    </hgroup>
+    <article class="">
+      <p>Now that we've got temporary views that work, we can fix them to get
 information from our database</p>
 <div class="build container">
-<p>We&#8217;ll begin with the list view.</p>
-<p>We need some code that will fetch all the journal entries we&#8217;ve written, in
+<p>We'll begin with the list view.</p>
+<p>We need some code that will fetch all the journal entries we've written, in
 reverse order, and hand that collection back for rendering.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">DBSession</span><span class="p">,</span>
@@ -385,12 +640,24 @@ reverse order, and hand that collection back for rendering.</p>
 </pre></div>
 </div>
 </div>
-<p>Next, we want to write the view for a single entry.</p>
+
+
+
+<div class="slide-no">23</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id19">
+    <hgroup>
+      <h3>Using the <code class="docutils literal"><span class="pre">matchdict</span></code></h3>
+    </hgroup>
+    <article class="">
+      <p>Next, we want to write the view for a single entry.</p>
 <div class="build container">
-<p>We&#8217;ll need to use the <code class="docutils literal"><span class="pre">id</span></code> value our route captures into the
+<p>We'll need to use the <code class="docutils literal"><span class="pre">id</span></code> value our route captures into the
 <code class="docutils literal"><span class="pre">matchdict</span></code>.</p>
 <p>Remember that the <code class="docutils literal"><span class="pre">matchdict</span></code> is an attribute of the request.</p>
-<p>We&#8217;ll get the <code class="docutils literal"><span class="pre">id</span></code> from there, and use it to get the correct entry.</p>
+<p>We'll get the <code class="docutils literal"><span class="pre">id</span></code> from there, and use it to get the correct entry.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c"># add this import at the top</span>
 <span class="kn">from</span> <span class="nn">pyramid.httpexceptions</span> <span class="kn">import</span> <span class="n">HTTPNotFound</span>
 
@@ -404,7 +671,19 @@ reverse order, and hand that collection back for rendering.</p>
 </pre></div>
 </div>
 </div>
-<p>We can now verify that these views work correctly.</p>
+
+
+
+<div class="slide-no">24</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id20">
+    <hgroup>
+      <h3>Testing Our Views</h3>
+    </hgroup>
+    <article class="">
+      <p>We can now verify that these views work correctly.</p>
 <div class="build container">
 <p>Make sure your virtualenv is properly activated, and start the web server:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>pserve development.ini
@@ -417,32 +696,50 @@ serving on http://0.0.0.0:6543
 <li><a class="reference external" href="http://localhost:6543">http://localhost:6543</a></li>
 <li><a class="reference external" href="http://localhost:6543/journal/1">http://localhost:6543/journal/1</a></li>
 </ul>
-<p>What happens when you request an entry with an id that isn&#8217;t in the
+<p>What happens when you request an entry with an id that isn't in the
 database?</p>
 <ul class="simple">
 <li><a class="reference external" href="http://localhost:6543/journal/100">http://localhost:6543/journal/100</a></li>
 </ul>
 </div>
-</div>
-</div>
-<div class="section" id="the-mvc-view">
-<h2>The MVC View<a class="headerlink" href="#the-mvc-view" title="Permalink to this headline">¶</a></h2>
-<div class="left container">
+
+
+
+<div class="slide-no">25</div>
+
+
+    </article>
+  </slide>  <slide class="level-2" id="the-mvc-view">
+    <hgroup>
+      <h2>The MVC View</h2>
+    </hgroup>
+    <article class="">
+      <div class="left container">
 <p>Again, back to the <em>Model-View-Controller</em> pattern.</p>
 <div class="figure align-center" id="id2">
 <a class="reference internal image-reference" href="http://upload.wikimedia.org/wikipedia/commons/4/40/MVC_passive_view.png"><img alt="http://upload.wikimedia.org/wikipedia/commons/4/40/MVC_passive_view.png" src="http://upload.wikimedia.org/wikipedia/commons/4/40/MVC_passive_view.png" style="width: 25%;" /></a>
 <p class="caption"><span class="caption-text">By Alan Evangelista (Own work) [CC0], via Wikimedia Commons</span></p>
 </div>
 <div class="build container">
-<p>We&#8217;ve built a <em>model</em> and we&#8217;ve created some <em>controllers</em> that use it.</p>
+<p>We've built a <em>model</em> and we've created some <em>controllers</em> that use it.</p>
 <p>In Pyramid, we call <em>controllers</em> <strong>views</strong> and they are callables that
 take <em>request</em> as an argument.</p>
-<p>Let&#8217;s turn to the last piece of the <em>MVC</em> patter, the <em>view</em></p>
+<p>Let's turn to the last piece of the <em>MVC</em> patter, the <em>view</em></p>
 </div>
 </div>
-<div class="section" id="presenting-data">
-<h3>Presenting Data<a class="headerlink" href="#presenting-data" title="Permalink to this headline">¶</a></h3>
-<p>The job of the <em>view</em> in the <em>MVC</em> pattern is to present data in a format that
+
+
+
+<div class="slide-no">26</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="presenting-data">
+    <hgroup>
+      <h3>Presenting Data</h3>
+    </hgroup>
+    <article class="">
+      <p>The job of the <em>view</em> in the <em>MVC</em> pattern is to present data in a format that
 is readable to the user of the system.</p>
 <div class="build container">
 <p>There are many ways to present data.</p>
@@ -452,22 +749,43 @@ files).</p>
 <p>Which of these formats is the <em>right one</em> depends on your purpose.</p>
 <p>What is the purpose of our learning journal?</p>
 </div>
-</div>
-<div class="section" id="pyramid-renderers">
-<h3>Pyramid Renderers<a class="headerlink" href="#pyramid-renderers" title="Permalink to this headline">¶</a></h3>
-<p>In Pyramid, the job of presenting data is performed by a <em>renderer</em>.</p>
+
+
+
+<div class="slide-no">27</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="pyramid-renderers">
+    <hgroup>
+      <h3>Pyramid Renderers</h3>
+    </hgroup>
+    <article class="">
+      <p>In Pyramid, the job of presenting data is performed by a <em>renderer</em>.</p>
 <div class="build container">
 <p>So we can consider the Pyramid <strong>renderer</strong> to be the <em>view</em> in our <em>MVC</em>
 app.</p>
-<p>We&#8217;ve already seen how we can connect a <em>renderer</em> to a Pyramid <em>view</em> with
+<p>We've already seen how we can connect a <em>renderer</em> to a Pyramid <em>view</em> with
 configuration.</p>
 <p>In fact, we have already done so, using a built-in renderer called
 <code class="docutils literal"><span class="pre">'string'</span></code>.</p>
 <p>This renderer converts the return value of its <em>view</em> to a string and sends
 that back to the client as an HTTP response.</p>
-<p>But the result isn&#8217;t so nice looking.</p>
+<p>But the result isn't so nice looking.</p>
 </div>
-<p>The <cite>built-in renderers</cite> (<code class="docutils literal"><span class="pre">'string'</span></code>, <code class="docutils literal"><span class="pre">'json'</span></code>, <code class="docutils literal"><span class="pre">'jsonp'</span></code>) in Pyramid are
+
+
+
+<div class="slide-no">28</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id21">
+    <hgroup>
+      <h3>Template Renderers</h3>
+    </hgroup>
+    <article class="">
+      <p>The <cite>built-in renderers</cite> (<code class="docutils literal"><span class="pre">'string'</span></code>, <code class="docutils literal"><span class="pre">'json'</span></code>, <code class="docutils literal"><span class="pre">'jsonp'</span></code>) in Pyramid are
 not the only ones available.</p>
 <div class="build container">
 <p>There are add-ons to Pyramid that support using various <em>template
@@ -475,7 +793,19 @@ languages</em> as renderers.</p>
 <p>In fact, one of these was installed by default when you created this
 project.</p>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># in setup.py</span>
+
+
+
+<div class="slide-no">29</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id22">
+    <hgroup>
+      <h3>Configuring a Template Renderer</h3>
+    </hgroup>
+    <article class="">
+      <div class="highlight-python"><div class="highlight"><pre><span class="c"># in setup.py</span>
 <span class="n">requires</span> <span class="o">=</span> <span class="p">[</span>
     <span class="c"># ...</span>
     <span class="s">&#39;pyramid_chameleon&#39;</span><span class="p">,</span>
@@ -492,9 +822,21 @@ project.</p>
 <p>The <cite>pyramid_chameleon</cite> package supports using the <cite>chameleon</cite> template
 language.</p>
 <p>The language is quite nice and powerful, but not so easy to learn.</p>
-<p>Let&#8217;s use a different one, <em>jinja2</em></p>
+<p>Let's use a different one, <em>jinja2</em></p>
 </div>
-<p>Change <code class="docutils literal"><span class="pre">pyramid_chameleon</span></code> to <code class="docutils literal"><span class="pre">pyramid_jinja2</span></code> in both of these files:</p>
+
+
+
+<div class="slide-no">30</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id23">
+    <hgroup>
+      <h3>Changing Template Renderers</h3>
+    </hgroup>
+    <article class="">
+      <p>Change <code class="docutils literal"><span class="pre">pyramid_chameleon</span></code> to <code class="docutils literal"><span class="pre">pyramid_jinja2</span></code> in both of these files:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c"># in setup.py</span>
 <span class="n">requires</span> <span class="o">=</span> <span class="p">[</span>
     <span class="c"># ...</span>
@@ -508,7 +850,19 @@ language.</p>
     <span class="n">config</span><span class="o">.</span><span class="n">include</span><span class="p">(</span><span class="s">&#39;pyramid_jinja2&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>We&#8217;ve changed the dependencies for our Pyramid project.</p>
+
+
+
+<div class="slide-no">31</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id24">
+    <hgroup>
+      <h3>Picking up the Changes</h3>
+    </hgroup>
+    <article class="">
+      <p>We've changed the dependencies for our Pyramid project.</p>
 <div class="build container">
 <p>As a result, we will need to re-install it so the new dependencies are also
 installed:</p>
@@ -519,12 +873,21 @@ Finished processing dependencies for learning-journal==0.0
 </pre></div>
 </div>
 <p>Now, we can use <em>Jinja2</em> templates in our project.</p>
-<p>Let&#8217;s learn a bit about how <a class="reference external" href="http://jinja.pocoo.org/docs/templates/">Jinja2 templates</a> work.</p>
+<p>Let's learn a bit about how <a class="reference external" href="http://jinja.pocoo.org/docs/templates/">Jinja2 templates</a> work.</p>
 </div>
-</div>
-<div class="section" id="jinja2-template-basics">
-<h3>Jinja2 Template Basics<a class="headerlink" href="#jinja2-template-basics" title="Permalink to this headline">¶</a></h3>
-<p>We&#8217;ll start with the absolute basics.</p>
+
+
+
+<div class="slide-no">32</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="jinja2-template-basics">
+    <hgroup>
+      <h3>Jinja2 Template Basics</h3>
+    </hgroup>
+    <article class="">
+      <p>We'll start with the absolute basics.</p>
 <div class="build container">
 <p>Fire up an iPython interpreter, using your <cite>ljenv</cite> virtualenv:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>ipython
@@ -537,18 +900,42 @@ In <span class="o">[</span>1<span class="o">]</span>:
 </pre></div>
 </div>
 </div>
-<p>A template is constructed with a simple string:</p>
+
+
+
+<div class="slide-no">33</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id25">
+    <hgroup>
+      <h3>Templates are Strings</h3>
+    </hgroup>
+    <article class="">
+      <p>A template is constructed with a simple string:</p>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [2]: </span><span class="n">t1</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="s">&quot;Hello {{ name }}, how are you&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="build container">
-<p>Here, we&#8217;ve simply typed the string directly, but it is more common to
+<p>Here, we've simply typed the string directly, but it is more common to
 build a template from the contents of a <em>file</em>.</p>
 <p>Notice that our string has some odd stuff in it: <code class="docutils literal"><span class="pre">{{</span> <span class="pre">name</span> <span class="pre">}}</span></code>.</p>
 <p>This is called a <em>placeholder</em> and when the template is <em>rendered</em> it is
 replaced.</p>
 </div>
-<p>Call the <code class="docutils literal"><span class="pre">render</span></code> method, providing <em>context</em>:</p>
+
+
+
+<div class="slide-no">34</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id26">
+    <hgroup>
+      <h3>Rendering a Template</h3>
+    </hgroup>
+    <article class="">
+      <p>Call the <code class="docutils literal"><span class="pre">render</span></code> method, providing <em>context</em>:</p>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [3]: </span><span class="n">t1</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Freddy&quot;</span><span class="p">)</span>
 <span class="gh">Out[3]: </span><span class="go">&#39;Hello Freddy, how are you&#39;</span>
 <span class="gp">In [4]: </span><span class="n">t1</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Gloria&quot;</span><span class="p">)</span>
@@ -557,13 +944,25 @@ replaced.</p>
 </div>
 <div class="build container">
 <p><em>Context</em> can either be keyword arguments, or a dictionary</p>
-<p>Note the resemblance to something you&#8217;ve seen before:</p>
+<p>Note the resemblance to something you've seen before:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="s">&quot;This is {owner}&#39;s string&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">owner</span><span class="o">=</span><span class="s">&quot;Cris&quot;</span><span class="p">)</span>
 <span class="go">&#39;This is Cris&#39;s string&#39;</span>
 </pre></div>
 </div>
 </div>
-<p>Dictionaries passed in as part of the <em>context</em> can be addressed with <em>either</em>
+
+
+
+<div class="slide-no">35</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id27">
+    <hgroup>
+      <h3>Dictionaries in Context</h3>
+    </hgroup>
+    <article class="">
+      <p>Dictionaries passed in as part of the <em>context</em> can be addressed with <em>either</em>
 subscript or dotted notation:</p>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [5]: </span><span class="n">person</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;first_name&#39;</span><span class="p">:</span> <span class="s">&#39;Frank&#39;</span><span class="p">,</span>
 <span class="gp">   ...: </span>          <span class="s">&#39;last_name&#39;</span><span class="p">:</span> <span class="s">&#39;Herbert&#39;</span><span class="p">}</span>
@@ -578,7 +977,19 @@ subscript).</li>
 <li>If nothing is found, it will try the opposite.</li>
 <li>If nothing is found, it will return an <em>undefined</em> object.</li>
 </ul>
-<p>The exact same is true of objects passed in as part of <em>context</em>:</p>
+
+
+
+<div class="slide-no">36</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id28">
+    <hgroup>
+      <h3>Objects in Context</h3>
+    </hgroup>
+    <article class="">
+      <p>The exact same is true of objects passed in as part of <em>context</em>:</p>
 <div class="build container">
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [8]: </span><span class="n">t3</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="s">&quot;{{ obj.x }} + {{ obj[&#39;y&#39;] }} = Fun!&quot;</span><span class="p">)</span>
 <span class="gp">In [9]: </span><span class="k">class</span> <span class="nc">Game</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -593,7 +1004,19 @@ subscript).</li>
 <p>This means your templates can be agnostic as to the nature of the
 things found in <em>context</em></p>
 </div>
-<p>You can apply <a class="reference external" href="http://jinja.pocoo.org/docs/dev/templates/#filters">filters</a> to the data passed in <em>context</em> with the pipe (&#8216;|&#8217;)
+
+
+
+<div class="slide-no">37</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id29">
+    <hgroup>
+      <h3>Filtering values in Templates</h3>
+    </hgroup>
+    <article class="">
+      <p>You can apply <a class="reference external" href="http://jinja.pocoo.org/docs/dev/templates/#filters">filters</a> to the data passed in <em>context</em> with the pipe ('|')
 operator:</p>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [12]: </span><span class="n">t4</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="s">&quot;shouted: {{ phrase|upper }}&quot;</span><span class="p">)</span>
 <span class="gp">In [13]: </span><span class="n">t4</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">phrase</span><span class="o">=</span><span class="s">&quot;this is very important&quot;</span><span class="p">)</span>
@@ -608,7 +1031,19 @@ operator:</p>
 </pre></div>
 </div>
 </div>
-<p>Logical <a class="reference external" href="http://jinja.pocoo.org/docs/dev/templates/#list-of-control-structures">control structures</a> are also available:</p>
+
+
+
+<div class="slide-no">38</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id30">
+    <hgroup>
+      <h3>Control Flow</h3>
+    </hgroup>
+    <article class="">
+      <p>Logical <a class="reference external" href="http://jinja.pocoo.org/docs/dev/templates/#list-of-control-structures">control structures</a> are also available:</p>
 <div class="build container">
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [16]: </span><span class="n">tmpl</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
 <span class="gp">   ....: </span><span class="s">{</span><span class="si">% f</span><span class="s">or item in list %}{{ item}}, {</span><span class="si">% e</span><span class="s">ndfor %}</span>
@@ -624,7 +1059,19 @@ explicit closing tag (<code class="docutils literal"><span class="pre">{%</span>
 lot like Python, <em>they are not</em>.</p>
 <p>The syntax is specific and must be followed correctly.</p>
 </div>
-<p>There are a number of specialized <em>tests</em> available for use with the
+
+
+
+<div class="slide-no">39</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id31">
+    <hgroup>
+      <h3>Template Tests</h3>
+    </hgroup>
+    <article class="">
+      <p>There are a number of specialized <em>tests</em> available for use with the
 <code class="docutils literal"><span class="pre">if...elif...else</span></code> control structure:</p>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [19]: </span><span class="n">tmpl</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
 <span class="gp">   ....: </span><span class="s">{</span><span class="si">% i</span><span class="s">f phrase is upper %}</span>
@@ -641,7 +1088,19 @@ lot like Python, <em>they are not</em>.</p>
 <span class="gh">Out[23]: </span><span class="go">&#39;\nThis should print as-is&#39;</span>
 </pre></div>
 </div>
-<p>Basic <a class="reference external" href="http://jinja.pocoo.org/docs/dev/templates/#expressions">Python-like expressions</a> are also supported:</p>
+
+
+
+<div class="slide-no">40</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id32">
+    <hgroup>
+      <h3>Basic Expressions</h3>
+    </hgroup>
+    <article class="">
+      <p>Basic <a class="reference external" href="http://jinja.pocoo.org/docs/dev/templates/#expressions">Python-like expressions</a> are also supported:</p>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [24]: </span><span class="n">tmpl</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
 <span class="gp">   ....: </span><span class="s">{</span><span class="si">% s</span><span class="s">et sum = 0 %}</span>
 <span class="gp">   ....: </span><span class="s">{</span><span class="si">% f</span><span class="s">or val in values %}</span>
@@ -656,12 +1115,33 @@ lot like Python, <em>they are not</em>.</p>
 <span class="go">          \n\n9: 45\n  \n\n10: 55\n  \n\n&#39;</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="our-templates">
-<h3>Our Templates<a class="headerlink" href="#our-templates" title="Permalink to this headline">¶</a></h3>
-<p>There&#8217;s more that Jinja2 templates can do, but it will be easier to introduce
-you to that in the context of a working template.  So let&#8217;s make some.</p>
-<p>We have a Pyramid view that returns a single entry. Let&#8217;s create a template to
+
+
+
+<div class="slide-no">41</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="our-templates">
+    <hgroup>
+      <h3>Our Templates</h3>
+    </hgroup>
+    <article class="">
+      <p>There's more that Jinja2 templates can do, but it will be easier to introduce
+you to that in the context of a working template.  So let's make some.</p>
+
+
+
+<div class="slide-no">42</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id33">
+    <hgroup>
+      <h3>Detail Template</h3>
+    </hgroup>
+    <article class="">
+      <p>We have a Pyramid view that returns a single entry. Let's create a template to
 show it.</p>
 <div class="build container">
 <p>In <code class="docutils literal"><span class="pre">learning_journal/templates</span></code> create a new file <code class="docutils literal"><span class="pre">detail.jinja2</span></code>:</p>
@@ -682,7 +1162,19 @@ show it.</p>
 </pre></div>
 </div>
 </div>
-<p>Now we should be able to see some rendered HTML for our journal entry details.</p>
+
+
+
+<div class="slide-no">43</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id34">
+    <hgroup>
+      <h3>Try It Out</h3>
+    </hgroup>
+    <article class="">
+      <p>Now we should be able to see some rendered HTML for our journal entry details.</p>
 <div class="build container">
 <p>Start up your server:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>pserve development.ini
@@ -695,7 +1187,19 @@ serving on http://0.0.0.0:6543
 <li><a class="reference external" href="http://localhost:6543/journal/1">http://localhost:6543/journal/1</a></li>
 </ul>
 </div>
-<p>The index page of our journal should show a list of journal entries, let&#8217;s do
+
+
+
+<div class="slide-no">44</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id35">
+    <hgroup>
+      <h3>Listing Page</h3>
+    </hgroup>
+    <article class="">
+      <p>The index page of our journal should show a list of journal entries, let's do
 that next.</p>
 <div class="build container">
 <p>In <code class="docutils literal"><span class="pre">learning_journal/templates</span></code> create a new file <code class="docutils literal"><span class="pre">list.jinja2</span></code>:</p>
@@ -714,7 +1218,19 @@ that next.</p>
 </pre></div>
 </div>
 </div>
-<p>It&#8217;s worth taking a look at a few specifics of this template.</p>
+
+
+
+<div class="slide-no">45</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id36">
+    <hgroup>
+      <h3>Our Templates</h3>
+    </hgroup>
+    <article class="">
+      <p>It's worth taking a look at a few specifics of this template.</p>
 <div class="build container">
 <div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{%</span> <span class="k">for</span> <span class="nv">entry</span> <span class="k">in</span> <span class="nv">entries</span> <span class="cp">%}</span><span class="x"></span>
 <span class="x"> ...</span>
@@ -727,7 +1243,19 @@ part of of that <em>context</em></p>
 <p>This means we can access values we return from our <em>view</em> in the <em>renderer</em>
 using the names we assigned to them.</p>
 </div>
-<p>It&#8217;s worth taking a look at a few specifics of this template.</p>
+
+
+
+<div class="slide-no">46</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id37">
+    <hgroup>
+      <h3>Our Templates</h3>
+    </hgroup>
+    <article class="">
+      <p>It's worth taking a look at a few specifics of this template.</p>
 <blockquote>
 <div><div class="highlight-jinja"><div class="highlight"><pre><span class="x">&lt;a href=&quot;</span><span class="cp">{{</span> <span class="nv">request.route_url</span><span class="o">(</span><span class="s1">&#39;detail&#39;</span><span class="o">,</span> <span class="nv">id</span><span class="o">=</span><span class="nv">entry.id</span><span class="o">)</span> <span class="cp">}}</span><span class="x">&quot;&gt;</span><span class="cp">{{</span> <span class="nv">entry.title</span> <span class="cp">}}</span><span class="x">&lt;/a&gt;</span>
 </pre></div>
@@ -737,16 +1265,40 @@ using the names we assigned to them.</p>
 route.</p>
 <p>This allows you to include URLs in your template without needing to know
 exactly what they will be.</p>
-<p>This process is called <em>reversing</em>, since it&#8217;s a bit like a reverse phone
+<p>This process is called <em>reversing</em>, since it's a bit like a reverse phone
 book lookup.</p>
 </div></blockquote>
-<p>Finally, you&#8217;ll need to connect this new renderer to your listing view:</p>
+
+
+
+<div class="slide-no">47</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id38">
+    <hgroup>
+      <h3>Our Templates</h3>
+    </hgroup>
+    <article class="">
+      <p>Finally, you'll need to connect this new renderer to your listing view:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="s">&#39;home&#39;</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="s">&#39;templates/list.jinja2&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">index_page</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="c"># ...</span>
 </pre></div>
 </div>
-<p>We can now see our list page too.  Let&#8217;s try starting the server:</p>
+
+
+
+<div class="slide-no">48</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id39">
+    <hgroup>
+      <h3>Try It Out</h3>
+    </hgroup>
+    <article class="">
+      <p>We can now see our list page too.  Let's try starting the server:</p>
 <div class="build container">
 <div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>pserve development.ini
 Starting server in PID 90536.
@@ -759,18 +1311,42 @@ serving on http://0.0.0.0:6543
 </ul>
 <p>Click on the link to an entry, it should work.</p>
 </div>
-<p>These views are reasonable, if quite plain.</p>
+
+
+
+<div class="slide-no">49</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id40">
+    <hgroup>
+      <h3>Sharing Structure</h3>
+    </hgroup>
+    <article class="">
+      <p>These views are reasonable, if quite plain.</p>
 <div class="build container">
-<p>It&#8217;d be nice to put them into something that looks a bit more like a
+<p>It'd be nice to put them into something that looks a bit more like a
 website.</p>
 <p>Jinja2 allows you to combine templates using something called
 <a class="reference external" href="http://jinja.pocoo.org/docs/dev/templates/#template-inheritance">template inheritance</a>.</p>
 <p>You can create a basic page structure, and then <em>inherit</em> that structure in
 other templates.</p>
-<p>In our class resources I&#8217;ve added a page template <code class="docutils literal"><span class="pre">layout.jinja2</span></code>.  Copy
+<p>In our class resources I've added a page template <code class="docutils literal"><span class="pre">layout.jinja2</span></code>.  Copy
 that page to your templates directory</p>
 </div>
-<div class="highlight-jinja"><div class="highlight"><pre><span class="x">&lt;!DOCTYPE html&gt;</span>
+
+
+
+<div class="slide-no">50</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id41">
+    <hgroup>
+      <h3><code class="docutils literal"><span class="pre">layout.jinja2</span></code></h3>
+    </hgroup>
+    <article class="">
+      <div class="highlight-jinja"><div class="highlight"><pre><span class="x">&lt;!DOCTYPE html&gt;</span>
 <span class="x">&lt;html lang=&quot;en&quot;&gt;</span>
 <span class="x">  &lt;head&gt;</span>
 <span class="x">    &lt;meta charset=&quot;utf-8&quot;&gt;</span>
@@ -790,12 +1366,24 @@ that page to your templates directory</p>
 <span class="x">&lt;/html&gt;</span>
 </pre></div>
 </div>
-<p>The important part here is the <code class="docutils literal"><span class="pre">{%</span> <span class="pre">block</span> <span class="pre">body</span> <span class="pre">%}{%</span> <span class="pre">endblock</span> <span class="pre">%}</span></code> expression.</p>
+
+
+
+<div class="slide-no">51</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id42">
+    <hgroup>
+      <h3>Template Blocks</h3>
+    </hgroup>
+    <article class="">
+      <p>The important part here is the <code class="docutils literal"><span class="pre">{%</span> <span class="pre">block</span> <span class="pre">body</span> <span class="pre">%}{%</span> <span class="pre">endblock</span> <span class="pre">%}</span></code> expression.</p>
 <div class="build container">
 <p>This is a template <strong>block</strong> and it is a kind of placeholder.</p>
 <p>Other templates can inherit from this one, and fill that block with
 additional HTML.</p>
-<p>Let&#8217;s update our detail and list templates:</p>
+<p>Let's update our detail and list templates:</p>
 <div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{%</span> <span class="k">extends</span> <span class="s2">&quot;layout.jinja2&quot;</span> <span class="cp">%}</span><span class="x"></span>
 <span class="cp">{%</span> <span class="k">block</span> <span class="nv">body</span> <span class="cp">%}</span><span class="x"></span>
 <span class="x">&lt;!-- everything else that was already there goes here --&gt;</span>
@@ -803,7 +1391,19 @@ additional HTML.</p>
 </pre></div>
 </div>
 </div>
-<p>Let&#8217;s try starting the server so we can see the result:</p>
+
+
+
+<div class="slide-no">52</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id43">
+    <hgroup>
+      <h3>Try It Out</h3>
+    </hgroup>
+    <article class="">
+      <p>Let's try starting the server so we can see the result:</p>
 <div class="build container">
 <div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>pserve development.ini
 Starting server in PID 90536.
@@ -817,10 +1417,19 @@ serving on http://0.0.0.0:6543
 <p>Click on the link to an entry, it should work.</p>
 <p>And now you have shared page structure that is in both.</p>
 </div>
-</div>
-<div class="section" id="static-assets">
-<h3>Static Assets<a class="headerlink" href="#static-assets" title="Permalink to this headline">¶</a></h3>
-<p>Although we have a shared structure, it isn&#8217;t particularly nice to look at.</p>
+
+
+
+<div class="slide-no">53</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="static-assets">
+    <hgroup>
+      <h3>Static Assets</h3>
+    </hgroup>
+    <article class="">
+      <p>Although we have a shared structure, it isn't particularly nice to look at.</p>
 <div class="build container">
 <p>Aspects of how a website looks are controlled by CSS (<em>Cascading Style
 Sheets</em>).</p>
@@ -829,7 +1438,19 @@ Sheets</em>).</p>
 the site (logos, button images, etc) and the <em>JavaScript</em> files that add
 client-side dynamic behavior to the site.</p>
 </div>
-<p>Serving static assets in Pyramid requires a <em>static view</em> to configuration.
+
+
+
+<div class="slide-no">54</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id44">
+    <hgroup>
+      <h3>Static Assets in Pyramid</h3>
+    </hgroup>
+    <article class="">
+      <p>Serving static assets in Pyramid requires a <em>static view</em> to configuration.
 Luckily, <code class="docutils literal"><span class="pre">pcreate</span></code> already handled that for us:</p>
 <div class="build container">
 <div class="highlight-python"><div class="highlight"><pre><span class="c"># in learning_journal/__init__.py</span>
@@ -847,7 +1468,19 @@ configured.</p>
 location defined by the <em>path</em></p>
 <p>Additional keyword arguments control other aspects of how the view works.</p>
 </div>
-<p>Once you have a static view configured, you can use assets in that location in
+
+
+
+<div class="slide-no">55</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id45">
+    <hgroup>
+      <h3>Static Assets in Templates</h3>
+    </hgroup>
+    <article class="">
+      <p>Once you have a static view configured, you can use assets in that location in
 templates.</p>
 <div class="build container">
 <p>The <em>request</em> object in Pyramid provides a <code class="docutils literal"><span class="pre">static_path</span></code> method that
@@ -863,9 +1496,21 @@ will render an appropriate asset path for us.</p>
 asset.</p>
 <p>Note that because any package <em>might</em> define a static view, we have to
 specify which package we want to look in.</p>
-<p>That&#8217;s why we have <code class="docutils literal"><span class="pre">learning_journal:static/styles.css</span></code> in our call.</p>
+<p>That's why we have <code class="docutils literal"><span class="pre">learning_journal:static/styles.css</span></code> in our call.</p>
 </div>
-<p>I&#8217;ve created some very very basic styles for our learning journal.</p>
+
+
+
+<div class="slide-no">56</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id46">
+    <hgroup>
+      <h3>Basic Styles</h3>
+    </hgroup>
+    <article class="">
+      <p>I've created some very very basic styles for our learning journal.</p>
 <div class="build container">
 <p>You can find them in <code class="docutils literal"><span class="pre">resources/session06/styles.css</span></code>.  Go ahead and copy
 that file.</p>
@@ -878,38 +1523,80 @@ serving on http://0.0.0.0:6543
 </pre></div>
 </div>
 </div>
-<p>Your site should look something like this:</p>
+
+
+
+<div class="slide-no">57</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id47">
+    <hgroup>
+      <h3>The Outcome</h3>
+    </hgroup>
+    <article class="">
+      <p>Your site should look something like this:</p>
 <div class="figure align-center" id="id3">
 <a class="reference internal image-reference" href="../_images/learning_journal_styled.png"><img alt="../_images/learning_journal_styled.png" src="../_images/learning_journal_styled.png" style="width: 75%;" /></a>
 <p class="caption"><span class="caption-text">The learning journal with basic styles applied</span></p>
 </div>
-</div>
-</div>
-<div class="section" id="getting-interactive">
-<h2>Getting Interactive<a class="headerlink" href="#getting-interactive" title="Permalink to this headline">¶</a></h2>
-<div class="left container">
+
+
+
+<div class="slide-no">58</div>
+
+
+    </article>
+  </slide>  <slide class="level-2" id="getting-interactive">
+    <hgroup>
+      <h2>Getting Interactive</h2>
+    </hgroup>
+    <article class="">
+      <div class="left container">
 <p>We have a site that allows us to view a list of journal entries.</p>
 <div class="build container">
 <p>We can also view the details of a single entry.</p>
-<p>But as yet, we don&#8217;t really have any <em>interaction</em> in our site yet.</p>
-<p>We can&#8217;t create new entries.</p>
-<p>Let&#8217;s add that functionality next.</p>
+<p>But as yet, we don't really have any <em>interaction</em> in our site yet.</p>
+<p>We can't create new entries.</p>
+<p>Let's add that functionality next.</p>
 </div>
 </div>
-<div class="section" id="user-input">
-<h3>User Input<a class="headerlink" href="#user-input" title="Permalink to this headline">¶</a></h3>
-<p>In HTML websites, the traditional way of getting input from users is via
+
+
+
+<div class="slide-no">59</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="user-input">
+    <hgroup>
+      <h3>User Input</h3>
+    </hgroup>
+    <article class="">
+      <p>In HTML websites, the traditional way of getting input from users is via
 <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Forms">HTML forms</a>.</p>
 <div class="build container">
 <p>Forms use <em>input elements</em> to allow users to enter data, pick from
 drop-down lists, or choose items via checkbox or radio button.</p>
 <p>It is possible to create plain HTML forms in templates and use them with
 Pyramid.</p>
-<p>It&#8217;s a lot easier, however, to work with a <em>form library</em> to create forms,
+<p>It's a lot easier, however, to work with a <em>form library</em> to create forms,
 render them in templates and interact with data sent by a client.</p>
-<p>We&#8217;ll be using a form library called <a class="reference external" href="http://wtforms.readthedocs.org/en/latest/">WTForms</a> in our project</p>
+<p>We'll be using a form library called <a class="reference external" href="http://wtforms.readthedocs.org/en/latest/">WTForms</a> in our project</p>
 </div>
-<p>The first step to working with this library is to install it.</p>
+
+
+
+<div class="slide-no">60</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id48">
+    <hgroup>
+      <h3>Installing WTForms</h3>
+    </hgroup>
+    <article class="">
+      <p>The first step to working with this library is to install it.</p>
 <div class="build container">
 <p>Start by makin the library as a <em>dependency</em> of our package by adding it to
 the <em>requires</em> list in <code class="docutils literal"><span class="pre">setup.py</span></code>:</p>
@@ -926,10 +1613,19 @@ Finished processing dependencies <span class="k">for</span> learning-journal<spa
 </pre></div>
 </div>
 </div>
-</div>
-<div class="section" id="using-wtforms">
-<h3>Using WTForms<a class="headerlink" href="#using-wtforms" title="Permalink to this headline">¶</a></h3>
-<p>We&#8217;ll want a form to allow a user to create a new Journal Entry.</p>
+
+
+
+<div class="slide-no">61</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="using-wtforms">
+    <hgroup>
+      <h3>Using WTForms</h3>
+    </hgroup>
+    <article class="">
+      <p>We'll want a form to allow a user to create a new Journal Entry.</p>
 <div class="build container">
 <p>Add a new file called <code class="docutils literal"><span class="pre">forms.py</span></code> in our learning_journal package, next to
 <code class="docutils literal"><span class="pre">models.py</span></code>:</p>
@@ -949,7 +1645,19 @@ Finished processing dependencies <span class="k">for</span> learning-journal<spa
 </pre></div>
 </div>
 </div>
-<p>Next, we need to add a new view that uses this form to create a new entry.</p>
+
+
+
+<div class="slide-no">62</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id49">
+    <hgroup>
+      <h3>Using a Form in a View</h3>
+    </hgroup>
+    <article class="">
+      <p>Next, we need to add a new view that uses this form to create a new entry.</p>
 <div class="build container">
 <p>Add this to <code class="docutils literal"><span class="pre">views.py</span></code>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c"># add these imports</span>
@@ -968,7 +1676,19 @@ Finished processing dependencies <span class="k">for</span> learning-journal<spa
 </pre></div>
 </div>
 </div>
-<p>We already have a route that connects here.  Let&#8217;s test it.</p>
+
+
+
+<div class="slide-no">63</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id50">
+    <hgroup>
+      <h3>Testing the Route/View Connection</h3>
+    </hgroup>
+    <article class="">
+      <p>We already have a route that connects here.  Let's test it.</p>
 <div class="build container">
 <p>Start your server:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>pserve development.ini
@@ -985,7 +1705,19 @@ serving on http://0.0.0.0:6543
 </pre></div>
 </div>
 </div>
-<p>Finally, we need to create a template that will render our form.</p>
+
+
+
+<div class="slide-no">64</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id51">
+    <hgroup>
+      <h3>Rendering A Form</h3>
+    </hgroup>
+    <article class="">
+      <p>Finally, we need to create a template that will render our form.</p>
 <div class="build container">
 <p>Add a new template called <code class="docutils literal"><span class="pre">edit.jinja2</span></code> in
 <code class="docutils literal"><span class="pre">learning_journal/templates</span></code>:</p>
@@ -1008,7 +1740,19 @@ serving on http://0.0.0.0:6543
 </pre></div>
 </div>
 </div>
-<p>You&#8217;ll need to update the view configuration to use this new renderer.</p>
+
+
+
+<div class="slide-no">65</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id52">
+    <hgroup>
+      <h3>Connecting the Renderer</h3>
+    </hgroup>
+    <article class="">
+      <p>You'll need to update the view configuration to use this new renderer.</p>
 <div class="build container">
 <p>Update the configuration in <code class="docutils literal"><span class="pre">learning_journal/views.py</span></code>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="nd">@view_config</span><span class="p">(</span><span class="n">route_name</span><span class="o">=</span><span class="s">&#39;action&#39;</span><span class="p">,</span> <span class="n">match_param</span><span class="o">=</span><span class="s">&#39;action=create&#39;</span><span class="p">,</span>
@@ -1027,7 +1771,19 @@ serving on http://0.0.0.0:6543
 <li><a class="reference external" href="http://localhost:6543/create">http://localhost:6543/create</a></li>
 </ul>
 </div>
-<p>Great!  Now you can add new entries to your journal.</p>
+
+
+
+<div class="slide-no">66</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id53">
+    <hgroup>
+      <h3>Providing Access</h3>
+    </hgroup>
+    <article class="">
+      <p>Great!  Now you can add new entries to your journal.</p>
 <div class="build container">
 <p>But in order to do so, you have to hand-enter the url.</p>
 <p>You should add a new link in the UI somewhere that helps you get there more
@@ -1046,11 +1802,19 @@ easily.</p>
 </pre></div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="homework">
-<h2>Homework<a class="headerlink" href="#homework" title="Permalink to this headline">¶</a></h2>
-<div class="left container">
+
+
+
+<div class="slide-no">67</div>
+
+
+    </article>
+  </slide>  <slide class="level-2" id="homework">
+    <hgroup>
+      <h2>Homework</h2>
+    </hgroup>
+    <article class="">
+      <div class="left container">
 <p>You have a website now that allows you to create, view and list journal
 entries</p>
 <div class="build container">
@@ -1058,12 +1822,22 @@ entries</p>
 <p>You should be able to edit a journal entry that already exists, in case
 you make a spelling error.</p>
 <p>It would also be nice to see a prettier site.</p>
-<p>Let&#8217;s handle that for homework this week.</p>
+<p>Let's handle that for homework this week.</p>
 </div>
 </div>
-<div class="section" id="part-1-add-editing">
-<h3>Part 1: Add Editing<a class="headerlink" href="#part-1-add-editing" title="Permalink to this headline">¶</a></h3>
-<p>For part one of your assignment, add editing of existing entries. You will need:</p>
+
+
+
+<div class="slide-no">68</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="part-1-add-editing">
+    <hgroup>
+      <h3>Part 1: Add Editing</h3>
+    </hgroup>
+    <article class="">
+      <p>For part one of your assignment, add editing of existing entries. You will need:</p>
 <ul class="simple">
 <li>A form that shows an existing entry (what is different about this form from
 one for creating a new entry?)</li>
@@ -1079,12 +1853,21 @@ saved correctly</li>
 <li>A link somewhere that leads to the editing page for a single entry (probably
 on the view page for a entry)</li>
 </ul>
-<p>You&#8217;ll need to update a bit of configuration, but not much.  Use the create
+<p>You'll need to update a bit of configuration, but not much.  Use the create
 form we did here in class as an example.</p>
-</div>
-<div class="section" id="part-2-make-it-yours">
-<h3>Part 2: Make it Yours<a class="headerlink" href="#part-2-make-it-yours" title="Permalink to this headline">¶</a></h3>
-<p>I&#8217;ve created for you a very bare-bones layout and stylesheet.</p>
+
+
+
+<div class="slide-no">69</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="part-2-make-it-yours">
+    <hgroup>
+      <h3>Part 2: Make it Yours</h3>
+    </hgroup>
+    <article class="">
+      <p>I've created for you a very bare-bones layout and stylesheet.</p>
 <p>You will certainly want to add a bit of your own style and panache.</p>
 <p>Spend a few hours this week playing with the styles and getting a site that
 looks more like you want it to look.</p>
@@ -1100,13 +1883,22 @@ juices.</p>
 <li><a class="reference external" href="http://www.smashingmagazine.com">Smashing Magazine</a> is another excellent
 resource for articles on design.</li>
 </ul>
-</div>
-<div class="section" id="part-3-user-model">
-<h3>Part 3: User Model<a class="headerlink" href="#part-3-user-model" title="Permalink to this headline">¶</a></h3>
-<p>As it stands, our journal accepts entries from anyone who comes by.</p>
+
+
+
+<div class="slide-no">70</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="part-3-user-model">
+    <hgroup>
+      <h3>Part 3: User Model</h3>
+    </hgroup>
+    <article class="">
+      <p>As it stands, our journal accepts entries from anyone who comes by.</p>
 <p>Next week we will add security to allow only logged-in users to create and edit
 entries.</p>
-<p>To do so, we&#8217;ll need a user model</p>
+<p>To do so, we'll need a user model</p>
 <p>The model should have:</p>
 <ul class="simple">
 <li>An <code class="docutils literal"><span class="pre">id</span></code> field that is a primary key</li>
@@ -1116,127 +1908,70 @@ nullable, unique and indexed.</li>
 </ul>
 <p>In addition, the model should have a classmethod that retrieves a specific user
 when given a username.</p>
-</div>
-<div class="section" id="part-4-preparation-for-deployment">
-<h3>Part 4: Preparation for Deployment<a class="headerlink" href="#part-4-preparation-for-deployment" title="Permalink to this headline">¶</a></h3>
-<p>At the end of class next week we will be deploying our application to Heroku.</p>
+
+
+
+<div class="slide-no">71</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="part-4-preparation-for-deployment">
+    <hgroup>
+      <h3>Part 4: Preparation for Deployment</h3>
+    </hgroup>
+    <article class="">
+      <p>At the end of class next week we will be deploying our application to Heroku.</p>
 <p>You will need to get a free account.</p>
 <p>Once you have your free account set up and you have logged in, run through the
 <a class="reference external" href="https://devcenter.heroku.com/articles/getting-started-with-python#introduction">getting started with Python</a> tutorial.</p>
 <p>Be sure to at least complete the <em>set up</em> step. It will have you install the
 Heroku Toolbelt, which you will need to have ready in class.</p>
-</div>
-<div class="section" id="submitting-your-work">
-<h3>Submitting Your Work<a class="headerlink" href="#submitting-your-work" title="Permalink to this headline">¶</a></h3>
-<p>As usual, submit your work by committing and pushing it to your project github
+
+
+
+<div class="slide-no">72</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="submitting-your-work">
+    <hgroup>
+      <h3>Submitting Your Work</h3>
+    </hgroup>
+    <article class="">
+      <p>As usual, submit your work by committing and pushing it to your project github
 repository</p>
 <p>Commit early and commit often.</p>
 <p>Write yourself good commit messages explaining what you have done and why.</p>
 <p>When you are ready to have your work reviewed, email the link to your
-repository to us, we&#8217;ll take a look and make comments.</p>
-</div>
-</div>
-</div>
+repository to us, we'll take a look and make comments.</p>
 
 
-          </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="../index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Session 06</a><ul>
-<li><a class="reference internal" href="#interacting-with-data">Interacting with Data</a><ul>
-<li><a class="reference internal" href="#but-first">But First</a></li>
-<li><a class="reference internal" href="#our-data-model">Our Data Model</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#the-mvc-controller">The MVC Controller</a><ul>
-<li><a class="reference internal" href="#http-request-response">HTTP Request/Response</a></li>
-<li><a class="reference internal" href="#routes-in-pyramid">Routes in Pyramid</a></li>
-<li><a class="reference internal" href="#the-pyramid-view">The Pyramid View</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#the-mvc-view">The MVC View</a><ul>
-<li><a class="reference internal" href="#presenting-data">Presenting Data</a></li>
-<li><a class="reference internal" href="#pyramid-renderers">Pyramid Renderers</a></li>
-<li><a class="reference internal" href="#jinja2-template-basics">Jinja2 Template Basics</a></li>
-<li><a class="reference internal" href="#our-templates">Our Templates</a></li>
-<li><a class="reference internal" href="#static-assets">Static Assets</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#getting-interactive">Getting Interactive</a><ul>
-<li><a class="reference internal" href="#user-input">User Input</a></li>
-<li><a class="reference internal" href="#using-wtforms">Using WTForms</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#homework">Homework</a><ul>
-<li><a class="reference internal" href="#part-1-add-editing">Part 1: Add Editing</a></li>
-<li><a class="reference internal" href="#part-2-make-it-yours">Part 2: Make it Yours</a></li>
-<li><a class="reference internal" href="#part-3-user-model">Part 3: User Model</a></li>
-<li><a class="reference internal" href="#part-4-preparation-for-deployment">Part 4: Preparation for Deployment</a></li>
-<li><a class="reference internal" href="#submitting-your-work">Submitting Your Work</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="session05.html"
-                        title="previous chapter">Session 05</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="session07.html"
-                        title="next chapter">Session 07</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/presentations/session06.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-  <h3>Slides</h3>
-  <ul class="this-page-menu">
-    <li><a href="../.././slides/presentations/session06.html"
-           rel="nofollow">View as slides</a></li>
-  </ul>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
+<div class="slide-no">73</div>
+
+
+    </article>
+  </slide>
+
+
+    <slide class="thank-you-slide segue nobackground">
+    <aside class="gdbar right"><img src="../_static/logo_UW.png"></aside>
+    <article class="flexbox vleft auto-fadein">
+      <h2>Good Night!</h2>
+      <p>&nbsp;</p>
+    </article>
+    <p class="auto-fadein" data-config-contact>
+      <!-- populated from slide_config.json -->
     </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="session07.html" title="Session 07"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="session05.html" title="Session 05"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">UWPCE Python 200</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="index.html" >Course Presentations</a> &raquo;</li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &copy; Copyright 2012-2016, Cris Ewing.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
-    </div>
-  </body>
+  </slide>
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
 </html>

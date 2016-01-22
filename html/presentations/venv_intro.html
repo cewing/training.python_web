@@ -89,33 +89,44 @@ cause long-term nightmares</li>
 </div>
 <div class="section" id="creating-a-venv">
 <h3>Creating a Venv<a class="headerlink" href="#creating-a-venv" title="Permalink to this headline">¶</a></h3>
-<p>Since version 3.3, Python has come with a built-in <code class="docutils literal"><span class="pre">venv</span></code> module.  This
-module provides a command you can use to create virtual environments:
-<code class="docutils literal"><span class="pre">pyvenv</span></code></p>
+<p>Since version 3.3, Python has come with a built-in <code class="docutils literal"><span class="pre">venv</span></code> module.</p>
 <div class="build container">
-<p>The basic usage for this command is as follows:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>pyvenv /path/to/new/environment
+<p>To use the module, you can run it using your Python 3 executable:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python -m venv my_env
 </pre></div>
 </div>
 <p>On Windows you&#8217;ll need something a bit different:</p>
-<div class="highlight-posh"><div class="highlight"><pre>c:\Temp&gt;c:\Python35\python -m venv myenv
+<div class="highlight-posh"><div class="highlight"><pre>c:\Temp&gt;c:\Python35\python -m venv my_env
 </pre></div>
 </div>
 <p>Unless you have the Python executable in your path, in which case this:</p>
-<div class="highlight-posh"><div class="highlight"><pre>c:\Temp&gt;python -m venv myenv
+<div class="highlight-posh"><div class="highlight"><pre>c:\Temp&gt;python -m venv my_env
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Your Python 3 executable may be <code class="docutils literal"><span class="pre">python3</span></code>, please substitute
+that if required</p>
+</div>
+<p>Depending on how you installed Python (and on your operating system) you
+may also have a <code class="docutils literal"><span class="pre">pyvenv</span></code> command available in your PATH. You can use it like so:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>pyvenv my_env
 </pre></div>
 </div>
 </div>
 <p>In any of these command forms, the name of the new virtual environment
-(<code class="docutils literal"><span class="pre">myenv</span></code>) is arbitrary.</p>
+(<code class="docutils literal"><span class="pre">my_env</span></code>) is arbitrary.</p>
 <div class="build container">
 <p>I suggest that you name virtual environments to match the project for which
 the environment is to be used.</p>
 <p>I also suggest that you keep your virtual environments <em>in the same
 directory</em> as the project code you are writing.</p>
+<p>Be aware that <code class="docutils literal"><span class="pre">venv</span></code> can be sensitive to path names that contain spaces.
+Please make sure that the entire path to your working directory does not
+contain any spaces just to be safe.</p>
 </div>
 <p>Let&#8217;s make one for demonstration purposes:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>pyvenv demoenv
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python -m venv demoenv
 <span class="nv">$ </span>ls demoenv
 bin     include     lib     pyvenv.cfg
 </pre></div>

@@ -1,16 +1,41 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+Google IO 2012/2013 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahé <lukem@google.com>
+
+URL: https://code.google.com/p/io-2012-slides
+--><!DOCTYPE html>
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<html>
+<head>
+  <title>Course Outline &mdash; Internet Programming with Python</title>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  
+  <link rel="stylesheet" media="all"
+        href="_static/theme/css/default.css">
+  <link rel="stylesheet" media="all"
+        href="_static/theme/css/hieroglyph.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)"
+        href="_static/theme/css/phone.css">
+
     
-    <title>Course Outline &mdash; Internet Programming with Python</title>
+    <link rel="stylesheet" href="_static/custom.css"
+          type="text/css" />
     
-    <link rel="stylesheet" href="_static/pyramid.css" type="text/css" />
+
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
@@ -20,340 +45,66 @@
         HAS_SOURCE:  true
       };
     </script>
+
+    <script data-main="_static/js/slides"
+            src="_static/js/require-1.0.8.min.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
+    
     <link rel="top" title="Internet Programming with Python" href="index.html" />
     <link rel="next" title="Course Presentations" href="presentations/index.html" />
-    <link rel="prev" title="Internet Programming with Python" href="index.html" />
-<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
-<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
-<!--[if lte IE 6]>
-<link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
-<![endif]-->
+    <link rel="prev" title="Internet Programming with Python" href="index.html" /> 
+</head>
+<body style="opacity: 0">
 
-  </head>
-  <body role="document">
-<div class="header">
-  <div class="logo">
-    <a href="index.html">
-      <img class="logo" src="_static/logo_UW.png" alt="Logo"/>
-    </a>
-  </div>
-</div>
+<slides class="layout-widescreen">
 
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="presentations/index.html" title="Course Presentations"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="index.html" title="Internet Programming with Python"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">UWPCE Python 200</a> &raquo;</li> 
-      </ul>
-    </div>  
+  <slide class="title-slide segue nobackground">
+  <aside class="gdbar"><img src="../_static/logo_UW.png"></aside>
+  <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+  <hgroup class="auto-fadein">
+    <h1 data-config-title><!-- populated from slide_config.json --></h1>
+    <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+    <p data-config-presenter><!-- populated from slide_config.json --></p>
+  </hgroup>
+</slide>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <div class="section" id="course-outline">
-<h1>Course Outline<a class="headerlink" href="#course-outline" title="Permalink to this headline">¶</a></h1>
-<span class="admonition-course-outline"></span><p>This course takes place over 10 sessions. Each session is three hours long.
-Each session contains lecture material and exercises you will type at a python
-prompt. Each session has associated assignments which you will complete
-between sessions.</p>
-<div class="section" id="session-1-tcp-ip-and-sockets">
-<h2>Session 1 - TCP/IP and Sockets<a class="headerlink" href="#session-1-tcp-ip-and-sockets" title="Permalink to this headline">¶</a></h2>
-<p>We will begin with a disucssion of the fundamental concepts and structures
-that underly the internet and networked computing. We&#8217;ll learn about the
-TCP/IP stack (Internet Protocol Suite) and gain some insights into how that
-model manifests in real life. We will then dive into sockets and learn how to
-use them to communicate between processes on a single machine, or across a
-network.</p>
-<p>Along the way, we&#8217;ll build a basic Echo server and client to demonstrate the
-processes we&#8217;ve learned. By the end of the session, we&#8217;ll be sending messages
-and receiving replies.</p>
-<div class="section" id="references">
-<h3>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><a class="reference external" href="http://docs.python.org/2/library/socket.html">Python Library - socket</a></li>
-<li><a class="reference external" href="http://docs.python.org/2/howto/sockets.html">Socket Programming How-to</a></li>
-<li><a class="reference external" href="http://pymotw.com/2/socket/">Python Module of the Week - socket</a></li>
-</ul>
-</div>
-</div>
-<div class="section" id="session-2-web-protocols">
-<h2>Session 2 - Web Protocols<a class="headerlink" href="#session-2-web-protocols" title="Permalink to this headline">¶</a></h2>
-<p>Protocols are the languages of the Internet. They govern how machines speak to
-one another. We will focus on finding both the similarities and differences
-between protocols. Can you use the inherent qualities of each to determine
-which is appropriate for a given purpose?</p>
-<p>Along the way, we&#8217;ll build a simple web server. Using the HTTP protocol and
-extending what we learned in the previous session we&#8217;ll create an HTTP server
-that allows us to serve files and directories from our own computers. By the
-end of the day, you&#8217;ll be browsing your filesystem with your own web browser.</p>
-<div class="section" id="id1">
-<h3>References<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><a class="reference external" href="http://docs.python.org/2/library/smtplib.html">smtplib</a></li>
-<li><a class="reference external" href="http://docs.python.org/2/library/imaplib.html">imaplib</a></li>
-<li><a class="reference external" href="http://docs.python.org/2/library/httplib.html">httplib</a></li>
-<li><a class="reference external" href="http://docs.python.org/2/library/urllib.html">urllib</a></li>
-<li><a class="reference external" href="http://docs.python.org/2/library/urllib2.html">urllib2</a></li>
-</ul>
-<p>If you have more curiosity about other Python Standard Library implementations
-of internet protocols, you should read Doug Hellmann&#8217;s Python Module Of The
-Week on <a class="reference external" href="http://pymotw.com/2/internet_protocols.html">Internet Protocols and Support</a>. His entries on these libraries are
-clear and concise and have some great code examples.</p>
-</div>
-</div>
-<div class="section" id="session-3-cgi-and-wsgi">
-<h2>Session 3 - CGI and WSGI<a class="headerlink" href="#session-3-cgi-and-wsgi" title="Permalink to this headline">¶</a></h2>
-<p>In this class we will explore ways of moving data from HTTP requests into the
-dynamic scripts that process data. We will begin by looking at the original
-specification for passing data, CGI (Common Gateway Interface). We&#8217;ll look at
-the benefits and drawbacks of the specification, and use it to create some
-simple interactions.</p>
-<p>Then we will investigate a more modern take on the same problem, WSGI (Web
-Services Gateway Interface). We&#8217;ll see the ways in which WSGI is similar to
-CGI, and look at the ways in which it differs. We&#8217;ll create a simple interaction
-using WSGI and see what benefits and drawbacks it confers.</p>
-</div>
-<div class="section" id="session-4-apis-and-mashups">
-<h2>Session 4 - APIs and Mashups<a class="headerlink" href="#session-4-apis-and-mashups" title="Permalink to this headline">¶</a></h2>
-<p>The internet is a treasure trove of information. But meaning can be hard to
-find among all that data. Mashups offer a way to combine data from disparate
-sources in order to derive meaning. Data online can be offered in forms ripe
-for consumption. APIs built in XMLRPC, SOAP or REST offer rich tools for
-extraction, but even simple websites can be scraped using tools like
-BeautifulSoup.</p>
-<p>We&#8217;ll explore the differences between various &#8216;Web Services&#8217; formats, learning
-how to serve information and consume it. We&#8217;ll also explore using BeautifulSoup
-to help extract information from the sea of HTML in the wild.</p>
-<p>Along the way, we&#8217;ll create a mashup of our own, using the tools we learn to
-build a script that can produce derived meaning out of data we find online.</p>
-<div class="section" id="id2">
-<h3>References<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><a class="reference external" href="http://www.crummy.com/software/BeautifulSoup/bs4/doc/">BeautifulSoup</a></li>
-<li><a class="reference external" href="http://requests.readthedocs.org/en/latest/">requests</a></li>
-<li><a class="reference external" href="http://docs.python.org/2/library/json.html">json</a></li>
-<li><a class="reference external" href="http://geocoder.readthedocs.org/en/latest/">geocoder</a></li>
-<li><a class="reference external" href="http://docs.python.org/2/library/httplib.html">httplib</a></li>
-<li><a class="reference external" href="http://docs.python.org/2/library/htmlparser.html">htmlparser</a></li>
-<li><a class="reference external" href="http://docs.python.org/2/library/xmlrpclib.html">xmlrpclib</a></li>
-<li><a class="reference external" href="http://docs.python.org/2/library/docxmlrpcserver.html">DocXMLRPCServer</a></li>
-</ul>
-</div>
-</div>
-<div class="section" id="session-5-mvc-applications-and-data-persistence">
-<h2>Session 5 - MVC Applications and Data Persistence<a class="headerlink" href="#session-5-mvc-applications-and-data-persistence" title="Permalink to this headline">¶</a></h2>
-<p>In this session we will begin by introducing the idea of an MVC (<em>Model View
-Controller</em>) application.  We&#8217;ll discuss this popular application design
-pattern and talk about the ways in which it does and does not apply to the
-world of web applications.</p>
-<p>We&#8217;ll get started with our first application, a learning journal written in the
-lignt but powerful <em>Pyramid</em> web framework. We&#8217;ll set up a development
-environment and install the framework and dependencies. We&#8217;ll create our first
-<em>models</em> and experiment with persisting data to a database.</p>
-<div class="section" id="id4">
-<h3>References<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
-</div>
-<div class="section" id="preparation-for-session-6">
-<h3>Preparation for Session 6<a class="headerlink" href="#preparation-for-session-6" title="Permalink to this headline">¶</a></h3>
-<p>In preparation for session 6, please read the following materials:</p>
-<ul class="simple">
-<li><a class="reference external" href="presentations/template_tutorial-plain.html">Jinja2 Template Tutorial</a></li>
-<li><a class="reference external" href="http://www.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">HTML5 Site Layout Tutorial</a></li>
-</ul>
-</div>
-</div>
-<div class="section" id="session-6-pyramid-views-renderers-and-forms">
-<h2>Session 6 - Pyramid Views, Renderers and Forms<a class="headerlink" href="#session-6-pyramid-views-renderers-and-forms" title="Permalink to this headline">¶</a></h2>
-<p>In this session we extend our understanding of the MVC design pattern by
-learning how Pyramid implements the <em>view</em> and <em>controller</em> aspects.</p>
-<p>Pyramid <em>views</em> represent the <em>controller</em> part of the MVC pattern, and we&#8217;ll
-create a number of them. We&#8217;ll also learn how Pyramid uses <em>routes</em> to properly
-connect the <em>path</em> requested by a client to the <em>views</em> run by a server.</p>
-<p>We&#8217;ll meet with Pyramid&#8217;s <em>renderers</em>, the <em>view</em> in MVC.  We&#8217;ll start by using
-a built-in renderer that simply turns view data into strings sent back to the
-client as plain text responses.  We&#8217;ll then install a template-based renderer
-and use the <em>jinja2</em> template language to create visible HTML pages the brower
-can load to show our learning journal entries.</p>
-<div class="section" id="prepraration-for-session-7">
-<h3>Prepraration for Session 7<a class="headerlink" href="#prepraration-for-session-7" title="Permalink to this headline">¶</a></h3>
-<p>In preparation for session 7, please read up on getting started with <a class="reference external" href="https://devcenter.heroku.com/articles/getting-started-with-python#introduction">Heroku
-and Python</a>.  We&#8217;ll be deploying our learning journal to Heroku by the end of
-that session.</p>
-</div>
-</div>
-<div class="section" id="sesstion-7-pyramid-authentication-and-deployment">
-<h2>Sesstion 7 - Pyramid Authentication and Deployment<a class="headerlink" href="#sesstion-7-pyramid-authentication-and-deployment" title="Permalink to this headline">¶</a></h2>
-<p>In this session we will learn the basic elements of access control:
-authentication and authorization. We&#8217;ll learn how Pyramid implements these two
-aspects of security, and will implement a basic security policy for our
-learning journal.</p>
-<p>Once complete, we will deploy our application to Heroku.  We&#8217;ll make a few
-changes to how our app is configured to fit with the Heroku model and will be
-able to see our application in action by the end of the session.</p>
-<p>Time permitting, we will enhance our application with a few special features
-such as Markdown formatting, and code highlighting. A list of potential future
-enhancements will give you plenty to think about for the rest of the week.</p>
-<div class="section" id="preparation-for-session-8">
-<h3>Preparation for Session 8<a class="headerlink" href="#preparation-for-session-8" title="Permalink to this headline">¶</a></h3>
-<p>Please walk through this tutorial before session 8 begins.</p>
-<ul class="simple">
-<li><a class="reference external" href="presentations/django_intro.html">An Introduction to Django</a></li>
-</ul>
-</div>
-</div>
-<div class="section" id="session-8-basic-django">
-<h2>Session 8 - Basic Django<a class="headerlink" href="#session-8-basic-django" title="Permalink to this headline">¶</a></h2>
-<p>In this class we&#8217;ll get introduced to arguably the most popular full-stack
-Python web framework, Django. We&#8217;ll install the framework, learn about how to
-get it running and how to get started creating your very own app.</p>
-<p>We&#8217;ll be learning about the Django ORM and how Django Models can help shield
-developers from much of the complexity of SQL.</p>
-<p>During the week leading up to this session, we&#8217;ll <a class="reference external" href="presentations/django_intro.html">get started building</a> a
-blog app in Django. We&#8217;ll learn how to use the tools Django provides to explore
-and interact with your models while designing them. We&#8217;ll also get a brief
-introduction to the Django admin, Django&#8217;s <em>killer feature</em>.</p>
-<p>Along the way, we&#8217;ll build a nicely functional blog application.  We&#8217;ll learn
-about model relationships, customizing the Django admin, and adding front-end
-views so users can see our work. We&#8217;ll even learn how we can update our
-database code and keep it in sync with our progressing development work.</p>
-<p>Along the way we&#8217;ll learn that the Django template language is quite similar
-to the Jinja2 language (in fact, Jinja2 was modelled on the Django version).
-We&#8217;ll also get a chance to learn a bit more about the features that the Django
-test framework provides over and above the standard Python <code class="docutils literal"><span class="pre">unittest</span></code>
-library.</p>
-</div>
-<div class="section" id="session-9-extending-django">
-<h2>Session 9 - Extending Django<a class="headerlink" href="#session-9-extending-django" title="Permalink to this headline">¶</a></h2>
-<p>During this session, we will continue our exploration of Django, and of pair
-programming. Students will pair up and work together to implement one or more
-feature extending the basic Django app we created previously.</p>
-<p>Finally, we&#8217;ll discuss some of the strengths and weaknesses of Django.  What
-makes it a good choice for some projects but not for others.</p>
-<div class="section" id="preparation-for-session-10">
-<h3>Preparation for Session 10<a class="headerlink" href="#preparation-for-session-10" title="Permalink to this headline">¶</a></h3>
-<p>In preparation for session 10, you&#8217;ll need to sign up for an account with
-Amazon Web Services.</p>
-</div>
-</div>
-<div class="section" id="session-10-deploying-django">
-<h2>Session 10 - Deploying Django<a class="headerlink" href="#session-10-deploying-django" title="Permalink to this headline">¶</a></h2>
-<p>During this session, we will deploy our Django application to Amazon Web
-Services. To do so, we&#8217;ll use a popular Python-based configuration management
-tool, Ansible.</p>
-</div>
-</div>
+  
+    <slide class="title-slide segue nobackground admonition-course-outline level-1" id="course-outline">
+    <hgroup>
+      <h1>Course Outline</h1>
+    </hgroup>
+    <article class="">
+      <p>This document contains no slides.</p>
 
 
-          </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Course Outline</a><ul>
-<li><a class="reference internal" href="#session-1-tcp-ip-and-sockets">Session 1 - TCP/IP and Sockets</a><ul>
-<li><a class="reference internal" href="#references">References</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#session-2-web-protocols">Session 2 - Web Protocols</a><ul>
-<li><a class="reference internal" href="#id1">References</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#session-3-cgi-and-wsgi">Session 3 - CGI and WSGI</a></li>
-<li><a class="reference internal" href="#session-4-apis-and-mashups">Session 4 - APIs and Mashups</a><ul>
-<li><a class="reference internal" href="#id2">References</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#session-5-mvc-applications-and-data-persistence">Session 5 - MVC Applications and Data Persistence</a><ul>
-<li><a class="reference internal" href="#id4">References</a></li>
-<li><a class="reference internal" href="#preparation-for-session-6">Preparation for Session 6</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#session-6-pyramid-views-renderers-and-forms">Session 6 - Pyramid Views, Renderers and Forms</a><ul>
-<li><a class="reference internal" href="#prepraration-for-session-7">Prepraration for Session 7</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#sesstion-7-pyramid-authentication-and-deployment">Sesstion 7 - Pyramid Authentication and Deployment</a><ul>
-<li><a class="reference internal" href="#preparation-for-session-8">Preparation for Session 8</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#session-8-basic-django">Session 8 - Basic Django</a></li>
-<li><a class="reference internal" href="#session-9-extending-django">Session 9 - Extending Django</a><ul>
-<li><a class="reference internal" href="#preparation-for-session-10">Preparation for Session 10</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#session-10-deploying-django">Session 10 - Deploying Django</a></li>
-</ul>
-</li>
-</ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="index.html"
-                        title="previous chapter">Internet Programming with Python</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="presentations/index.html"
-                        title="next chapter">Course Presentations</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/outline.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-  <h3>Slides</h3>
-  <ul class="this-page-menu">
-    <li><a href="./slides/outline.html"
-           rel="nofollow">View as slides</a></li>
-  </ul>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
+<div class="slide-no">1</div>
+
+
+    </article>
+  </slide>
+
+
+    <slide class="thank-you-slide segue nobackground">
+    <aside class="gdbar right"><img src="../_static/logo_UW.png"></aside>
+    <article class="flexbox vleft auto-fadein">
+      <h2>Good Night!</h2>
+      <p>&nbsp;</p>
+    </article>
+    <p class="auto-fadein" data-config-contact>
+      <!-- populated from slide_config.json -->
     </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="presentations/index.html" title="Course Presentations"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="index.html" title="Internet Programming with Python"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">UWPCE Python 200</a> &raquo;</li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &copy; Copyright 2012-2016, Cris Ewing.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
-    </div>
-  </body>
+  </slide>
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
 </html>

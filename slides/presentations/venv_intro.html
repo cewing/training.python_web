@@ -1,16 +1,41 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+Google IO 2012/2013 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahé <lukem@google.com>
+
+URL: https://code.google.com/p/io-2012-slides
+--><!DOCTYPE html>
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<html>
+<head>
+  <title>An Introduction To Venv &mdash; Internet Programming with Python</title>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  
+  <link rel="stylesheet" media="all"
+        href="../_static/theme/css/default.css">
+  <link rel="stylesheet" media="all"
+        href="../_static/theme/css/hieroglyph.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)"
+        href="../_static/theme/css/phone.css">
+
     
-    <title>An Introduction To Venv &mdash; Internet Programming with Python</title>
+    <link rel="stylesheet" href="../_static/custom.css"
+          type="text/css" />
     
-    <link rel="stylesheet" href="../_static/pyramid.css" type="text/css" />
+
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
@@ -20,358 +45,64 @@
         HAS_SOURCE:  true
       };
     </script>
+
+    <script data-main="../_static/js/slides"
+            src="../_static/js/require-1.0.8.min.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="Internet Programming with Python" href="../index.html" />
-<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
-<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
-<!--[if lte IE 6]>
-<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
-<![endif]-->
+    
+    <link rel="top" title="Internet Programming with Python" href="../index.html" /> 
+</head>
+<body style="opacity: 0">
 
-  </head>
-  <body role="document">
-<div class="header">
-  <div class="logo">
-    <a href="../index.html">
-      <img class="logo" src="../_static/logo_UW.png" alt="Logo"/>
-    </a>
-  </div>
-</div>
+<slides class="layout-widescreen">
 
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="nav-item nav-item-0"><a href="../index.html">UWPCE Python 200</a> &raquo;</li> 
-      </ul>
-    </div>  
+  <slide class="title-slide segue nobackground">
+  <aside class="gdbar"><img src="../_static/logo_UW.png"></aside>
+  <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+  <hgroup class="auto-fadein">
+    <h1 data-config-title><!-- populated from slide_config.json --></h1>
+    <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+    <p data-config-presenter><!-- populated from slide_config.json --></p>
+  </hgroup>
+</slide>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <div class="section" id="an-introduction-to-venv">
-<h1>An Introduction To Venv<a class="headerlink" href="#an-introduction-to-venv" title="Permalink to this headline">¶</a></h1>
-<span class="admonition-an-introduction-to-venv"></span><p>In this tutorial you&#8217;ll learn a bit about the <a class="reference external" href="https://docs.python.org/3/library/venv.html">pyvenv</a> command and the
-<code class="docutils literal"><span class="pre">venv</span></code> module that powers it. You&#8217;ll learn how to create self-contained
-Python environments in order to practice safe development and manage package
-dependency conflicts.</p>
-<div class="section" id="working-with-virtual-environments">
-<h2>Working with Virtual Environments<a class="headerlink" href="#working-with-virtual-environments" title="Permalink to this headline">¶</a></h2>
-<div class="large line-block">
-<div class="line">For every package</div>
-<div class="line">installed in the</div>
-<div class="line">system Python, the</div>
-<div class="line">gods kill a kitten</div>
-</div>
-<div class="build container">
-<div class="line-block">
-<div class="line">- me</div>
-</div>
-</div>
-<div class="section" id="why-virtual-environments">
-<h3>Why Virtual Environments?<a class="headerlink" href="#why-virtual-environments" title="Permalink to this headline">¶</a></h3>
-<ul class="build simple">
-<li>You will need to install packages that aren&#8217;t in the Python standard
-Library</li>
-<li>You often need to install <em>different</em> versions of the <em>same</em> library for
-different projects</li>
-<li>Conflicts arising from having the wrong version of a dependency installed can
-cause long-term nightmares</li>
-<li>Use <a class="reference external" href="https://docs.python.org/3/library/venv.html">pyvenv</a> ...</li>
-<li><strong>Always</strong></li>
-</ul>
-</div>
-<div class="section" id="creating-a-venv">
-<h3>Creating a Venv<a class="headerlink" href="#creating-a-venv" title="Permalink to this headline">¶</a></h3>
-<p>Since version 3.3, Python has come with a built-in <code class="docutils literal"><span class="pre">venv</span></code> module.  This
-module provides a command you can use to create virtual environments:
-<code class="docutils literal"><span class="pre">pyvenv</span></code></p>
-<div class="build container">
-<p>The basic usage for this command is as follows:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>pyvenv /path/to/new/environment
-</pre></div>
-</div>
-<p>On Windows you&#8217;ll need something a bit different:</p>
-<div class="highlight-posh"><div class="highlight"><pre>c:\Temp&gt;c:\Python35\python -m venv myenv
-</pre></div>
-</div>
-<p>Unless you have the Python executable in your path, in which case this:</p>
-<div class="highlight-posh"><div class="highlight"><pre>c:\Temp&gt;python -m venv myenv
-</pre></div>
-</div>
-</div>
-<p>In any of these command forms, the name of the new virtual environment
-(<code class="docutils literal"><span class="pre">myenv</span></code>) is arbitrary.</p>
-<div class="build container">
-<p>I suggest that you name virtual environments to match the project for which
-the environment is to be used.</p>
-<p>I also suggest that you keep your virtual environments <em>in the same
-directory</em> as the project code you are writing.</p>
-</div>
-<p>Let&#8217;s make one for demonstration purposes:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>pyvenv demoenv
-<span class="nv">$ </span>ls demoenv
-bin     include     lib     pyvenv.cfg
-</pre></div>
-</div>
-<p>When you ran that command, a couple of things took place:</p>
-<ul class="build simple">
-<li>A new directory with your requested name was created</li>
-<li>A new Python executable was created in &lt;ENV&gt;/bin (&lt;ENV&gt;/Scripts on Windows)</li>
-<li>The new Python was cloned from your system Python (where virtualenv was
-installed)</li>
-<li>The new Python was isolated from any libraries installed in the old Python</li>
-<li>Setuptools was installed so you have <code class="docutils literal"><span class="pre">easy_install</span></code> for this new python</li>
-<li>Pip was installed so you have <code class="docutils literal"><span class="pre">pip</span></code> for this new python</li>
-</ul>
-</div>
-<div class="section" id="activation">
-<h3>Activation<a class="headerlink" href="#activation" title="Permalink to this headline">¶</a></h3>
-<p>Every virtual environment you create contains an executable Python command.</p>
-<div class="build container">
-<p>If you do a quick check to see which Python executable is found by your
-terminal, you&#8217;ll see that it is not the one:</p>
-<div class="container">
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>which python
-/usr/bin/python
-</pre></div>
-</div>
-<p>in powershell:</p>
-<div class="highlight-posh"><div class="highlight"><pre><span class="p">$</span> <span class="n">gcm</span> <span class="n">python</span>
-<span class="p">...</span>
-</pre></div>
-</div>
-</div>
-<p>You can execute the new Python by explicitly pointing to it:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>./demoenv/bin/python -V
-Python 3.5.0
-</pre></div>
-</div>
-</div>
-<p>But that&#8217;s tedious and hard to remember.</p>
-<div class="build container">
-<p>Instead, <code class="docutils literal"><span class="pre">activate</span></code> your virtual environment using a shell command:</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="16%" />
-<col width="19%" />
-<col width="65%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Platform</th>
-<th class="head">Shell</th>
-<th class="head">Activation Command</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr class="row-even"><td rowspan="3">Posix</td>
-<td>bash/zsh</td>
-<td><code class="docutils literal"><span class="pre">$</span> <span class="pre">source</span> <span class="pre">&lt;venv&gt;/bin/activate</span></code></td>
-</tr>
-<tr class="row-odd"><td>fish</td>
-<td><code class="docutils literal"><span class="pre">$</span> <span class="pre">.</span> <span class="pre">&lt;venv&gt;/bin/activate.fish</span></code></td>
-</tr>
-<tr class="row-even"><td>csh/tcsh</td>
-<td><code class="docutils literal"><span class="pre">$</span> <span class="pre">source</span> <span class="pre">&lt;venv&gt;/bin/activate.csh</span></code></td>
-</tr>
-<tr class="row-odd"><td rowspan="2">Windows</td>
-<td>cmd.exe</td>
-<td><code class="docutils literal"><span class="pre">C:&gt;</span> <span class="pre">&lt;venv&gt;/Scripts/activate.bat</span></code></td>
-</tr>
-<tr class="row-even"><td>powershell</td>
-<td><code class="docutils literal"><span class="pre">PS</span> <span class="pre">C:&gt;</span> <span class="pre">&lt;venv&gt;/Scripts/Activate.ps1</span></code></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>Notice that when a virtualenv is <em>active</em> you can see it in your command
-prompt:</p>
-<div class="build container">
-<div class="highlight-bash"><div class="highlight"><pre>(demoenv)$
-</pre></div>
-</div>
-<p>So long as the virtualenv is <em>active</em> the <code class="docutils literal"><span class="pre">python</span></code> executable that will
-be used will be the new one in your <code class="docutils literal"><span class="pre">demoenv</span></code>.</p>
-</div>
-</div>
-<div class="section" id="installing-packages">
-<h3>Installing Packages<a class="headerlink" href="#installing-packages" title="Permalink to this headline">¶</a></h3>
-<p>Since <code class="docutils literal"><span class="pre">pip</span></code> is also installed, the <code class="docutils literal"><span class="pre">pip</span></code> that is used to install new
-software will also be the one in <code class="docutils literal"><span class="pre">demoenv</span></code>.</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>demoenv<span class="o">)</span><span class="nv">$ </span>which pip
-/Users/cewing/demoenv/bin/pip
-</pre></div>
-</div>
-<div class="build container">
-<p>This means that using these tools to install packages will install them
-<em>into your virtual environment only</em></p>
-<p>The are not installed into the system Python.</p>
-<p>Let&#8217;s see this in action.</p>
-</div>
-<p>We&#8217;ll install a package called <code class="docutils literal"><span class="pre">docutils</span></code></p>
-<div class="build container">
-<p>It provides tools for creating documentation using ReStructuredText</p>
-<p>Install it using pip (while your virtualenv is active):</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>demoenv<span class="o">)</span><span class="nv">$ </span>pip install docutils
-Downloading/unpacking docutils
-  Downloading docutils-0.11.tar.gz <span class="o">(</span>1.6MB<span class="o">)</span>: 1.6MB downloaded
-  Running setup.py <span class="o">(</span>path:/Users/cewing/demoenv/build/docutils/setup.py<span class="o">)</span> egg_info <span class="k">for</span> package docutils
-    ...
-    changing mode of /Users/cewing/demoenv/bin/rst2xml.py to 755
-    changing mode of /Users/cewing/demoenv/bin/rstpep2html.py to 755
-Successfully installed docutils
-Cleaning up...
-</pre></div>
-</div>
-</div>
-<p>And now, when we fire up our Python interpreter, the docutils package is
-available to us:</p>
-<div class="highlight-pycon"><div class="highlight"><pre><span class="go">(demoenv)$ python</span>
-<span class="go">Python 3.5.0 (default, Sep 16 2015, 10:42:55)</span>
-<span class="go">[GCC 4.2.1 Compatible Apple LLVM 6.1.0 (clang-602.0.49)] on darwin</span>
-<span class="go">Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">docutils</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">docutils</span><span class="o">.</span><span class="n">__path__</span>
-<span class="go">[&#39;/Users/cewing/projects/uwpce/training.python_web/testenvs/sess01/demoenv/lib/python3.5/site-packages/docutils&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="o">^</span><span class="n">d</span>
-<span class="go">(demoenv)$</span>
-</pre></div>
-</div>
-<p>Like some other Python libraries, the <code class="docutils literal"><span class="pre">docutils</span></code> package provides a number of
-executable scripts when it is installed.</p>
-<div class="build container">
-<p>You can see these in the <code class="docutils literal"><span class="pre">bin</span></code> directory inside your virtualenv:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>demoenv<span class="o">)</span><span class="nv">$ </span>ls ./demoenv/bin
-...
-python
-rst2html.py
-rst2latex.py
-...
-</pre></div>
-</div>
-<p>These scripts are set up to execute using the Python with which they were
-built.</p>
-<p>Running these scripts <em>from this location</em> will use the Python executable
-in your virtualenv, <em>even if that virtualenv is not active</em>!</p>
-</div>
-</div>
-<div class="section" id="deactivation">
-<h3>Deactivation<a class="headerlink" href="#deactivation" title="Permalink to this headline">¶</a></h3>
-<p>So you&#8217;ve got a virtual environment created and activated so you can work with
-it.</p>
-<div class="build container">
-<p>Eventually you&#8217;ll need to stop working with this <code class="docutils literal"><span class="pre">venv</span></code> and switch
-to another</p>
-<p>It&#8217;s a good idea to keep a separate <code class="docutils literal"><span class="pre">venv</span></code> for every project you
-work on.</p>
-<p>When a <code class="docutils literal"><span class="pre">venv</span></code> is active, all you have to do is use the
-<code class="docutils literal"><span class="pre">deactivate</span></code> command:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>demoenv<span class="o">)</span><span class="nv">$ </span>deactivate
-<span class="nv">$ </span>which python
-/usr/bin/python
-</pre></div>
-</div>
-<p>Note that your shell prompt returns to normal, and now the executable
-Python found when you check <code class="docutils literal"><span class="pre">python</span></code> is the system one again.</p>
-</div>
-</div>
-<div class="section" id="cleaning-up">
-<h3>Cleaning Up<a class="headerlink" href="#cleaning-up" title="Permalink to this headline">¶</a></h3>
-<p>The final advantage that <code class="docutils literal"><span class="pre">venv</span></code> offers you as a developer is the ability to
-easily remove a batch of installed Python software from your system.</p>
-<div class="build container">
-<p>Consider a situation where you installed a library that breaks your Python
-(it happens)</p>
-<p>If you are working in your system Python, you now have to figure out what
-that package installed</p>
-<p>You have to figure out where it is</p>
-<p>And you have to go clean it out manually.</p>
-<p>With <code class="docutils literal"><span class="pre">venv</span></code> you simply remove the directory <code class="docutils literal"><span class="pre">venv</span></code> created when you
-started out.</p>
-</div>
-<p>Let&#8217;s do that with our <code class="docutils literal"><span class="pre">demoenv</span></code>:</p>
-<div class="build container">
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>rm -r demoenv
-</pre></div>
-</div>
-<p>And that&#8217;s it.</p>
-<p>The entire environment and all the packages you installed into it are now
-gone.</p>
-<p>There are no traces left to pollute your world.</p>
-</div>
-</div>
-</div>
-</div>
+  
+    <slide class="title-slide segue nobackground admonition-an-introduction-to-venv level-1" id="an-introduction-to-venv">
+    <hgroup>
+      <h1>An Introduction To Venv</h1>
+    </hgroup>
+    <article class="">
+      <p>This document contains no slides.</p>
 
 
-          </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="../index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">An Introduction To Venv</a><ul>
-<li><a class="reference internal" href="#working-with-virtual-environments">Working with Virtual Environments</a><ul>
-<li><a class="reference internal" href="#why-virtual-environments">Why Virtual Environments?</a></li>
-<li><a class="reference internal" href="#creating-a-venv">Creating a Venv</a></li>
-<li><a class="reference internal" href="#activation">Activation</a></li>
-<li><a class="reference internal" href="#installing-packages">Installing Packages</a></li>
-<li><a class="reference internal" href="#deactivation">Deactivation</a></li>
-<li><a class="reference internal" href="#cleaning-up">Cleaning Up</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
 
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/presentations/venv_intro.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-  <h3>Slides</h3>
-  <ul class="this-page-menu">
-    <li><a href="../.././slides/presentations/venv_intro.html"
-           rel="nofollow">View as slides</a></li>
-  </ul>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
+<div class="slide-no">1</div>
+
+
+    </article>
+  </slide>
+
+
+    <slide class="thank-you-slide segue nobackground">
+    <aside class="gdbar right"><img src="../_static/logo_UW.png"></aside>
+    <article class="flexbox vleft auto-fadein">
+      <h2>Good Night!</h2>
+      <p>&nbsp;</p>
+    </article>
+    <p class="auto-fadein" data-config-contact>
+      <!-- populated from slide_config.json -->
     </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="nav-item nav-item-0"><a href="../index.html">UWPCE Python 200</a> &raquo;</li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &copy; Copyright 2012-2016, Cris Ewing.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
-    </div>
-  </body>
+  </slide>
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
 </html>

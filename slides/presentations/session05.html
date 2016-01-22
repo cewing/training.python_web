@@ -1,16 +1,41 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+Google IO 2012/2013 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahé <lukem@google.com>
+
+URL: https://code.google.com/p/io-2012-slides
+--><!DOCTYPE html>
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<html>
+<head>
+  <title>Session 05 &mdash; Internet Programming with Python</title>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  
+  <link rel="stylesheet" media="all"
+        href="../_static/theme/css/default.css">
+  <link rel="stylesheet" media="all"
+        href="../_static/theme/css/hieroglyph.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)"
+        href="../_static/theme/css/phone.css">
+
     
-    <title>Session 05 &mdash; Internet Programming with Python</title>
+    <link rel="stylesheet" href="../_static/custom.css"
+          type="text/css" />
     
-    <link rel="stylesheet" href="../_static/pyramid.css" type="text/css" />
+
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
@@ -20,65 +45,70 @@
         HAS_SOURCE:  true
       };
     </script>
+
+    <script data-main="../_static/js/slides"
+            src="../_static/js/require-1.0.8.min.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    
     <link rel="top" title="Internet Programming with Python" href="../index.html" />
     <link rel="up" title="Course Presentations" href="index.html" />
     <link rel="next" title="Session 06" href="session06.html" />
-    <link rel="prev" title="Session 04" href="session04.html" />
-<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
-<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
-<!--[if lte IE 6]>
-<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
-<![endif]-->
+    <link rel="prev" title="Session 04" href="session04.html" /> 
+</head>
+<body style="opacity: 0">
 
-  </head>
-  <body role="document">
-<div class="header">
-  <div class="logo">
-    <a href="../index.html">
-      <img class="logo" src="../_static/logo_UW.png" alt="Logo"/>
-    </a>
-  </div>
-</div>
+<slides class="layout-widescreen">
 
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="session06.html" title="Session 06"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="session04.html" title="Session 04"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">UWPCE Python 200</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Course Presentations</a> &raquo;</li> 
-      </ul>
-    </div>  
+  <slide class="title-slide segue nobackground">
+  <aside class="gdbar"><img src="../_static/logo_UW.png"></aside>
+  <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+  <hgroup class="auto-fadein">
+    <h1 data-config-title><!-- populated from slide_config.json --></h1>
+    <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+    <p data-config-presenter><!-- populated from slide_config.json --></p>
+  </hgroup>
+</slide>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <div class="section" id="session-05">
-<h1>Session 05<a class="headerlink" href="#session-05" title="Permalink to this headline">¶</a></h1>
-<a class="reference internal image-reference" href="../_images/python.png"><img alt="../_images/python.png" class="align-center" src="../_images/python.png" style="width: 43%;" /></a>
-<div class="section" id="mvc-applications">
-<h2>MVC Applications<a class="headerlink" href="#mvc-applications" title="Permalink to this headline">¶</a></h2>
-<p>Wherin we learn about the Model View Controller approach to app design and
+  
+    <slide class="title-slide segue nobackground level-1" id="session-05">
+    <hgroup>
+      <h1>Session 05</h1>
+    </hgroup>
+    <article class="">
+      <a class="reference internal image-reference" href="../_images/python.png"><img alt="../_images/python.png" class="align-center" src="../_images/python.png" style="width: 43%;" /></a>
+
+
+
+<div class="slide-no">1</div>
+
+
+    </article>
+  </slide>  <slide class="level-2" id="mvc-applications">
+    <hgroup>
+      <h2>MVC Applications</h2>
+    </hgroup>
+    <article class="">
+      <p>Wherin we learn about the Model View Controller approach to app design and
 explore data persistence in Python.</p>
 <div class="figure align-center" id="id4">
 <a class="reference internal image-reference" href="http://upload.wikimedia.org/wikipedia/commons/4/40/MVC_passive_view.png"><img alt="http://upload.wikimedia.org/wikipedia/commons/4/40/MVC_passive_view.png" src="http://upload.wikimedia.org/wikipedia/commons/4/40/MVC_passive_view.png" style="width: 40%;" /></a>
 <p class="caption"><span class="caption-text">By Alan Evangelista (Own work) [CC0], via Wikimedia Commons</span></p>
 </div>
-<div class="section" id="separation-of-concerns">
-<h3>Separation of Concerns<a class="headerlink" href="#separation-of-concerns" title="Permalink to this headline">¶</a></h3>
-<div class="build container">
+
+
+
+<div class="slide-no">2</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="separation-of-concerns">
+    <hgroup>
+      <h3>Separation of Concerns</h3>
+    </hgroup>
+    <article class="">
+      <div class="build container">
 <p>In the first part of this course, you were introduced to the concept of
 <em>Object Oriented Programming</em></p>
 <p>OOP was <a class="reference external" href="http://en.wikipedia.org/wiki/Object-oriented_programming#History">first formalized</a> in the 1970s in <em>Smalltalk</em>, invented by Alan
@@ -90,10 +120,19 @@ thinking</em> that helps to make software design easier.</p>
 <p>In this case, the goal is to help clarify the high-level <em>separation of
 concerns</em> in a system.</p>
 </div>
-</div>
-<div class="section" id="three-components">
-<h3>Three Components<a class="headerlink" href="#three-components" title="Permalink to this headline">¶</a></h3>
-<p>The pattern divides the elements of a system into three parts:</p>
+
+
+
+<div class="slide-no">3</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="three-components">
+    <hgroup>
+      <h3>Three Components</h3>
+    </hgroup>
+    <article class="">
+      <p>The pattern divides the elements of a system into three parts:</p>
 <dl class="build docutils">
 <dt>Model:</dt>
 <dd>This component represents the <em>data</em> that comprises the system, and the
@@ -110,10 +149,19 @@ a chart, diagram, table, user interface, etc.</p>
 that information to the View.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="on-the-web">
-<h3>On the Web<a class="headerlink" href="#on-the-web" title="Permalink to this headline">¶</a></h3>
-<p>This pattern has proven useful for thinking about the applications we build for
+
+
+
+<div class="slide-no">4</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="on-the-web">
+    <hgroup>
+      <h3>On the Web</h3>
+    </hgroup>
+    <article class="">
+      <p>This pattern has proven useful for thinking about the applications we build for
 the web.</p>
 <div class="build container">
 <p>A web browser provides a convenient container for <em>views</em> of data.</p>
@@ -123,45 +171,84 @@ channeling it into a <em>data model</em>, often stored in some database.</p>
 <p>The <em>controller</em> returns information about the state of the <em>data model</em> to
 the user via <em>HTTP responses</em></p>
 </div>
-<p>This approach is so common, that it has been formalized into any number of <em>web
+
+
+
+<div class="slide-no">5</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id5">
+    <hgroup>
+      <h3>On the Web</h3>
+    </hgroup>
+    <article class="">
+      <p>This approach is so common, that it has been formalized into any number of <em>web
 frameworks</em></p>
 <div class="build container">
 <p><em>Web frameworks</em> abstract away the specifics of the <em>HTTP request/response
 cycle</em>, leaving simple MVC components for the developer to use.</p>
 <p><em>Web frameworks</em> exist in nearly all modern languages.</p>
 <p>Python has scores of them.</p>
-<p>Over the weeks to come, we&#8217;ll learn about two of them, <a class="reference external" href="http://www.pylonsproject.org/projects/pyramid/about">Pyramid</a> and
+<p>Over the weeks to come, we'll learn about two of them, <a class="reference external" href="http://www.pylonsproject.org/projects/pyramid/about">Pyramid</a> and
 <a class="reference external" href="https://www.djangoproject.com/">Django</a>.</p>
 </div>
-</div>
-<div class="section" id="a-word-about-terminology">
-<h3>A Word About Terminology<a class="headerlink" href="#a-word-about-terminology" title="Permalink to this headline">¶</a></h3>
-<p>Although the MVC pattern is a useful abstraction, there are a few differences
+
+
+
+<div class="slide-no">6</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="a-word-about-terminology">
+    <hgroup>
+      <h3>A Word About Terminology</h3>
+    </hgroup>
+    <article class="">
+      <p>Although the MVC pattern is a useful abstraction, there are a few differences
 in how things are named in Python web frameworks</p>
 <div class="build centered container">
-<p>model &lt;&#8211;&gt; model</p>
-<p>controller &lt;&#8211;&gt; view</p>
-<p>view &lt;&#8211;&gt; template (or even HTTP response)</p>
+<p>model &lt;--&gt; model</p>
+<p>controller &lt;--&gt; view</p>
+<p>view &lt;--&gt; template (or even HTTP response)</p>
 <p class="left">For more on this difference, you can <a class="reference external" href="http://docs.pylonsproject.org/projects/pyramid/en/latest/designdefense.html#pyramid-gets-its-terminology-wrong-mvc">read this</a> from the Pyramid design
 documentation.</p>
 </div>
-</div>
-</div>
-<div class="section" id="our-first-application">
-<h2>Our First Application<a class="headerlink" href="#our-first-application" title="Permalink to this headline">¶</a></h2>
-<p class="left">But enough abstract blabbering.</p>
+
+
+
+<div class="slide-no">7</div>
+
+
+    </article>
+  </slide>  <slide class="level-2" id="our-first-application">
+    <hgroup>
+      <h2>Our First Application</h2>
+    </hgroup>
+    <article class="">
+      <p class="left">But enough abstract blabbering.</p>
 <div class="build left container">
-<p>There&#8217;s no better way to make concepts like these concrete than to build
+<p>There's no better way to make concepts like these concrete than to build
 something using them.</p>
-<p>Let&#8217;s make an application!</p>
-<p>We&#8217;re going to build a Learning Journal.</p>
-<p>When we&#8217;re done, you&#8217;ll have a live, online application you can use to keep
+<p>Let's make an application!</p>
+<p>We're going to build a Learning Journal.</p>
+<p>When we're done, you'll have a live, online application you can use to keep
 note of the things you are learning about Python development.</p>
-<p>We&#8217;ll use one of our Python web framework to do this: <a class="reference external" href="http://www.pylonsproject.org/projects/pyramid/about">Pyramid</a></p>
+<p>We'll use one of our Python web framework to do this: <a class="reference external" href="http://www.pylonsproject.org/projects/pyramid/about">Pyramid</a></p>
 </div>
-<div class="section" id="id1">
-<h3>Pyramid<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
-<p>First published in 2010, <a class="reference external" href="http://www.pylonsproject.org/projects/pyramid/about">Pyramid</a> is a powerful, flexible web framework.</p>
+
+
+
+<div class="slide-no">8</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id1">
+    <hgroup>
+      <h3>Pyramid</h3>
+    </hgroup>
+    <article class="">
+      <p>First published in 2010, <a class="reference external" href="http://www.pylonsproject.org/projects/pyramid/about">Pyramid</a> is a powerful, flexible web framework.</p>
 <div class="build container">
 <p>You can create compelling one-page applications, much like in
 microframeworks like Flask</p>
@@ -171,12 +258,21 @@ power of Python</p>
 <p>It represents the first true second-generation web framework in
 existence.</p>
 </div>
-</div>
-<div class="section" id="starting-the-project">
-<h3>Starting the Project<a class="headerlink" href="#starting-the-project" title="Permalink to this headline">¶</a></h3>
-<p>The first step is to prepare for the project.</p>
+
+
+
+<div class="slide-no">9</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="starting-the-project">
+    <hgroup>
+      <h3>Starting the Project</h3>
+    </hgroup>
+    <article class="">
+      <p>The first step is to prepare for the project.</p>
 <div class="build container">
-<p>Begin by creating a location where you&#8217;ll do your work.</p>
+<p>Begin by creating a location where you'll do your work.</p>
 <p>I generally put all my work in a folder called <code class="docutils literal"><span class="pre">projects</span></code> in my home
 directory:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span><span class="nb">cd</span>
@@ -189,7 +285,19 @@ directory:</p>
 </pre></div>
 </div>
 </div>
-<p>We continue our preparations by creating the virtual environment we will use
+
+
+
+<div class="slide-no">10</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id6">
+    <hgroup>
+      <h3>Creating an Environment</h3>
+    </hgroup>
+    <article class="">
+      <p>We continue our preparations by creating the virtual environment we will use
 for our project.</p>
 <div class="build container">
 <p>Again, this will help us to keep our work here isolated from anything else
@@ -210,7 +318,19 @@ we do.</p>
 </pre></div>
 </div>
 </div>
-<p>Next, we install the Pyramid web framework into our new virtualenv.</p>
+
+
+
+<div class="slide-no">11</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id7">
+    <hgroup>
+      <h3>Installing Pyramid</h3>
+    </hgroup>
+    <article class="">
+      <p>Next, we install the Pyramid web framework into our new virtualenv.</p>
 <div class="build container">
 <p>We can do this with the <code class="docutils literal"><span class="pre">pip</span></code> in our active <code class="docutils literal"><span class="pre">ljenv</span></code>:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>pip install pyramid
@@ -225,10 +345,19 @@ venusian-1.0 zope.deprecation-4.1.1 zope.interface-4.1.2
 </div>
 <p>Once that is complete, we are ready to create a <em>scaffold</em> for our project.</p>
 </div>
-</div>
-<div class="section" id="working-with-pyramid">
-<h3>Working with Pyramid<a class="headerlink" href="#working-with-pyramid" title="Permalink to this headline">¶</a></h3>
-<p>Many web frameworks require at least a bit of <em>boilerplate</em> code to get
+
+
+
+<div class="slide-no">12</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="working-with-pyramid">
+    <hgroup>
+      <h3>Working with Pyramid</h3>
+    </hgroup>
+    <article class="">
+      <p>Many web frameworks require at least a bit of <em>boilerplate</em> code to get
 started.</p>
 <div class="build container">
 <p>Pyramid does not.</p>
@@ -243,9 +372,21 @@ Welcome to Pyramid.  Sorry <span class="k">for</span> the convenience.
 <span class="o">===============================================================================</span>
 </pre></div>
 </div>
-<p>Let&#8217;s take a quick look at what that did</p>
+<p>Let's take a quick look at what that did</p>
 </div>
-<div class="highlight-bash"><div class="highlight"><pre>...
+
+
+
+<div class="slide-no">13</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id8">
+    <hgroup>
+      <h3>What You Get</h3>
+    </hgroup>
+    <article class="">
+      <div class="highlight-bash"><div class="highlight"><pre>...
 ├── development.ini
 ├── learning_journal
 │   ├── __init__.py
@@ -263,7 +404,19 @@ Welcome to Pyramid.  Sorry <span class="k">for</span> the convenience.
 └── setup.py
 </pre></div>
 </div>
-<p>You&#8217;ve now created something worth saving.</p>
+
+
+
+<div class="slide-no">14</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id9">
+    <hgroup>
+      <h3>Saving Your Work</h3>
+    </hgroup>
+    <article class="">
+      <p>You've now created something worth saving.</p>
 <div class="build container">
 <p>Start by initializing a new git repository in the <cite>learning_journal</cite> folder
 you just created:</p>
@@ -274,7 +427,19 @@ Initialized empty Git repository in
 </pre></div>
 </div>
 </div>
-<p>Check <code class="docutils literal"><span class="pre">git</span> <span class="pre">status</span></code> to see where things stand:</p>
+
+
+
+<div class="slide-no">15</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id10">
+    <hgroup>
+      <h3>Saving Your Work</h3>
+    </hgroup>
+    <article class="">
+      <p>Check <code class="docutils literal"><span class="pre">git</span> <span class="pre">status</span></code> to see where things stand:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>git status
 On branch master
 
@@ -292,7 +457,19 @@ Untracked files:
     setup.py
 </pre></div>
 </div>
-<p>Add your work to this new repository:</p>
+
+
+
+<div class="slide-no">16</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id11">
+    <hgroup>
+      <h3>Add the Project Code</h3>
+    </hgroup>
+    <article class="">
+      <p>Add your work to this new repository:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>git add .
 <span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>git status
 ...
@@ -306,9 +483,21 @@ Changes to be committed:
     new file:   setup.py
 </pre></div>
 </div>
-<p>Python creates <code class="docutils literal"><span class="pre">.pyc</span></code> files when it executes your code.</p>
+
+
+
+<div class="slide-no">17</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id12">
+    <hgroup>
+      <h3>Ignore Irrelevant Files</h3>
+    </hgroup>
+    <article class="">
+      <p>Python creates <code class="docutils literal"><span class="pre">.pyc</span></code> files when it executes your code.</p>
 <div class="build container">
-<p>There are many other files you don&#8217;t want or need in your repository</p>
+<p>There are many other files you don't want or need in your repository</p>
 <p>You can ignore this in <code class="docutils literal"><span class="pre">git</span></code> with the <code class="docutils literal"><span class="pre">.gitignore</span></code> file.</p>
 <p>Create one now, in this same directory, and add the following basic lines:</p>
 <div class="highlight-python"><div class="highlight"><pre>*.pyc
@@ -320,16 +509,40 @@ Changes to be committed:
 </pre></div>
 </div>
 </div>
-<p>To preserve all these changes, you&#8217;ll need to commit what you&#8217;ve done:</p>
+
+
+
+<div class="slide-no">18</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id13">
+    <hgroup>
+      <h3>Make It Permanent</h3>
+    </hgroup>
+    <article class="">
+      <p>To preserve all these changes, you'll need to commit what you've done:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>git commit -m <span class="s2">&quot;initial commit of the Pyramid learning journal&quot;</span>
 </pre></div>
 </div>
 <div class="build container">
 <p>This will make a first commit here in this local repository.</p>
-<p>For homework, you&#8217;ll put this into GitHub, but this is enough for now.</p>
-<p>Let&#8217;s move on to learning about what we&#8217;ve built so far.</p>
+<p>For homework, you'll put this into GitHub, but this is enough for now.</p>
+<p>Let's move on to learning about what we've built so far.</p>
 </div>
-<p>When you ran the <code class="docutils literal"><span class="pre">pcreate</span></code> command, a new folder was created:
+
+
+
+<div class="slide-no">19</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id14">
+    <hgroup>
+      <h3>Project Structure</h3>
+    </hgroup>
+    <article class="">
+      <p>When you ran the <code class="docutils literal"><span class="pre">pcreate</span></code> command, a new folder was created:
 <code class="docutils literal"><span class="pre">learning_journal</span></code>.</p>
 <div class="build container">
 <p>This folder contains your <em>project</em>.</p>
@@ -337,9 +550,21 @@ Changes to be committed:
 <p>You also have a file called <code class="docutils literal"><span class="pre">setup.py</span></code></p>
 <p>This file turns this collection of Python code and configuration into an
 <em>installable Python distribution</em></p>
-<p>Let&#8217;s take a moment to look over the code in that file</p>
+<p>Let's take a moment to look over the code in that file</p>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">find_packages</span>
+
+
+
+<div class="slide-no">20</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id15">
+    <hgroup>
+      <h3><code class="docutils literal"><span class="pre">setup.py</span></code></h3>
+    </hgroup>
+    <article class="">
+      <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">find_packages</span>
 <span class="o">...</span>
 <span class="n">requires</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s">&#39;pyramid&#39;</span><span class="p">,</span>
@@ -359,10 +584,19 @@ Changes to be committed:
       <span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="pyramid-is-python">
-<h3>Pyramid is Python<a class="headerlink" href="#pyramid-is-python" title="Permalink to this headline">¶</a></h3>
-<p>In the <code class="docutils literal"><span class="pre">__init__.py</span></code> file of your app <em>package</em>, you&#8217;ll find a <code class="docutils literal"><span class="pre">main</span></code>
+
+
+
+<div class="slide-no">21</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="pyramid-is-python">
+    <hgroup>
+      <h3>Pyramid is Python</h3>
+    </hgroup>
+    <article class="">
+      <p>In the <code class="docutils literal"><span class="pre">__init__.py</span></code> file of your app <em>package</em>, you'll find a <code class="docutils literal"><span class="pre">main</span></code>
 function:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">global_config</span><span class="p">,</span> <span class="o">**</span><span class="n">settings</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; This function returns a Pyramid WSGI application.</span>
@@ -378,8 +612,20 @@ function:</p>
     <span class="k">return</span> <span class="n">config</span><span class="o">.</span><span class="n">make_wsgi_app</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>Let&#8217;s take a closer look at this, line by line.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">global_config</span><span class="p">,</span> <span class="o">**</span><span class="n">settings</span><span class="p">):</span>
+<p>Let's take a closer look at this, line by line.</p>
+
+
+
+<div class="slide-no">22</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id16">
+    <hgroup>
+      <h3>System Configuration</h3>
+    </hgroup>
+    <article class="">
+      <div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">global_config</span><span class="p">,</span> <span class="o">**</span><span class="n">settings</span><span class="p">):</span>
 </pre></div>
 </div>
 <p>Configuration is passed in to an application after being read from the
@@ -396,7 +642,19 @@ pairs of <em>configuration data</em></p>
 <p>The default section of the file is passed in as <code class="docutils literal"><span class="pre">global_config</span></code>, the
 section for <em>this app</em> as <code class="docutils literal"><span class="pre">settings</span></code>.</p>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">engine_from_config</span>
+
+
+
+<div class="slide-no">23</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id17">
+    <hgroup>
+      <h3>Database Configuration</h3>
+    </hgroup>
+    <article class="">
+      <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">engine_from_config</span>
 <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">DBSession</span><span class="p">,</span> <span class="n">Base</span>
 <span class="o">...</span>
 <span class="n">engine</span> <span class="o">=</span> <span class="n">engine_from_config</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;sqlalchemy.&#39;</span><span class="p">)</span>
@@ -413,7 +671,19 @@ requests.</p>
 <p>The <code class="docutils literal"><span class="pre">Base</span></code> provides a parent class that will hook our <em>models</em> to the
 database.</p>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">config</span> <span class="o">=</span> <span class="n">Configurator</span><span class="p">(</span><span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">)</span>
+
+
+
+<div class="slide-no">24</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id18">
+    <hgroup>
+      <h3>App Configuration</h3>
+    </hgroup>
+    <article class="">
+      <div class="highlight-python"><div class="highlight"><pre><span class="n">config</span> <span class="o">=</span> <span class="n">Configurator</span><span class="p">(</span><span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">)</span>
 <span class="n">config</span><span class="o">.</span><span class="n">include</span><span class="p">(</span><span class="s">&#39;pyramid_chameleon&#39;</span><span class="p">)</span>
 <span class="n">config</span><span class="o">.</span><span class="n">add_static_view</span><span class="p">(</span><span class="s">&#39;static&#39;</span><span class="p">,</span> <span class="s">&#39;static&#39;</span><span class="p">,</span> <span class="n">cache_max_age</span><span class="o">=</span><span class="mi">3600</span><span class="p">)</span>
 <span class="n">config</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s">&#39;home&#39;</span><span class="p">,</span> <span class="s">&#39;/&#39;</span><span class="p">)</span>
@@ -427,34 +697,76 @@ database.</p>
 <p>Additionally, we can configure <em>routes</em> and <em>views</em> needed to connect our
 application to the outside world here (more on this next week).</p>
 <p>Finally, the <code class="docutils literal"><span class="pre">Configurator</span></code> instance performs a <code class="docutils literal"><span class="pre">scan</span></code> to ensure there
-are no problems with what we&#8217;ve created.</p>
+are no problems with what we've created.</p>
 </div>
-<p>We will return to the configuration of our application repeatedly over the next
+
+
+
+<div class="slide-no">25</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id19">
+    <hgroup>
+      <h3>A Last Word on Configuration</h3>
+    </hgroup>
+    <article class="">
+      <p>We will return to the configuration of our application repeatedly over the next
 sessions.</p>
 <div class="build container">
 <p>Pyramid configuration is powerful and flexible.</p>
-<p>We&#8217;ll use a few of its features</p>
-<p>But there&#8217;s a lot more you could (and should) learn.</p>
+<p>We'll use a few of its features</p>
+<p>But there's a lot more you could (and should) learn.</p>
 <p>Read about it in the <a class="reference external" href="http://docs.pylonsproject.org/projects/pyramid/en/latest/api/config.html">configuration chapter</a> of the Pyramid documentation.</p>
 </div>
-<p>Let&#8217;s take a moment to rest up and absorb what we&#8217;ve learned.</p>
-<p>When we return, we&#8217;ll see how we can create <em>models</em> that will embody the data
+
+
+
+<div class="slide-no">26</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id20">
+    <hgroup>
+      <h3>Break Time</h3>
+    </hgroup>
+    <article class="">
+      <p>Let's take a moment to rest up and absorb what we've learned.</p>
+<p>When we return, we'll see how we can create <em>models</em> that will embody the data
 for our Learning Journal application.</p>
 <p class="centered"><strong>Pyramid Models</strong></p>
-</div>
-</div>
-<div class="section" id="models-in-pyramid">
-<h2>Models in Pyramid<a class="headerlink" href="#models-in-pyramid" title="Permalink to this headline">¶</a></h2>
-<div class="left container">
+
+
+
+<div class="slide-no">27</div>
+
+
+    </article>
+  </slide>  <slide class="level-2" id="models-in-pyramid">
+    <hgroup>
+      <h2>Models in Pyramid</h2>
+    </hgroup>
+    <article class="">
+      <div class="left container">
 <p>The central component of MVC, the model, captures the behavior of the
 application in terms of its problem domain, independent of the user
 interface. The model directly manages the data, logic and rules of the
 application</p>
-<p>&#8211; from the Wikipedia article on <a class="reference external" href="http://en.wikipedia.org/wiki/Model–view–controller">Model-view-controller</a></p>
+<p>-- from the Wikipedia article on <a class="reference external" href="http://en.wikipedia.org/wiki/Model–view–controller">Model-view-controller</a></p>
 </div>
-<div class="section" id="models-and-orms">
-<h3>Models and ORMs<a class="headerlink" href="#models-and-orms" title="Permalink to this headline">¶</a></h3>
-<p>In an MVC application, we define the <em>problem domain</em> by creating one or more
+
+
+
+<div class="slide-no">28</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="models-and-orms">
+    <hgroup>
+      <h3>Models and ORMs</h3>
+    </hgroup>
+    <article class="">
+      <p>In an MVC application, we define the <em>problem domain</em> by creating one or more
 <em>Models</em>.</p>
 <div class="build container">
 <p>These capture relevant details about the information we want to preserve
@@ -466,7 +778,19 @@ classes.</p>
 <p>The actions we want to take using that data are <em>methods</em> of our classes.</p>
 <p>Together, we can refer to this as the <em>API</em> of our system.</p>
 </div>
-<p>It&#8217;s all well and good to have a set of Python classes that represent your
+
+
+
+<div class="slide-no">29</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id21">
+    <hgroup>
+      <h3>Persistence</h3>
+    </hgroup>
+    <article class="">
+      <p>It's all well and good to have a set of Python classes that represent your
 system.</p>
 <div class="build container">
 <p>But what happens when you want to <em>save</em> information.</p>
@@ -477,7 +801,19 @@ system.</p>
 <p>So what happens to the data in your system in-between these moments?</p>
 <p>The data must be <em>persisted</em></p>
 </div>
-<p>In the last class from part one of this series, you explored a number of
+
+
+
+<div class="slide-no">30</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id22">
+    <hgroup>
+      <h3>Alternatives</h3>
+    </hgroup>
+    <article class="">
+      <p>In the last class from part one of this series, you explored a number of
 alternatives for persistence</p>
 <ul class="build simple">
 <li>Python Literals</li>
@@ -495,7 +831,19 @@ alternatives for persistence</p>
 <li>SQL</li>
 </ul>
 </div>
-<p>How do you choose one over the other?</p>
+
+
+
+<div class="slide-no">31</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id23">
+    <hgroup>
+      <h3>Choosing One</h3>
+    </hgroup>
+    <article class="">
+      <p>How do you choose one over the other?</p>
 <div class="build container">
 <p>In general, the telling factor is going to be how you intend to use your
 data.</p>
@@ -504,9 +852,21 @@ individual objects, a NoSQL storage solution might be the best way to go.</p>
 <p>In systems with objects that are related to eachother, SQL-based Relational
 Databases are a better choice.</p>
 <p>Our system is more like this latter type (trust me on that one for now).</p>
-<p>We&#8217;ll be using SQL (sqlite to start with).</p>
+<p>We'll be using SQL (sqlite to start with).</p>
 </div>
-<p>So we have a system where our data is captured in Python <em>objects</em></p>
+
+
+
+<div class="slide-no">32</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id24">
+    <hgroup>
+      <h3>Objects and Tables</h3>
+    </hgroup>
+    <article class="">
+      <p>So we have a system where our data is captured in Python <em>objects</em></p>
 <div class="build container">
 <p>And a storage system where our data must be rendered as database <em>tables</em></p>
 <p>Python provides a specification for interacting directly with databases:
@@ -522,7 +882,19 @@ for various databases:</p>
 <p>With these, you can write SQL to save your Python objects into your
 database.</p>
 </div>
-<p>But that&#8217;s a pain.</p>
+
+
+
+<div class="slide-no">33</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id25">
+    <hgroup>
+      <h3>ORMs</h3>
+    </hgroup>
+    <article class="">
+      <p>But that's a pain.</p>
 <div class="build container">
 <p>SQL, while not impossible, is yet another language to learn.</p>
 <p>And there is a viable alternative in using an <em>Object Relational Manager</em>
@@ -532,15 +904,24 @@ database.</p>
 <p>The ORM handles converting data from these objects into SQL statements (and
 back)</p>
 </div>
-</div>
-<div class="section" id="sqlalchemy">
-<h3>SQLAlchemy<a class="headerlink" href="#sqlalchemy" title="Permalink to this headline">¶</a></h3>
-<p>In our project we will be using the <a class="reference external" href="http://docs.sqlalchemy.org/en/rel_0_9/">SQLAlchemy</a> ORM.</p>
+
+
+
+<div class="slide-no">34</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="sqlalchemy">
+    <hgroup>
+      <h3>SQLAlchemy</h3>
+    </hgroup>
+    <article class="">
+      <p>In our project we will be using the <a class="reference external" href="http://docs.sqlalchemy.org/en/rel_0_9/">SQLAlchemy</a> ORM.</p>
 <div class="build container">
 <p>You can find SQLAlchemy among the packages in <code class="docutils literal"><span class="pre">requires</span></code> in <code class="docutils literal"><span class="pre">setup.py</span></code>
 in our new <code class="docutils literal"><span class="pre">learning_journal</span></code> package.</p>
-<p>However, we don&#8217;t yet have that code installed.</p>
-<p>To do so, we will need to &#8220;install&#8221; our own package</p>
+<p>However, we don't yet have that code installed.</p>
+<p>To do so, we will need to &quot;install&quot; our own package</p>
 <p>Make sure your <code class="docutils literal"><span class="pre">ljenv</span></code> virtualenv is active and then type the following:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>python setup.py develop
 running develop
@@ -551,17 +932,41 @@ Finished processing dependencies <span class="k">for</span> learning-journal<spa
 </pre></div>
 </div>
 </div>
-<p>Once that is complete, all the <em>dependencies</em> listed in our <code class="docutils literal"><span class="pre">setup.py</span></code> will
+
+
+
+<div class="slide-no">35</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id26">
+    <hgroup>
+      <h3>SQLAlchemy</h3>
+    </hgroup>
+    <article class="">
+      <p>Once that is complete, all the <em>dependencies</em> listed in our <code class="docutils literal"><span class="pre">setup.py</span></code> will
 be installed.</p>
 <div class="build container">
 <p>You can also install the package using <code class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">install</span></code></p>
 <p>But using <code class="docutils literal"><span class="pre">develop</span></code> allows us to continue developing our package without
 needing to re-install it every time we change something.</p>
 <p>It is very similar to using the <code class="docutils literal"><span class="pre">-e</span></code> option to <code class="docutils literal"><span class="pre">pip</span></code></p>
-<p>Now, we&#8217;ll only need to re-run this command if we change <code class="docutils literal"><span class="pre">setup.py</span></code>
+<p>Now, we'll only need to re-run this command if we change <code class="docutils literal"><span class="pre">setup.py</span></code>
 itself.</p>
 </div>
-<p>We also need to adjust our <code class="docutils literal"><span class="pre">.gitignore</span></code> file:</p>
+
+
+
+<div class="slide-no">36</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id27">
+    <hgroup>
+      <h3>SQLAlchemy</h3>
+    </hgroup>
+    <article class="">
+      <p>We also need to adjust our <code class="docutils literal"><span class="pre">.gitignore</span></code> file:</p>
 <div class="build highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>git status
 ...
 Untracked files:
@@ -574,11 +979,23 @@ Untracked files:
 <p>The <code class="docutils literal"><span class="pre">egg-info</span></code> directory that was just created is an artifact of
 installing a Python egg.</p>
 <p>It should never be committed to a repository.</p>
-<p>Let&#8217;s add <code class="docutils literal"><span class="pre">*.egg-info</span></code> to our <code class="docutils literal"><span class="pre">.gitignore</span></code> file and then commit that
+<p>Let's add <code class="docutils literal"><span class="pre">*.egg-info</span></code> to our <code class="docutils literal"><span class="pre">.gitignore</span></code> file and then commit that
 change</p>
 <p>Remember how?</p>
 </div>
-<p>Our project skeleton contains up a first, basic model created for us:</p>
+
+
+
+<div class="slide-no">37</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id28">
+    <hgroup>
+      <h3>Our First Model</h3>
+    </hgroup>
+    <article class="">
+      <p>Our project skeleton contains up a first, basic model created for us:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c"># in models.py</span>
 <span class="n">Base</span> <span class="o">=</span> <span class="n">declarative_base</span><span class="p">()</span>
 
@@ -595,7 +1012,19 @@ change</p>
 <p>We ran into <code class="docutils literal"><span class="pre">Base</span></code> earlier when discussing configuration.</p>
 <p>We were binding it to the database we wanted to use (the <code class="docutils literal"><span class="pre">engine</span></code>)</p>
 </div>
-<p>Any class we create that inherits from this <code class="docutils literal"><span class="pre">Base</span></code> becomes a <em>model</em></p>
+
+
+
+<div class="slide-no">38</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id29">
+    <hgroup>
+      <h3><code class="docutils literal"><span class="pre">Base</span></code></h3>
+    </hgroup>
+    <article class="">
+      <p>Any class we create that inherits from this <code class="docutils literal"><span class="pre">Base</span></code> becomes a <em>model</em></p>
 <div class="build container">
 <p>It will be connected through the ORM to a table in our database.</p>
 <p>The name of the table is determined by the <code class="docutils literal"><span class="pre">__tablename__</span></code> special
@@ -607,7 +1036,19 @@ attributes</p>
 columns in the table.</p>
 <p>You can learn much more in the <a class="reference external" href="http://docs.sqlalchemy.org/en/rel_0_9/orm/extensions/declarative/">Declarative</a> chapter of the SQLAlchemy docs</p>
 </div>
-<p>Each attribute of your model that will be persisted must be an instance of
+
+
+
+<div class="slide-no">39</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id30">
+    <hgroup>
+      <h3>Columns</h3>
+    </hgroup>
+    <article class="">
+      <p>Each attribute of your model that will be persisted must be an instance of
 <a class="reference external" href="http://docs.sqlalchemy.org/en/rel_0_9/core/metadata.html#sqlalchemy.schema.Column">Column</a>.</p>
 <div class="build container">
 <p>Each instance requires <em>at least</em> a specific <a class="reference external" href="http://docs.sqlalchemy.org/en/rel_0_9/core/types.html">data type</a> (such as
@@ -619,12 +1060,21 @@ database will default to the attribute name you assigned.</p>
 <p>If you wish, you may provide a name specifically.  It must be the first
 argument and must be a string.</p>
 </div>
-</div>
-<div class="section" id="creating-the-database">
-<h3>Creating The Database<a class="headerlink" href="#creating-the-database" title="Permalink to this headline">¶</a></h3>
-<p>We have a <em>model</em> which allows us to persist Python objects to an SQL database.</p>
+
+
+
+<div class="slide-no">40</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="creating-the-database">
+    <hgroup>
+      <h3>Creating The Database</h3>
+    </hgroup>
+    <article class="">
+      <p>We have a <em>model</em> which allows us to persist Python objects to an SQL database.</p>
 <div class="build container">
-<p>But we&#8217;re still missing one ingredient here.</p>
+<p>But we're still missing one ingredient here.</p>
 <p>We need to create our database, or there will be nowhere for our data to
 go.</p>
 <p>Luckily, our <code class="docutils literal"><span class="pre">pcreate</span></code> scaffold also gave us a convenient way to handle
@@ -640,7 +1090,19 @@ this:</p>
 </div>
 <p>The <code class="docutils literal"><span class="pre">console_script</span></code> set up as an entry point will help us.</p>
 </div>
-<p>Let&#8217;s look at that code for a moment.</p>
+
+
+
+<div class="slide-no">41</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id31">
+    <hgroup>
+      <h3><code class="docutils literal"><span class="pre">initialize_learning_journal_db</span></code></h3>
+    </hgroup>
+    <article class="">
+      <p>Let's look at that code for a moment.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c"># in scripts/intitalizedb.py</span>
 <span class="kn">from</span> <span class="nn">..models</span> <span class="kn">import</span> <span class="n">DBSession</span><span class="p">,</span> <span class="n">MyModel</span><span class="p">,</span> <span class="n">Base</span>
 <span class="c"># ...</span>
@@ -659,13 +1121,25 @@ this:</p>
         <span class="n">DBSession</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>By connecting this function as a <code class="docutils literal"><span class="pre">console</span> <span class="pre">script</span></code>, our Python package makes
+
+
+
+<div class="slide-no">42</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id32">
+    <hgroup>
+      <h3>Console Scripts</h3>
+    </hgroup>
+    <article class="">
+      <p>By connecting this function as a <code class="docutils literal"><span class="pre">console</span> <span class="pre">script</span></code>, our Python package makes
 this command available to us.</p>
 <div class="build container">
 <p>When we exectute <code class="docutils literal"><span class="pre">initialize_learning_journal_db</span></code> at the command line, we
 will be running this function.</p>
-<p>Let&#8217;s try it out.</p>
-<p>We&#8217;ll need to provide a configuration file name, let&#8217;s use
+<p>Let's try it out.</p>
+<p>We'll need to provide a configuration file name, let's use
 <code class="docutils literal"><span class="pre">development.ini</span></code>:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>initialize_learning_journal_db development.ini
 2015-01-05 18:59:55,426 INFO  <span class="o">[</span>sqlalchemy.engine.base.Engine<span class="o">][</span>MainThread<span class="o">]</span> SELECT CAST<span class="o">(</span><span class="s1">&#39;test plain returns&#39;</span> AS VARCHAR<span class="o">(</span>60<span class="o">))</span> AS anon_1
@@ -676,7 +1150,19 @@ will be running this function.</p>
 <p>The <code class="docutils literal"><span class="pre">[loggers]</span></code> configuration in our <code class="docutils literal"><span class="pre">.ini</span></code> file sends a stream of
 INFO-level logging to sys.stdout as the console script runs.</p>
 </div>
-<p>So what was the outcome of running that script?</p>
+
+
+
+<div class="slide-no">43</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id33">
+    <hgroup>
+      <h3>A Bit More Cleanup</h3>
+    </hgroup>
+    <article class="">
+      <p>So what was the outcome of running that script?</p>
 <div class="build container">
 <div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>ls
 ...
@@ -684,30 +1170,51 @@ learning_journal.sqlite
 ...
 </pre></div>
 </div>
-<p>We&#8217;ve now created an sqlite database.</p>
-<p>You&#8217;ll need to add <code class="docutils literal"><span class="pre">*.sqlite</span></code> to <code class="docutils literal"><span class="pre">.gitignore</span></code> so you don&#8217;t
+<p>We've now created an sqlite database.</p>
+<p>You'll need to add <code class="docutils literal"><span class="pre">*.sqlite</span></code> to <code class="docutils literal"><span class="pre">.gitignore</span></code> so you don't
 inadvertently add that file to your repository.</p>
-<p>Once you&#8217;ve done so, commit the change to your repository</p>
+<p>Once you've done so, commit the change to your repository</p>
 </div>
-</div>
-<div class="section" id="interacting-with-sqla-models">
-<h3>Interacting with SQLA Models<a class="headerlink" href="#interacting-with-sqla-models" title="Permalink to this headline">¶</a></h3>
-<p>It&#8217;s pretty easy to play with your models from in an interpreter.</p>
+
+
+
+<div class="slide-no">44</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="interacting-with-sqla-models">
+    <hgroup>
+      <h3>Interacting with SQLA Models</h3>
+    </hgroup>
+    <article class="">
+      <p>It's pretty easy to play with your models from in an interpreter.</p>
 <div class="build container">
-<p>But before we do so, let&#8217;s make a nicer interpreter available for our
+<p>But before we do so, let's make a nicer interpreter available for our
 project</p>
-<p>You&#8217;ve been using iPython in class, we can use it here too.</p>
+<p>You've been using iPython in class, we can use it here too.</p>
 <p>Just install it with <code class="docutils literal"><span class="pre">pip</span></code>:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>pip install ipython
 </pre></div>
 </div>
-<p>Once that finishes, you&#8217;ll be able to use iPython as your interpreter for
+<p>Once that finishes, you'll be able to use iPython as your interpreter for
 this project.</p>
 <p>And <code class="docutils literal"><span class="pre">Pyramid</span></code> provides a way to connect your interpreter to the
 application code you are writing:</p>
 <p>The <code class="docutils literal"><span class="pre">pshell</span></code> command</p>
 </div>
-<p>Let&#8217;s fire up <code class="docutils literal"><span class="pre">pshell</span></code> and explore for a moment to see what we have at our
+
+
+
+<div class="slide-no">45</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id34">
+    <hgroup>
+      <h3>The <code class="docutils literal"><span class="pre">pshell</span></code> command</h3>
+    </hgroup>
+    <article class="">
+      <p>Let's fire up <code class="docutils literal"><span class="pre">pshell</span></code> and explore for a moment to see what we have at our
 disposal:</p>
 <div class="build container">
 <div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>pshell development.ini
@@ -729,7 +1236,19 @@ Environment:
 </pre></div>
 </div>
 </div>
-<p>The <code class="docutils literal"><span class="pre">environment</span></code> created by <code class="docutils literal"><span class="pre">pshell</span></code> provides us with a few useful tools.</p>
+
+
+
+<div class="slide-no">46</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id35">
+    <hgroup>
+      <h3>Interacting with SQLA Models</h3>
+    </hgroup>
+    <article class="">
+      <p>The <code class="docutils literal"><span class="pre">environment</span></code> created by <code class="docutils literal"><span class="pre">pshell</span></code> provides us with a few useful tools.</p>
 <div class="highlight-bash"><div class="highlight"><pre>app          The WSGI application.
 registry     Active Pyramid registry.
 request      Active request object.
@@ -745,7 +1264,19 @@ information</li>
 pretend we are listening to clients</li>
 <li>...</li>
 </ul>
-<p>Let&#8217;s use this environment to build a database session and interact with our
+
+
+
+<div class="slide-no">47</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id36">
+    <hgroup>
+      <h3>Interacting with SQLA Models</h3>
+    </hgroup>
+    <article class="">
+      <p>Let's use this environment to build a database session and interact with our
 data:</p>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [1]: </span><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">engine_from_config</span>
 <span class="gp">In [2]: </span><span class="n">engine</span> <span class="o">=</span> <span class="n">engine_from_config</span><span class="p">(</span><span class="n">registry</span><span class="o">.</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;sqlalchemy.&#39;</span><span class="p">)</span>
@@ -761,8 +1292,20 @@ data:</p>
 <span class="gh">Out[7]: </span><span class="go">[&lt;learning_journal.models.MyModel at 0x105f30208&gt;]</span>
 </pre></div>
 </div>
-<p>We&#8217;ve stolen a lot of this from the <code class="docutils literal"><span class="pre">initializedb.py</span></code> script</p>
-<p>Any interaction with the database requires a <code class="docutils literal"><span class="pre">session</span></code>.</p>
+<p>We've stolen a lot of this from the <code class="docutils literal"><span class="pre">initializedb.py</span></code> script</p>
+
+
+
+<div class="slide-no">48</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id37">
+    <hgroup>
+      <h3>Basic Interactions</h3>
+    </hgroup>
+    <article class="">
+      <p>Any interaction with the database requires a <code class="docutils literal"><span class="pre">session</span></code>.</p>
 <div class="build container">
 <p>This object represents the connection to the database.</p>
 <p>All database queries are phrased as methods of the session.</p>
@@ -777,7 +1320,19 @@ data:</p>
 <p>Arguments to the <code class="docutils literal"><span class="pre">query</span></code> method can be a <em>model</em> class or <em>columns</em> from
 a model class.</p>
 </div>
-<p>You can iterate over a query object. The result depends on the args you passed.</p>
+
+
+
+<div class="slide-no">49</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id38">
+    <hgroup>
+      <h3>Queries are Iterators</h3>
+    </hgroup>
+    <article class="">
+      <p>You can iterate over a query object. The result depends on the args you passed.</p>
 <div class="build container">
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [10]: </span><span class="n">q1</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">MyModel</span><span class="p">)</span>
 <span class="gp">In [11]: </span><span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">q1</span><span class="p">:</span>
@@ -789,7 +1344,19 @@ a model class.</p>
 </pre></div>
 </div>
 </div>
-<p>You can iterate over a query object. The result depends on the args you passed.</p>
+
+
+
+<div class="slide-no">50</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id39">
+    <hgroup>
+      <h3>Queries are Iterators</h3>
+    </hgroup>
+    <article class="">
+      <p>You can iterate over a query object. The result depends on the args you passed.</p>
 <blockquote>
 <div><div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [12]: </span><span class="n">q2</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">MyModel</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">MyModel</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">MyModel</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="gp">In [13]: </span><span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">q2</span><span class="p">:</span>
@@ -809,7 +1376,19 @@ a model class.</p>
 </pre></div>
 </div>
 </div></blockquote>
-<p>You can view the SQL that your query will use:</p>
+
+
+
+<div class="slide-no">51</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id40">
+    <hgroup>
+      <h3>Queries have SQL</h3>
+    </hgroup>
+    <article class="">
+      <p>You can view the SQL that your query will use:</p>
 <div class="build container">
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [14]: </span><span class="nb">str</span><span class="p">(</span><span class="n">q1</span><span class="p">)</span>
 <span class="gh">Out[14]: </span><span class="go">&#39;SELECT models.id AS models_id, models.name AS models_name, models.value AS models_value \nFROM models&#39;</span>
@@ -822,15 +1401,39 @@ a model class.</p>
 you expect.</p>
 <p>It can be helpful in debugging.</p>
 </div>
-<p>The methods of the <code class="docutils literal"><span class="pre">Query</span></code> object fall into two rough categories</p>
+
+
+
+<div class="slide-no">52</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id41">
+    <hgroup>
+      <h3>Methods of the Query Object</h3>
+    </hgroup>
+    <article class="">
+      <p>The methods of the <code class="docutils literal"><span class="pre">Query</span></code> object fall into two rough categories</p>
 <div class="build container">
 <ol class="build arabic simple">
 <li>Methods that return a new <code class="docutils literal"><span class="pre">Query</span></code> object</li>
 <li>Methods that return <em>scalar</em> values or <em>model</em> instances</li>
 </ol>
-<p>Let&#8217;s start by looking quickly at a few methods from the second category</p>
+<p>Let's start by looking quickly at a few methods from the second category</p>
 </div>
-<p>A good example of this category of methods is <code class="docutils literal"><span class="pre">get</span></code>, which returns one
+
+
+
+<div class="slide-no">53</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id42">
+    <hgroup>
+      <h3><code class="docutils literal"><span class="pre">query.get()</span></code></h3>
+    </hgroup>
+    <article class="">
+      <p>A good example of this category of methods is <code class="docutils literal"><span class="pre">get</span></code>, which returns one
 instance only.</p>
 <div class="build container">
 <p>It takes a primary key as an argument:</p>
@@ -843,7 +1446,19 @@ instance only.</p>
 <p>If no item with that primary key is present, then the method returns
 <code class="docutils literal"><span class="pre">None</span></code></p>
 </div>
-<p>Another example is one we&#8217;ve already seen.</p>
+
+
+
+<div class="slide-no">54</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id43">
+    <hgroup>
+      <h3><code class="docutils literal"><span class="pre">query.all()</span></code></h3>
+    </hgroup>
+    <article class="">
+      <p>Another example is one we've already seen.</p>
 <div class="build container">
 <p><code class="docutils literal"><span class="pre">query.all()</span></code> returns a list of all rows returned by the database:</p>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [18]: </span><span class="n">q1</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
@@ -860,7 +1475,19 @@ by the query:</p>
 </pre></div>
 </div>
 </div>
-<p>Before getting into the other category, let&#8217;s learn how to create new objects.</p>
+
+
+
+<div class="slide-no">55</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id44">
+    <hgroup>
+      <h3>Creating New Objects</h3>
+    </hgroup>
+    <article class="">
+      <p>Before getting into the other category, let's learn how to create new objects.</p>
 <div class="build container">
 <div class="container">
 <p>We can create new instances of our <em>model</em> just like normal Python
@@ -880,7 +1507,19 @@ nothing about it:</p>
 </div>
 </div>
 </div>
-<p>For the database to know about our new object, we must <code class="docutils literal"><span class="pre">add</span></code> it to the
+
+
+
+<div class="slide-no">56</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id45">
+    <hgroup>
+      <h3>Adding Objects to the Session</h3>
+    </hgroup>
+    <article class="">
+      <p>For the database to know about our new object, we must <code class="docutils literal"><span class="pre">add</span></code> it to the
 session:</p>
 <div class="build container">
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [24]: </span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">new_model</span><span class="p">)</span>
@@ -901,7 +1540,19 @@ session:</p>
 </pre></div>
 </div>
 </div>
-<p>Up until now, the changes you&#8217;ve made are not permanent.</p>
+
+
+
+<div class="slide-no">57</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id46">
+    <hgroup>
+      <h3>Committing Changes</h3>
+    </hgroup>
+    <article class="">
+      <p>Up until now, the changes you've made are not permanent.</p>
 <div class="build container">
 <p>In order for these new objects to be saved to the database, the session
 must be <code class="docutils literal"><span class="pre">committed</span></code>:</p>
@@ -917,13 +1568,25 @@ must be <code class="docutils literal"><span class="pre">committed</span></code>
 automatically handled for you.</p>
 <p>The session that is bound to a particular HTTP request is committed when a
 response is sent back.</p>
-<p>(don&#8217;t worry if this seems confusing, more to come next week)</p>
+<p>(don't worry if this seems confusing, more to come next week)</p>
 </div>
-<p>You can edit objects that are already part of a session, or that are fetched by
+
+
+
+<div class="slide-no">58</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id47">
+    <hgroup>
+      <h3>Altering Objects</h3>
+    </hgroup>
+    <article class="">
+      <p>You can edit objects that are already part of a session, or that are fetched by
 a query.</p>
 <div class="build container">
 <p>Simply change the values of a persisted attribute, the session will know
-it&#8217;s been updated:</p>
+it's been updated:</p>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [34]: </span><span class="n">new_model</span>
 <span class="gh">Out[34]: </span><span class="go">&lt;learning_journal.models.MyModel at 0x105f4af28&gt;</span>
 <span class="gp">In [35]: </span><span class="n">new_model</span><span class="o">.</span><span class="n">name</span>
@@ -940,7 +1603,19 @@ it&#8217;s been updated:</p>
 </pre></div>
 </div>
 </div>
-<p>Returning to query methods, a good example of the second type is the <code class="docutils literal"><span class="pre">filter</span></code>
+
+
+
+<div class="slide-no">59</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id48">
+    <hgroup>
+      <h3>Methods Returning Queries</h3>
+    </hgroup>
+    <article class="">
+      <p>Returning to query methods, a good example of the second type is the <code class="docutils literal"><span class="pre">filter</span></code>
 method.</p>
 <div class="build container">
 <p>This method allows you to reduce the number of results, based on criteria:</p>
@@ -949,7 +1624,19 @@ method.</p>
 </pre></div>
 </div>
 </div>
-<p>Another typical method in this category is <code class="docutils literal"><span class="pre">order_by</span></code>:</p>
+
+
+
+<div class="slide-no">60</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id49">
+    <hgroup>
+      <h3><code class="docutils literal"><span class="pre">order_by</span></code></h3>
+    </hgroup>
+    <article class="">
+      <p>Another typical method in this category is <code class="docutils literal"><span class="pre">order_by</span></code>:</p>
 <div class="build container">
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [41]: </span><span class="p">[</span><span class="n">o</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">MyModel</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">MyModel</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span>
 <span class="gh">Out[41]: </span><span class="go">[1, 3, 13, 34]</span>
@@ -959,7 +1646,19 @@ method.</p>
 </pre></div>
 </div>
 </div>
-<p>Since methods in this category return <code class="docutils literal"><span class="pre">Query</span></code> objects, they can be safely
+
+
+
+<div class="slide-no">61</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id50">
+    <hgroup>
+      <h3>Method Chaining</h3>
+    </hgroup>
+    <article class="">
+      <p>Since methods in this category return <code class="docutils literal"><span class="pre">Query</span></code> objects, they can be safely
 <em>chained</em> to build more complex queries:</p>
 <div class="build container">
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [43]: </span><span class="n">q1</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">MyModel</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">MyModel</span><span class="o">.</span><span class="n">value</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">)</span>
@@ -973,15 +1672,24 @@ method.</p>
 <p>Also note that when using chained queries like this, no query is actually
 sent to the database until you require a result.</p>
 </div>
-</div>
-<div class="section" id="cleaning-up-after-ourselves">
-<h3>Cleaning Up After Ourselves<a class="headerlink" href="#cleaning-up-after-ourselves" title="Permalink to this headline">¶</a></h3>
-<p>When you are experimenting with a new system, you often create data that is
+
+
+
+<div class="slide-no">62</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="cleaning-up-after-ourselves">
+    <hgroup>
+      <h3>Cleaning Up After Ourselves</h3>
+    </hgroup>
+    <article class="">
+      <p>When you are experimenting with a new system, you often create data that is
 messy or incomplete.</p>
 <div class="build container">
-<p>It&#8217;s good to remember that none of the information we&#8217;ve persisted to our
+<p>It's good to remember that none of the information we've persisted to our
 database is vital to us.</p>
-<p>For homework this week we&#8217;ll be making new models, and the data we have in
+<p>For homework this week we'll be making new models, and the data we have in
 our current database will only get in the way.</p>
 <p>Until you have real production data it is always safe simply to delete the
 database and start over:</p>
@@ -990,23 +1698,41 @@ database and start over:</p>
 </div>
 <p>You can always re-create it by executing <code class="docutils literal"><span class="pre">initialize_learning_journal_db</span></code></p>
 </div>
-</div>
-</div>
-<div class="section" id="homework">
-<h2>Homework<a class="headerlink" href="#homework" title="Permalink to this headline">¶</a></h2>
-<p class="left">Okay, that&#8217;s enough for the moment.</p>
+
+
+
+<div class="slide-no">63</div>
+
+
+    </article>
+  </slide>  <slide class="level-2" id="homework">
+    <hgroup>
+      <h2>Homework</h2>
+    </hgroup>
+    <article class="">
+      <p class="left">Okay, that's enough for the moment.</p>
 <div class="build left container">
-<p>You&#8217;ve learned quite a bit about how <em>models</em> work in SQLAlchemy</p>
-<p>It&#8217;s time to put that knowledge to good use.</p>
+<p>You've learned quite a bit about how <em>models</em> work in SQLAlchemy</p>
+<p>It's time to put that knowledge to good use.</p>
 <p>For the first part of your assignment this week you will begin to define
 the data model for our learning journal application.</p>
-<p>I&#8217;ll provide a specification, you define the model required to do the job.</p>
-<p>I&#8217;ll also ask you to define a few methods to complete the first part of our
+<p>I'll provide a specification, you define the model required to do the job.</p>
+<p>I'll also ask you to define a few methods to complete the first part of our
 API.</p>
 </div>
-<div class="section" id="the-model">
-<h3>The Model<a class="headerlink" href="#the-model" title="Permalink to this headline">¶</a></h3>
-<p>Our model will be called an <code class="docutils literal"><span class="pre">Entry</span></code>. Here&#8217;s what you need to know:</p>
+
+
+
+<div class="slide-no">64</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="the-model">
+    <hgroup>
+      <h3>The Model</h3>
+    </hgroup>
+    <article class="">
+      <p>Our model will be called an <code class="docutils literal"><span class="pre">Entry</span></code>. Here's what you need to know:</p>
 <ul class="simple">
 <li>It should be stored in a database table called <code class="docutils literal"><span class="pre">entries</span></code></li>
 <li>It should have a primary key field called <code class="docutils literal"><span class="pre">id</span></code></li>
@@ -1020,7 +1746,19 @@ was created.</li>
 <li>It should have an <code class="docutils literal"><span class="pre">edited</span></code> field which stores the date and time the object
 was last edited.</li>
 </ul>
-<ul class="simple">
+
+
+
+<div class="slide-no">65</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id51">
+    <hgroup>
+      <h3>The Model</h3>
+    </hgroup>
+    <article class="">
+      <ul class="simple">
 <li>Both the <code class="docutils literal"><span class="pre">created</span></code> and <code class="docutils literal"><span class="pre">edited</span></code> field should default to <code class="docutils literal"><span class="pre">now</span></code> if not
 provided when a new instance is constructed.</li>
 <li>The <code class="docutils literal"><span class="pre">entry</span></code> class should support a classmethod <code class="docutils literal"><span class="pre">all</span></code> that returns all the
@@ -1030,131 +1768,98 @@ single entry, given an <code class="docutils literal"><span class="pre">id</span
 </ul>
 <p>Remember that in order to have your new model table created, you will have to
 re-run the <code class="docutils literal"><span class="pre">initialize_learning_journal_db</span></code> script after creating your model.</p>
-<p>Use the documentation linked in this presentation to assist you.  SQLAlchemy
+
+
+
+<div class="slide-no">66</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id52">
+    <hgroup>
+      <h3>Words of Advice</h3>
+    </hgroup>
+    <article class="">
+      <p>Use the documentation linked in this presentation to assist you.  SQLAlchemy
 has fantastic documentation, but it can be a bit overwhelming.  Everything you
 require for this assignment is on one or more of the pages linked above.</p>
 <p>As you define this new model for our application, make frequent commits to your
 github repository. Remember to write meaningful commit messages.</p>
-<p>Don&#8217;t be afraid to start up a Python interpreter and play with your model. Try
+<p>Don't be afraid to start up a Python interpreter and play with your model. Try
 things out. Learn how this all works by making mistakes. Remember the
 <code class="docutils literal"><span class="pre">pshell</span></code> command and how we set up a session once the shell is running.</p>
 <p>Errors at the SQL level can sometimes leave your session unusable. To restore
-it, use the <code class="docutils literal"><span class="pre">session.rollback()</span></code> method.  You&#8217;ll lose uncommitted changes,
-but you&#8217;ll gain a session that can be used again.</p>
-<p>I want to be able to review your code (and you want to be able to share it).</p>
-<p>To submit this assignment, you&#8217;ll need to add this learning_journal repository
+it, use the <code class="docutils literal"><span class="pre">session.rollback()</span></code> method.  You'll lose uncommitted changes,
+but you'll gain a session that can be used again.</p>
+
+
+
+<div class="slide-no">67</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id53">
+    <hgroup>
+      <h3>Submitting Your Work</h3>
+    </hgroup>
+    <article class="">
+      <p>I want to be able to review your code (and you want to be able to share it).</p>
+<p>To submit this assignment, you'll need to add this learning_journal repository
 to GitHub.</p>
 <p>On the GitHub website you can create a new repository.  Set it up to be
 completely empty. Name it <code class="docutils literal"><span class="pre">learning_journal</span></code> and give it any description you
 like.</p>
-<p>When you&#8217;ve created an empty repository in GitHub, you should see a set of
-directions for connecting it to a repository that you&#8217;ve already built. Follow
+<p>When you've created an empty repository in GitHub, you should see a set of
+directions for connecting it to a repository that you've already built. Follow
 those instructions to connect your emtpy GitHub repository as the <code class="docutils literal"><span class="pre">origin</span></code>
 remote to your <code class="docutils literal"><span class="pre">learning_journal</span></code> repository on your machine.</p>
 <p>Finally, push your <code class="docutils literal"><span class="pre">master</span></code> branch to your new <code class="docutils literal"><span class="pre">origin</span></code> remote on GitHub.</p>
 <p>When you are done, send me an email with the URL for your new repository.</p>
-<p><strong>Our work next week will assume that you have completed this assignment</strong></p>
+
+
+
+<div class="slide-no">68</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id54">
+    <hgroup>
+      <h3>The Model</h3>
+    </hgroup>
+    <article class="">
+      <p><strong>Our work next week will assume that you have completed this assignment</strong></p>
 <p>Do not delay working on this until the last moment.</p>
 <p>Do not skip this assignment.</p>
 <p>Do ask questions frequently via email (use the <a class="reference external" href="https://groups.google.com/forum/#!forum/programming-in-python">class google group</a>).</p>
 <p>See you next week!</p>
-</div>
-</div>
-</div>
 
 
-          </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="../index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Session 05</a><ul>
-<li><a class="reference internal" href="#mvc-applications">MVC Applications</a><ul>
-<li><a class="reference internal" href="#separation-of-concerns">Separation of Concerns</a></li>
-<li><a class="reference internal" href="#three-components">Three Components</a></li>
-<li><a class="reference internal" href="#on-the-web">On the Web</a></li>
-<li><a class="reference internal" href="#a-word-about-terminology">A Word About Terminology</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#our-first-application">Our First Application</a><ul>
-<li><a class="reference internal" href="#id1">Pyramid</a></li>
-<li><a class="reference internal" href="#starting-the-project">Starting the Project</a></li>
-<li><a class="reference internal" href="#working-with-pyramid">Working with Pyramid</a></li>
-<li><a class="reference internal" href="#pyramid-is-python">Pyramid is Python</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#models-in-pyramid">Models in Pyramid</a><ul>
-<li><a class="reference internal" href="#models-and-orms">Models and ORMs</a></li>
-<li><a class="reference internal" href="#sqlalchemy">SQLAlchemy</a></li>
-<li><a class="reference internal" href="#creating-the-database">Creating The Database</a></li>
-<li><a class="reference internal" href="#interacting-with-sqla-models">Interacting with SQLA Models</a></li>
-<li><a class="reference internal" href="#cleaning-up-after-ourselves">Cleaning Up After Ourselves</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#homework">Homework</a><ul>
-<li><a class="reference internal" href="#the-model">The Model</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="session04.html"
-                        title="previous chapter">Session 04</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="session06.html"
-                        title="next chapter">Session 06</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/presentations/session05.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-  <h3>Slides</h3>
-  <ul class="this-page-menu">
-    <li><a href="../.././slides/presentations/session05.html"
-           rel="nofollow">View as slides</a></li>
-  </ul>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
+<div class="slide-no">69</div>
+
+
+    </article>
+  </slide>
+
+
+    <slide class="thank-you-slide segue nobackground">
+    <aside class="gdbar right"><img src="../_static/logo_UW.png"></aside>
+    <article class="flexbox vleft auto-fadein">
+      <h2>Good Night!</h2>
+      <p>&nbsp;</p>
+    </article>
+    <p class="auto-fadein" data-config-contact>
+      <!-- populated from slide_config.json -->
     </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="session06.html" title="Session 06"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="session04.html" title="Session 04"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">UWPCE Python 200</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="index.html" >Course Presentations</a> &raquo;</li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &copy; Copyright 2012-2016, Cris Ewing.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
-    </div>
-  </body>
+  </slide>
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
 </html>

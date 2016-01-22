@@ -1,16 +1,41 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+Google IO 2012/2013 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahé <lukem@google.com>
+
+URL: https://code.google.com/p/io-2012-slides
+--><!DOCTYPE html>
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<html>
+<head>
+  <title>Session 04 &mdash; Internet Programming with Python</title>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  
+  <link rel="stylesheet" media="all"
+        href="../_static/theme/css/default.css">
+  <link rel="stylesheet" media="all"
+        href="../_static/theme/css/hieroglyph.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)"
+        href="../_static/theme/css/phone.css">
+
     
-    <title>Session 04 &mdash; Internet Programming with Python</title>
+    <link rel="stylesheet" href="../_static/custom.css"
+          type="text/css" />
     
-    <link rel="stylesheet" href="../_static/pyramid.css" type="text/css" />
+
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
@@ -20,90 +45,131 @@
         HAS_SOURCE:  true
       };
     </script>
+
+    <script data-main="../_static/js/slides"
+            src="../_static/js/require-1.0.8.min.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    
     <link rel="top" title="Internet Programming with Python" href="../index.html" />
     <link rel="up" title="Course Presentations" href="index.html" />
     <link rel="next" title="Session 05" href="session05.html" />
-    <link rel="prev" title="Session 03" href="session03.html" />
-<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
-<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
-<!--[if lte IE 6]>
-<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
-<![endif]-->
+    <link rel="prev" title="Session 03" href="session03.html" /> 
+</head>
+<body style="opacity: 0">
 
-  </head>
-  <body role="document">
-<div class="header">
-  <div class="logo">
-    <a href="../index.html">
-      <img class="logo" src="../_static/logo_UW.png" alt="Logo"/>
-    </a>
-  </div>
-</div>
+<slides class="layout-widescreen">
 
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="session05.html" title="Session 05"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="session03.html" title="Session 03"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">UWPCE Python 200</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Course Presentations</a> &raquo;</li> 
-      </ul>
-    </div>  
+  <slide class="title-slide segue nobackground">
+  <aside class="gdbar"><img src="../_static/logo_UW.png"></aside>
+  <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+  <hgroup class="auto-fadein">
+    <h1 data-config-title><!-- populated from slide_config.json --></h1>
+    <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+    <p data-config-presenter><!-- populated from slide_config.json --></p>
+  </hgroup>
+</slide>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <div class="section" id="session-04">
-<h1>Session 04<a class="headerlink" href="#session-04" title="Permalink to this headline">¶</a></h1>
-<div class="figure align-center" id="id3">
+  
+    <slide class="title-slide segue nobackground level-1" id="session-04">
+    <hgroup>
+      <h1>Session 04</h1>
+    </hgroup>
+    <article class="">
+      <div class="figure align-center" id="id3">
 <a class="reference internal image-reference" href="../_images/granny_mashup.png"><img alt="../_images/granny_mashup.png" src="../_images/granny_mashup.png" style="width: 70%;" /></a>
 <p class="caption"><span class="caption-text">Paul Downey <a class="reference external" href="http://www.flickr.com/photos/psd/492139935/">http://www.flickr.com/photos/psd/492139935/</a> - CC-BY</span></p>
 </div>
-<div class="section" id="scraping-apis-and-mashups">
-<h2>Scraping, APIs and Mashups<a class="headerlink" href="#scraping-apis-and-mashups" title="Permalink to this headline">¶</a></h2>
-<p>Wherein we learn how to make order from the chaos of the wild internet.</p>
-<div class="section" id="a-dilemma">
-<h3>A Dilemma<a class="headerlink" href="#a-dilemma" title="Permalink to this headline">¶</a></h3>
-<p>The internet makes a vast quantity of data available.</p>
+
+
+
+<div class="slide-no">1</div>
+
+
+    </article>
+  </slide>  <slide class="level-2" id="scraping-apis-and-mashups">
+    <hgroup>
+      <h2>Scraping, APIs and Mashups</h2>
+    </hgroup>
+    <article class="">
+      <p>Wherein we learn how to make order from the chaos of the wild internet.</p>
+
+
+
+<div class="slide-no">2</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="a-dilemma">
+    <hgroup>
+      <h3>A Dilemma</h3>
+    </hgroup>
+    <article class="">
+      <p>The internet makes a vast quantity of data available.</p>
 <div class="build container">
 <p>But not always in the form or combination you want.</p>
 <p>It would be nice to be able to combine data from different sources to
 create <em>meaning</em>.</p>
 </div>
-</div>
-<div class="section" id="the-big-question">
-<h3>The Big Question<a class="headerlink" href="#the-big-question" title="Permalink to this headline">¶</a></h3>
-<p class="large centered">But How?</p>
-</div>
-<div class="section" id="the-big-answer">
-<h3>The Big Answer<a class="headerlink" href="#the-big-answer" title="Permalink to this headline">¶</a></h3>
-<p class="large centered">Mashups</p>
-</div>
-<div class="section" id="mashups">
-<h3>Mashups<a class="headerlink" href="#mashups" title="Permalink to this headline">¶</a></h3>
-<p>A mashup is:</p>
+
+
+
+<div class="slide-no">3</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="the-big-question">
+    <hgroup>
+      <h3>The Big Question</h3>
+    </hgroup>
+    <article class="">
+      <p class="large centered">But How?</p>
+
+
+
+<div class="slide-no">4</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="the-big-answer">
+    <hgroup>
+      <h3>The Big Answer</h3>
+    </hgroup>
+    <article class="">
+      <p class="large centered">Mashups</p>
+
+
+
+<div class="slide-no">5</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="mashups">
+    <hgroup>
+      <h3>Mashups</h3>
+    </hgroup>
+    <article class="">
+      <p>A mashup is:</p>
 <div class="highlight-python"><div class="highlight"><pre>a web page, or web application, that uses and combines data, presentation
 or functionality from two or more sources to create new services.
 
 -- wikipedia (http://en.wikipedia.org/wiki/Mashup_(web_application_hybrid))
 </pre></div>
 </div>
-</div>
-<div class="section" id="data-sources">
-<h3>Data Sources<a class="headerlink" href="#data-sources" title="Permalink to this headline">¶</a></h3>
-<p>The key to mashups is the idea of data sources.</p>
+
+
+
+<div class="slide-no">6</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="data-sources">
+    <hgroup>
+      <h3>Data Sources</h3>
+    </hgroup>
+    <article class="">
+      <p>The key to mashups is the idea of data sources.</p>
 <div class="build container">
 <p>These come in many flavors:</p>
 <ul class="build simple">
@@ -113,11 +179,19 @@ or functionality from two or more sources to create new services.
 <li>Web services providing presentation (mapping)</li>
 </ul>
 </div>
-</div>
-</div>
-<div class="section" id="web-scraping">
-<h2>Web Scraping<a class="headerlink" href="#web-scraping" title="Permalink to this headline">¶</a></h2>
-<div class="left container">
+
+
+
+<div class="slide-no">7</div>
+
+
+    </article>
+  </slide>  <slide class="level-2" id="web-scraping">
+    <hgroup>
+      <h2>Web Scraping</h2>
+    </hgroup>
+    <article class="">
+      <div class="left container">
 <p>It would be nice if all online data were available in well-structured formats.</p>
 <div class="build container">
 <p>The reality is that much data is available only in HTML.</p>
@@ -125,10 +199,19 @@ or functionality from two or more sources to create new services.
 <p>By scraping the data from the web pages.</p>
 </div>
 </div>
-<div class="section" id="html">
-<h3>HTML<a class="headerlink" href="#html" title="Permalink to this headline">¶</a></h3>
-<p>Ideally, it looks like this:</p>
-<div class="highlight-html"><div class="highlight"><pre><span class="cp">&lt;!DOCTYPE html&gt;</span>
+
+
+
+<div class="slide-no">8</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="html">
+    <hgroup>
+      <h3>HTML</h3>
+    </hgroup>
+    <article class="">
+      <div class="highlight-html"><div class="highlight"><pre><span class="cp">&lt;!DOCTYPE html&gt;</span>
 <span class="nt">&lt;html&gt;</span>
   <span class="nt">&lt;head&gt;</span>
   <span class="nt">&lt;/head&gt;</span>
@@ -139,8 +222,19 @@ or functionality from two or more sources to create new services.
 <span class="nt">&lt;/html&gt;</span>
 </pre></div>
 </div>
-<p>But in real life, it&#8217;s more often like this:</p>
-<div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;html&gt;</span>
+
+
+
+<div class="slide-no">9</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id5">
+    <hgroup>
+      <h3>HTML... IRL</h3>
+    </hgroup>
+    <article class="">
+      <div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;html&gt;</span>
  <span class="nt">&lt;form&gt;</span>
   <span class="nt">&lt;table&gt;</span>
    <span class="nt">&lt;td&gt;&lt;input</span> <span class="na">name=</span><span class="s">&quot;input1&quot;</span><span class="nt">&gt;</span>Row 1 cell 1
@@ -151,19 +245,52 @@ or functionality from two or more sources to create new services.
 <span class="nt">&lt;/html&gt;</span>
 </pre></div>
 </div>
-<div class="figure align-center" id="id4">
+
+
+
+<div class="slide-no">10</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id6">
+    <hgroup>
+      <h3>FFFFFFFFFUUUUUUUUUUUUU!!!!</h3>
+    </hgroup>
+    <article class="">
+      <div class="figure align-center" id="id4">
 <a class="reference internal image-reference" href="../_images/scream.jpg"><img alt="../_images/scream.jpg" src="../_images/scream.jpg" style="width: 32%;" /></a>
 <p class="caption"><span class="caption-text">Photo by Matthew via Flickr (<a class="reference external" href="http://www.flickr.com/photos/purplemattfish/3918004964/">http://www.flickr.com/photos/purplemattfish/3918004964/</a>) - CC-BY-NC-ND</span></p>
 </div>
-<p class="large centered">&#8220;Be strict in what you send and tolerant in what you receive&#8221;</p>
-</div>
-<div class="section" id="taming-the-mess">
-<h3>Taming the Mess<a class="headerlink" href="#taming-the-mess" title="Permalink to this headline">¶</a></h3>
-<p>Luckily, there are tools to help with this.</p>
+
+
+
+<div class="slide-no">11</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id7">
+    <hgroup>
+      <h3>The Law of The Internet</h3>
+    </hgroup>
+    <article class="">
+      <p class="large centered">&quot;Be strict in what you send and tolerant in what you receive&quot;</p>
+
+
+
+<div class="slide-no">12</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="taming-the-mess">
+    <hgroup>
+      <h3>Taming the Mess</h3>
+    </hgroup>
+    <article class="">
+      <p>Luckily, there are tools to help with this.</p>
 <div class="build container">
 <p>In python there are several candidates, but I like <code class="docutils literal"><span class="pre">BeautifulSoup</span></code>.</p>
-<p>BeautifulSoup is a great tool, but it&#8217;s not in the Standard Library.</p>
-<p>We&#8217;ll need to install it.</p>
+<p>BeautifulSoup is a great tool, but it's not in the Standard Library.</p>
+<p>We'll need to install it.</p>
 <p>Create a virtualenv to do so:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>pyvenv soupenv
 ...
@@ -172,64 +299,145 @@ or functionality from two or more sources to create new services.
 </div>
 <p>(remember, for Windows users that should be <code class="docutils literal"><span class="pre">soupenv/Scripts/activate.bat</span></code>)</p>
 </div>
-<p>Once the virtualenv is activated, you can simply use pip or easy_install to
+
+
+
+<div class="slide-no">13</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id8">
+    <hgroup>
+      <h3>Install BeautifulSoup</h3>
+    </hgroup>
+    <article class="">
+      <p>Once the virtualenv is activated, you can simply use pip or easy_install to
 install the libraries you want:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>soupenv<span class="o">)</span><span class="nv">$ </span>pip install beautifulsoup4
 </pre></div>
 </div>
-<p>BeautifulSoup is built to use the Python HTMLParser.</p>
+
+
+
+<div class="slide-no">14</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id9">
+    <hgroup>
+      <h3>Choose a Parsing Engine</h3>
+    </hgroup>
+    <article class="">
+      <p>BeautifulSoup is built to use the Python HTMLParser.</p>
 <ul class="build simple">
-<li>Batteries Included.  It&#8217;s already there</li>
-<li>It&#8217;s not great, especially before Python 2.7.3</li>
+<li>Batteries Included.  It's already there</li>
+<li>It's not great, especially before Python 2.7.3</li>
 </ul>
 <div class="build container">
 <p>BeautifulSoup also supports using other parsers.</p>
 <p>There are two good choices: <code class="docutils literal"><span class="pre">lxml</span></code> and <code class="docutils literal"><span class="pre">html5lib</span></code>.</p>
-<p><code class="docutils literal"><span class="pre">lxml</span></code> is better, but much harder to install.  Let&#8217;s use <code class="docutils literal"><span class="pre">html5lib</span></code>.</p>
+<p><code class="docutils literal"><span class="pre">lxml</span></code> is better, but much harder to install.  Let's use <code class="docutils literal"><span class="pre">html5lib</span></code>.</p>
 </div>
-<p>Again, this is pretty simple:</p>
+
+
+
+<div class="slide-no">15</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id10">
+    <hgroup>
+      <h3>Install a Parsing Engine</h3>
+    </hgroup>
+    <article class="">
+      <p>Again, this is pretty simple:</p>
 <div class="highlight-python"><div class="highlight"><pre>(soupenv)$ pip install html5lib
 </pre></div>
 </div>
 <div class="build container">
 <p>Once installed, BeautifulSoup will choose it automatically.</p>
-<p>BeautifulSoup will choose the &#8220;best&#8221; available.</p>
+<p>BeautifulSoup will choose the &quot;best&quot; available.</p>
 <p>You can specify the parser if you need to for some reason.</p>
-<p>In fact, in recent versions of BeautifulSoup, you&#8217;ll be warned if you don&#8217;t
+<p>In fact, in recent versions of BeautifulSoup, you'll be warned if you don't
 (though you can ignore the warning).</p>
 </div>
-<p>Python provides tools for opening urls and communicating with servers. It&#8217;s
+
+
+
+<div class="slide-no">16</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id11">
+    <hgroup>
+      <h3>Install Requests</h3>
+    </hgroup>
+    <article class="">
+      <p>Python provides tools for opening urls and communicating with servers. It's
 spread across the <code class="docutils literal"><span class="pre">urllib</span></code> and <code class="docutils literal"><span class="pre">urllib2</span></code> packages.</p>
 <div class="build container">
 <p>These packages have pretty unintuitive APIs.</p>
 <p>The <code class="docutils literal"><span class="pre">requests</span></code> library is becoming the de-facto standard for this type of
-work.  Let&#8217;s install it too.</p>
+work.  Let's install it too.</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>soupenv<span class="o">)</span><span class="nv">$ </span>pip install requests
 </pre></div>
 </div>
 </div>
-</div>
-<div class="section" id="our-class-mashup">
-<h3>Our Class Mashup<a class="headerlink" href="#our-class-mashup" title="Permalink to this headline">¶</a></h3>
-<p>We&#8217;re going to explore some tools for making a mashup today</p>
+
+
+
+<div class="slide-no">17</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="our-class-mashup">
+    <hgroup>
+      <h3>Our Class Mashup</h3>
+    </hgroup>
+    <article class="">
+      <p>We're going to explore some tools for making a mashup today</p>
 <div class="build container">
-<p>We&#8217;ll be starting by scraping restaurant health code data for
+<p>We'll be starting by scraping restaurant health code data for
 a given ZIP code</p>
-<p>Then, we&#8217;ll look up the geographic location of those zipcodes using Google</p>
-<p>Finally, we&#8217;ll display the results of our work on a map</p>
+<p>Then, we'll look up the geographic location of those zipcodes using Google</p>
+<p>Finally, we'll display the results of our work on a map</p>
 <p>Start by opening a new file in your editor: <code class="docutils literal"><span class="pre">mashup.py</span></code>.</p>
 </div>
-<p>The source for the data we&#8217;ll be displaying is a search tool provided by King
+
+
+
+<div class="slide-no">18</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id12">
+    <hgroup>
+      <h3>Getting Some HTML</h3>
+    </hgroup>
+    <article class="">
+      <p>The source for the data we'll be displaying is a search tool provided by King
 County.</p>
 <div class="build container">
-<p>It&#8217;s supposed to have a web service, but the service is broken.</p>
+<p>It's supposed to have a web service, but the service is broken.</p>
 <p>Luckily, the HTML search works just fine.</p>
 <p>Open <a class="reference external" href="http://info.kingcounty.gov/health/ehs/foodsafety/inspections/search.aspx">the search form</a> in your browser.</p>
 <p>Fill in a ZIP code (perhaps 98101).</p>
 <p>Add a start and end date (perhaps about 1 or 2 years apart).</p>
 <p>Submit the form, and take a look at what you get.</p>
 </div>
-<p>Next we want to automate the process.</p>
+
+
+
+<div class="slide-no">19</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id13">
+    <hgroup>
+      <h3>Repeat, But Automate</h3>
+    </hgroup>
+    <article class="">
+      <p>Next we want to automate the process.</p>
 <div class="build container">
 <p>Copy the domain and path of the url into your new <code class="docutils literal"><span class="pre">mashup.py</span></code> file like
 so:</p>
@@ -238,7 +446,19 @@ so:</p>
 </pre></div>
 </div>
 </div>
-<p>Next, copy the query parameters from the URL and convert them to a dictionary:</p>
+
+
+
+<div class="slide-no">20</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id14">
+    <hgroup>
+      <h3>Repeat, But Automate</h3>
+    </hgroup>
+    <article class="">
+      <p>Next, copy the query parameters from the URL and convert them to a dictionary:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">INSPECTION_PARAMS</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s">&#39;Output&#39;</span><span class="p">:</span> <span class="s">&#39;W&#39;</span><span class="p">,</span>
     <span class="s">&#39;Business_Name&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
@@ -259,10 +479,19 @@ so:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="fetching-search-results">
-<h3>Fetching Search Results<a class="headerlink" href="#fetching-search-results" title="Permalink to this headline">¶</a></h3>
-<p>Next we&#8217;ll use the <code class="docutils literal"><span class="pre">requests</span></code> library to write a function to fetch these
+
+
+
+<div class="slide-no">21</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="fetching-search-results">
+    <hgroup>
+      <h3>Fetching Search Results</h3>
+    </hgroup>
+    <article class="">
+      <p>Next we'll use the <code class="docutils literal"><span class="pre">requests</span></code> library to write a function to fetch these
 results on demand.</p>
 <div class="build container">
 <p>In <code class="docutils literal"><span class="pre">requests</span></code>, each HTTP method has a module-level function:</p>
@@ -279,7 +508,19 @@ results on demand.</p>
 <li>...</li>
 </ul>
 </div>
-<p>The return value from one of these functions is a <code class="docutils literal"><span class="pre">response</span></code> object which
+
+
+
+<div class="slide-no">22</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id15">
+    <hgroup>
+      <h3>Handling Requests Responses</h3>
+    </hgroup>
+    <article class="">
+      <p>The return value from one of these functions is a <code class="docutils literal"><span class="pre">response</span></code> object which
 provides:</p>
 <div class="build container">
 <ul class="build simple">
@@ -293,7 +534,19 @@ provides:</p>
 </ul>
 <p><code class="docutils literal"><span class="pre">requests</span> <span class="pre">documentation</span></code>: <a class="reference external" href="http://docs.python-requests.org/en/latest/">http://docs.python-requests.org/en/latest/</a></p>
 </div>
-<p>We&#8217;ll start by writing a function <code class="docutils literal"><span class="pre">get_inspection_page</span></code></p>
+
+
+
+<div class="slide-no">23</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id16">
+    <hgroup>
+      <h3>Fetch Search Results</h3>
+    </hgroup>
+    <article class="">
+      <p>We'll start by writing a function <code class="docutils literal"><span class="pre">get_inspection_page</span></code></p>
 <div class="build container">
 <ul class="build simple">
 <li>It will accept keyword arguments for each of the possible query values</li>
@@ -305,10 +558,19 @@ query</li>
 </ul>
 <p>Try writing this function. Put it in <code class="docutils literal"><span class="pre">mashup.py</span></code></p>
 </div>
-</div>
-<div class="section" id="my-solution">
-<h3>My Solution<a class="headerlink" href="#my-solution" title="Permalink to this headline">¶</a></h3>
-<p>Here&#8217;s the one I created:</p>
+
+
+
+<div class="slide-no">24</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="my-solution">
+    <hgroup>
+      <h3>My Solution</h3>
+    </hgroup>
+    <article class="">
+      <p>Here's the one I created:</p>
 <div class="build highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="k">def</span> <span class="nf">get_inspection_page</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -322,12 +584,33 @@ query</li>
     <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">text</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="parse-the-results">
-<h3>Parse the Results<a class="headerlink" href="#parse-the-results" title="Permalink to this headline">¶</a></h3>
-<p>Next, we&#8217;ll need to parse the results we get when we call that function</p>
+
+
+
+<div class="slide-no">25</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="parse-the-results">
+    <hgroup>
+      <h3>Parse the Results</h3>
+    </hgroup>
+    <article class="">
+      <p>Next, we'll need to parse the results we get when we call that function</p>
 <p>But before we start, a word about parsing HTML with BeautifulSoup</p>
-<p>The BeautifulSoup object can be instantiated with a string or a file-like
+
+
+
+<div class="slide-no">26</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id17">
+    <hgroup>
+      <h3>Parsing HTML with BeautifulSoup</h3>
+    </hgroup>
+    <article class="">
+      <p>The BeautifulSoup object can be instantiated with a string or a file-like
 object as the sole argument:</p>
 <div class="build container">
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
@@ -343,10 +626,19 @@ object as the sole argument:</p>
 <p>You might want to open the documentation as reference
 (<a class="reference external" href="http://www.crummy.com/software/BeautifulSoup/bs4/doc">http://www.crummy.com/software/BeautifulSoup/bs4/doc</a>)</p>
 </div>
-</div>
-<div class="section" id="id1">
-<h3>My Solution<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
-<p>Take a shot at writing this new function in <code class="docutils literal"><span class="pre">mashup.py</span></code></p>
+
+
+
+<div class="slide-no">27</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id1">
+    <hgroup>
+      <h3>My Solution</h3>
+    </hgroup>
+    <article class="">
+      <p>Take a shot at writing this new function in <code class="docutils literal"><span class="pre">mashup.py</span></code></p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c"># add this import at the top</span>
 <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
 
@@ -356,10 +648,19 @@ object as the sole argument:</p>
     <span class="k">return</span> <span class="n">parsed</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="put-it-together">
-<h3>Put It Together<a class="headerlink" href="#put-it-together" title="Permalink to this headline">¶</a></h3>
-<p>We&#8217;ll need to make our script do something when run.</p>
+
+
+
+<div class="slide-no">28</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="put-it-together">
+    <hgroup>
+      <h3>Put It Together</h3>
+    </hgroup>
+    <article class="">
+      <p>We'll need to make our script do something when run.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="c"># do something</span>
 </pre></div>
@@ -377,10 +678,19 @@ object as the sole argument:</p>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="id2">
-<h3>My Solution<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
-<p>Try to come up with the proper code on your own.  Add it to <code class="docutils literal"><span class="pre">mashup.py</span></code></p>
+
+
+
+<div class="slide-no">29</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id2">
+    <hgroup>
+      <h3>My Solution</h3>
+    </hgroup>
+    <article class="">
+      <p>Try to come up with the proper code on your own.  Add it to <code class="docutils literal"><span class="pre">mashup.py</span></code></p>
 <div class="build highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">use_params</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s">&#39;Inspection_Start&#39;</span><span class="p">:</span> <span class="s">&#39;2/1/2013&#39;</span><span class="p">,</span>
@@ -392,7 +702,19 @@ object as the sole argument:</p>
     <span class="k">print</span><span class="p">(</span><span class="n">parsed</span><span class="o">.</span><span class="n">prettify</span><span class="p">())</span>
 </pre></div>
 </div>
-<p>Assuming your virtualenv is still active, you should be able to execute the
+
+
+
+<div class="slide-no">30</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id18">
+    <hgroup>
+      <h3>Test The Results</h3>
+    </hgroup>
+    <article class="">
+      <p>Assuming your virtualenv is still active, you should be able to execute the
 script.</p>
 <div class="build container">
 <div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>soupenv<span class="o">)</span><span class="nv">$ </span>python mashup.py
@@ -415,7 +737,19 @@ script.</p>
 </div>
 <p>This script is available as <code class="docutils literal"><span class="pre">resources/session04/mashup_1.py</span></code></p>
 </div>
-<p>Now, let&#8217;s re-run the script, saving the output to a file so we can use it
+
+
+
+<div class="slide-no">31</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id19">
+    <hgroup>
+      <h3>Preserve the Results</h3>
+    </hgroup>
+    <article class="">
+      <p>Now, let's re-run the script, saving the output to a file so we can use it
 later:</p>
 <div class="highlight-python"><div class="highlight"><pre>$ python mashup.py &gt; inspection_page.html
 </pre></div>
@@ -434,18 +768,39 @@ later:</p>
 </pre></div>
 </div>
 </div>
-</div>
-<div class="section" id="extracting-data">
-<h3>Extracting Data<a class="headerlink" href="#extracting-data" title="Permalink to this headline">¶</a></h3>
-<p>Next we find the bits of this pile of HTML that matter to us.</p>
+
+
+
+<div class="slide-no">32</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="extracting-data">
+    <hgroup>
+      <h3>Extracting Data</h3>
+    </hgroup>
+    <article class="">
+      <p>Next we find the bits of this pile of HTML that matter to us.</p>
 <div class="build container">
 <p>Open the page you just wrote to disk in your web browser and open the
 developer tools to inspect the page source.</p>
-<p>You&#8217;ll want to start by finding the element in the page that contains all
+<p>You'll want to start by finding the element in the page that contains all
 our search results.</p>
 <p>Look at the source and identify the single element we are looking for.</p>
 </div>
-<p>Having found it visually, we can now search for it automatically. In
+
+
+
+<div class="slide-no">33</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id20">
+    <hgroup>
+      <h3>Tags and Searching</h3>
+    </hgroup>
+    <article class="">
+      <p>Having found it visually, we can now search for it automatically. In
 BeautifulSoup:</p>
 <div class="build container">
 <ul class="build simple">
@@ -462,7 +817,19 @@ BeautifulSoup:</p>
 </div>
 </div>
 </div>
-<p>The <code class="docutils literal"><span class="pre">find</span></code> method allows us to pass <em>kwargs</em>.</p>
+
+
+
+<div class="slide-no">34</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id21">
+    <hgroup>
+      <h3>Searching by Attribute</h3>
+    </hgroup>
+    <article class="">
+      <p>The <code class="docutils literal"><span class="pre">find</span></code> method allows us to pass <em>kwargs</em>.</p>
 <div class="build container">
 <p>Keywords that are not among the named parameters will be considered an HTML
 attribute.</p>
@@ -484,7 +851,19 @@ attribute.</p>
 </pre></div>
 </div>
 </div>
-<p>The next job is to find the inspection data we can see when we click on the
+
+
+
+<div class="slide-no">35</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id22">
+    <hgroup>
+      <h3>Filtering By Regular Expression</h3>
+    </hgroup>
+    <article class="">
+      <p>The next job is to find the inspection data we can see when we click on the
 restaurant names in our page.</p>
 <div class="build container">
 <p>Do you notice a pattern in how that data is structured?</p>
@@ -497,7 +876,19 @@ that displays when we click.</p>
 <p>Each number is different for each restaurant</p>
 <p>We can use a regular expression to help us here.</p>
 </div>
-<p>Let&#8217;s write a function in <code class="docutils literal"><span class="pre">mashup.py</span></code> that will find all the divs in our
+
+
+
+<div class="slide-no">36</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id23">
+    <hgroup>
+      <h3>Getting the Information Divs</h3>
+    </hgroup>
+    <article class="">
+      <p>Let's write a function in <code class="docutils literal"><span class="pre">mashup.py</span></code> that will find all the divs in our
 column with the right kind of id:</p>
 <div class="build container">
 <ul class="build simple">
@@ -516,7 +907,19 @@ column with the right kind of id:</p>
 </pre></div>
 </div>
 </div>
-<p>Let&#8217;s add that step to the <em>main</em> block at the bottom of <code class="docutils literal"><span class="pre">mashup.py</span></code> (only
+
+
+
+<div class="slide-no">37</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id24">
+    <hgroup>
+      <h3>Verify It Works</h3>
+    </hgroup>
+    <article class="">
+      <p>Let's add that step to the <em>main</em> block at the bottom of <code class="docutils literal"><span class="pre">mashup.py</span></code> (only
 print the first of the many divs that match):</p>
 <div class="build container">
 <div class="highlight-python"><div class="highlight"><pre><span class="n">html</span><span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="n">load_inspection_page</span><span class="p">(</span><span class="s">&#39;inspection_page.html&#39;</span><span class="p">)</span>
@@ -537,12 +940,21 @@ print the first of the many divs that match):</p>
 </div>
 <p>This code is available as <code class="docutils literal"><span class="pre">/resources/session04/mashup_2.py</span></code></p>
 </div>
-</div>
-<div class="section" id="parsing-restaurant-data">
-<h3>Parsing Restaurant Data<a class="headerlink" href="#parsing-restaurant-data" title="Permalink to this headline">¶</a></h3>
-<p>Now that we have the records we want, we need to parse them. We want to preserve:</p>
+
+
+
+<div class="slide-no">38</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="parsing-restaurant-data">
+    <hgroup>
+      <h3>Parsing Restaurant Data</h3>
+    </hgroup>
+    <article class="">
+      <p>Now that we have the records we want, we need to parse them. We want to preserve:</p>
 <div class="build container">
-<p>We&#8217;ll start by parsing out the information about the restaurant themselves:</p>
+<p>We'll start by parsing out the information about the restaurant themselves:</p>
 <ul class="build simple">
 <li>Name</li>
 <li>Address</li>
@@ -551,11 +963,23 @@ print the first of the many divs that match):</p>
 </ul>
 <p>How is this information contained in our records?</p>
 </div>
-<p>Each record consists of a table with a series of <em>rows</em> (<code class="docutils literal"><span class="pre">&lt;tr&gt;</span></code>).</p>
+
+
+
+<div class="slide-no">39</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id25">
+    <hgroup>
+      <h3>Complex Filtering</h3>
+    </hgroup>
+    <article class="">
+      <p>Each record consists of a table with a series of <em>rows</em> (<code class="docutils literal"><span class="pre">&lt;tr&gt;</span></code>).</p>
 <div class="build container">
 <p>The rows we want at this time all have two <em>cells</em> inside them.</p>
 <p>The first contains the <em>label</em> of the data, the second contains the <em>value</em></p>
-<p>We&#8217;ll need a function in <code class="docutils literal"><span class="pre">mashup.py</span></code> that:</p>
+<p>We'll need a function in <code class="docutils literal"><span class="pre">mashup.py</span></code> that:</p>
 <ul class="build simple">
 <li>takes an HTML element as an argument</li>
 <li>verifies that it is a <code class="docutils literal"><span class="pre">&lt;tr&gt;</span></code> element</li>
@@ -570,7 +994,19 @@ print the first of the many divs that match):</p>
 </pre></div>
 </div>
 </div>
-<p>Let&#8217;s try this out in an interpreter:</p>
+
+
+
+<div class="slide-no">40</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id26">
+    <hgroup>
+      <h3>Test It Out</h3>
+    </hgroup>
+    <article class="">
+      <p>Let's try this out in an interpreter:</p>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [1]: </span><span class="kn">from</span> <span class="nn">mashup_3</span> <span class="kn">import</span> <span class="n">load_inspection_page</span><span class="p">,</span> <span class="n">parse_source</span><span class="p">,</span>
 <span class="go">        restaurant_data_generator, has_two_tds</span>
 <span class="gp">In [2]: </span><span class="n">html</span> <span class="o">=</span> <span class="n">load_inspection_page</span><span class="p">(</span><span class="s">&#39;inspection_page.html&#39;</span><span class="p">)</span>
@@ -581,7 +1017,19 @@ print the first of the many divs that match):</p>
 <span class="gp">In [6]: </span><span class="n">rec</span> <span class="o">=</span> <span class="n">records</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>We&#8217;d like to find all table rows in that div that contain <em>two</em> cells</p>
+
+
+
+<div class="slide-no">41</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id27">
+    <hgroup>
+      <h3>Test It Out</h3>
+    </hgroup>
+    <article class="">
+      <p>We'd like to find all table rows in that div that contain <em>two</em> cells</p>
 <div class="build container">
 <p>The table rows are all contained in a <code class="docutils literal"><span class="pre">&lt;tbody&gt;</span></code> tag.</p>
 <p>We only want the ones at the top of that tag (ones nested more deeply
@@ -601,12 +1049,24 @@ contain other data)</p>
 </pre></div>
 </div>
 </div>
-<p>Now we have a list of the rows that contain our data.</p>
+
+
+
+<div class="slide-no">42</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id28">
+    <hgroup>
+      <h3>Extracting Labels and Values</h3>
+    </hgroup>
+    <article class="">
+      <p>Now we have a list of the rows that contain our data.</p>
 <div class="build container">
 <p>Next we have to collect the data they contain</p>
 <p>The <em>label/value</em> structure of this data should suggest the right container
 to store the information.</p>
-<p>Let&#8217;s start by trying to get at the first label</p>
+<p>Let's start by trying to get at the first label</p>
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [18]: </span><span class="n">row1</span> <span class="o">=</span> <span class="n">data_rows</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="gp">In [19]: </span><span class="n">cells</span> <span class="o">=</span> <span class="n">row1</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">&#39;td&#39;</span><span class="p">)</span>
 <span class="gp">In [20]: </span><span class="n">cell1</span> <span class="o">=</span> <span class="n">cells</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -617,9 +1077,21 @@ to store the information.</p>
 <p>That works well enough, but all that extra stuff is nasty</p>
 <p>We need a method to clean up the text we get from these cells</p>
 <p>It should strip extra whitespace, and characters like <code class="docutils literal"><span class="pre">-</span></code> and <code class="docutils literal"><span class="pre">:</span></code> we
-don&#8217;t want.</p>
+don't want.</p>
 </div>
-<p>Try writing such a function for yourself now in <code class="docutils literal"><span class="pre">mashup.py</span></code></p>
+
+
+
+<div class="slide-no">43</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id29">
+    <hgroup>
+      <h3>My Solution</h3>
+    </hgroup>
+    <article class="">
+      <p>Try writing such a function for yourself now in <code class="docutils literal"><span class="pre">mashup.py</span></code></p>
 <div class="build container">
 <div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">clean_data</span><span class="p">(</span><span class="n">td</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">td</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s">&quot; </span><span class="se">\n</span><span class="s">:-&quot;</span><span class="p">)</span>
@@ -636,15 +1108,39 @@ don&#8217;t want.</p>
 </div>
 <p>Ahhh, much better</p>
 </div>
-<p>So we can get a list of the rows that contain label/value pairs.</p>
+
+
+
+<div class="slide-no">44</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id30">
+    <hgroup>
+      <h3>The Complete Function</h3>
+    </hgroup>
+    <article class="">
+      <p>So we can get a list of the rows that contain label/value pairs.</p>
 <div class="build container">
 <p>And we can extract clean values from the cells in these rows</p>
 <p>Now we need a function in <code class="docutils literal"><span class="pre">mashup.py</span></code> that will iterate through the rows
 we find and build a dictionary of the pairs.</p>
-<p>We have to be cautious because some rows don&#8217;t have a label.</p>
+<p>We have to be cautious because some rows don't have a label.</p>
 <p>The values in these rows should go with the label from the previous row.</p>
 </div>
-<p>Here&#8217;s the version I came up with:</p>
+
+
+
+<div class="slide-no">45</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id31">
+    <hgroup>
+      <h3>My Solution</h3>
+    </hgroup>
+    <article class="">
+      <p>Here's the version I came up with:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">extract_restaurant_metadata</span><span class="p">(</span><span class="n">elem</span><span class="p">):</span>
     <span class="n">restaurant_data_rows</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;tbody&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span>
         <span class="n">has_two_tds</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="bp">False</span>
@@ -659,7 +1155,19 @@ we find and build a dictionary of the pairs.</p>
     <span class="k">return</span> <span class="n">rdata</span>
 </pre></div>
 </div>
-<p>Add it to our script:</p>
+
+
+
+<div class="slide-no">46</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id32">
+    <hgroup>
+      <h3>Testing It Out</h3>
+    </hgroup>
+    <article class="">
+      <p>Add it to our script:</p>
 <div class="build container">
 <div class="highlight-python"><div class="highlight"><pre><span class="c"># ...</span>
 <span class="n">data_list</span> <span class="o">=</span> <span class="n">restaurant_data_generator</span><span class="p">(</span><span class="n">content_col</span><span class="p">)</span>
@@ -679,20 +1187,41 @@ we find and build a dictionary of the pairs.</p>
 </div>
 <p>This script is available as <code class="docutils literal"><span class="pre">resources/session04/mashup_3.py</span></code></p>
 </div>
-</div>
-<div class="section" id="extracting-inspection-data">
-<h3>Extracting Inspection Data<a class="headerlink" href="#extracting-inspection-data" title="Permalink to this headline">¶</a></h3>
-<p>The final step is to extract the inspection data for each restaurant.</p>
+
+
+
+<div class="slide-no">47</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="extracting-inspection-data">
+    <hgroup>
+      <h3>Extracting Inspection Data</h3>
+    </hgroup>
+    <article class="">
+      <p>The final step is to extract the inspection data for each restaurant.</p>
 <div class="build container">
 <p>We want to capture only the score from each inspection, details we can
 leave behind.</p>
-<p>We&#8217;d like to calculate the average score for all known inspections.</p>
-<p>We&#8217;d also like to know how many inspections there were in total.</p>
-<p>Finally, we&#8217;d like to preserve the highest score of all inspections for a
+<p>We'd like to calculate the average score for all known inspections.</p>
+<p>We'd also like to know how many inspections there were in total.</p>
+<p>Finally, we'd like to preserve the highest score of all inspections for a
 restaurant.</p>
-<p>We&#8217;ll add this information to our metadata about the restaurant.</p>
+<p>We'll add this information to our metadata about the restaurant.</p>
 </div>
-<p>Let&#8217;s start by getting our bearings. Return to viewing the
+
+
+
+<div class="slide-no">48</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id33">
+    <hgroup>
+      <h3>Finding the Data</h3>
+    </hgroup>
+    <article class="">
+      <p>Let's start by getting our bearings. Return to viewing the
 <code class="docutils literal"><span class="pre">inspection_page.html</span></code> you saved in a browser.</p>
 <div class="build container">
 <p>Find a restaurant that has had an inspection or two.</p>
@@ -702,13 +1231,25 @@ inspections?</p>
 <ul class="build simple">
 <li>Inspection data is containd in <code class="docutils literal"><span class="pre">&lt;tr&gt;</span></code> elements</li>
 <li>Rows with inspection data in them have four <code class="docutils literal"><span class="pre">&lt;td&gt;</span></code> children</li>
-<li>The text in the first cell contains the word &#8220;inspection&#8221;</li>
-<li>But the text does not <em>start</em> with the word &#8220;inspection&#8221;</li>
+<li>The text in the first cell contains the word &quot;inspection&quot;</li>
+<li>But the text does not <em>start</em> with the word &quot;inspection&quot;</li>
 </ul>
-<p>Let&#8217;s try to write a filter function like the one above that will catch
+<p>Let's try to write a filter function like the one above that will catch
 these rows for us.</p>
 </div>
-<p>Add this new function <code class="docutils literal"><span class="pre">is_inspection_data_row</span></code> to <code class="docutils literal"><span class="pre">mashup.py</span></code></p>
+
+
+
+<div class="slide-no">49</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id34">
+    <hgroup>
+      <h3>The filter</h3>
+    </hgroup>
+    <article class="">
+      <p>Add this new function <code class="docutils literal"><span class="pre">is_inspection_data_row</span></code> to <code class="docutils literal"><span class="pre">mashup.py</span></code></p>
 <div class="build highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">is_inspection_data_row</span><span class="p">(</span><span class="n">elem</span><span class="p">):</span>
     <span class="n">is_tr</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;tr&#39;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">is_tr</span><span class="p">:</span>
@@ -721,7 +1262,19 @@ these rows for us.</p>
     <span class="k">return</span> <span class="n">is_tr</span> <span class="ow">and</span> <span class="n">has_four</span> <span class="ow">and</span> <span class="n">contains_word</span> <span class="ow">and</span> <span class="n">does_not_start</span>
 </pre></div>
 </div>
-<p>We can test this function by adding it into our script:</p>
+
+
+
+<div class="slide-no">50</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id35">
+    <hgroup>
+      <h3>Test It Out</h3>
+    </hgroup>
+    <article class="">
+      <p>We can test this function by adding it into our script:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">data_div</span> <span class="ow">in</span> <span class="n">data_list</span><span class="p">:</span>
     <span class="n">metadata</span> <span class="o">=</span> <span class="n">extract_restaurant_metadata</span><span class="p">(</span><span class="n">data_div</span><span class="p">)</span>
     <span class="c"># UPDATE THIS BELOW HERE</span>
@@ -743,11 +1296,23 @@ these rows for us.</p>
 </pre></div>
 </div>
 </div>
-<p>Now we can isolate a list of the rows that contain inspection data.</p>
+
+
+
+<div class="slide-no">51</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id36">
+    <hgroup>
+      <h3>Building Inspection Data</h3>
+    </hgroup>
+    <article class="">
+      <p>Now we can isolate a list of the rows that contain inspection data.</p>
 <div class="build container">
 <p>Next we need to calculate the average score, total number and highest score
 for each restaurant.</p>
-<p>Let&#8217;s add a function to <code class="docutils literal"><span class="pre">mashup.py</span></code> that will:</p>
+<p>Let's add a function to <code class="docutils literal"><span class="pre">mashup.py</span></code> that will:</p>
 <ul class="build simple">
 <li>Take a div containing a restaurant record</li>
 <li>Extract the rows containing inspection data</li>
@@ -758,7 +1323,19 @@ for each restaurant.</p>
 <li>Return the three calculated values in a dictionary</li>
 </ul>
 </div>
-<p>Try writing this routine yourself.</p>
+
+
+
+<div class="slide-no">52</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id37">
+    <hgroup>
+      <h3>My Solution</h3>
+    </hgroup>
+    <article class="">
+      <p>Try writing this routine yourself.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">get_score_data</span><span class="p">(</span><span class="n">elem</span><span class="p">):</span>
     <span class="n">inspection_rows</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">is_inspection_data_row</span><span class="p">)</span>
     <span class="n">samples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">inspection_rows</span><span class="p">)</span>
@@ -778,9 +1355,21 @@ for each restaurant.</p>
             <span class="s">&#39;Total Inspections&#39;</span><span class="p">:</span> <span class="n">samples</span><span class="p">}</span>
 </pre></div>
 </div>
-<p>We can now incorporate this new routine into our <code class="docutils literal"><span class="pre">mashup</span></code> script.</p>
+
+
+
+<div class="slide-no">53</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id38">
+    <hgroup>
+      <h3>Test It Out</h3>
+    </hgroup>
+    <article class="">
+      <p>We can now incorporate this new routine into our <code class="docutils literal"><span class="pre">mashup</span></code> script.</p>
 <div class="build container">
-<p>We&#8217;ll want to add the data it produces to the metadata we&#8217;ve already
+<p>We'll want to add the data it produces to the metadata we've already
 extracted.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">data_div</span> <span class="ow">in</span> <span class="n">data_list</span><span class="p">:</span>
     <span class="n">metadata</span> <span class="o">=</span> <span class="n">extract_restaurant_metadata</span><span class="p">(</span><span class="n">data_div</span><span class="p">)</span>
@@ -800,16 +1389,33 @@ extracted.</p>
 </pre></div>
 </div>
 </div>
-</div>
-<div class="section" id="break-time">
-<h3>Break Time<a class="headerlink" href="#break-time" title="Permalink to this headline">¶</a></h3>
-<p>Once you have this working, take a break.</p>
-<p>When we return, we&#8217;ll try a saner approach to getting data from online</p>
-</div>
-</div>
-<div class="section" id="another-approach">
-<h2>Another Approach<a class="headerlink" href="#another-approach" title="Permalink to this headline">¶</a></h2>
-<div class="left container">
+
+
+
+<div class="slide-no">54</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="break-time">
+    <hgroup>
+      <h3>Break Time</h3>
+    </hgroup>
+    <article class="">
+      <p>Once you have this working, take a break.</p>
+<p>When we return, we'll try a saner approach to getting data from online</p>
+
+
+
+<div class="slide-no">55</div>
+
+
+    </article>
+  </slide>  <slide class="level-2" id="another-approach">
+    <hgroup>
+      <h2>Another Approach</h2>
+    </hgroup>
+    <article class="">
+      <div class="left container">
 <p>Scraping web pages is tedious and inherently brittle</p>
 <div class="build container">
 <p>The owner of the website updates their layout, your code breaks</p>
@@ -818,23 +1424,57 @@ fashion</p>
 <p class="centered"><strong>Web Services</strong></p>
 </div>
 </div>
-<div class="section" id="web-services">
-<h3>Web Services<a class="headerlink" href="#web-services" title="Permalink to this headline">¶</a></h3>
-<p>&#8220;a software system designed to support interoperable machine-to-machine
-interaction over a network&#8221; - W3C</p>
+
+
+
+<div class="slide-no">56</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="web-services">
+    <hgroup>
+      <h3>Web Services</h3>
+    </hgroup>
+    <article class="">
+      <p>&quot;a software system designed to support interoperable machine-to-machine
+interaction over a network&quot; - W3C</p>
 <ul class="build simple">
 <li>provides a defined set of calls</li>
 <li>returns structured data</li>
 </ul>
-<p>RSS is one of the earliest forms of Web Services</p>
+
+
+
+<div class="slide-no">57</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id39">
+    <hgroup>
+      <h3>Early Web Services</h3>
+    </hgroup>
+    <article class="">
+      <p>RSS is one of the earliest forms of Web Services</p>
 <div class="build container">
 <p>A single web-based <em>endpoint</em> provides a dynamically updated listing of
 content</p>
 <p>Implemented in pure HTTP.  Returns XML</p>
 <p><strong>Atom</strong> is a competing, but similar standard</p>
-<p>There&#8217;s a solid Python library for consuming RSS: <a class="reference external" href="https://pythonhosted.org/feedparser/">feedparser</a>.</p>
+<p>There's a solid Python library for consuming RSS: <a class="reference external" href="https://pythonhosted.org/feedparser/">feedparser</a>.</p>
 </div>
-<p>XML-RPC extended the essentially static nature of RSS by allowing users to call
+
+
+
+<div class="slide-no">58</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id40">
+    <hgroup>
+      <h3>XML-RPC</h3>
+    </hgroup>
+    <article class="">
+      <p>XML-RPC extended the essentially static nature of RSS by allowing users to call
 procedures and pass arguments.</p>
 <div class="build container">
 <ul class="build simple">
@@ -844,7 +1484,19 @@ procedures and pass arguments.</p>
 <p>In python, you can access XML-RPC services using <a class="reference external" href="https://docs.python.org/2/library/xmlrpclib.html">xmlrpclib</a> from the
 standard library</p>
 </div>
-<p>SOAP extends XML-RPC in a couple of useful ways:</p>
+
+
+
+<div class="slide-no">59</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id41">
+    <hgroup>
+      <h3>SOAP</h3>
+    </hgroup>
+    <article class="">
+      <p>SOAP extends XML-RPC in a couple of useful ways:</p>
 <ul class="build simple">
 <li>It uses Web Services Description Language (WSDL) to provide meta-data about
 an entire service in a machine-readable format (Automatic introspection)</li>
@@ -857,17 +1509,38 @@ namespaces</li>
 <li>The best-known and best-supported module available is <strong>Suds</strong></li>
 <li>The homepage is <a class="reference external" href="https://fedorahosted.org/suds/">https://fedorahosted.org/suds/</a></li>
 <li>It can be installed using <code class="docutils literal"><span class="pre">easy_install</span></code> or <code class="docutils literal"><span class="pre">pip</span> <span class="pre">install</span></code></li>
-<li>But it hasn&#8217;t been updated since Sept. 2010.</li>
+<li>But it hasn't been updated since Sept. 2010.</li>
 </ul>
-<p>So we&#8217;re going to move on</p>
+<p>So we're going to move on</p>
 </div>
-<p>XML is a pretty inefficient medium for transmitting data.  There&#8217;s a lot of
+
+
+
+<div class="slide-no">60</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id42">
+    <hgroup>
+      <h3>If Not XML, Then What?</h3>
+    </hgroup>
+    <article class="">
+      <p>XML is a pretty inefficient medium for transmitting data.  There's a lot of
 extra characters transmitted that lack any meaning.</p>
-<p class="build large centered"><strong>Let&#8217;s Use JSON</strong></p>
-</div>
-<div class="section" id="json">
-<h3>JSON<a class="headerlink" href="#json" title="Permalink to this headline">¶</a></h3>
-<p>JavaScript Object Notation:</p>
+<p class="build large centered"><strong>Let's Use JSON</strong></p>
+
+
+
+<div class="slide-no">61</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="json">
+    <hgroup>
+      <h3>JSON</h3>
+    </hgroup>
+    <article class="">
+      <p>JavaScript Object Notation:</p>
 <div class="build container">
 <ul class="build simple">
 <li>a lightweight data-interchange format</li>
@@ -881,19 +1554,43 @@ extra characters transmitted that lack any meaning.</p>
 </ul>
 <p class="centered">pythonic, no?</p>
 </div>
-<p>JSON provides a few basic data types (see <a class="reference external" href="http://json.org/">http://json.org/</a>):</p>
+
+
+
+<div class="slide-no">62</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id43">
+    <hgroup>
+      <h3>JSON Data Types</h3>
+    </hgroup>
+    <article class="">
+      <p>JSON provides a few basic data types (see <a class="reference external" href="http://json.org/">http://json.org/</a>):</p>
 <div class="build container">
 <ul class="build simple">
-<li>string: unicode, anything but &#8221;, \ and control characters</li>
+<li>string: unicode, anything but &quot;, \ and control characters</li>
 <li>number: any number, but json does not use octal or hexadecimal</li>
-<li>object, array (we&#8217;ve seen these above)</li>
+<li>object, array (we've seen these above)</li>
 <li>true</li>
 <li>false</li>
 <li>null</li>
 </ul>
 <p class="centered"><strong>No date type? OMGWTF??!!1!1</strong></p>
 </div>
-<p>You have two options:</p>
+
+
+
+<div class="slide-no">63</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id44">
+    <hgroup>
+      <h3>Dates in JSON</h3>
+    </hgroup>
+    <article class="">
+      <p>You have two options:</p>
 <div class="build container">
 <div class="container">
 <p>Option 1 - Unix Epoch Time (number):</p>
@@ -912,10 +1609,19 @@ extra characters transmitted that lack any meaning.</p>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="json-in-python">
-<h3>JSON in Python<a class="headerlink" href="#json-in-python" title="Permalink to this headline">¶</a></h3>
-<p>You can encode python to json, and decode json back to python:</p>
+
+
+
+<div class="slide-no">64</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="json-in-python">
+    <hgroup>
+      <h3>JSON in Python</h3>
+    </hgroup>
+    <article class="">
+      <p>You can encode python to json, and decode json back to python:</p>
 <div class="build container">
 <div class="highlight-python"><div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">json</span>
 <span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
@@ -932,14 +1638,38 @@ extra characters transmitted that lack any meaning.</p>
 </div>
 <p>Customizing the encoder or decoder class allows for specialized serializations</p>
 </div>
-<p>the json module also supports reading and writing to <em>file-like objects</em> via
-<code class="docutils literal"><span class="pre">json.dump(fp)</span></code> and <code class="docutils literal"><span class="pre">json.load(fp)</span></code> (note the missing &#8216;s&#8217;)</p>
+
+
+
+<div class="slide-no">65</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id45">
+    <hgroup>
+      <h3>JSON in Python</h3>
+    </hgroup>
+    <article class="">
+      <p>the json module also supports reading and writing to <em>file-like objects</em> via
+<code class="docutils literal"><span class="pre">json.dump(fp)</span></code> and <code class="docutils literal"><span class="pre">json.load(fp)</span></code> (note the missing 's')</p>
 <div class="build container">
 <p>Remember duck-typing. Anything with a <code class="docutils literal"><span class="pre">.write</span></code> and a <code class="docutils literal"><span class="pre">.read</span></code> method is
 <em>file-like</em></p>
 <p>This usage can be much more memory-friendly with large files/sources</p>
 </div>
-<p>SOAP was invented in part to provide completely machine-readable
+
+
+
+<div class="slide-no">66</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id46">
+    <hgroup>
+      <h3>What about WSDL?</h3>
+    </hgroup>
+    <article class="">
+      <p>SOAP was invented in part to provide completely machine-readable
 interoperability.</p>
 <div class="build container">
 <p><em>Does that really work in real life?</em></p>
@@ -948,16 +1678,37 @@ interoperability.</p>
 <p><em>Does that really work in real life?</em></p>
 <p class="centered">Hardly ever</p>
 </div>
-<p>So, if neither of these goals is really achieved by using SOAP, why pay all
+
+
+
+<div class="slide-no">67</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id47">
+    <hgroup>
+      <h3>Why Do All The Work?</h3>
+    </hgroup>
+    <article class="">
+      <p>So, if neither of these goals is really achieved by using SOAP, why pay all
 the overhead required to use the protocol?</p>
 <div class="build container">
 <p>Is there another way we could consider approaching the problem?</p>
 <p class="centered"><strong>Enter REST</strong></p>
 </div>
-</div>
-<div class="section" id="rest">
-<h3>REST<a class="headerlink" href="#rest" title="Permalink to this headline">¶</a></h3>
-<p class="centered"><strong>Representational State Transfer</strong></p>
+
+
+
+<div class="slide-no">68</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="rest">
+    <hgroup>
+      <h3>REST</h3>
+    </hgroup>
+    <article class="">
+      <p class="centered"><strong>Representational State Transfer</strong></p>
 <div class="build container">
 <ul class="build simple">
 <li>Originally described by Roy T. Fielding (worth reading)</li>
@@ -966,7 +1717,19 @@ the overhead required to use the protocol?</p>
 </ul>
 <p>* Seriously. Buy it and read it</p>
 </div>
-<p>The XML-RCP/SOAP way:</p>
+
+
+
+<div class="slide-no">69</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id48">
+    <hgroup>
+      <h3>A Comparison</h3>
+    </hgroup>
+    <article class="">
+      <p>The XML-RCP/SOAP way:</p>
 <ul class="build simple">
 <li>POST /getComment HTTP/1.1</li>
 <li>POST /getComments HTTP/1.1</li>
@@ -984,13 +1747,37 @@ the overhead required to use the protocol?</p>
 <li>DELETE /comment/&lt;id&gt; HTTP/1.1</li>
 </ul>
 </div>
-<p>REST is a <strong>Resource Oriented Architecture</strong></p>
+
+
+
+<div class="slide-no">70</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id49">
+    <hgroup>
+      <h3>ROA</h3>
+    </hgroup>
+    <article class="">
+      <p>REST is a <strong>Resource Oriented Architecture</strong></p>
 <div class="build container">
 <p>The URL represents the <em>resource</em> we are working with</p>
 <p>The HTTP Method indicates the <code class="docutils literal"><span class="pre">action</span></code> to be taken</p>
 <p>The HTTP Code returned tells us the <code class="docutils literal"><span class="pre">result</span></code> (whether success or failure)</p>
 </div>
-<div class="build container">
+
+
+
+<div class="slide-no">71</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id50">
+    <hgroup>
+      <h3>HTTP Codes Revisited</h3>
+    </hgroup>
+    <article class="">
+      <div class="build container">
 <p>POST /comment HTTP/1.1  (creating a new comment):</p>
 <ul class="build simple">
 <li>Success: <code class="docutils literal"><span class="pre">HTTP/1.1</span> <span class="pre">201</span> <span class="pre">Created</span></code></li>
@@ -1008,15 +1795,36 @@ the overhead required to use the protocol?</p>
 <li>Success: <code class="docutils literal"><span class="pre">HTTP/1.1</span> <span class="pre">204</span> <span class="pre">No</span> <span class="pre">Content</span></code></li>
 </ul>
 </div>
-</div>
-<div class="section" id="playing-with-rest">
-<h3>Playing With REST<a class="headerlink" href="#playing-with-rest" title="Permalink to this headline">¶</a></h3>
-<p>Let&#8217;s take a moment to play with REST.</p>
+
+
+
+<div class="slide-no">72</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="playing-with-rest">
+    <hgroup>
+      <h3>Playing With REST</h3>
+    </hgroup>
+    <article class="">
+      <p>Let's take a moment to play with REST.</p>
 <div class="build container">
-<p>We&#8217;ll use a common, public API provided by Google.</p>
+<p>We'll use a common, public API provided by Google.</p>
 <p class="centered"><strong>Geocoding</strong></p>
 </div>
-<p><a class="reference external" href="https://developers.google.com/maps/documentation/geocoding">https://developers.google.com/maps/documentation/geocoding</a></p>
+
+
+
+<div class="slide-no">73</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id51">
+    <hgroup>
+      <h3>Geocoding with Google APIs</h3>
+    </hgroup>
+    <article class="">
+      <p><a class="reference external" href="https://developers.google.com/maps/documentation/geocoding">https://developers.google.com/maps/documentation/geocoding</a></p>
 <div class="build container">
 <p>Open a python interpreter using our virtualenv:</p>
 <div class="highlight-python"><div class="highlight"><pre>(soupenv)$ python
@@ -1033,7 +1841,19 @@ the overhead required to use the protocol?</p>
 </pre></div>
 </div>
 </div>
-<p>You can do the same thing in reverse, supply latitude and longitude and get
+
+
+
+<div class="slide-no">74</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id52">
+    <hgroup>
+      <h3>Reverse Geocoding</h3>
+    </hgroup>
+    <article class="">
+      <p>You can do the same thing in reverse, supply latitude and longitude and get
 back address information:</p>
 <div class="build container">
 <div class="highlight-ipython"><div class="highlight"><pre><span class="gp">In [15]: </span><span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;status&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;OK&#39;</span><span class="p">:</span>
@@ -1048,36 +1868,69 @@ back address information:</p>
 <p>Notice that there may be a number of results returned, ordered from most
 specific to least.</p>
 </div>
-</div>
-<div class="section" id="mashing-it-up">
-<h3>Mashing It Up<a class="headerlink" href="#mashing-it-up" title="Permalink to this headline">¶</a></h3>
-<p>Google&#8217;s geocoding data is quite nice.</p>
+
+
+
+<div class="slide-no">75</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="mashing-it-up">
+    <hgroup>
+      <h3>Mashing It Up</h3>
+    </hgroup>
+    <article class="">
+      <p>Google's geocoding data is quite nice.</p>
 <div class="build container">
-<p>But it&#8217;s not in a format we can use directly to create a map</p>
+<p>But it's not in a format we can use directly to create a map</p>
 <p>For that we need <cite>geojson</cite></p>
 <p>Moreover, formatting the data for all those requests is going to get
 tedious.</p>
-<p>Luckily, people create <em>wrappers</em> for popular REST apis like google&#8217;s
+<p>Luckily, people create <em>wrappers</em> for popular REST apis like google's
 geocoding service.</p>
-<p>Once such wrapper is <a class="reference external" href="http://geocoder.readthedocs.org/en/latest/">geocoder</a>, which provides not only google&#8217;s service,
+<p>Once such wrapper is <a class="reference external" href="http://geocoder.readthedocs.org/en/latest/">geocoder</a>, which provides not only google's service,
 but many others under a single umbrella.</p>
 </div>
-<p>Install geocoder into your <code class="docutils literal"><span class="pre">soupenv</span></code> so that it&#8217;s available to use:</p>
+
+
+
+<div class="slide-no">76</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id53">
+    <hgroup>
+      <h3>Install <code class="docutils literal"><span class="pre">geocoder</span></code></h3>
+    </hgroup>
+    <article class="">
+      <p>Install geocoder into your <code class="docutils literal"><span class="pre">soupenv</span></code> so that it's available to use:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>soupenv<span class="o">)</span><span class="nv">$ </span>pip install geocoder
 </pre></div>
 </div>
 <div class="build container">
 <p>Our final step for tonight will be to geocode the results we have scraped
 from the inspection site.</p>
-<p>We&#8217;ll then convert that to <code class="docutils literal"><span class="pre">geojson</span></code>, insert our own properties and map
+<p>We'll then convert that to <code class="docutils literal"><span class="pre">geojson</span></code>, insert our own properties and map
 the results.</p>
-<p>Let&#8217;s begin by converting our script so that what we have so far is
+<p>Let's begin by converting our script so that what we have so far is
 contained in a generator function</p>
-<p>We&#8217;ll eventually sort our results and generate the top 10 or so for
+<p>We'll eventually sort our results and generate the top 10 or so for
 geocoding.</p>
 <p>Open up <code class="docutils literal"><span class="pre">mashup.py</span></code> and copy everthing in the <code class="docutils literal"><span class="pre">main</span></code> block.</p>
 </div>
-<p>Add a new function <code class="docutils literal"><span class="pre">result_generator</span></code> to the <code class="docutils literal"><span class="pre">mashup.py</span></code> script. Paste the
+
+
+
+<div class="slide-no">77</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id54">
+    <hgroup>
+      <h3>Make a Generator Function</h3>
+    </hgroup>
+    <article class="">
+      <p>Add a new function <code class="docutils literal"><span class="pre">result_generator</span></code> to the <code class="docutils literal"><span class="pre">mashup.py</span></code> script. Paste the
 code you copied from the <code class="docutils literal"><span class="pre">main</span></code> block and then update it a bit:</p>
 <div class="build highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">result_generator</span><span class="p">(</span><span class="n">count</span><span class="p">):</span>
     <span class="n">use_params</span> <span class="o">=</span> <span class="p">{</span>
@@ -1097,7 +1950,19 @@ code you copied from the <code class="docutils literal"><span class="pre">main</
         <span class="k">yield</span> <span class="n">metadata</span>
 </pre></div>
 </div>
-<p>Update the <code class="docutils literal"><span class="pre">main</span></code> block of your <code class="docutils literal"><span class="pre">mashup.py</span></code> script to use the new function:</p>
+
+
+
+<div class="slide-no">78</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id55">
+    <hgroup>
+      <h3>Test It Out</h3>
+    </hgroup>
+    <article class="">
+      <p>Update the <code class="docutils literal"><span class="pre">main</span></code> block of your <code class="docutils literal"><span class="pre">mashup.py</span></code> script to use the new function:</p>
 <div class="build container">
 <div class="highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">result_generator</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
@@ -1111,10 +1976,19 @@ number of results that print.</p>
 </pre></div>
 </div>
 </div>
-</div>
-<div class="section" id="add-geocoding">
-<h3>Add Geocoding<a class="headerlink" href="#add-geocoding" title="Permalink to this headline">¶</a></h3>
-<p>The API for geocoding with <code class="docutils literal"><span class="pre">geocoder</span></code> is the same for all providers.</p>
+
+
+
+<div class="slide-no">79</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="add-geocoding">
+    <hgroup>
+      <h3>Add Geocoding</h3>
+    </hgroup>
+    <article class="">
+      <p>The API for geocoding with <code class="docutils literal"><span class="pre">geocoder</span></code> is the same for all providers.</p>
 <div class="build container">
 <p>You give an address, it returns geocoded data.</p>
 <p>You provide latitude and longitude, it provides address data</p>
@@ -1126,11 +2000,23 @@ number of results that print.</p>
 </pre></div>
 </div>
 </div>
-<p>Let&#8217;s add a new function <code class="docutils literal"><span class="pre">get_geojson</span></code> to <code class="docutils literal"><span class="pre">mashup.py</span></code></p>
+
+
+
+<div class="slide-no">80</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id56">
+    <hgroup>
+      <h3>Adding The Function</h3>
+    </hgroup>
+    <article class="">
+      <p>Let's add a new function <code class="docutils literal"><span class="pre">get_geojson</span></code> to <code class="docutils literal"><span class="pre">mashup.py</span></code></p>
 <div class="build container">
 <p>It will</p>
 <ul class="build simple">
-<li>Take a result from our search as it&#8217;s input</li>
+<li>Take a result from our search as it's input</li>
 <li>Get geocoding data from google using the address of the restaurant</li>
 <li>Return the geojson representation of that data</li>
 </ul>
@@ -1144,7 +2030,19 @@ number of results that print.</p>
 </pre></div>
 </div>
 </div>
-<p>Next, update our <code class="docutils literal"><span class="pre">main</span></code> block to get the geojson for each result and print
+
+
+
+<div class="slide-no">81</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id57">
+    <hgroup>
+      <h3>Testing It Out</h3>
+    </hgroup>
+    <article class="">
+      <p>Next, update our <code class="docutils literal"><span class="pre">main</span></code> block to get the geojson for each result and print
 it:</p>
 <div class="build container">
 <div class="highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
@@ -1169,21 +2067,45 @@ it:</p>
 </pre></div>
 </div>
 </div>
-<p>The <code class="docutils literal"><span class="pre">properties</span></code> of our geojson records are filled with data we don&#8217;t really
+
+
+
+<div class="slide-no">82</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id58">
+    <hgroup>
+      <h3>Update Geojson Properties</h3>
+    </hgroup>
+    <article class="">
+      <p>The <code class="docutils literal"><span class="pre">properties</span></code> of our geojson records are filled with data we don't really
 care about.</p>
 <div class="build container">
-<p>Let&#8217;s replace that information with some of the metadata from our
+<p>Let's replace that information with some of the metadata from our
 inspection results.</p>
-<p>We&#8217;ll update our <code class="docutils literal"><span class="pre">get_geojson</span></code> function so that it:</p>
+<p>We'll update our <code class="docutils literal"><span class="pre">get_geojson</span></code> function so that it:</p>
 <ul class="build simple">
 <li>Builds a dictionary containing only the values we want from our
 inspection record.</li>
 <li>Converts list values to strings (geojson requires this)</li>
-<li>Replaces the &#8216;properties&#8217; of our geojson with this new data</li>
+<li>Replaces the 'properties' of our geojson with this new data</li>
 <li>Returns the modified geojson record</li>
 </ul>
 </div>
-<p>See if you can make the updates on your own.</p>
+
+
+
+<div class="slide-no">83</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id59">
+    <hgroup>
+      <h3>Write the Function</h3>
+    </hgroup>
+    <article class="">
+      <p>See if you can make the updates on your own.</p>
 <div class="build highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">get_geojson</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
     <span class="c"># ...</span>
     <span class="n">geocoded</span> <span class="o">=</span> <span class="n">geocoder</span><span class="o">.</span><span class="n">google</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
@@ -1202,19 +2124,43 @@ inspection record.</li>
     <span class="k">return</span> <span class="n">geojson</span>
 </pre></div>
 </div>
-<p>We are now generating a series of <code class="docutils literal"><span class="pre">geojson</span></code> <em>Feature</em> objects.</p>
+
+
+
+<div class="slide-no">84</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id60">
+    <hgroup>
+      <h3>Making Mappable Data</h3>
+    </hgroup>
+    <article class="">
+      <p>We are now generating a series of <code class="docutils literal"><span class="pre">geojson</span></code> <em>Feature</em> objects.</p>
 <div class="build container">
-<p>To map these objects, we&#8217;ll need to create a file which contains a
+<p>To map these objects, we'll need to create a file which contains a
 <code class="docutils literal"><span class="pre">geojson</span></code> <em>FeatureCollection</em>.</p>
 <p>The structure of such a collection looks like this:</p>
 <div class="highlight-json"><div class="highlight"><pre>{&#39;type&#39;: &#39;FeatureCollection&#39;, &#39;features&#39;: [...]}
 </pre></div>
 </div>
-<p>Let&#8217;s update our <code class="docutils literal"><span class="pre">main</span></code> function to append each feature to such a
+<p>Let's update our <code class="docutils literal"><span class="pre">main</span></code> function to append each feature to such a
 structure.</p>
 <p>Then we can dump the structure as <code class="docutils literal"><span class="pre">json</span></code> to a file.</p>
 </div>
-<p>In <code class="docutils literal"><span class="pre">mashup.py</span></code> update the <code class="docutils literal"><span class="pre">main</span></code> block like so:</p>
+
+
+
+<div class="slide-no">85</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id61">
+    <hgroup>
+      <h3>Update the Script</h3>
+    </hgroup>
+    <article class="">
+      <p>In <code class="docutils literal"><span class="pre">mashup.py</span></code> update the <code class="docutils literal"><span class="pre">main</span></code> block like so:</p>
 <div class="build container">
 <div class="highlight-python"><div class="highlight"><pre><span class="c"># add an import at the top:</span>
 <span class="kn">import</span> <span class="nn">json</span>
@@ -1234,10 +2180,19 @@ structure.</p>
 </div>
 <p>This script is available as <code class="docutils literal"><span class="pre">resources/session04/mashup_5.py</span></code></p>
 </div>
-</div>
-<div class="section" id="display-the-results">
-<h3>Display the Results<a class="headerlink" href="#display-the-results" title="Permalink to this headline">¶</a></h3>
-<p>Once the new file is written you are ready to display your results.</p>
+
+
+
+<div class="slide-no">86</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="display-the-results">
+    <hgroup>
+      <h3>Display the Results</h3>
+    </hgroup>
+    <article class="">
+      <p>Once the new file is written you are ready to display your results.</p>
 <div class="build container">
 <p>Open your web browser and go to <a class="reference external" href="http://geojson.io">http://geojson.io</a></p>
 <p>Then drag and drop the new file you wrote onto the map you see there.</p>
@@ -1245,24 +2200,41 @@ structure.</p>
 <a class="reference internal image-reference" href="../_images/geojson-io.png"><img alt="../_images/geojson-io.png" src="../_images/geojson-io.png" style="width: 75%;" /></a>
 </div>
 </div>
-</div>
-<div class="section" id="wrap-up">
-<h3>Wrap Up<a class="headerlink" href="#wrap-up" title="Permalink to this headline">¶</a></h3>
-<p>We&#8217;ve built a simple mashup combining data from different sources.</p>
+
+
+
+<div class="slide-no">87</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="wrap-up">
+    <hgroup>
+      <h3>Wrap Up</h3>
+    </hgroup>
+    <article class="">
+      <p>We've built a simple mashup combining data from different sources.</p>
 <div class="build container">
 <p>We scraped health inspection data from the King County government site.</p>
 <p>We geocoded that data.</p>
-<p>And we&#8217;ve displayed the results on a map.</p>
+<p>And we've displayed the results on a map.</p>
 <p>What other sources of data might we choose to combine?</p>
 <p>Check out <a class="reference external" href="http://www.programmableweb.com/apis/directory">programmable web</a>
 to see some of the possibilities</p>
 </div>
-</div>
-</div>
-<div class="section" id="homework">
-<h2>Homework<a class="headerlink" href="#homework" title="Permalink to this headline">¶</a></h2>
-<div class="left container">
-<p>For your homework this week, you&#8217;ll be polishing this mashup.</p>
+
+
+
+<div class="slide-no">88</div>
+
+
+    </article>
+  </slide>  <slide class="level-2" id="homework">
+    <hgroup>
+      <h2>Homework</h2>
+    </hgroup>
+    <article class="">
+      <div class="left container">
+<p>For your homework this week, you'll be polishing this mashup.</p>
 <div class="build container">
 <p>Begin by sorting the results of our search by the average score (can
 you do this and still use a generator for getting the geojson?).</p>
@@ -1279,14 +2251,24 @@ average, high score or most inspections:</p>
 <div class="highlight-python"><div class="highlight"><pre>(soupenv)$ python mashup.py highscore 25 reverse
 </pre></div>
 </div>
-<p>If you&#8217;re feeling particularly adventurous, see if you can use the
+<p>If you're feeling particularly adventurous, see if you can use the
 <a class="reference external" href="https://docs.python.org/2/library/argparse.html#module-argparse">argparse</a> module from the standard library to handle command line
 arguments</p>
 </div>
 </div>
-<div class="section" id="more-fun">
-<h3>More Fun<a class="headerlink" href="#more-fun" title="Permalink to this headline">¶</a></h3>
-<p>Next, try adding a bit of information to your map by setting the
+
+
+
+<div class="slide-no">89</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="more-fun">
+    <hgroup>
+      <h3>More Fun</h3>
+    </hgroup>
+    <article class="">
+      <p>Next, try adding a bit of information to your map by setting the
 <code class="docutils literal"><span class="pre">marker-color</span></code> property. This will display a marker with the provided
 css-style color (<code class="docutils literal"><span class="pre">#FF0000</span></code>)</p>
 <div class="build container">
@@ -1295,134 +2277,59 @@ sorting of the list.  Either vary the intensity of the color, or the hue.</p>
 <p>Finally, if you are feeling particularly frisky, you can update your script
 to automatically open a browser window with your map loaded on
 <em>geojson.io</em>.</p>
-<p>To do this, you&#8217;ll want to read about the <a class="reference external" href="https://docs.python.org/3/library/webbrowser.html">webbrowser</a> module from the
+<p>To do this, you'll want to read about the <a class="reference external" href="https://docs.python.org/3/library/webbrowser.html">webbrowser</a> module from the
 standard library.</p>
-<p>In addition, you&#8217;ll want to read up on using the URL parameters API for
+<p>In addition, you'll want to read up on using the URL parameters API for
 <em>geojson.io</em>.  Click on the <strong>help</strong> tab in the sidebar to view the
 information.</p>
 <p>You will also need to learn about how to properly quote special characters
 for a URL, using the <a class="reference external" href="https://docs.python.org/3/library/urllib.parse.html#urllib.parse.quote">urllib.parse</a> <code class="docutils literal"><span class="pre">quote</span></code> function.</p>
 </div>
-</div>
-<div class="section" id="submitting-your-work">
-<h3>Submitting Your Work<a class="headerlink" href="#submitting-your-work" title="Permalink to this headline">¶</a></h3>
-<p>Create a github repository to contain your mashup work. Start by populating it
+
+
+
+<div class="slide-no">90</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="submitting-your-work">
+    <hgroup>
+      <h3>Submitting Your Work</h3>
+    </hgroup>
+    <article class="">
+      <p>Create a github repository to contain your mashup work. Start by populating it
 with the script as we finished it today (mashup_5.py).</p>
 <p>As you implement the above features, commit early and commit often.</p>
-<p>When you&#8217;re ready for us to look it over, email a link to your repository to
+<p>When you're ready for us to look it over, email a link to your repository to
 Maria and I.</p>
-</div>
-</div>
-</div>
 
 
-          </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="../index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Session 04</a><ul>
-<li><a class="reference internal" href="#scraping-apis-and-mashups">Scraping, APIs and Mashups</a><ul>
-<li><a class="reference internal" href="#a-dilemma">A Dilemma</a></li>
-<li><a class="reference internal" href="#the-big-question">The Big Question</a></li>
-<li><a class="reference internal" href="#the-big-answer">The Big Answer</a></li>
-<li><a class="reference internal" href="#mashups">Mashups</a></li>
-<li><a class="reference internal" href="#data-sources">Data Sources</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#web-scraping">Web Scraping</a><ul>
-<li><a class="reference internal" href="#html">HTML</a></li>
-<li><a class="reference internal" href="#taming-the-mess">Taming the Mess</a></li>
-<li><a class="reference internal" href="#our-class-mashup">Our Class Mashup</a></li>
-<li><a class="reference internal" href="#fetching-search-results">Fetching Search Results</a></li>
-<li><a class="reference internal" href="#my-solution">My Solution</a></li>
-<li><a class="reference internal" href="#parse-the-results">Parse the Results</a></li>
-<li><a class="reference internal" href="#id1">My Solution</a></li>
-<li><a class="reference internal" href="#put-it-together">Put It Together</a></li>
-<li><a class="reference internal" href="#id2">My Solution</a></li>
-<li><a class="reference internal" href="#extracting-data">Extracting Data</a></li>
-<li><a class="reference internal" href="#parsing-restaurant-data">Parsing Restaurant Data</a></li>
-<li><a class="reference internal" href="#extracting-inspection-data">Extracting Inspection Data</a></li>
-<li><a class="reference internal" href="#break-time">Break Time</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#another-approach">Another Approach</a><ul>
-<li><a class="reference internal" href="#web-services">Web Services</a></li>
-<li><a class="reference internal" href="#json">JSON</a></li>
-<li><a class="reference internal" href="#json-in-python">JSON in Python</a></li>
-<li><a class="reference internal" href="#rest">REST</a></li>
-<li><a class="reference internal" href="#playing-with-rest">Playing With REST</a></li>
-<li><a class="reference internal" href="#mashing-it-up">Mashing It Up</a></li>
-<li><a class="reference internal" href="#add-geocoding">Add Geocoding</a></li>
-<li><a class="reference internal" href="#display-the-results">Display the Results</a></li>
-<li><a class="reference internal" href="#wrap-up">Wrap Up</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#homework">Homework</a><ul>
-<li><a class="reference internal" href="#more-fun">More Fun</a></li>
-<li><a class="reference internal" href="#submitting-your-work">Submitting Your Work</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="session03.html"
-                        title="previous chapter">Session 03</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="session05.html"
-                        title="next chapter">Session 05</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/presentations/session04.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-  <h3>Slides</h3>
-  <ul class="this-page-menu">
-    <li><a href="../.././slides/presentations/session04.html"
-           rel="nofollow">View as slides</a></li>
-  </ul>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
+<div class="slide-no">91</div>
+
+
+    </article>
+  </slide>
+
+
+    <slide class="thank-you-slide segue nobackground">
+    <aside class="gdbar right"><img src="../_static/logo_UW.png"></aside>
+    <article class="flexbox vleft auto-fadein">
+      <h2>Good Night!</h2>
+      <p>&nbsp;</p>
+    </article>
+    <p class="auto-fadein" data-config-contact>
+      <!-- populated from slide_config.json -->
     </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="session05.html" title="Session 05"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="session03.html" title="Session 03"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">UWPCE Python 200</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="index.html" >Course Presentations</a> &raquo;</li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &copy; Copyright 2012-2016, Cris Ewing.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
-    </div>
-  </body>
+  </slide>
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
 </html>

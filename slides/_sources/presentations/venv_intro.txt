@@ -20,9 +20,9 @@ Working with Virtual Environments
 
 .. rst-class:: large
 
-| For every package 
+| For every package
 | installed in the
-| system Python, the 
+| system Python, the
 | gods kill a kitten
 
 .. rst-class:: build
@@ -49,36 +49,43 @@ Why Virtual Environments?
 Creating a Venv
 ---------------
 
-Since version 3.3, Python has come with a built-in ``venv`` module.  This
-module provides a command you can use to create virtual environments:
-``pyvenv``
+Since version 3.3, Python has come with a built-in ``venv`` module.
 
 .. rst-class:: build
 .. container::
 
-    The basic usage for this command is as follows:
+    To use the module, you can run it using your Python 3 executable:
 
     .. code-block:: bash
-    
-        $ pyvenv /path/to/new/environment
+
+        $ python -m venv my_env
 
     On Windows you'll need something a bit different:
 
     .. code-block:: posh
-    
-        c:\Temp>c:\Python35\python -m venv myenv
+
+        c:\Temp>c:\Python35\python -m venv my_env
 
     Unless you have the Python executable in your path, in which case this:
 
     .. code-block:: posh
-    
-        c:\Temp>python -m venv myenv
 
+        c:\Temp>python -m venv my_env
+
+    .. note:: Your Python 3 executable may be ``python3``, please substitute
+              that if required
+
+    Depending on how you installed Python (and on your operating system) you
+    may also have a ``pyvenv`` command available in your PATH. You can use it like so:
+
+    .. code-block:: bash
+
+        $ pyvenv my_env
 
 .. nextslide::
 
 In any of these command forms, the name of the new virtual environment
-(``myenv``) is arbitrary.
+(``my_env``) is arbitrary.
 
 .. rst-class:: build
 .. container::
@@ -89,13 +96,17 @@ In any of these command forms, the name of the new virtual environment
     I also suggest that you keep your virtual environments *in the same
     directory* as the project code you are writing.
 
+    Be aware that ``venv`` can be sensitive to path names that contain spaces.
+    Please make sure that the entire path to your working directory does not
+    contain any spaces just to be safe.
+
 .. nextslide::
 
 Let's make one for demonstration purposes:
 
 .. code-block:: bash
 
-    $ pyvenv demoenv
+    $ python -m venv demoenv
     $ ls demoenv
     bin     include     lib     pyvenv.cfg
 
@@ -126,7 +137,7 @@ Every virtual environment you create contains an executable Python command.
     terminal, you'll see that it is not the one:
 
     .. container::
-    
+
         .. code-block:: bash
 
             $ which python
@@ -135,7 +146,7 @@ Every virtual environment you create contains an executable Python command.
         in powershell:
 
         .. code-block:: posh
-        
+
             $ gcm python
             ...
 

@@ -1,16 +1,41 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+Google IO 2012/2013 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahé <lukem@google.com>
+
+URL: https://code.google.com/p/io-2012-slides
+--><!DOCTYPE html>
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<html>
+<head>
+  <title>Supplementary Course Readings &mdash; Internet Programming with Python</title>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  
+  <link rel="stylesheet" media="all"
+        href="_static/theme/css/default.css">
+  <link rel="stylesheet" media="all"
+        href="_static/theme/css/hieroglyph.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)"
+        href="_static/theme/css/phone.css">
+
     
-    <title>Supplementary Course Readings &mdash; Internet Programming with Python</title>
+    <link rel="stylesheet" href="_static/custom.css"
+          type="text/css" />
     
-    <link rel="stylesheet" href="_static/pyramid.css" type="text/css" />
+
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
@@ -20,307 +45,65 @@
         HAS_SOURCE:  true
       };
     </script>
+
+    <script data-main="_static/js/slides"
+            src="_static/js/require-1.0.8.min.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
+    
     <link rel="top" title="Internet Programming with Python" href="index.html" />
-    <link rel="prev" title="Session 10" href="presentations/session10.html" />
-<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
-<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
-<!--[if lte IE 6]>
-<link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
-<![endif]-->
+    <link rel="prev" title="Session 10" href="presentations/session10.html" /> 
+</head>
+<body style="opacity: 0">
 
-  </head>
-  <body role="document">
-<div class="header">
-  <div class="logo">
-    <a href="index.html">
-      <img class="logo" src="_static/logo_UW.png" alt="Logo"/>
-    </a>
-  </div>
-</div>
+<slides class="layout-widescreen">
 
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="presentations/session10.html" title="Session 10"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">UWPCE Python 200</a> &raquo;</li> 
-      </ul>
-    </div>  
+  <slide class="title-slide segue nobackground">
+  <aside class="gdbar"><img src="../_static/logo_UW.png"></aside>
+  <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+  <hgroup class="auto-fadein">
+    <h1 data-config-title><!-- populated from slide_config.json --></h1>
+    <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+    <p data-config-presenter><!-- populated from slide_config.json --></p>
+  </hgroup>
+</slide>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <div class="section" id="supplementary-course-readings">
-<h1>Supplementary Course Readings<a class="headerlink" href="#supplementary-course-readings" title="Permalink to this headline">¶</a></h1>
-<span class="admonition-course-readings"></span><p>Web programming is a deep pool. There&#8217;s more to cover than a 10-session course
-could ever hope to accomplish. To that end, I&#8217;ve compiled a list of related
-readings that will support the information you&#8217;ll learn in class. Think of
-this as supplemental materials. You can read it at your leisure to help
-increase both the depth and breadth of your knowledge.</p>
-<p>The readings are organized like the class, by session and topic.</p>
-<div class="section" id="session-1-tcp-ip-and-sockets">
-<h2>Session 1 - TCP/IP and Sockets<a class="headerlink" href="#session-1-tcp-ip-and-sockets" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><a class="reference external" href="http://en.wikipedia.org/wiki/Internet_Protocol_Suite">Wikipedia - Internet Protocol Suite</a></li>
-<li><a class="reference external" href="http://www.garykessler.net/library/tcpip.html">Kessler - TCP/IP (sections 1 and 2)</a></li>
-<li><a class="reference external" href="http://en.wikipedia.org/wiki/Domain_Name_System">Wikipedia - Domain Name System</a></li>
-<li><a class="reference external" href="http://en.wikipedia.org/wiki/Network_socket">Wikipedia - Internet Sockets</a></li>
-<li><a class="reference external" href="http://en.wikipedia.org/wiki/Berkeley_sockets">Wikipedia - Berkeley socket interface</a></li>
-</ul>
-<p>If you want to know a bit more about the lower layers of the stack, you might
-find the following readings enlightening:</p>
-<p><strong>Transport Layer</strong></p>
-<ul class="simple">
-<li><a class="reference external" href="http://en.wikipedia.org/wiki/User_Datagram_Protocol">Wikipedia - Universal Datagram Protocol (UDP)</a></li>
-<li><a class="reference external" href="http://en.wikipedia.org/wiki/Transmission_Control_Protocol">Wikipedia - Transmission Control Protocol (TCP)</a></li>
-</ul>
-<p><strong>Internet Layer</strong></p>
-<ul class="simple">
-<li><a class="reference external" href="http://en.wikipedia.org/wiki/Internet_Protocol">Wikipedia - Internet Protocol (IP)</a></li>
-<li><a class="reference external" href="http://en.wikipedia.org/wiki/IPv4#Packet_structure">Wikipedia - IPv4 Packet Structure</a></li>
-<li><a class="reference external" href="http://en.wikipedia.org/wiki/IPv6_packet#Fixed_header">Wikipedia - IPv6 Packet Structure</a></li>
-</ul>
-<p><strong>Link Layer</strong></p>
-<ul class="simple">
-<li><a class="reference external" href="http://en.wikipedia.org/wiki/Link_Layer#Link_layer_protocols">Wikipedia - Link Layer Protocols</a></li>
-</ul>
-<p>In addition, you may find it interesting to take a look at ZeroMQ, a
-next-generation implementation of the socket concept built with parallel and
-networked computing in mind:</p>
-<ul class="simple">
-<li><a class="reference external" href="http://zguide.zeromq.org/py:all#Chapter-Basics">ZeroMQ Guide, Chapter 1</a></li>
-</ul>
-</div>
-<div class="section" id="session-2-web-protocols">
-<h2>Session 2 - Web Protocols<a class="headerlink" href="#session-2-web-protocols" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><a class="reference external" href="http://docs.python.org/2/library/internet.html">Python Standard Library Internet Protocols</a></li>
-<li>An introduction to the HTTP protocol: <a class="reference external" href="http://www.jmarshall.com/easy/http/">HTTP Made Really Easy</a></li>
-</ul>
-<p>Python offers a number of external libraries that offer extended support for
-covered web protocols, or support for protocols not covered in the Standard
-Library:</p>
-<ul class="simple">
-<li><a class="reference external" href="http://code.google.com/p/httplib2/">httplib2</a> - A comprehensive HTTP client library that supports many features
-left out of other HTTP libraries.</li>
-<li><a class="reference external" href="http://docs.python-requests.org/en/latest/">requests</a> - &#8221;... an Apache2 Licensed HTTP library, written in Python, for
-human beings.&#8221;</li>
-<li><a class="reference external" href="http://docs.paramiko.org/">paramiko</a> - &#8220;a module for python 2.5 or greater that implements the SSH2
-protocol for secure (encrypted and authenticated) connections to remote
-machines&#8221;</li>
-</ul>
-<p>For a historical perspective on how protocols can change (as well as how they
-remain unchanged) over time, skim these specifications for HTTP and SMTP:</p>
-<ul class="simple">
-<li><a class="reference external" href="http://www.w3.org/Protocols/HTTP/AsImplemented.html">HTTP/0.9</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/HTTP/HTTP2.html">HTTP - as defined in 1992</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc1945/rfc1945">Hypertext Transfer Protocol &#8211; HTTP/1.0</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616">Hypertext Transfer Protocol &#8211; HTTP/1.1</a></li>
-<li><a class="reference external" href="http://tools.ietf.org/html/rfc821">RFC 821 - SMTP (initial)</a></li>
-<li><a class="reference external" href="http://tools.ietf.org/html/rfc5321">RFC 5321 - SMTP (latest)</a></li>
-</ul>
-</div>
-<div class="section" id="session-3-cgi-and-wsgi">
-<h2>Session 3 - CGI and WSGI<a class="headerlink" href="#session-3-cgi-and-wsgi" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><a class="reference external" href="http://webpython.codepoint.net/cgi_tutorial">CGI tutorial</a> - Read the following sections: Hello World, Debugging, Form.
-Other sections optional. Follow along using CGIHTTPServer.</li>
-<li><a class="reference external" href="http://webpython.codepoint.net/wsgi_tutorial">WSGI tutorial</a> - Follow along using wsgiref.</li>
-<li><a class="reference external" href="http://docs.python.org/release/2.6.5/library/cgi.html">CGI module</a> - utilities for CGI scripts, mostly form and query string
-parsing</li>
-<li><a class="reference external" href="http://docs.python.org/release/2.6.5/library/urlparse.html">Parse URLS into components</a></li>
-<li><a class="reference external" href="http://docs.python.org/release/2.6.5/library/cgihttpserver.html">CGIHTTPServer</a> - python -m CGIHTTPServer</li>
-<li><a class="reference external" href="http://docs.python.org/release/2.6.5/library/wsgiref.html">WSGI Utilities and Reference implementation</a></li>
-<li><a class="reference external" href="http://www.python.org/dev/peps/pep-0333/">WSGI 1.0 specification</a></li>
-<li><a class="reference external" href="http://python.org/dev/peps/pep-3333/">WSGI 1.0.1 (Python 3 support)</a></li>
-<li><a class="reference external" href="http://hg.moinmo.in/moin/1.8/raw-file/tip/wiki/server/test.wsgi">test WSGI server, like cgi.test()</a></li>
-</ul>
-<p>For alternative introductions to WSGI, try these two sources. They are a bit
-more minimal and may be easier to comprehend off the bat.</p>
-<ul class="simple">
-<li><a class="reference external" href="http://lucumr.pocoo.org/2007/5/21/getting-started-with-wsgi/">Getting Started with WSGI</a> - by Armin Ronacher (really solid and quick!)</li>
-<li><a class="reference external" href="http://be.groovie.org/2005/10/07/wsgi_and_wsgi_middleware_is_easy.html">very minimal introduction to WSGI</a></li>
-</ul>
-</div>
-<div class="section" id="session-4-apis-and-mashups">
-<h2>Session 4 - APIs and Mashups<a class="headerlink" href="#session-4-apis-and-mashups" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Introduction">Introduction to HTML (from the Mozilla Developer Network)</a></li>
-<li><a class="reference external" href="http://en.wikipedia.org/wiki/Web_service">Wikipedia&#8217;s take on &#8216;Web Services&#8217;</a></li>
-<li><a class="reference external" href="http://www.xmlrpc.com/">xmlrpc overview</a></li>
-<li><a class="reference external" href="http://www.xmlrpc.com/spec">xmlrpc spec (short)</a></li>
-<li><a class="reference external" href="http://www.w3.org/TR/soap/">the SOAP specification</a></li>
-<li><a class="reference external" href="http://www.json.org/">json overview and spec (short)</a></li>
-<li><a class="reference external" href="http://tomayko.com/writings/rest-to-my-wife">How I Explained REST to My Wife (Tomayko 2004)</a></li>
-<li><a class="reference external" href="http://www.infoq.com/articles/rest-introduction">A Brief Introduction to REST (Tilkov 2007)</a></li>
-<li><a class="reference external" href="http://en.wikipedia.org/wiki/Representational_State_Transfer">Wikipedia on REST</a></li>
-<li><a class="reference external" href="http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm">Original REST disertation</a></li>
-<li><a class="reference external" href="http://www.slideshare.net/trilancer/why-hateoas-1547275">Why HATEOAS - *a simple case study on the often ignored REST constraint*</a></li>
-</ul>
-<p>Python offers a number of solid external libraries to support Web Services,
-both from the side of production and consumption:</p>
-<ul class="simple">
-<li><a class="reference external" href="http://www.crummy.com/software/BeautifulSoup/">BeautifulSoup</a> - &#8220;You didn&#8217;t write that awful page. You&#8217;re just trying to
-get some data out of it. Right now, you don&#8217;t really care what HTML is
-supposed to look like. Neither does this parser.&#8221;</li>
-<li><a class="reference external" href="http://docs.python-requests.org/en/latest/">requests</a> - HTTP for humans</li>
-<li><a class="reference external" href="http://code.google.com/p/httplib2/">httplib2</a> - A comprehensive HTTP client library that supports many features
-left out of other HTTP libraries.</li>
-<li><a class="reference external" href="https://github.com/arskom/rpclib">rpclib</a> - a simple, easily extendible soap library that provides several
-useful tools for creating, publishing and consuming soap web services</li>
-<li><a class="reference external" href="https://fedorahosted.org/suds/">Suds</a> - a lightweight SOAP python client for consuming Web Services.</li>
-<li><a class="reference external" href="https://github.com/benoitc/restkit/">restkit</a> - an HTTP resource kit for Python. It allows you to easily access
-to HTTP resource and build objects around it.</li>
-</ul>
-</div>
-<div class="section" id="session-5-mvc-applications-and-data-persistence">
-<h2>Session 5 - MVC Applications and Data Persistence<a class="headerlink" href="#session-5-mvc-applications-and-data-persistence" title="Permalink to this headline">¶</a></h2>
-<p>As we&#8217;ll be learning about Pyramid over the next three sessions, please take
-some time to read and digest some of the <a class="reference external" href="http://docs.pylonsproject.org/projects/pyramid/en/latest/index.html">copious documentation</a> for thie
-powerful framework.</p>
-<p>In particular, to cover the topics we address in this session you&#8217;ll want to
-read the following:</p>
-<ul class="simple">
-<li><a class="reference external" href="http://docs.pylonsproject.org/projects/pyramid/en/latest/api/config.html">Pyramid Configuration</a></li>
-<li><a class="reference external" href="http://docs.pylonsproject.org/projects/pyramid/en/latest/designdefense.html">Defending Pyramid&#8217;s Design</a></li>
-</ul>
-<p>You may also wish to read a bit about <a class="reference external" href="http://docs.sqlalchemy.org/en/rel_0_9/">SQLAlchemy</a>.  In particular you may
-want to work through the <a class="reference external" href="http://docs.sqlalchemy.org/en/rel_0_9/orm/tutorial.html">Object Relational Tutorial</a> to get a more complete
-understanding of how the SQLAlchemy ORM works.</p>
-</div>
-<div class="section" id="session-6-pyramid-views-renderers-and-forms">
-<h2>Session 6 - Pyramid Views, Renderers and Forms<a class="headerlink" href="#session-6-pyramid-views-renderers-and-forms" title="Permalink to this headline">¶</a></h2>
-<p>This week we&#8217;ll be focusing on the connection of an HTTP request to the code
-that handles that request using <a class="reference external" href="http://docs.pylonsproject.org/docs/pyramid/en/latest/narr/urldispatch.html">URL Dispatch</a>.  Quite a lot is possible with
-the Pyramid route system.  You may wish to read a bit more about it in one of
-the following documentation sections:</p>
-<ul class="simple">
-<li><a class="reference external" href="http://docs.pylonsproject.org/docs/pyramid/en/latest/narr/urldispatch.html#route-pattern-syntax">Route Pattern Syntax</a>
-discusses the syntax for pattern matching and extraction in Pyramid routes.</li>
-</ul>
-<p>In Pyramid, the code that handles requests is called <a class="reference external" href="http://docs.pylonsproject.org/projects/pyramid/en/1.5-branch/narr/views.html">a view</a>.</p>
-<p>A view passes data to <a class="reference external" href="http://docs.pylonsproject.org/projects/pyramid/en/1.5-branch/narr/renderers.html">a renderer</a>, which is responsible for turning the data
-into a response to send back.</p>
-<p>Getting information from a client to the server is generally handled by
-<a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Forms">HTML forms</a>. Working with forms in a framework like Pyramid can be
-facilitated by using a <em>form library</em> like <a class="reference external" href="http://wtforms.readthedocs.org/en/latest/">WTForms</a>.</p>
-<p>For layout and design, CSS will be your tool of choice. There is no better tool
-for learning CSS than trying things out, but you need a good reference to get
-started. You can learn a great deal from the <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/CSS">Mozilla Developer Network</a> CSS
-pages.  I also find <a class="reference external" href="http://alistapart.com">A List Apart</a> and <a class="reference external" href="http://www.smashingmagazine.com">Smashing Magazine</a> to be fantastic
-resources.</p>
-</div>
-<div class="section" id="sesstion-7-pyramid-authentication-and-deployment">
-<h2>Sesstion 7 - Pyramid Authentication and Deployment<a class="headerlink" href="#sesstion-7-pyramid-authentication-and-deployment" title="Permalink to this headline">¶</a></h2>
-<p>There are no special readings associated with this week.</p>
-</div>
-<div class="section" id="sessions-8-9-10-django">
-<h2>Sessions 8, 9, &amp; 10 - Django<a class="headerlink" href="#sessions-8-9-10-django" title="Permalink to this headline">¶</a></h2>
-<p>Though it&#8217;s way too much to read in any one sitting (or even in 10 or 20), the
-Django documentation is excellent and thorough. As a start, take a look at
-these sections:</p>
-<ul class="simple">
-<li><a class="reference external" href="https://docs.djangoproject.com/en/1.9/intro/overview/">Django at a Glance</a> - introduction to
-the concepts and execution of Django</li>
-<li><a class="reference external" href="https://docs.djangoproject.com/en/1.9/intro/install/">Quick Install Guide</a> - lightweight
-instructions on installing Django. Use Python 2.7.</li>
-<li><a class="reference external" href="https://docs.djangoproject.com/en/1.9/intro/tutorial01/">Django Tutorial</a>
-- The tutorial covers many of the same concepts we will in class. Go over it
-to re-enforce the lessons you learn</li>
-<li><a class="reference external" href="https://docs.djangoproject.com/en/1.9/topics/">Using Django</a> - far more
-in-depth information about core topics in Django. In particular, the
-installation instructions here can be helpful when you run into trouble.</li>
-</ul>
-<p>Bookmark the <a class="reference external" href="https://docs.djangoproject.com/en/1.9/">Django Documentation homepage</a>. It really is &#8220;everything you need
-to know about Django&#8221;</p>
-<p>When you have some time, read <a class="reference external" href="https://docs.djangoproject.com/en/dev/misc/design-philosophies/">Django Design Philosophies</a> - for some
-well-considered words on why Django is the way it is.</p>
-<p>Conversely, for some well-considered criticisms of Django and the way it is,
-read this in-depth comparison of SQLAlchemy and the Django ORM by the creator
-of Flask: <a class="reference external" href="http://lucumr.pocoo.org/2011/7/19/sqlachemy-and-you/">SQLAlchemy and You</a></p>
-<p>Or consider viewing <a class="reference external" href="http://www.youtube.com/watch?v=eN7h6ZbzMy0">this video</a>
-of a talk given at DjangoCon 2012 by Chris McDonough, one of the driving
-forces behind the Pyramid framework.</p>
-</div>
-</div>
+  
+    <slide class="title-slide segue nobackground admonition-course-readings level-1" id="supplementary-course-readings">
+    <hgroup>
+      <h1>Course Readings</h1>
+    </hgroup>
+    <article class="">
+      <p>This document contains no slides.</p>
 
 
-          </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Supplementary Course Readings</a><ul>
-<li><a class="reference internal" href="#session-1-tcp-ip-and-sockets">Session 1 - TCP/IP and Sockets</a></li>
-<li><a class="reference internal" href="#session-2-web-protocols">Session 2 - Web Protocols</a></li>
-<li><a class="reference internal" href="#session-3-cgi-and-wsgi">Session 3 - CGI and WSGI</a></li>
-<li><a class="reference internal" href="#session-4-apis-and-mashups">Session 4 - APIs and Mashups</a></li>
-<li><a class="reference internal" href="#session-5-mvc-applications-and-data-persistence">Session 5 - MVC Applications and Data Persistence</a></li>
-<li><a class="reference internal" href="#session-6-pyramid-views-renderers-and-forms">Session 6 - Pyramid Views, Renderers and Forms</a></li>
-<li><a class="reference internal" href="#sesstion-7-pyramid-authentication-and-deployment">Sesstion 7 - Pyramid Authentication and Deployment</a></li>
-<li><a class="reference internal" href="#sessions-8-9-10-django">Sessions 8, 9, &amp; 10 - Django</a></li>
-</ul>
-</li>
-</ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="presentations/session10.html"
-                        title="previous chapter">Session 10</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/readings.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-  <h3>Slides</h3>
-  <ul class="this-page-menu">
-    <li><a href="./slides/readings.html"
-           rel="nofollow">View as slides</a></li>
-  </ul>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
+<div class="slide-no">1</div>
+
+
+    </article>
+  </slide>
+
+
+    <slide class="thank-you-slide segue nobackground">
+    <aside class="gdbar right"><img src="../_static/logo_UW.png"></aside>
+    <article class="flexbox vleft auto-fadein">
+      <h2>Good Night!</h2>
+      <p>&nbsp;</p>
+    </article>
+    <p class="auto-fadein" data-config-contact>
+      <!-- populated from slide_config.json -->
     </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="presentations/session10.html" title="Session 10"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">UWPCE Python 200</a> &raquo;</li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &copy; Copyright 2012-2016, Cris Ewing.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
-    </div>
-  </body>
+  </slide>
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
 </html>

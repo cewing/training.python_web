@@ -1,16 +1,41 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+Google IO 2012/2013 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahé <lukem@google.com>
+
+URL: https://code.google.com/p/io-2012-slides
+--><!DOCTYPE html>
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<html>
+<head>
+  <title>Internet Programming with Python &mdash; Internet Programming with Python</title>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  
+  <link rel="stylesheet" media="all"
+        href="_static/theme/css/default.css">
+  <link rel="stylesheet" media="all"
+        href="_static/theme/css/hieroglyph.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)"
+        href="_static/theme/css/phone.css">
+
     
-    <title>Internet Programming with Python &mdash; Internet Programming with Python</title>
+    <link rel="stylesheet" href="_static/custom.css"
+          type="text/css" />
     
-    <link rel="stylesheet" href="_static/pyramid.css" type="text/css" />
+
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
@@ -20,233 +45,66 @@
         HAS_SOURCE:  true
       };
     </script>
+
+    <script data-main="_static/js/slides"
+            src="_static/js/require-1.0.8.min.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
+    
     <link rel="top" title="Internet Programming with Python" href="#" />
-    <link rel="next" title="Course Outline" href="outline.html" />
-<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
-<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
-<!--[if lte IE 6]>
-<link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
-<![endif]-->
+    <link rel="next" title="Course Outline" href="outline.html" /> 
+</head>
+<body style="opacity: 0">
 
-  </head>
-  <body role="document">
-<div class="header">
-  <div class="logo">
-    <a href="#">
-      <img class="logo" src="_static/logo_UW.png" alt="Logo"/>
-    </a>
-  </div>
-</div>
+<slides class="layout-widescreen">
 
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="outline.html" title="Course Outline"
-             accesskey="N">next</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">UWPCE Python 200</a> &raquo;</li> 
-      </ul>
-    </div>  
+  <slide class="title-slide segue nobackground">
+  <aside class="gdbar"><img src="../_static/logo_UW.png"></aside>
+  <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+  <hgroup class="auto-fadein">
+    <h1 data-config-title><!-- populated from slide_config.json --></h1>
+    <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+    <p data-config-presenter><!-- populated from slide_config.json --></p>
+  </hgroup>
+</slide>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <p><a class="reference external" href="http://www.pce.uw.edu/certificates/python-programming.html">UW PCE Certificate Program in Python Programming</a></p>
-<div class="section" id="internet-programming-with-python">
-<h1>Internet Programming with Python<a class="headerlink" href="#internet-programming-with-python" title="Permalink to this headline">¶</a></h1>
-<span class="admonition-internet-programming-with-python"></span><div class="sidebar">
-<p class="first sidebar-title">In This Class</p>
-<div class="toctree-wrapper last compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="outline.html">Course Outline</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="outline.html#session-1-tcp-ip-and-sockets">Session 1 - TCP/IP and Sockets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="outline.html#session-2-web-protocols">Session 2 - Web Protocols</a></li>
-<li class="toctree-l2"><a class="reference internal" href="outline.html#session-3-cgi-and-wsgi">Session 3 - CGI and WSGI</a></li>
-<li class="toctree-l2"><a class="reference internal" href="outline.html#session-4-apis-and-mashups">Session 4 - APIs and Mashups</a></li>
-<li class="toctree-l2"><a class="reference internal" href="outline.html#session-5-mvc-applications-and-data-persistence">Session 5 - MVC Applications and Data Persistence</a></li>
-<li class="toctree-l2"><a class="reference internal" href="outline.html#session-6-pyramid-views-renderers-and-forms">Session 6 - Pyramid Views, Renderers and Forms</a></li>
-<li class="toctree-l2"><a class="reference internal" href="outline.html#sesstion-7-pyramid-authentication-and-deployment">Sesstion 7 - Pyramid Authentication and Deployment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="outline.html#session-8-basic-django">Session 8 - Basic Django</a></li>
-<li class="toctree-l2"><a class="reference internal" href="outline.html#session-9-extending-django">Session 9 - Extending Django</a></li>
-<li class="toctree-l2"><a class="reference internal" href="outline.html#session-10-deploying-django">Session 10 - Deploying Django</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="presentations/index.html">Course Presentations</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="presentations/session01.html">Session 01</a></li>
-<li class="toctree-l2"><a class="reference internal" href="presentations/session02.html">Session 02</a></li>
-<li class="toctree-l2"><a class="reference internal" href="presentations/session03.html">Session 03</a></li>
-<li class="toctree-l2"><a class="reference internal" href="presentations/session04.html">Session 04</a></li>
-<li class="toctree-l2"><a class="reference internal" href="presentations/session05.html">Session 05</a></li>
-<li class="toctree-l2"><a class="reference internal" href="presentations/session06.html">Session 06</a></li>
-<li class="toctree-l2"><a class="reference internal" href="presentations/session07.html">Session 07</a></li>
-<li class="toctree-l2"><a class="reference internal" href="presentations/session08.html">Session 08</a></li>
-<li class="toctree-l2"><a class="reference internal" href="presentations/session09.html">Session 09</a></li>
-<li class="toctree-l2"><a class="reference internal" href="presentations/session10.html">Session 10</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="readings.html">Supplementary Course Readings</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="readings.html#session-1-tcp-ip-and-sockets">Session 1 - TCP/IP and Sockets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readings.html#session-2-web-protocols">Session 2 - Web Protocols</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readings.html#session-3-cgi-and-wsgi">Session 3 - CGI and WSGI</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readings.html#session-4-apis-and-mashups">Session 4 - APIs and Mashups</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readings.html#session-5-mvc-applications-and-data-persistence">Session 5 - MVC Applications and Data Persistence</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readings.html#session-6-pyramid-views-renderers-and-forms">Session 6 - Pyramid Views, Renderers and Forms</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readings.html#sesstion-7-pyramid-authentication-and-deployment">Sesstion 7 - Pyramid Authentication and Deployment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="readings.html#sessions-8-9-10-django">Sessions 8, 9, &amp; 10 - Django</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-<p>Winter Term, 2016 (10 sessions)</p>
-<p>Tuesdays, 6-9 pm, January 5 - March 8</p>
-<div class="section" id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<p>This course emphasizes network-based programming and Web applications, how they
-work and how to program them in Python. Explore the underlying principles and
-their expression in the Python libraries. Learn contrasting approaches in
-creating applications: programming with the low-level libraries versus using
-highly integrated frameworks</p>
-</div>
-<div class="section" id="prerequisites">
-<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
-<p>To attend this course you should have a working knowledge of the basic syntax
-and structures of the Python programming language. You will also need to be
-comfortable working at the command line to navigate a file system, create and
-delete files, and execute commands. Finally, you should have some basic
-knowledge of HTML.</p>
-</div>
-<div class="section" id="requirements">
-<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
-<p>This workshop does not provide a computer laboratory. You will have to have a
-portable computer in order to participate. Network access is provided, but you
-will need to know how to operate the network settings for your computer.</p>
-<p>Your computer must have Python version 3.4 or later installed. No additional
-libraries will be required, but we will be installing some as the workshop
-progresses.</p>
-<p>To keep clean and isolated development environments, we will make use in class
-of the <a class="reference external" href="https://docs.python.org/3/library/venv.html">venv</a> module, a standard library module used to create and maintain
-lightweight sandbox environments.</p>
-</div>
-<div class="section" id="what-to-expect">
-<h2>What to Expect<a class="headerlink" href="#what-to-expect" title="Permalink to this headline">¶</a></h2>
-<p>This course will cover the fundamental concepts of networked programming in
-Python. You&#8217;ll learn everything, starting from the sockets that enable
-communications between processes and machines and the basic protocols that
-govern this communication, right up to the full-stack frameworks that enable
-developers to build rich applications efficiently.</p>
-<p>Along the way, you&#8217;ll learn through a combination of lecture and activity.
-Historical information will be combined with exercises designed to help you
-learn the Pythonic way to create programs that interact with each-other across
-networks. Each module will include reading lists for more information.
-Homework assignments will allow you to dive more deeply into the concepts
-introduced in class.</p>
-<p><strong>This class is</strong> intended to give students a solid grounding in the
-fundamentals of network programming. You will gain a basic understanding of a
-broad range of Pythonic tools and learn to choose the right tool for a given
-task.</p>
-<p><strong>This class is not</strong> an in-depth course in any single Python web framework.
-The intention is to give you the information needed to select the right
-framework for your task. To that end, you will learn the basics of the
-frameworks covered as well as the choices and compromises that shape them.</p>
-</div>
-<div class="section" id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="https://docs.python.org/3/">Python 3 Documentation</a>: Complete
-documentation of the language.</p>
-<p><a class="reference external" href="https://docs.python.org/3/reference/">Python 3 Language Reference</a>: Terse
-and complete reference to the language structures of Python 3.</p>
-<p>Python Standard Library -
-<a class="reference external" href="https://docs.python.org/3/library/internet.html">Internet Protocols and Support</a>:
-All the supported internet protocols as implemented in Python.</p>
-<p>Python Module of the Week (<a class="reference external" href="https://pymotw.com/2/contents.html">py2</a>, <a class="reference external" href="https://pymotw.com/3/">py3</a>): A fantastic reference for many
-modules in Python 2 and 3. Examples and usage are provided throughout. Don&#8217;t be
-shy about trying the Python 2 docs in Python 3, often they will work still.</p>
-<p><a class="reference external" href="presentations/index.html">Lecture Presentations</a>: Slides from the course
-presentations.</p>
-</div>
-<div class="section" id="search">
-<h2>Search<a class="headerlink" href="#search" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><a class="reference internal" href="search.html"><span>Search Page</span></a></li>
-</ul>
-</div>
-</div>
+  
+    <slide class="title-slide segue nobackground admonition-internet-programming-with-python level-1" id="internet-programming-with-python">
+    <hgroup>
+      <h1>Internet Programming with Python</h1>
+    </hgroup>
+    <article class="">
+      <div class="large center container">
+No Content</div>
 
 
-          </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="#">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Internet Programming with Python</a><ul>
-<li><a class="reference internal" href="#overview">Overview</a></li>
-<li><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
-<li><a class="reference internal" href="#requirements">Requirements</a></li>
-<li><a class="reference internal" href="#what-to-expect">What to Expect</a></li>
-<li><a class="reference internal" href="#references">References</a></li>
-<li><a class="reference internal" href="#search">Search</a></li>
-</ul>
-</li>
-</ul>
 
-  <h4>Next topic</h4>
-  <p class="topless"><a href="outline.html"
-                        title="next chapter">Course Outline</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/index.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-  <h3>Slides</h3>
-  <ul class="this-page-menu">
-    <li><a href="./slides/index.html"
-           rel="nofollow">View as slides</a></li>
-  </ul>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
+<div class="slide-no">1</div>
+
+
+    </article>
+  </slide>
+
+
+    <slide class="thank-you-slide segue nobackground">
+    <aside class="gdbar right"><img src="../_static/logo_UW.png"></aside>
+    <article class="flexbox vleft auto-fadein">
+      <h2>Good Night!</h2>
+      <p>&nbsp;</p>
+    </article>
+    <p class="auto-fadein" data-config-contact>
+      <!-- populated from slide_config.json -->
     </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="outline.html" title="Course Outline"
-             >next</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">UWPCE Python 200</a> &raquo;</li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &copy; Copyright 2012-2016, Cris Ewing.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
-    </div>
-  </body>
+  </slide>
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
 </html>
