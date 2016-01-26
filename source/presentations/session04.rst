@@ -1193,7 +1193,7 @@ SOAP extends XML-RPC in a couple of useful ways:
 
     **I HATE SOAP**
 
-.. _fork of the library`: https://github.com/cackharot/suds-py3
+.. _fork of the library: https://github.com/cackharot/suds-py3
 
 .. nextslide:: What about WSDL?
 
