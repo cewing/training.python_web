@@ -376,7 +376,7 @@ We'll start by writing a function ``get_inspection_page``
 
     * It will accept keyword arguments for each of the possible query values
     * It will build a dictionary of request query parameters from incoming
-      keywords
+      keywords, using INSPECTION_PARAMS as a template
     * It will make a request to the inspection service search page using this
       query
     * It will return the encoded content and the encoding used as a tuple
@@ -713,19 +713,18 @@ print the first of the many divs that match):
 Parsing Restaurant Data
 -----------------------
 
-Now that we have the records we want, we need to parse them. We want to preserve:
+Now that we have the records we want, we need to parse them.
 
 .. rst-class:: build
 .. container::
 
-    We'll start by parsing out the information about the restaurant themselves:
+    We'll start by extracting information about the restaurants:
 
     .. rst-class:: build
 
     * Name
     * Address
     * Location
-    * ...
 
     How is this information contained in our records?
 
@@ -1133,7 +1132,7 @@ interaction over a network" - W3C
 
 .. nextslide:: Early Web Services
 
-RSS is one of the earliest forms of Web Services
+**RSS** is one of the earliest forms of Web Services
 
 .. rst-class:: build
 .. container::
@@ -1162,10 +1161,11 @@ procedures and pass arguments.
     * Calls are made via HTTP GET, by passing an XML document
     * Returns from a call are sent to the client in XML
 
-    In python, you can access XML-RPC services using `xmlrpclib`_ from the
-    standard library
+    In python, you can access XML-RPC services using `xmlrpc`_ from the
+    standard library. It has two libraries, ``xmlrpc.client`` and
+    ``xmlrpc.server``
 
-.. _xmlrpclib: https://docs.python.org/2/library/xmlrpclib.html
+.. _xmlrpc: https://docs.python.org/3.5/library/xmlrpc.html
 
 .. nextslide:: SOAP
 
@@ -1189,22 +1189,156 @@ SOAP extends XML-RPC in a couple of useful ways:
     * The best-known and best-supported module available is **Suds**
     * The homepage is https://fedorahosted.org/suds/
     * It can be installed using ``easy_install`` or ``pip install``
-    * But it hasn't been updated since Sept. 2010.
+    * A `fork of the library`_ compatible with Python 3 does exist
 
-    So we're going to move on
+    **I HATE SOAP**
 
-.. nextslide:: If Not XML, Then What?
+.. _fork of the library`: https://github.com/cackharot/suds-py3
 
-XML is a pretty inefficient medium for transmitting data.  There's a lot of
-extra characters transmitted that lack any meaning.
+.. nextslide:: What about WSDL?
 
-.. rst-class:: build large centered
+SOAP was invented in part to provide completely machine-readable
+interoperability.
 
-**Let's Use JSON**
+.. rst-class:: build
+.. container::
+
+    *Does that really work in real life?*
+
+    .. rst-class:: centered
+
+    **Hardly ever**
+
+    Another reason was to provide extensibility via custom types
+
+    *Does that really work in real life?*
+
+    .. rst-class:: centered
+
+    **Hardly ever**
+
+.. nextslide:: I have to write XML?
+
+In addition, XML is a pretty inefficient medium for transmitting data.  There's
+a lot of extra characters transmitted that lack any meaning.
+
+.. code-block:: xml
+
+    <?xml version="1.0"?>
+    <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
+      <soap:Header>
+      </soap:Header>
+      <soap:Body>
+        <m:GetStockPrice xmlns:m="http://www.example.org/stock/Surya">
+          <m:StockName>IBM</m:StockName>
+        </m:GetStockPrice>
+      </soap:Body>
+    </soap:Envelope>
+
+.. nextslide:: Why Do All The Work?
+
+So, if neither of the original goals is really achieved by using SOAP
+
+.. rst-class:: build
+.. container::
+
+    And if the transmission medium is too bloated to use
+
+    why pay all the overhead required to use the protocol?
+
+    Is there another way we could consider approaching the problem?
+
+    .. rst-class:: centered
+
+    **Enter REST**
 
 
-JSON
+REST
 ----
+
+.. rst-class:: centered
+
+**Representational State Transfer**
+
+.. rst-class:: build
+.. container::
+
+    .. rst-class:: build
+
+    * Originally described by Roy T. Fielding (worth reading)
+    * Use HTTP for what it can do
+    * Read more in `RESTful Web Services <http://www.crummy.com/writing/RESTful-Web-Services/>`_\*
+
+    \* Seriously. Buy it and read it
+
+.. nextslide:: A Comparison
+
+The XML-RCP/SOAP way:
+
+.. rst-class:: build
+
+* POST /getComment HTTP/1.1
+* POST /getComments HTTP/1.1
+* POST /addComment HTTP/1.1
+* POST /editComment HTTP/1.1
+* POST /deleteComment HTTP/1.1
+
+.. rst-class:: build
+.. container::
+
+    The RESTful way:
+
+    .. rst-class:: build
+
+    * GET /comment/<id> HTTP/1.1
+    * GET /comment HTTP/1.1
+    * POST /comment HTTP/1.1
+    * PUT /comment/<id> HTTP/1.1
+    * DELETE /comment/<id> HTTP/1.1
+
+
+.. nextslide:: ROA
+
+REST is a **Resource Oriented Architecture**
+
+.. rst-class:: build
+.. container::
+
+    The URL represents the *resource* we are working with
+
+    The HTTP Method indicates the ``action`` to be taken
+
+    The HTTP Code returned tells us the ``result`` (whether success or failure)
+
+.. nextslide:: HTTP Codes Revisited
+
+.. rst-class:: build
+.. container::
+
+    POST /comment HTTP/1.1  (creating a new comment):
+
+    .. rst-class:: build
+
+    * Success: ``HTTP/1.1 201 Created``
+    * Failure (unauthorized): ``HTTP/1.1 401 Unauthorized``
+    * Failure (NotImplemented): ``HTTP/1.1 405 Not Allowed``
+    * Failure (ValueError): ``HTTP/1.1 406 Not Acceptable``
+
+    PUT /comment/<id> HTTP/1.1 (edit comment):
+
+    .. rst-class:: build
+
+    * Success: ``HTTP/1.1 200 OK``
+    * Failure: ``HTTP/1.1 409 Conflict``
+
+    DELETE /comment/<id> HTTP/1.1 (delete comment):
+
+    .. rst-class:: build
+
+    * Success: ``HTTP/1.1 204 No Content``
+
+REST uses JSON
+--------------
 
 JavaScript Object Notation:
 
@@ -1312,127 +1446,6 @@ the json module also supports reading and writing to *file-like objects* via
     *file-like*
 
     This usage can be much more memory-friendly with large files/sources
-
-.. nextslide:: What about WSDL?
-
-SOAP was invented in part to provide completely machine-readable
-interoperability.
-
-.. rst-class:: build
-.. container::
-
-    *Does that really work in real life?*
-
-    .. rst-class:: centered
-
-    Hardly ever
-
-    Another reason was to provide extensibility via custom types
-
-    *Does that really work in real life?*
-
-    .. rst-class:: centered
-
-    Hardly ever
-
-.. nextslide:: Why Do All The Work?
-
-So, if neither of these goals is really achieved by using SOAP, why pay all
-the overhead required to use the protocol?
-
-.. rst-class:: build
-.. container::
-
-    Is there another way we could consider approaching the problem?
-
-    .. rst-class:: centered
-
-    **Enter REST**
-
-
-REST
-----
-
-.. rst-class:: centered
-
-**Representational State Transfer**
-
-.. rst-class:: build
-.. container::
-
-    .. rst-class:: build
-
-    * Originally described by Roy T. Fielding (worth reading)
-    * Use HTTP for what it can do
-    * Read more in `RESTful Web Services <http://www.crummy.com/writing/RESTful-Web-Services/>`_\*
-
-    \* Seriously. Buy it and read it
-
-.. nextslide:: A Comparison
-
-The XML-RCP/SOAP way:
-
-.. rst-class:: build
-
-* POST /getComment HTTP/1.1
-* POST /getComments HTTP/1.1
-* POST /addComment HTTP/1.1
-* POST /editComment HTTP/1.1
-* POST /deleteComment HTTP/1.1
-
-.. rst-class:: build
-.. container::
-
-    The RESTful way:
-
-    .. rst-class:: build
-
-    * GET /comment/<id> HTTP/1.1
-    * GET /comment HTTP/1.1
-    * POST /comment HTTP/1.1
-    * PUT /comment/<id> HTTP/1.1
-    * DELETE /comment/<id> HTTP/1.1
-
-
-.. nextslide:: ROA
-
-REST is a **Resource Oriented Architecture**
-
-.. rst-class:: build
-.. container::
-
-    The URL represents the *resource* we are working with
-
-    The HTTP Method indicates the ``action`` to be taken
-
-    The HTTP Code returned tells us the ``result`` (whether success or failure)
-
-.. nextslide:: HTTP Codes Revisited
-
-.. rst-class:: build
-.. container::
-
-    POST /comment HTTP/1.1  (creating a new comment):
-
-    .. rst-class:: build
-
-    * Success: ``HTTP/1.1 201 Created``
-    * Failure (unauthorized): ``HTTP/1.1 401 Unauthorized``
-    * Failure (NotImplemented): ``HTTP/1.1 405 Not Allowed``
-    * Failure (ValueError): ``HTTP/1.1 406 Not Acceptable``
-
-    PUT /comment/<id> HTTP/1.1 (edit comment):
-
-    .. rst-class:: build
-
-    * Success: ``HTTP/1.1 200 OK``
-    * Failure: ``HTTP/1.1 409 Conflict``
-
-    DELETE /comment/<id> HTTP/1.1 (delete comment):
-
-    .. rst-class:: build
-
-    * Success: ``HTTP/1.1 204 No Content``
 
 
 Playing With REST
