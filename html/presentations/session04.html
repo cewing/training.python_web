@@ -298,7 +298,7 @@ provides:</p>
 <ul class="build simple">
 <li>It will accept keyword arguments for each of the possible query values</li>
 <li>It will build a dictionary of request query parameters from incoming
-keywords</li>
+keywords, using INSPECTION_PARAMS as a template</li>
 <li>It will make a request to the inspection service search page using this
 query</li>
 <li>It will return the encoded content and the encoding used as a tuple</li>
@@ -540,14 +540,13 @@ print the first of the many divs that match):</p>
 </div>
 <div class="section" id="parsing-restaurant-data">
 <h3>Parsing Restaurant Data<a class="headerlink" href="#parsing-restaurant-data" title="Permalink to this headline">¶</a></h3>
-<p>Now that we have the records we want, we need to parse them. We want to preserve:</p>
+<p>Now that we have the records we want, we need to parse them.</p>
 <div class="build container">
-<p>We&#8217;ll start by parsing out the information about the restaurant themselves:</p>
+<p>We&#8217;ll start by extracting information about the restaurants:</p>
 <ul class="build simple">
 <li>Name</li>
 <li>Address</li>
 <li>Location</li>
-<li>...</li>
 </ul>
 <p>How is this information contained in our records?</p>
 </div>
@@ -826,7 +825,7 @@ interaction over a network&#8221; - W3C</p>
 <li>provides a defined set of calls</li>
 <li>returns structured data</li>
 </ul>
-<p>RSS is one of the earliest forms of Web Services</p>
+<p><strong>RSS</strong> is one of the earliest forms of Web Services</p>
 <div class="build container">
 <p>A single web-based <em>endpoint</em> provides a dynamically updated listing of
 content</p>
@@ -841,8 +840,9 @@ procedures and pass arguments.</p>
 <li>Calls are made via HTTP GET, by passing an XML document</li>
 <li>Returns from a call are sent to the client in XML</li>
 </ul>
-<p>In python, you can access XML-RPC services using <a class="reference external" href="https://docs.python.org/2/library/xmlrpclib.html">xmlrpclib</a> from the
-standard library</p>
+<p>In python, you can access XML-RPC services using <a class="reference external" href="https://docs.python.org/3.5/library/xmlrpc.html">xmlrpc</a> from the
+standard library. It has two libraries, <code class="docutils literal"><span class="pre">xmlrpc.client</span></code> and
+<code class="docutils literal"><span class="pre">xmlrpc.server</span></code></p>
 </div>
 <p>SOAP extends XML-RPC in a couple of useful ways:</p>
 <ul class="build simple">
@@ -857,16 +857,97 @@ namespaces</li>
 <li>The best-known and best-supported module available is <strong>Suds</strong></li>
 <li>The homepage is <a class="reference external" href="https://fedorahosted.org/suds/">https://fedorahosted.org/suds/</a></li>
 <li>It can be installed using <code class="docutils literal"><span class="pre">easy_install</span></code> or <code class="docutils literal"><span class="pre">pip</span> <span class="pre">install</span></code></li>
-<li>But it hasn&#8217;t been updated since Sept. 2010.</li>
+<li>A <a class="reference external" href="https://github.com/cackharot/suds-py3">fork of the library</a> compatible with Python 3 does exist</li>
 </ul>
-<p>So we&#8217;re going to move on</p>
+<p><strong>I HATE SOAP</strong></p>
 </div>
-<p>XML is a pretty inefficient medium for transmitting data.  There&#8217;s a lot of
-extra characters transmitted that lack any meaning.</p>
-<p class="build large centered"><strong>Let&#8217;s Use JSON</strong></p>
+<p>SOAP was invented in part to provide completely machine-readable
+interoperability.</p>
+<div class="build container">
+<p><em>Does that really work in real life?</em></p>
+<p class="centered"><strong>Hardly ever</strong></p>
+<p>Another reason was to provide extensibility via custom types</p>
+<p><em>Does that really work in real life?</em></p>
+<p class="centered"><strong>Hardly ever</strong></p>
 </div>
-<div class="section" id="json">
-<h3>JSON<a class="headerlink" href="#json" title="Permalink to this headline">¶</a></h3>
+<p>In addition, XML is a pretty inefficient medium for transmitting data.  There&#8217;s
+a lot of extra characters transmitted that lack any meaning.</p>
+<div class="highlight-xml"><div class="highlight"><pre><span class="cp">&lt;?xml version=&quot;1.0&quot;?&gt;</span>
+<span class="nt">&lt;soap:Envelope</span> <span class="na">xmlns:soap=</span><span class="s">&quot;http://www.w3.org/2003/05/soap-envelope&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;soap:Header&gt;</span>
+  <span class="nt">&lt;/soap:Header&gt;</span>
+  <span class="nt">&lt;soap:Body&gt;</span>
+    <span class="nt">&lt;m:GetStockPrice</span> <span class="na">xmlns:m=</span><span class="s">&quot;http://www.example.org/stock/Surya&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;m:StockName&gt;</span>IBM<span class="nt">&lt;/m:StockName&gt;</span>
+    <span class="nt">&lt;/m:GetStockPrice&gt;</span>
+  <span class="nt">&lt;/soap:Body&gt;</span>
+<span class="nt">&lt;/soap:Envelope&gt;</span>
+</pre></div>
+</div>
+<p>So, if neither of the original goals is really achieved by using SOAP</p>
+<div class="build container">
+<p>And if the transmission medium is too bloated to use</p>
+<p>why pay all the overhead required to use the protocol?</p>
+<p>Is there another way we could consider approaching the problem?</p>
+<p class="centered"><strong>Enter REST</strong></p>
+</div>
+</div>
+<div class="section" id="rest">
+<h3>REST<a class="headerlink" href="#rest" title="Permalink to this headline">¶</a></h3>
+<p class="centered"><strong>Representational State Transfer</strong></p>
+<div class="build container">
+<ul class="build simple">
+<li>Originally described by Roy T. Fielding (worth reading)</li>
+<li>Use HTTP for what it can do</li>
+<li>Read more in <a class="reference external" href="http://www.crummy.com/writing/RESTful-Web-Services/">RESTful Web Services</a>*</li>
+</ul>
+<p>* Seriously. Buy it and read it</p>
+</div>
+<p>The XML-RCP/SOAP way:</p>
+<ul class="build simple">
+<li>POST /getComment HTTP/1.1</li>
+<li>POST /getComments HTTP/1.1</li>
+<li>POST /addComment HTTP/1.1</li>
+<li>POST /editComment HTTP/1.1</li>
+<li>POST /deleteComment HTTP/1.1</li>
+</ul>
+<div class="build container">
+<p>The RESTful way:</p>
+<ul class="build simple">
+<li>GET /comment/&lt;id&gt; HTTP/1.1</li>
+<li>GET /comment HTTP/1.1</li>
+<li>POST /comment HTTP/1.1</li>
+<li>PUT /comment/&lt;id&gt; HTTP/1.1</li>
+<li>DELETE /comment/&lt;id&gt; HTTP/1.1</li>
+</ul>
+</div>
+<p>REST is a <strong>Resource Oriented Architecture</strong></p>
+<div class="build container">
+<p>The URL represents the <em>resource</em> we are working with</p>
+<p>The HTTP Method indicates the <code class="docutils literal"><span class="pre">action</span></code> to be taken</p>
+<p>The HTTP Code returned tells us the <code class="docutils literal"><span class="pre">result</span></code> (whether success or failure)</p>
+</div>
+<div class="build container">
+<p>POST /comment HTTP/1.1  (creating a new comment):</p>
+<ul class="build simple">
+<li>Success: <code class="docutils literal"><span class="pre">HTTP/1.1</span> <span class="pre">201</span> <span class="pre">Created</span></code></li>
+<li>Failure (unauthorized): <code class="docutils literal"><span class="pre">HTTP/1.1</span> <span class="pre">401</span> <span class="pre">Unauthorized</span></code></li>
+<li>Failure (NotImplemented): <code class="docutils literal"><span class="pre">HTTP/1.1</span> <span class="pre">405</span> <span class="pre">Not</span> <span class="pre">Allowed</span></code></li>
+<li>Failure (ValueError): <code class="docutils literal"><span class="pre">HTTP/1.1</span> <span class="pre">406</span> <span class="pre">Not</span> <span class="pre">Acceptable</span></code></li>
+</ul>
+<p>PUT /comment/&lt;id&gt; HTTP/1.1 (edit comment):</p>
+<ul class="build simple">
+<li>Success: <code class="docutils literal"><span class="pre">HTTP/1.1</span> <span class="pre">200</span> <span class="pre">OK</span></code></li>
+<li>Failure: <code class="docutils literal"><span class="pre">HTTP/1.1</span> <span class="pre">409</span> <span class="pre">Conflict</span></code></li>
+</ul>
+<p>DELETE /comment/&lt;id&gt; HTTP/1.1 (delete comment):</p>
+<ul class="build simple">
+<li>Success: <code class="docutils literal"><span class="pre">HTTP/1.1</span> <span class="pre">204</span> <span class="pre">No</span> <span class="pre">Content</span></code></li>
+</ul>
+</div>
+</div>
+<div class="section" id="rest-uses-json">
+<h3>REST uses JSON<a class="headerlink" href="#rest-uses-json" title="Permalink to this headline">¶</a></h3>
 <p>JavaScript Object Notation:</p>
 <div class="build container">
 <ul class="build simple">
@@ -938,75 +1019,6 @@ extra characters transmitted that lack any meaning.</p>
 <p>Remember duck-typing. Anything with a <code class="docutils literal"><span class="pre">.write</span></code> and a <code class="docutils literal"><span class="pre">.read</span></code> method is
 <em>file-like</em></p>
 <p>This usage can be much more memory-friendly with large files/sources</p>
-</div>
-<p>SOAP was invented in part to provide completely machine-readable
-interoperability.</p>
-<div class="build container">
-<p><em>Does that really work in real life?</em></p>
-<p class="centered">Hardly ever</p>
-<p>Another reason was to provide extensibility via custom types</p>
-<p><em>Does that really work in real life?</em></p>
-<p class="centered">Hardly ever</p>
-</div>
-<p>So, if neither of these goals is really achieved by using SOAP, why pay all
-the overhead required to use the protocol?</p>
-<div class="build container">
-<p>Is there another way we could consider approaching the problem?</p>
-<p class="centered"><strong>Enter REST</strong></p>
-</div>
-</div>
-<div class="section" id="rest">
-<h3>REST<a class="headerlink" href="#rest" title="Permalink to this headline">¶</a></h3>
-<p class="centered"><strong>Representational State Transfer</strong></p>
-<div class="build container">
-<ul class="build simple">
-<li>Originally described by Roy T. Fielding (worth reading)</li>
-<li>Use HTTP for what it can do</li>
-<li>Read more in <a class="reference external" href="http://www.crummy.com/writing/RESTful-Web-Services/">RESTful Web Services</a>*</li>
-</ul>
-<p>* Seriously. Buy it and read it</p>
-</div>
-<p>The XML-RCP/SOAP way:</p>
-<ul class="build simple">
-<li>POST /getComment HTTP/1.1</li>
-<li>POST /getComments HTTP/1.1</li>
-<li>POST /addComment HTTP/1.1</li>
-<li>POST /editComment HTTP/1.1</li>
-<li>POST /deleteComment HTTP/1.1</li>
-</ul>
-<div class="build container">
-<p>The RESTful way:</p>
-<ul class="build simple">
-<li>GET /comment/&lt;id&gt; HTTP/1.1</li>
-<li>GET /comment HTTP/1.1</li>
-<li>POST /comment HTTP/1.1</li>
-<li>PUT /comment/&lt;id&gt; HTTP/1.1</li>
-<li>DELETE /comment/&lt;id&gt; HTTP/1.1</li>
-</ul>
-</div>
-<p>REST is a <strong>Resource Oriented Architecture</strong></p>
-<div class="build container">
-<p>The URL represents the <em>resource</em> we are working with</p>
-<p>The HTTP Method indicates the <code class="docutils literal"><span class="pre">action</span></code> to be taken</p>
-<p>The HTTP Code returned tells us the <code class="docutils literal"><span class="pre">result</span></code> (whether success or failure)</p>
-</div>
-<div class="build container">
-<p>POST /comment HTTP/1.1  (creating a new comment):</p>
-<ul class="build simple">
-<li>Success: <code class="docutils literal"><span class="pre">HTTP/1.1</span> <span class="pre">201</span> <span class="pre">Created</span></code></li>
-<li>Failure (unauthorized): <code class="docutils literal"><span class="pre">HTTP/1.1</span> <span class="pre">401</span> <span class="pre">Unauthorized</span></code></li>
-<li>Failure (NotImplemented): <code class="docutils literal"><span class="pre">HTTP/1.1</span> <span class="pre">405</span> <span class="pre">Not</span> <span class="pre">Allowed</span></code></li>
-<li>Failure (ValueError): <code class="docutils literal"><span class="pre">HTTP/1.1</span> <span class="pre">406</span> <span class="pre">Not</span> <span class="pre">Acceptable</span></code></li>
-</ul>
-<p>PUT /comment/&lt;id&gt; HTTP/1.1 (edit comment):</p>
-<ul class="build simple">
-<li>Success: <code class="docutils literal"><span class="pre">HTTP/1.1</span> <span class="pre">200</span> <span class="pre">OK</span></code></li>
-<li>Failure: <code class="docutils literal"><span class="pre">HTTP/1.1</span> <span class="pre">409</span> <span class="pre">Conflict</span></code></li>
-</ul>
-<p>DELETE /comment/&lt;id&gt; HTTP/1.1 (delete comment):</p>
-<ul class="build simple">
-<li>Success: <code class="docutils literal"><span class="pre">HTTP/1.1</span> <span class="pre">204</span> <span class="pre">No</span> <span class="pre">Content</span></code></li>
-</ul>
 </div>
 </div>
 <div class="section" id="playing-with-rest">
@@ -1350,9 +1362,9 @@ Maria and I.</p>
 </li>
 <li><a class="reference internal" href="#another-approach">Another Approach</a><ul>
 <li><a class="reference internal" href="#web-services">Web Services</a></li>
-<li><a class="reference internal" href="#json">JSON</a></li>
-<li><a class="reference internal" href="#json-in-python">JSON in Python</a></li>
 <li><a class="reference internal" href="#rest">REST</a></li>
+<li><a class="reference internal" href="#rest-uses-json">REST uses JSON</a></li>
+<li><a class="reference internal" href="#json-in-python">JSON in Python</a></li>
 <li><a class="reference internal" href="#playing-with-rest">Playing With REST</a></li>
 <li><a class="reference internal" href="#mashing-it-up">Mashing It Up</a></li>
 <li><a class="reference internal" href="#add-geocoding">Add Geocoding</a></li>
