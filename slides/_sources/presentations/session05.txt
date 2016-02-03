@@ -983,7 +983,7 @@ It's pretty easy to play with your models from in an interpreter.
 
     .. code-block:: bash
     
-        (ljenv)$ pip install ipython
+        (ljenv)$ pip install ipython pyramid_ipython
 
     Once that finishes, you'll be able to use iPython as your interpreter for
     this project.
