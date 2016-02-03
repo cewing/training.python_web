@@ -63,6 +63,8 @@ I've added a working ``models.py`` file to our `class repository`_ in the
 
 Let's review how it works.
 
+.. _class repository: https://github.com/UWPCE-PythonCert/training.python_web/tree/master/resources/session06
+
 .. nextslide:: Demo Interaction
 
 I've also made a few small changes to make the ``pshell`` command a bit more
