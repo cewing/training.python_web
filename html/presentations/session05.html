@@ -660,14 +660,32 @@ this:</p>
 </pre></div>
 </div>
 <p>By connecting this function as a <code class="docutils literal"><span class="pre">console</span> <span class="pre">script</span></code>, our Python package makes
-this command available to us.</p>
+this command available to us when we install it.</p>
 <div class="build container">
-<p>When we exectute <code class="docutils literal"><span class="pre">initialize_learning_journal_db</span></code> at the command line, we
-will be running this function.</p>
-<p>Let&#8217;s try it out.</p>
+<p>When we exectute the script at the command line, we will be running this
+function.</p>
+<p>But before we try it out, let&#8217;s update the name we use so we don&#8217;t have to
+type that whole big mess.</p>
+<p>In <code class="docutils literal"><span class="pre">setup.py</span></code> change <code class="docutils literal"><span class="pre">initialize_learning_journal_db</span></code> to <code class="docutils literal"><span class="pre">setup_db</span></code>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">entry_points</span><span class="o">=</span><span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s">[paste.app_factory]</span>
+<span class="s">main = learning_journal:main</span>
+<span class="s">[console_scripts]</span>
+<span class="s">setup_db = learning_journal.scripts.initializedb:main</span>
+<span class="s">&quot;&quot;&quot;</span><span class="p">,</span>
+</pre></div>
+</div>
+<p>Then, as you have changed <code class="docutils literal"><span class="pre">setup.py</span></code>, re-install your package:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>python setup.py develop
+...
+</pre></div>
+</div>
+</div>
+<p>Now that the script has been renamed, let&#8217;s try it out.</p>
+<div class="build container">
 <p>We&#8217;ll need to provide a configuration file name, let&#8217;s use
 <code class="docutils literal"><span class="pre">development.ini</span></code>:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>initialize_learning_journal_db development.ini
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>setup_db development.ini
 2015-01-05 18:59:55,426 INFO  <span class="o">[</span>sqlalchemy.engine.base.Engine<span class="o">][</span>MainThread<span class="o">]</span> SELECT CAST<span class="o">(</span><span class="s1">&#39;test plain returns&#39;</span> AS VARCHAR<span class="o">(</span>60<span class="o">))</span> AS anon_1
 ...
 2015-01-05 18:59:55,434 INFO  <span class="o">[</span>sqlalchemy.engine.base.Engine<span class="o">][</span>MainThread<span class="o">]</span> COMMIT
@@ -988,7 +1006,7 @@ database and start over:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>rm learning_journal.sqlite
 </pre></div>
 </div>
-<p>You can always re-create it by executing <code class="docutils literal"><span class="pre">initialize_learning_journal_db</span></code></p>
+<p>You can always re-create it by executing <code class="docutils literal"><span class="pre">setup_db</span></code></p>
 </div>
 </div>
 </div>

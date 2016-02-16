@@ -1099,7 +1099,7 @@ this:</p>
     </article>
   </slide>  <slide class="level-3" id="id31">
     <hgroup>
-      <h3><code class="docutils literal"><span class="pre">initialize_learning_journal_db</span></code></h3>
+      <h3>Initializing the Database</h3>
     </hgroup>
     <article class="">
       <p>Let's look at that code for a moment.</p>
@@ -1134,14 +1134,44 @@ this:</p>
     </hgroup>
     <article class="">
       <p>By connecting this function as a <code class="docutils literal"><span class="pre">console</span> <span class="pre">script</span></code>, our Python package makes
-this command available to us.</p>
+this command available to us when we install it.</p>
 <div class="build container">
-<p>When we exectute <code class="docutils literal"><span class="pre">initialize_learning_journal_db</span></code> at the command line, we
-will be running this function.</p>
-<p>Let's try it out.</p>
+<p>When we exectute the script at the command line, we will be running this
+function.</p>
+<p>But before we try it out, let's update the name we use so we don't have to
+type that whole big mess.</p>
+<p>In <code class="docutils literal"><span class="pre">setup.py</span></code> change <code class="docutils literal"><span class="pre">initialize_learning_journal_db</span></code> to <code class="docutils literal"><span class="pre">setup_db</span></code>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">entry_points</span><span class="o">=</span><span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s">[paste.app_factory]</span>
+<span class="s">main = learning_journal:main</span>
+<span class="s">[console_scripts]</span>
+<span class="s">setup_db = learning_journal.scripts.initializedb:main</span>
+<span class="s">&quot;&quot;&quot;</span><span class="p">,</span>
+</pre></div>
+</div>
+<p>Then, as you have changed <code class="docutils literal"><span class="pre">setup.py</span></code>, re-install your package:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>python setup.py develop
+...
+</pre></div>
+</div>
+</div>
+
+
+
+<div class="slide-no">43</div>
+
+
+    </article>
+  </slide>  <slide class="level-3" id="id33">
+    <hgroup>
+      <h3>Running the Script</h3>
+    </hgroup>
+    <article class="">
+      <p>Now that the script has been renamed, let's try it out.</p>
+<div class="build container">
 <p>We'll need to provide a configuration file name, let's use
 <code class="docutils literal"><span class="pre">development.ini</span></code>:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>initialize_learning_journal_db development.ini
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>ljenv<span class="o">)</span><span class="nv">$ </span>setup_db development.ini
 2015-01-05 18:59:55,426 INFO  <span class="o">[</span>sqlalchemy.engine.base.Engine<span class="o">][</span>MainThread<span class="o">]</span> SELECT CAST<span class="o">(</span><span class="s1">&#39;test plain returns&#39;</span> AS VARCHAR<span class="o">(</span>60<span class="o">))</span> AS anon_1
 ...
 2015-01-05 18:59:55,434 INFO  <span class="o">[</span>sqlalchemy.engine.base.Engine<span class="o">][</span>MainThread<span class="o">]</span> COMMIT
@@ -1153,11 +1183,11 @@ INFO-level logging to sys.stdout as the console script runs.</p>
 
 
 
-<div class="slide-no">43</div>
+<div class="slide-no">44</div>
 
 
     </article>
-  </slide>  <slide class="level-3" id="id33">
+  </slide>  <slide class="level-3" id="id34">
     <hgroup>
       <h3>A Bit More Cleanup</h3>
     </hgroup>
@@ -1178,7 +1208,7 @@ inadvertently add that file to your repository.</p>
 
 
 
-<div class="slide-no">44</div>
+<div class="slide-no">45</div>
 
 
     </article>
@@ -1205,11 +1235,11 @@ application code you are writing:</p>
 
 
 
-<div class="slide-no">45</div>
+<div class="slide-no">46</div>
 
 
     </article>
-  </slide>  <slide class="level-3" id="id34">
+  </slide>  <slide class="level-3" id="id35">
     <hgroup>
       <h3>The <code class="docutils literal"><span class="pre">pshell</span></code> command</h3>
     </hgroup>
@@ -1239,11 +1269,11 @@ Environment:
 
 
 
-<div class="slide-no">46</div>
+<div class="slide-no">47</div>
 
 
     </article>
-  </slide>  <slide class="level-3" id="id35">
+  </slide>  <slide class="level-3" id="id36">
     <hgroup>
       <h3>Interacting with SQLA Models</h3>
     </hgroup>
@@ -1267,11 +1297,11 @@ pretend we are listening to clients</li>
 
 
 
-<div class="slide-no">47</div>
+<div class="slide-no">48</div>
 
 
     </article>
-  </slide>  <slide class="level-3" id="id36">
+  </slide>  <slide class="level-3" id="id37">
     <hgroup>
       <h3>Interacting with SQLA Models</h3>
     </hgroup>
@@ -1296,11 +1326,11 @@ data:</p>
 
 
 
-<div class="slide-no">48</div>
+<div class="slide-no">49</div>
 
 
     </article>
-  </slide>  <slide class="level-3" id="id37">
+  </slide>  <slide class="level-3" id="id38">
     <hgroup>
       <h3>Basic Interactions</h3>
     </hgroup>
@@ -1323,11 +1353,11 @@ a model class.</p>
 
 
 
-<div class="slide-no">49</div>
+<div class="slide-no">50</div>
 
 
     </article>
-  </slide>  <slide class="level-3" id="id38">
+  </slide>  <slide class="level-3" id="id39">
     <hgroup>
       <h3>Queries are Iterators</h3>
     </hgroup>
@@ -1347,11 +1377,11 @@ a model class.</p>
 
 
 
-<div class="slide-no">50</div>
+<div class="slide-no">51</div>
 
 
     </article>
-  </slide>  <slide class="level-3" id="id39">
+  </slide>  <slide class="level-3" id="id40">
     <hgroup>
       <h3>Queries are Iterators</h3>
     </hgroup>
@@ -1379,11 +1409,11 @@ a model class.</p>
 
 
 
-<div class="slide-no">51</div>
+<div class="slide-no">52</div>
 
 
     </article>
-  </slide>  <slide class="level-3" id="id40">
+  </slide>  <slide class="level-3" id="id41">
     <hgroup>
       <h3>Queries have SQL</h3>
     </hgroup>
@@ -1404,11 +1434,11 @@ you expect.</p>
 
 
 
-<div class="slide-no">52</div>
+<div class="slide-no">53</div>
 
 
     </article>
-  </slide>  <slide class="level-3" id="id41">
+  </slide>  <slide class="level-3" id="id42">
     <hgroup>
       <h3>Methods of the Query Object</h3>
     </hgroup>
@@ -1424,11 +1454,11 @@ you expect.</p>
 
 
 
-<div class="slide-no">53</div>
+<div class="slide-no">54</div>
 
 
     </article>
-  </slide>  <slide class="level-3" id="id42">
+  </slide>  <slide class="level-3" id="id43">
     <hgroup>
       <h3><code class="docutils literal"><span class="pre">query.get()</span></code></h3>
     </hgroup>
@@ -1449,11 +1479,11 @@ instance only.</p>
 
 
 
-<div class="slide-no">54</div>
+<div class="slide-no">55</div>
 
 
     </article>
-  </slide>  <slide class="level-3" id="id43">
+  </slide>  <slide class="level-3" id="id44">
     <hgroup>
       <h3><code class="docutils literal"><span class="pre">query.all()</span></code></h3>
     </hgroup>
@@ -1478,11 +1508,11 @@ by the query:</p>
 
 
 
-<div class="slide-no">55</div>
+<div class="slide-no">56</div>
 
 
     </article>
-  </slide>  <slide class="level-3" id="id44">
+  </slide>  <slide class="level-3" id="id45">
     <hgroup>
       <h3>Creating New Objects</h3>
     </hgroup>
@@ -1510,11 +1540,11 @@ nothing about it:</p>
 
 
 
-<div class="slide-no">56</div>
+<div class="slide-no">57</div>
 
 
     </article>
-  </slide>  <slide class="level-3" id="id45">
+  </slide>  <slide class="level-3" id="id46">
     <hgroup>
       <h3>Adding Objects to the Session</h3>
     </hgroup>
@@ -1543,11 +1573,11 @@ session:</p>
 
 
 
-<div class="slide-no">57</div>
+<div class="slide-no">58</div>
 
 
     </article>
-  </slide>  <slide class="level-3" id="id46">
+  </slide>  <slide class="level-3" id="id47">
     <hgroup>
       <h3>Committing Changes</h3>
     </hgroup>
@@ -1573,11 +1603,11 @@ response is sent back.</p>
 
 
 
-<div class="slide-no">58</div>
+<div class="slide-no">59</div>
 
 
     </article>
-  </slide>  <slide class="level-3" id="id47">
+  </slide>  <slide class="level-3" id="id48">
     <hgroup>
       <h3>Altering Objects</h3>
     </hgroup>
@@ -1606,11 +1636,11 @@ it's been updated:</p>
 
 
 
-<div class="slide-no">59</div>
+<div class="slide-no">60</div>
 
 
     </article>
-  </slide>  <slide class="level-3" id="id48">
+  </slide>  <slide class="level-3" id="id49">
     <hgroup>
       <h3>Methods Returning Queries</h3>
     </hgroup>
@@ -1627,11 +1657,11 @@ method.</p>
 
 
 
-<div class="slide-no">60</div>
+<div class="slide-no">61</div>
 
 
     </article>
-  </slide>  <slide class="level-3" id="id49">
+  </slide>  <slide class="level-3" id="id50">
     <hgroup>
       <h3><code class="docutils literal"><span class="pre">order_by</span></code></h3>
     </hgroup>
@@ -1649,11 +1679,11 @@ method.</p>
 
 
 
-<div class="slide-no">61</div>
+<div class="slide-no">62</div>
 
 
     </article>
-  </slide>  <slide class="level-3" id="id50">
+  </slide>  <slide class="level-3" id="id51">
     <hgroup>
       <h3>Method Chaining</h3>
     </hgroup>
@@ -1675,7 +1705,7 @@ sent to the database until you require a result.</p>
 
 
 
-<div class="slide-no">62</div>
+<div class="slide-no">63</div>
 
 
     </article>
@@ -1696,12 +1726,12 @@ database and start over:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>rm learning_journal.sqlite
 </pre></div>
 </div>
-<p>You can always re-create it by executing <code class="docutils literal"><span class="pre">initialize_learning_journal_db</span></code></p>
+<p>You can always re-create it by executing <code class="docutils literal"><span class="pre">setup_db</span></code></p>
 </div>
 
 
 
-<div class="slide-no">63</div>
+<div class="slide-no">64</div>
 
 
     </article>
@@ -1723,7 +1753,7 @@ API.</p>
 
 
 
-<div class="slide-no">64</div>
+<div class="slide-no">65</div>
 
 
     </article>
@@ -1749,11 +1779,11 @@ was last edited.</li>
 
 
 
-<div class="slide-no">65</div>
+<div class="slide-no">66</div>
 
 
     </article>
-  </slide>  <slide class="level-3" id="id51">
+  </slide>  <slide class="level-3" id="id52">
     <hgroup>
       <h3>The Model</h3>
     </hgroup>
@@ -1771,11 +1801,11 @@ re-run the <code class="docutils literal"><span class="pre">initialize_learning_
 
 
 
-<div class="slide-no">66</div>
+<div class="slide-no">67</div>
 
 
     </article>
-  </slide>  <slide class="level-3" id="id52">
+  </slide>  <slide class="level-3" id="id53">
     <hgroup>
       <h3>Words of Advice</h3>
     </hgroup>
@@ -1794,11 +1824,11 @@ but you'll gain a session that can be used again.</p>
 
 
 
-<div class="slide-no">67</div>
+<div class="slide-no">68</div>
 
 
     </article>
-  </slide>  <slide class="level-3" id="id53">
+  </slide>  <slide class="level-3" id="id54">
     <hgroup>
       <h3>Submitting Your Work</h3>
     </hgroup>
@@ -1818,11 +1848,11 @@ remote to your <code class="docutils literal"><span class="pre">learning_journal
 
 
 
-<div class="slide-no">68</div>
+<div class="slide-no">69</div>
 
 
     </article>
-  </slide>  <slide class="level-3" id="id54">
+  </slide>  <slide class="level-3" id="id55">
     <hgroup>
       <h3>The Model</h3>
     </hgroup>
@@ -1835,7 +1865,7 @@ remote to your <code class="docutils literal"><span class="pre">learning_journal
 
 
 
-<div class="slide-no">69</div>
+<div class="slide-no">70</div>
 
 
     </article>

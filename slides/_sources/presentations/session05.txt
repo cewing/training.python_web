@@ -896,7 +896,7 @@ We have a *model* which allows us to persist Python objects to an SQL database.
 
     The ``console_script`` set up as an entry point will help us.
 
-.. nextslide:: ``initialize_learning_journal_db``
+.. nextslide:: Initializing the Database
 
 Let's look at that code for a moment.
 
@@ -922,22 +922,48 @@ Let's look at that code for a moment.
 .. nextslide:: Console Scripts
 
 By connecting this function as a ``console script``, our Python package makes
-this command available to us.
+this command available to us when we install it.
 
 .. rst-class:: build
 .. container::
 
-    When we exectute ``initialize_learning_journal_db`` at the command line, we
-    will be running this function.
+    When we exectute the script at the command line, we will be running this
+    function.
 
-    Let's try it out.
+    But before we try it out, let's update the name we use so we don't have to
+    type that whole big mess.
+
+    In ``setup.py`` change ``initialize_learning_journal_db`` to ``setup_db``:
+
+    .. code-block:: python
+        
+        entry_points="""\
+        [paste.app_factory]
+        main = learning_journal:main
+        [console_scripts]
+        setup_db = learning_journal.scripts.initializedb:main
+        """,
+
+    Then, as you have changed ``setup.py``, re-install your package:
+
+    .. code-block:: bash
+    
+        (ljenv)$ python setup.py develop
+        ...
+
+.. nextslide:: Running the Script
+
+Now that the script has been renamed, let's try it out.
+
+.. rst-class:: build
+.. container::
 
     We'll need to provide a configuration file name, let's use
     ``development.ini``:
 
     .. code-block:: bash
 
-        (ljenv)$ initialize_learning_journal_db development.ini
+        (ljenv)$ setup_db development.ini
         2015-01-05 18:59:55,426 INFO  [sqlalchemy.engine.base.Engine][MainThread] SELECT CAST('test plain returns' AS VARCHAR(60)) AS anon_1
         ...
         2015-01-05 18:59:55,434 INFO  [sqlalchemy.engine.base.Engine][MainThread] COMMIT
@@ -1392,7 +1418,7 @@ messy or incomplete.
     
         $ rm learning_journal.sqlite
 
-    You can always re-create it by executing ``initialize_learning_journal_db``
+    You can always re-create it by executing ``setup_db``
 
 Homework
 ========
