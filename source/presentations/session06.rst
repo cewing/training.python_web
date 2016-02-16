@@ -1437,7 +1437,7 @@ You'll need to update the view configuration to use this new renderer.
         Starting server in PID 90536.
         serving on http://0.0.0.0:6543
 
-    * http://localhost:6543/create
+    * http://localhost:6543/journal/create
 
 .. nextslide:: Providing Access
 
