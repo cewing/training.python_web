@@ -162,8 +162,8 @@ In Pyramid these two aspects are handled by separate configuration settings:
     You can learn about the interfaces for `authentication`_ and
     `authorization`_ in the Pyramid documentation
 
-.. _authentication: http://docs.pylonsproject.org/docs/pyramid/en/latest/api/interfaces.html#pyramid.interfaces.IAuthenticationPolicy
-.. _authorization: http://docs.pylonsproject.org/docs/pyramid/en/latest/api/interfaces.html#pyramid.interfaces.IAuthorizationPolicy
+.. _authentication: http://docs.pylonsproject.org/projects/pyramid/en/latest/api/interfaces.html#pyramid.interfaces.IAuthenticationPolicy
+.. _authorization: http://docs.pylonsproject.org/projects/pyramid/en/latest/api/interfaces.html#pyramid.interfaces.IAuthorizationPolicy
 
 .. nextslide:: Our Journal Security
 
