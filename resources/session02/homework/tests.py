@@ -324,7 +324,7 @@ class HTTPServerFunctionalTestCase(unittest.TestCase):
     def test_webroot_directory_resources(self):
         """verify that directory uris are properly served"""
         message_tmpl = CRLF.join(['GET {0} HTTP/1.1', 'Host: example.com', ''])
-        root = "webroot"
+        root = "webroot/"
         for directory, directories, files in os.walk(root):
             directory_uri = "/{0}".format(directory[len(root):])
             message = message_tmpl.format(directory_uri)
